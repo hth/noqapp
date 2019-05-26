@@ -65,7 +65,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
-    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate) {
+    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, Date scheduleDate) {
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("SD").is(scheduleDate)),
             ScheduleAppointmentEntity.class,
@@ -80,7 +80,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     public List<ScheduleAppointmentEntity> findBookedAppointmentsForMonth(String codeQR, Date startOfMonth, Date endOfMonth) {
         try {
             TypedAggregation<ScheduleAppointmentEntity> agg = newAggregation(ScheduleAppointmentEntity.class,
-                match(where("QR").is(codeQR).and("AS").ne(AppointmentStatusEnum.R)),
+                match(where("QR").is(codeQR).and("AS").ne(AppointmentStatusEnum.R).and("SD").gte(startOfMonth).lte(endOfMonth)),
                 group("scheduleDate")
                     .first("scheduleDate").as("SD")
                     .count().as("TA")
