@@ -359,6 +359,6 @@ public final class DateUtil {
         ZonedDateTime zdt = date.toInstant().atZone(ZoneId.of(timeZone));
         YearMonth ym = YearMonth.from(zdt);
         LocalDate last = ym.atEndOfMonth();
-        return Date.from(last.atStartOfDay(ZoneId.of(timeZone)).plusDays(1).toInstant());
+        return Date.from(last.atStartOfDay(ZoneId.of(timeZone)).plusDays(1).minusSeconds(1).toInstant());
     }
 }
