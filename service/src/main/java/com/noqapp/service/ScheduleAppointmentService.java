@@ -74,7 +74,7 @@ public class ScheduleAppointmentService {
 
         ScheduleAppointmentEntity scheduleAppointment = new ScheduleAppointmentEntity()
             .setCodeQR(jsonSchedule.getCodeQR())
-            .setScheduleDate(jsonSchedule.getScheduleDate())
+            .setScheduleDate(DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone()))
             .setStartTime(jsonSchedule.getStartTime())
             .setEndTime(jsonSchedule.getEndTime())
             .setQueueUserId(jsonSchedule.getQueueUserId())
@@ -95,8 +95,8 @@ public class ScheduleAppointmentService {
         scheduleAppointmentManager.cancelAppointment(id, qid, codeQR);
     }
 
-    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String day) {
-        return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, day);
+    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, Date scheduleDate) {
+        return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
     }
 
     /**
@@ -105,7 +105,8 @@ public class ScheduleAppointmentService {
     @Mobile
     public JsonScheduleList findBookedAppointmentsForDayAsJson(String codeQR, String scheduleDate) {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone()));
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, null));
         }
@@ -119,7 +120,8 @@ public class ScheduleAppointmentService {
     @Mobile
     public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone()));
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
@@ -143,7 +145,7 @@ public class ScheduleAppointmentService {
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(
                 new JsonSchedule()
-                    .setScheduleDate(scheduleAppointment.getScheduleDate())
+                    .setScheduleDate(Formatter.toDefaultDateFormatAsString(scheduleAppointment.getScheduleDate()))
                     .setTotalAppointments(scheduleAppointment.getTotalAppointments())
             );
         }

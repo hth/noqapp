@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
 import java.util.StringJoiner;
 
 /**
@@ -31,7 +32,7 @@ public class ScheduleAppointmentEntity extends BaseEntity {
     private String codeQR;
 
     @Field("SD")
-    private String scheduleDate;
+    private Date scheduleDate;
 
     @Field("ST")
     private int startTime;
@@ -61,11 +62,11 @@ public class ScheduleAppointmentEntity extends BaseEntity {
         return this;
     }
 
-    public String getScheduleDate() {
+    public Date getScheduleDate() {
         return scheduleDate;
     }
 
-    public ScheduleAppointmentEntity setScheduleDate(String scheduleDate) {
+    public ScheduleAppointmentEntity setScheduleDate(Date scheduleDate) {
         this.scheduleDate = scheduleDate;
         return this;
     }
