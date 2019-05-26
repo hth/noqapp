@@ -118,4 +118,13 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
             TABLE
         );
     }
+
+    @Override
+    public boolean doesAppointmentExists(String qid, String codeQR, Date scheduleDate) {
+        return mongoTemplate.exists(
+            query(where("QID").is(qid).and("QR").is(codeQR).and("SD").is(scheduleDate)),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        );
+    }
 }
