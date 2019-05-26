@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.ScheduleAppointmentEntity;
+import com.noqapp.domain.types.AppointmentStatusEnum;
 
 import java.util.Date;
 import java.util.List;
@@ -16,4 +17,6 @@ public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAp
     List<ScheduleAppointmentEntity> findBookedAppointmentsForMonth(String codeQR, Date startOfMonth, Date endOfMonth);
 
     void cancelAppointment(String id, String qid, String codeQR);
+
+    ScheduleAppointmentEntity updateSchedule(String id, AppointmentStatusEnum appointmentStatus, String qid, String codeQR);
 }

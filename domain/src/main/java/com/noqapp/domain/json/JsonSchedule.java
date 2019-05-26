@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.beans.Transient;
 import java.util.StringJoiner;
 
 /**
@@ -148,6 +150,20 @@ public class JsonSchedule extends AbstractDomain {
     public JsonSchedule setJsonProfile(JsonProfile jsonProfile) {
         this.jsonProfile = jsonProfile;
         return this;
+    }
+
+    @Transient
+    public static JsonSchedule populateJsonSchedule(ScheduleAppointmentEntity scheduleAppointment, JsonProfile jsonProfile) {
+        return new JsonSchedule()
+            .setScheduleAppointmentId(scheduleAppointment.getId())
+            .setCodeQR(scheduleAppointment.getCodeQR())
+            .setScheduleDate(scheduleAppointment.getScheduleDate())
+            .setStartTime(scheduleAppointment.getStartTime())
+            .setEndTime(scheduleAppointment.getEndTime())
+            .setQueueUserId(scheduleAppointment.getQueueUserId())
+            .setGuardianQid(scheduleAppointment.getGuardianQid())
+            .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
+            .setJsonProfile(jsonProfile);
     }
 
     @Override
