@@ -19,4 +19,6 @@ public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAp
     void cancelAppointment(String id, String qid, String codeQR);
 
     ScheduleAppointmentEntity updateSchedule(String id, AppointmentStatusEnum appointmentStatus, String qid, String codeQR);
+
+    boolean doesAppointmentExists(String qid, String codeQR, Date scheduleDate);
 }

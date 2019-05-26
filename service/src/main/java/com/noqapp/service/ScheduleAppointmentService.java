@@ -166,4 +166,9 @@ public class ScheduleAppointmentService {
 
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile);
     }
+
+    public boolean doesAppointmentExists(String qid, String codeQR, String scheduleDate) {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        return scheduleAppointmentManager.doesAppointmentExists(qid, codeQR, DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone()));
+    }
 }
