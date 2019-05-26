@@ -87,16 +87,7 @@ public class ScheduleAppointmentService {
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
-        return new JsonSchedule()
-            .setScheduleAppointmentId(scheduleAppointment.getId())
-            .setCodeQR(scheduleAppointment.getCodeQR())
-            .setScheduleDate(scheduleAppointment.getScheduleDate())
-            .setStartTime(scheduleAppointment.getStartTime())
-            .setEndTime(scheduleAppointment.getEndTime())
-            .setQueueUserId(scheduleAppointment.getQueueUserId())
-            .setGuardianQid(scheduleAppointment.getGuardianQid())
-            .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
-            .setJsonProfile(jsonProfile);
+        return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile);
     }
 
     @Mobile
@@ -116,16 +107,7 @@ public class ScheduleAppointmentService {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-            jsonScheduleList.addJsonSchedule(
-                new JsonSchedule()
-                    .setScheduleAppointmentId(scheduleAppointment.getId())
-                    .setScheduleDate(scheduleAppointment.getScheduleDate())
-                    .setStartTime(scheduleAppointment.getStartTime())
-                    .setEndTime(scheduleAppointment.getEndTime())
-                    .setQueueUserId(scheduleAppointment.getQueueUserId())
-                    .setGuardianQid(scheduleAppointment.getGuardianQid())
-                    .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
-            );
+            jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, null));
         }
 
         return jsonScheduleList;
@@ -142,18 +124,7 @@ public class ScheduleAppointmentService {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
             JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
-
-            jsonScheduleList.addJsonSchedule(
-                new JsonSchedule()
-                    .setScheduleAppointmentId(scheduleAppointment.getId())
-                    .setScheduleDate(scheduleAppointment.getScheduleDate())
-                    .setStartTime(scheduleAppointment.getStartTime())
-                    .setEndTime(scheduleAppointment.getEndTime())
-                    .setQueueUserId(scheduleAppointment.getQueueUserId())
-                    .setGuardianQid(scheduleAppointment.getGuardianQid())
-                    .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
-                    .setJsonProfile(jsonProfile)
-            );
+            jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile));
         }
 
         return jsonScheduleList;
@@ -178,5 +149,19 @@ public class ScheduleAppointmentService {
         }
 
         return jsonScheduleList;
+    }
+
+    @Mobile
+    public JsonSchedule scheduleAction(String scheduleAppointmentId, AppointmentStatusEnum appointmentStatus, String qid, String codeQR) {
+        ScheduleAppointmentEntity scheduleAppointment = scheduleAppointmentManager.updateSchedule(scheduleAppointmentId, appointmentStatus, qid, codeQR);
+        if (null == scheduleAppointment) {
+            LOG.warn("Could not find schedule {} {} {} {}", scheduleAppointmentId, appointmentStatus, qid, codeQR);
+            throw new AppointmentBookingException("Could not find schedule");
+        }
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
+        UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+
+        return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile);
     }
 }

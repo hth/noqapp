@@ -1,10 +1,12 @@
 package com.noqapp.repository;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mapping.context.InvalidPersistentPropertyPath;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -100,6 +103,17 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     public void cancelAppointment(String id, String qid, String codeQR) {
         mongoTemplate.remove(
             query(where("id").is(id).and("QID").is(qid).and("QR").is(codeQR)),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public ScheduleAppointmentEntity updateSchedule(String id, AppointmentStatusEnum appointmentStatus, String qid, String codeQR) {
+        return mongoTemplate.findAndModify(
+            query(where("id").is(id).and("QR").is(codeQR).and("QID").is(qid)),
+            entityUpdate(update("AS", appointmentStatus)),
+            FindAndModifyOptions.options().returnNew(true),
             ScheduleAppointmentEntity.class,
             TABLE
         );
