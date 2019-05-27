@@ -141,4 +141,13 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
             TABLE
         );
     }
+
+    @Override
+    public ScheduleAppointmentEntity findAppointment(String id, String qid, String codeQR) {
+        return mongoTemplate.findOne(
+            query(where("id").is(id).and("QID").is(qid).and("QR").is(codeQR)),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        );
+    }
 }

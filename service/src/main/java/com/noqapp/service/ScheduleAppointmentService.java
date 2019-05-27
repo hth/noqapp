@@ -201,4 +201,9 @@ public class ScheduleAppointmentService {
 
         return jsonScheduleList;
     }
+
+    @Mobile
+    public ScheduleAppointmentEntity findAppointment(String id, String qid, String codeQR) {
+        return scheduleAppointmentManager.findAppointment(id, qid, codeQR);
+    }
 }
