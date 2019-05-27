@@ -193,6 +193,8 @@ public class ScheduleAppointmentService {
             List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllUpComingAppointments(queueUserId);
 
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
+            userProfile.setPhoneRaw(userProfileOfGuardian.getPhoneRaw());
+            
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
             JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
