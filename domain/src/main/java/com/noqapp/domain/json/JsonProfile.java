@@ -14,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,7 +135,7 @@ public final class JsonProfile extends AbstractDomain {
             userProfile.getEmail(),
             userProfile.getCountryShortName(),
             userProfile.getAddress(),
-            userProfile.getPhoneRaw(),
+            StringUtils.isBlank(userProfile.getGuardianPhone()) ? userProfile.getPhoneRaw() : userProfile.getGuardianPhone(),
             userProfile.getTimeZone(),
             userProfile.getInviteCode(),
             userProfile.getBirthday(),

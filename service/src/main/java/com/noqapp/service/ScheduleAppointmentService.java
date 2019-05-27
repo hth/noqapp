@@ -19,8 +19,6 @@ import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.exceptions.AppointmentBookingException;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -193,8 +191,6 @@ public class ScheduleAppointmentService {
             List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllUpComingAppointments(queueUserId);
 
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
-            userProfile.setPhoneRaw(userProfileOfGuardian.getPhoneRaw());
-            
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
             JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
