@@ -19,12 +19,15 @@ import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.exceptions.AppointmentBookingException;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -167,8 +170,37 @@ public class ScheduleAppointmentService {
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile);
     }
 
+    @Mobile
     public boolean doesAppointmentExists(String qid, String codeQR, String scheduleDate) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         return scheduleAppointmentManager.doesAppointmentExists(qid, codeQR, DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone()));
+    }
+
+    @Mobile
+    public JsonScheduleList findAllUpComingAppointments(String qid) {
+        UserProfileEntity userProfileOfGuardian = userProfileManager.findByQueueUserId(qid);
+
+        List<String> qids;
+        if (null != userProfileOfGuardian.getQidOfDependents()) {
+            qids = userProfileOfGuardian.getQidOfDependents();
+            qids.add(qid);
+        } else {
+            qids = new ArrayList<String>() {{add(qid);}};
+        }
+
+        JsonScheduleList jsonScheduleList = new JsonScheduleList();
+        for (String queueUserId : qids) {
+            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllUpComingAppointments(queueUserId);
+
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
+            UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
+            JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+
+            for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
+                jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile));
+            }
+        }
+
+        return jsonScheduleList;
     }
 }

@@ -38,6 +38,18 @@ public class JsonTokenAndQueueList extends AbstractDomain {
     @JsonProperty ("tqs")
     private List<JsonTokenAndQueue> tokenAndQueues = new ArrayList<>();
 
+    @JsonProperty ("jsl")
+    private JsonScheduleList jsonScheduleList = new JsonScheduleList();
+
+    public boolean isSinceBeginning() {
+        return sinceBeginning;
+    }
+
+    public JsonTokenAndQueueList setSinceBeginning(boolean sinceBeginning) {
+        this.sinceBeginning = sinceBeginning;
+        return this;
+    }
+
     public List<JsonTokenAndQueue> getTokenAndQueues() {
         return tokenAndQueues;
     }
@@ -47,12 +59,12 @@ public class JsonTokenAndQueueList extends AbstractDomain {
         return this;
     }
 
-    public boolean isSinceBeginning() {
-        return sinceBeginning;
+    public JsonScheduleList getJsonScheduleList() {
+        return jsonScheduleList;
     }
 
-    public JsonTokenAndQueueList setSinceBeginning(boolean sinceBeginning) {
-        this.sinceBeginning = sinceBeginning;
+    public JsonTokenAndQueueList setJsonScheduleList(JsonScheduleList jsonScheduleList) {
+        this.jsonScheduleList = jsonScheduleList;
         return this;
     }
 

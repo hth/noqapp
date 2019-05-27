@@ -8,6 +8,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStatusEnum;
@@ -123,6 +124,16 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     public boolean doesAppointmentExists(String qid, String codeQR, Date scheduleDate) {
         return mongoTemplate.exists(
             query(where("QID").is(qid).and("QR").is(codeQR).and("SD").is(scheduleDate)),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid) {
+        Date twoDaysFromNow = DateUtil.plusDays(2);
+        return mongoTemplate.find(
+            query(where("QID").is(qid).and("SD").gte(DateUtil.nowMidnightDate()).lte(twoDaysFromNow)),
             ScheduleAppointmentEntity.class,
             TABLE
         );
