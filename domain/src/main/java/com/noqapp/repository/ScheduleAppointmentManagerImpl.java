@@ -24,6 +24,7 @@ import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -93,7 +94,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
                 return scheduleAppointments;
             }
 
-            return null;
+            return new ArrayList<>();
         } catch (InvalidPersistentPropertyPath e) {
             LOG.error("Failed finding appointments for codeQR={} reason={}", codeQR, e.getLocalizedMessage(), e);
             return null;
