@@ -19,8 +19,6 @@ import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.exceptions.AppointmentBookingException;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
