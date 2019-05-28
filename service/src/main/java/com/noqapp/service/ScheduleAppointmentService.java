@@ -88,8 +88,8 @@ public class ScheduleAppointmentService {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
-
-        return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile);
+        
+        return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour));
     }
 
     @Mobile
