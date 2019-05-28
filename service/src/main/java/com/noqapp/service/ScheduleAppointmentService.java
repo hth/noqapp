@@ -49,7 +49,7 @@ public class ScheduleAppointmentService {
 
     @Autowired
     public ScheduleAppointmentService(
-        @Value("${untilDays}")
+        @Value("${untilDays:2}")
         int untilDays,
 
         ScheduleAppointmentManager scheduleAppointmentManager,
@@ -197,7 +197,7 @@ public class ScheduleAppointmentService {
 
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         for (String queueUserId : qids) {
-            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllUpComingAppointments(queueUserId, 2);
+            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllUpComingAppointments(queueUserId, untilDays);
 
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
