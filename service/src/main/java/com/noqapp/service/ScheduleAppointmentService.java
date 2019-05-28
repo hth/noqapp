@@ -9,6 +9,7 @@ import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonProfile;
+import com.noqapp.domain.json.JsonQueueDisplay;
 import com.noqapp.domain.json.JsonSchedule;
 import com.noqapp.domain.json.JsonScheduleList;
 import com.noqapp.domain.types.AppointmentStatusEnum;
@@ -195,7 +196,11 @@ public class ScheduleAppointmentService {
             JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
             for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-                jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile));
+                BizStoreEntity bizStore = bizStoreManager.findByCodeQR(scheduleAppointment.getCodeQR());
+                StoreHourEntity storeHour = storeHourManager.findOne(
+                    bizStore.getId(),
+                    DateUtil.getDayOfWeekFromDate(scheduleAppointment.getScheduleDate(), bizStore.getTimeZone()));
+                jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour)));
             }
         }
 

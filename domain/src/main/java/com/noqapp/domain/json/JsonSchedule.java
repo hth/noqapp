@@ -63,6 +63,9 @@ public class JsonSchedule extends AbstractDomain {
     @JsonProperty("jp")
     private JsonProfile jsonProfile;
 
+    @JsonProperty("qd")
+    private JsonQueueDisplay jsonQueueDisplay;
+
     public String getScheduleAppointmentId() {
         return scheduleAppointmentId;
     }
@@ -153,6 +156,15 @@ public class JsonSchedule extends AbstractDomain {
         return this;
     }
 
+    public JsonQueueDisplay getJsonQueueDisplay() {
+        return jsonQueueDisplay;
+    }
+
+    public JsonSchedule setJsonQueueDisplay(JsonQueueDisplay jsonQueueDisplay) {
+        this.jsonQueueDisplay = jsonQueueDisplay;
+        return this;
+    }
+
     @Transient
     public static JsonSchedule populateJsonSchedule(ScheduleAppointmentEntity scheduleAppointment, JsonProfile jsonProfile) {
         return new JsonSchedule()
@@ -165,6 +177,13 @@ public class JsonSchedule extends AbstractDomain {
             .setGuardianQid(scheduleAppointment.getGuardianQid())
             .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
             .setJsonProfile(jsonProfile);
+    }
+
+    @Transient
+    public static JsonSchedule populateJsonSchedule(ScheduleAppointmentEntity scheduleAppointment, JsonProfile jsonProfile, JsonQueueDisplay jsonQueueDisplay) {
+        JsonSchedule jsonSchedule = populateJsonSchedule(scheduleAppointment, jsonProfile);
+        jsonSchedule.setJsonQueueDisplay(jsonQueueDisplay);
+        return jsonSchedule;
     }
 
     @Override
