@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ import java.util.List;
 public class ScheduleAppointmentService {
     private static final Logger LOG = LoggerFactory.getLogger(ScheduleAppointmentService.class);
 
+    private int untilDays;
+
     private ScheduleAppointmentManager scheduleAppointmentManager;
     private BizStoreManager bizStoreManager;
     private StoreHourManager storeHourManager;
@@ -46,12 +49,17 @@ public class ScheduleAppointmentService {
 
     @Autowired
     public ScheduleAppointmentService(
+        @Value("${untilDays}")
+        int untilDays,
+
         ScheduleAppointmentManager scheduleAppointmentManager,
         BizStoreManager bizStoreManager,
         StoreHourManager storeHourManager,
         UserProfileManager userProfileManager,
         UserAccountManager userAccountManager
     ) {
+        this.untilDays = untilDays;
+
         this.scheduleAppointmentManager = scheduleAppointmentManager;
         this.bizStoreManager = bizStoreManager;
         this.storeHourManager = storeHourManager;
@@ -88,7 +96,7 @@ public class ScheduleAppointmentService {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
-        
+
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour));
     }
 
@@ -189,7 +197,39 @@ public class ScheduleAppointmentService {
 
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         for (String queueUserId : qids) {
-            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllUpComingAppointments(queueUserId);
+            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllUpComingAppointments(queueUserId, 2);
+
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
+            UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
+            JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+
+            for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
+                BizStoreEntity bizStore = bizStoreManager.findByCodeQR(scheduleAppointment.getCodeQR());
+                StoreHourEntity storeHour = storeHourManager.findOne(
+                    bizStore.getId(),
+                    DateUtil.getDayOfWeekFromDate(scheduleAppointment.getScheduleDate(), bizStore.getTimeZone()));
+                jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour)));
+            }
+        }
+
+        return jsonScheduleList;
+    }
+
+    @Mobile
+    public JsonScheduleList findAllFutureAppointments(String qid) {
+        UserProfileEntity userProfileOfGuardian = userProfileManager.findByQueueUserId(qid);
+
+        List<String> qids;
+        if (null != userProfileOfGuardian.getQidOfDependents()) {
+            qids = userProfileOfGuardian.getQidOfDependents();
+            qids.add(qid);
+        } else {
+            qids = new ArrayList<String>() {{add(qid);}};
+        }
+
+        JsonScheduleList jsonScheduleList = new JsonScheduleList();
+        for (String queueUserId : qids) {
+            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllFutureAppointments(queueUserId);
 
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
