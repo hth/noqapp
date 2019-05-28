@@ -22,7 +22,9 @@ public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAp
 
     boolean doesAppointmentExists(String qid, String codeQR, Date scheduleDate);
 
-    List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid);
+    List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid, int untilDays);
+
+    List<ScheduleAppointmentEntity> findAllFutureAppointments(String qid);
 
     ScheduleAppointmentEntity findAppointment(String id, String qid, String codeQR);
 }

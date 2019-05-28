@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -133,13 +134,19 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
-    public List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid) {
-        Date twoDaysFromNow = DateUtil.plusDays(2);
-        return mongoTemplate.find(
-            query(where("QID").is(qid).and("SD").gte(DateUtil.nowMidnightDate()).lte(twoDaysFromNow)),
-            ScheduleAppointmentEntity.class,
-            TABLE
-        );
+    public List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid, int untilDays) {
+        Query query;
+        if (untilDays > 0) {
+            query = query(where("QID").is(qid).and("SD").gte(DateUtil.nowMidnightDate()).lte(DateUtil.plusDays(untilDays)));
+        } else {
+            query = query(where("QID").is(qid).and("SD").gte(DateUtil.nowMidnightDate()));
+        }
+        return mongoTemplate.find(query, ScheduleAppointmentEntity.class, TABLE);
+    }
+
+    @Override
+    public List<ScheduleAppointmentEntity> findAllFutureAppointments(String qid) {
+        return findAllUpComingAppointments(qid, 0);
     }
 
     @Override
