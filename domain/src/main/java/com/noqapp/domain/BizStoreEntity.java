@@ -239,6 +239,21 @@ public class BizStoreEntity extends BaseEntity {
     //*  Queue Price Settings Ends.   */
     //*********************************/
 
+    //******************************************/
+    //*  Queue Appointment Setting Starts.     */
+    //******************************************/
+    @Field("AE")
+    private boolean appointmentEnable = false;
+
+    @Field("AD")
+    private int appointmentDuration = 20;
+
+    @Field("AO")
+    private int appointmentOpenHowFar = 1;
+    //******************************************/
+    //*  Queue Appointment Setting Ends.       */
+    //******************************************/
+
     /* Contains Id if a task is assigned. */
     @Field("TA")
     private String scheduledTaskId;
@@ -770,6 +785,33 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setDiscountedFollowupProductPrice(int discountedFollowupProductPrice) {
         this.discountedFollowupProductPrice = discountedFollowupProductPrice;
+        return this;
+    }
+
+    public boolean isAppointmentEnable() {
+        return appointmentEnable;
+    }
+
+    public BizStoreEntity setAppointmentEnable(boolean appointmentEnable) {
+        this.appointmentEnable = appointmentEnable;
+        return this;
+    }
+
+    public int getAppointmentDuration() {
+        return appointmentDuration;
+    }
+
+    public BizStoreEntity setAppointmentDuration(int appointmentDuration) {
+        this.appointmentDuration = appointmentDuration;
+        return this;
+    }
+
+    public int getAppointmentOpenHowFar() {
+        return appointmentOpenHowFar;
+    }
+
+    public BizStoreEntity setAppointmentOpenHowFar(int appointmentOpenHowFar) {
+        this.appointmentOpenHowFar = appointmentOpenHowFar;
         return this;
     }
 
