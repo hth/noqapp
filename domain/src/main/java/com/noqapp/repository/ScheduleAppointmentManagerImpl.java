@@ -85,7 +85,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
         LOG.info("codeQR={} {} {}", codeQR, startOfMonth, endOfMonth);
         try {
             TypedAggregation<ScheduleAppointmentEntity> agg = newAggregation(ScheduleAppointmentEntity.class,
-                match(where("QR").is(codeQR).and("AS").ne(AppointmentStatusEnum.R).and("SD").gte(startOfMonth).lte(endOfMonth)),
+                match(where("QR").is(codeQR).and("SD").gte(startOfMonth).lte(endOfMonth)),
                 group("scheduleDate")
                     .first("scheduleDate").as("SD")
                     .count().as("TA")
@@ -106,8 +106,9 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
 
     @Override
     public void cancelAppointment(String id, String qid, String codeQR) {
-        mongoTemplate.remove(
+        mongoTemplate.updateFirst(
             query(where("id").is(id).and("QID").is(qid).and("QR").is(codeQR)),
+            entityUpdate(update("AS", AppointmentStatusEnum.C)),
             ScheduleAppointmentEntity.class,
             TABLE
         );

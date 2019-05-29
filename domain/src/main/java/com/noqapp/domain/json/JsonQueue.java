@@ -163,6 +163,21 @@ public class JsonQueue extends AbstractDomain {
     //*  Queue Price Settings Ends.   */
     //*********************************/
 
+    //******************************************/
+    //*  Queue Appointment Setting Starts.     */
+    //******************************************/
+    @JsonProperty("ae")
+    private boolean appointmentEnable;
+
+    @JsonProperty("ad")
+    private int appointmentDuration;
+
+    @JsonProperty("ao")
+    private int appointmentOpenHowFar;
+    //******************************************/
+    //*  Queue Appointment Setting Ends.       */
+    //******************************************/
+
     @JsonProperty("bc")
     private String bizCategoryId;
 
@@ -506,6 +521,33 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setServicePayment(ServicePaymentEnum servicePayment) {
         this.servicePayment = servicePayment;
+        return this;
+    }
+
+    public boolean isAppointmentEnable() {
+        return appointmentEnable;
+    }
+
+    public JsonQueue setAppointmentEnable(boolean appointmentEnable) {
+        this.appointmentEnable = appointmentEnable;
+        return this;
+    }
+
+    public int getAppointmentDuration() {
+        return appointmentDuration;
+    }
+
+    public JsonQueue setAppointmentDuration(int appointmentDuration) {
+        this.appointmentDuration = appointmentDuration;
+        return this;
+    }
+
+    public int getAppointmentOpenHowFar() {
+        return appointmentOpenHowFar;
+    }
+
+    public JsonQueue setAppointmentOpenHowFar(int appointmentOpenHowFar) {
+        this.appointmentOpenHowFar = appointmentOpenHowFar;
         return this;
     }
 
