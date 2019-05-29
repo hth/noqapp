@@ -106,8 +106,9 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
 
     @Override
     public void cancelAppointment(String id, String qid, String codeQR) {
-        mongoTemplate.remove(
+        mongoTemplate.updateFirst(
             query(where("id").is(id).and("QID").is(qid).and("QR").is(codeQR)),
+            entityUpdate(update("AS", AppointmentStatusEnum.C)),
             ScheduleAppointmentEntity.class,
             TABLE
         );
