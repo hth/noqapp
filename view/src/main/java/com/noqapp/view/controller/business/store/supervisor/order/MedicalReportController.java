@@ -219,7 +219,8 @@ public class MedicalReportController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Upload medical report for qid={} storeId={} transactionId={}", queueUser.getQueueUserId(), medicalReportForm.getStoreId(), medicalReportForm.getTransactionId());
+        LOG.info("Upload medical report for qid={} storeId={} transactionId={}",
+            queueUser.getQueueUserId(), medicalReportForm.getStoreId(), medicalReportForm.getTransactionId());
         /* Above condition to make sure users with right roles and access gets access. */
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
@@ -289,7 +290,8 @@ public class MedicalReportController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Delete medical lab report for qid={} storeId={} transactionId={}", queueUser.getQueueUserId(), medicalReportForm.getStoreId(), medicalReportForm.getTransactionId());
+        LOG.info("Delete medical lab report for qid={} storeId={} transactionId={}",
+            queueUser.getQueueUserId(), medicalReportForm.getStoreId(), medicalReportForm.getTransactionId());
         /* Above condition to make sure users with right roles and access gets access. */
 
         medicalFileService.removeReport(
