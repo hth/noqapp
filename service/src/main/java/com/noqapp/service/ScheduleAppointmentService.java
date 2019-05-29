@@ -70,6 +70,11 @@ public class ScheduleAppointmentService {
     @Mobile
     public JsonSchedule bookAppointment(String guardianQid, JsonSchedule jsonSchedule) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(jsonSchedule.getCodeQR());
+        if (!bizStore.isAppointmentEnable()) {
+            LOG.warn("Appointment is not enabled {} for {}", jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
+            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is not accepting appointments");
+        }
+
         Date date = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date, bizStore.getTimeZone()));
         if (storeHour.getStartHour() > jsonSchedule.getStartTime()) {
