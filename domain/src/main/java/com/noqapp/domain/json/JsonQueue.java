@@ -166,7 +166,7 @@ public class JsonQueue extends AbstractDomain {
     //******************************************/
     //*  Queue Appointment Setting Starts.     */
     //******************************************/
-    @JsonProperty("ea")
+    @JsonProperty("al")
     private boolean appointmentEnable;
 
     @JsonProperty("da")
