@@ -85,7 +85,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
         LOG.info("codeQR={} {} {}", codeQR, startOfMonth, endOfMonth);
         try {
             TypedAggregation<ScheduleAppointmentEntity> agg = newAggregation(ScheduleAppointmentEntity.class,
-                match(where("QR").is(codeQR).and("AS").ne(AppointmentStatusEnum.R).and("SD").gte(startOfMonth).lte(endOfMonth)),
+                match(where("QR").is(codeQR).and("SD").gte(startOfMonth).lte(endOfMonth)),
                 group("scheduleDate")
                     .first("scheduleDate").as("SD")
                     .count().as("TA")
