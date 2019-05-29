@@ -478,6 +478,30 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         );
     }
 
+    @Override
+    public BizStoreEntity disableAppointment(String codeQR) {
+        return mongoTemplate.findAndModify(
+            query(where("QR").is(codeQR)),
+            entityUpdate(update("PE", false)),
+            FindAndModifyOptions.options().returnNew(true),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public BizStoreEntity updateAppointment(String codeQR, int appointmentDuration, int appointmentOpenHowFar) {
+        return mongoTemplate.findAndModify(
+            query(where("QR").is(codeQR)),
+            entityUpdate(update("PE", true)
+                .set("PD", appointmentDuration)
+                .set("PF", appointmentOpenHowFar)),
+            FindAndModifyOptions.options().returnNew(true),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM
