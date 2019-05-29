@@ -81,6 +81,9 @@ public class JsonQueueDisplay extends AbstractDomain {
     @JsonProperty("dc")
     private boolean dayClosed = false;
 
+    @JsonProperty("bc")
+    private String bizCategoryId;
+
     public JsonQueueDisplay() {
         //Required default constructor
     }
@@ -220,6 +223,15 @@ public class JsonQueueDisplay extends AbstractDomain {
         return this;
     }
 
+    public String getBizCategoryId() {
+        return bizCategoryId;
+    }
+
+    public JsonQueueDisplay setBizCategoryId(String bizCategoryId) {
+        this.bizCategoryId = bizCategoryId;
+        return this;
+    }
+
     public static JsonQueueDisplay populate(BizStoreEntity bizStore, StoreHourEntity storeHour) {
         return new JsonQueueDisplay()
             .setBusinessName(bizStore.getBizName().getBusinessName())
@@ -236,6 +248,7 @@ public class JsonQueueDisplay extends AbstractDomain {
             .setEndHour(storeHour.getEndHour())
             .setDelayedInMinutes(storeHour.getDelayedInMinutes())
             .setPreventJoining(storeHour.isPreventJoining())
-            .setDayClosed(bizStore.getBizName().isDayClosed() || storeHour.isDayClosed() || storeHour.isTempDayClosed());
+            .setDayClosed(bizStore.getBizName().isDayClosed() || storeHour.isDayClosed() || storeHour.isTempDayClosed())
+            .setBizCategoryId(bizStore.getBizCategoryId());
     }
 }
