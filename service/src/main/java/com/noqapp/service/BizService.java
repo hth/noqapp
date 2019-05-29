@@ -589,4 +589,14 @@ public class BizService {
             discountedFollowupDays,
             discountedFollowupProductPrice);
     }
+
+    @Mobile
+    public BizStoreEntity disableAppointment(String codeQR) {
+        return bizStoreManager.disableServiceCost(codeQR);
+    }
+
+    @Mobile
+    public BizStoreEntity updateAppointment(String codeQR, int appointmentDuration, int appointmentOpenHowFar) {
+        return bizStoreManager.updateAppointment(codeQR, appointmentDuration, appointmentOpenHowFar);
+    }
 }

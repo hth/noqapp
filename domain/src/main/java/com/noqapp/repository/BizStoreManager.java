@@ -110,5 +110,8 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
         int freeFollowupDays,
         int discountedFollowupDays,
         int discountedFollowupProductPrice);
+
+    BizStoreEntity disableAppointment(String codeQR);
+    BizStoreEntity updateAppointment(String codeQR, int appointmentDuration, int appointmentOpenHowFar);
 }
 
