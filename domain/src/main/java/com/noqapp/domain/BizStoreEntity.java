@@ -242,7 +242,7 @@ public class BizStoreEntity extends BaseEntity {
     //******************************************/
     //*  Queue Appointment Setting Starts.     */
     //******************************************/
-    @Field("EA")
+    @Field("AL")
     private boolean appointmentEnable = false;
 
     @Field("DA")
