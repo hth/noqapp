@@ -592,7 +592,7 @@ public class BizService {
 
     @Mobile
     public BizStoreEntity disableAppointment(String codeQR) {
-        return bizStoreManager.disableServiceCost(codeQR);
+        return bizStoreManager.disableAppointment(codeQR);
     }
 
     @Mobile
