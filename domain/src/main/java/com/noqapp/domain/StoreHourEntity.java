@@ -40,11 +40,17 @@ public class StoreHourEntity extends BaseEntity {
     @Field ("SH")
     private int startHour;
 
+    @Field ("AS")
+    private int appointmentStartHour;
+
     @Field ("TE")
     private int tokenNotAvailableFrom;
 
     @Field ("EH")
     private int endHour;
+
+    @Field ("AE")
+    private int appointmentEndHour;
 
     @Field ("DC")
     private boolean dayClosed = false;
@@ -100,6 +106,15 @@ public class StoreHourEntity extends BaseEntity {
         return this;
     }
 
+    public int getAppointmentStartHour() {
+        return appointmentStartHour;
+    }
+
+    public StoreHourEntity setAppointmentStartHour(int appointmentStartHour) {
+        this.appointmentStartHour = appointmentStartHour;
+        return this;
+    }
+
     public int getTokenNotAvailableFrom() {
         return tokenNotAvailableFrom;
     }
@@ -115,6 +130,15 @@ public class StoreHourEntity extends BaseEntity {
 
     public StoreHourEntity setEndHour(int endHour) {
         this.endHour = endHour;
+        return this;
+    }
+
+    public int getAppointmentEndHour() {
+        return appointmentEndHour;
+    }
+
+    public StoreHourEntity setAppointmentEndHour(int appointmentEndHour) {
+        this.appointmentEndHour = appointmentEndHour;
         return this;
     }
 

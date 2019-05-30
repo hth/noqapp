@@ -164,6 +164,15 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("PP")
     private int productPrice;
 
+    @JsonProperty("PE")
+    private boolean appointmentEnable;
+
+    @JsonProperty("PD")
+    private int appointmentDuration;
+
+    @JsonProperty("PF")
+    private int appointmentOpenHowFar;
+
     @Transient
     @JsonProperty("BI")
     private Set<String> bizServiceImages = new LinkedHashSet<>();
@@ -494,6 +503,33 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public boolean isAppointmentEnable() {
+        return appointmentEnable;
+    }
+
+    public BizStoreElastic setAppointmentEnable(boolean appointmentEnable) {
+        this.appointmentEnable = appointmentEnable;
+        return this;
+    }
+
+    public int getAppointmentDuration() {
+        return appointmentDuration;
+    }
+
+    public BizStoreElastic setAppointmentDuration(int appointmentDuration) {
+        this.appointmentDuration = appointmentDuration;
+        return this;
+    }
+
+    public int getAppointmentOpenHowFar() {
+        return appointmentOpenHowFar;
+    }
+
+    public BizStoreElastic setAppointmentOpenHowFar(int appointmentOpenHowFar) {
+        this.appointmentOpenHowFar = appointmentOpenHowFar;
+        return this;
+    }
+
     public Set<String> getBizServiceImages() {
         return bizServiceImages;
     }
@@ -593,6 +629,9 @@ public class BizStoreElastic extends AbstractDomain {
             .setDisplayName(bizStore.getDisplayName())
             .setEnabledPayment(bizStore.isEnabledPayment())
             .setProductPrice(bizStore.getProductPrice())
+            .setAppointmentEnable(bizStore.isAppointmentEnable())
+            .setAppointmentDuration(bizStore.getAppointmentDuration())
+            .setAppointmentOpenHowFar(bizStore.getAppointmentOpenHowFar())
             .setCodeQR(bizStore.getCodeQR())
             .setTimeZone(bizStore.getTimeZone())
             .setGeoHash(bizStore.getGeoPoint().getGeohash())
