@@ -25,7 +25,7 @@ public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAp
     List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid, int untilDaysInFuture);
     List<ScheduleAppointmentEntity> findAllPastAppointments(String qid, int untilDaysInPast);
 
-    List<ScheduleAppointmentEntity> findAllFutureAppointments(String qid);
+    List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid);
 
     ScheduleAppointmentEntity findAppointment(String id, String qid, String codeQR);
 }

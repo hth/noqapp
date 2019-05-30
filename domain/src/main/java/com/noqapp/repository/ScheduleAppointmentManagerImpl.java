@@ -153,7 +153,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
-    public List<ScheduleAppointmentEntity> findAllFutureAppointments(String qid) {
+    public List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid) {
         return findAllUpComingAppointments(qid, 0);
     }
 
