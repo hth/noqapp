@@ -38,11 +38,17 @@ public class StoreHourElastic extends AbstractDomain {
     @JsonProperty("SH")
     private int startHour;
 
+    @JsonProperty("AS")
+    private int appointmentStartHour;
+
     @JsonProperty("TE")
     private int tokenNotAvailableFrom;
 
     @JsonProperty("EH")
     private int endHour;
+
+    @JsonProperty("AE")
+    private int appointmentEndHour;
 
     @JsonProperty("DC")
     private boolean dayClosed = false;
@@ -74,6 +80,15 @@ public class StoreHourElastic extends AbstractDomain {
         return this;
     }
 
+    public int getAppointmentStartHour() {
+        return appointmentStartHour;
+    }
+
+    public StoreHourElastic setAppointmentStartHour(int appointmentStartHour) {
+        this.appointmentStartHour = appointmentStartHour;
+        return this;
+    }
+
     public int getTokenNotAvailableFrom() {
         return tokenNotAvailableFrom;
     }
@@ -89,6 +104,15 @@ public class StoreHourElastic extends AbstractDomain {
 
     public StoreHourElastic setEndHour(int endHour) {
         this.endHour = endHour;
+        return this;
+    }
+
+    public int getAppointmentEndHour() {
+        return appointmentEndHour;
+    }
+
+    public StoreHourElastic setAppointmentEndHour(int appointmentEndHour) {
+        this.appointmentEndHour = appointmentEndHour;
         return this;
     }
 
