@@ -52,16 +52,16 @@ public class StoreFlowActions extends RegistrationFlowActions {
     @SuppressWarnings ("unused")
     @Autowired
     public StoreFlowActions(
-            Environment environment,
-            ExternalService externalService,
-            BizService bizService,
-            BusinessUserService businessUserService,
-            TokenQueueService tokenQueueService,
-            BizStoreElasticService bizStoreElasticService,
-            BusinessUserStoreService businessUserStoreService,
-            ProfessionalProfileService professionalProfileService,
-            AccountService accountService,
-            MailService mailService
+        Environment environment,
+        ExternalService externalService,
+        BizService bizService,
+        BusinessUserService businessUserService,
+        TokenQueueService tokenQueueService,
+        BizStoreElasticService bizStoreElasticService,
+        BusinessUserStoreService businessUserStoreService,
+        ProfessionalProfileService professionalProfileService,
+        AccountService accountService,
+        MailService mailService
     ) {
         super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
         this.businessUserService = businessUserService;
