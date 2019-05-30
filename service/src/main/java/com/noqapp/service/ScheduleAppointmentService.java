@@ -208,7 +208,7 @@ public class ScheduleAppointmentService {
     }
 
     @Mobile
-    public JsonScheduleList findAllUpComingAppointments(String qid) {
+    public JsonScheduleList findLimitedUpComingAppointments(String qid) {
         List<String> qids = getListOfQueueUserIds(qid);
 
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
@@ -222,12 +222,12 @@ public class ScheduleAppointmentService {
     }
 
     @Mobile
-    public JsonScheduleList findAllFutureAppointments(String qid) {
+    public JsonScheduleList findAllUpComingAppointments(String qid) {
         List<String> qids = getListOfQueueUserIds(qid);
 
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         for (String queueUserId : qids) {
-            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllFutureAppointments(queueUserId);
+            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllUpComingAppointments(queueUserId);
 
             populateJsonScheduleList(jsonScheduleList, queueUserId, scheduleAppointments);
         }
