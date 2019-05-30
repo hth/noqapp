@@ -39,7 +39,8 @@ import java.util.List;
 public class ScheduleAppointmentService {
     private static final Logger LOG = LoggerFactory.getLogger(ScheduleAppointmentService.class);
 
-    private int untilDays;
+    private int untilDaysInPast;
+    private int untilDaysInFuture;
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
     private BizStoreManager bizStoreManager;
@@ -49,8 +50,11 @@ public class ScheduleAppointmentService {
 
     @Autowired
     public ScheduleAppointmentService(
-        @Value("${untilDays:2}")
-        int untilDays,
+        @Value("${untilDaysInPast:60}")
+        int untilDaysInPast,
+
+        @Value("${untilDaysInFuture:2}")
+        int untilDaysInFuture,
 
         ScheduleAppointmentManager scheduleAppointmentManager,
         BizStoreManager bizStoreManager,
@@ -58,7 +62,8 @@ public class ScheduleAppointmentService {
         UserProfileManager userProfileManager,
         UserAccountManager userAccountManager
     ) {
-        this.untilDays = untilDays;
+        this.untilDaysInPast = untilDaysInPast;
+        this.untilDaysInFuture = untilDaysInFuture;
 
         this.scheduleAppointmentManager = scheduleAppointmentManager;
         this.bizStoreManager = bizStoreManager;
@@ -189,32 +194,28 @@ public class ScheduleAppointmentService {
     }
 
     @Mobile
-    public JsonScheduleList findAllUpComingAppointments(String qid) {
-        UserProfileEntity userProfileOfGuardian = userProfileManager.findByQueueUserId(qid);
-
-        List<String> qids;
-        if (null != userProfileOfGuardian.getQidOfDependents()) {
-            qids = userProfileOfGuardian.getQidOfDependents();
-            qids.add(qid);
-        } else {
-            qids = new ArrayList<String>() {{add(qid);}};
-        }
+    public JsonScheduleList findAllPastAppointments(String qid) {
+        List<String> qids = getListOfQueueUserIds(qid);
 
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         for (String queueUserId : qids) {
-            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllUpComingAppointments(queueUserId, untilDays);
+            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllPastAppointments(queueUserId, untilDaysInPast);
 
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
-            UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
-            JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+            populateJsonScheduleList(jsonScheduleList, queueUserId, scheduleAppointments);
+        }
 
-            for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-                BizStoreEntity bizStore = bizStoreManager.findByCodeQR(scheduleAppointment.getCodeQR());
-                StoreHourEntity storeHour = storeHourManager.findOne(
-                    bizStore.getId(),
-                    DateUtil.getDayOfWeekFromDate(scheduleAppointment.getScheduleDate(), bizStore.getTimeZone()));
-                jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour)));
-            }
+        return jsonScheduleList;
+    }
+
+    @Mobile
+    public JsonScheduleList findAllUpComingAppointments(String qid) {
+        List<String> qids = getListOfQueueUserIds(qid);
+
+        JsonScheduleList jsonScheduleList = new JsonScheduleList();
+        for (String queueUserId : qids) {
+            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllUpComingAppointments(queueUserId, untilDaysInFuture);
+
+            populateJsonScheduleList(jsonScheduleList, queueUserId, scheduleAppointments);
         }
 
         return jsonScheduleList;
@@ -222,6 +223,19 @@ public class ScheduleAppointmentService {
 
     @Mobile
     public JsonScheduleList findAllFutureAppointments(String qid) {
+        List<String> qids = getListOfQueueUserIds(qid);
+
+        JsonScheduleList jsonScheduleList = new JsonScheduleList();
+        for (String queueUserId : qids) {
+            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllFutureAppointments(queueUserId);
+
+            populateJsonScheduleList(jsonScheduleList, queueUserId, scheduleAppointments);
+        }
+
+        return jsonScheduleList;
+    }
+
+    private List<String> getListOfQueueUserIds(String qid) {
         UserProfileEntity userProfileOfGuardian = userProfileManager.findByQueueUserId(qid);
 
         List<String> qids;
@@ -231,25 +245,21 @@ public class ScheduleAppointmentService {
         } else {
             qids = new ArrayList<String>() {{add(qid);}};
         }
+        return qids;
+    }
 
-        JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        for (String queueUserId : qids) {
-            List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findAllFutureAppointments(queueUserId);
+    private void populateJsonScheduleList(JsonScheduleList jsonScheduleList, String queueUserId, List<ScheduleAppointmentEntity> scheduleAppointments) {
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
+        UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
-            UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
-            JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
-
-            for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-                BizStoreEntity bizStore = bizStoreManager.findByCodeQR(scheduleAppointment.getCodeQR());
-                StoreHourEntity storeHour = storeHourManager.findOne(
-                    bizStore.getId(),
-                    DateUtil.getDayOfWeekFromDate(scheduleAppointment.getScheduleDate(), bizStore.getTimeZone()));
-                jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour)));
-            }
+        for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(scheduleAppointment.getCodeQR());
+            StoreHourEntity storeHour = storeHourManager.findOne(
+                bizStore.getId(),
+                DateUtil.getDayOfWeekFromDate(scheduleAppointment.getScheduleDate(), bizStore.getTimeZone()));
+            jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour)));
         }
-
-        return jsonScheduleList;
     }
 
     @Mobile
