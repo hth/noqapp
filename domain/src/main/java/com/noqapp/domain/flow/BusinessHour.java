@@ -17,6 +17,8 @@ public class BusinessHour implements Serializable {
     private int endHourStore;
     private int tokenAvailableFrom;
     private int tokenNotAvailableFrom;
+    private int appointmentStartHour;
+    private int appointmentEndHour;
     private boolean dayClosed = false;
 
     public BusinessHour(DayOfWeek dayOfWeek) {
@@ -27,40 +29,63 @@ public class BusinessHour implements Serializable {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(DayOfWeek dayOfWeek) {
+    public BusinessHour setDayOfWeek(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
+        return this;
     }
 
     public int getStartHourStore() {
         return startHourStore;
     }
 
-    public void setStartHourStore(int startHourStore) {
+    public BusinessHour setStartHourStore(int startHourStore) {
         this.startHourStore = startHourStore;
+        return this;
     }
 
     public int getEndHourStore() {
         return endHourStore;
     }
 
-    public void setEndHourStore(int endHourStore) {
+    public BusinessHour setEndHourStore(int endHourStore) {
         this.endHourStore = endHourStore;
+        return this;
     }
 
     public int getTokenAvailableFrom() {
         return tokenAvailableFrom;
     }
 
-    public void setTokenAvailableFrom(int tokenAvailableFrom) {
+    public BusinessHour setTokenAvailableFrom(int tokenAvailableFrom) {
         this.tokenAvailableFrom = tokenAvailableFrom;
+        return this;
     }
 
     public int getTokenNotAvailableFrom() {
         return tokenNotAvailableFrom;
     }
 
-    public void setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
+    public BusinessHour setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
         this.tokenNotAvailableFrom = tokenNotAvailableFrom;
+        return this;
+    }
+
+    public int getAppointmentStartHour() {
+        return appointmentStartHour;
+    }
+
+    public BusinessHour setAppointmentStartHour(int appointmentStartHour) {
+        this.appointmentStartHour = appointmentStartHour;
+        return this;
+    }
+
+    public int getAppointmentEndHour() {
+        return appointmentEndHour;
+    }
+
+    public BusinessHour setAppointmentEndHour(int appointmentEndHour) {
+        this.appointmentEndHour = appointmentEndHour;
+        return this;
     }
 
     public boolean isDayClosed() {
@@ -71,42 +96,37 @@ public class BusinessHour implements Serializable {
         this.dayClosed = dayClosed;
     }
     
-    /**
-     * Used for displaying store hours on JSP.
-     *
-     * @return
-     */
+    /** Used for displaying store hours on JSP. */
     @Transient
     public String getStartHourStoreAsString() {
         return Formatter.convertMilitaryTo12HourFormat(startHourStore);
     }
 
-    /**
-     * Used for displaying store hours on JSP.
-     *
-     * @return
-     */
+    /** Used for displaying store hours on JSP. */
     @Transient
     public String getEndHourStoreAsString() {
         return Formatter.convertMilitaryTo12HourFormat(endHourStore);
     }
 
+    @Transient
+    public String getAppointmentStartHourStoreAsString() {
+        return Formatter.convertMilitaryTo12HourFormat(appointmentStartHour);
+    }
 
-    /**
-     * Used for displaying store hours on JSP.
-     *
-     * @return
-     */
+    /** Used for displaying store hours on JSP. */
+    @Transient
+    public String getAppointmentEndHourStoreAsString() {
+        return Formatter.convertMilitaryTo12HourFormat(appointmentEndHour);
+    }
+
+
+    /** Used for displaying store hours on JSP. */
     @Transient
     public String getTokenAvailableFromAsString() {
         return Formatter.convertMilitaryTo12HourFormat(tokenAvailableFrom);
     }
 
-    /**
-     * Used for displaying store hours on JSP.
-     *
-     * @return
-     */
+    /** Used for displaying store hours on JSP. */
     @Transient
     public String getTokenNotAvailableFromAsString() {
         return Formatter.convertMilitaryTo12HourFormat(tokenNotAvailableFrom);

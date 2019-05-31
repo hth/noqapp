@@ -74,6 +74,11 @@ public class RegisterBusiness implements Serializable {
     private int availableTokenCount;
     private List<BusinessHour> businessHours = new LinkedList<>();
 
+    /* Appointment. */
+    private boolean appointmentEnable;
+    private int appointmentDuration;
+    private int appointmentOpenHowFar;
+
     private HashMap<String, DecodedAddress> foundAddresses = new LinkedHashMap<>();
     private String foundAddressPlaceId;
 
@@ -458,6 +463,33 @@ public class RegisterBusiness implements Serializable {
         this.businessHours = businessHours;
     }
 
+    public boolean isAppointmentEnable() {
+        return appointmentEnable;
+    }
+
+    public RegisterBusiness setAppointmentEnable(boolean appointmentEnable) {
+        this.appointmentEnable = appointmentEnable;
+        return this;
+    }
+
+    public int getAppointmentDuration() {
+        return appointmentDuration;
+    }
+
+    public RegisterBusiness setAppointmentDuration(int appointmentDuration) {
+        this.appointmentDuration = appointmentDuration;
+        return this;
+    }
+
+    public int getAppointmentOpenHowFar() {
+        return appointmentOpenHowFar;
+    }
+
+    public RegisterBusiness setAppointmentOpenHowFar(int appointmentOpenHowFar) {
+        this.appointmentOpenHowFar = appointmentOpenHowFar;
+        return this;
+    }
+
     public HashMap<String, DecodedAddress> getFoundAddresses() {
         return foundAddresses;
     }
@@ -560,6 +592,9 @@ public class RegisterBusiness implements Serializable {
         this.famousFor = bizStore.getFamousFor();
         this.amenitiesStore = bizStore.getAmenities();
         this.facilitiesStore = bizStore.getFacilities();
+        this.appointmentEnable = bizStore.isAppointmentEnable();
+        this.appointmentDuration = bizStore.getAppointmentDuration();
+        this.appointmentOpenHowFar = bizStore.getAppointmentOpenHowFar();
     }
 
     @Transient
@@ -588,11 +623,14 @@ public class RegisterBusiness implements Serializable {
         List<BusinessHour> businessHours = new LinkedList<>();
         for (StoreHourEntity storeHour : storeHours) {
             BusinessHour businessHour = new BusinessHour(DayOfWeek.of(storeHour.getDayOfWeek()));
-            businessHour.setStartHourStore(storeHour.getStartHour());
-            businessHour.setEndHourStore(storeHour.getEndHour());
-            businessHour.setTokenAvailableFrom(storeHour.getTokenAvailableFrom());
-            businessHour.setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom());
-            businessHour.setDayClosed(storeHour.isDayClosed());
+            businessHour
+                .setStartHourStore(storeHour.getStartHour())
+                .setEndHourStore(storeHour.getEndHour())
+                .setAppointmentStartHour(storeHour.getAppointmentStartHour())
+                .setAppointmentEndHour(storeHour.getAppointmentEndHour())
+                .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
+                .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+                .setDayClosed(storeHour.isDayClosed());
 
             businessHours.add(businessHour);
         }

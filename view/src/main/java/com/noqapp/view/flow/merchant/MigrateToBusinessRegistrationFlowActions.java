@@ -55,16 +55,16 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     @SuppressWarnings ("all")
     @Autowired
     public MigrateToBusinessRegistrationFlowActions(
-            Environment environment,
-            FetcherService fetcherService,
-            UserProfilePreferenceService userProfilePreferenceService,
-            AccountService accountService,
-            BusinessUserService businessUserService,
-            BizService bizService,
-            ExternalService externalService,
-            TokenQueueService tokenQueueService,
-            BizStoreElasticService bizStoreElasticService,
-            MailService mailService
+        Environment environment,
+        FetcherService fetcherService,
+        UserProfilePreferenceService userProfilePreferenceService,
+        AccountService accountService,
+        BusinessUserService businessUserService,
+        BizService bizService,
+        ExternalService externalService,
+        TokenQueueService tokenQueueService,
+        BizStoreElasticService bizStoreElasticService,
+        MailService mailService
     ) {
         super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
         this.fetcherService = fetcherService;
@@ -96,15 +96,15 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         UserProfileEntity userProfile = userProfilePreferenceService.findByQueueUserId(qid);
         register.getRegisterUser().setEmail(new ScrubbedInput(userProfile.getEmail()))
-                .setGender(userProfile.getGender())
-                .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
-                .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
-                .setLastName(new ScrubbedInput(userProfile.getLastName()))
-                .setAddress(new ScrubbedInput(userProfile.getAddress()))
-                .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
-                .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
-                .setEmailValidated(userAccount.isAccountValidated())
-                .setPhoneValidated(userAccount.isPhoneValidated());
+            .setGender(userProfile.getGender())
+            .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
+            .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
+            .setLastName(new ScrubbedInput(userProfile.getLastName()))
+            .setAddress(new ScrubbedInput(userProfile.getAddress()))
+            .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
+            .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
+            .setEmailValidated(userAccount.isAccountValidated())
+            .setPhoneValidated(userAccount.isPhoneValidated());
 
         LOG.info("Register={}", register);
         return register;

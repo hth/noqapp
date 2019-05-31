@@ -56,13 +56,13 @@ class RegistrationFlowActions {
     private ExecutorService executorService;
 
     RegistrationFlowActions(
-            Environment environment,
-            ExternalService externalService,
-            BizService bizService,
-            TokenQueueService tokenQueueService,
-            BizStoreElasticService bizStoreElasticService,
-            AccountService accountService,
-            MailService mailService
+        Environment environment,
+        ExternalService externalService,
+        BizService bizService,
+        TokenQueueService tokenQueueService,
+        BizStoreElasticService bizStoreElasticService,
+        AccountService accountService,
+        MailService mailService
     ) {
         this.environment = environment;
         this.externalService = externalService;
@@ -123,8 +123,8 @@ class RegistrationFlowActions {
             externalService.updateTimezone(bizStore);
         } else {
             LOG.warn("Found no coordinates={} validateUsingAPI={}",
-                    bizStore.getCoordinate(),
-                    bizStore.isValidatedUsingExternalAPI());
+                bizStore.getCoordinate(),
+                bizStore.isValidatedUsingExternalAPI());
         }
     }
 
@@ -141,9 +141,9 @@ class RegistrationFlowActions {
             tokenQueueService.createUpdate(bizStore);
         } catch (Exception e) {
             LOG.error("Failed registering new bizNameId={} bizName={} reason={}",
-                    registerBusiness.getBusinessUser().getBizName().getId(),
-                    registerBusiness.getBusinessUser().getBizName().getBusinessName(),
-                    e.getLocalizedMessage(), e);
+                registerBusiness.getBusinessUser().getBizName().getId(),
+                registerBusiness.getBusinessUser().getBizName().getBusinessName(),
+                e.getLocalizedMessage(), e);
         }
         return registerBusiness;
     }
@@ -173,18 +173,18 @@ class RegistrationFlowActions {
         }
 
         bizName.setBusinessName(registerBusiness.getName())
-                .setBusinessType(registerBusiness.getBusinessType())
-                .setPhone(registerBusiness.getPhoneWithCountryCode())
-                .setPhoneRaw(registerBusiness.getPhoneNotFormatted())
-                .setAddress(registerBusiness.getAddress())
-                .setArea(registerBusiness.getArea())
-                .setTown(registerBusiness.getTown())
-                .setTimeZone(registerBusiness.getTimeZone())
-                .setInviteeCode(registerBusiness.getInviteeCode())
-                .setAddressOrigin(registerBusiness.getAddressOrigin())
-                .setAmenities(registerBusiness.getAmenities())
-                .setFacilities(registerBusiness.getFacilities())
-                .setDayClosed(registerBusiness.isDayClosed());
+            .setBusinessType(registerBusiness.getBusinessType())
+            .setPhone(registerBusiness.getPhoneWithCountryCode())
+            .setPhoneRaw(registerBusiness.getPhoneNotFormatted())
+            .setAddress(registerBusiness.getAddress())
+            .setArea(registerBusiness.getArea())
+            .setTown(registerBusiness.getTown())
+            .setTimeZone(registerBusiness.getTimeZone())
+            .setInviteeCode(registerBusiness.getInviteeCode())
+            .setAddressOrigin(registerBusiness.getAddressOrigin())
+            .setAmenities(registerBusiness.getAmenities())
+            .setFacilities(registerBusiness.getFacilities())
+            .setDayClosed(registerBusiness.isDayClosed());
         validateAddress(bizName);
 
         try {
@@ -270,23 +270,26 @@ class RegistrationFlowActions {
             BizStoreEntity bizStore
     ) {
         bizStore.setBizName(bizName)
-                .setDisplayName(registerBusiness.getDisplayName())
-                .setBusinessType(registerBusiness.getStoreBusinessType())
-                .setPhone(registerBusiness.getPhoneStoreWithCountryCode())
-                .setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted())
-                .setAddress(registerBusiness.getAddressStore())
-                .setArea(registerBusiness.getAreaStore())
-                .setTown(registerBusiness.getTownStore())
-                .setTimeZone(registerBusiness.getTimeZoneStore())
-                .setCodeQR(StringUtils.isBlank(bizStore.getCodeQR()) ? CommonUtil.generateCodeQR(environment.getProperty("build.env")) : bizStore.getCodeQR())
-                .setAddressOrigin(registerBusiness.getAddressStoreOrigin())
-                .setBizCategoryId(registerBusiness.getBizCategoryId())
-                .setRemoteJoin(registerBusiness.isRemoteJoin())
-                .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
-                .setAvailableTokenCount(registerBusiness.getAvailableTokenCount())
-                .setFamousFor(registerBusiness.getFamousFor())
-                .setFacilities(registerBusiness.getFacilitiesStore())
-                .setAmenities(registerBusiness.getAmenitiesStore());
+            .setDisplayName(registerBusiness.getDisplayName())
+            .setBusinessType(registerBusiness.getStoreBusinessType())
+            .setPhone(registerBusiness.getPhoneStoreWithCountryCode())
+            .setPhoneRaw(registerBusiness.getPhoneStoreNotFormatted())
+            .setAddress(registerBusiness.getAddressStore())
+            .setArea(registerBusiness.getAreaStore())
+            .setTown(registerBusiness.getTownStore())
+            .setTimeZone(registerBusiness.getTimeZoneStore())
+            .setCodeQR(StringUtils.isBlank(bizStore.getCodeQR()) ? CommonUtil.generateCodeQR(environment.getProperty("build.env")) : bizStore.getCodeQR())
+            .setAddressOrigin(registerBusiness.getAddressStoreOrigin())
+            .setBizCategoryId(registerBusiness.getBizCategoryId())
+            .setRemoteJoin(registerBusiness.isRemoteJoin())
+            .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
+            .setAvailableTokenCount(registerBusiness.getAvailableTokenCount())
+            .setFamousFor(registerBusiness.getFamousFor())
+            .setFacilities(registerBusiness.getFacilitiesStore())
+            .setAmenities(registerBusiness.getAmenitiesStore())
+            .setAppointmentEnable(registerBusiness.isAppointmentEnable())
+            .setAppointmentDuration(registerBusiness.getAppointmentDuration())
+            .setAppointmentOpenHowFar(registerBusiness.getAppointmentOpenHowFar());
 
         /* If preferred Google Address then, do an update. Otherwise skip. */
         if (registerBusiness.isSelectFoundAddressStore()) {
@@ -307,13 +310,13 @@ class RegistrationFlowActions {
             List<StoreHourEntity> storeHours = saveStoreHours(registerBusiness, bizStore);
             String area = StringUtils.isBlank(registerBusiness.getAreaStore()) ? bizStore.getArea() : new ScrubbedInput(registerBusiness.getAreaStore()).getText();
             String webLocation = bizService.buildWebLocationForStore(
-                    area,
-                    bizStore.getTown(),
-                    bizStore.getStateShortName(),
-                    registerBusiness.getCountryShortNameStore(),
-                    registerBusiness.getName(),
-                    registerBusiness.getDisplayName(),
-                    bizStore.getId());
+                area,
+                bizStore.getTown(),
+                bizStore.getStateShortName(),
+                registerBusiness.getCountryShortNameStore(),
+                registerBusiness.getName(),
+                registerBusiness.getDisplayName(),
+                bizStore.getId());
 
             bizStore
                 .setWebLocation(webLocation)
@@ -327,13 +330,13 @@ class RegistrationFlowActions {
             return bizStore;
         } catch (Exception e) {
             LOG.error("Error saving store for  bizName={} bizId={} reason={}",
-                    bizName.getBusinessName(),
-                    bizName.getId(),
-                    e.getLocalizedMessage(),
-                    e);
+                bizName.getBusinessName(),
+                bizName.getId(),
+                e.getLocalizedMessage(),
+                e);
 
             if (0 == bizService.getAllBizStores(bizName.getId()).size()) {
-                LOG.error("Found no store hence, starting rollback...", bizName.getBusinessName());
+                LOG.error("Found no store hence, starting rollback... {}", bizName.getBusinessName());
                 bizService.deleteBizName(bizName);
                 LOG.info("Rollback successful");
             }
@@ -353,6 +356,8 @@ class RegistrationFlowActions {
                 storeHour.setEndHour(businessHour.getEndHourStore());
                 storeHour.setTokenAvailableFrom(businessHour.getTokenAvailableFrom());
                 storeHour.setTokenNotAvailableFrom(businessHour.getTokenNotAvailableFrom());
+                storeHour.setAppointmentStartHour(businessHour.getAppointmentStartHour());
+                storeHour.setAppointmentEndHour(businessHour.getAppointmentEndHour());
             }
 
             storeHours.add(storeHour);
