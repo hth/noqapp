@@ -109,12 +109,6 @@ public final class DateUtil {
         return Date.from(instant);
     }
 
-    public static Date getDateMinusDay(long days) {
-        LocalDateTime localDateTime = LocalDateTime.now().minusDays(days);
-        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        return Date.from(instant);
-    }
-
     public static Date sinceBeginningOfThisMonth() {
         return Date.from(LocalDate.now().withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
@@ -254,6 +248,12 @@ public final class DateUtil {
         Assert.notNull(end, "End date is null");
         Interval interval = new Interval(start.getTime(), end.getTime());
         return interval.toPeriod(PeriodType.minutes()).getMinutes();
+    }
+
+    public static Date minusDays(long days) {
+        LocalDateTime localDateTime = LocalDateTime.now().minusDays(days);
+        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
     }
 
     public static Date plusDays(int days) {
