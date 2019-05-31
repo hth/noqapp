@@ -50,15 +50,15 @@ public class AuthorizedQueueUserDetailFlowActions {
 
     @Autowired
     public AuthorizedQueueUserDetailFlowActions(
-            @Value("${BusinessUserStoreService.queue.limit}")
-            int queueLimit,
+        @Value("${BusinessUserStoreService.queue.limit}")
+        int queueLimit,
 
-            WebFlowUtils webFlowUtils,
-            BizService bizService,
-            BusinessUserService businessUserService,
-            BusinessUserStoreService businessUserStoreService,
-            AccountService accountService,
-            ProfessionalProfileService professionalProfileService
+        WebFlowUtils webFlowUtils,
+        BizService bizService,
+        BusinessUserService businessUserService,
+        BusinessUserStoreService businessUserStoreService,
+        AccountService accountService,
+        ProfessionalProfileService professionalProfileService
     ) {
         this.queueLimit = queueLimit;
 
@@ -95,11 +95,11 @@ public class AuthorizedQueueUserDetailFlowActions {
 
             for (BizStoreEntity bizStore : bizStores) {
                 BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
-                        businessUser.getQueueUserId(),
-                        bizStore.getId(),
-                        bizStore.getBizName().getId(),
-                        bizStore.getCodeQR(),
-                        userProfile.getLevel());
+                    businessUser.getQueueUserId(),
+                    bizStore.getId(),
+                    bizStore.getBizName().getId(),
+                    bizStore.getCodeQR(),
+                    userProfile.getLevel());
 
                 if (businessUserStores.contains(businessUserStore)) {
                     enrolledInStores.add(bizStore);
@@ -108,12 +108,12 @@ public class AuthorizedQueueUserDetailFlowActions {
         }
         bizStores.removeAll(enrolledInStores);
         authorizedQueueUser
-                .setQueueLimit(queueLimit)
-                .setQid(userProfile.getQueueUserId())
-                .setName(userProfile.getName())
-                .setEnrolledInStores(enrolledInStores)
-                .setBizStores(bizStores)
-                .setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS));
+            .setQueueLimit(queueLimit)
+            .setQid(userProfile.getQueueUserId())
+            .setName(userProfile.getName())
+            .setEnrolledInStores(enrolledInStores)
+            .setBizStores(bizStores)
+            .setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS));
 
         return authorizedQueueUser;
     }
@@ -123,17 +123,17 @@ public class AuthorizedQueueUserDetailFlowActions {
         for (String bizStoreId : authorizedQueueUser.getInterests()) {
             try {
                 Optional<BizStoreEntity> matchingObject = authorizedQueueUser.getBizStores().stream().
-                        filter(p -> p.getId().equals(bizStoreId)).
-                        findAny(); //Using findFirst() as findAny() runs in parallel & not sequential. Dataset is unique
+                    filter(p -> p.getId().equals(bizStoreId)).
+                    findAny(); //Using findFirst() as findAny() runs in parallel & not sequential. Dataset is unique
 
                 BizStoreEntity bizStore = matchingObject.isPresent() ? matchingObject.get() : null;
                 UserProfileEntity userProfile = accountService.findProfileByQueueUserId(authorizedQueueUser.getQid());
                 BusinessUserStoreEntity businessUserStoreEntity = new BusinessUserStoreEntity(
-                        authorizedQueueUser.getQid(),
-                        bizStoreId,
-                        bizStore.getBizName().getId(),
-                        bizStore.getCodeQR(),
-                        userProfile.getLevel()
+                    authorizedQueueUser.getQid(),
+                    bizStoreId,
+                    bizStore.getBizName().getId(),
+                    bizStore.getCodeQR(),
+                    userProfile.getLevel()
                 );
 
                 businessUserStoreService.save(businessUserStoreEntity);
@@ -142,10 +142,10 @@ public class AuthorizedQueueUserDetailFlowActions {
                 professionalProfileService.save(professionalProfile);
             } catch (RuntimeException e) {
                 LOG.error("Failed to authorize user to business profile qid={} bizStoreId={} reason={}",
-                        authorizedQueueUser.getQid(),
-                        bizStoreId,
-                        e.getLocalizedMessage(),
-                        e);
+                    authorizedQueueUser.getQid(),
+                    bizStoreId,
+                    e.getLocalizedMessage(),
+                    e);
                 throw new AuthorizedQueueUserDetailException("Failed to authorize user to business");
             }
         }

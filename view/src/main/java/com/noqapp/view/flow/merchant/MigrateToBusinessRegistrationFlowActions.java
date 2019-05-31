@@ -52,7 +52,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     private AccountService accountService;
     private BusinessUserService businessUserService;
 
-    @SuppressWarnings ("all")
+    @SuppressWarnings("all")
     @Autowired
     public MigrateToBusinessRegistrationFlowActions(
         Environment environment,
@@ -77,7 +77,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         return fetcherService.findAllDistinctBizName(bizName);
     }
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public Register createBusinessRegistration() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String qid = queueUser.getQueueUserId();
@@ -110,12 +110,12 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         return register;
     }
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String isRegistrationComplete(Register register) {
         return isBusinessUserRegistrationComplete(register.getRegisterBusiness().getBusinessUser().getBusinessUserRegistrationStatus());
     }
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public Register populateBusiness(String bizId) {
         if (StringUtils.isBlank(bizId)) {
             return createBusinessRegistration();
@@ -124,7 +124,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         }
     }
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public Register editBusiness(String bizNameId) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String qid = queueUser.getQueueUserId();
@@ -139,12 +139,12 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         return MigrateToBusinessRegistration.newInstance(businessUser, null);
     }
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public void additionalAttributes(RegisterBusiness registerBusiness, String modelType) {
         switch (modelType) {
             case "bizName":
                 addAvailableAmenities(registerBusiness, registerBusiness.getBusinessType(), modelType);
-                addAvailableFacilities(registerBusiness,  registerBusiness.getBusinessType(), modelType);
+                addAvailableFacilities(registerBusiness, registerBusiness.getBusinessType(), modelType);
                 break;
             case "bizStore":
                 addAvailableAmenities(registerBusiness, registerBusiness.getStoreBusinessType(), modelType);
@@ -211,12 +211,12 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
 
     /**
      * Register new business.
-     * 
+     *
      * @param register
      * @return
      * @throws MigrateToBusinessRegistrationException
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public Register completeRegistrationInformation(Register register) throws MigrateToBusinessRegistrationException {
         try {
             QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -237,13 +237,13 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                  * associated with QID.
                  */
                 BusinessUserEntity businessUser = businessUserService.findBusinessUser(
-                        register.getRegisterUser().getQueueUserId(),
-                        register.getRegisterBusiness().getBizId());
+                    register.getRegisterUser().getQueueUserId(),
+                    register.getRegisterBusiness().getBizId());
 
                 if (null == businessUser) {
                     businessUser = BusinessUserEntity.newInstance(
-                            register.getRegisterUser().getQueueUserId(),
-                            UserLevelEnum.M_ADMIN
+                        register.getRegisterUser().getQueueUserId(),
+                        UserLevelEnum.M_ADMIN
                     ).setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
                 }
                 businessUser
@@ -255,17 +255,17 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 return register;
             } catch (Exception e) {
                 LOG.error("Error adding business qid={} reason={}",
-                        register.getRegisterUser().getQueueUserId(), e.getLocalizedMessage(), e);
+                    register.getRegisterUser().getQueueUserId(), e.getLocalizedMessage(), e);
                 throw new MigrateToBusinessRegistrationException("Error adding business", e);
             }
         } catch (Exception e) {
             LOG.error("Error updating business user profile qid={} reason={}",
-                    register.getRegisterUser().getQueueUserId(), e.getLocalizedMessage(), e);
+                register.getRegisterUser().getQueueUserId(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessRegistrationException("Error updating profile", e);
         }
     }
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public Register updateRegistrationInformation(Register register) throws MigrateToBusinessRegistrationException {
         registerBusinessDetails(register);
         return register;
@@ -278,7 +278,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
      * @return
      * @throws MigrateToBusinessRegistrationException
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public RegisterBusiness completeRegistrationInformation(RegisterBusiness registerBusiness) throws MigrateToBusinessRegistrationException {
         try {
             return registerBusinessDetails(registerBusiness);
