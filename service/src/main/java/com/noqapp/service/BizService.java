@@ -192,6 +192,13 @@ public class BizService {
                 }
             }
 
+            if (bizStore.isAppointmentEnable()) {
+                rootMap.put("appointmentDuration", bizStore.getAppointmentDuration());
+                rootMap.put("appointmentWindow", bizStore.getAppointmentOpenHowFar());
+            } else {
+                rootMap.put("appointment", "OFF");
+            }
+
             if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
                 ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
                 switch (scheduledTask.getScheduleTask()) {
@@ -210,6 +217,20 @@ public class BizService {
                     storeHoursAsMap.put("Stop issuing token after: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenNotAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
                     storeHoursAsMap.put("Queue start time: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
                     storeHoursAsMap.put("Queue close time: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
+
+                    if (bizStore.isAppointmentEnable()) {
+                        if (bizStore.getAppointmentStartHour(DayOfWeek.of(storeHour.getDayOfWeek())) > 0) {
+                            storeHoursAsMap.put("Appointment available from: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getAppointmentStartHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                        } else {
+                            storeHoursAsMap.put("Appointment available from: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                        }
+
+                        if (bizStore.getAppointmentEndHour(DayOfWeek.of(storeHour.getDayOfWeek())) > 0) {
+                            storeHoursAsMap.put("Appointment not available after: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getAppointmentEndHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                        } else {
+                            storeHoursAsMap.put("Appointment not available after: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
+                        }
+                    }
 
                     if (storeHour.isTempDayClosed()) {
                         storeHoursAsMap.put("Temporary closed today: ", "Yes");
