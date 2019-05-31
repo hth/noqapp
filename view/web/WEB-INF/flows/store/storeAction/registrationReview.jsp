@@ -226,17 +226,19 @@
                                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                             <tr>
                                                                 <td>Token Available Time</td>
-                                                                <td>
-                                                                    <c:out value="${businessHour.tokenAvailableFromAsString}"/></td>
+                                                                <td><c:out value="${businessHour.tokenAvailableFromAsString}"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Store Start Time</td>
                                                                 <td><c:out value="${businessHour.startHourStoreAsString}"/></td>
                                                             </tr>
                                                             <tr>
+                                                                <td>&nbsp;</td>
+                                                                <td>&nbsp;</td>
+                                                            </tr>
+                                                            <tr>
                                                                 <td>Token Not Available After</td>
-                                                                <td>
-                                                                    <c:out value="${businessHour.tokenNotAvailableFromAsString}"/></td>
+                                                                <td><c:out value="${businessHour.tokenNotAvailableFromAsString}"/></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Store Close Time</td>
@@ -250,22 +252,112 @@
 
                                         <div class="clearFix"></div>
                                     </ul>
+                                </div>
 
+                                <div class="full">
+                                    <div class="admin-title pT30">
+                                        <h2>Appointment Settings</h2>
+                                    </div>
+                                    <ul class="list-form">
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="appointmentEnable" cssErrorClass="lb_error">Allow Appointment</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:checkbox path="appointmentEnable" cssClass="form-check-box" disabled="true"/>
+                                                <span style="display:block; font-size:14px;">(Allow user to take appointment)</span>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="appointmentEnable" cssErrorClass="lb_error">Duration of Appointment</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="appointmentDuration" cssClass="form-field-admin" disabled="true"/>
+                                                <span style="display:block; font-size:14px;">(Duration of each appointment in minutes)</span>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="appointmentEnable" cssErrorClass="lb_error">Booking Window</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="appointmentOpenHowFar" cssClass="form-field-admin" disabled="true"/>
+                                                <span style="display:block; font-size:14px;">(Booking window lets user book weeks ahead of time. Max booking window is 52 weeks.)</span>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <c:if test="${registerBusiness.appointmentEnable}">
+                                <div>
+                                    <div class="admin-title pT30">
+                                        <h2>Appointment Hours</h2>
+                                    </div>
+                                    <ul class="col2-grid">
+                                        <c:forEach items="${registerBusiness.businessHours}" var="businessHour" varStatus="status">
+                                        <li>
+                                            <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
+                                            <c:choose>
+                                                <c:when test="${businessHour.dayClosed}">
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td>Closed for the day</td>
+                                                        </tr>
+                                                    </table>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td>Store Start Time</td>
+                                                            <td><c:out value="${businessHour.startHourStoreAsString}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Appointment Start Time</td>
+                                                            <td><c:out value="${businessHour.appointmentStartHourStoreAsString}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Store Close Time</td>
+                                                            <td><c:out value="${businessHour.endHourStoreAsString}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Appointment End Time</td>
+                                                            <td><c:out value="${businessHour.appointmentEndHourStoreAsString}"/></td>
+                                                        </tr>
+                                                    </table>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </li>
+                                        </c:forEach>
+
+                                        <div class="clearFix"></div>
+                                    </ul>
+                                </div>
+                                </c:if>
+
+                                <div>
                                     <div class="btn-hours">
                                         <%--<div class="first-btn">--%>
-                                            <%--<input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">--%>
+                                        <%--<input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">--%>
                                         <%--</div>--%>
                                         <%--<div class="center-btn">--%>
-                                            <%--<input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">--%>
+                                        <%--<input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">--%>
                                         <%--</div>--%>
                                         <%--<div class="last-btn">--%>
-                                            <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                        <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
                                         <%--</div>--%>
-                                            <div class="button-btn">
-                                                <button name="_eventId_confirm" class="ladda-button next-btn" style="width:32%; float: left">Confirm</button>
-                                                <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>
-                                                <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
-                                            </div>
+                                        <div class="button-btn">
+                                            <button name="_eventId_confirm" class="ladda-button next-btn" style="width:32%; float: left">Confirm</button>
+                                            <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>
+                                            <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
+                                        </div>
                                         <div class="clearFix"></div>
                                     </div>
                                 </div>

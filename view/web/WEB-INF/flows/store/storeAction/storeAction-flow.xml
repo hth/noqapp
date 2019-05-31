@@ -57,10 +57,36 @@
 
     <action-state id="validateBusinessHours">
         <evaluate expression="businessFlowValidator.validateBusinessHours(registerBusiness, '', messageContext)"/>
-        <transition on="success" to="registrationReview">
+        <transition on="success" to="appointmentSettings">
             <evaluate expression="migrateToBusinessRegistrationFlowActions.fillWithBusinessHour(registerBusiness)"/>
         </transition>
         <transition on="failure" to="businessHours"/>
+    </action-state>
+
+    <view-state id="appointmentSettings" model="registerBusiness">
+        <transition on="submit" to="decideIfAppointmentIsEnabled"/>
+        <transition on="cancel" to="logout"/>
+    </view-state>
+
+    <decision-state id="decideIfAppointmentIsEnabled">
+        <if test="registerBusiness.appointmentEnable == true" then="validateAppointmentSettings" else="registrationReview" />
+    </decision-state>
+
+    <action-state id="validateAppointmentSettings">
+        <evaluate expression="businessFlowValidator.validateAppointmentSettings(registerBusiness, '', messageContext)"/>
+        <transition on="success" to="appointmentHours" />
+        <transition on="failure" to="appointmentSettings"/>
+    </action-state>
+
+    <view-state id="appointmentHours" model="registerBusiness">
+        <transition on="submit" to="validateAppointmentHours"/>
+        <transition on="cancel" to="logout"/>
+    </view-state>
+
+    <action-state id="validateAppointmentHours">
+        <evaluate expression="businessFlowValidator.validateAppointmentHours(registerBusiness, '', messageContext)"/>
+        <transition on="success" to="registrationReview" />
+        <transition on="failure" to="appointmentHours"/>
     </action-state>
 
     <view-state id="registrationReview">

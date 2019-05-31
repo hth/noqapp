@@ -55,14 +55,14 @@
                     <form:form modelAttribute="registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Add Queue Hours For Each Day</h2>
+                            <h2>Add Appointment Hours For Each Day</h2>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                                     <ul>
                                         <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
+                                        <li>${message.text}</li>
                                         </c:forEach>
                                     </ul>
                                 </c:if>
@@ -94,30 +94,21 @@
                                             <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
                                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                 <tr>
-                                                    <td width="49%" class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].tokenAvailableFrom" cssErrorClass="lb_error">Token Available Time</form:label>
-                                                    </td>
-                                                    <td width="51%">
-                                                        <form:input path="businessHours[${status.index}].tokenAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
-                                                        <span>(As 1800 for 6:00 PM)</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
                                                     <td class="lable-td">
                                                         <form:label path="businessHours[${status.index}].startHourStore" cssErrorClass="lb_error">Store Start Time</form:label>
                                                     </td>
                                                     <td>
-                                                        <form:input path="businessHours[${status.index}].startHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <form:input path="businessHours[${status.index}].startHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field" disabled="true"/>
                                                         <span>(As 1000 for 10:00 AM)</span>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].tokenNotAvailableFrom" cssErrorClass="lb_error">Token Not Available After</form:label>
+                                                        <form:label path="businessHours[${status.index}].appointmentStartHour" cssErrorClass="lb_error">Appointment Start Time</form:label>
                                                     </td>
                                                     <td>
-                                                        <form:input path="businessHours[${status.index}].tokenNotAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
-                                                        <span>(As 1800 for 6:00 PM)</span>
+                                                        <form:input path="businessHours[${status.index}].appointmentStartHour" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <span>(As 1000 for 10:00 AM)</span>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -125,16 +116,17 @@
                                                         <form:label path="businessHours[${status.index}].endHourStore" cssErrorClass="lb_error">Store Close Time</form:label>
                                                     </td>
                                                     <td>
-                                                        <form:input path="businessHours[${status.index}].endHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <form:input path="businessHours[${status.index}].endHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field" disabled="true"/>
                                                         <span>(As 1800 for 6:00 PM)</span>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="lable-td pT0">
-                                                        <form:label path="businessHours[${status.index}].dayClosed" cssErrorClass="lb_error">Store Closed</form:label>
+                                                    <td class="lable-td">
+                                                        <form:label path="businessHours[${status.index}].appointmentEndHour" cssErrorClass="lb_error">Appointment End Time</form:label>
                                                     </td>
                                                     <td>
-                                                        <form:checkbox path="businessHours[${status.index}].dayClosed" cssErrorClass="error-field"/>
+                                                        <form:input path="businessHours[${status.index}].appointmentEndHour" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <span>(As 1000 for 10:00 AM)</span>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -145,12 +137,12 @@
                                 </ul>
 
                                 <div class="btn-hours">
-                                    <%--<div class="left-btn">--%>
+                                        <%--<div class="left-btn">--%>
                                         <%--<input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">--%>
-                                    <%--</div>--%>
-                                    <%--<div class="right-btn">--%>
+                                        <%--</div>--%>
+                                        <%--<div class="right-btn">--%>
                                         <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                    <%--</div>--%>
+                                        <%--</div>--%>
 
                                     <div class="button-btn">
                                         <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
@@ -196,33 +188,20 @@
 <script type="text/javascript">
     $('[name="copyData"]').click(function () {
         if (document.getElementById('copyData').checked) {
-            document.getElementById('businessHours1.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
-            document.getElementById('businessHours2.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
-            document.getElementById('businessHours3.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
-            document.getElementById('businessHours4.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
-            document.getElementById('businessHours5.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
-            document.getElementById('businessHours6.tokenAvailableFrom').value = document.getElementById('businessHours0.tokenAvailableFrom').value;
 
-            document.getElementById('businessHours1.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
-            document.getElementById('businessHours2.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
-            document.getElementById('businessHours3.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
-            document.getElementById('businessHours4.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
-            document.getElementById('businessHours5.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
-            document.getElementById('businessHours6.startHourStore').value = document.getElementById('businessHours0.startHourStore').value;
+            document.getElementById('businessHours1.appointmentStartHour').value = document.getElementById('businessHours0.appointmentStartHour').value;
+            document.getElementById('businessHours2.appointmentStartHour').value = document.getElementById('businessHours0.appointmentStartHour').value;
+            document.getElementById('businessHours3.appointmentStartHour').value = document.getElementById('businessHours0.appointmentStartHour').value;
+            document.getElementById('businessHours4.appointmentStartHour').value = document.getElementById('businessHours0.appointmentStartHour').value;
+            document.getElementById('businessHours5.appointmentStartHour').value = document.getElementById('businessHours0.appointmentStartHour').value;
+            document.getElementById('businessHours6.appointmentStartHour').value = document.getElementById('businessHours0.appointmentStartHour').value;
 
-            document.getElementById('businessHours1.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-            document.getElementById('businessHours2.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-            document.getElementById('businessHours3.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-            document.getElementById('businessHours4.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-            document.getElementById('businessHours5.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-            document.getElementById('businessHours6.tokenNotAvailableFrom').value = document.getElementById('businessHours0.tokenNotAvailableFrom').value;
-
-            document.getElementById('businessHours1.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
-            document.getElementById('businessHours2.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
-            document.getElementById('businessHours3.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
-            document.getElementById('businessHours4.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
-            document.getElementById('businessHours5.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
-            document.getElementById('businessHours6.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
+            document.getElementById('businessHours1.appointmentEndHour').value = document.getElementById('businessHours0.appointmentEndHour').value;
+            document.getElementById('businessHours2.appointmentEndHour').value = document.getElementById('businessHours0.appointmentEndHour').value;
+            document.getElementById('businessHours3.appointmentEndHour').value = document.getElementById('businessHours0.appointmentEndHour').value;
+            document.getElementById('businessHours4.appointmentEndHour').value = document.getElementById('businessHours0.appointmentEndHour').value;
+            document.getElementById('businessHours5.appointmentEndHour').value = document.getElementById('businessHours0.appointmentEndHour').value;
+            document.getElementById('businessHours6.appointmentEndHour').value = document.getElementById('businessHours0.appointmentEndHour').value;
         }
     });
 </script>

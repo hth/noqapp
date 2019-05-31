@@ -576,4 +576,139 @@ public class BusinessFlowValidator {
         LOG.info("Validate business qid={} status={}", registerBusiness.getBusinessUser().getQueueUserId(), status);
         return status;
     }
+
+    @SuppressWarnings ("unused")
+    public String validateAppointmentSettings(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
+        String status = LandingController.SUCCESS;
+
+        if (registerBusiness.isAppointmentEnable()) {
+            if (registerBusiness.getAppointmentDuration() < 5) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "appointment duration")
+                        .defaultText("Appointment duration cannot be less than 5 minutes")
+                        .build());
+                status = "failure";
+            }
+
+            if (registerBusiness.getAppointmentDuration() > 60) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "appointment duration")
+                        .defaultText("Appointment duration cannot be greater than 60 minutes")
+                        .build());
+                status = "failure";
+            }
+
+
+            if (registerBusiness.getAppointmentOpenHowFar() > 52) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "appointment windows")
+                        .defaultText("Appointment window cannot exceed more than 52 weeks")
+                        .build());
+                status = "failure";
+            }
+
+            if (registerBusiness.getAppointmentOpenHowFar() < 1) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "appointment windows")
+                        .defaultText("Appointment window has to be at least 1 week")
+                        .build());
+                status = "failure";
+            }
+
+        }
+        return status;
+    }
+
+    @SuppressWarnings ("unused")
+    public String validateAppointmentHours(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
+        String status = LandingController.SUCCESS;
+        List<BusinessHour> businessHours = registerBusiness.getBusinessHours();
+
+        for (BusinessHour businessHour : businessHours) {
+            if (!businessHour.isDayClosed()) {
+                if (businessHour.getAppointmentStartHour() == 0) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].appointmentStartHour")
+                            .defaultText("Specify Appointment Available Time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + ". This is the time from when users would be able to book appointment.")
+                            .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getAppointmentEndHour() == 0) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].appointmentEndHour")
+                            .defaultText("Specify Appointment End Time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + ". This is the time after which appointment booking would not be available.")
+                            .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getAppointmentStartHour() > 2359) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].appointmentStartHour")
+                            .defaultText("Appointment start time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " cannot exceed 2359")
+                            .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getAppointmentEndHour() > 2359) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].appointmentEndHour")
+                            .defaultText("Appointment end time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " cannot exceed 2359")
+                            .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getAppointmentStartHour() < businessHour.getStartHourStore()) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].appointmentStartHour")
+                            .defaultText("Appointment start time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " cannot start before store start hour")
+                            .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getAppointmentEndHour() > businessHour.getEndHourStore()) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].appointmentEndHour")
+                            .defaultText("Appointment end time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " cannot end after store end hour")
+                            .build());
+                    status = "failure";
+                }
+            }
+        }
+
+        LOG.info("Validate business qid={} status={}", registerBusiness.getBusinessUser().getQueueUserId(), status);
+        return status;
+    }
 }
