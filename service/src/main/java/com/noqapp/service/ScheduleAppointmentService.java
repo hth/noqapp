@@ -82,13 +82,21 @@ public class ScheduleAppointmentService {
 
         Date date = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date, bizStore.getTimeZone()));
-        if (storeHour.getStartHour() > jsonSchedule.getStartTime()) {
-            LOG.warn("Supplied start time is beyond range {} {} {} {}", jsonSchedule.getStartTime(), storeHour.getStartHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
+        if (storeHour.isDayClosed()) {
+            LOG.warn("Closed cannot book {} {} {} {}",
+                jsonSchedule.getStartTime(), storeHour.isDayClosed(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
+            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed for the day");
+        }
+
+        if (storeHour.getAppointmentStartHour() > jsonSchedule.getStartTime()) {
+            LOG.warn("Supplied start time is beyond range {} {} {} {}",
+                jsonSchedule.getStartTime(), storeHour.getAppointmentStartHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " opens at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getStartHour()));
         }
 
-        if (storeHour.getEndHour() < jsonSchedule.getEndTime()) {
-            LOG.warn("Supplied end time is beyond range {} {} {} {}", jsonSchedule.getEndTime(), storeHour.getEndHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
+        if (storeHour.getAppointmentEndHour() < jsonSchedule.getEndTime()) {
+            LOG.warn("Supplied end time is beyond range {} {} {} {}",
+                jsonSchedule.getEndTime(), storeHour.getAppointmentEndHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " closes at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getEndHour()));
         }
 
