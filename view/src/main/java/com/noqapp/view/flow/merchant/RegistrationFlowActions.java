@@ -75,12 +75,12 @@ class RegistrationFlowActions {
         this.executorService = newCachedThreadPool();
     }
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public void updateProfile(Register register) {
         register.getRegisterUser().setPhone(new ScrubbedInput(register.getRegisterUser().getPhoneNotFormatted()));
     }
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public void updateBusiness(Register register) {
         register.getRegisterBusiness().setPhone(new ScrubbedInput(Formatter.phoneCleanup(register.getRegisterBusiness().getPhone())));
         register.getRegisterBusiness().setAddressStore(new ScrubbedInput(""));
@@ -90,10 +90,10 @@ class RegistrationFlowActions {
 
     /**
      * Add hours to store.
-     * 
+     *
      * @param registerBusiness
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public void fillWithBusinessHour(RegisterBusiness registerBusiness) {
         registerBusiness.setPhone(new ScrubbedInput(Formatter.phoneCleanup(registerBusiness.getPhone())));
         List<BusinessHour> businessHours = registerBusiness.getBusinessHours();
@@ -150,7 +150,7 @@ class RegistrationFlowActions {
 
     /**
      * For registering new or for editing business.
-     * 
+     *
      * @param register
      * @return
      */
@@ -189,18 +189,18 @@ class RegistrationFlowActions {
 
         try {
             String webLocation = bizService.buildWebLocationForBiz(
-                    bizName.getTown(),
-                    bizName.getStateShortName(),
-                    registerBusiness.getCountryShortName(),
-                    registerBusiness.getName(),
-                    bizName.getId());
+                bizName.getTown(),
+                bizName.getStateShortName(),
+                registerBusiness.getCountryShortName(),
+                registerBusiness.getName(),
+                bizName.getId());
 
             bizName.setWebLocation(webLocation);
             bizService.saveName(bizName);
             mailWhenBusinessProfileHasChanged(bizName);
             updateAllStoresWhenBizNameUpdated(bizName);
             return bizName;
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOG.error("Error saving business reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving business");
         }
@@ -265,9 +265,9 @@ class RegistrationFlowActions {
      * @return
      */
     private BizStoreEntity saveStoreAndHours(
-            RegisterBusiness registerBusiness,
-            BizNameEntity bizName,
-            BizStoreEntity bizStore
+        RegisterBusiness registerBusiness,
+        BizNameEntity bizName,
+        BizStoreEntity bizStore
     ) {
         bizStore.setBizName(bizName)
             .setDisplayName(registerBusiness.getDisplayName())
