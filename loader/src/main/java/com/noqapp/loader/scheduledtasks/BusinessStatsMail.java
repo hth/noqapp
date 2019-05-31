@@ -114,7 +114,7 @@ public class BusinessStatsMail {
             Calendar date = Calendar.getInstance();
             date.set(Calendar.HOUR_OF_DAY, 7);
             List<String> zones = getAllTimeZones(date);
-            Date since = DateUtil.midnight(DateUtil.getDateMinusDay(1));
+            Date since = DateUtil.midnight(DateUtil.minusDays(1));
             DayOfWeek dayOfWeek = DateUtil.getDayOfWeekFromDate(since);
             for (String zone : zones) {
                 try (Stream<BizNameEntity> stream = bizNameManager.findAll(zone)) {

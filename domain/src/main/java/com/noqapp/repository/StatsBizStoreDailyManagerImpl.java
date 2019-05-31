@@ -113,7 +113,7 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
             Date sinceBeginningOfThisMonth = DateUtil.sinceBeginningOfThisMonth();
             TypedAggregation<StatsBizStoreDailyEntity> agg = newAggregation(StatsBizStoreDailyEntity.class,
                 match(where("QR").is(codeQR).and("C").gte(sinceBeginningOfThisMonth)
-                //match(where("QR").is(codeQR).and("C").gte(DateUtil.midnight(DateUtil.getDateMinusDay(30)))
+                //match(where("QR").is(codeQR).and("C").gte(DateUtil.midnight(DateUtil.minusDays(30)))
                     .andOperator(
                         isActive(),
                         isNotDeleted()

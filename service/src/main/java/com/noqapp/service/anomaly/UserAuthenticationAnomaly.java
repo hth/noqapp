@@ -36,7 +36,7 @@ public class UserAuthenticationAnomaly {
     }
 
     public void listOrphanData() {
-        List<UserAuthenticationEntity> userAuthentications = userAuthenticationManager.listAll(DateUtil.getDateMinusDay(30));
+        List<UserAuthenticationEntity> userAuthentications = userAuthenticationManager.listAll(DateUtil.minusDays(30));
         try (Stream<UserAuthenticationEntity> stream = userAuthentications.stream()) {
             stream.iterator().forEachRemaining(userAuthenticationEntity -> {
                 boolean exists = userAccountManager.existWithAuth(userAuthenticationEntity.getId());

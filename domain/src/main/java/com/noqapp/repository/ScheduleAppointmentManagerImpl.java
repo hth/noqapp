@@ -138,6 +138,14 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
+    public List<ScheduleAppointmentEntity> findAllPastAppointments(String qid, int untilDaysInPast) {
+        return mongoTemplate.find(
+            query(where("QID").is(qid).and("SD").lte(DateUtil.nowMidnightDate()).gte(DateUtil.minusDays(untilDaysInPast))),
+            ScheduleAppointmentEntity.class,
+            TABLE);
+    }
+
+    @Override
     public List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid, int untilDaysInFuture) {
         Query query;
         if (untilDaysInFuture > 0) {
@@ -155,14 +163,6 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     @Override
     public List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid) {
         return findAllUpComingAppointments(qid, 0);
-    }
-
-    @Override
-    public List<ScheduleAppointmentEntity> findAllPastAppointments(String qid, int untilDaysInPast) {
-        return mongoTemplate.find(
-            query(where("QID").is(qid).and("SD").lte(DateUtil.nowMidnightDate()).gte(DateUtil.plusDays(untilDaysInPast))),
-            ScheduleAppointmentEntity.class,
-            TABLE);
     }
 
     @Override

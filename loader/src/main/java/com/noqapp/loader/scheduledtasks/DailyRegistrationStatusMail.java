@@ -96,7 +96,7 @@ public class DailyRegistrationStatusMail {
         long iPhoneDeviceRegistered = 0;
         MailTypeEnum mailType;
 
-        Date from = DateUtil.getDateMinusDay(1);
+        Date from = DateUtil.minusDays(1);
         Date to = DateUtil.nowMidnightDate();
         try {
             registeredUser = accountService.countRegisteredBetweenDates(from, to);
