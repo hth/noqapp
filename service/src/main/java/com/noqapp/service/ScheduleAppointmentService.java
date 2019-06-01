@@ -150,11 +150,10 @@ public class ScheduleAppointmentService {
     @Mobile
     public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
 
         /* LocalDate as Date gives Fri May 31 18:30:00 UTC 2019 when asking for June 1 Day. */
         LocalDate localDate = LocalDate.parse(scheduleDate);
-        Date date = DateUtil.convertToDate(localDate, ZoneId.of(bizStore.getTimeZone()));
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         LOG.info("LocalDate={} date={}", localDate, date);
 
         List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, date);
