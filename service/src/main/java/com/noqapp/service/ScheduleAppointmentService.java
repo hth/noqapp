@@ -84,23 +84,23 @@ public class ScheduleAppointmentService {
         //Date date = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
         LocalDate localDate = LocalDate.parse(jsonSchedule.getScheduleDate());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), localDate.getDayOfWeek());
-//        if (storeHour.isDayClosed()) {
-//            LOG.warn("Closed cannot book {} {} {} {}",
-//                jsonSchedule.getStartTime(), storeHour.isDayClosed(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
-//            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed for the day");
-//        }
+        if (storeHour.isDayClosed()) {
+            LOG.warn("Closed cannot book {} {} {} {}",
+                jsonSchedule.getStartTime(), storeHour.isDayClosed(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
+            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed for the day");
+        }
 
-//        if (storeHour.getAppointmentStartHour() > jsonSchedule.getStartTime()) {
-//            LOG.warn("Supplied start time is beyond range {} {} {} {}",
-//                jsonSchedule.getStartTime(), storeHour.getAppointmentStartHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
-//            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " opens at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getStartHour()));
-//        }
-//
-//        if (storeHour.getAppointmentEndHour() < jsonSchedule.getEndTime()) {
-//            LOG.warn("Supplied end time is beyond range {} {} {} {}",
-//                jsonSchedule.getEndTime(), storeHour.getAppointmentEndHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
-//            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " closes at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getEndHour()));
-//        }
+        if (storeHour.getAppointmentStartHour() > jsonSchedule.getStartTime()) {
+            LOG.warn("Supplied start time is beyond range {} {} {} {}",
+                jsonSchedule.getStartTime(), storeHour.getAppointmentStartHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
+            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " opens at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getStartHour()));
+        }
+
+        if (storeHour.getAppointmentEndHour() < jsonSchedule.getEndTime()) {
+            LOG.warn("Supplied end time is beyond range {} {} {} {}",
+                jsonSchedule.getEndTime(), storeHour.getAppointmentEndHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
+            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " closes at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getEndHour()));
+        }
 
         ScheduleAppointmentEntity scheduleAppointment = new ScheduleAppointmentEntity()
             .setCodeQR(jsonSchedule.getCodeQR())
