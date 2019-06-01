@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -151,7 +152,10 @@ public class ScheduleAppointmentService {
     public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone()));
+        LocalDate localDate = LocalDate.parse(scheduleDate);
+        Date date = DateUtil.convertToDate(localDate, ZoneId.of(bizStore.getTimeZone()));
+        LOG.info("LocalDate={} date={}", localDate, date);
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, );
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());

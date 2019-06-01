@@ -170,7 +170,7 @@ public final class DateUtil {
         return convertToDate(LocalDate.parse(date, dateTimeFormatter), zoneId);
     }
 
-    private static Date convertToDate(LocalDate localDate, ZoneId zoneId) {
+    public static Date convertToDate(LocalDate localDate, ZoneId zoneId) {
         return Date.from(localDate.atStartOfDay(zoneId).toInstant());
     }
 
