@@ -27,8 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -82,9 +80,8 @@ public class ScheduleAppointmentService {
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is not accepting appointments");
         }
 
-        //Date date = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
-        LocalDate localDate = LocalDate.parse(jsonSchedule.getScheduleDate());
-        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), localDate.getDayOfWeek());
+        Date date = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
+        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date, bizStore.getTimeZone()));
         if (storeHour.isDayClosed()) {
             LOG.warn("Closed cannot book {} {} {} {}",
                 jsonSchedule.getStartTime(), storeHour.isDayClosed(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
@@ -137,9 +134,7 @@ public class ScheduleAppointmentService {
     public JsonScheduleList findBookedAppointmentsForDayAsJson(String codeQR, String scheduleDate) {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        Date date = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
-        LOG.info("Date={}", date);
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, date);
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone()));
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, null));
         }
@@ -154,10 +149,7 @@ public class ScheduleAppointmentService {
     public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        LocalDate localDate = LocalDate.parse(scheduleDate);
-        Date date = DateUtil.convertToDate(localDate, ZoneId.of(bizStore.getTimeZone()));
-        LOG.info("LocalDate={} date={}", localDate, date);
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, date);
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone()));
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
