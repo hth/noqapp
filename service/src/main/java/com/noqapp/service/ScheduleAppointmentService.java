@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,8 +81,9 @@ public class ScheduleAppointmentService {
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is not accepting appointments");
         }
 
-        Date date = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
-        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date, bizStore.getTimeZone()));
+        //Date date = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
+        LocalDate localDate = LocalDate.parse(jsonSchedule.getScheduleDate());
+        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), localDate.getDayOfWeek());
         if (storeHour.isDayClosed()) {
             LOG.warn("Closed cannot book {} {} {} {}",
                 jsonSchedule.getStartTime(), storeHour.isDayClosed(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
