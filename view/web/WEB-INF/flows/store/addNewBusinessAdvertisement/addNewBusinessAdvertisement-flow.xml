@@ -8,10 +8,10 @@
 
     <on-start>
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'advertisementId')"
-                  result="conversationScope.advertisementId" />
+                  result="conversationScope.advertisementId"/>
 
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizNameId')"
-                  result="conversationScope.bizNameId" />
+                  result="conversationScope.bizNameId"/>
 
         <evaluate expression="addNewBusinessAdvertisementFlowActions.createBlankAdvertisementForm(advertisementId, bizNameId)"
                   result="flowScope.advertisementForm"/>
@@ -37,8 +37,8 @@
     </action-state>
 
     <action-state id="validateAdvertisement">
-        <evaluate expression="advertisementFlowValidator.validateAdvertisement(advertisementForm, messageContext)" />
-        <transition on="success" to="advertisementTermsAndConditions" />
+        <evaluate expression="advertisementFlowValidator.validateAdvertisement(advertisementForm, messageContext)"/>
+        <transition on="success" to="advertisementTermsAndConditions"/>
         <transition on="failure" to="advertisementStart"/>
     </action-state>
 
@@ -50,14 +50,14 @@
     </view-state>
 
     <action-state id="termsAndConditions">
-        <evaluate expression="addNewBusinessAdvertisementFlowActions.addTermAndCondition(advertisementForm)" />
-        <transition on="success" to="advertisementTermsAndConditions" />
+        <evaluate expression="addNewBusinessAdvertisementFlowActions.addTermAndCondition(advertisementForm)"/>
+        <transition on="success" to="advertisementTermsAndConditions"/>
         <transition on="failure" to="advertisementStart"/>
     </action-state>
 
     <action-state id="removeAllTermsAndConditions">
-        <evaluate expression="addNewBusinessAdvertisementFlowActions.removeAllTermsAndConditions(advertisementForm)" />
-        <transition on="success" to="advertisementTermsAndConditions" />
+        <evaluate expression="addNewBusinessAdvertisementFlowActions.removeAllTermsAndConditions(advertisementForm)"/>
+        <transition on="success" to="advertisementTermsAndConditions"/>
         <transition on="failure" to="advertisementStart"/>
     </action-state>
 
@@ -68,7 +68,7 @@
     </view-state>
 
     <action-state id="confirm">
-        <evaluate expression="addNewBusinessAdvertisementFlowActions.confirm(advertisementForm)" />
+        <evaluate expression="addNewBusinessAdvertisementFlowActions.confirm(advertisementForm)"/>
         <transition on="success" to="advertisementComplete"/>
         <transition on="failure" to="advertisementStart"/>
     </action-state>

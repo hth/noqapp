@@ -2,13 +2,13 @@
 <flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns="http://www.springframework.org/schema/webflow"
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
-       http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
+      http://www.springframework.org/schema/webflow/spring-webflow.xsd">
 
     <secured attributes="ROLE_S_MANAGER" match="any"/>
 
     <on-start>
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'publishId')"
-                  result="conversationScope.publishId" />
+                  result="conversationScope.publishId"/>
 
         <evaluate expression="publishArticleFlowActions.initiatePublishArticle(publishId)"
                   result="flowScope.publishArticleForm"/>
@@ -20,7 +20,7 @@
     </view-state>
 
     <action-state id="validate">
-        <evaluate expression="publishArticleValidator.validate(publishArticleForm, messageContext)" />
+        <evaluate expression="publishArticleValidator.validate(publishArticleForm, messageContext)"/>
         <transition on="success" to="previewPublish"/>
         <transition on="failure" to="startPublish"/>
     </action-state>
@@ -32,7 +32,7 @@
     </view-state>
 
     <action-state id="confirm">
-        <evaluate expression="publishArticleFlowActions.confirm(publishArticleForm)" />
+        <evaluate expression="publishArticleFlowActions.confirm(publishArticleForm)"/>
         <transition on="success" to="home"/>
         <transition on="failure" to="startPublish"/>
     </action-state>
