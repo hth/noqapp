@@ -123,8 +123,8 @@ public class ScheduleAppointmentService {
         scheduleAppointmentManager.cancelAppointment(id, qid, codeQR);
     }
 
-    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, Date scheduleDate) {
-        return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
+    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate) {
+        return getScheduleAppointments(codeQR, scheduleDate);
     }
 
     /** Safe to use for client only. */
