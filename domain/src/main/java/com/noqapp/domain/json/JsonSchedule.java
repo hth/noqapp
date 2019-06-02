@@ -59,6 +59,9 @@ public class JsonSchedule extends AbstractDomain {
     @JsonProperty("as")
     private AppointmentStatusEnum appointmentStatus;
 
+    @JsonProperty("cc")
+    private String chiefComplain;
+
     @JsonProperty("jp")
     private JsonProfile jsonProfile;
 
@@ -146,6 +149,15 @@ public class JsonSchedule extends AbstractDomain {
         return this;
     }
 
+    public String getChiefComplain() {
+        return chiefComplain;
+    }
+
+    public JsonSchedule setChiefComplain(String chiefComplain) {
+        this.chiefComplain = chiefComplain;
+        return this;
+    }
+
     public JsonProfile getJsonProfile() {
         return jsonProfile;
     }
@@ -175,6 +187,7 @@ public class JsonSchedule extends AbstractDomain {
             .setQueueUserId(scheduleAppointment.getQueueUserId())
             .setGuardianQid(scheduleAppointment.getGuardianQid())
             .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
+            .setChiefComplain(scheduleAppointment.getChiefComplain())
             .setJsonProfile(jsonProfile);
     }
 
