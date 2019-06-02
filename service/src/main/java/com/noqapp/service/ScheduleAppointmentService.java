@@ -27,8 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -129,14 +127,11 @@ public class ScheduleAppointmentService {
         return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
     }
 
-    /**
-     * Safe to use for client only.
-     */
+    /** Safe to use for client only. */
     @Mobile
     public JsonScheduleList findBookedAppointmentsForDayAsJson(String codeQR, String scheduleDate) {
+        List<ScheduleAppointmentEntity> scheduleAppointments = getScheduleAppointments(codeQR, scheduleDate);
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone()));
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, null));
         }
@@ -144,19 +139,19 @@ public class ScheduleAppointmentService {
         return jsonScheduleList;
     }
 
-    /**
-     * Contains profile information. To be used by merchant only.
-     */
+    private List<ScheduleAppointmentEntity> getScheduleAppointments(String codeQR, String scheduleDate) {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        Date onDate = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
+        Date endOfDay = DateUtil.nextDay(onDate, bizStore.getTimeZone());
+        LOG.info("Find schedule for {} between {} {}", codeQR, onDate, endOfDay);
+        return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, onDate, endOfDay);
+    }
+
+    /** Contains profile information. To be used by merchant only. */
     @Mobile
     public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
+        List<ScheduleAppointmentEntity> scheduleAppointments = getScheduleAppointments(codeQR, scheduleDate);
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-
-        /* LocalDate as Date gives Fri May 31 18:30:00 UTC 2019 when asking for June 1 Day. */
-        LocalDate localDate = LocalDate.parse(scheduleDate);
-        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        LOG.info("LocalDate={} date={}", localDate, date);
-
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, date);
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());

@@ -68,10 +68,10 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
-    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, Date scheduleDate) {
+    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, Date scheduleDate, Date endOfDay) {
         LOG.info("ScheduleDate={} codeQR={}", scheduleDate, codeQR);
         return mongoTemplate.find(
-            query(where("QR").is(codeQR).and("SD").is(scheduleDate)),
+            query(where("QR").is(codeQR).and("SD").gte(scheduleDate).lte(endOfDay)),
             ScheduleAppointmentEntity.class,
             TABLE
         );

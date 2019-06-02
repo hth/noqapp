@@ -99,6 +99,10 @@ public final class DateUtil {
         return midnight(new DateTime(date)).toDate();
     }
 
+    public static Date nextDay(Date date, String timeZone) {
+        return Date.from(date.toInstant().atZone(ZoneId.of(timeZone)).plusDays(1).minusSeconds(1).toInstant());
+    }
+
     public static long getDuration(Date begin, Date end) {
         return Duration.between(begin.toInstant(), end.toInstant()).getSeconds();
     }
@@ -170,7 +174,7 @@ public final class DateUtil {
         return convertToDate(LocalDate.parse(date, dateTimeFormatter), zoneId);
     }
 
-    public static Date convertToDate(LocalDate localDate, ZoneId zoneId) {
+    private static Date convertToDate(LocalDate localDate, ZoneId zoneId) {
         return Date.from(localDate.atStartOfDay(zoneId).toInstant());
     }
 
