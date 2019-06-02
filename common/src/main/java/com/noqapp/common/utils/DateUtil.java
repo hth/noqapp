@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.PeriodType;
 
@@ -118,6 +119,16 @@ public final class DateUtil {
 
     public static Date sinceOneYearAgo() {
         return Date.from(LocalDate.now().minusMonths(12).withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /** Gets current time on UTC. This is required when setting up cron task as server time is set on UTC. */
+    public static Date getUTCDate() {
+        return new DateTime(DateTimeZone.UTC).toLocalDateTime().toDate();
+    }
+
+    /** Gets current day of week on UTC. */
+    public static int getUTCDayOfWeek() {
+        return new DateTime(DateTimeZone.UTC).getDayOfWeek();
     }
 
     public static DayOfWeek getDayOfWeekFromDate(Date date) {
