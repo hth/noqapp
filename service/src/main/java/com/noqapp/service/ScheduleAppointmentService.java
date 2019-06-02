@@ -106,7 +106,8 @@ public class ScheduleAppointmentService {
             .setEndTime(jsonSchedule.getEndTime())
             .setQueueUserId(jsonSchedule.getQueueUserId())
             .setGuardianQid(guardianQid)
-            .setAppointmentStatus(AppointmentStatusEnum.U);
+            .setAppointmentStatus(AppointmentStatusEnum.U)
+            .setChiefComplain(jsonSchedule.getChiefComplain());
 
         scheduleAppointmentManager.save(scheduleAppointment);
 

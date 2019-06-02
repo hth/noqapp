@@ -48,6 +48,9 @@ public class ScheduleAppointmentEntity extends BaseEntity {
     @Field("AS")
     private AppointmentStatusEnum appointmentStatus;
 
+    @Field("CC")
+    private String chiefComplain;
+
     /* Temp field used only for mongo aggregation framework. */
     @Field("TA")
     private int totalAppointments;
@@ -112,6 +115,15 @@ public class ScheduleAppointmentEntity extends BaseEntity {
 
     public ScheduleAppointmentEntity setAppointmentStatus(AppointmentStatusEnum appointmentStatus) {
         this.appointmentStatus = appointmentStatus;
+        return this;
+    }
+
+    public String getChiefComplain() {
+        return chiefComplain;
+    }
+
+    public ScheduleAppointmentEntity setChiefComplain(String chiefComplain) {
+        this.chiefComplain = chiefComplain;
         return this;
     }
 
