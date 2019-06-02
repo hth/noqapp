@@ -99,6 +99,10 @@ public final class DateUtil {
         return midnight(new DateTime(date)).toDate();
     }
 
+    public static Date nextDay(Date date, String timeZone) {
+        return Date.from(date.toInstant().atZone(ZoneId.of(timeZone)).plusDays(1).minusSeconds(1).toInstant());
+    }
+
     public static long getDuration(Date begin, Date end) {
         return Duration.between(begin.toInstant(), end.toInstant()).getSeconds();
     }

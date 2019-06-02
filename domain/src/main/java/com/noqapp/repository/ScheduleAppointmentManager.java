@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAppointmentEntity> {
 
-    List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, Date scheduleDate);
+    List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, Date scheduleDate, Date endOfDay);
 
     List<ScheduleAppointmentEntity> findBookedAppointmentsForMonth(String codeQR, Date startOfMonth, Date endOfMonth);
 

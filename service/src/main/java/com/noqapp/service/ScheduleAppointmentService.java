@@ -127,14 +127,11 @@ public class ScheduleAppointmentService {
         return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
     }
 
-    /**
-     * Safe to use for client only.
-     */
+    /** Safe to use for client only. */
     @Mobile
     public JsonScheduleList findBookedAppointmentsForDayAsJson(String codeQR, String scheduleDate) {
+        List<ScheduleAppointmentEntity> scheduleAppointments = getScheduleAppointments(codeQR, scheduleDate);
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone()));
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, null));
         }
@@ -142,13 +139,19 @@ public class ScheduleAppointmentService {
         return jsonScheduleList;
     }
 
+    private List<ScheduleAppointmentEntity> getScheduleAppointments(String codeQR, String scheduleDate) {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        Date onDate = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
+        Date endOfDay = DateUtil.nextDay(onDate, bizStore.getTimeZone());
+        LOG.info("Find schedule for {} between {} {}", codeQR, onDate, endOfDay);
+        return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, onDate, endOfDay);
+    }
+
     /** Contains profile information. To be used by merchant only. */
     @Mobile
     public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
+        List<ScheduleAppointmentEntity> scheduleAppointments = getScheduleAppointments(codeQR, scheduleDate);
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        Date onDate = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, onDate);
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
