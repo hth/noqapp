@@ -1,7 +1,6 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 
@@ -170,7 +169,7 @@ public class JsonSchedule extends AbstractDomain {
         return new JsonSchedule()
             .setScheduleAppointmentId(scheduleAppointment.getId())
             .setCodeQR(scheduleAppointment.getCodeQR())
-            .setScheduleDate(Formatter.toDefaultDateFormatAsString(scheduleAppointment.getScheduleDate()))
+            .setScheduleDate(scheduleAppointment.getScheduleDate())
             .setStartTime(scheduleAppointment.getStartTime())
             .setEndTime(scheduleAppointment.getEndTime())
             .setQueueUserId(scheduleAppointment.getQueueUserId())

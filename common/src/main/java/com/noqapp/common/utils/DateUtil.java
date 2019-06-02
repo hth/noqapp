@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.PeriodType;
 
@@ -121,24 +120,13 @@ public final class DateUtil {
         return Date.from(LocalDate.now().minusMonths(12).withDayOfMonth(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
     }
 
-    /** Gets current time on UTC. This is required when setting up cron task as server time is set on UTC. */
-    public static Date getUTCDate() {
-        return new DateTime(DateTimeZone.UTC).toLocalDateTime().toDate();
-    }
-
-    /** Gets current day of week on UTC. */
-    public static int getUTCDayOfWeek() {
-        return new DateTime(DateTimeZone.UTC).getDayOfWeek();
-    }
-
     public static DayOfWeek getDayOfWeekFromDate(Date date) {
         LocalDate localDate = date.toInstant().atZone(ZoneOffset.UTC).toLocalDate();
         return localDate.getDayOfWeek();
     }
 
-    public static DayOfWeek getDayOfWeekFromDate(Date date, String timeZone) {
-        LocalDate localDate = date.toInstant().atZone(ZoneId.of(timeZone)).toLocalDate();
-        return localDate.getDayOfWeek();
+    public static DayOfWeek getDayOfWeekFromDate(String day) {
+        return LocalDate.parse(day).getDayOfWeek();
     }
 
     public static LocalTime getTimeAtTimeZone(String forTimeZone) {
@@ -198,7 +186,7 @@ public final class DateUtil {
         return convertToDateTime(localDateTime, ZoneOffset.UTC);
     }
 
-    public static Date convertToDateTime(LocalDateTime localDateTime, ZoneOffset zoneOffset) {
+    private static Date convertToDateTime(LocalDateTime localDateTime, ZoneOffset zoneOffset) {
         return Date.from(localDateTime.toInstant(zoneOffset));
     }
 
@@ -236,7 +224,7 @@ public final class DateUtil {
         return interval.toPeriod(PeriodType.years()).getYears();
     }
 
-    public static int getMillisBetween(Date start, Date end) {
+    private static int getMillisBetween(Date start, Date end) {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");
         Interval interval = new Interval(start.getTime(), end.getTime());

@@ -3,7 +3,6 @@ package com.noqapp.repository;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,15 +11,15 @@ import java.util.List;
  */
 public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAppointmentEntity> {
 
-    List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, Date scheduleDate, Date endOfDay);
+    List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate);
 
-    List<ScheduleAppointmentEntity> findBookedAppointmentsForMonth(String codeQR, Date startOfMonth, Date endOfMonth);
+    List<ScheduleAppointmentEntity> findBookedAppointmentsForMonth(String codeQR, String startOfMonth, String endOfMonth);
 
     void cancelAppointment(String id, String qid, String codeQR);
 
     ScheduleAppointmentEntity updateSchedule(String id, AppointmentStatusEnum appointmentStatus, String qid, String codeQR);
 
-    boolean doesAppointmentExists(String qid, String codeQR, Date scheduleDate);
+    boolean doesAppointmentExists(String qid, String codeQR, String scheduleDate);
 
     List<ScheduleAppointmentEntity> findAllPastAppointments(String qid, int untilDaysInPast);
     List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid, int untilDaysInFuture);

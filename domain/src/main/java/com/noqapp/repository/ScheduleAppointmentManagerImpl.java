@@ -9,6 +9,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStatusEnum;
@@ -26,7 +27,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,10 +68,10 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
-    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, Date scheduleDate, Date endOfDay) {
+    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate) {
         LOG.info("ScheduleDate={} codeQR={}", scheduleDate, codeQR);
         return mongoTemplate.find(
-            query(where("QR").is(codeQR).and("SD").gte(scheduleDate).lte(endOfDay)),
+            query(where("QR").is(codeQR).and("SD").is(scheduleDate)),
             ScheduleAppointmentEntity.class,
             TABLE
         );
@@ -81,7 +81,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
      * Counts number of records in each schedule. Sums the count in field TA.
      */
     @Override
-    public List<ScheduleAppointmentEntity> findBookedAppointmentsForMonth(String codeQR, Date startOfMonth, Date endOfMonth) {
+    public List<ScheduleAppointmentEntity> findBookedAppointmentsForMonth(String codeQR, String startOfMonth, String endOfMonth) {
         LOG.info("codeQR={} {} {}", codeQR, startOfMonth, endOfMonth);
         try {
             TypedAggregation<ScheduleAppointmentEntity> agg = newAggregation(ScheduleAppointmentEntity.class,
@@ -126,7 +126,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
-    public boolean doesAppointmentExists(String qid, String codeQR, Date scheduleDate) {
+    public boolean doesAppointmentExists(String qid, String codeQR, String scheduleDate) {
         return mongoTemplate.exists(
             query(where("QID").is(qid)
                 .and("QR").is(codeQR)
@@ -140,7 +140,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     @Override
     public List<ScheduleAppointmentEntity> findAllPastAppointments(String qid, int untilDaysInPast) {
         return mongoTemplate.find(
-            query(where("QID").is(qid).and("SD").lte(DateUtil.nowMidnightDate()).gte(DateUtil.minusDays(untilDaysInPast))),
+            query(where("QID").is(qid).and("SD").lte(Formatter.toDefaultDateFormatAsString(DateUtil.nowMidnightDate())).gte(Formatter.toDefaultDateFormatAsString(DateUtil.minusDays(untilDaysInPast)))),
             ScheduleAppointmentEntity.class,
             TABLE);
     }
@@ -151,11 +151,11 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
         if (untilDaysInFuture > 0) {
             query = query(where("QID").is(qid)
                 .and("AS").nin(AppointmentStatusEnum.C, AppointmentStatusEnum.R, AppointmentStatusEnum.S)
-                .and("SD").gte(DateUtil.nowMidnightDate()).lte(DateUtil.plusDays(untilDaysInFuture)));
+                .and("SD").gte(Formatter.toDefaultDateFormatAsString(DateUtil.nowMidnightDate())).lte(Formatter.toDefaultDateFormatAsString(DateUtil.plusDays(untilDaysInFuture))));
         } else {
             query = query(where("QID").is(qid)
                 .and("AS").nin(AppointmentStatusEnum.C, AppointmentStatusEnum.R, AppointmentStatusEnum.S)
-                .and("SD").gte(DateUtil.nowMidnightDate()));
+                .and("SD").gte(Formatter.toDefaultDateFormatAsString(DateUtil.nowMidnightDate())));
         }
         return mongoTemplate.find(query, ScheduleAppointmentEntity.class, TABLE);
     }

@@ -80,8 +80,7 @@ public class ScheduleAppointmentService {
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is not accepting appointments");
         }
 
-        Date date = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
-        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(date, bizStore.getTimeZone()));
+        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), DateUtil.getDayOfWeekFromDate(jsonSchedule.getScheduleDate()));
         if (storeHour.isDayClosed()) {
             LOG.warn("Closed cannot book {} {} {} {}",
                 jsonSchedule.getStartTime(), storeHour.isDayClosed(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
@@ -102,7 +101,7 @@ public class ScheduleAppointmentService {
 
         ScheduleAppointmentEntity scheduleAppointment = new ScheduleAppointmentEntity()
             .setCodeQR(jsonSchedule.getCodeQR())
-            .setScheduleDate(DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone()))
+            .setScheduleDate(jsonSchedule.getScheduleDate())
             .setStartTime(jsonSchedule.getStartTime())
             .setEndTime(jsonSchedule.getEndTime())
             .setQueueUserId(jsonSchedule.getQueueUserId())
@@ -124,13 +123,13 @@ public class ScheduleAppointmentService {
     }
 
     public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate) {
-        return getScheduleAppointments(codeQR, scheduleDate);
+        return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
     }
 
     /** Safe to use for client only. */
     @Mobile
     public JsonScheduleList findBookedAppointmentsForDayAsJson(String codeQR, String scheduleDate) {
-        List<ScheduleAppointmentEntity> scheduleAppointments = getScheduleAppointments(codeQR, scheduleDate);
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, null));
@@ -139,18 +138,10 @@ public class ScheduleAppointmentService {
         return jsonScheduleList;
     }
 
-    private List<ScheduleAppointmentEntity> getScheduleAppointments(String codeQR, String scheduleDate) {
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        Date onDate = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
-        Date endOfDay = DateUtil.nextDay(onDate, bizStore.getTimeZone());
-        LOG.info("Find schedule for {} between {} {}", codeQR, onDate, endOfDay);
-        return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, onDate, endOfDay);
-    }
-
     /** Contains profile information. To be used by merchant only. */
     @Mobile
     public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
-        List<ScheduleAppointmentEntity> scheduleAppointments = getScheduleAppointments(codeQR, scheduleDate);
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
@@ -170,12 +161,16 @@ public class ScheduleAppointmentService {
         Date date = DateUtil.convertToDate(month, bizStore.getTimeZone());
         Date startOfMonth = DateUtil.startOfMonth(date, bizStore.getTimeZone());
         Date endOfMonth = DateUtil.endOfMonth(date, bizStore.getTimeZone());
+        LOG.info("Find between days {} {} for {}", startOfMonth, endOfMonth, codeQR);
 
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForMonth(codeQR, startOfMonth, endOfMonth);
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForMonth(
+            codeQR,
+            Formatter.toDefaultDateFormatAsString(startOfMonth),
+            Formatter.toDefaultDateFormatAsString(endOfMonth));
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(
                 new JsonSchedule()
-                    .setScheduleDate(Formatter.toDefaultDateFormatAsString(scheduleAppointment.getScheduleDate()))
+                    .setScheduleDate(scheduleAppointment.getScheduleDate())
                     .setTotalAppointments(scheduleAppointment.getTotalAppointments())
             );
         }
@@ -200,7 +195,7 @@ public class ScheduleAppointmentService {
     @Mobile
     public boolean doesAppointmentExists(String qid, String codeQR, String scheduleDate) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        return scheduleAppointmentManager.doesAppointmentExists(qid, codeQR, DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone()));
+        return scheduleAppointmentManager.doesAppointmentExists(qid, codeQR, scheduleDate);
     }
 
     @Mobile
@@ -267,7 +262,7 @@ public class ScheduleAppointmentService {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(scheduleAppointment.getCodeQR());
             StoreHourEntity storeHour = storeHourManager.findOne(
                 bizStore.getId(),
-                DateUtil.getDayOfWeekFromDate(scheduleAppointment.getScheduleDate(), bizStore.getTimeZone()));
+                DateUtil.getDayOfWeekFromDate(scheduleAppointment.getScheduleDate()));
             jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour)));
         }
     }
