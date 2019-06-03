@@ -23,8 +23,8 @@ public class AdvertisementFlowValidator {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
-                    .source("authorizedQueueUser.selectAll")
-                    .defaultText("No stores selected. Please select at least one store to continue.")
+                    .source("title")
+                    .defaultText("Please select a title")
                     .build());
 
             status = "failure";

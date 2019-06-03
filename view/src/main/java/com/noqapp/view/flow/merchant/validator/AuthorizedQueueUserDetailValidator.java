@@ -18,32 +18,32 @@ import org.springframework.stereotype.Component;
 public class AuthorizedQueueUserDetailValidator {
     private static final Logger LOG = LoggerFactory.getLogger(AuthorizedQueueUserDetailValidator.class);
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String validateQueueUserDetails(AuthorizedQueueUser authorizedQueueUser, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
         if (authorizedQueueUser.getInterests().length == 0) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("authorizedQueueUser.selectAll")
-                            .defaultText("No stores selected. Please select at least one store to continue.")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("authorizedQueueUser.selectAll")
+                    .defaultText("No stores selected. Please select at least one store to continue.")
+                    .build());
 
             status = "failure";
         }
 
         if (authorizedQueueUser.maxSelectedStore() > authorizedQueueUser.getQueueLimit()) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("authorizedQueueUser.selectAll")
-                            .defaultText("Authorized store management has reach max limit of "
-                                    + authorizedQueueUser.getQueueLimit()
-                                    + " stores. Please select fewer than "
-                                    + authorizedQueueUser.getQueueLimit()
-                                    + " stores.")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("authorizedQueueUser.selectAll")
+                    .defaultText("Authorized store management has reach max limit of "
+                        + authorizedQueueUser.getQueueLimit()
+                        + " stores. Please select fewer than "
+                        + authorizedQueueUser.getQueueLimit()
+                        + " stores.")
+                    .build());
 
             status = "failure";
         }

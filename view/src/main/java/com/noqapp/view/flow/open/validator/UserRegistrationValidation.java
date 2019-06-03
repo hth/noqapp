@@ -85,53 +85,53 @@ public class UserRegistrationValidation {
 
         if (StringUtils.isBlank(merchantRegistration.getFirstName().getText())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("firstName")
-                            .defaultText("First Name cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("firstName")
+                    .defaultText("First Name cannot be empty")
+                    .build());
             status = "failure";
         } else {
             if (!Validate.isValidName(merchantRegistration.getFirstName().getText())) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("firstName")
-                                .defaultText("First Name is not a valid name " + merchantRegistration.getFirstName())
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("firstName")
+                        .defaultText("First Name is not a valid name " + merchantRegistration.getFirstName())
+                        .build());
                 status = "failure";
             }
 
             if (merchantRegistration.getFirstName().getText().length() < nameLength) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("firstName")
-                                .defaultText("First Name minimum length of " + nameLength + " characters")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("firstName")
+                        .defaultText("First Name minimum length of " + nameLength + " characters")
+                        .build());
                 status = "failure";
             }
         }
 
         if (StringUtils.isNotBlank(merchantRegistration.getLastName().getText())
-                && !Validate.isValidName(merchantRegistration.getLastName().getText())) {
+            && !Validate.isValidName(merchantRegistration.getLastName().getText())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("lastName")
-                            .defaultText("Last Name is not a valid name " + merchantRegistration.getLastName())
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("lastName")
+                    .defaultText("Last Name is not a valid name " + merchantRegistration.getLastName())
+                    .build());
             status = "failure";
         }
 
         if (StringUtils.isBlank(merchantRegistration.getBirthday().getText())
-                && !DateUtil.DOB_PATTERN.matcher(merchantRegistration.getBirthday().getText()).matches()) {
+            && !DateUtil.DOB_PATTERN.matcher(merchantRegistration.getBirthday().getText()).matches()) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("birthday")
-                            .defaultText("Date format not valid " + merchantRegistration.getBirthday())
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("birthday")
+                    .defaultText("Date format not valid " + merchantRegistration.getBirthday())
+                    .build());
             status = "failure";
         } else {
             try {
@@ -165,11 +165,11 @@ public class UserRegistrationValidation {
                 GenderEnum.valueOf(merchantRegistration.getGender().getText());
             } catch (IllegalArgumentException e) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("gender")
-                                .defaultText("Gender provided is not valid")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("gender")
+                        .defaultText("Gender provided is not valid")
+                        .build());
                 status = "failure";
             }
         }
@@ -178,29 +178,29 @@ public class UserRegistrationValidation {
 
         if (StringUtils.isBlank(merchantRegistration.getPassword().getText())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("password")
-                            .defaultText("Password cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("password")
+                    .defaultText("Password cannot be empty")
+                    .build());
             status = "failure";
         } else if (merchantRegistration.getPassword().getText().length() < passwordLength) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("password")
-                            .defaultText("Password minimum length of " + passwordLength + " characters")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("password")
+                    .defaultText("Password minimum length of " + passwordLength + " characters")
+                    .build());
             status = "failure";
         }
 
         if (!merchantRegistration.isAcceptsAgreement()) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("acceptsAgreement")
-                            .defaultText("To continue, please check accept to terms")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("acceptsAgreement")
+                    .defaultText("To continue, please check accept to terms")
+                    .build());
             status = "failure";
         }
 
@@ -208,11 +208,11 @@ public class UserRegistrationValidation {
         if (null != userProfile) {
             LOG.warn("Account already exists with email={}", merchantRegistration.getMail());
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("mail")
-                            .defaultText("Account with this email address is already registered.")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("mail")
+                    .defaultText("Account with this email address is already registered.")
+                    .build());
 
             merchantRegistration.setAccountExists(true);
             status = "failure";
@@ -230,11 +230,11 @@ public class UserRegistrationValidation {
         if (StringUtils.isNotBlank(merchantRegistration.getCaptcha())) {
             LOG.warn("Found captcha populated");
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("mail")
-                            .defaultText("Entered value does not match")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("mail")
+                    .defaultText("Entered value does not match")
+                    .build());
             status = "failure";
         }
 
@@ -244,30 +244,30 @@ public class UserRegistrationValidation {
     private String validateMail(MerchantRegistrationForm merchantRegistration, MessageContext messageContext, String status) {
         if (StringUtils.isBlank(merchantRegistration.getMail().getText())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("mail")
-                            .defaultText("Mail cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("mail")
+                    .defaultText("Mail cannot be empty")
+                    .build());
             status = "failure";
         } else {
             if (!Validate.isValidMail(merchantRegistration.getMail().getText())) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("mail")
-                                .defaultText("Email Address provided is not valid")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("mail")
+                        .defaultText("Email Address provided is not valid")
+                        .build());
                 status = "failure";
             }
 
             if (merchantRegistration.getMail() != null && merchantRegistration.getMail().getText().length() <= mailLength) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("mail")
-                                .defaultText("Email Address has to be at least of size " + mailLength + " characters")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("mail")
+                        .defaultText("Email Address has to be at least of size " + mailLength + " characters")
+                        .build());
                 status = "failure";
             }
         }

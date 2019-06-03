@@ -33,29 +33,29 @@ public class QueueSupervisorFlowValidator {
         String status = LandingController.SUCCESS;
         if (StringUtils.isBlank(inviteQueueSupervisor.getPhoneNumber())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("phoneNumber")
-                            .defaultText("Phone Number cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("phoneNumber")
+                    .defaultText("Phone Number cannot be empty")
+                    .build());
             status = "failure";
         } else if (!Formatter.isValidPhone(inviteQueueSupervisor.getPhoneNumber(), inviteQueueSupervisor.getCountryShortName())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("phoneNumber")
-                            .defaultText("Phone Number " + inviteQueueSupervisor.getPhoneNumber() + " is not valid")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("phoneNumber")
+                    .defaultText("Phone Number " + inviteQueueSupervisor.getPhoneNumber() + " is not valid")
+                    .build());
             status = "failure";
         }
 
         if (StringUtils.isBlank(inviteQueueSupervisor.getInviteeCode().getText())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("inviteeCode")
-                            .defaultText("Invitee code cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("inviteeCode")
+                    .defaultText("Invitee code cannot be empty")
+                    .build());
             status = "failure";
         }
 
