@@ -183,7 +183,11 @@ public class ScheduleAppointmentService {
             );
         }
 
-        jsonScheduleList.setJsonHours(bizService.findAllStoreHoursAsJson(bizStore.getId()));
+        jsonScheduleList
+            .setJsonHours(bizService.findAllStoreHoursAsJson(bizStore.getId()))
+            .setAppointmentDuration(bizStore.getAppointmentDuration())
+            .setAppointmentEnable(bizStore.isAppointmentEnable())
+            .setAppointmentOpenHowFar(bizStore.getAppointmentOpenHowFar());
         return jsonScheduleList;
     }
 
