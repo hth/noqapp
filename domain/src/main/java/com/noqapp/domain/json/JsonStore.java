@@ -59,6 +59,11 @@ public class JsonStore extends AbstractDomain {
         return jsonHours;
     }
 
+    public JsonStore setJsonHours(List<JsonHour> jsonHours) {
+        this.jsonHours = jsonHours;
+        return this;
+    }
+
     public JsonStore addJsonHour(JsonHour jsonHour) {
         this.jsonHours.add(jsonHour);
         return this;
