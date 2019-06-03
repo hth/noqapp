@@ -43,16 +43,16 @@ public class UserFlowValidator {
 
     @Autowired
     public UserFlowValidator(
-            @Value ("${AccountValidator.mailLength}")
-            int mailLength,
+        @Value("${AccountValidator.mailLength}")
+        int mailLength,
 
-            @Value ("${AccountValidator.nameLength}")
-            int nameLength,
+        @Value("${AccountValidator.nameLength}")
+        int nameLength,
 
-            @Value ("${AccountValidator.passwordLength}")
-            int passwordLength,
+        @Value("${AccountValidator.passwordLength}")
+        int passwordLength,
 
-            ExternalService externalService
+        ExternalService externalService
     ) {
         this.mailLength = mailLength;
         this.nameLength = nameLength;
@@ -64,52 +64,52 @@ public class UserFlowValidator {
      * Validate business user profile.
      *
      * @param registerUser
-     * @param source            Identify label correctly in jsp. Matches error message with input with error css.
+     * @param source         Identify label correctly in jsp. Matches error message with input with error css.
      * @param messageContext
      * @return
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String validateUserProfileSignUpDetails(RegisterUser registerUser, String source, MessageContext messageContext) {
         LOG.info("Validate user profile signUp qid={}", registerUser.getQueueUserId());
         String status = validateUserProfileDetails(registerUser, source, messageContext);
 
         if (StringUtils.isBlank(registerUser.getBirthday())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "birthday")
-                            .defaultText("Data of birth cannot be empty. Should be of format yyyy-MM-dd.")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "birthday")
+                    .defaultText("Data of birth cannot be empty. Should be of format yyyy-MM-dd.")
+                    .build());
             status = "failure";
         }
 
         if (StringUtils.isNotBlank(registerUser.getBirthday()) && !DateUtil.DOB_PATTERN.matcher(registerUser.getBirthday()).matches()) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "birthday")
-                            .defaultText("Data of birth not valid. Should be of format yyyy-MM-dd.")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "birthday")
+                    .defaultText("Data of birth not valid. Should be of format yyyy-MM-dd.")
+                    .build());
             status = "failure";
         }
 
         if (!Validate.isValidMail(registerUser.getEmail())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "email")
-                            .defaultText("Email Address provided is not valid")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "email")
+                    .defaultText("Email Address provided is not valid")
+                    .build());
             status = "failure";
         }
 
         if (registerUser.getEmail() != null && registerUser.getEmail().length() <= mailLength) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "email")
-                            .defaultText("Email address has to be at least of size " + mailLength + " characters")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "email")
+                    .defaultText("Email address has to be at least of size " + mailLength + " characters")
+                    .build());
             status = "failure";
         }
 
@@ -117,11 +117,11 @@ public class UserFlowValidator {
         if (!registerUser.isEmailValidated()) {
             if (StringUtils.isBlank(registerUser.getPassword()) || registerUser.getPassword().length() < passwordLength) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source(source + "password")
-                                .defaultText("Password minimum length of " + passwordLength + " characters")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "password")
+                        .defaultText("Password minimum length of " + passwordLength + " characters")
+                        .build());
                 status = "failure";
             }
         }
@@ -129,19 +129,19 @@ public class UserFlowValidator {
         if (!registerUser.isAcceptsAgreement()) {
             if (messageContext.getAllMessages().length > 0) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source(source + "acceptsAgreement")
-                                .defaultText("To continue, please check accept to terms")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "acceptsAgreement")
+                        .defaultText("To continue, please check accept to terms")
+                        .build());
                 status = "failure";
             } else {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source(source + "acceptsAgreement")
-                                .defaultText("To continue, please check accept to terms")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "acceptsAgreement")
+                        .defaultText("To continue, please check accept to terms")
+                        .build());
                 status = "failure";
             }
         }
@@ -157,22 +157,22 @@ public class UserFlowValidator {
      * Validate signed up user info.
      *
      * @param registerUser
-     * @param source            Identify label correctly in jsp. Matches error message with input with error css.
+     * @param source         Identify label correctly in jsp. Matches error message with input with error css.
      * @param messageContext
      * @return
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String validateUserProfileDetails(RegisterUser registerUser, String source, MessageContext messageContext) {
         LOG.info("Validate user profile qid={}", registerUser.getQueueUserId());
         String status = LandingController.SUCCESS;
 
         if (StringUtils.isBlank(registerUser.getAddress())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "address")
-                            .defaultText("Your Address cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "address")
+                    .defaultText("Your Address cannot be empty")
+                    .build());
             status = "failure";
         } else {
             DecodedAddress decodedAddress;
@@ -185,28 +185,28 @@ public class UserFlowValidator {
                 registerUser.setPlaceHolderAddress(registerUser.getAddress());
 
                 Geocode geocode = Geocode.newInstance(
-                        externalService.getGeocodingResults(registerUser.getAddress()),
-                        registerUser.getAddress());
+                    externalService.getGeocodingResults(registerUser.getAddress()),
+                    registerUser.getAddress());
                 registerUser.setFoundAddresses(geocode.getFoundAddresses());
                 decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
 
                 if (decodedAddress.isNotBlank()) {
                     if (geocode.getResults().length > 1 || geocode.isAddressMisMatch()) {
                         messageContext.addMessage(
-                                new MessageBuilder()
-                                        .error()
-                                        .source(source + "address")
-                                        .defaultText("Found other matching address(es). Please select 'Best Matching Address' or if you choose 'Your Address' then click Next.")
-                                        .build());
+                            new MessageBuilder()
+                                .error()
+                                .source(source + "address")
+                                .defaultText("Found other matching address(es). Please select 'Best Matching Address' or if you choose 'Your Address' then click Next.")
+                                .build());
                         status = "failure";
                     }
                 } else {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "address")
-                                    .defaultText("Failed decoding your address. Please contact support if this error persists.")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "address")
+                            .defaultText("Failed decoding your address. Please contact support if this error persists.")
+                            .build());
                     status = "failure";
                 }
             } else {
@@ -224,11 +224,11 @@ public class UserFlowValidator {
                     DecodedAddress foundAddress = registerUser.getFoundAddresses().get(decodedAddressId);
                     if (!foundAddress.getCountryShortName().equalsIgnoreCase(registerUser.getCountryShortName())) {
                         messageContext.addMessage(
-                                new MessageBuilder()
-                                        .error()
-                                        .source(source + "address")
-                                        .defaultText("Address and Phone are not from the same country. Please update your Phone or fix Address to match.")
-                                        .build());
+                            new MessageBuilder()
+                                .error()
+                                .source(source + "address")
+                                .defaultText("Address and Phone are not from the same country. Please update your Phone or fix Address to match.")
+                                .build());
 
                         status = "failure";
                         break;
@@ -240,12 +240,12 @@ public class UserFlowValidator {
             if (registerUser.isPhoneValidated()) {
                 if (!registerUser.getCountryShortName().equalsIgnoreCase(decodedAddress.getCountryShortName())) {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "address")
-                                    .defaultText("Your address does not match with the country of registered phone number. " +
-                                            "Phone is registered to " + registerUser.getCountryShortName())
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "address")
+                            .defaultText("Your address does not match with the country of registered phone number. " +
+                                "Phone is registered to " + registerUser.getCountryShortName())
+                            .build());
                     status = "failure";
                 }
             }
@@ -255,11 +255,11 @@ public class UserFlowValidator {
                 try {
                     if (StringUtils.isBlank(registerUser.getPhoneNotFormatted())) {
                         messageContext.addMessage(
-                                new MessageBuilder()
-                                        .error()
-                                        .source(source + "phone")
-                                        .defaultText("Your Phone number cannot be empty")
-                                        .build());
+                            new MessageBuilder()
+                                .error()
+                                .source(source + "phone")
+                                .defaultText("Your Phone number cannot be empty")
+                                .build());
                         status = "failure";
                         return status;
                     } else {
@@ -269,11 +269,11 @@ public class UserFlowValidator {
                 } catch (Exception e) {
                     LOG.error("Failed parsing phone number reason={}", e.getLocalizedMessage(), e);
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "phone")
-                                    .defaultText("Your Phone number '" + registerUser.getPhoneAsIs() + "' is not valid")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "phone")
+                            .defaultText("Your Phone number '" + registerUser.getPhoneAsIs() + "' is not valid")
+                            .build());
                     status = "failure";
                     return status;
                 }
@@ -291,72 +291,72 @@ public class UserFlowValidator {
 
         if (StringUtils.isBlank(registerUser.getFirstName())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "firstName")
-                            .defaultText("First name cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "firstName")
+                    .defaultText("First name cannot be empty")
+                    .build());
             status = "failure";
         }
 
         if (StringUtils.isNotBlank(registerUser.getFirstName()) && !Validate.isValidName(registerUser.getFirstName())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "firstName")
-                            .defaultText("First name is not a valid name: " + registerUser.getFirstName())
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "firstName")
+                    .defaultText("First name is not a valid name: " + registerUser.getFirstName())
+                    .build());
             status = "failure";
         }
 
         if (registerUser.getFirstName().length() < nameLength) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "firstName")
-                            .defaultText("First name minimum length of " + nameLength + " characters")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "firstName")
+                    .defaultText("First name minimum length of " + nameLength + " characters")
+                    .build());
             status = "failure";
         }
 
         if (StringUtils.isBlank(registerUser.getLastName())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "lastName")
-                            .defaultText("Last name cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "lastName")
+                    .defaultText("Last name cannot be empty")
+                    .build());
             status = "failure";
         }
 
         if (StringUtils.isNotBlank(registerUser.getLastName()) && !Validate.isValidName(registerUser.getLastName())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "lastName")
-                            .defaultText("Last name is not a valid name: " + registerUser.getLastName())
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "lastName")
+                    .defaultText("Last name is not a valid name: " + registerUser.getLastName())
+                    .build());
             status = "failure";
         }
 
         if (StringUtils.isBlank(registerUser.getPhoneNotFormatted())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "phone")
-                            .defaultText("Your Phone number cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "phone")
+                    .defaultText("Your Phone number cannot be empty")
+                    .build());
             status = "failure";
         }
 
         if (StringUtils.isNotBlank(registerUser.getPhoneNotFormatted())) {
             if (!Formatter.isValidPhone(registerUser.getPhoneNotFormatted(), registerUser.getCountryShortName())) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source(source + "phone")
-                                .defaultText("Your Phone number '" + registerUser.getPhoneNotFormatted() + "' is not valid")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "phone")
+                        .defaultText("Your Phone number '" + registerUser.getPhoneNotFormatted() + "' is not valid")
+                        .build());
                 status = "failure";
             }
         }

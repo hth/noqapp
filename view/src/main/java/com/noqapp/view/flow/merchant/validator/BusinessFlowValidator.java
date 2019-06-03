@@ -45,8 +45,8 @@ public class BusinessFlowValidator {
 
     @Autowired
     public BusinessFlowValidator(
-            ExternalService externalService,
-            BizService bizService
+        ExternalService externalService,
+        BizService bizService
     ) {
         this.externalService = externalService;
         this.bizService = bizService;
@@ -60,7 +60,7 @@ public class BusinessFlowValidator {
      * @param messageContext
      * @return
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String validateBusinessDetails(Register register, String mode, MessageContext messageContext) {
         LOG.info("Validate business qid={}", register.getRegisterUser().getQueueUserId());
         String status = LandingController.SUCCESS;
@@ -69,31 +69,31 @@ public class BusinessFlowValidator {
 
         if (StringUtils.isBlank(registerBusiness.getName())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("registerBusiness.name")
-                            .defaultText("Business Name cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("registerBusiness.name")
+                    .defaultText("Business Name cannot be empty")
+                    .build());
             status = "failure";
         }
 
         if (null == registerBusiness.getBusinessType() && mode.equalsIgnoreCase("create")) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("registerBusiness.businessType")
-                            .defaultText("Business Type is not selected")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("registerBusiness.businessType")
+                    .defaultText("Business Type is not selected")
+                    .build());
             status = "failure";
         }
-        
+
         if (StringUtils.isBlank(registerBusiness.getAddress())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("registerBusiness.address")
-                            .defaultText("Business Address cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("registerBusiness.address")
+                    .defaultText("Business Address cannot be empty")
+                    .build());
             status = "failure";
         } else {
             DecodedAddress decodedAddress;
@@ -109,10 +109,10 @@ public class BusinessFlowValidator {
                 if (StringUtils.isBlank(registerBusiness.getTown())) {
                     registerBusiness.setTown(new ScrubbedInput(decodedAddress.getTown()));
                 }
-            } else if(registerBusiness.getFoundAddresses().isEmpty()) {
+            } else if (registerBusiness.getFoundAddresses().isEmpty()) {
                 Geocode geocode = Geocode.newInstance(
-                        externalService.getGeocodingResults(registerBusiness.getAddress()),
-                        registerBusiness.getAddress());
+                    externalService.getGeocodingResults(registerBusiness.getAddress()),
+                    registerBusiness.getAddress());
                 registerBusiness.setFoundAddresses(geocode.getFoundAddresses());
                 decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
 
@@ -127,20 +127,20 @@ public class BusinessFlowValidator {
                 if (decodedAddress.isNotBlank()) {
                     if (geocode.getResults().length > 1 || geocode.isAddressMisMatch()) {
                         messageContext.addMessage(
-                                new MessageBuilder()
-                                        .error()
-                                        .source("registerBusiness.address")
-                                        .defaultText("Found other matching address(es). Please select 'Best Matching Business Address' or if you choose 'Business Address' then click Next.")
-                                        .build());
+                            new MessageBuilder()
+                                .error()
+                                .source("registerBusiness.address")
+                                .defaultText("Found other matching address(es). Please select 'Best Matching Business Address' or if you choose 'Business Address' then click Next.")
+                                .build());
                         status = "failure";
                     }
                 } else {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source("registerBusiness.address")
-                                    .defaultText("Failed decoding your address. Please contact support if this error persists.")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source("registerBusiness.address")
+                            .defaultText("Failed decoding your address. Please contact support if this error persists.")
+                            .build());
                     status = "failure";
                 }
             } else {
@@ -160,7 +160,7 @@ public class BusinessFlowValidator {
                     registerBusiness.setTown(new ScrubbedInput(decodedAddress.getTown()));
                 }
             }
-            
+
             if (decodedAddress.isNotBlank()) {
                 registerBusiness.setCountryShortName(new ScrubbedInput(decodedAddress.getCountryShortName()));
 
@@ -171,32 +171,32 @@ public class BusinessFlowValidator {
 
             if (StringUtils.isBlank(registerBusiness.getArea())) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.area")
-                                .defaultText("Business Town cannot be empty")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("registerBusiness.area")
+                        .defaultText("Business Town cannot be empty")
+                        .build());
                 status = "failure";
             }
 
             if (StringUtils.isBlank(registerBusiness.getTown())) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.town")
-                                .defaultText("Business Area cannot be empty")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("registerBusiness.town")
+                        .defaultText("Business Area cannot be empty")
+                        .build());
                 status = "failure";
             }
         }
 
         if (StringUtils.isBlank(registerBusiness.getPhoneNotFormatted())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("registerBusiness.phone")
-                            .defaultText("Business Phone cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("registerBusiness.phone")
+                    .defaultText("Business Phone cannot be empty")
+                    .build());
             status = "failure";
         } else if (mode.equalsIgnoreCase("create")) {
             LOG.info("Checking if business exists with phone={}", registerBusiness.getPhoneWithCountryCode());
@@ -204,11 +204,11 @@ public class BusinessFlowValidator {
             if (null != bizName && !bizName.getId().equalsIgnoreCase(registerBusiness.getBizId())) {
                 LOG.warn("Business exists with phone={} existing bizName={}", registerBusiness.getPhoneWithCountryCode(), bizName.getBusinessName());
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("registerBusiness.phone")
-                                .defaultText("Business Phone already exists. Contact support for help.")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("registerBusiness.phone")
+                        .defaultText("Business Phone already exists. Contact support for help.")
+                        .build());
                 status = "failure";
             }
         }
@@ -222,19 +222,19 @@ public class BusinessFlowValidator {
             /* Ignore finding business when editing. */
             if (StringUtils.isBlank(registerBusiness.getBizId())) {
                 Set<BizStoreEntity> bizStores = bizService.bizSearch(
-                        registerBusiness.getName(),
-                        registerBusiness.getAddress(),
-                        registerBusiness.getPhoneWithCountryCode());
+                    registerBusiness.getName(),
+                    registerBusiness.getAddress(),
+                    registerBusiness.getPhoneWithCountryCode());
 
                 if (bizStores.size() != 0) {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source("registerBusiness.name")
-                                    .defaultText(
-                                            "Business Name already exist wth this name or address or phone. " +
-                                                    "Please email us at contact@noqapp.com.")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source("registerBusiness.name")
+                            .defaultText(
+                                "Business Name already exist wth this name or address or phone. " +
+                                    "Please email us at contact@noqapp.com.")
+                            .build());
                     status = "failure";
                 }
             }
@@ -248,11 +248,11 @@ public class BusinessFlowValidator {
      * Validate store.
      *
      * @param registerBusiness
-     * @param source            adaptable source based on where this validation is being called from
+     * @param source           adaptable source based on where this validation is being called from
      * @param messageContext
      * @return
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String validateStoreDetails(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
@@ -263,11 +263,11 @@ public class BusinessFlowValidator {
 
         if (StringUtils.isBlank(registerBusiness.getAddressStore())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "addressStore")
-                            .defaultText("Store Address cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "addressStore")
+                    .defaultText("Store Address cannot be empty")
+                    .build());
             status = "failure";
         } else {
             DecodedAddress decodedAddressStore;
@@ -283,10 +283,10 @@ public class BusinessFlowValidator {
                 if (StringUtils.isBlank(registerBusiness.getTownStore())) {
                     registerBusiness.setTownStore(new ScrubbedInput(decodedAddressStore.getTown()));
                 }
-            } else if(registerBusiness.getFoundAddressStores().isEmpty()) {
+            } else if (registerBusiness.getFoundAddressStores().isEmpty()) {
                 Geocode geocode = Geocode.newInstance(
-                        externalService.getGeocodingResults(registerBusiness.getAddressStore()),
-                        registerBusiness.getAddressStore());
+                    externalService.getGeocodingResults(registerBusiness.getAddressStore()),
+                    registerBusiness.getAddressStore());
                 registerBusiness.setFoundAddressStores(geocode.getFoundAddresses());
                 decodedAddressStore = DecodedAddress.newInstance(geocode.getResults(), 0);
 
@@ -301,20 +301,20 @@ public class BusinessFlowValidator {
                 if (decodedAddressStore.isNotBlank()) {
                     if (geocode.getResults().length > 1 || geocode.isAddressMisMatch()) {
                         messageContext.addMessage(
-                                new MessageBuilder()
-                                        .error()
-                                        .source(source + "addressStore")
-                                        .defaultText("Found other matching address(es). Please select 'Best Matching Store Address' or if you choose 'Store Address' then click Next.")
-                                        .build());
+                            new MessageBuilder()
+                                .error()
+                                .source(source + "addressStore")
+                                .defaultText("Found other matching address(es). Please select 'Best Matching Store Address' or if you choose 'Store Address' then click Next.")
+                                .build());
                         status = "failure";
                     }
                 } else {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "addressStore")
-                                    .defaultText("Failed decoding your address. Please contact support if this error persists.")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "addressStore")
+                            .defaultText("Failed decoding your address. Please contact support if this error persists.")
+                            .build());
                     status = "failure";
                 }
             } else {
@@ -345,21 +345,21 @@ public class BusinessFlowValidator {
 
             if (StringUtils.isBlank(registerBusiness.getAreaStore())) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source(source + "areaStore")
-                                .defaultText("Store Town cannot be empty")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "areaStore")
+                        .defaultText("Store Town cannot be empty")
+                        .build());
                 status = "failure";
             }
 
             if (StringUtils.isBlank(registerBusiness.getTownStore())) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source(source + "townStore")
-                                .defaultText("Store City cannot be empty")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "townStore")
+                        .defaultText("Store City cannot be empty")
+                        .build());
                 status = "failure";
             }
         }
@@ -372,22 +372,22 @@ public class BusinessFlowValidator {
 
         if (StringUtils.isBlank(registerBusiness.getDisplayName())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "displayName")
-                            .defaultText("Queue Name cannot be empty. " +
-                                    "Queue Names can be like: Pharmacy, Driving License, Dinner Reservation")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "displayName")
+                    .defaultText("Queue Name cannot be empty. " +
+                        "Queue Names can be like: Pharmacy, Driving License, Dinner Reservation")
+                    .build());
             status = "failure";
         }
 
         if (StringUtils.isBlank(registerBusiness.getPhoneStoreNotFormatted())) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "phoneStore")
-                            .defaultText("Store Phone cannot be empty")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "phoneStore")
+                    .defaultText("Store Phone cannot be empty")
+                    .build());
             status = "failure";
         }
 
@@ -400,16 +400,16 @@ public class BusinessFlowValidator {
 
         if (!foundInStoreBusinessSelection) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "storeBusinessType")
-                            .defaultText("'Queue for' has to be a subset of 'Business Type'")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "storeBusinessType")
+                    .defaultText("'Queue for' has to be a subset of 'Business Type'")
+                    .build());
             status = "failure";
         }
 
         /* Checks if has self defined business category or system defined. DO, BK and HS has system defined. */
-        switch(registerBusiness.getStoreBusinessType()) {
+        switch (registerBusiness.getStoreBusinessType()) {
             case DO:
             case BK:
             case HS:
@@ -439,7 +439,7 @@ public class BusinessFlowValidator {
      * @param messageContext
      * @return
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String validateQueueSettings(Register register, MessageContext messageContext) {
         LOG.info("Validate queue settings qid={}", register.getRegisterUser().getQueueUserId());
         final RegisterBusiness registerBusiness = register.getRegisterBusiness();
@@ -453,7 +453,7 @@ public class BusinessFlowValidator {
      * @param messageContext
      * @return
      */
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String validateBusinessHours(Register register, MessageContext messageContext) {
         LOG.info("Validate business qid={}", register.getRegisterUser().getQueueUserId());
         final RegisterBusiness registerBusiness = register.getRegisterBusiness();
@@ -465,11 +465,11 @@ public class BusinessFlowValidator {
 
         if (!StringUtils.isNumeric(String.valueOf(registerBusiness.getAvailableTokenCount()))) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source(source + "limited token")
-                            .defaultText("Limited token is not valid")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source(source + "limited token")
+                    .defaultText("Limited token is not valid")
+                    .build());
             status = "failure";
         }
         return status;
@@ -479,7 +479,7 @@ public class BusinessFlowValidator {
      * Validate store hours.
      *
      * @param registerBusiness
-     * @param source            adaptable source based on where this validation is being called from
+     * @param source           adaptable source based on where this validation is being called from
      * @param messageContext
      * @return
      */
@@ -491,83 +491,83 @@ public class BusinessFlowValidator {
             if (!businessHour.isDayClosed()) {
                 if (businessHour.getStartHourStore() == 0) {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].startHourStore")
-                                    .defaultText("Specify Store Start Time for "
-                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].startHourStore")
+                            .defaultText("Specify Store Start Time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
+                            .build());
                     status = "failure";
                 }
 
                 if (businessHour.getEndHourStore() == 0) {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
-                                    .defaultText("Specify Store Close Time for "
-                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
+                            .defaultText("Specify Store Close Time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()))
+                            .build());
                     status = "failure";
                 }
 
                 if (businessHour.getTokenAvailableFrom() == 0) {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
-                                    .defaultText("Specify Token Available Time for "
-                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
-                                            + ". This is the time from when Token would be available to users.")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
+                            .defaultText("Specify Token Available Time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + ". This is the time from when Token would be available to users.")
+                            .build());
                     status = "failure";
                 }
 
                 if (businessHour.getStartHourStore() > 2359) {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].startHourStore")
-                                    .defaultText("Store Start Time for "
-                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
-                                            + " cannot exceed 2359")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].startHourStore")
+                            .defaultText("Store Start Time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " cannot exceed 2359")
+                            .build());
                     status = "failure";
                 }
 
                 if (businessHour.getEndHourStore() > 2359) {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
-                                    .defaultText("Store Close Time for "
-                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
-                                            + " cannot exceed 2359")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
+                            .defaultText("Store Close Time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " cannot exceed 2359")
+                            .build());
                     status = "failure";
                 }
 
                 if (businessHour.getTokenAvailableFrom() > 2359) {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
-                                    .defaultText("Token Available Time for "
-                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
-                                            + " cannot exceed 2359")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
+                            .defaultText("Token Available Time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " cannot exceed 2359")
+                            .build());
                     status = "failure";
                 }
 
                 if (businessHour.getTokenNotAvailableFrom() > 2359) {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenNotAvailableFrom")
-                                    .defaultText("Token Not Available After for "
-                                            + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
-                                            + " cannot exceed 2359")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenNotAvailableFrom")
+                            .defaultText("Token Not Available After for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " cannot exceed 2359")
+                            .build());
                     status = "failure";
                 }
             }
@@ -577,7 +577,7 @@ public class BusinessFlowValidator {
         return status;
     }
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String validateAppointmentSettings(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
@@ -627,7 +627,7 @@ public class BusinessFlowValidator {
         return status;
     }
 
-    @SuppressWarnings ("unused")
+    @SuppressWarnings("unused")
     public String validateAppointmentHours(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
         List<BusinessHour> businessHours = registerBusiness.getBusinessHours();
