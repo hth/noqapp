@@ -33,14 +33,14 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 12/9/16 5:00 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/open/validate")
+@RequestMapping(value = "/open/validate")
 public class ValidateEmailController {
     private static final Logger LOG = LoggerFactory.getLogger(ValidateEmailController.class);
 
@@ -48,20 +48,20 @@ public class ValidateEmailController {
     private AccountService accountService;
     private ApiHealthService apiHealthService;
 
-    @Value ("${emailValidate:redirect:/open/validate/result.htm}")
+    @Value("${emailValidate:redirect:/open/validate/result.htm}")
     private String validateResult;
 
-    @Value ("${emailValidatePage:validate/success}")
+    @Value("${emailValidatePage:validate/success}")
     private String validateSuccessPage;
 
-    @Value ("${emailValidatePage:validate/failure}")
+    @Value("${emailValidatePage:validate/failure}")
     private String validateFailurePage;
 
     @Autowired
     public ValidateEmailController(
-            EmailValidateService emailValidateService,
-            AccountService accountService,
-            ApiHealthService apiHealthService
+        EmailValidateService emailValidateService,
+        AccountService accountService,
+        ApiHealthService apiHealthService
     ) {
         this.emailValidateService = emailValidateService;
         this.accountService = accountService;
@@ -70,11 +70,11 @@ public class ValidateEmailController {
 
     @GetMapping
     public String validateEmail(
-            @RequestParam ("authenticationKey")
-            ScrubbedInput key,
+        @RequestParam("authenticationKey")
+        ScrubbedInput key,
 
-            RedirectAttributes redirectAttrs,
-            HttpServletResponse httpServletResponse
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse httpServletResponse
     ) throws IOException {
         boolean methodStatusSuccess = true;
         Instant start = Instant.now();
@@ -108,28 +108,28 @@ public class ValidateEmailController {
             throw e;
         } finally {
             apiHealthService.insert(
-                    "/",
-                    "validateEmail",
-                    ValidateEmailController.class.getName(),
-                    Duration.between(start, Instant.now()),
-                    methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
+                "/",
+                "validateEmail",
+                ValidateEmailController.class.getName(),
+                Duration.between(start, Instant.now()),
+                methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
         }
     }
 
-    @GetMapping (value = "/result")
+    @GetMapping(value = "/result")
     public String success(
-            @ModelAttribute ("success")
-            ScrubbedInput success,
+        @ModelAttribute("success")
+        ScrubbedInput success,
 
-            Model model,
-            HttpServletResponse httpServletResponse
+        Model model,
+        HttpServletResponse httpServletResponse
     ) throws IOException {
         String nextPage = null;
         if (StringUtils.isNotBlank(success.getText())) {
-            nextPage =  Boolean.valueOf(success.getText()) ? validateSuccessPage : validateFailurePage;
+            nextPage = Boolean.valueOf(success.getText()) ? validateSuccessPage : validateFailurePage;
             model.addAttribute(
-                    "registrationMessage",
-                    "Please log in with your email address and password entered during registration.");
+                "registrationMessage",
+                "Please log in with your email address and password entered during registration.");
 
         } else {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);

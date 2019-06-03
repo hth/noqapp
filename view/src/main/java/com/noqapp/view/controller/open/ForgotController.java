@@ -44,14 +44,14 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 5/3/17 12:34 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/open/forgot")
+@RequestMapping(value = "/open/forgot")
 public class ForgotController {
     private static final Logger LOG = LoggerFactory.getLogger(ForgotController.class);
 
@@ -62,23 +62,23 @@ public class ForgotController {
     private static final String SUCCESS = "success";
 
     /** Called when user hits on forgot password. */
-    @Value ("${password:/forgot/password}")
+    @Value("${password:/forgot/password}")
     private String passwordPage;
 
     /** Called when user tries to register with email already existing. Then user is directed to recover instead. */
-    @Value ("${recoverPage:/forgot/recover}")
+    @Value("${recoverPage:/forgot/recover}")
     private String recoverPage;
 
-    @Value ("${recoverConfirmPage:/forgot/recoverConfirm}")
+    @Value("${recoverConfirmPage:/forgot/recoverConfirm}")
     private String recoverConfirmPage;
 
-    @Value ("${recoverConfirm:redirect:/open/forgot/recoverConfirm.htm}")
+    @Value("${recoverConfirm:redirect:/open/forgot/recoverConfirm.htm}")
     private String recoverConfirm;
 
-    @Value ("${authenticatePage:/forgot/authenticate}")
+    @Value("${authenticatePage:/forgot/authenticate}")
     private String authenticatePage;
 
-    @Value ("${authenticationConfirmPage:/forgot/authenticateConfirm}")
+    @Value("${authenticationConfirmPage:/forgot/authenticateConfirm}")
     private String authenticateConfirm;
 
     private AccountService accountService;
@@ -89,11 +89,11 @@ public class ForgotController {
 
     @Autowired
     public ForgotController(
-            AccountService accountService,
-            ForgotRecoverValidator forgotRecoverValidator,
-            UserProfilePreferenceService userProfilePreferenceService,
-            ForgotAuthenticateValidator forgotAuthenticateValidator,
-            MailService mailService
+        AccountService accountService,
+        ForgotRecoverValidator forgotRecoverValidator,
+        UserProfilePreferenceService userProfilePreferenceService,
+        ForgotAuthenticateValidator forgotAuthenticateValidator,
+        MailService mailService
     ) {
         this.accountService = accountService;
         this.forgotRecoverValidator = forgotRecoverValidator;
@@ -104,8 +104,8 @@ public class ForgotController {
 
     @GetMapping(value = "password")
     public String onPasswordLinkClicked(
-            @ModelAttribute ("forgotRecoverForm")
-            ForgotRecoverForm forgotRecoverForm
+        @ModelAttribute("forgotRecoverForm")
+        ForgotRecoverForm forgotRecoverForm
     ) {
         LOG.info("Password recovery page invoked");
         return passwordPage;
@@ -113,11 +113,11 @@ public class ForgotController {
 
     @PostMapping(value = "password", params = {"forgot_password"})
     public String emailUserForPasswordRecovery(
-            @ModelAttribute ("forgotRecoverForm")
-            ForgotRecoverForm forgotRecoverForm,
+        @ModelAttribute("forgotRecoverForm")
+        ForgotRecoverForm forgotRecoverForm,
 
-            BindingResult result,
-            RedirectAttributes redirectAttrs
+        BindingResult result,
+        RedirectAttributes redirectAttrs
     ) {
         forgotRecoverValidator.validate(forgotRecoverForm, result);
         if (result.hasErrors()) {
@@ -149,8 +149,8 @@ public class ForgotController {
             case ACCOUNT_NOT_FOUND:
             case SUCCESS:
                 redirectAttrs.addFlashAttribute(
-                        SUCCESS_EMAIL,
-                        mailType == MailTypeEnum.ACCOUNT_NOT_VALIDATED ? mailType : MailTypeEnum.SUCCESS);
+                    SUCCESS_EMAIL,
+                    mailType == MailTypeEnum.ACCOUNT_NOT_VALIDATED ? mailType : MailTypeEnum.SUCCESS);
                 break;
             default:
                 LOG.error("Reached unreachable condition, user={}", forgotRecoverForm.getMail().getText().toLowerCase());
@@ -162,13 +162,13 @@ public class ForgotController {
     /**
      * Add this gymnastic to make sure the page does not process when refreshed again or bookmarked.
      */
-    @GetMapping (value = "recoverConfirm")
+    @GetMapping(value = "recoverConfirm")
     public String showConfirmationPageForProcessingPasswordRecovery(
-            @ModelAttribute (SUCCESS_EMAIL)
-            String success,
+        @ModelAttribute(SUCCESS_EMAIL)
+        String success,
 
-            HttpServletRequest httpServletRequest,
-            HttpServletResponse httpServletResponse
+        HttpServletRequest httpServletRequest,
+        HttpServletResponse httpServletResponse
     ) throws IOException {
 
         //TODO(hth) strengthen the check here as this can be hacked to get a dummy confirmation page
@@ -176,10 +176,10 @@ public class ForgotController {
             return recoverConfirmPage;
         }
         LOG.warn(
-                "404 request access={} success={} header={}",
-                recoverConfirmPage,
-                success,
-                HttpRequestResponseParser.printHeader(httpServletRequest)
+            "404 request access={} success={} header={}",
+            recoverConfirmPage,
+            success,
+            HttpRequestResponseParser.printHeader(httpServletRequest)
         );
         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
         return null;
@@ -193,12 +193,12 @@ public class ForgotController {
      * @param forgotAuthenticateForm
      * @return
      */
-    @GetMapping (value = "authenticate")
+    @GetMapping(value = "authenticate")
     public String whenClickedOnEmailLink(
-            @RequestParam ("authenticationKey")
-            ScrubbedInput key,
+        @RequestParam("authenticationKey")
+        ScrubbedInput key,
 
-            ForgotAuthenticateForm forgotAuthenticateForm
+        ForgotAuthenticateForm forgotAuthenticateForm
     ) {
         LOG.info("Email link clicked on for password reset");
         ForgotRecoverEntity forgotRecover = accountService.findByAuthenticationKey(key.getText());
@@ -209,13 +209,13 @@ public class ForgotController {
         return authenticatePage;
     }
 
-    @PostMapping (value = "authenticate", params = {"update_password"})
+    @PostMapping(value = "authenticate", params = {"update_password"})
     public String updatePassword(
-            @ModelAttribute ("forgotAuthenticateForm")
-            ForgotAuthenticateForm forgotAuthenticateForm,
+        @ModelAttribute("forgotAuthenticateForm")
+        ForgotAuthenticateForm forgotAuthenticateForm,
 
-            BindingResult result,
-            ModelMap modelMap
+        BindingResult result,
+        ModelMap modelMap
     ) {
         forgotAuthenticateValidator.validate(forgotAuthenticateForm, result);
         if (result.hasErrors()) {
@@ -228,8 +228,8 @@ public class ForgotController {
             } else {
                 UserProfileEntity userProfile = userProfilePreferenceService.findByQueueUserId(forgotRecover.getQueueUserId());
                 UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                        HashText.computeSCrypt(forgotAuthenticateForm.getPassword()),
-                        HashText.computeBCrypt(RandomString.newInstance().nextString())
+                    HashText.computeSCrypt(forgotAuthenticateForm.getPassword()),
+                    HashText.computeBCrypt(RandomString.newInstance().nextString())
                 );
 
                 UserAuthenticationEntity userAuthenticationLoaded = accountService.findByQueueUserId(userProfile.getQueueUserId()).getUserAuthentication();
@@ -242,8 +242,7 @@ public class ForgotController {
                     accountService.invalidateAllEntries(forgotRecover.getQueueUserId());
                     modelMap.addAttribute(SUCCESS, true);
                 } catch (Exception e) {
-                    LOG.error("Error during updating of the old authentication key message={}",
-                            e.getLocalizedMessage(), e);
+                    LOG.error("Error during updating of the old authentication key message={}", e.getLocalizedMessage(), e);
                     modelMap.addAttribute(SUCCESS, false);
                 }
             }
