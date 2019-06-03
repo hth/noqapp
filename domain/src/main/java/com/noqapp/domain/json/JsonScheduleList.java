@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -33,6 +34,9 @@ public class JsonScheduleList extends AbstractDomain {
     @JsonProperty("scs")
     private List<JsonSchedule> jsonSchedules = new ArrayList<>();
 
+    @JsonProperty("hours")
+    private List<JsonHour> jsonHours = new LinkedList<>();
+
     public List<JsonSchedule> getJsonSchedules() {
         return jsonSchedules;
     }
@@ -44,6 +48,15 @@ public class JsonScheduleList extends AbstractDomain {
 
     public JsonScheduleList addJsonSchedule(JsonSchedule jsonSchedule) {
         this.jsonSchedules.add(jsonSchedule);
+        return this;
+    }
+
+    public List<JsonHour> getJsonHours() {
+        return jsonHours;
+    }
+
+    public JsonScheduleList setJsonHours(List<JsonHour> jsonHours) {
+        this.jsonHours = jsonHours;
         return this;
     }
 }

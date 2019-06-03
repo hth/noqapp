@@ -14,6 +14,7 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.json.JsonHour;
 import com.noqapp.domain.site.JsonBusiness;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ActionTypeEnum;
@@ -48,6 +49,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -357,6 +359,28 @@ public class BizService {
 
     public List<StoreHourEntity> findAllStoreHours(String bizStoreId) {
         return storeHourManager.findAll(bizStoreId);
+    }
+
+    public List<JsonHour> findAllStoreHoursAsJson(String bizStoreId) {
+        List<StoreHourEntity> storeHours = findAllStoreHours(bizStoreId);
+
+        List<JsonHour> jsonHours = new LinkedList<>();
+        for (StoreHourEntity storeHour : storeHours) {
+            JsonHour jsonHour = new JsonHour()
+                .setDayOfWeek(storeHour.getDayOfWeek())
+                .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
+                .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+                .setStartHour(storeHour.getStartHour())
+                .setAppointmentStartHour(storeHour.getAppointmentStartHour())
+                .setEndHour(storeHour.getEndHour())
+                .setAppointmentEndHour(storeHour.getAppointmentEndHour())
+                .setPreventJoining(storeHour.isPreventJoining())
+                .setDayClosed(storeHour.isDayClosed() || storeHour.isTempDayClosed())
+                .setDelayedInMinutes(storeHour.getDelayedInMinutes());
+            jsonHours.add(jsonHour);
+        }
+
+        return jsonHours;
     }
 
     public List<BizNameEntity> findByInviteeCode(String inviteCode) {

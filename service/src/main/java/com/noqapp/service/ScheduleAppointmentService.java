@@ -48,6 +48,8 @@ public class ScheduleAppointmentService {
     private UserProfileManager userProfileManager;
     private UserAccountManager userAccountManager;
 
+    private BizService bizService;
+
     @Autowired
     public ScheduleAppointmentService(
         @Value("${untilDaysInPast:60}")
@@ -60,7 +62,9 @@ public class ScheduleAppointmentService {
         BizStoreManager bizStoreManager,
         StoreHourManager storeHourManager,
         UserProfileManager userProfileManager,
-        UserAccountManager userAccountManager
+        UserAccountManager userAccountManager,
+
+        BizService bizService
     ) {
         this.untilDaysInPast = untilDaysInPast;
         this.untilDaysInFuture = untilDaysInFuture;
@@ -70,6 +74,8 @@ public class ScheduleAppointmentService {
         this.storeHourManager = storeHourManager;
         this.userProfileManager = userProfileManager;
         this.userAccountManager = userAccountManager;
+
+        this.bizService = bizService;
     }
 
     @Mobile
@@ -157,7 +163,6 @@ public class ScheduleAppointmentService {
     @Mobile
     public JsonScheduleList numberOfAppointmentsForMonth(String codeQR, String month) {
         LOG.info("Appointments for {} {}", month, codeQR);
-        JsonScheduleList jsonScheduleList = new JsonScheduleList();
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         Date date = DateUtil.convertToDate(month, bizStore.getTimeZone());
         Date startOfMonth = DateUtil.startOfMonth(date, bizStore.getTimeZone());
@@ -168,6 +173,8 @@ public class ScheduleAppointmentService {
             codeQR,
             Formatter.toDefaultDateFormatAsString(startOfMonth),
             Formatter.toDefaultDateFormatAsString(endOfMonth));
+
+        JsonScheduleList jsonScheduleList = new JsonScheduleList();
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             jsonScheduleList.addJsonSchedule(
                 new JsonSchedule()
@@ -176,6 +183,7 @@ public class ScheduleAppointmentService {
             );
         }
 
+        jsonScheduleList.setJsonHours(bizService.findAllStoreHoursAsJson(bizStore.getId()));
         return jsonScheduleList;
     }
 
@@ -254,7 +262,10 @@ public class ScheduleAppointmentService {
         return qids;
     }
 
-    private void populateJsonScheduleList(JsonScheduleList jsonScheduleList, String queueUserId, List<ScheduleAppointmentEntity> scheduleAppointments) {
+    private void populateJsonScheduleList(
+        JsonScheduleList jsonScheduleList,
+        String queueUserId, List<ScheduleAppointmentEntity> scheduleAppointments
+    ) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
@@ -264,7 +275,11 @@ public class ScheduleAppointmentService {
             StoreHourEntity storeHour = storeHourManager.findOne(
                 bizStore.getId(),
                 DateUtil.getDayOfWeekFromDate(scheduleAppointment.getScheduleDate()));
-            jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour)));
+
+            jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(
+                scheduleAppointment,
+                jsonProfile,
+                JsonQueueDisplay.populate(bizStore, storeHour)));
         }
     }
 

@@ -37,10 +37,10 @@ import java.util.List;
  * Date: 6/14/17 6:29 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Component
 public class GenerateStoreQueueHTML {
@@ -59,19 +59,19 @@ public class GenerateStoreQueueHTML {
 
     @Autowired
     public GenerateStoreQueueHTML(
-            @Value("${parentHost}")
-            String parentHost,
+        @Value("${parentHost}")
+        String parentHost,
 
-            @Value("${GenerateStoreQueueHTML.staticHTMLSwitch:ON}")
-            String staticHTMLSwitch,
+        @Value("${GenerateStoreQueueHTML.staticHTMLSwitch:ON}")
+        String staticHTMLSwitch,
 
-            @Value("${GenerateStoreQueueHTML.store.base.directory:/tmp/b/s}")
-            String storeBaseDirectory,
+        @Value("${GenerateStoreQueueHTML.store.base.directory:/tmp/b/s}")
+        String storeBaseDirectory,
 
-            BizStoreManager bizStoreManager,
-            ShowHTMLService showHTMLService,
-            ShowProfessionalProfileHTMLService showProfessionalProfileHTMLService,
-            StatsCronService statsCronService
+        BizStoreManager bizStoreManager,
+        ShowHTMLService showHTMLService,
+        ShowProfessionalProfileHTMLService showProfessionalProfileHTMLService,
+        StatsCronService statsCronService
     ) {
         this.parentHost = parentHost;
         this.staticHTMLSwitch = staticHTMLSwitch;
@@ -86,9 +86,9 @@ public class GenerateStoreQueueHTML {
     @Scheduled(cron = "${loader.GenerateStoreQueueHTML.generateHTMLPages}")
     public void generateHTMLPages() {
         statsCron = new StatsCronEntity(
-                GenerateStoreQueueHTML.class.getName(),
-                "Generate_Store_Queue_HTML",
-                staticHTMLSwitch);
+            GenerateStoreQueueHTML.class.getName(),
+            "Generate_Store_Queue_HTML",
+            staticHTMLSwitch);
 
         int found = 0, failure = 0, generated = 0, skipped = 0;
         if ("OFF".equalsIgnoreCase(staticHTMLSwitch)) {
@@ -121,16 +121,16 @@ public class GenerateStoreQueueHTML {
                             Files.createFile(pathToFile);
 
                             FileUtils.writeStringToFile(
-                                    pathToFile.toFile(),
-                                    htmlData,
-                                    Constants.CHAR_SET_UTF8);
+                                pathToFile.toFile(),
+                                htmlData,
+                                Constants.CHAR_SET_UTF8);
 
                             String location = filePath.replace("/tmp", parentHost);
                             FileUtils.writeStringToFile(
-                                    pathToTxtFile.toFile(),
-                                    location + System.lineSeparator(),
-                                    Constants.CHAR_SET_UTF8,
-                                    true);
+                                pathToTxtFile.toFile(),
+                                location + System.lineSeparator(),
+                                Constants.CHAR_SET_UTF8,
+                                true);
 
                             populateSiteMapURL(siteUrlMap, location, modifiedDate);
                             generated++;
@@ -159,9 +159,9 @@ public class GenerateStoreQueueHTML {
 
             /* Create site index file upon exit. */
             createSiteMapIndexFile(
-                    /* Since store file is in two levels down at /b/s hence getParent() & getParent(). */
-                    Paths.get(Paths.get(storeBaseDirectory).getParent().getParent() + Constants.FILE_SEPARATOR + "q-s-sitemap.xml"),
-                    siteMapIndex);
+                /* Since store file is in two levels down at /b/s hence getParent() & getParent(). */
+                Paths.get(Paths.get(storeBaseDirectory).getParent().getParent() + Constants.FILE_SEPARATOR + "q-s-sitemap.xml"),
+                siteMapIndex);
 
         } catch (Exception e) {
             LOG.error("Failed HTML generation, reason={}", e.getLocalizedMessage(), e);
@@ -185,12 +185,12 @@ public class GenerateStoreQueueHTML {
      */
     private void populateSiteMapURL(SiteUrlMap siteUrlMap, String location, String modifiedDate) {
         siteUrlMap.addSiteUrl(
-                new SiteUrl()
-                        .setLocation(location)
-                        .setLastModified(modifiedDate)
-                        /* other changeFrequency options are hourly or always means (changes each time the page is accessed). */
-                        .setChangeFrequency("daily")
-                        .setPriority("0.8")
+            new SiteUrl()
+                .setLocation(location)
+                .setLastModified(modifiedDate)
+                /* other changeFrequency options are hourly or always means (changes each time the page is accessed). */
+                .setChangeFrequency("daily")
+                .setPriority("0.8")
         );
     }
 
@@ -199,9 +199,9 @@ public class GenerateStoreQueueHTML {
      */
     private void populateSiteMapIndex(String modifiedDate, SiteMapIndex siteMapIndex, Path xmlFilePath) {
         siteMapIndex.addSiteMaps(new SiteMap()
-                /* Since store file is in two levels down at /b/s hence getParent() & getParent(). */
-                .setLocation(xmlFilePath.toString().replace(Paths.get(storeBaseDirectory).getParent().getParent().toString(), parentHost))
-                .setLastModified(modifiedDate));
+            /* Since store file is in two levels down at /b/s hence getParent() & getParent(). */
+            .setLocation(xmlFilePath.toString().replace(Paths.get(storeBaseDirectory).getParent().getParent().toString(), parentHost))
+            .setLastModified(modifiedDate));
     }
 
     /**

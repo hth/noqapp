@@ -51,18 +51,18 @@ import javax.servlet.http.HttpServletRequest;
  * User: hitender
  * Date: 11/19/16 7:08 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/open/login")
+@RequestMapping(value = "/open/login")
 public class LoginController {
     private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
-    
-    @Value ("${loginPage:login}")
+
+    @Value("${loginPage:login}")
     private String loginPage;
 
     private final CachedUserAgentStringParser parser;
@@ -75,11 +75,11 @@ public class LoginController {
 
     @Autowired
     public LoginController(
-            LoginService loginService,
-            OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler,
-            AccountService accountService,
-            CustomUserDetailsService customUserDetailsService,
-            DatabaseReader databaseReader
+        LoginService loginService,
+        OnLoginAuthenticationSuccessHandler onLoginAuthenticationSuccessHandler,
+        AccountService accountService,
+        CustomUserDetailsService customUserDetailsService,
+        DatabaseReader databaseReader
     ) {
         this.parser = CachedUserAgentStringParser.getInstance();
 
@@ -109,19 +109,19 @@ public class LoginController {
      * @return
      * @see <a href="http://axelfontaine.com/blog/http-head.html">http://axelfontaine.com/blog/http-head.html</a>
      */
-    @RequestMapping (method = {RequestMethod.GET, RequestMethod.HEAD})
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.HEAD})
     public String loadForm(
-            @RequestHeader ("User-Agent")
-            String userAgent,
+        @RequestHeader("User-Agent")
+        String userAgent,
 
-            @ModelAttribute ("userLoginForm")
-            UserLoginForm userLoginForm,
+        @ModelAttribute("userLoginForm")
+        UserLoginForm userLoginForm,
 
-            @ModelAttribute ("userLoginPhoneForm")
-            UserLoginPhoneForm userLoginPhoneForm,
+        @ModelAttribute("userLoginPhoneForm")
+        UserLoginPhoneForm userLoginPhoneForm,
 
-            Locale locale,
-            HttpServletRequest request
+        Locale locale,
+        HttpServletRequest request
     ) {
         LOG.info("Locale Type={}", locale);
 
@@ -193,15 +193,15 @@ public class LoginController {
         customUserDetailsService.doesUserHasInActiveReason(userAccount);
         Collection<? extends GrantedAuthority> authorities = customUserDetailsService.getAuthorities(userAccount.getRoles());
         UserDetails userDetails = new QueueUser(
-                userProfile.getEmail(),
-                "",
-                authorities,
-                userProfile.getQueueUserId(),
-                userProfile.getLevel(),
-                userAccount.isActive(),
-                userAccount.isAccountValidated(),
-                userProfile.getCountryShortName(),
-                userAccount.getDisplayName()
+            userProfile.getEmail(),
+            "",
+            authorities,
+            userProfile.getQueueUserId(),
+            userProfile.getLevel(),
+            userAccount.isActive(),
+            userAccount.isAccountValidated(),
+            userProfile.getCountryShortName(),
+            userAccount.getDisplayName()
         );
 
         /*

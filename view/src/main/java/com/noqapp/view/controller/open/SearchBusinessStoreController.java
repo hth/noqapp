@@ -27,11 +27,11 @@ import javax.servlet.http.HttpServletRequest;
  * hitender
  * 2/19/18 11:04 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
 @RequestMapping(value = "/open/search")
@@ -46,12 +46,12 @@ public class SearchBusinessStoreController {
 
     @Autowired
     public SearchBusinessStoreController(
-            @Value("${nextPage:/search}")
-            String nextPage,
+        @Value("${nextPage:/search}")
+        String nextPage,
 
-            SearchBizStoreElasticService searchBizStoreElasticService,
-            GeoIPLocationService geoIPLocationService,
-            SearchValidator searchValidator
+        SearchBizStoreElasticService searchBizStoreElasticService,
+        GeoIPLocationService geoIPLocationService,
+        SearchValidator searchValidator
     ) {
         this.nextPage = nextPage;
 
@@ -62,11 +62,11 @@ public class SearchBusinessStoreController {
 
     @GetMapping
     public String search(
-            @ModelAttribute("searchForm")
-            SearchForm searchForm,
+        @ModelAttribute("searchForm")
+        SearchForm searchForm,
 
-            Model model,
-            HttpServletRequest request
+        Model model,
+        HttpServletRequest request
     ) {
         String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
         searchForm.setGeoIP(geoIPLocationService.getLocation(ipAddress));
@@ -79,10 +79,10 @@ public class SearchBusinessStoreController {
             if (model.asMap().containsKey("search")) {
                 searchForm.setSearch(((SearchForm) model.asMap().get("search")).getSearch());
                 model.addAttribute(
-                        "searchResult",
-                        searchBizStoreElasticService.createBizStoreSearchDSLQuery(
-                                searchForm.getSearch().getText(),
-                                searchForm.getGeoIP().getGeoHash()));
+                    "searchResult",
+                    searchBizStoreElasticService.createBizStoreSearchDSLQuery(
+                        searchForm.getSearch().getText(),
+                        searchForm.getGeoIP().getGeoHash()));
             }
         }
 
@@ -92,11 +92,11 @@ public class SearchBusinessStoreController {
 
     @PostMapping(produces = "application/json")
     public String search(
-            @ModelAttribute("searchForm")
-            SearchForm searchForm,
+        @ModelAttribute("searchForm")
+        SearchForm searchForm,
 
-            BindingResult result,
-            RedirectAttributes redirectAttrs
+        BindingResult result,
+        RedirectAttributes redirectAttrs
     ) {
         searchValidator.validate(searchForm, result);
         if (result.hasErrors()) {
