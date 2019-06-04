@@ -166,7 +166,13 @@ public class RegisterUser implements Serializable {
 
     @Transient
     public String getPhoneNotFormatted() {
-        return Formatter.phoneCleanup(phone);
+        String phoneRaw = null;
+        int countryCode = 0;
+        if (StringUtils.isNotBlank(countryShortName)) {
+            countryCode = Formatter.findCountryCodeFromCountryShortCode(countryShortName);
+            phoneRaw = phone.replaceFirst(String.valueOf(countryCode), "");
+        }
+        return Formatter.phoneCleanup(StringUtils.isBlank(phoneRaw) ? phone : phoneRaw);
     }
 
     /* Return phone as is. */
