@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.CustomTransactional;
 import com.noqapp.domain.mapper.QueueRowMapper;
+import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -133,10 +134,10 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "GROUP BY QR) ORDER BY C DESC";
 
     private static final String checkIfClientVisitedStore =
-        "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? LIMIT 1)";
+        "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? AND QS = ? LIMIT 1)";
 
     private static final String clientVisitedStoreDate =
-        "SELECT C FROM QUEUE WHERE QR = ? AND QID = ? ORDER BY C DESC LIMIT 1";
+        "SELECT C FROM QUEUE WHERE QR = ? AND QID = ? AND QS = ? ORDER BY C DESC LIMIT 1";
 
     private static final String checkIfClientVisitedBusiness =
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE BN = ? AND QID = ? LIMIT 1)";
@@ -300,16 +301,16 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     }
 
     @Override
-    public boolean hasClientVisitedThisStore(String codeQR, String qid) {
+    public boolean hasClientVisitedThisStoreAndServiced(String codeQR, String qid) {
         LOG.info("Fetch history by codeQR={} qid={}", codeQR, qid);
-        return jdbcTemplate.queryForObject(checkIfClientVisitedStore, new Object[]{codeQR, qid}, Boolean.class);
+        return jdbcTemplate.queryForObject(checkIfClientVisitedStore, new Object[]{codeQR, qid, QueueUserStateEnum.S.getName()}, Boolean.class);
     }
 
     @Override
-    public Date clientVisitedStoreDate(String codeQR, String qid) {
+    public Date clientVisitedStoreAndServicedDate(String codeQR, String qid) {
         LOG.info("Fetch history by codeQR={} qid={}", codeQR, qid);
         try {
-            return jdbcTemplate.queryForObject(clientVisitedStoreDate, new Object[]{codeQR, qid}, Date.class);
+            return jdbcTemplate.queryForObject(clientVisitedStoreDate, new Object[]{codeQR, qid, QueueUserStateEnum.S.getName()}, Date.class);
         } catch (EmptyResultDataAccessException e) {
             //TODO fix this error or query
             return null;
