@@ -466,10 +466,10 @@ public class TokenQueueService {
                 queue.setCustomerPhone(userProfile.getGuardianPhone());
             }
 
-            if (queueManagerJDBC.hasClientVisitedThisStore(codeQR, qid)) {
+            if (queueManagerJDBC.hasClientVisitedThisStoreAndServiced(codeQR, qid)) {
                 queue.setClientVisitedThisStore(true);
                 //Fails with Failed getting token reason=Incorrect result size: expected 1, actual 0 when users has not visited the store
-                queue.setClientVisitedThisStoreDate(queueManagerJDBC.clientVisitedStoreDate(codeQR, qid));
+                queue.setClientVisitedThisStoreDate(queueManagerJDBC.clientVisitedStoreAndServicedDate(codeQR, qid));
             }
 
             if (null != userProfile.getQidOfDependents() && !userProfile.getQidOfDependents().isEmpty()) {

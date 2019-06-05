@@ -47,10 +47,10 @@ public interface QueueManagerJDBC {
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review, SentimentTypeEnum sentimentType);
 
     @Mobile
-    boolean hasClientVisitedThisStore(String codeQR, String qid);
+    boolean hasClientVisitedThisStoreAndServiced(String codeQR, String qid);
 
     @Mobile
-    Date clientVisitedStoreDate(String codeQR, String qid);
+    Date clientVisitedStoreAndServicedDate(String codeQR, String qid);
 
     @Mobile
     boolean hasClientVisitedThisBusiness(String bizNameId, String qid);
