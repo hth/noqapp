@@ -114,14 +114,25 @@ public class ScheduleAppointmentService {
             .setGuardianQid(guardianQid)
             .setAppointmentStatus(AppointmentStatusEnum.U)
             .setChiefComplain(jsonSchedule.getChiefComplain());
-
-        scheduleAppointmentManager.save(scheduleAppointment);
+        save(scheduleAppointment);
 
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour));
+    }
+
+    public JsonSchedule populateJsonSchedule(ScheduleAppointmentEntity scheduleAppointment) {
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
+        UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+
+        return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile);
+    }
+
+    public void save(ScheduleAppointmentEntity scheduleAppointment) {
+        scheduleAppointmentManager.save(scheduleAppointment);
     }
 
     @Mobile
@@ -207,7 +218,6 @@ public class ScheduleAppointmentService {
 
     @Mobile
     public boolean doesAppointmentExists(String qid, String codeQR, String scheduleDate) {
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         return scheduleAppointmentManager.doesAppointmentExists(qid, codeQR, scheduleDate);
     }
 
