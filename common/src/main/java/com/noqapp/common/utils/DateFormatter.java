@@ -31,6 +31,6 @@ public class DateFormatter {
     }
 
     public static LocalTime getLocalTime(int hourAndMinute) {
-        return LocalTime.parse(String.valueOf(hourAndMinute), java.time.format.DateTimeFormatter.ofPattern("HHmm"));
+        return LocalTime.parse(String.format(Locale.US, "%04d", hourAndMinute), java.time.format.DateTimeFormatter.ofPattern("HHmm"));
     }
 }
