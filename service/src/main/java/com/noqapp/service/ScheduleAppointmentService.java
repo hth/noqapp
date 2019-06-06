@@ -1,6 +1,5 @@
 package com.noqapp.service;
 
-import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
@@ -28,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -81,7 +79,7 @@ public class ScheduleAppointmentService {
     }
 
     @Mobile
-    public JsonScheduleList bookAppointment(String guardianQid, JsonSchedule jsonSchedule) {
+    public JsonSchedule bookAppointment(String guardianQid, JsonSchedule jsonSchedule) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(jsonSchedule.getCodeQR());
         if (!bizStore.isAppointmentEnable()) {
             LOG.warn("Appointment is not enabled {} for {}", jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
@@ -107,35 +105,23 @@ public class ScheduleAppointmentService {
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " closes at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getEndHour()));
         }
 
-        int appointmentDuration = bizStore.getAppointmentDuration();
-        long totalBookDuration = ChronoUnit.MINUTES.between(
-            DateFormatter.getLocalTime(jsonSchedule.getStartTime()),
-            DateFormatter.getLocalTime(jsonSchedule.getEndTime()));
+        ScheduleAppointmentEntity scheduleAppointment = new ScheduleAppointmentEntity()
+            .setCodeQR(jsonSchedule.getCodeQR())
+            .setScheduleDate(jsonSchedule.getScheduleDate())
+            .setStartTime(jsonSchedule.getStartTime())
+            .setEndTime(jsonSchedule.getEndTime())
+            .setQueueUserId(jsonSchedule.getQueueUserId())
+            .setGuardianQid(guardianQid)
+            .setAppointmentStatus(AppointmentStatusEnum.U)
+            .setChiefComplain(jsonSchedule.getChiefComplain());
 
-        long loop = totalBookDuration/appointmentDuration;
+        scheduleAppointmentManager.save(scheduleAppointment);
 
-        JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        for (int i = 0; i < loop; i++) {
-            ScheduleAppointmentEntity scheduleAppointment = new ScheduleAppointmentEntity()
-                .setCodeQR(jsonSchedule.getCodeQR())
-                .setScheduleDate(jsonSchedule.getScheduleDate())
-                .setStartTime(jsonSchedule.getStartTime())
-                .setEndTime(jsonSchedule.getEndTime())
-                .setQueueUserId(jsonSchedule.getQueueUserId())
-                .setGuardianQid(guardianQid)
-                .setAppointmentStatus(AppointmentStatusEnum.U)
-                .setChiefComplain(jsonSchedule.getChiefComplain());
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
+        UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
-            scheduleAppointmentManager.save(scheduleAppointment);
-
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-            UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-            JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
-
-            jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour)));
-        }
-
-        return jsonScheduleList;
+        return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour));
     }
 
     @Mobile
