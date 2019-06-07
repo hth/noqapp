@@ -6,6 +6,7 @@ package com.noqapp.domain.types;
  */
 public enum MessageOriginEnum {
     Q,  //Queued                    (In App DB)
+    QA, //Queue Appointment         (In App DB)
     QR, //Queue Review              (In App DB)
     O,  //Order                     (In App DB)
     OR, //Order Review              (In App DB)
