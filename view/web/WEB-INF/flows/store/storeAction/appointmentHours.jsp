@@ -106,10 +106,20 @@
                                                     <td class="lable-td">
                                                         <form:label path="businessHours[${status.index}].appointmentStartHour" cssErrorClass="lb_error">Appointment Start Time</form:label>
                                                     </td>
-                                                    <td>
-                                                        <form:input path="businessHours[${status.index}].appointmentStartHour" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
-                                                        <span>(As 1000 for 10:00 AM)</span>
-                                                    </td>
+                                                    <c:choose>
+                                                        <c:when test="${businessHour.dayClosed}">
+                                                        <td>
+                                                            <form:input path="businessHours[${status.index}].appointmentStartHour" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field" disabled="true"/>
+                                                            <span>(As 1000 for 10:00 AM)</span>
+                                                        </td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                        <td>
+                                                            <form:input path="businessHours[${status.index}].appointmentStartHour" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                            <span>(As 1000 for 10:00 AM)</span>
+                                                        </td>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </tr>
                                                 <tr>
                                                     <td class="lable-td">
@@ -124,9 +134,27 @@
                                                     <td class="lable-td">
                                                         <form:label path="businessHours[${status.index}].appointmentEndHour" cssErrorClass="lb_error">Appointment End Time</form:label>
                                                     </td>
+                                                    <c:choose>
+                                                        <c:when test="${businessHour.dayClosed}">
+                                                        <td>
+                                                            <form:input path="businessHours[${status.index}].appointmentEndHour" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field" disabled="true"/>
+                                                            <span>(As 1000 for 10:00 AM)</span>
+                                                        </td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                        <td>
+                                                            <form:input path="businessHours[${status.index}].appointmentEndHour" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                            <span>(As 1000 for 10:00 AM)</span>
+                                                        </td>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </tr>
+                                                <tr>
+                                                    <td class="lable-td pT0">
+                                                        <form:label path="businessHours[${status.index}].dayClosed" cssErrorClass="lb_error">Store Closed</form:label>
+                                                    </td>
                                                     <td>
-                                                        <form:input path="businessHours[${status.index}].appointmentEndHour" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
-                                                        <span>(As 1000 for 10:00 AM)</span>
+                                                        <form:checkbox path="businessHours[${status.index}].dayClosed" cssErrorClass="error-field"/>
                                                     </td>
                                                 </tr>
                                             </table>
