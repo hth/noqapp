@@ -1,10 +1,15 @@
 package com.noqapp.service;
 
+import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -12,13 +17,24 @@ import com.noqapp.domain.json.JsonProfile;
 import com.noqapp.domain.json.JsonQueueDisplay;
 import com.noqapp.domain.json.JsonSchedule;
 import com.noqapp.domain.json.JsonScheduleList;
+import com.noqapp.domain.json.fcm.JsonMessage;
+import com.noqapp.domain.json.fcm.data.JsonData;
+import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.types.AppointmentStatusEnum;
+import com.noqapp.domain.types.DeviceTypeEnum;
+import com.noqapp.domain.types.FirebaseMessageTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
 import com.noqapp.repository.StoreHourManager;
+import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.exceptions.AppointmentBookingException;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +46,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 /**
  * User: hitender
@@ -47,8 +64,13 @@ public class ScheduleAppointmentService {
     private StoreHourManager storeHourManager;
     private UserProfileManager userProfileManager;
     private UserAccountManager userAccountManager;
+    private RegisteredDeviceManager registeredDeviceManager;
+    private TokenQueueManager tokenQueueManager;
 
     private BizService bizService;
+    private FirebaseMessageService firebaseMessageService;
+
+    private ExecutorService executorService;
 
     @Autowired
     public ScheduleAppointmentService(
@@ -63,8 +85,11 @@ public class ScheduleAppointmentService {
         StoreHourManager storeHourManager,
         UserProfileManager userProfileManager,
         UserAccountManager userAccountManager,
+        RegisteredDeviceManager registeredDeviceManager,
+        TokenQueueManager tokenQueueManager,
 
-        BizService bizService
+        BizService bizService,
+        FirebaseMessageService firebaseMessageService
     ) {
         this.untilDaysInPast = untilDaysInPast;
         this.untilDaysInFuture = untilDaysInFuture;
@@ -74,8 +99,13 @@ public class ScheduleAppointmentService {
         this.storeHourManager = storeHourManager;
         this.userProfileManager = userProfileManager;
         this.userAccountManager = userAccountManager;
+        this.registeredDeviceManager = registeredDeviceManager;
+        this.tokenQueueManager = tokenQueueManager;
 
         this.bizService = bizService;
+        this.firebaseMessageService = firebaseMessageService;
+
+        this.executorService = newCachedThreadPool();
     }
 
     @Mobile
@@ -120,9 +150,23 @@ public class ScheduleAppointmentService {
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
+        sendMessageToTopic(
+            jsonSchedule.getCodeQR(),
+            "Appointment requested for " + jsonSchedule.getScheduleDate() + " from " + jsonSchedule.getStartTime());
+        /*
+         * Do not inform anyone other than the person with the
+         * token who is being served. This is personal message.
+         * of being served out of order/sequence.
+         */
+        sendMessageToSelectedTokenUser(
+            jsonSchedule.getCodeQR(),
+            jsonProfile.getQueueUserId(),
+            "Your appointment has been booked. Awaiting confirmation from " + bizStore.getDisplayName());
+
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour));
     }
 
+    @Mobile
     public JsonSchedule populateJsonSchedule(ScheduleAppointmentEntity scheduleAppointment) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
@@ -300,5 +344,86 @@ public class ScheduleAppointmentService {
     @Mobile
     public ScheduleAppointmentEntity findAppointment(String id, String qid, String codeQR) {
         return scheduleAppointmentManager.findAppointment(id, qid, codeQR);
+    }
+
+    /** Send FCM message to Topic asynchronously. */
+    private void sendMessageToTopic(String codeQR, String message) {
+        executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, message));
+    }
+
+    /** Send FCM message to person with specific token number asynchronously. */
+    private void sendMessageToSelectedTokenUser(String codeQR, String qid, String message) {
+        executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, qid, message));
+    }
+
+    /** Formulates and send messages to FCM. */
+    void invokeThreadSendMessageToTopic(String codeQR, String message) {
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+        LOG.debug("Sending message codeQR={} tokenQueue={} firebaseMessageType={}", codeQR, tokenQueue, FirebaseMessageTypeEnum.M);
+        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+            LOG.debug("Appointment received being sent to {}", tokenQueue.getCorrectTopic(QueueStatusEnum.D) + UNDER_SCORE + deviceType.name());
+            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(QueueStatusEnum.D) + UNDER_SCORE + deviceType.name());
+            JsonData jsonData = new JsonTopicData(MessageOriginEnum.QA, tokenQueue.getFirebaseMessageType()).getJsonTopicAppointmentData()
+                .setMessage(message);
+
+            /*
+             * This message has to go as the merchant with the opened queue
+             * will not get any update if some one joins. FCM makes sure the message is dispersed.
+             */
+            if (DeviceTypeEnum.I == deviceType) {
+                jsonMessage.getNotification()
+                    .setBody(message)
+                    .setTitle("Appointment Received");
+            } else {
+                jsonMessage.setNotification(null);
+                jsonData.setBody(message)
+                    .setTitle("Appointment Received");
+            }
+
+            jsonMessage.setData(jsonData);
+            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+            if (!fcmMessageBroadcast) {
+                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            } else {
+                LOG.debug("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
+            }
+        }
+    }
+
+    /** When client is booking appointment send message and mark it as personal. */
+    private void invokeThreadSendMessageToSelectedTokenUser(String codeQR, String qid, String message) {
+        LOG.debug("Sending personal message codeQR={} qid={} message={}", codeQR, qid, message);
+
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+        if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
+            userProfile = userProfileManager.findOneByPhone(userProfile.getGuardianPhone());
+        }
+
+        RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(userProfile.getQueueUserId());
+
+        JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
+        JsonData jsonData = new JsonTopicData(MessageOriginEnum.QA, FirebaseMessageTypeEnum.P).getJsonTopicAppointmentData()
+            .setMessage(message);
+
+        if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
+            jsonMessage.getNotification()
+                .setBody(message)
+                .setTitle("Appointment Booked");
+        } else {
+            jsonMessage.setNotification(null);
+            jsonData
+                .setBody(message)
+                .setTitle("Appointment Booked");
+        }
+
+        jsonMessage.setData(jsonData);
+
+        LOG.debug("Personal FCM message to be sent={}", jsonMessage);
+        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+        if (!fcmMessageBroadcast) {
+            LOG.warn("Personal broadcast failed message={}", jsonMessage.asJson());
+        } else {
+            LOG.debug("Sent Personal message={}", jsonMessage.asJson());
+        }
     }
 }

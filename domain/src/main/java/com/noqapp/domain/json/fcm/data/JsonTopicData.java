@@ -35,6 +35,7 @@ public class JsonTopicData {
 
     private JsonTopicQueueData jsonTopicQueueData;
     private JsonTopicOrderData jsonTopicOrderData;
+    private JsonTopicAppointmentData jsonTopicAppointmentData;
     private JsonAlertData jsonAlertData;
     private JsonMedicalFollowUp jsonMedicalFollowUp;
 
@@ -42,6 +43,9 @@ public class JsonTopicData {
         switch (messageOrigin) {
             case Q:
                 jsonTopicQueueData = new JsonTopicQueueData(firebaseMessageType, messageOrigin);
+                break;
+            case QA:
+                jsonTopicAppointmentData = new JsonTopicAppointmentData(firebaseMessageType, messageOrigin);
                 break;
             case O:
                 jsonTopicOrderData = new JsonTopicOrderData(firebaseMessageType, messageOrigin);
@@ -76,6 +80,15 @@ public class JsonTopicData {
 
     public JsonTopicData setJsonTopicOrderData(JsonTopicOrderData jsonTopicOrderData) {
         this.jsonTopicOrderData = jsonTopicOrderData;
+        return this;
+    }
+
+    public JsonTopicAppointmentData getJsonTopicAppointmentData() {
+        return jsonTopicAppointmentData;
+    }
+
+    public JsonTopicData setJsonTopicAppointmentData(JsonTopicAppointmentData jsonTopicAppointmentData) {
+        this.jsonTopicAppointmentData = jsonTopicAppointmentData;
         return this;
     }
 
