@@ -123,6 +123,7 @@ public class ScheduleAppointmentService {
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour));
     }
 
+    @Mobile
     public JsonSchedule populateJsonSchedule(ScheduleAppointmentEntity scheduleAppointment) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
