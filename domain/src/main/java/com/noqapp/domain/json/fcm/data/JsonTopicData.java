@@ -39,6 +39,12 @@ public class JsonTopicData {
     private JsonAlertData jsonAlertData;
     private JsonMedicalFollowUp jsonMedicalFollowUp;
 
+    /**
+     * When FirebaseMessageTypeEnum.P is Personal for Merchant, it saves in DB otherwise it processes the message it receives.
+     *
+     * @param messageOrigin
+     * @param firebaseMessageType
+     */
     public JsonTopicData(MessageOriginEnum messageOrigin, FirebaseMessageTypeEnum firebaseMessageType) {
         switch (messageOrigin) {
             case Q:

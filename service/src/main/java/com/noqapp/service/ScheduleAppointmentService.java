@@ -363,7 +363,7 @@ public class ScheduleAppointmentService {
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Appointment received being sent to {}", tokenQueue.getCorrectTopic(QueueStatusEnum.D) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(QueueStatusEnum.D) + UNDER_SCORE + deviceType.name());
-            JsonData jsonData = new JsonTopicData(MessageOriginEnum.QA, tokenQueue.getFirebaseMessageType()).getJsonTopicAppointmentData()
+            JsonData jsonData = new JsonTopicData(MessageOriginEnum.QA, FirebaseMessageTypeEnum.P).getJsonTopicAppointmentData()
                 .setMessage(message);
 
             /*
