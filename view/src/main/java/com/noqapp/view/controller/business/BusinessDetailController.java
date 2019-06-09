@@ -66,13 +66,13 @@ public class BusinessDetailController {
 
     @Autowired
     public BusinessDetailController(
-            @Value ("${storeDetail:/business/storeDetail}")
-            String storeDetail,
+        @Value ("${storeDetail:/business/storeDetail}")
+        String storeDetail,
 
-            BizService bizService,
-            CodeQRGeneratorService codeQRGeneratorService,
-            PdfGenerateService pdfGenerateService,
-            BusinessUserService businessUserService
+        BizService bizService,
+        CodeQRGeneratorService codeQRGeneratorService,
+        PdfGenerateService pdfGenerateService,
+        BusinessUserService businessUserService
     ) {
         this.storeDetail = storeDetail;
 
@@ -87,13 +87,13 @@ public class BusinessDetailController {
      */
     @GetMapping(value = "/store/{storeId}")
     public String storeLanding(
-            @PathVariable("storeId")
-            ScrubbedInput storeId,
+        @PathVariable("storeId")
+        ScrubbedInput storeId,
 
-            @ModelAttribute ("storeLandingForm")
-            StoreLandingForm storeLandingForm,
+        @ModelAttribute ("storeLandingForm")
+        StoreLandingForm storeLandingForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -109,12 +109,12 @@ public class BusinessDetailController {
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
 
         storeLandingForm
-                .setBusinessName(bizStore.getBizName().getBusinessName())
-                .setAddress(bizStore.getAddressWrappedFunky())
-                .setPhone(bizStore.getPhoneFormatted())
-                .setDisplayName(bizStore.getDisplayName())
-                .setCategoryName(CommonHelper.findCategoryName(bizStore))
-                .setStoreHours(storeHours);
+            .setBusinessName(bizStore.getBizName().getBusinessName())
+            .setAddress(bizStore.getAddressWrappedFunky())
+            .setPhone(bizStore.getPhoneFormatted())
+            .setDisplayName(bizStore.getDisplayName())
+            .setCategoryName(CommonHelper.findCategoryName(bizStore))
+            .setStoreHours(storeHours);
 
         try {
             storeLandingForm.setQrFileName(codeQRGeneratorService.createQRImage(bizStore.getCodeQRInALink()));
@@ -130,13 +130,13 @@ public class BusinessDetailController {
      */
     @GetMapping(value = "/business/{codeQR}")
     public void businessLanding(
-            @PathVariable("codeQR")
-            ScrubbedInput codeQR,
+        @PathVariable("codeQR")
+        ScrubbedInput codeQR,
 
-            @ModelAttribute ("storeLandingForm")
-            StoreLandingForm storeLandingForm,
+        @ModelAttribute ("storeLandingForm")
+        StoreLandingForm storeLandingForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -153,8 +153,8 @@ public class BusinessDetailController {
             String fileName = codeQRGeneratorService.createQRImage(bizName.getCodeQRInALink());
             File codeQRFile = FileUtil.getFileFromTmpDir(fileName + "." + FileExtensionTypeEnum.PNG.name().toLowerCase());
             XmlBusinessCodeQR xmlBusinessCodeQR = new XmlBusinessCodeQR()
-                    .setBusinessName(bizName.getBusinessName())
-                    .setImageLocationCodeQR(codeQRFile.toURI());
+                .setBusinessName(bizName.getBusinessName())
+                .setImageLocationCodeQR(codeQRFile.toURI());
 
             File file = pdfGenerateService.createPDF(xmlBusinessCodeQR.asXML(), bizName.getBusinessName(), PdfGenerateService.PDF_FOR.BIZ);
             WebUtil.setContentType(file.getName(), response);

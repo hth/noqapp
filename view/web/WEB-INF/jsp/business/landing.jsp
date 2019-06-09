@@ -38,6 +38,7 @@
                         <a href="${pageContext.request.contextPath}/business/dataVisibility/landing.htm">Data Visibility</a>
                         <a href="${pageContext.request.contextPath}/business/paymentConfiguration/landing.htm">Payment Permission</a>
                         <a href="${pageContext.request.contextPath}/business/advertisement/landing.htm">Advertisement</a>
+                        <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
