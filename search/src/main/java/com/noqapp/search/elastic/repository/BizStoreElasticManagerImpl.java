@@ -258,7 +258,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         scrollRequest.scroll(TimeValue.timeValueSeconds(10L));
 
         try {
-            SearchResponse searchResponse = restHighLevelClient.searchScroll(scrollRequest);
+            SearchResponse searchResponse = restHighLevelClient.searchScroll(scrollRequest, RequestOptions.DEFAULT);
             scrollId = searchResponse.getScrollId();
             SearchHits hits = searchResponse.getHits();
 
