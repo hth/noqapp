@@ -1,8 +1,7 @@
 package com.noqapp.common.utils;
 
-import net.logstash.logback.encoder.org.apache.commons.lang.StringEscapeUtils;
-
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +46,7 @@ class TextInputScrubber {
         String sanitizedText = input;
         while (true) {
             preSanitizeLength = sanitizedText.length();
-            sanitizedText = StringEscapeUtils.unescapeHtml(policyFactory.sanitize(sanitizedText));
+            sanitizedText = StringEscapeUtils.unescapeHtml4(policyFactory.sanitize(sanitizedText));
 
             if (sanitizedText.length() > preSanitizeLength) {
                 LOG.warn("input grew: [{}]", input);

@@ -3,6 +3,8 @@ package com.noqapp.common.utils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * User: hitender
@@ -16,7 +18,7 @@ import java.io.Serializable;
 })
 public class ScrubbedInput implements Serializable {
     private static final long serialVersionUID = -4941918823207463880L;
-    public static final String UTF_8 = "UTF-8";
+    static final String UTF_8 = StandardCharsets.UTF_8.name();
 
     protected String text;
 
@@ -54,7 +56,7 @@ public class ScrubbedInput implements Serializable {
         }
 
         ScrubbedInput that = (ScrubbedInput) o;
-        return !(text != null ? !text.equals(that.text) : that.text != null);
+        return Objects.equals(text, that.text);
     }
 
     @Override
