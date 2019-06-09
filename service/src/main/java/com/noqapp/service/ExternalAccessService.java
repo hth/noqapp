@@ -16,11 +16,11 @@ import java.util.List;
  * hitender
  * 2/4/18 5:20 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Service
 public class ExternalAccessService {
@@ -30,9 +30,9 @@ public class ExternalAccessService {
 
     @Autowired
     public ExternalAccessService(
-            ExternalAccessManager externalAccessManager,
-            BusinessUserService businessUserService,
-            BizService bizService
+        ExternalAccessManager externalAccessManager,
+        BusinessUserService businessUserService,
+        BizService bizService
     ) {
         this.externalAccessManager = externalAccessManager;
         this.businessUserService = businessUserService;
@@ -76,11 +76,11 @@ public class ExternalAccessService {
             BizNameEntity bizName = bizService.getByBizNameId(externalAccess.getBizId());
 
             JsonBusiness jsonBusiness = new JsonBusiness()
-                    .setBizId(externalAccess.getBizId())
-                    .setBizName(bizName.getBusinessName())
-                    .setExternalAccessId(externalAccess.getId())
-                    .setApproverQID(externalAccess.getApproverQID())
-                    .setExternalPermission(externalAccess.getExternalPermission());
+                .setBizId(externalAccess.getBizId())
+                .setBizName(bizName.getBusinessName())
+                .setExternalAccessId(externalAccess.getId())
+                .setApproverQID(externalAccess.getApproverQID())
+                .setExternalPermission(externalAccess.getExternalPermission());
 
             jsonBusinesses.add(jsonBusiness);
         }
