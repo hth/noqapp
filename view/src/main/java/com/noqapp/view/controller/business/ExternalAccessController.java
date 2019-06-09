@@ -51,11 +51,11 @@ public class ExternalAccessController {
 
     @Autowired
     public ExternalAccessController(
-            @Value("${nextPage:/business/externalAccess}")
-            String nextPage,
+        @Value("${nextPage:/business/externalAccess}")
+        String nextPage,
 
-            ExternalAccessService externalAccessService,
-            BusinessUserService businessUserService
+        ExternalAccessService externalAccessService,
+        BusinessUserService businessUserService
     ) {
         this.nextPage = nextPage;
 
@@ -65,10 +65,10 @@ public class ExternalAccessController {
 
     @GetMapping
     public String landing(
-            @ModelAttribute("externalAccessForm")
-            ExternalAccessForm externalAccessForm,
+        @ModelAttribute("externalAccessForm")
+        ExternalAccessForm externalAccessForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on external access page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
@@ -96,10 +96,10 @@ public class ExternalAccessController {
      */
     @PostMapping(value = "/actionExternalAccess")
     public String actionQueueSupervisor(
-            @ModelAttribute ("externalAccessForm")
-            ExternalAccessForm externalAccessForm,
+        @ModelAttribute ("externalAccessForm")
+        ExternalAccessForm externalAccessForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -127,10 +127,10 @@ public class ExternalAccessController {
             return "redirect:/business/external/access.htm";
         } catch (Exception e) {
             LOG.error("Failed updated status for externalAccessId={} status={} reason={}",
-                    externalAccessForm.decodeId(),
-                    externalAccessForm.getAction().getText(),
-                    e.getLocalizedMessage(),
-                    e);
+                externalAccessForm.decodeId(),
+                externalAccessForm.getAction().getText(),
+                e.getLocalizedMessage(),
+                e);
 
             return "redirect:/business/external/access.htm";
         }
