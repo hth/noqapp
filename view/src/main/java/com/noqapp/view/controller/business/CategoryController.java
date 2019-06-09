@@ -59,15 +59,15 @@ public class CategoryController {
 
     @Autowired
     public CategoryController(
-            @Value("${nextPage:/business/category}")
-            String nextPage,
+        @Value("${nextPage:/business/category}")
+        String nextPage,
 
-            @Value ("${storeByCategoryPage:/business/storeByCategory}")
-            String storeByCategoryPage,
+        @Value ("${storeByCategoryPage:/business/storeByCategory}")
+        String storeByCategoryPage,
 
-            BizService bizService,
-            BusinessUserService businessUserService,
-            BusinessUserStoreService businessUserStoreService
+        BizService bizService,
+        BusinessUserService businessUserService,
+        BusinessUserStoreService businessUserStoreService
     ) {
         this.nextPage = nextPage;
         this.storeByCategoryPage = storeByCategoryPage;
@@ -82,10 +82,10 @@ public class CategoryController {
      */
     @GetMapping
     public String landing(
-            @ModelAttribute("categoryLanding")
-            CategoryLandingForm categoryLanding,
+        @ModelAttribute("categoryLanding")
+        CategoryLandingForm categoryLanding,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -100,9 +100,9 @@ public class CategoryController {
         String bizNameId = businessUser.getBizName().getId();
         Map<String, String> categories = CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS);
         categoryLanding
-                .setBizNameId(new ScrubbedInput(bizNameId))
-                .setCategories(null == categories ? new HashMap<>() : categories)
-                .setCategoryCounts(null == categories ? new HashMap<>() : bizService.countCategoryUse(categories.keySet(), bizNameId));
+            .setBizNameId(new ScrubbedInput(bizNameId))
+            .setCategories(null == categories ? new HashMap<>() : categories)
+            .setCategoryCounts(null == categories ? new HashMap<>() : bizService.countCategoryUse(categories.keySet(), bizNameId));
         return nextPage;
     }
 
@@ -111,13 +111,13 @@ public class CategoryController {
      */
     @GetMapping(value = "/{bizCategoryId}/storeByCategory")
     public String storeByCategory(
-            @PathVariable("bizCategoryId")
-            ScrubbedInput bizCategoryId,
+        @PathVariable("bizCategoryId")
+        ScrubbedInput bizCategoryId,
 
-            @ModelAttribute ("businessLandingForm")
-            BusinessLandingForm businessLandingForm,
+        @ModelAttribute ("businessLandingForm")
+        BusinessLandingForm businessLandingForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -131,16 +131,16 @@ public class CategoryController {
 
         BizNameEntity bizName = businessUser.getBizName();
         businessLandingForm
-                .setBizName(bizName.getBusinessName())
-                .setBusinessType(bizName.getBusinessType())
-                .setCategories(CommonHelper.getCategories(bizName.getBusinessType(), InvocationByEnum.BUSINESS));
+            .setBizName(bizName.getBusinessName())
+            .setBusinessType(bizName.getBusinessType())
+            .setCategories(CommonHelper.getCategories(bizName.getBusinessType(), InvocationByEnum.BUSINESS));
         List<BizStoreEntity> bizStores = bizService.getBizStoresByCategory(bizCategoryId.getText(), businessUser.getBizName().getId());
         businessLandingForm.setBizStores(bizStores);
         for (BizStoreEntity bizStore : bizStores) {
             QueueDetail queueDetail = new QueueDetail()
-                    .setId(bizStore.getId())
-                    .setAssignedToQueue(businessUserStoreService.findNumberOfPeopleAssignedToQueue(bizStore.getId()))
-                    .setPendingApprovalToQueue(businessUserStoreService.findNumberOfPeoplePendingApprovalToQueue(bizStore.getId()));
+                .setId(bizStore.getId())
+                .setAssignedToQueue(businessUserStoreService.findNumberOfPeopleAssignedToQueue(bizStore.getId()))
+                .setPendingApprovalToQueue(businessUserStoreService.findNumberOfPeoplePendingApprovalToQueue(bizStore.getId()));
 
             businessLandingForm.addQueueDetail(queueDetail);
         }
