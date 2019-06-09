@@ -81,8 +81,10 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     public void save(BizStoreElastic bizStoreElastic) {
         try {
             replaceCategoryIdWithCategoryName(bizStoreElastic);
-            IndexRequest request = new IndexRequest(BizStoreElastic.INDEX)
-                .id(bizStoreElastic.getId())
+            IndexRequest request = new IndexRequest(
+                BizStoreElastic.INDEX,
+                BizStoreElastic.TYPE,
+                bizStoreElastic.getId())
                 .source(bizStoreElastic.asJson(), XContentType.JSON);
 
             IndexResponse indexResponse = restHighLevelClient.index(request, RequestOptions.DEFAULT);
@@ -114,7 +116,10 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
     @Override
     public void delete(String id) {
-        DeleteRequest request = new DeleteRequest(BizStoreElastic.INDEX).id(id);
+        DeleteRequest request = new DeleteRequest(
+            BizStoreElastic.INDEX,
+            BizStoreElastic.TYPE,
+            id);
 
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
@@ -152,15 +157,16 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         for (BizStoreElastic bizStoreElastic : bizStoreElastics) {
             replaceCategoryIdWithCategoryName(bizStoreElastic);
             request.add(
-                new IndexRequest(BizStoreElastic.INDEX)
+                new IndexRequest(
+                    BizStoreElastic.INDEX,
+                    BizStoreElastic.TYPE,
                     /*
                      *  Recommend to remove your id for indexing as it checks before insert,
                      *  that slows the process of insert. But having your existing index
                      *  helps shorten data, and easy lookup by id.
                      */
-                    .id(bizStoreElastic.getId())
-                    .source(bizStoreElastic.asJson(), XContentType.JSON)
-            );
+                    bizStoreElastic.getId()
+                ).source(bizStoreElastic.asJson(), XContentType.JSON));
         }
 
         try {
