@@ -39,16 +39,15 @@ import javax.validation.Valid;
 
 /**
  * Provide access to businesses externally. This will help fixing issue on business account.
- *
  * //TODO Make sure to delete all access when ROLE is downgraded in even of user leaving
  * hitender
  * 2/5/18 7:33 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
 @RequestMapping(value = "/emp/landing/account/access")
@@ -86,14 +85,14 @@ public class AccountAccessController {
      */
     @GetMapping
     public String landing(
-            @ModelAttribute("accountAccessForm")
-            AccountAccessForm accountAccessForm,
+        @ModelAttribute("accountAccessForm")
+        AccountAccessForm accountAccessForm,
 
-            @ModelAttribute("searchForm")
-            SearchForm searchForm,
+        @ModelAttribute("searchForm")
+        SearchForm searchForm,
 
-            Model model,
-            RedirectAttributes redirectAttrs
+        Model model,
+        RedirectAttributes redirectAttrs
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed at Account access qid={}", queueUser.getQueueUserId());
@@ -112,14 +111,14 @@ public class AccountAccessController {
 
     @PostMapping(value = "/search")
     public String searchByBizName(
-            @Valid @ModelAttribute ("accountAccessForm")
-            AccountAccessForm accountAccessForm,
+        @Valid @ModelAttribute("accountAccessForm")
+        AccountAccessForm accountAccessForm,
 
-            @ModelAttribute("searchForm")
-            SearchForm searchForm,
+        @ModelAttribute("searchForm")
+        SearchForm searchForm,
 
-            BindingResult result,
-            RedirectAttributes redirectAttrs
+        BindingResult result,
+        RedirectAttributes redirectAttrs
     ) {
         LOG.info("Search for business by name={}", searchForm.getSearch().getText());
         searchValidator.validate(searchForm, result);
@@ -138,7 +137,7 @@ public class AccountAccessController {
     /**
      * On cancelling addition of new category.
      */
-    @PostMapping (value = "/search", params = {"cancel_Search"})
+    @PostMapping(value = "/search", params = {"cancel_Search"})
     public String cancelAdd() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel business category qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
@@ -151,8 +150,8 @@ public class AccountAccessController {
      */
     @GetMapping(value = "/{externalAccessId}")
     public String accessBusiness(
-            @PathVariable("externalAccessId")
-            ScrubbedInput externalAccessId
+        @PathVariable("externalAccessId")
+        ScrubbedInput externalAccessId
     ) {
         LOG.info("Access business externalAccessId={}", externalAccessId.getText());
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -188,8 +187,8 @@ public class AccountAccessController {
      */
     @PostMapping(value = "/actionExternalAccess")
     public String actionOnBusinessAccess(
-            @ModelAttribute ("accountAccessForm")
-            AccountAccessForm accountAccessForm
+        @ModelAttribute("accountAccessForm")
+        AccountAccessForm accountAccessForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -209,11 +208,11 @@ public class AccountAccessController {
             return "redirect:/emp/landing/account/access.htm";
         } catch (Exception e) {
             LOG.error("Failed updated status for bizId={} status={} qid={} reason={}",
-                    accountAccessForm.getId().getText(),
-                    accountAccessForm.getAction().getText(),
-                    queueUser.getQueueUserId(),
-                    e.getLocalizedMessage(),
-                    e);
+                accountAccessForm.getId().getText(),
+                accountAccessForm.getAction().getText(),
+                queueUser.getQueueUserId(),
+                e.getLocalizedMessage(),
+                e);
 
             return "redirect:/emp/landing/account/access.htm";
         }
