@@ -70,6 +70,7 @@ public class DiscountCouponService {
         for (DiscountEntity discount : discounts) {
             jsonDiscountList.addDiscount(
                 new JsonDiscount()
+                    .setDiscountId(discount.getId())
                     .setDiscountName(discount.getDiscountName())
                     .setDiscountDescription(discount.getDiscountDescription())
                     .setDiscountType(discount.getDiscountType())
