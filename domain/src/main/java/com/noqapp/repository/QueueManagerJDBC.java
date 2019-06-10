@@ -50,9 +50,6 @@ public interface QueueManagerJDBC {
     boolean hasClientVisitedThisStoreAndServiced(String codeQR, String qid);
 
     @Mobile
-    Date clientVisitedStoreAndServicedDate(String codeQR, String qid);
-
-    @Mobile
     boolean hasClientVisitedThisBusiness(String bizNameId, String qid);
 
     @Mobile
