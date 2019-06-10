@@ -7,6 +7,7 @@ import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,4 +44,7 @@ public interface PurchaseOrderManagerJDBC {
 
     List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR, int durationInDays);
     PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId);
+
+    @Mobile
+    Date clientVisitedStoreAndServicedDate(String codeQR, String qid);
 }

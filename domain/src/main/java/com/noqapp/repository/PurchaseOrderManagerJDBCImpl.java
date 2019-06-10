@@ -21,6 +21,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -94,6 +95,9 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, SD, PP, OP, BT, PQ, FQ, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE TI = ? AND BS = ? ";
+
+    private static final String clientVisitedStoreDate =
+        "SELECT C FROM PURCHASE_ORDER WHERE QR = ? AND QID = ? AND PY = ? ORDER BY C DESC LIMIT 1";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
@@ -282,6 +286,17 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         } catch (EmptyResultDataAccessException e) {
             //TODO fix this error or query
             LOG.error("Failed to find transactionId={} bizStoreId={} reason={}", transactionId, bizStoreId, e.getLocalizedMessage(), e);
+            return null;
+        }
+    }
+
+    @Override
+    public Date clientVisitedStoreAndServicedDate(String codeQR, String qid) {
+        LOG.info("Fetch payment made by codeQR={} qid={}", codeQR, qid);
+        try {
+            return jdbcTemplate.queryForObject(clientVisitedStoreDate, new Object[]{codeQR, qid, PaymentStatusEnum.PA.getName()}, Date.class);
+        } catch (EmptyResultDataAccessException e) {
+            //TODO fix this error or query
             return null;
         }
     }

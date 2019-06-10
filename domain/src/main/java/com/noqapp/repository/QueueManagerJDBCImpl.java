@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -135,9 +134,6 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     private static final String checkIfClientVisitedStore =
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? AND QS = ? LIMIT 1)";
-
-    private static final String clientVisitedStoreDate =
-        "SELECT C FROM QUEUE WHERE QR = ? AND QID = ? AND QS = ? ORDER BY C DESC LIMIT 1";
 
     private static final String checkIfClientVisitedBusiness =
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE BN = ? AND QID = ? LIMIT 1)";
@@ -304,17 +300,6 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public boolean hasClientVisitedThisStoreAndServiced(String codeQR, String qid) {
         LOG.info("Fetch history by codeQR={} qid={}", codeQR, qid);
         return jdbcTemplate.queryForObject(checkIfClientVisitedStore, new Object[]{codeQR, qid, QueueUserStateEnum.S.getName()}, Boolean.class);
-    }
-
-    @Override
-    public Date clientVisitedStoreAndServicedDate(String codeQR, String qid) {
-        LOG.info("Fetch history by codeQR={} qid={}", codeQR, qid);
-        try {
-            return jdbcTemplate.queryForObject(clientVisitedStoreDate, new Object[]{codeQR, qid, QueueUserStateEnum.S.getName()}, Date.class);
-        } catch (EmptyResultDataAccessException e) {
-            //TODO fix this error or query
-            return null;
-        }
     }
 
     @Override

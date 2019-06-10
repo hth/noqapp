@@ -602,7 +602,7 @@ public class PurchaseOrderService {
 
     /** Days between now and previous visit. */
     private Integer daysBetweenService(String qid, BizStoreEntity bizStore) {
-        Date lastVisited = queueManagerJDBC.clientVisitedStoreAndServicedDate(bizStore.getCodeQR(), qid);
+        Date lastVisited = purchaseOrderManagerJDBC.clientVisitedStoreAndServicedDate(bizStore.getCodeQR(), qid);
         if (lastVisited == null) {
             return null;
         }
