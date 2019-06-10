@@ -49,6 +49,13 @@ public interface QueueManagerJDBC {
     @Mobile
     boolean hasClientVisitedThisStoreAndServiced(String codeQR, String qid);
 
+    /**
+     * This only shows when client last visited the store. Not used in computing follow-up or discount.
+     * Discount should be computed on when was last paid.
+     */
+    @Mobile
+    Date clientVisitedStoreAndServicedDate(String codeQR, String qid);
+
     @Mobile
     boolean hasClientVisitedThisBusiness(String bizNameId, String qid);
 
