@@ -72,4 +72,13 @@ public class DiscountManagerImpl implements DiscountManager {
             TABLE
         );
     }
+
+    @Override
+    public void removeById(String discountId) {
+        mongoTemplate.remove(
+            query(where("id").is(discountId)),
+            DiscountEntity.class,
+            TABLE
+        );
+    }
 }

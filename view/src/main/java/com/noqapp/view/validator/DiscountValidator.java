@@ -36,6 +36,13 @@ public class DiscountValidator implements Validator {
 
         if (!errors.hasErrors()) {
             DiscountForm discountForm = (DiscountForm) target;
+            if (discountForm.getDiscountType() == null) {
+                errors.rejectValue("discountType",
+                    "field.required",
+                    new Object[]{"Discount Type"},
+                    "Please set discount type");
+            }
+
             if (discountForm.getDiscountAmount() <= 0) {
                 errors.rejectValue("discountAmount",
                     "field.amount",

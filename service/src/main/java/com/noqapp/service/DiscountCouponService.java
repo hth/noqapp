@@ -48,4 +48,8 @@ public class DiscountCouponService {
     public void inActive(String discountId) {
         discountManager.inActive(discountId);
     }
+
+    public void removeDiscount(String discountId) {
+        discountManager.removeById(discountId);
+    }
 }

@@ -146,11 +146,15 @@ public class DiscountController {
                     .setBizNameId(businessUser.getBizName().getId())
                     .setDiscountName(discountForm.getDiscountName())
                     .setDiscountDescription(discountForm.getDiscountDescription())
+                    .setDiscountType(discountForm.getDiscountType())
                     .setDiscountAmount(discountForm.getDiscountAmount());
                 discountCouponService.saveDiscount(discount);
                 break;
             case INACTIVE:
                 discountCouponService.inActive(discountForm.getDiscountId());
+                break;
+            case REMOVE:
+                discountCouponService.removeDiscount(discountForm.getDiscountId());
                 break;
         }
 
