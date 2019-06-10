@@ -28,6 +28,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonDiscount extends AbstractDomain {
 
+    @JsonProperty("di")
+    private String discountId;
+
     @JsonProperty("bn")
     private String bizNameId;
 
@@ -42,6 +45,15 @@ public class JsonDiscount extends AbstractDomain {
 
     @JsonProperty("dt")
     private DiscountTypeEnum discountType;
+
+    public String getDiscountId() {
+        return discountId;
+    }
+
+    public JsonDiscount setDiscountId(String discountId) {
+        this.discountId = discountId;
+        return this;
+    }
 
     public String getBizNameId() {
         return bizNameId;
