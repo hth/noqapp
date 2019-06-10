@@ -62,8 +62,8 @@ public class DiscountCouponService {
     }
 
     @Mobile
-    public JsonDiscountList findAllDiscountAsJson(String bizStoreId) {
-        BizStoreEntity bizStore = bizStoreManager.getById(bizStoreId);
+    public JsonDiscountList findAllDiscountAsJson(String codeQR) {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         List<DiscountEntity> discounts = discountManager.findAll(bizStore.getBizName().getId());
 
         JsonDiscountList jsonDiscountList = new JsonDiscountList();
