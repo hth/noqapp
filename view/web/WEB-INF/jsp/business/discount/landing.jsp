@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.ActionTypeEnum" %>
+<%@ page import="com.noqapp.domain.types.ActionTypeEnum,com.noqapp.domain.types.DiscountTypeEnum" %>
 <%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -69,7 +69,7 @@
                                         <th>&nbsp;</th>
                                         <th nowrap>Name</th>
                                         <th nowrap>Description</th>
-                                        <th>Amount</th>
+                                        <th>Discount</th>
                                         <th></th>
                                     </tr>
                                     <c:forEach items="${discountForm.discounts}" var="discount" varStatus="status">
@@ -77,7 +77,16 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td nowrap>${discount.discountName}</td>
                                         <td nowrap>${discount.discountDescription}</td>
-                                        <td nowrap align="center">${discount.discountAmount}</td>
+                                        <td nowrap align="left">
+                                            <c:choose>
+                                                <c:when test="${discount.discountType eq DiscountTypeEnum.F}">
+                                                    Rs ${discount.discountAmount}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${discount.discountAmount}<span style="font-size: large; font-weight: bold">%</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${discount.active}">
@@ -88,7 +97,11 @@
                                                     </form:form>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    DISABLED
+                                                    <form:form action="${pageContext.request.contextPath}/business/discount/action.htm" modelAttribute="discountForm" method="post">
+                                                        <form:hidden path="actionType" value="${ActionTypeEnum.REMOVE}" />
+                                                        <form:hidden path="discountId" value="${discount.id}" />
+                                                        <input class="cancel-btn" style="margin: 0;" value="Delete" type="submit">
+                                                    </form:form>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>

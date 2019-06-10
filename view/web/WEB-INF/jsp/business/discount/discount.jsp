@@ -98,6 +98,19 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
+                                        <form:label path="discountType" cssErrorClass="lb_error">Discount Type</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:select path="discountType" cssClass="form-field-select single-dropdown"
+                                                cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                            <form:option value="" label="--- Select ---"/>
+                                            <form:options items="${discountForm.discountTypes}" />
+                                        </form:select>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
                                         <form:label path="discountAmount" cssErrorClass="lb_error">Discount Amount</form:label>
                                     </div>
                                     <div class="col-fields">

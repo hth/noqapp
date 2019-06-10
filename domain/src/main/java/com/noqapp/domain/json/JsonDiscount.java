@@ -1,48 +1,53 @@
-package com.noqapp.domain;
+package com.noqapp.domain.json;
 
+import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.types.DiscountTypeEnum;
 
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * User: hitender
- * Date: 2019-06-09 13:43
+ * Date: 2019-06-10 11:29
  */
 @SuppressWarnings ({
     "PMD.BeanMembersShouldSerialize",
     "PMD.LocalVariableCouldBeFinal",
     "PMD.MethodArgumentCouldBeFinal",
-    "PMD.LongVariable"
+    "PMD.LongVariable",
+    "unused"
 })
-@Document(collection = "DISCOUNT")
-@CompoundIndexes(value = {
-    @CompoundIndex(name = "discount_idx", def = "{'BN': 1}", unique = false),
-})
-public class DiscountEntity extends BaseEntity {
+@JsonAutoDetect(
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
+)
+@JsonPropertyOrder(alphabetic = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class JsonDiscount extends AbstractDomain {
 
-    @Field("BN")
+    @JsonProperty("bn")
     private String bizNameId;
 
-    @Field("DN")
+    @JsonProperty("dn")
     private String discountName;
 
-    @Field("DD")
+    @JsonProperty("dd")
     private String discountDescription;
 
-    @Field("DA")
+    @JsonProperty("da")
     private int discountAmount;
 
-    @Field("DT")
+    @JsonProperty("dt")
     private DiscountTypeEnum discountType;
 
     public String getBizNameId() {
         return bizNameId;
     }
 
-    public DiscountEntity setBizNameId(String bizNameId) {
+    public JsonDiscount setBizNameId(String bizNameId) {
         this.bizNameId = bizNameId;
         return this;
     }
@@ -51,7 +56,7 @@ public class DiscountEntity extends BaseEntity {
         return discountName;
     }
 
-    public DiscountEntity setDiscountName(String discountName) {
+    public JsonDiscount setDiscountName(String discountName) {
         this.discountName = discountName;
         return this;
     }
@@ -60,7 +65,7 @@ public class DiscountEntity extends BaseEntity {
         return discountDescription;
     }
 
-    public DiscountEntity setDiscountDescription(String discountDescription) {
+    public JsonDiscount setDiscountDescription(String discountDescription) {
         this.discountDescription = discountDescription;
         return this;
     }
@@ -69,7 +74,7 @@ public class DiscountEntity extends BaseEntity {
         return discountAmount;
     }
 
-    public DiscountEntity setDiscountAmount(int discountAmount) {
+    public JsonDiscount setDiscountAmount(int discountAmount) {
         this.discountAmount = discountAmount;
         return this;
     }
@@ -78,7 +83,7 @@ public class DiscountEntity extends BaseEntity {
         return discountType;
     }
 
-    public DiscountEntity setDiscountType(DiscountTypeEnum discountType) {
+    public JsonDiscount setDiscountType(DiscountTypeEnum discountType) {
         this.discountType = discountType;
         return this;
     }
