@@ -110,6 +110,12 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field ("FQ")
     private String fullPaymentAcceptedByQid;
 
+    @Field ("CQ")
+    private String couponAddedByQid;
+
+    @Field("CI")
+    private String couponId;
+
     @Field ("RA")
     private int ratingCount;
 

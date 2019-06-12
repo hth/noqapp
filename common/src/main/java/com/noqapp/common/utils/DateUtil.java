@@ -228,6 +228,12 @@ public final class DateUtil {
         return interval.toPeriod(PeriodType.days()).getDays();
     }
 
+    public static long getDaysBetween(LocalDate start, LocalDate end) {
+        Assert.notNull(start, "Start date is null");
+        Assert.notNull(end, "End date is null");
+        return ChronoUnit.DAYS.between(start, end);
+    }
+
     public static int getYearsBetween(Date start, Date end) {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");

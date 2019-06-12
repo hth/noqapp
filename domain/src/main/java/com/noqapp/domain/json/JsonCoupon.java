@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * User: hitender
- * Date: 2019-06-10 11:29
+ * Date: 2019-06-12 06:48
  */
 @SuppressWarnings ({
     "PMD.BeanMembersShouldSerialize",
@@ -26,13 +26,16 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonDiscount extends AbstractDomain {
+public class JsonCoupon extends AbstractDomain {
 
-    @JsonProperty("di")
-    private String discountId;
+    @JsonProperty("ci")
+    private String couponId;
 
     @JsonProperty("bn")
     private String bizNameId;
+
+    @JsonProperty("cc")
+    private String couponCode;
 
     @JsonProperty("dn")
     private String discountName;
@@ -46,12 +49,21 @@ public class JsonDiscount extends AbstractDomain {
     @JsonProperty("dt")
     private DiscountTypeEnum discountType;
 
-    public String getDiscountId() {
-        return discountId;
+    @JsonProperty("sd")
+    private String couponStartDate;
+
+    @JsonProperty("ed")
+    private String couponEndDate;
+
+    @JsonProperty("mu")
+    private boolean multiUse;
+
+    public String getCouponId() {
+        return couponId;
     }
 
-    public JsonDiscount setDiscountId(String discountId) {
-        this.discountId = discountId;
+    public JsonCoupon setCouponId(String couponId) {
+        this.couponId = couponId;
         return this;
     }
 
@@ -59,8 +71,17 @@ public class JsonDiscount extends AbstractDomain {
         return bizNameId;
     }
 
-    public JsonDiscount setBizNameId(String bizNameId) {
+    public JsonCoupon setBizNameId(String bizNameId) {
         this.bizNameId = bizNameId;
+        return this;
+    }
+
+    public String getCouponCode() {
+        return couponCode;
+    }
+
+    public JsonCoupon setCouponCode(String couponCode) {
+        this.couponCode = couponCode;
         return this;
     }
 
@@ -68,7 +89,7 @@ public class JsonDiscount extends AbstractDomain {
         return discountName;
     }
 
-    public JsonDiscount setDiscountName(String discountName) {
+    public JsonCoupon setDiscountName(String discountName) {
         this.discountName = discountName;
         return this;
     }
@@ -77,7 +98,7 @@ public class JsonDiscount extends AbstractDomain {
         return discountDescription;
     }
 
-    public JsonDiscount setDiscountDescription(String discountDescription) {
+    public JsonCoupon setDiscountDescription(String discountDescription) {
         this.discountDescription = discountDescription;
         return this;
     }
@@ -86,7 +107,7 @@ public class JsonDiscount extends AbstractDomain {
         return discountAmount;
     }
 
-    public JsonDiscount setDiscountAmount(int discountAmount) {
+    public JsonCoupon setDiscountAmount(int discountAmount) {
         this.discountAmount = discountAmount;
         return this;
     }
@@ -95,8 +116,35 @@ public class JsonDiscount extends AbstractDomain {
         return discountType;
     }
 
-    public JsonDiscount setDiscountType(DiscountTypeEnum discountType) {
+    public JsonCoupon setDiscountType(DiscountTypeEnum discountType) {
         this.discountType = discountType;
+        return this;
+    }
+
+    public String getCouponStartDate() {
+        return couponStartDate;
+    }
+
+    public JsonCoupon setCouponStartDate(String couponStartDate) {
+        this.couponStartDate = couponStartDate;
+        return this;
+    }
+
+    public String getCouponEndDate() {
+        return couponEndDate;
+    }
+
+    public JsonCoupon setCouponEndDate(String couponEndDate) {
+        this.couponEndDate = couponEndDate;
+        return this;
+    }
+
+    public boolean isMultiUse() {
+        return multiUse;
+    }
+
+    public JsonCoupon setMultiUse(boolean multiUse) {
+        this.multiUse = multiUse;
         return this;
     }
 }

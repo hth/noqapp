@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * User: hitender
- * Date: 2019-06-10 13:07
+ * Date: 2019-06-12 06:49
  */
 @SuppressWarnings ({
     "PMD.BeanMembersShouldSerialize",
@@ -28,22 +28,22 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonDiscountList extends AbstractDomain {
+public class JsonCouponList extends AbstractDomain {
 
-    @JsonProperty("ds")
-    private List<JsonDiscount> discounts = new ArrayList<>();
+    @JsonProperty("cs")
+    private List<JsonCoupon> coupons = new ArrayList<>();
 
-    public List<JsonDiscount> getDiscounts() {
-        return discounts;
+    public List<JsonCoupon> getCoupons() {
+        return coupons;
     }
 
-    public JsonDiscountList setDiscounts(List<JsonDiscount> discounts) {
-        this.discounts = discounts;
+    public JsonCouponList setCoupons(List<JsonCoupon> coupons) {
+        this.coupons = coupons;
         return this;
     }
 
-    public JsonDiscountList addDiscount(JsonDiscount discount) {
-        this.discounts.add(discount);
+    public JsonCouponList addCoupon(JsonCoupon coupon) {
+        this.coupons.add(coupon);
         return this;
     }
 }

@@ -6,7 +6,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.DiscountEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BusinessUserService;
-import com.noqapp.service.DiscountCouponService;
+import com.noqapp.service.DiscountService;
 import com.noqapp.view.form.business.DiscountForm;
 import com.noqapp.view.validator.DiscountValidator;
 
@@ -48,7 +48,7 @@ public class DiscountController {
     private String discountPage;
 
     private DiscountValidator discountValidator;
-    private DiscountCouponService discountCouponService;
+    private DiscountService discountService;
     private BusinessUserService businessUserService;
 
     @Autowired
@@ -60,14 +60,14 @@ public class DiscountController {
         String discountPage,
 
         DiscountValidator discountValidator,
-        DiscountCouponService discountCouponService,
+        DiscountService discountService,
         BusinessUserService businessUserService
     ) {
         this.nextPage = nextPage;
         this.discountPage = discountPage;
 
         this.discountValidator = discountValidator;
-        this.discountCouponService = discountCouponService;
+        this.discountService = discountService;
         this.businessUserService = businessUserService;
     }
 
@@ -88,7 +88,7 @@ public class DiscountController {
         LOG.info("Landed on discount page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        discountForm.setDiscounts(discountCouponService.findAll(businessUser.getBizName().getId()));
+        discountForm.setDiscounts(discountService.findAll(businessUser.getBizName().getId()));
 
         return nextPage;
     }
@@ -148,13 +148,13 @@ public class DiscountController {
                     .setDiscountDescription(discountForm.getDiscountDescription())
                     .setDiscountType(discountForm.getDiscountType())
                     .setDiscountAmount(discountForm.getDiscountAmount());
-                discountCouponService.saveDiscount(discount);
+                discountService.save(discount);
                 break;
             case INACTIVE:
-                discountCouponService.inActive(discountForm.getDiscountId());
+                discountService.inActive(discountForm.getDiscountId());
                 break;
             case REMOVE:
-                discountCouponService.removeDiscount(discountForm.getDiscountId());
+                discountService.removeDiscount(discountForm.getDiscountId());
                 break;
         }
 

@@ -1,10 +1,13 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.DiscountTypeEnum;
+
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.beans.Transient;
 import java.util.Date;
 
 /**
@@ -45,6 +48,9 @@ public class CouponEntity extends BaseEntity {
     @Field("DA")
     private int discountAmount;
 
+    @Field("DT")
+    private DiscountTypeEnum discountType;
+
     @Field("SD")
     private Date couponStartDate;
 
@@ -54,14 +60,18 @@ public class CouponEntity extends BaseEntity {
     @Field("MU")
     private boolean multiUse;
 
+    /* Owner of coupon when issued to owner */
     @Field("QID")
     private String qid;
 
+    /* Coupon issued against specific store. */
     @Field("BS")
     private String bizStoreId;
 
     @Field("IB")
     private String couponIssuedByQID;
+
+    private String issuedBy;
 
     public String getBizNameId() {
         return bizNameId;
@@ -117,6 +127,15 @@ public class CouponEntity extends BaseEntity {
         return this;
     }
 
+    public DiscountTypeEnum getDiscountType() {
+        return discountType;
+    }
+
+    public CouponEntity setDiscountType(DiscountTypeEnum discountType) {
+        this.discountType = discountType;
+        return this;
+    }
+
     public Date getCouponStartDate() {
         return couponStartDate;
     }
@@ -132,6 +151,53 @@ public class CouponEntity extends BaseEntity {
 
     public CouponEntity setCouponEndDate(Date couponEndDate) {
         this.couponEndDate = couponEndDate;
+        return this;
+    }
+
+    public boolean isMultiUse() {
+        return multiUse;
+    }
+
+    public CouponEntity setMultiUse(boolean multiUse) {
+        this.multiUse = multiUse;
+        return this;
+    }
+
+    public String getQid() {
+        return qid;
+    }
+
+    public CouponEntity setQid(String qid) {
+        this.qid = qid;
+        return this;
+    }
+
+    public String getBizStoreId() {
+        return bizStoreId;
+    }
+
+    public CouponEntity setBizStoreId(String bizStoreId) {
+        this.bizStoreId = bizStoreId;
+        return this;
+    }
+
+    public String getCouponIssuedByQID() {
+        return couponIssuedByQID;
+    }
+
+    public CouponEntity setCouponIssuedByQID(String couponIssuedByQID) {
+        this.couponIssuedByQID = couponIssuedByQID;
+        return this;
+    }
+
+    @Transient
+    public String getIssuedBy() {
+        return issuedBy;
+    }
+
+    @Transient
+    public CouponEntity setIssuedBy(String issuedBy) {
+        this.issuedBy = issuedBy;
         return this;
     }
 }

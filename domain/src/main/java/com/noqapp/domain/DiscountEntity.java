@@ -1,17 +1,21 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.types.DiscountTypeEnum;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
+
 /**
  * User: hitender
  * Date: 2019-06-09 13:43
  */
-@SuppressWarnings ({
+@SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
     "PMD.LocalVariableCouldBeFinal",
     "PMD.MethodArgumentCouldBeFinal",
@@ -37,6 +41,9 @@ public class DiscountEntity extends BaseEntity {
 
     @Field("DT")
     private DiscountTypeEnum discountType;
+
+    @Field("MI")
+    private Date markedInActiveDate;
 
     public String getBizNameId() {
         return bizNameId;
@@ -81,5 +88,22 @@ public class DiscountEntity extends BaseEntity {
     public DiscountEntity setDiscountType(DiscountTypeEnum discountType) {
         this.discountType = discountType;
         return this;
+    }
+
+    public Date getMarkedInActiveDate() {
+        return markedInActiveDate;
+    }
+
+    public DiscountEntity setMarkedInActiveDate(Date markedInActiveDate) {
+        this.markedInActiveDate = markedInActiveDate;
+        return this;
+    }
+
+    @Transient
+    public long getCanDeletedAfterDays() {
+        return DateUtil.getDaysBetween(
+            DateUtil.asLocalDate(DateUtil.nowMidnightDate()),
+            DateUtil.asLocalDate(isActive() ? DateUtil.nowMidnightDate() : markedInActiveDate).plusYears(1));
+
     }
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+    <secured attributes="ROLE_M_ADMIN, ROLE_TECHNICIAN, ROLE_SUPERVISOR" match="any"/>
+
+    <on-start>
+        <evaluate expression="couponFlowActions.createNewBusinessCoupon(externalContext)"
+                  result="flowScope.couponForm"/>
+    </on-start>
+
+    <view-state id="couponStart" model="couponForm">
+        <transition on="submit" to="validateDiscount"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="validateDiscount">
+        <evaluate expression="couponFlowValidator.validateDiscount(couponForm, messageContext)"/>
+        <transition on="success" to="couponPopulate"/>
+        <transition on="failure" to="couponStart"/>
+    </action-state>
+
+    <view-state id="couponPopulate" model="couponForm">
+        <on-entry>
+            <evaluate expression="couponFlowActions.populateCouponForm(couponForm)"/>
+        </on-entry>
+        <transition on="submit" to="validateCoupon"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="validateCoupon">
+        <evaluate expression="couponFlowValidator.validateCoupon(couponForm, messageContext)"/>
+        <transition on="success" to="couponReview"/>
+        <transition on="failure" to="couponPopulate"/>
+    </action-state>
+
+    <view-state id="couponReview" model="couponForm">
+        <transition on="confirm" to="confirm"/>
+        <transition on="revise" to="couponStart"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="confirm">
+        <evaluate expression="couponFlowActions.createCoupon(couponForm)"/>
+        <transition on="success" to="home"/>
+        <transition on="failure" to="couponStart"/>
+    </action-state>
+
+    <view-state id="home"
+                view="externalRedirect:contextRelative:/business/coupon/landing.htm"/>
+
+</flow>
