@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.ValidateStatusEnum" %>
+<%@ page import="com.noqapp.domain.types.DiscountTypeEnum,com.noqapp.domain.types.ActionTypeEnum" %>
 <%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -55,14 +55,90 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Coupons</h3>
+                        <h3>Active Coupons</h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/coupons/add.htm" class="add-btn">Add New Coupon</a>
+                                <a href="/business/coupon/upcoming.htm" class="add-btn">Upcoming Coupon</a>
+                                <a href="/business/coupon/newBusinessCoupon.htm" class="add-btn">Add New Business Coupon</a>
                             </div>
                             <div class="store-table">
-
+                                <c:choose>
+                                <c:when test="${!empty couponForm.coupons}">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <th nowrap>Name & Description</th>
+                                        <th nowrap>Dates</th>
+                                        <th>Issued By</th>
+                                        <th>Multi Use</th>
+                                        <th>Discount</th>
+                                        <th></th>
+                                    </tr>
+                                    <c:forEach items="${couponForm.coupons}" var="coupon" varStatus="status">
+                                    <tr>
+                                        <td>${status.count}&nbsp;</td>
+                                        <td nowrap>
+                                            <b>${coupon.discountName}</b>
+                                            <br/>
+                                            ${coupon.discountDescription}
+                                        </td>
+                                        <td nowrap>
+                                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponStartDate}"/>
+                                            -
+                                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponEndDate}"/>
+                                        </td>
+                                        <td nowrap>
+                                            ${coupon.issuedBy}
+                                        </td>
+                                        <td nowrap>
+                                            <c:choose>
+                                                <c:when test="${coupon.multiUse}">
+                                                    Yes
+                                                </c:when>
+                                                <c:otherwise>
+                                                    No
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td nowrap align="left">
+                                            <c:choose>
+                                                <c:when test="${coupon.discountType eq DiscountTypeEnum.F}">
+                                                    Rs ${coupon.discountAmount}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${coupon.discountAmount}<span style="font-size: large; font-weight: bold">%</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${coupon.active}">
+                                                    <form:form action="${pageContext.request.contextPath}/business/coupon/action.htm" modelAttribute="couponForm" method="post">
+                                                        <form:hidden path="actionType" value="${ActionTypeEnum.INACTIVE}" />
+                                                        <form:hidden path="couponId" value="${coupon.id}" />
+                                                        <input class="cancel-btn" style="margin: 0;" value="In-Active" type="submit">
+                                                    </form:form>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <form:form action="${pageContext.request.contextPath}/business/coupon/action.htm" modelAttribute="couponForm" method="post">
+                                                        <form:hidden path="actionType" value="${ActionTypeEnum.REMOVE}" />
+                                                        <form:hidden path="couponId" value="${coupon.id}" />
+                                                        <input class="cancel-btn" style="margin: 0;" value="Delete" type="submit">
+                                                    </form:form>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </tr>
+                                    </c:forEach>
+                                </table>
+                                </c:when>
+                                <c:otherwise>
+                                <div class="alert-info">
+                                    <p>There are no coupon listed. Coupons listed here are available for use.</p>
+                                </div>
+                                </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>

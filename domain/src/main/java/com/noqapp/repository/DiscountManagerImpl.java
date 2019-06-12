@@ -5,6 +5,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.DiscountEntity;
 
@@ -64,10 +65,19 @@ public class DiscountManagerImpl implements DiscountManager {
     }
 
     @Override
+    public List<DiscountEntity> findAllActive(String bizNameId) {
+        return mongoTemplate.find(
+            query(where("BN").is(bizNameId).and("A").is(true)),
+            DiscountEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public void inActive(String discountId) {
         mongoTemplate.updateFirst(
             query(where("id").is(discountId)),
-            entityUpdate(update("A", false)),
+            entityUpdate(update("A", false).set("MI", DateUtil.nowMidnightDate())),
             DiscountEntity.class,
             TABLE
         );
@@ -76,9 +86,14 @@ public class DiscountManagerImpl implements DiscountManager {
     @Override
     public void removeById(String discountId) {
         mongoTemplate.remove(
-            query(where("id").is(discountId)),
+            query(where("id").is(discountId).and("MI").lte(DateUtil.sinceOneYearAgo()).and("A").is(false)),
             DiscountEntity.class,
             TABLE
         );
+    }
+
+    @Override
+    public DiscountEntity findById(String discountId) {
+        return mongoTemplate.findById(discountId, DiscountEntity.class, TABLE);
     }
 }

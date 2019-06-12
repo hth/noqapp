@@ -12,7 +12,11 @@ public interface DiscountManager extends RepositoryManager<DiscountEntity> {
 
     List<DiscountEntity> findAll(String bizNameId);
 
+    List<DiscountEntity> findAllActive(String bizNameId);
+
     void inActive(String discountId);
 
     void removeById(String discountId);
+
+    DiscountEntity findById(String discountId);
 }

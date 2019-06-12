@@ -96,6 +96,9 @@
                                                         <input class="cancel-btn" style="margin: 0;" value="In-Active" type="submit">
                                                     </form:form>
                                                 </c:when>
+                                                <c:when test="${discount.canDeletedAfterDays > 0}">
+                                                    Available to delete in ${discount.canDeletedAfterDays} days
+                                                </c:when>
                                                 <c:otherwise>
                                                     <form:form action="${pageContext.request.contextPath}/business/discount/action.htm" modelAttribute="discountForm" method="post">
                                                         <form:hidden path="actionType" value="${ActionTypeEnum.REMOVE}" />
