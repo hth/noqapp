@@ -356,6 +356,24 @@ public class PurchaseOrderEntity extends BaseEntity {
         return this;
     }
 
+    public String getCouponAddedByQid() {
+        return couponAddedByQid;
+    }
+
+    public PurchaseOrderEntity setCouponAddedByQid(String couponAddedByQid) {
+        this.couponAddedByQid = couponAddedByQid;
+        return this;
+    }
+
+    public String getCouponId() {
+        return couponId;
+    }
+
+    public PurchaseOrderEntity setCouponId(String couponId) {
+        this.couponId = couponId;
+        return this;
+    }
+
     public int getRatingCount() {
         return ratingCount;
     }

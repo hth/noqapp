@@ -56,6 +56,7 @@ import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.exceptions.CouponCannotApplyException;
+import com.noqapp.service.exceptions.CouponRemovalException;
 import com.noqapp.service.exceptions.FailedTransactionException;
 import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
@@ -615,9 +616,20 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public JsonPurchaseOrder applyCoupon(String qid, String transactionId, String couponId) {
+    public PurchaseOrderEntity applyCoupon(String qid, String transactionId, String couponId) {
+        PurchaseOrderEntity purchaseOrder = removeCoupon(qid, transactionId);
+        switch (purchaseOrder.getPaymentStatus()) {
+            case MP:
+            case PA:
+            case FP:
+            case PC:
+            case PR:
+                LOG.error("Cannot apply coupon {} {}", purchaseOrder.getTransactionId(), purchaseOrder.getPaymentStatus());
+                throw new CouponCannotApplyException("Cannot apply coupon");
+        }
+
         CouponEntity coupon = couponService.findById(couponId);
-        if (!coupon.getQid().equalsIgnoreCase(qid)) {
+        if (StringUtils.isNotBlank(coupon.getQid()) && !coupon.getQid().equalsIgnoreCase(qid)) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
             if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
                 UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
@@ -625,9 +637,9 @@ public class PurchaseOrderService {
                     throw new CouponCannotApplyException("Cannot apply coupon " + coupon.getCouponCode());
                 }
             }
+            purchaseOrder.setCouponAddedByQid(qid);
         }
 
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(transactionId);
         switch (coupon.getDiscountType()) {
             case F:
                 purchaseOrder.setStoreDiscount(coupon.getDiscountAmount());
@@ -639,8 +651,34 @@ public class PurchaseOrderService {
         }
 
         int afterDiscount = Integer.valueOf(purchaseOrder.getOrderPrice()) - purchaseOrder.getStoreDiscount();
-        purchaseOrder.setOrderPrice(String.valueOf(afterDiscount));
-        return purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
+        purchaseOrder.setOrderPrice(String.valueOf(afterDiscount))
+            .setCouponId(couponId);
+        purchaseOrderManager.save(purchaseOrder);
+        return purchaseOrder;
+    }
+
+    @Mobile
+    public PurchaseOrderEntity removeCoupon(String qid, String transactionId) {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(transactionId);
+        switch (purchaseOrder.getPaymentStatus()) {
+            case MP:
+            case PA:
+            case FP:
+            case PC:
+            case PR:
+                LOG.error("Cannot remove coupon {} {}", purchaseOrder.getTransactionId(), purchaseOrder.getPaymentStatus());
+                throw new CouponRemovalException("Cannot remove coupon");
+        }
+
+        if (purchaseOrder.getQueueUserId().equalsIgnoreCase(qid) && StringUtils.isNotBlank(purchaseOrder.getCouponId())) {
+            purchaseOrder
+                .setOrderPrice(String.valueOf(Integer.valueOf(purchaseOrder.getOrderPrice()) + purchaseOrder.getStoreDiscount()))
+                .setCouponId(null)
+                .setStoreDiscount(0);
+
+            purchaseOrderManager.save(purchaseOrder);
+        }
+        return purchaseOrder;
     }
 
     @Mobile

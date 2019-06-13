@@ -85,6 +85,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("bt")
     private BusinessTypeEnum businessType;
 
+    @JsonProperty("ci")
+    private String couponId;
+
     @JsonProperty("dn")
     private String displayName;
 
@@ -252,6 +255,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
+    public String getCouponId() {
+        return couponId;
+    }
+
+    public JsonPurchaseOrder setCouponId(String couponId) {
+        this.couponId = couponId;
+        return this;
+    }
+
     public String getDisplayName() {
         return displayName;
     }
@@ -399,6 +411,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setPaymentMode(po.getPaymentMode())
             .setPaymentStatus(po.getPaymentStatus())
             .setBusinessType(po.getBusinessType())
+            .setCouponId(po.getCouponId())
             .setDisplayName(po.getDisplayName())
             //Empty purchaseOrderProducts List
             //No Setting Serving Number
@@ -432,6 +445,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.orderPrice = purchaseOrder.getOrderPrice();
         this.deliveryMode = purchaseOrder.getDeliveryMode();
         this.businessType = purchaseOrder.getBusinessType();
+        this.couponId = purchaseOrder.getCouponId();
         this.displayName = purchaseOrder.getDisplayName();
 
         this.token = purchaseOrder.getTokenNumber();
