@@ -57,6 +57,10 @@ public class CouponService {
         return couponManager.findExistingCouponWithDiscountId(discountId);
     }
 
+    public CouponEntity findById(String couponId) {
+        return couponManager.findById(couponId);
+    }
+
     @Mobile
     public JsonCouponList findAllCouponAsJson(String codeQR) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);

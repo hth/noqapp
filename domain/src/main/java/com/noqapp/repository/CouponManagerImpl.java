@@ -102,4 +102,9 @@ public class CouponManagerImpl implements CouponManager {
             TABLE
         );
     }
+
+    @Override
+    public CouponEntity findById(String couponId) {
+        return mongoTemplate.findById(couponId, CouponEntity.class, TABLE);
+    }
 }

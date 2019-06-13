@@ -41,12 +41,20 @@ public class CouponFlowValidator {
         LOG.info("Validate coupon title={}", couponForm.getDiscountId());
         String status = LandingController.SUCCESS;
 
-        if (StringUtils.isBlank(couponForm.getDiscountId())) {
+        if (StringUtils.isBlank(couponForm.getDiscountId()) && couponForm.getDiscounts().isEmpty()) {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
                     .source("discountId")
                     .defaultText("There are no discount available. Please first create discount & then create coupons based on these discounts")
+                    .build());
+            status = "failure";
+        } else if(StringUtils.isBlank(couponForm.getDiscountId()) && !couponForm.getDiscounts().isEmpty()) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("discountId")
+                    .defaultText("Please select a discount")
                     .build());
             status = "failure";
         } else {
@@ -153,6 +161,38 @@ public class CouponFlowValidator {
                 status = "failure";
             }
         }
+
+        return status;
+    }
+
+    public String validateClientDiscount(CouponForm couponForm, MessageContext messageContext) {
+        LOG.info("Validate coupon title={}", couponForm.getDiscountId());
+        String status = LandingController.SUCCESS;
+
+        if (StringUtils.isBlank(couponForm.getDiscountId()) && couponForm.getDiscounts().isEmpty()) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("discountId")
+                    .defaultText("There are no discount available. Please first create discount & then create coupons based on these discounts")
+                    .build());
+            status = "failure";
+        } else if(StringUtils.isBlank(couponForm.getDiscountId()) && !couponForm.getDiscounts().isEmpty()) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("discountId")
+                    .defaultText("Please select a discount")
+                    .build());
+            status = "failure";
+        }
+
+        return status;
+    }
+
+    public String validateClient(CouponForm couponForm, MessageContext messageContext) {
+        LOG.info("Validate client title={}", couponForm.getDiscountId());
+        String status = LandingController.SUCCESS;
 
         return status;
     }

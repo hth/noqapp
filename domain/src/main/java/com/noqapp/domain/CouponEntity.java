@@ -2,12 +2,12 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.DiscountTypeEnum;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.beans.Transient;
 import java.util.Date;
 
 /**
@@ -71,6 +71,7 @@ public class CouponEntity extends BaseEntity {
     @Field("IB")
     private String couponIssuedByQID;
 
+    @Transient
     private String issuedBy;
 
     public String getBizNameId() {

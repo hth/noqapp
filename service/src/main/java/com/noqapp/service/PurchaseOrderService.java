@@ -9,6 +9,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.QueueEntity;
@@ -54,6 +55,7 @@ import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.service.exceptions.CouponCannotApplyException;
 import com.noqapp.service.exceptions.FailedTransactionException;
 import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
@@ -121,6 +123,7 @@ public class PurchaseOrderService {
     private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
     private QueueManager queueManager;
     private QueueManagerJDBC queueManagerJDBC;
+    private CouponService couponService;
     private UserAddressService userAddressService;
     private FirebaseMessageService firebaseMessageService;
     private RegisteredDeviceManager registeredDeviceManager;
@@ -148,12 +151,13 @@ public class PurchaseOrderService {
         PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC,
         QueueManager queueManager,
         QueueManagerJDBC queueManagerJDBC,
+        CouponService couponService,
+        UserAddressService userAddressService,
+        FirebaseMessageService firebaseMessageService,
         RegisteredDeviceManager registeredDeviceManager,
         TokenQueueManager tokenQueueManager,
         StoreProductService storeProductService,
         TokenQueueService tokenQueueService,
-        UserAddressService userAddressService,
-        FirebaseMessageService firebaseMessageService,
         AccountService accountService,
         TransactionService transactionService,
         NLPService nlpService,
@@ -174,6 +178,7 @@ public class PurchaseOrderService {
         this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
         this.queueManager = queueManager;
         this.queueManagerJDBC = queueManagerJDBC;
+        this.couponService = couponService;
         this.userAddressService = userAddressService;
         this.firebaseMessageService = firebaseMessageService;
         this.registeredDeviceManager = registeredDeviceManager;
@@ -607,6 +612,33 @@ public class PurchaseOrderService {
             return null;
         }
         return DateUtil.getDaysBetween(lastVisited, DateUtil.nowDate());
+    }
+
+    @Mobile
+    public JsonPurchaseOrder applyCoupon(String qid, String transactionId, String couponId) {
+        CouponEntity coupon = couponService.findById(couponId);
+        if (!coupon.getQid().equalsIgnoreCase(qid)) {
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+            if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
+                UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
+                if (!coupon.getQid().equalsIgnoreCase(guardianProfile.getQueueUserId())) {
+                    throw new CouponCannotApplyException("Cannot apply coupon " + coupon.getCouponCode());
+                }
+            }
+        }
+
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(transactionId);
+        switch (coupon.getDiscountType()) {
+            case F:
+                purchaseOrder.setStoreDiscount(coupon.getDiscountAmount());
+                break;
+            case P:
+                int discountToApply = Integer.valueOf(purchaseOrder.getOrderPrice()) - Integer.valueOf(purchaseOrder.getOrderPrice()) * coupon.getDiscountAmount() / 100;
+                purchaseOrder.setStoreDiscount(discountToApply);
+                break;
+        }
+
+        return purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
     }
 
     @Mobile
