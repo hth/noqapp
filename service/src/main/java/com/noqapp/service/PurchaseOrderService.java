@@ -616,7 +616,7 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public PurchaseOrderEntity applyCoupon(String qid, String transactionId, String couponId) {
+    public PurchaseOrderEntity applyCoupon(String qid, String transactionId, String couponId, String couponAddedByQid) {
         PurchaseOrderEntity purchaseOrder = removeCoupon(qid, transactionId);
         switch (purchaseOrder.getPaymentStatus()) {
             case MP:
@@ -629,7 +629,9 @@ public class PurchaseOrderService {
         }
 
         CouponEntity coupon = couponService.findById(couponId);
-        if (StringUtils.isNotBlank(coupon.getQid()) && !coupon.getQid().equalsIgnoreCase(qid)) {
+        if (StringUtils.isNotBlank(couponAddedByQid)) {
+            purchaseOrder.setCouponAddedByQid(couponAddedByQid);
+        } else if (StringUtils.isNotBlank(coupon.getQid()) && !coupon.getQid().equalsIgnoreCase(qid)) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
             if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
                 UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
@@ -638,6 +640,8 @@ public class PurchaseOrderService {
                 }
             }
             purchaseOrder.setCouponAddedByQid(qid);
+        } else {
+            LOG.warn("Not sure who is adding this coupon... bug {} {} {}", couponId, transactionId, couponAddedByQid);
         }
 
         switch (coupon.getDiscountType()) {
@@ -674,6 +678,7 @@ public class PurchaseOrderService {
             purchaseOrder
                 .setOrderPrice(String.valueOf(Integer.valueOf(purchaseOrder.getOrderPrice()) + purchaseOrder.getStoreDiscount()))
                 .setCouponId(null)
+                .setCouponAddedByQid(null)
                 .setStoreDiscount(0);
 
             purchaseOrderManager.save(purchaseOrder);
