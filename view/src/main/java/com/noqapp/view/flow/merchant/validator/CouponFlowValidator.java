@@ -51,7 +51,7 @@ public class CouponFlowValidator {
     }
 
     public String validateBusinessDiscount(CouponForm couponForm, MessageContext messageContext) {
-        LOG.info("Validate coupon title={}", couponForm.getDiscountId());
+        LOG.info("Validate business coupon title={}", couponForm.getDiscountId());
         String status = LandingController.SUCCESS;
 
         if (StringUtils.isBlank(couponForm.getDiscountId()) && couponForm.getDiscounts().isEmpty()) {
@@ -90,7 +90,7 @@ public class CouponFlowValidator {
     }
 
     public String validateBusinessCoupon(CouponForm couponForm, MessageContext messageContext) {
-        LOG.info("Validate coupon title={}", couponForm.getDiscountId());
+        LOG.info("Validate business coupon title={}", couponForm.getDiscountId());
         String status = LandingController.SUCCESS;
 
         if (StringUtils.isBlank(couponForm.getCouponStartDate())) {
