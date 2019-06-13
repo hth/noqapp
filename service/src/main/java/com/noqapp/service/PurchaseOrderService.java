@@ -56,6 +56,7 @@ import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.exceptions.CouponCannotApplyException;
+import com.noqapp.service.exceptions.CouponRemovalException;
 import com.noqapp.service.exceptions.FailedTransactionException;
 import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
@@ -650,6 +651,15 @@ public class PurchaseOrderService {
     @Mobile
     public PurchaseOrderEntity removeCoupon(String qid, String transactionId) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(transactionId);
+        switch (purchaseOrder.getPaymentStatus()) {
+            case PA:
+            case MP:
+            case FP:
+            case PR:
+                LOG.error("Cannot remove coupon {} {}", purchaseOrder.getTransactionId(), purchaseOrder.getPaymentStatus());
+                throw new CouponRemovalException("Cannot remove coupon");
+        }
+
         if (purchaseOrder.getQueueUserId().equalsIgnoreCase(qid) && StringUtils.isNotBlank(purchaseOrder.getCouponId())) {
             purchaseOrder
                 .setOrderPrice(String.valueOf(Integer.valueOf(purchaseOrder.getOrderPrice()) + purchaseOrder.getStoreDiscount()))
