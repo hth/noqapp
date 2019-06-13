@@ -45,6 +45,7 @@ public class CouponController {
     private String nextPage;
     private String upcomingPage;
     private String couponFlow;
+    private String couponForClientFlow;
 
     private UserProfileManager userProfileManager;
     private CouponService couponService;
@@ -58,8 +59,11 @@ public class CouponController {
         @Value("${nextPage:/business/coupon/upcoming}")
         String upcomingPage,
 
-        @Value("${couponFlow:redirect:/store/coupon.htm}")
+        @Value("${couponFlow:redirect:/store/coupon/couponBusiness.htm}")
         String couponFlow,
+
+        @Value("${couponForClientFlow:redirect:/store/coupon/couponClient.htm}")
+        String couponForClientFlow,
 
         UserProfileManager userProfileManager,
         CouponService couponService,
@@ -68,6 +72,7 @@ public class CouponController {
         this.nextPage = nextPage;
         this.upcomingPage = upcomingPage;
         this.couponFlow = couponFlow;
+        this.couponForClientFlow = couponForClientFlow;
 
         this.userProfileManager = userProfileManager;
         this.couponService = couponService;
@@ -134,9 +139,9 @@ public class CouponController {
         return couponFlow;
     }
 
-    @GetMapping(value = "/newCustomerCoupon", produces = "text/html;charset=UTF-8")
-    public String newCustomerCoupon() {
-        LOG.info("Landed to publish new customer coupon");
-        return couponFlow;
+    @GetMapping(value = "/newClientCoupon", produces = "text/html;charset=UTF-8")
+    public String newClientCoupon() {
+        LOG.info("Landed to publish new client coupon");
+        return couponForClientFlow;
     }
 }

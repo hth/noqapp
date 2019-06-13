@@ -17,21 +17,40 @@
     </view-state>
 
     <action-state id="validateDiscount">
-        <evaluate expression="couponFlowValidator.validateDiscount(couponForm, messageContext)"/>
-        <transition on="success" to="couponPopulate"/>
+        <evaluate expression="couponFlowValidator.validateClientDiscount(couponForm, messageContext)"/>
+        <transition on="success" to="couponFindClient"/>
         <transition on="failure" to="couponStart"/>
     </action-state>
 
+    <view-state id="couponFindClient" model="couponForm">
+        <transition on="submit" to="validateClient"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="validateClient">
+        <evaluate expression="couponFlowValidator.validateClient(couponForm, messageContext)"/>
+        <transition on="success" to="couponClientDetail"/>
+        <transition on="failure" to="couponFindClient"/>
+    </action-state>
+
+    <view-state id="couponClientDetail" model="couponForm">
+        <on-entry>
+            <evaluate expression="couponFlowActions.populateWithClientDetail(couponForm)"/>
+        </on-entry>
+        <transition on="submit" to="couponPopulate"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
     <view-state id="couponPopulate" model="couponForm">
         <on-entry>
-            <evaluate expression="couponFlowActions.populateCouponForm(couponForm)"/>
+            <evaluate expression="couponFlowActions.populateClientCouponForm(couponForm)"/>
         </on-entry>
         <transition on="submit" to="validateCoupon"/>
         <transition on="cancel" to="home"/>
     </view-state>
 
     <action-state id="validateCoupon">
-        <evaluate expression="couponFlowValidator.validateCoupon(couponForm, messageContext)"/>
+        <evaluate expression="couponFlowValidator.validateClientCoupon(couponForm, messageContext)"/>
         <transition on="success" to="couponReview"/>
         <transition on="failure" to="couponPopulate"/>
     </action-state>
@@ -43,7 +62,7 @@
     </view-state>
 
     <action-state id="confirm">
-        <evaluate expression="couponFlowActions.createCoupon(couponForm)"/>
+        <evaluate expression="couponFlowActions.createClientCoupon(couponForm)"/>
         <transition on="success" to="home"/>
         <transition on="failure" to="couponStart"/>
     </action-state>

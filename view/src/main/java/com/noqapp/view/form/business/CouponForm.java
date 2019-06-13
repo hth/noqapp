@@ -31,11 +31,15 @@ public class CouponForm implements Serializable {
     private String couponStartDate;
     private String couponEndDate;
     private boolean multiUse;
+    private String qid;
     private String couponIssuedByQID;
 
     private List<CouponEntity> coupons = new LinkedList<>();
     private List<DiscountEntity> discounts = new LinkedList<>();
     private Map<String, String> discountTypes = DiscountTypeEnum.asMapWithNameAsKey();
+    private String phoneRaw;
+    private String name;
+    private String address;
 
     public static CouponForm newInstance() {
         return new CouponForm();
@@ -158,6 +162,15 @@ public class CouponForm implements Serializable {
         return this;
     }
 
+    public String getQid() {
+        return qid;
+    }
+
+    public CouponForm setQid(String qid) {
+        this.qid = qid;
+        return this;
+    }
+
     public String getCouponIssuedByQID() {
         return couponIssuedByQID;
     }
@@ -196,6 +209,33 @@ public class CouponForm implements Serializable {
 
     public CouponForm setDiscountTypes(Map<String, String> discountTypes) {
         this.discountTypes = discountTypes;
+        return this;
+    }
+
+    public String getPhoneRaw() {
+        return phoneRaw;
+    }
+
+    public CouponForm setPhoneRaw(String phoneRaw) {
+        this.phoneRaw = phoneRaw;
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public CouponForm setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public CouponForm setAddress(String address) {
+        this.address = address;
         return this;
     }
 }

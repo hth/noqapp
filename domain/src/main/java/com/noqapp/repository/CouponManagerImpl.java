@@ -62,10 +62,11 @@ public class CouponManagerImpl implements CouponManager {
     public List<CouponEntity> findActiveByBizNameId(String bizNameId) {
         Date midnight = DateUtil.nowMidnightDate();
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId).andOperator(
-                where("SD").lte(midnight),
-                where("ED").gte(midnight)
-            ).and("A").is(true)),
+            query(where("BN").is(bizNameId)
+                .andOperator(
+                    where("SD").lte(midnight),
+                    where("ED").gte(midnight)
+                ).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );
@@ -73,9 +74,8 @@ public class CouponManagerImpl implements CouponManager {
 
     @Override
     public List<CouponEntity> findUpcomingByBizNameId(String bizNameId) {
-        Date midnight = DateUtil.nowMidnightDate();
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId).and("SD").gte(midnight).and("A").is(true)),
+            query(where("BN").is(bizNameId).and("SD").gte(DateUtil.nowMidnightDate()).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );
@@ -95,9 +95,27 @@ public class CouponManagerImpl implements CouponManager {
 
     @Override
     public List<CouponEntity> findExistingCouponWithDiscountId(String discountId) {
+        return mongoTemplate.find(
+            query(where("DI").is(discountId).and("ED").lte(DateUtil.nowMidnightDate()).and("A").is(true)),
+            CouponEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public CouponEntity findById(String couponId) {
+        return mongoTemplate.findById(couponId, CouponEntity.class, TABLE);
+    }
+
+    @Override
+    public List<CouponEntity> findActiveCouponByQID(String qid) {
         Date midnight = DateUtil.nowMidnightDate();
         return mongoTemplate.find(
-            query(where("DI").is(discountId).and("ED").lte(midnight).and("A").is(true)),
+            query(where("QID").is(qid)
+                .andOperator(
+                    where("SD").lte(midnight),
+                    where("ED").gte(midnight)
+                ).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );

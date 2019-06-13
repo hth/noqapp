@@ -14,10 +14,14 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
      * Gets currently active coupons.
      */
     List<CouponEntity> findActiveByBizNameId(String bizNameId);
-    
+
     List<CouponEntity> findUpcomingByBizNameId(String bizNameId);
 
     long inActiveCouponWithDiscountId(String discountId);
 
     List<CouponEntity> findExistingCouponWithDiscountId(String discountId);
+
+    CouponEntity findById(String couponId);
+
+    List<CouponEntity> findActiveCouponByQID(String qid);
 }

@@ -1,4 +1,4 @@
-<%@ include file="../../../jsp/include.jsp" %>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -68,11 +68,11 @@
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                <ul>
-                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <ul>
+                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
                                         <li>${message.text}</li>
-                                    </c:forEach>
-                                </ul>
+                                        </c:forEach>
+                                    </ul>
                                 </c:if>
                             </div>
                         </div>
@@ -82,16 +82,10 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="discountId" cssErrorClass="lb_error">Select Discount</form:label>
+                                            <form:label path="phoneRaw" cssErrorClass="lb_error">Phone Number of Client</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:select path="discountId" cssClass="form-field-select single-dropdown"
-                                                    cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                <form:option value="" label="--- Select ---"/>
-                                                <c:forEach items="${couponForm.discounts}" var="discount" varStatus="cnt">
-                                                    <option value="${discount.id}">${discount.discountName}</option>
-                                                </c:forEach>
-                                            </form:select>
+                                            <form:input path="phoneRaw" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

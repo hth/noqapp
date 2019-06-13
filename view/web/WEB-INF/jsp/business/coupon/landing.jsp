@@ -60,6 +60,7 @@
                         <div class="add-store">
                             <div class="addbtn-store">
                                 <a href="/business/coupon/upcoming.htm" class="add-btn">Upcoming Coupon</a>
+                                <a href="/business/coupon/newClientCoupon.htm" class="add-btn">Add New Client Coupon</a>
                                 <a href="/business/coupon/newBusinessCoupon.htm" class="add-btn">Add New Business Coupon</a>
                             </div>
                             <div class="store-table">

@@ -1,7 +1,12 @@
 package com.noqapp.view.flow.merchant.validator;
 
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.Formatter;
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.CouponEntity;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.BizService;
 import com.noqapp.service.CouponService;
 import com.noqapp.view.controller.access.LandingController;
 import com.noqapp.view.form.business.CouponForm;
@@ -31,22 +36,38 @@ public class CouponFlowValidator {
     private static final Logger LOG = LoggerFactory.getLogger(CouponFlowValidator.class);
 
     private CouponService couponService;
+    private AccountService accountService;
+    private BizService bizService;
 
     @Autowired
-    public CouponFlowValidator(CouponService couponService) {
+    public CouponFlowValidator(
+        CouponService couponService,
+        AccountService accountService,
+        BizService bizService
+    ) {
         this.couponService = couponService;
+        this.accountService = accountService;
+        this.bizService = bizService;
     }
 
-    public String validateDiscount(CouponForm couponForm, MessageContext messageContext) {
-        LOG.info("Validate coupon title={}", couponForm.getDiscountId());
+    public String validateBusinessDiscount(CouponForm couponForm, MessageContext messageContext) {
+        LOG.info("Validate business coupon title={}", couponForm.getDiscountId());
         String status = LandingController.SUCCESS;
 
-        if (StringUtils.isBlank(couponForm.getDiscountId())) {
+        if (StringUtils.isBlank(couponForm.getDiscountId()) && couponForm.getDiscounts().isEmpty()) {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
                     .source("discountId")
                     .defaultText("There are no discount available. Please first create discount & then create coupons based on these discounts")
+                    .build());
+            status = "failure";
+        } else if (StringUtils.isBlank(couponForm.getDiscountId()) && !couponForm.getDiscounts().isEmpty()) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("discountId")
+                    .defaultText("Please select a discount")
                     .build());
             status = "failure";
         } else {
@@ -68,8 +89,8 @@ public class CouponFlowValidator {
         return status;
     }
 
-    public String validateCoupon(CouponForm couponForm, MessageContext messageContext) {
-        LOG.info("Validate coupon title={}", couponForm.getDiscountId());
+    public String validateBusinessCoupon(CouponForm couponForm, MessageContext messageContext) {
+        LOG.info("Validate business coupon title={}", couponForm.getDiscountId());
         String status = LandingController.SUCCESS;
 
         if (StringUtils.isBlank(couponForm.getCouponStartDate())) {
@@ -153,6 +174,70 @@ public class CouponFlowValidator {
                 status = "failure";
             }
         }
+
+        return status;
+    }
+
+    public String validateClientDiscount(CouponForm couponForm, MessageContext messageContext) {
+        LOG.info("Validate coupon title={}", couponForm.getDiscountId());
+        String status = LandingController.SUCCESS;
+
+        if (StringUtils.isBlank(couponForm.getDiscountId()) && couponForm.getDiscounts().isEmpty()) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("discountId")
+                    .defaultText("There are no discount available. Please first create discount & then create coupons based on these discounts")
+                    .build());
+            status = "failure";
+        } else if (StringUtils.isBlank(couponForm.getDiscountId()) && !couponForm.getDiscounts().isEmpty()) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("discountId")
+                    .defaultText("Please select a discount")
+                    .build());
+            status = "failure";
+        }
+
+        return status;
+    }
+
+    public String validateClient(CouponForm couponForm, MessageContext messageContext) {
+        LOG.info("Validate client title={}", couponForm.getDiscountId());
+        String status = LandingController.SUCCESS;
+
+        if (StringUtils.isBlank(couponForm.getPhoneRaw())) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("phoneRaw")
+                    .defaultText("Please provide with a phone number to issue personal coupon")
+                    .build());
+            status = "failure";
+        } else {
+            BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
+            String phone = Formatter.phoneNumberWithCountryCode(couponForm.getPhoneRaw(), bizName.getCountryShortName());
+            UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
+
+            if (null == userProfile) {
+                LOG.warn("Could not find user with phone {} {}", couponForm.getPhoneRaw(), couponForm.getBizNamedId());
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("phoneRaw")
+                        .defaultText("Could not find user with phone " + couponForm.getPhoneRaw())
+                        .build());
+                status = "failure";
+            }
+        }
+
+        return status;
+    }
+
+    public String validateClientCoupon(CouponForm couponForm, MessageContext messageContext) {
+        LOG.info("Validate client title={}", couponForm.getDiscountId());
+        String status = validateBusinessCoupon(couponForm, messageContext);
 
         return status;
     }

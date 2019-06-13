@@ -1,4 +1,4 @@
-<%@ include file="../../../jsp/include.jsp" %>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -70,7 +70,7 @@
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                                     <ul>
                                         <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                        <li>${message.text}</li>
+                                            <li>${message.text}</li>
                                         </c:forEach>
                                     </ul>
                                 </c:if>
@@ -143,7 +143,7 @@
                                             <form:label path="couponStartDate" cssErrorClass="lb_error">Coupon Start Date</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="couponStartDate" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field" placeholder="YYYY-MM-DD"/>
+                                            <form:input path="couponStartDate" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field" placeholder="YYYY-MM-DD" readonly="true"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -152,7 +152,25 @@
                                             <form:label path="couponEndDate" cssErrorClass="lb_error">Coupon End Date</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="couponEndDate" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field" placeholder="YYYY-MM-DD"/>
+                                            <form:input path="couponEndDate" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field" placeholder="YYYY-MM-DD" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="phoneRaw" cssErrorClass="lb_error">Customer Phone</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="phoneRaw" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="name" cssErrorClass="lb_error">Customer Name</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -162,8 +180,9 @@
 
                                 <div class="col-fields">
                                     <div class="button-btn">
-                                        <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
-                                        <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                        <button name="_eventId_confirm" class="ladda-button next-btn" style="width:32%; float: left">Confirm</button>
+                                        <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>
+                                        <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
                                     </div>
                                     <div class="clearFix"></div>
                                 </div>
