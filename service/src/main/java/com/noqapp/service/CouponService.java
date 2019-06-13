@@ -45,12 +45,12 @@ public class CouponService {
         couponManager.save(coupon);
     }
 
-    public List<CouponEntity> findActiveByBizNameId(String bizNameId) {
-        return couponManager.findActiveByBizNameId(bizNameId);
+    public List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId) {
+        return couponManager.findActiveBusinessCouponByBizNameId(bizNameId);
     }
 
-    public List<CouponEntity> findUpcomingByBizNameId(String bizNameId) {
-        return couponManager.findUpcomingByBizNameId(bizNameId);
+    public List<CouponEntity> findUpcomingBusinessCouponByBizNameId(String bizNameId) {
+        return couponManager.findUpcomingBusinessCouponByBizNameId(bizNameId);
     }
 
     public List<CouponEntity> findExistingCouponWithDiscountId(String discountId) {
@@ -64,7 +64,7 @@ public class CouponService {
     @Mobile
     public JsonCouponList findActiveBusinessCouponAsJson(String codeQR) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        List<CouponEntity> coupons = findActiveByBizNameId(bizStore.getBizName().getId());
+        List<CouponEntity> coupons = findActiveBusinessCouponByBizNameId(bizStore.getBizName().getId());
 
         JsonCouponList jsonDiscountList = new JsonCouponList();
         for (CouponEntity coupon : coupons) {
@@ -87,7 +87,7 @@ public class CouponService {
 
     @Mobile
     public JsonCouponList findActiveClientCouponByQIDAsJson(String qid) {
-        List<CouponEntity> coupons = couponManager.findActiveCouponByQID(qid);
+        List<CouponEntity> coupons = couponManager.findActiveClientCouponByQID(qid);
 
         JsonCouponList jsonDiscountList = new JsonCouponList();
         for (CouponEntity coupon : coupons) {

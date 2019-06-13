@@ -59,10 +59,10 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public List<CouponEntity> findActiveByBizNameId(String bizNameId) {
+    public List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId) {
         Date midnight = DateUtil.nowMidnightDate();
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId)
+            query(where("BN").is(bizNameId).and("QID").exists(false)
                 .andOperator(
                     where("SD").lte(midnight),
                     where("ED").gte(midnight)
@@ -73,9 +73,9 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public List<CouponEntity> findUpcomingByBizNameId(String bizNameId) {
+    public List<CouponEntity> findUpcomingBusinessCouponByBizNameId(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId).and("SD").gte(DateUtil.nowMidnightDate()).and("A").is(true)),
+            query(where("BN").is(bizNameId).and("QID").exists(false).and("SD").gte(DateUtil.nowMidnightDate()).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );
@@ -108,7 +108,7 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public List<CouponEntity> findActiveCouponByQID(String qid) {
+    public List<CouponEntity> findActiveClientCouponByQID(String qid) {
         Date midnight = DateUtil.nowMidnightDate();
         return mongoTemplate.find(
             query(where("QID").is(qid)
