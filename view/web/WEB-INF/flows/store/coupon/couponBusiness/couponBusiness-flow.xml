@@ -17,7 +17,7 @@
     </view-state>
 
     <action-state id="validateDiscount">
-        <evaluate expression="couponFlowValidator.validateDiscount(couponForm, messageContext)"/>
+        <evaluate expression="couponFlowValidator.validateBusinessDiscount(couponForm, messageContext)"/>
         <transition on="success" to="couponPopulate"/>
         <transition on="failure" to="couponStart"/>
     </action-state>
@@ -31,7 +31,7 @@
     </view-state>
 
     <action-state id="validateCoupon">
-        <evaluate expression="couponFlowValidator.validateCoupon(couponForm, messageContext)"/>
+        <evaluate expression="couponFlowValidator.validateBusinessCoupon(couponForm, messageContext)"/>
         <transition on="success" to="couponReview"/>
         <transition on="failure" to="couponPopulate"/>
     </action-state>

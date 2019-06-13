@@ -30,7 +30,7 @@
     <action-state id="validateClient">
         <evaluate expression="couponFlowValidator.validateClient(couponForm, messageContext)"/>
         <transition on="success" to="couponClientDetail"/>
-        <transition on="failure" to="couponStart"/>
+        <transition on="failure" to="couponFindClient"/>
     </action-state>
 
     <view-state id="couponClientDetail" model="couponForm">
@@ -50,7 +50,7 @@
     </view-state>
 
     <action-state id="validateCoupon">
-        <evaluate expression="couponFlowValidator.validateCoupon(couponForm, messageContext)"/>
+        <evaluate expression="couponFlowValidator.validateClientCoupon(couponForm, messageContext)"/>
         <transition on="success" to="couponReview"/>
         <transition on="failure" to="couponPopulate"/>
     </action-state>
