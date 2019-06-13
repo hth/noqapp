@@ -633,11 +633,13 @@ public class PurchaseOrderService {
                 purchaseOrder.setStoreDiscount(coupon.getDiscountAmount());
                 break;
             case P:
-                int discountToApply = Integer.valueOf(purchaseOrder.getOrderPrice()) - Integer.valueOf(purchaseOrder.getOrderPrice()) * coupon.getDiscountAmount() / 100;
+                int discountToApply = Integer.valueOf(purchaseOrder.getOrderPrice()) * coupon.getDiscountAmount() / 100;
                 purchaseOrder.setStoreDiscount(discountToApply);
                 break;
         }
 
+        int afterDiscount = Integer.valueOf(purchaseOrder.getOrderPrice()) - purchaseOrder.getStoreDiscount();
+        purchaseOrder.setOrderPrice(String.valueOf(afterDiscount));
         return purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
     }
 

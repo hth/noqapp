@@ -142,12 +142,22 @@ public class DiscountController {
                     return "redirect:/business/discount/add.htm";
                 }
 
+                int amount = 0;
+                switch (discountForm.getDiscountType()) {
+                    case F:
+                        amount = discountForm.getDiscountAmount() * 100;
+                        break;
+                    case P:
+                        amount = discountForm.getDiscountAmount();
+                        break;
+                }
+
                 DiscountEntity discount = new DiscountEntity()
                     .setBizNameId(businessUser.getBizName().getId())
                     .setDiscountName(discountForm.getDiscountName())
                     .setDiscountDescription(discountForm.getDiscountDescription())
                     .setDiscountType(discountForm.getDiscountType())
-                    .setDiscountAmount(discountForm.getDiscountAmount());
+                    .setDiscountAmount(amount);
                 discountService.save(discount);
                 break;
             case INACTIVE:
