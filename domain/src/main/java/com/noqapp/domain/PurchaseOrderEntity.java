@@ -1,6 +1,7 @@
 package com.noqapp.domain;
 
 import com.noqapp.common.utils.MathUtil;
+import com.noqapp.domain.annotation.DBMapping;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
@@ -42,15 +43,20 @@ import java.util.List;
 })
 public class PurchaseOrderEntity extends BaseEntity {
 
+
+    @DBMapping
     @Field("QID")
     private String queueUserId;
 
+    @DBMapping
     @Field("BS")
     private String bizStoreId;
 
+    @DBMapping
     @Field("BN")
     private String bizNameId;
 
+    @DBMapping
     @Field("QR")
     private String codeQR;
 
@@ -59,36 +65,45 @@ public class PurchaseOrderEntity extends BaseEntity {
      * Or
      * Guardian's DID.
      */
+    @DBMapping
     @Field ("DID")
     private String did;
 
     @Field("CN")
     private String customerName;
 
+    @DBMapping
     @Field("DA")
     private String deliveryAddress;
 
     @Field("CP")
     private String customerPhone;
 
+    @DBMapping
     @Field("SD")
     private int storeDiscount;
 
+    @DBMapping
     @Field("PP")
     private String partialPayment;
 
+    @DBMapping
     @Field("OP")
     private String orderPrice;
 
+    @DBMapping
     @Field("DM")
     private DeliveryModeEnum deliveryMode;
 
+    @DBMapping
     @Field("PM")
     private PaymentModeEnum paymentMode;
 
+    @DBMapping
     @Field("PY")
     private PaymentStatusEnum paymentStatus = PaymentStatusEnum.PP;
 
+    @DBMapping
     @Field("PS")
     private PurchaseOrderStateEnum presentOrderState = PurchaseOrderStateEnum.IN;
 
@@ -101,27 +116,35 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("OS")
     private List<PurchaseOrderStateEnum> orderStates = new LinkedList<PurchaseOrderStateEnum>() {{add(PurchaseOrderStateEnum.IN);}};
 
+    @DBMapping
     @Field ("BT")
     private BusinessTypeEnum businessType;
 
+    @DBMapping
     @Field ("PQ")
     private String partialPaymentAcceptedByQid;
 
+    @DBMapping
     @Field ("FQ")
     private String fullPaymentAcceptedByQid;
 
+    @DBMapping
     @Field ("CQ")
     private String couponAddedByQid;
 
+    @DBMapping
     @Field("CI")
     private String couponId;
 
+    @DBMapping
     @Field ("RA")
     private int ratingCount;
 
+    @DBMapping
     @Field ("RV")
     private String review;
 
+    @DBMapping
     @Field ("ST")
     private SentimentTypeEnum sentimentType;
 
@@ -131,19 +154,23 @@ public class PurchaseOrderEntity extends BaseEntity {
      * TODO(hth) There is a possibility of having same token number in purchase order, please validate as this happened for Queue.
      * Do no rely on tokenNumber when dealing with transactions. Instead use transaction id for all transaction and qid.
      */
+    @DBMapping
     @Field ("TN")
     private int tokenNumber;
 
     /* Locked when being served. */
+    @DBMapping
     @Field ("SN")
     private String serverName;
 
     @Field ("SID")
     private String serverDeviceId;
 
+    @DBMapping
     @Field ("SB")
     private Date serviceBeginTime;
 
+    @DBMapping
     @Field ("SE")
     private Date serviceEndTime;
 
@@ -156,21 +183,27 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field ("VS")
     private boolean clientVisitedThisStore;
 
+    @DBMapping
     @Field ("TI")
     private String transactionId;
 
+    @DBMapping
     @Field("DN")
     private String displayName;
 
+    @DBMapping
     @Field("AN")
     private String additionalNote;
 
+    @DBMapping
     @Field("TM")
     private String transactionMessage;
 
+    @DBMapping
     @Field("TR")
     private String transactionReferenceId;
 
+    @DBMapping
     @Field("TV")
     private TransactionViaEnum transactionVia;
 

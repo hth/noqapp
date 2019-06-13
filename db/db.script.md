@@ -68,6 +68,8 @@ as a value, then it gets endless connections.
         BT CHAR(2)          NOT NULL, 
         PQ VARCHAR(13),
         FQ VARCHAR(13),
+        CQ VARCHAR(13),
+        CI VARCHAR(24),
         SN VARCHAR(12),
         SB DATETIME,
         SE DATETIME,

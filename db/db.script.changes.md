@@ -1,3 +1,11 @@
+### Change June 4 2019
+
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `CQ` VARCHAR(13) AFTER `FQ`;
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `CI` VARCHAR(24) AFTER `CQ`;
+
 ### Change May 21 2019
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT` 
