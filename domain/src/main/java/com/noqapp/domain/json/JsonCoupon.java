@@ -58,6 +58,9 @@ public class JsonCoupon extends AbstractDomain {
     @JsonProperty("mu")
     private boolean multiUse;
 
+    @JsonProperty("qid")
+    private String qid;
+
     public String getCouponId() {
         return couponId;
     }
@@ -145,6 +148,15 @@ public class JsonCoupon extends AbstractDomain {
 
     public JsonCoupon setMultiUse(boolean multiUse) {
         this.multiUse = multiUse;
+        return this;
+    }
+
+    public String getQid() {
+        return qid;
+    }
+
+    public JsonCoupon setQid(String qid) {
+        this.qid = qid;
         return this;
     }
 }

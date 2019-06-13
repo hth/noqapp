@@ -22,4 +22,6 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
     List<CouponEntity> findExistingCouponWithDiscountId(String discountId);
 
     CouponEntity findById(String couponId);
+
+    List<CouponEntity> findActiveCouponByQID(String qid);
 }
