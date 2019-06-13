@@ -1,4 +1,4 @@
-<%@ include file="../../../jsp/include.jsp" %>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -70,7 +70,7 @@
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                                     <ul>
                                         <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
+                                        <li>${message.text}</li>
                                         </c:forEach>
                                     </ul>
                                 </c:if>
@@ -85,25 +85,7 @@
                                             <form:label path="phoneRaw" cssErrorClass="lb_error">Phone Number of Client</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="phoneRaw" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="name" cssErrorClass="lb_error">Name</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="address" cssErrorClass="lb_error">Address</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="address" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                            <form:input path="phoneRaw" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

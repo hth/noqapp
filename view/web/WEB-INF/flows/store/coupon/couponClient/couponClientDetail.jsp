@@ -1,4 +1,4 @@
-<%@ include file="../../../jsp/include.jsp" %>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -82,83 +82,7 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="discountName" cssErrorClass="lb_error">Coupon Name</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="discountName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="discountDescription" cssErrorClass="lb_error">Coupon Description</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="discountDescription" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="discountAmount" cssErrorClass="lb_error">Coupon Amount</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="discountAmount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="discountType" cssErrorClass="lb_error">Coupon Type</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:select path="discountType" cssClass="form-field-select single-dropdown"
-                                                    cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                <form:options items="${couponForm.discountTypes}" disabled="true"/>
-                                            </form:select>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="couponCode" cssErrorClass="lb_error">Coupon Code</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="couponCode" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="multiUse" cssErrorClass="lb_error">Coupon Multi-use</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:checkbox path="multiUse" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true"/>
-                                            <span style="display:block; font-size:14px;">(When checked, can be used mutiple times over)</span>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="couponStartDate" cssErrorClass="lb_error">Coupon Start Date</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="couponStartDate" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field" placeholder="YYYY-MM-DD" readonly="true"/>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="couponEndDate" cssErrorClass="lb_error">Coupon End Date</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="couponEndDate" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field" placeholder="YYYY-MM-DD" readonly="true"/>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="phoneRaw" cssErrorClass="lb_error">Customer Phone</form:label>
+                                            <form:label path="phoneRaw" cssErrorClass="lb_error">Phone Number of Client</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="phoneRaw" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
@@ -167,10 +91,19 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="name" cssErrorClass="lb_error">Customer Name</form:label>
+                                            <form:label path="name" cssErrorClass="lb_error">Name</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="address" cssErrorClass="lb_error">Address</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="address" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -180,9 +113,8 @@
 
                                 <div class="col-fields">
                                     <div class="button-btn">
-                                        <button name="_eventId_confirm" class="ladda-button next-btn" style="width:32%; float: left">Confirm</button>
-                                        <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>
-                                        <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
+                                        <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
+                                        <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                     </div>
                                     <div class="clearFix"></div>
                                 </div>

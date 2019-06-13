@@ -1,4 +1,4 @@
-<%@ include file="../../../jsp/include.jsp" %>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -121,7 +121,7 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="couponCode" cssErrorClass="lb_error">Coupon Amount</form:label>
+                                            <form:label path="couponCode" cssErrorClass="lb_error">Coupon Code</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="couponCode" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
@@ -153,6 +153,24 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="couponEndDate" cssClass="datepicker form-field-admin" cssErrorClass="datepicker form-field-admin error-field" placeholder="YYYY-MM-DD" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="phoneRaw" cssErrorClass="lb_error">Customer Phone</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="phoneRaw" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="name" cssErrorClass="lb_error">Customer Name</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
