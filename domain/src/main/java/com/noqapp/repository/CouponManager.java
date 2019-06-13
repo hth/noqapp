@@ -13,9 +13,9 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
     /**
      * Gets currently active coupons.
      */
-    List<CouponEntity> findActiveByBizNameId(String bizNameId);
+    List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId);
 
-    List<CouponEntity> findUpcomingByBizNameId(String bizNameId);
+    List<CouponEntity> findUpcomingBusinessCouponByBizNameId(String bizNameId);
 
     long inActiveCouponWithDiscountId(String discountId);
 
@@ -23,5 +23,5 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
 
     CouponEntity findById(String couponId);
 
-    List<CouponEntity> findActiveCouponByQID(String qid);
+    List<CouponEntity> findActiveClientCouponByQID(String qid);
 }

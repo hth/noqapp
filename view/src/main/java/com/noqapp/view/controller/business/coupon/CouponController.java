@@ -96,7 +96,7 @@ public class CouponController {
         LOG.info("Landed on active coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        List<CouponEntity> coupons = couponService.findActiveByBizNameId(businessUser.getBizName().getId());
+        List<CouponEntity> coupons = couponService.findActiveBusinessCouponByBizNameId(businessUser.getBizName().getId());
         for (CouponEntity coupon : coupons) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(coupon.getCouponIssuedByQID());
             coupon.setIssuedBy(userProfile.getName());
@@ -123,7 +123,7 @@ public class CouponController {
         LOG.info("Landed on upcoming coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        List<CouponEntity> coupons = couponService.findUpcomingByBizNameId(businessUser.getBizName().getId());
+        List<CouponEntity> coupons = couponService.findUpcomingBusinessCouponByBizNameId(businessUser.getBizName().getId());
         for (CouponEntity coupon : coupons) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(coupon.getCouponIssuedByQID());
             coupon.setIssuedBy(userProfile.getName());
