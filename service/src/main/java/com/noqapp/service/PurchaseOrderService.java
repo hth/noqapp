@@ -618,6 +618,15 @@ public class PurchaseOrderService {
     @Mobile
     public PurchaseOrderEntity applyCoupon(String qid, String transactionId, String couponId) {
         PurchaseOrderEntity purchaseOrder = removeCoupon(qid, transactionId);
+        switch (purchaseOrder.getPaymentStatus()) {
+            case MP:
+            case PA:
+            case FP:
+            case PC:
+            case PR:
+                LOG.error("Cannot apply coupon {} {}", purchaseOrder.getTransactionId(), purchaseOrder.getPaymentStatus());
+                throw new CouponCannotApplyException("Cannot apply coupon");
+        }
 
         CouponEntity coupon = couponService.findById(couponId);
         if (StringUtils.isNotBlank(coupon.getQid()) && !coupon.getQid().equalsIgnoreCase(qid)) {
@@ -652,9 +661,10 @@ public class PurchaseOrderService {
     public PurchaseOrderEntity removeCoupon(String qid, String transactionId) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(transactionId);
         switch (purchaseOrder.getPaymentStatus()) {
-            case PA:
             case MP:
+            case PA:
             case FP:
+            case PC:
             case PR:
                 LOG.error("Cannot remove coupon {} {}", purchaseOrder.getTransactionId(), purchaseOrder.getPaymentStatus());
                 throw new CouponRemovalException("Cannot remove coupon");
