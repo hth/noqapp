@@ -609,7 +609,7 @@ public class PurchaseOrderService {
     /** Days between now and previous visit. */
     private Integer daysBetweenService(String qid, BizStoreEntity bizStore) {
         Date lastVisited = purchaseOrderManagerJDBC.clientVisitedStoreAndServicedDate(bizStore.getCodeQR(), qid);
-        if (lastVisited == null) {
+        if (null == lastVisited) {
             return null;
         }
         return DateUtil.getDaysBetween(lastVisited, DateUtil.nowDate());
@@ -655,9 +655,16 @@ public class PurchaseOrderService {
         }
 
         int afterDiscount = Integer.valueOf(purchaseOrder.getOrderPrice()) - purchaseOrder.getStoreDiscount();
-        purchaseOrder.setOrderPrice(String.valueOf(afterDiscount))
+        purchaseOrder
+            .setOrderPrice(String.valueOf(afterDiscount))
             .setCouponId(couponId);
         purchaseOrderManager.save(purchaseOrder);
+
+        /* Mark coupon inactive when not set for multi use. */
+        if (!coupon.isMultiUse()) {
+            coupon.inActive();
+            couponService.save(coupon);
+        }
         return purchaseOrder;
     }
 
