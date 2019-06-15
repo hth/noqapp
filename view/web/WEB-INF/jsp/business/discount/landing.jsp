@@ -69,8 +69,7 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
-                                        <th nowrap>Name</th>
-                                        <th nowrap>Description</th>
+                                        <th nowrap>Name & Description</th>
                                         <th>Discount</th>
                                         <th>Discount Type</th>
                                         <th>Coupon Type</th>
@@ -80,8 +79,11 @@
                                     <c:forEach items="${discountForm.discounts}" var="discount" varStatus="status">
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
-                                        <td nowrap>${discount.discountName}</td>
-                                        <td nowrap>${discount.discountDescription}</td>
+                                        <td nowrap>
+                                            ${discount.discountName}
+                                            <br/>
+                                            ${discount.discountDescription}
+                                        </td>
                                         <td nowrap align="left">
                                             <c:choose>
                                                 <c:when test="${discount.discountType eq DiscountTypeEnum.F}">
