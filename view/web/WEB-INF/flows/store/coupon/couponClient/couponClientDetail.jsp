@@ -56,21 +56,14 @@
                     <form:form modelAttribute="couponForm">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <c:choose>
-                                <c:when test="${!empty couponForm.couponId}">
-                                    <h2>Edit Coupon</h2>
-                                </c:when>
-                                <c:otherwise>
-                                    <h2>Add Coupon</h2>
-                                </c:otherwise>
-                            </c:choose>
+                            <h2>Add Coupon</h2>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                                     <ul>
                                         <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
+                                        <li>${message.text}</li>
                                         </c:forEach>
                                     </ul>
                                 </c:if>

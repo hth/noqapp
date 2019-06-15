@@ -63,7 +63,7 @@
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                                 <ul>
                                     <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                        <li>${message.text}</li>
+                                    <li>${message.text}</li>
                                     </c:forEach>
                                 </ul>
                                 </c:if>
