@@ -104,9 +104,10 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public List<CouponEntity> findExistingCouponWithDiscountId(String discountId) {
-        return mongoTemplate.find(
-            query(where("DI").is(discountId).and("ED").lte(DateUtil.nowMidnightDate()).and("A").is(true)),
+    public long countActiveCouponWithDiscountId(String discountId) {
+        Instant midnight = DateUtil.nowMidnightDate().toInstant();
+        return mongoTemplate.count(
+            query(where("DI").is(discountId).and("ED").gte(midnight).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );

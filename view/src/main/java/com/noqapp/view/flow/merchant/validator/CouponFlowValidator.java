@@ -3,11 +3,12 @@ package com.noqapp.view.flow.merchant.validator;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizNameEntity;
-import com.noqapp.domain.CouponEntity;
+import com.noqapp.domain.DiscountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.CouponService;
+import com.noqapp.service.DiscountService;
 import com.noqapp.view.controller.access.LandingController;
 import com.noqapp.view.form.business.CouponForm;
 
@@ -25,7 +26,6 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.List;
 
 /**
  * User: hitender
@@ -36,16 +36,19 @@ public class CouponFlowValidator {
     private static final Logger LOG = LoggerFactory.getLogger(CouponFlowValidator.class);
 
     private CouponService couponService;
+    private DiscountService discountService;
     private AccountService accountService;
     private BizService bizService;
 
     @Autowired
     public CouponFlowValidator(
         CouponService couponService,
+        DiscountService discountService,
         AccountService accountService,
         BizService bizService
     ) {
         this.couponService = couponService;
+        this.discountService = discountService;
         this.accountService = accountService;
         this.bizService = bizService;
     }
@@ -71,17 +74,16 @@ public class CouponFlowValidator {
                     .build());
             status = "failure";
         } else {
-            List<CouponEntity> coupons = couponService.findExistingCouponWithDiscountId(couponForm.getDiscountId());
-            if (coupons.size() > 0) {
+            long couponCountWithSimilarDiscountId = couponService.countActiveCouponWithDiscountId(couponForm.getDiscountId());
+            if (couponCountWithSimilarDiscountId > 0) {
+                DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()
                         .source("discountId")
-                        .defaultText(coupons.size() + " existing that refers to discount name " + couponForm.getDiscountId())
+                        .defaultText(couponCountWithSimilarDiscountId + " coupons already existing that refers to discount name " + discount.getDiscountName())
                         .build());
 
-
-                couponForm.setCoupons(coupons);
                 status = "failure";
             }
         }
