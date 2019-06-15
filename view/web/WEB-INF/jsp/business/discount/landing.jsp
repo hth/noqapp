@@ -99,23 +99,23 @@
                                         <td>${discount.usageCount}</td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${discount.active}">
-                                                    <form:form action="${pageContext.request.contextPath}/business/discount/action.htm" modelAttribute="discountForm" method="post">
-                                                        <form:hidden path="actionType" value="${ActionTypeEnum.INACTIVE}" />
-                                                        <form:hidden path="discountId" value="${discount.id}" />
-                                                        <input class="cancel-btn" style="margin: 0;" value="In-Active" type="submit">
-                                                    </form:form>
-                                                </c:when>
-                                                <c:when test="${discount.canDeletedAfterDays > 0}">
-                                                    Available to delete in ${discount.canDeletedAfterDays} days
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <form:form action="${pageContext.request.contextPath}/business/discount/action.htm" modelAttribute="discountForm" method="post">
-                                                        <form:hidden path="actionType" value="${ActionTypeEnum.REMOVE}" />
-                                                        <form:hidden path="discountId" value="${discount.id}" />
-                                                        <input class="cancel-btn" style="margin: 0;" value="Delete" type="submit">
-                                                    </form:form>
-                                                </c:otherwise>
+                                            <c:when test="${discount.active}">
+                                                <form:form action="${pageContext.request.contextPath}/business/discount/action.htm" modelAttribute="discountForm" method="post">
+                                                    <form:hidden path="actionType" value="${ActionTypeEnum.INACTIVE}" />
+                                                    <form:hidden path="discountId" value="${discount.id}" />
+                                                    <input class="cancel-btn" style="margin: 0;" value="In-Active" type="submit">
+                                                </form:form>
+                                            </c:when>
+                                            <c:when test="${discount.canDeletedAfterDays > 0}">
+                                                Available to delete in ${discount.canDeletedAfterDays} days
+                                            </c:when>
+                                            <c:otherwise>
+                                                <form:form action="${pageContext.request.contextPath}/business/discount/action.htm" modelAttribute="discountForm" method="post">
+                                                    <form:hidden path="actionType" value="${ActionTypeEnum.REMOVE}" />
+                                                    <form:hidden path="discountId" value="${discount.id}" />
+                                                    <input class="cancel-btn" style="margin: 0;" value="Delete" type="submit">
+                                                </form:form>
+                                            </c:otherwise>
                                             </c:choose>
                                         </td>
                                     </tr>
