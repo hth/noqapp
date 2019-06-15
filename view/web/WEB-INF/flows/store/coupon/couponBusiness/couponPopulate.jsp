@@ -61,11 +61,11 @@
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                    <ul>
-                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                        <li>${message.text}</li>
-                                        </c:forEach>
-                                    </ul>
+                                <ul>
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <li>${message.text}</li>
+                                    </c:forEach>
+                                </ul>
                                 </c:if>
                             </div>
                         </div>
