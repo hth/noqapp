@@ -74,30 +74,21 @@ public class CouponFlowActions {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
+        BizNameEntity bizName = bizService.getByBizNameId(discount.getBizNameId());
         couponForm.setBizNamedId(discount.getBizNameId())
             .setCouponCode(RandomString.newInstance(6).nextString())
             .setDiscountName(discount.getDiscountName())
             .setDiscountDescription(discount.getDiscountDescription())
             .setDiscountAmount(discount.getDiscountAmount())
             .setDiscountType(discount.getDiscountType())
-            .setMultiUse(true)
+            .setCouponType(discount.getCouponType())
+            .setMultiUse(true) //By default it should be multi use
+            .setCoordinate(bizName.getCoordinate())
             .setCouponIssuedByQID(queueUser.getQueueUserId());
     }
 
     public void createBusinessCoupon(CouponForm couponForm) {
-        CouponEntity coupon = new CouponEntity()
-            .setBizNameId(couponForm.getBizNamedId())
-            .setDiscountId(couponForm.getDiscountId())
-            .setCouponCode(couponForm.getCouponCode())
-            .setDiscountName(couponForm.getDiscountName())
-            .setDiscountDescription(couponForm.getDiscountDescription())
-            .setDiscountAmount(couponForm.getDiscountAmount())
-            .setDiscountType(couponForm.getDiscountType())
-            .setCouponStartDate(DateUtil.convertToDate(couponForm.getCouponStartDate(), ZoneOffset.UTC))
-            .setCouponEndDate(DateUtil.convertToDate(couponForm.getCouponEndDate(), ZoneOffset.UTC))
-            .setMultiUse(couponForm.isMultiUse())
-            .setCouponIssuedByQID(couponForm.getCouponIssuedByQID());
-
+        CouponEntity coupon = populateCommonCoupon(couponForm);
         couponService.save(coupon);
     }
 
@@ -120,12 +111,19 @@ public class CouponFlowActions {
             .setDiscountDescription(discount.getDiscountDescription())
             .setDiscountAmount(discount.getDiscountAmount())
             .setDiscountType(discount.getDiscountType())
+            .setCouponType(discount.getCouponType())
             .setMultiUse(false)
             .setCouponIssuedByQID(queueUser.getQueueUserId());
     }
 
     public void createClientCoupon(CouponForm couponForm) {
-        CouponEntity coupon = new CouponEntity()
+        CouponEntity coupon = populateCommonCoupon(couponForm);
+        coupon.setQid(couponForm.getQid());
+        couponService.save(coupon);
+    }
+
+    private CouponEntity populateCommonCoupon(CouponForm couponForm) {
+        return new CouponEntity()
             .setBizNameId(couponForm.getBizNamedId())
             .setDiscountId(couponForm.getDiscountId())
             .setCouponCode(couponForm.getCouponCode())
@@ -133,12 +131,11 @@ public class CouponFlowActions {
             .setDiscountDescription(couponForm.getDiscountDescription())
             .setDiscountAmount(couponForm.getDiscountAmount())
             .setDiscountType(couponForm.getDiscountType())
+            .setCouponType(couponForm.getCouponType())
             .setCouponStartDate(DateUtil.convertToDate(couponForm.getCouponStartDate(), ZoneOffset.UTC))
             .setCouponEndDate(DateUtil.convertToDate(couponForm.getCouponEndDate(), ZoneOffset.UTC))
             .setMultiUse(couponForm.isMultiUse())
-            .setQid(couponForm.getQid())
+            .setCoordinate(couponForm.getCoordinate())
             .setCouponIssuedByQID(couponForm.getCouponIssuedByQID());
-
-        couponService.save(coupon);
     }
 }

@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -12,6 +13,7 @@ import com.noqapp.domain.DiscountEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
@@ -58,7 +60,7 @@ public class DiscountManagerImpl implements DiscountManager {
     @Override
     public List<DiscountEntity> findAll(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId)),
+            query(where("BN").is(bizNameId)).with(new Sort(ASC, "DN")),
             DiscountEntity.class,
             TABLE
         );
@@ -67,7 +69,7 @@ public class DiscountManagerImpl implements DiscountManager {
     @Override
     public List<DiscountEntity> findAllActive(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId).and("A").is(true)),
+            query(where("BN").is(bizNameId).and("A").is(true)).with(new Sort(ASC, "DN")),
             DiscountEntity.class,
             TABLE
         );

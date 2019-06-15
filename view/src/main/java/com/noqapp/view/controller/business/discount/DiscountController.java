@@ -5,6 +5,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.DiscountEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.repository.CouponManager;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.DiscountService;
 import com.noqapp.view.form.business.DiscountForm;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,6 +52,7 @@ public class DiscountController {
     private DiscountValidator discountValidator;
     private DiscountService discountService;
     private BusinessUserService businessUserService;
+    private CouponManager couponManager;
 
     @Autowired
     public DiscountController(
@@ -61,7 +64,8 @@ public class DiscountController {
 
         DiscountValidator discountValidator,
         DiscountService discountService,
-        BusinessUserService businessUserService
+        BusinessUserService businessUserService,
+        CouponManager couponManager
     ) {
         this.nextPage = nextPage;
         this.discountPage = discountPage;
@@ -69,6 +73,7 @@ public class DiscountController {
         this.discountValidator = discountValidator;
         this.discountService = discountService;
         this.businessUserService = businessUserService;
+        this.couponManager = couponManager;
     }
 
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
@@ -88,8 +93,11 @@ public class DiscountController {
         LOG.info("Landed on discount page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        discountForm.setDiscounts(discountService.findAll(businessUser.getBizName().getId()));
-
+        List<DiscountEntity> discounts = discountService.findAll(businessUser.getBizName().getId());
+        for (DiscountEntity discount : discounts) {
+            discount.setUsageCount(couponManager.countDiscountUsage(discount.getId()));
+        }
+        discountForm.setDiscounts(discounts);
         return nextPage;
     }
 
@@ -157,6 +165,7 @@ public class DiscountController {
                     .setDiscountName(discountForm.getDiscountName())
                     .setDiscountDescription(discountForm.getDiscountDescription())
                     .setDiscountType(discountForm.getDiscountType())
+                    .setCouponType(discountForm.getCouponType())
                     .setDiscountAmount(amount);
                 discountService.save(discount);
                 break;

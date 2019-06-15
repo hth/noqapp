@@ -415,6 +415,18 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
+    public PurchaseOrderEntity findByQidAndTransactionId(String qid, String transactionId) {
+        return mongoTemplate.findOne(
+            query(where("TI").is(transactionId).and("QID").is(qid)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted())
+            ),
+            PurchaseOrderEntity.class,
+            TABLE);
+    }
+
+    @Override
     public PurchaseOrderEntity findByTransactionId(String transactionId) {
         return mongoTemplate.findOne(
             query(where("TI").is(transactionId)

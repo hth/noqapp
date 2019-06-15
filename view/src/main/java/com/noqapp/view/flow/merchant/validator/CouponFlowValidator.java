@@ -106,7 +106,7 @@ public class CouponFlowValidator {
             LocalDate publishDate = LocalDate.parse(couponForm.getCouponStartDate());
             Date publish = Date.from(publishDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date now = Date.from(Instant.now());
-            if (publish.before(now)) {
+            if (publish.after(now)) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()
