@@ -1,6 +1,8 @@
 package com.noqapp.domain;
 
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.MathUtil;
+import com.noqapp.domain.types.CouponTypeEnum;
 import com.noqapp.domain.types.DiscountTypeEnum;
 
 import org.springframework.data.annotation.Transient;
@@ -42,8 +44,14 @@ public class DiscountEntity extends BaseEntity {
     @Field("DT")
     private DiscountTypeEnum discountType;
 
+    @Field("CT")
+    private CouponTypeEnum couponType;
+
     @Field("MI")
     private Date markedInActiveDate;
+
+    @Transient
+    private long usageCount;
 
     public String getBizNameId() {
         return bizNameId;
@@ -90,6 +98,15 @@ public class DiscountEntity extends BaseEntity {
         return this;
     }
 
+    public CouponTypeEnum getCouponType() {
+        return couponType;
+    }
+
+    public DiscountEntity setCouponType(CouponTypeEnum couponType) {
+        this.couponType = couponType;
+        return this;
+    }
+
     public Date getMarkedInActiveDate() {
         return markedInActiveDate;
     }
@@ -104,6 +121,19 @@ public class DiscountEntity extends BaseEntity {
         return DateUtil.getDaysBetween(
             DateUtil.asLocalDate(DateUtil.nowMidnightDate()),
             DateUtil.asLocalDate(isActive() ? DateUtil.nowMidnightDate() : markedInActiveDate).plusYears(1));
+    }
 
+    @Transient
+    public String getDiscountAmountAsString() {
+        return MathUtil.displayPrice(discountAmount);
+    }
+
+    public long getUsageCount() {
+        return usageCount;
+    }
+
+    public DiscountEntity setUsageCount(long usageCount) {
+        this.usageCount = usageCount;
+        return this;
     }
 }

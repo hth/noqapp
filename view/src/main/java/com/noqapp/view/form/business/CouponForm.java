@@ -3,6 +3,7 @@ package com.noqapp.view.form.business;
 import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.DiscountEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
+import com.noqapp.domain.types.CouponTypeEnum;
 import com.noqapp.domain.types.DiscountTypeEnum;
 
 import java.io.Serializable;
@@ -28,15 +29,18 @@ public class CouponForm implements Serializable {
     private String discountDescription;
     private int discountAmount;
     private DiscountTypeEnum discountType;
+    private CouponTypeEnum couponType;
     private String couponStartDate;
     private String couponEndDate;
     private boolean multiUse;
+    private double[] coordinate;
     private String qid;
     private String couponIssuedByQID;
 
     private List<CouponEntity> coupons = new LinkedList<>();
     private List<DiscountEntity> discounts = new LinkedList<>();
     private Map<String, String> discountTypes = DiscountTypeEnum.asMapWithNameAsKey();
+    private Map<String, String> couponTypes = CouponTypeEnum.asMapWithNameAsKey();
     private String phoneRaw;
     private String name;
     private String address;
@@ -135,6 +139,15 @@ public class CouponForm implements Serializable {
         return this;
     }
 
+    public CouponTypeEnum getCouponType() {
+        return couponType;
+    }
+
+    public CouponForm setCouponType(CouponTypeEnum couponType) {
+        this.couponType = couponType;
+        return this;
+    }
+
     public String getCouponStartDate() {
         return couponStartDate;
     }
@@ -159,6 +172,15 @@ public class CouponForm implements Serializable {
 
     public CouponForm setMultiUse(boolean multiUse) {
         this.multiUse = multiUse;
+        return this;
+    }
+
+    public double[] getCoordinate() {
+        return coordinate;
+    }
+
+    public CouponForm setCoordinate(double[] coordinate) {
+        this.coordinate = coordinate;
         return this;
     }
 
@@ -209,6 +231,15 @@ public class CouponForm implements Serializable {
 
     public CouponForm setDiscountTypes(Map<String, String> discountTypes) {
         this.discountTypes = discountTypes;
+        return this;
+    }
+
+    public Map<String, String> getCouponTypes() {
+        return couponTypes;
+    }
+
+    public CouponForm setCouponTypes(Map<String, String> couponTypes) {
+        this.couponTypes = couponTypes;
         return this;
     }
 

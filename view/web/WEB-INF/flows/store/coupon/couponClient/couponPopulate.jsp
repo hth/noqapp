@@ -109,12 +109,24 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="discountType" cssErrorClass="lb_error">Coupon Type</form:label>
+                                            <form:label path="discountType" cssErrorClass="lb_error">Discount Type Type</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:select path="discountType" cssClass="form-field-select single-dropdown"
                                                     cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                                 <form:options items="${couponForm.discountTypes}" disabled="true"/>
+                                            </form:select>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="couponType" cssErrorClass="lb_error">Coupon Type</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:select path="couponType" cssClass="form-field-select single-dropdown"
+                                                    cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                <form:options items="${couponForm.couponTypes}" disabled="true"/>
                                             </form:select>
                                         </div>
                                         <div class="clearFix"></div>

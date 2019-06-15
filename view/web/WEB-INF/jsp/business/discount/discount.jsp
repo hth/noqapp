@@ -33,6 +33,9 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
+                        <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Coupon</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -93,6 +96,19 @@
                                     <div class="col-fields">
                                         <form:input path="discountDescription" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                 placeholder="Describe discount in detail"/>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="couponType" cssErrorClass="lb_error">Coupon Type</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:select path="couponType" cssClass="form-field-select single-dropdown"
+                                                cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                            <form:option value="" label="--- Select ---"/>
+                                            <form:options items="${discountForm.couponTypes}" />
+                                        </form:select>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>

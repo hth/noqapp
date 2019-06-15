@@ -1,5 +1,7 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.MathUtil;
+import com.noqapp.domain.types.CouponTypeEnum;
 import com.noqapp.domain.types.DiscountTypeEnum;
 
 import org.springframework.data.annotation.Transient;
@@ -51,6 +53,9 @@ public class CouponEntity extends BaseEntity {
     @Field("DT")
     private DiscountTypeEnum discountType;
 
+    @Field("CT")
+    private CouponTypeEnum couponType;
+
     @Field("SD")
     private Date couponStartDate;
 
@@ -59,6 +64,10 @@ public class CouponEntity extends BaseEntity {
 
     @Field("MU")
     private boolean multiUse;
+
+    /* Format Longitude and then Latitude. */
+    @Field("COR")
+    private double[] coordinate;
 
     /* Owner of coupon when issued to owner */
     @Field("QID")
@@ -137,6 +146,15 @@ public class CouponEntity extends BaseEntity {
         return this;
     }
 
+    public CouponTypeEnum getCouponType() {
+        return couponType;
+    }
+
+    public CouponEntity setCouponType(CouponTypeEnum couponType) {
+        this.couponType = couponType;
+        return this;
+    }
+
     public Date getCouponStartDate() {
         return couponStartDate;
     }
@@ -161,6 +179,15 @@ public class CouponEntity extends BaseEntity {
 
     public CouponEntity setMultiUse(boolean multiUse) {
         this.multiUse = multiUse;
+        return this;
+    }
+
+    public double[] getCoordinate() {
+        return coordinate;
+    }
+
+    public CouponEntity setCoordinate(double[] coordinate) {
+        this.coordinate = coordinate;
         return this;
     }
 
@@ -200,5 +227,10 @@ public class CouponEntity extends BaseEntity {
     public CouponEntity setIssuedBy(String issuedBy) {
         this.issuedBy = issuedBy;
         return this;
+    }
+
+    @Transient
+    public String getDiscountAmountAsString() {
+        return MathUtil.displayPrice(discountAmount);
     }
 }

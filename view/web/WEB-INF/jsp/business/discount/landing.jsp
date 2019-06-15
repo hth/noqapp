@@ -32,6 +32,8 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
+                        <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Coupon</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
@@ -70,6 +72,9 @@
                                         <th nowrap>Name</th>
                                         <th nowrap>Description</th>
                                         <th>Discount</th>
+                                        <th>Discount Type</th>
+                                        <th>Coupon Type</th>
+                                        <th>Usage</th>
                                         <th></th>
                                     </tr>
                                     <c:forEach items="${discountForm.discounts}" var="discount" varStatus="status">
@@ -80,13 +85,16 @@
                                         <td nowrap align="left">
                                             <c:choose>
                                                 <c:when test="${discount.discountType eq DiscountTypeEnum.F}">
-                                                    Rs ${discount.discountAmount}
+                                                    Rs ${discount.discountAmountAsString}
                                                 </c:when>
                                                 <c:otherwise>
                                                     ${discount.discountAmount}<span style="font-size: large; font-weight: bold">%</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
+                                        <td>${discount.discountType.description}</td>
+                                        <td>${discount.couponType.description}</td>
+                                        <td>${discount.usageCount}</td>
                                         <td>
                                             <c:choose>
                                                 <c:when test="${discount.active}">

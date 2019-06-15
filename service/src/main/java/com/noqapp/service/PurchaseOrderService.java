@@ -616,7 +616,7 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public PurchaseOrderEntity applyCoupon(String qid, String transactionId, String couponId, String couponAddedByQid) {
+    public PurchaseOrderEntity applyCoupon(String qid, String transactionId, String couponId) {
         PurchaseOrderEntity purchaseOrder = removeCoupon(qid, transactionId);
         switch (purchaseOrder.getPaymentStatus()) {
             case MP:
@@ -629,9 +629,7 @@ public class PurchaseOrderService {
         }
 
         CouponEntity coupon = couponService.findById(couponId);
-        if (StringUtils.isNotBlank(couponAddedByQid)) {
-            purchaseOrder.setCouponAddedByQid(couponAddedByQid);
-        } else if (StringUtils.isNotBlank(coupon.getQid()) && !coupon.getQid().equalsIgnoreCase(qid)) {
+        if (StringUtils.isNotBlank(coupon.getQid()) && !coupon.getQid().equalsIgnoreCase(qid)) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
             if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
                 UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
@@ -640,8 +638,6 @@ public class PurchaseOrderService {
                 }
             }
             purchaseOrder.setCouponAddedByQid(qid);
-        } else {
-            LOG.warn("Not sure who is adding this coupon... bug {} {} {}", couponId, transactionId, couponAddedByQid);
         }
 
         switch (coupon.getDiscountType()) {
@@ -669,8 +665,49 @@ public class PurchaseOrderService {
     }
 
     @Mobile
+    public PurchaseOrderEntity applyCouponByMerchant(String qid, String transactionId, String couponId, String couponAddedByQid) {
+        Assert.hasText(couponAddedByQid, "Coupon being added should not be null");
+
+        PurchaseOrderEntity purchaseOrder = removeCoupon(qid, transactionId);
+        switch (purchaseOrder.getPaymentStatus()) {
+            case MP:
+            case PA:
+            case FP:
+            case PC:
+            case PR:
+                LOG.error("Cannot apply coupon {} {}", purchaseOrder.getTransactionId(), purchaseOrder.getPaymentStatus());
+                throw new CouponCannotApplyException("Cannot apply coupon");
+        }
+
+        CouponEntity coupon = couponService.findById(couponId);
+        switch (coupon.getDiscountType()) {
+            case F:
+                purchaseOrder.setStoreDiscount(coupon.getDiscountAmount());
+                break;
+            case P:
+                int discountToApply = Integer.valueOf(purchaseOrder.getOrderPrice()) * coupon.getDiscountAmount() / 100;
+                purchaseOrder.setStoreDiscount(discountToApply);
+                break;
+        }
+
+        int afterDiscount = Integer.valueOf(purchaseOrder.getOrderPrice()) - purchaseOrder.getStoreDiscount();
+        purchaseOrder
+            .setOrderPrice(String.valueOf(afterDiscount))
+            .setCouponId(couponId)
+            .setCouponAddedByQid(couponAddedByQid);
+        purchaseOrderManager.save(purchaseOrder);
+
+        /* Mark coupon inactive when not set for multi use. */
+        if (!coupon.isMultiUse()) {
+            coupon.inActive();
+            couponService.save(coupon);
+        }
+        return purchaseOrder;
+    }
+
+    @Mobile
     public PurchaseOrderEntity removeCoupon(String qid, String transactionId) {
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(transactionId);
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByQidAndTransactionId(qid, transactionId);
         switch (purchaseOrder.getPaymentStatus()) {
             case MP:
             case PA:

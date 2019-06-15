@@ -32,6 +32,8 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
+                        <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Coupon</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
@@ -58,6 +60,10 @@
                         <h3>Upcoming Coupons</h3>
 
                         <div class="add-store">
+                            <div class="addbtn-store">
+                                <a href="/business/coupon/newClientCoupon.htm" class="add-btn">Add New Client Coupon</a>
+                                <a href="/business/coupon/newBusinessCoupon.htm" class="add-btn">Add New Business Coupon</a>
+                            </div>
                             <div class="store-table">
                                 <c:choose>
                                     <c:when test="${!empty couponForm.coupons}">

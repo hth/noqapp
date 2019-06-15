@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -14,11 +15,12 @@ import com.mongodb.client.result.UpdateResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -60,13 +62,15 @@ public class CouponManagerImpl implements CouponManager {
 
     @Override
     public List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId) {
-        Date midnight = DateUtil.nowMidnightDate();
+        Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId).and("QID").exists(false)
-                .andOperator(
-                    where("SD").lte(midnight),
-                    where("ED").gte(midnight)
-                ).and("A").is(true)),
+            query(
+                where("BN").is(bizNameId)
+                    .and("QID").exists(false)
+                    .and("SD").lte(midnight)
+                    .and("ED").gte(midnight)
+                    .and("A").is(true)
+            ).with(new Sort(DESC, "ED")),
             CouponEntity.class,
             TABLE
         );
@@ -74,8 +78,14 @@ public class CouponManagerImpl implements CouponManager {
 
     @Override
     public List<CouponEntity> findUpcomingBusinessCouponByBizNameId(String bizNameId) {
+        Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId).and("QID").exists(false).and("SD").gte(DateUtil.nowMidnightDate()).and("A").is(true)),
+            query(
+                where("BN").is(bizNameId)
+                    .and("QID").exists(false)
+                    .and("SD").gt(midnight)
+                    .and("A").is(true)
+            ).with(new Sort(DESC, "ED")),
             CouponEntity.class,
             TABLE
         );
@@ -109,13 +119,22 @@ public class CouponManagerImpl implements CouponManager {
 
     @Override
     public List<CouponEntity> findActiveClientCouponByQID(String qid) {
-        Date midnight = DateUtil.nowMidnightDate();
+        Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.find(
             query(where("QID").is(qid)
                 .andOperator(
-                    where("SD").lte(midnight),
+                    where("SD").lt(midnight),
                     where("ED").gte(midnight)
                 ).and("A").is(true)),
+            CouponEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public long countDiscountUsage(String discountId) {
+        return mongoTemplate.count(
+            query(where("DI").is(discountId).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );
