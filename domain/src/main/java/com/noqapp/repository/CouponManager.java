@@ -17,7 +17,7 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
 
     long inActiveCouponWithDiscountId(String discountId);
 
-    long countActiveCouponWithDiscountId(String discountId);
+    long countActiveBusinessCouponWithDiscountId(String discountId);
 
     CouponEntity findById(String couponId);
 

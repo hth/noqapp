@@ -74,7 +74,7 @@ public class CouponFlowValidator {
                     .build());
             status = "failure";
         } else {
-            long couponCountWithSimilarDiscountId = couponService.countActiveCouponWithDiscountId(couponForm.getDiscountId());
+            long couponCountWithSimilarDiscountId = couponService.countActiveBusinessCouponWithDiscountId(couponForm.getDiscountId());
             if (couponCountWithSimilarDiscountId > 0) {
                 DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
                 messageContext.addMessage(

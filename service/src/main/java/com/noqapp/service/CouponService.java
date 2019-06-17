@@ -53,8 +53,8 @@ public class CouponService {
         return couponManager.findUpcomingBusinessCouponByBizNameId(bizNameId);
     }
 
-    public long countActiveCouponWithDiscountId(String discountId) {
-        return couponManager.countActiveCouponWithDiscountId(discountId);
+    public long countActiveBusinessCouponWithDiscountId(String discountId) {
+        return couponManager.countActiveBusinessCouponWithDiscountId(discountId);
     }
 
     public CouponEntity findById(String couponId) {
