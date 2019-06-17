@@ -43,6 +43,7 @@ public class CouponController {
     private static final Logger LOG = LoggerFactory.getLogger(CouponController.class);
 
     private String nextPage;
+    private String merchantLandingPage;
     private String upcomingPage;
     private String couponFlow;
     private String couponForClientFlow;
@@ -55,6 +56,9 @@ public class CouponController {
     public CouponController(
         @Value("${nextPage:/business/coupon/landing}")
         String nextPage,
+
+        @Value("${merchantLandingPage:/business/coupon/merchantLanding}")
+        String merchantLandingPage,
 
         @Value("${nextPage:/business/coupon/upcoming}")
         String upcomingPage,
@@ -70,6 +74,7 @@ public class CouponController {
         BusinessUserService businessUserService
     ) {
         this.nextPage = nextPage;
+        this.merchantLandingPage = merchantLandingPage;
         this.upcomingPage = upcomingPage;
         this.couponFlow = couponFlow;
         this.couponForClientFlow = couponForClientFlow;
