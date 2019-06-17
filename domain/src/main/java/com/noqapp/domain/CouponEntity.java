@@ -1,6 +1,7 @@
 package com.noqapp.domain;
 
 import com.noqapp.common.utils.MathUtil;
+import com.noqapp.domain.types.CouponGroupEnum;
 import com.noqapp.domain.types.CouponTypeEnum;
 import com.noqapp.domain.types.DiscountTypeEnum;
 
@@ -79,6 +80,9 @@ public class CouponEntity extends BaseEntity {
 
     @Field("IB")
     private String couponIssuedByQID;
+
+    @Field("CG")
+    private CouponGroupEnum couponGroup;
 
     @Transient
     private String issuedBy;
@@ -215,6 +219,15 @@ public class CouponEntity extends BaseEntity {
 
     public CouponEntity setCouponIssuedByQID(String couponIssuedByQID) {
         this.couponIssuedByQID = couponIssuedByQID;
+        return this;
+    }
+
+    public CouponGroupEnum getCouponGroup() {
+        return couponGroup;
+    }
+
+    public CouponEntity setCouponGroup(CouponGroupEnum couponGroup) {
+        this.couponGroup = couponGroup;
         return this;
     }
 

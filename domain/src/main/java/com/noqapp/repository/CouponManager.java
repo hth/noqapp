@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface CouponManager extends RepositoryManager<CouponEntity> {
 
+    List<CouponEntity> findActiveGlobalCoupon();
+
     /** Gets currently active coupons. */
     List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId);
 
@@ -17,13 +19,11 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
 
     long inActiveCouponWithDiscountId(String discountId);
 
-    long countActiveBusinessCouponWithDiscountId(String discountId);
+    long countActiveBusinessCouponByDiscountId(String discountId);
 
     CouponEntity findById(String couponId);
 
     List<CouponEntity> findActiveClientCouponByQid(String qid);
 
     long countDiscountUsage(String discountId);
-
-    List<CouponEntity> findActiveGlobalCoupon();
 }
