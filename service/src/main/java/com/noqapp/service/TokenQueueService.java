@@ -324,7 +324,8 @@ public class TokenQueueService {
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setExpectedServiceBegin(queue.getExpectedServiceBegin())
-                .setTransactionId(queue.getTransactionId());
+                .setTransactionId(queue.getTransactionId())
+                .setQueueUserState(queue.getQueueUserState());
         } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
@@ -378,7 +379,8 @@ public class TokenQueueService {
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(tokenQueue.getQueueStatus())
             .setExpectedServiceBegin(expectedServiceBegin)
-            .setTransactionId(queue.getTransactionId());
+            .setTransactionId(queue.getTransactionId())
+            .setQueueUserState(queue.getQueueUserState());
     }
 
     Date computeExpectedServiceBeginTime(

@@ -9,6 +9,7 @@ import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.DiscountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.CouponTypeEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
@@ -58,6 +59,8 @@ public class CouponFlowActions {
         this.accountService = accountService;
     }
 
+    /* All coupon starts from here. */
+    @SuppressWarnings("unused")
     public CouponForm createNewBusinessCoupon(ExternalContext externalContext) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -72,6 +75,8 @@ public class CouponFlowActions {
         return couponForm;
     }
 
+    /* Populates coupon for business use. */
+    @SuppressWarnings("unused")
     public void populateBusinessCouponForm(CouponForm couponForm) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -89,30 +94,40 @@ public class CouponFlowActions {
             .setCouponIssuedByQID(queueUser.getQueueUserId());
     }
 
+    /* Finally save the business coupon. */
+    @SuppressWarnings("unused")
     public void createBusinessCoupon(CouponForm couponForm) {
         CouponEntity coupon = populateCommonCoupon(couponForm);
         couponService.save(coupon);
     }
 
+    /* Base on coupon type select the flow when creating client coupon. */
+    @SuppressWarnings("unused")
     public String selectAppropriateFlow(CouponForm couponForm) {
         DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
         return discount.getCouponType().getName();
     }
 
+    /* Coupon for Individual person. */
+    @SuppressWarnings("unused")
     public void populateWithGuardianDetail(CouponForm couponForm) {
         BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
         String phone = Formatter.phoneNumberWithCountryCode(couponForm.getPhoneRaw(), bizName.getCountryShortName());
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
-        couponForm.setQid(userProfile.getQueueUserId())
+        couponForm
+            .setQid(userProfile.getQueueUserId())
             .setName(userProfile.getName())
             .setAddress(userProfile.getAddress());
     }
 
+    /* Coupon for Whole family. */
+    @SuppressWarnings("unused")
     public void populateWithFamilyDetail(CouponForm couponForm) {
         BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
         String phone = Formatter.phoneNumberWithCountryCode(couponForm.getPhoneRaw(), bizName.getCountryShortName());
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
-        couponForm.setQid(userProfile.getQueueUserId())
+        couponForm
+            .setQid(userProfile.getQueueUserId())
             .setName(userProfile.getName())
             .setAddress(userProfile.getAddress());
 
@@ -126,8 +141,6 @@ public class CouponFlowActions {
     }
 
     public void populateClientCouponForm(CouponForm couponForm) {
-        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
         couponForm.setBizNamedId(discount.getBizNameId())
             .setCouponCode(RandomString.newInstance(6).nextString())
@@ -137,12 +150,14 @@ public class CouponFlowActions {
             .setDiscountType(discount.getDiscountType())
             .setCouponType(discount.getCouponType())
             .setMultiUse(false)
-            .setCouponIssuedByQID(queueUser.getQueueUserId());
+            .setCouponIssuedByQID(couponForm.getQid());
     }
 
     public void createClientCoupon(CouponForm couponForm) {
         CouponEntity coupon = populateCommonCoupon(couponForm);
-        coupon.setQid(couponForm.getQid());
+        if (couponForm.getCouponType() != CouponTypeEnum.G) {
+            coupon.setQid(couponForm.getQid());
+        }
         couponService.save(coupon);
     }
 
