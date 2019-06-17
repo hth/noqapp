@@ -9,6 +9,7 @@ import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.DiscountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.CouponGroupEnum;
 import com.noqapp.domain.types.CouponTypeEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -98,6 +99,7 @@ public class CouponFlowActions {
     @SuppressWarnings("unused")
     public void createBusinessCoupon(CouponForm couponForm) {
         CouponEntity coupon = populateCommonCoupon(couponForm);
+        coupon.setCouponGroup(CouponGroupEnum.M);
         couponService.save(coupon);
     }
 
@@ -178,6 +180,7 @@ public class CouponFlowActions {
         if (couponForm.getCouponType() != CouponTypeEnum.G) {
             coupon.setQid(couponForm.getQid());
         }
+        coupon.setCouponGroup(CouponGroupEnum.C);
         couponService.save(coupon);
     }
 

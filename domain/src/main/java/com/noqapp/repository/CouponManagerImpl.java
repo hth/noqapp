@@ -9,6 +9,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.CouponEntity;
+import com.noqapp.domain.types.CouponGroupEnum;
 
 import com.mongodb.client.result.UpdateResult;
 
@@ -61,11 +62,27 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
+    public List<CouponEntity> findActiveGlobalCoupon() {
+        Instant midnight = DateUtil.nowMidnightDate().toInstant();
+        return mongoTemplate.find(
+            query(where("QID").exists(false)
+                .and("CG").is(CouponGroupEnum.C)
+                .and("SD").lte(midnight)
+                .and("ED").gte(midnight)
+                .and("A").is(true)
+            ).with(new Sort(DESC, "ED")),
+            CouponEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId) {
         Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.find(
             query(
                 where("BN").is(bizNameId)
+                    .and("CG").is(CouponGroupEnum.M)
                     .and("QID").exists(false)
                     .and("SD").lte(midnight)
                     .and("ED").gte(midnight)
@@ -82,6 +99,7 @@ public class CouponManagerImpl implements CouponManager {
         return mongoTemplate.find(
             query(
                 where("BN").is(bizNameId)
+                    .and("CG").is(CouponGroupEnum.M)
                     .and("QID").exists(false)
                     .and("SD").gt(midnight)
                     .and("A").is(true)
@@ -104,7 +122,7 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public long countActiveBusinessCouponWithDiscountId(String discountId) {
+    public long countActiveBusinessCouponByDiscountId(String discountId) {
         Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.count(
             query(where("DI").is(discountId).and("ED").gte(midnight).and("QID").exists(false).and("A").is(true)),
@@ -136,20 +154,6 @@ public class CouponManagerImpl implements CouponManager {
     public long countDiscountUsage(String discountId) {
         return mongoTemplate.count(
             query(where("DI").is(discountId).and("A").is(true)),
-            CouponEntity.class,
-            TABLE
-        );
-    }
-
-    @Override
-    public List<CouponEntity> findActiveGlobalCoupon() {
-        Instant midnight = DateUtil.nowMidnightDate().toInstant();
-        return mongoTemplate.find(
-            query(where("QID").exists(false)
-                .and("SD").lte(midnight)
-                .and("ED").gte(midnight)
-                .and("A").is(true)
-            ).with(new Sort(DESC, "ED")),
             CouponEntity.class,
             TABLE
         );

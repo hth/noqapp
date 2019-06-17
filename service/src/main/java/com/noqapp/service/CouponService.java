@@ -51,20 +51,20 @@ public class CouponService {
         couponManager.save(coupon);
     }
 
-    public List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId) {
-        return couponManager.findActiveBusinessCouponByBizNameId(bizNameId);
-    }
-
     public List<CouponEntity> findActiveGlobalCoupon() {
         return couponManager.findActiveGlobalCoupon();
+    }
+
+    public List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId) {
+        return couponManager.findActiveBusinessCouponByBizNameId(bizNameId);
     }
 
     public List<CouponEntity> findUpcomingBusinessCouponByBizNameId(String bizNameId) {
         return couponManager.findUpcomingBusinessCouponByBizNameId(bizNameId);
     }
 
-    public long countActiveBusinessCouponWithDiscountId(String discountId) {
-        return couponManager.countActiveBusinessCouponWithDiscountId(discountId);
+    public long countActiveBusinessCouponByDiscountId(String discountId) {
+        return couponManager.countActiveBusinessCouponByDiscountId(discountId);
     }
 
     public CouponEntity findById(String couponId) {
