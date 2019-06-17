@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.CouponTypeEnum,com.noqapp.domain.types.DiscountTypeEnum" %>
 <%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -138,8 +139,15 @@
                                             <form:label path="multiUse" cssErrorClass="lb_error">Coupon Multi-use</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="multiUse" cssClass="form-check-box" cssErrorClass="form-check-box error-field"/>
-                                            <span style="display:block; font-size:14px;">(When checked, can be used mutiple times over)</span>
+                                            <c:choose>
+                                                <c:when test="${couponForm.couponType ne CouponTypeEnum.G}">
+                                                    <form:checkbox path="multiUse" cssClass="form-check-box" cssErrorClass="form-check-box error-field"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <form:checkbox path="multiUse" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true"/>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <span style="display:block; font-size:14px;">(When checked, can be used multiple times over)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

@@ -18,8 +18,15 @@
 
     <action-state id="validateDiscount">
         <evaluate expression="couponFlowValidator.validateClientDiscount(couponForm, messageContext)"/>
-        <transition on="success" to="couponFindClient"/>
+        <transition on="success" to="appropriateFlow"/>
         <transition on="failure" to="couponStart"/>
+    </action-state>
+
+    <action-state id="appropriateFlow">
+        <evaluate expression="couponFlowActions.selectAppropriateFlow(couponForm)"/>
+        <transition on="G" to="couponPopulate" />
+        <transition on="F" to="couponFindClient" />
+        <transition on="I" to="couponFindClient" />
     </action-state>
 
     <view-state id="couponFindClient" model="couponForm">
@@ -29,13 +36,13 @@
 
     <action-state id="validateClient">
         <evaluate expression="couponFlowValidator.validateClient(couponForm, messageContext)"/>
-        <transition on="success" to="appropriateFlow"/>
+        <transition on="success" to="appropriateFlow2"/>
         <transition on="failure" to="couponFindClient"/>
     </action-state>
 
-    <action-state id="appropriateFlow">
+    <!-- This is just a dummy redo of navigating flow -->
+    <action-state id="appropriateFlow2">
         <evaluate expression="couponFlowActions.selectAppropriateFlow(couponForm)"/>
-        <transition on="G" to="doNothing" />
         <transition on="F" to="couponGuardianDetail" />
         <transition on="I" to="couponIndividualSelection" />
     </action-state>
