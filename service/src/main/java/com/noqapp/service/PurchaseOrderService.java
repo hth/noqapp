@@ -617,51 +617,56 @@ public class PurchaseOrderService {
 
     @Mobile
     public PurchaseOrderEntity applyCoupon(String qid, String transactionId, String couponId) {
-        PurchaseOrderEntity purchaseOrder = removeCoupon(qid, transactionId);
-        switch (purchaseOrder.getPaymentStatus()) {
-            case MP:
-            case PA:
-            case FP:
-            case PC:
-            case PR:
-                LOG.error("Cannot apply coupon {} {}", purchaseOrder.getTransactionId(), purchaseOrder.getPaymentStatus());
-                throw new CouponCannotApplyException("Cannot apply coupon");
-        }
-
-        CouponEntity coupon = couponService.findById(couponId);
-        if (StringUtils.isNotBlank(coupon.getQid()) && !coupon.getQid().equalsIgnoreCase(qid)) {
-            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
-            if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
-                UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
-                if (!coupon.getQid().equalsIgnoreCase(guardianProfile.getQueueUserId())) {
-                    throw new CouponCannotApplyException("Cannot apply coupon " + coupon.getCouponCode());
-                }
+        try {
+            PurchaseOrderEntity purchaseOrder = removeCoupon(qid, transactionId);
+            switch (purchaseOrder.getPaymentStatus()) {
+                case MP:
+                case PA:
+                case FP:
+                case PC:
+                case PR:
+                    LOG.error("Cannot apply coupon {} {}", purchaseOrder.getTransactionId(), purchaseOrder.getPaymentStatus());
+                    throw new CouponCannotApplyException("Cannot apply coupon");
             }
-            purchaseOrder.setCouponAddedByQid(qid);
-        }
 
-        switch (coupon.getDiscountType()) {
-            case F:
-                purchaseOrder.setStoreDiscount(coupon.getDiscountAmount());
-                break;
-            case P:
-                int discountToApply = Integer.valueOf(purchaseOrder.getOrderPrice()) * coupon.getDiscountAmount() / 100;
-                purchaseOrder.setStoreDiscount(discountToApply);
-                break;
-        }
+            CouponEntity coupon = couponService.findById(couponId);
+            if (StringUtils.isNotBlank(coupon.getQid()) && !coupon.getQid().equalsIgnoreCase(qid)) {
+                UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+                if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
+                    UserProfileEntity guardianProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
+                    if (!coupon.getQid().equalsIgnoreCase(guardianProfile.getQueueUserId())) {
+                        throw new CouponCannotApplyException("Cannot apply coupon " + coupon.getCouponCode());
+                    }
+                }
+                purchaseOrder.setCouponAddedByQid(qid);
+            }
 
-        int afterDiscount = Integer.valueOf(purchaseOrder.getOrderPrice()) - purchaseOrder.getStoreDiscount();
-        purchaseOrder
-            .setOrderPrice(String.valueOf(afterDiscount))
-            .setCouponId(couponId);
-        purchaseOrderManager.save(purchaseOrder);
+            switch (coupon.getDiscountType()) {
+                case F:
+                    purchaseOrder.setStoreDiscount(coupon.getDiscountAmount());
+                    break;
+                case P:
+                    int discountToApply = Integer.valueOf(purchaseOrder.getOrderPrice()) * coupon.getDiscountAmount() / 100;
+                    purchaseOrder.setStoreDiscount(discountToApply);
+                    break;
+            }
 
-        /* Mark coupon inactive when not set for multi use. */
-        if (!coupon.isMultiUse()) {
-            coupon.inActive();
-            couponService.save(coupon);
+            int afterDiscount = Integer.valueOf(purchaseOrder.getOrderPrice()) - purchaseOrder.getStoreDiscount();
+            purchaseOrder
+                .setOrderPrice(String.valueOf(afterDiscount))
+                .setCouponId(couponId);
+            purchaseOrderManager.save(purchaseOrder);
+
+            /* Mark coupon inactive when not set for multi use. */
+            if (!coupon.isMultiUse()) {
+                coupon.inActive();
+                couponService.save(coupon);
+            }
+            return purchaseOrder;
+        } catch (Exception e) {
+            LOG.error("Failed applying coupon {} {} {}", qid, transactionId, couponId);
+            throw new RuntimeException("Failed applying coupon");
         }
-        return purchaseOrder;
     }
 
     @Mobile
