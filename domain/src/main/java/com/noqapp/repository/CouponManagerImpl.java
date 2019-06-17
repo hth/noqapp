@@ -57,7 +57,7 @@ public class CouponManagerImpl implements CouponManager {
 
     @Override
     public void deleteHard(CouponEntity object) {
-
+        throw new UnsupportedOperationException("This method is not supported");
     }
 
     @Override
@@ -136,6 +136,20 @@ public class CouponManagerImpl implements CouponManager {
     public long countDiscountUsage(String discountId) {
         return mongoTemplate.count(
             query(where("DI").is(discountId).and("A").is(true)),
+            CouponEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<CouponEntity> findActiveGlobalCoupon() {
+        Instant midnight = DateUtil.nowMidnightDate().toInstant();
+        return mongoTemplate.find(
+            query(where("QID").exists(false)
+                .and("SD").lte(midnight)
+                .and("ED").gte(midnight)
+                .and("A").is(true)
+            ).with(new Sort(DESC, "ED")),
             CouponEntity.class,
             TABLE
         );
