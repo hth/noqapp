@@ -51,6 +51,10 @@
         <on-entry>
             <evaluate expression="couponFlowActions.populateWithGuardianDetail(couponForm)"/>
         </on-entry>
+
+        <transition on-exception="com.noqapp.view.flow.merchant.exception.UserNotFoundException"
+                    to="couponGuardianDetail"/>
+
         <transition on="submit" to="couponPopulate"/>
         <transition on="cancel" to="home"/>
     </view-state>
@@ -59,6 +63,10 @@
         <on-entry>
             <evaluate expression="couponFlowActions.populateWithFamilyDetail(couponForm)"/>
         </on-entry>
+
+        <transition on-exception="com.noqapp.view.flow.merchant.exception.UserNotFoundException"
+                    to="couponIndividualSelection"/>
+
         <transition on="submit" to="couponPopulate"/>
         <transition on="cancel" to="home"/>
     </view-state>
