@@ -155,25 +155,25 @@
                                         <%--//TODO add note when email address is different--%>
 
                                     <c:if test="${!registerUser.emailValidated}">
-                                        <li>
-                                            <div class="alert-info">
-                                                <p>
-                                                    Your email address
-                                                    <span class="txt-red">${registerUser.email}</span>
-                                                    has not been validated. Please validated email address to continue merchant account registration.
-                                                </p>
-                                                <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a>
-                                                </p>
-                                            </div>
-                                        </li>
+                                    <li>
+                                        <div class="alert-info">
+                                            <p>
+                                                Your email address
+                                                <span class="txt-red">${registerUser.email}</span>
+                                                has not been validated. Please validated email address to continue merchant account registration.
+                                            </p>
+                                            <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a>
+                                            </p>
+                                        </div>
+                                    </li>
                                     </c:if>
 
                                     <c:if test="${!registerUser.phoneValidated}">
-                                        <li>
-                                            <div class="alert-info">
-                                                <p>Your phone number has not been validated. Login through NoQApp to validate phone using OTP.</p>
-                                            </div>
-                                        </li>
+                                    <li>
+                                        <div class="alert-info">
+                                            <p>Your phone number has not been validated. Login through NoQApp to validate phone using OTP.</p>
+                                        </div>
+                                    </li>
                                     </c:if>
 
                                     <div class="btn-hours">

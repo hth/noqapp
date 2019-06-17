@@ -29,13 +29,28 @@
 
     <action-state id="validateClient">
         <evaluate expression="couponFlowValidator.validateClient(couponForm, messageContext)"/>
-        <transition on="success" to="couponClientDetail"/>
+        <transition on="success" to="appropriateFlow"/>
         <transition on="failure" to="couponFindClient"/>
     </action-state>
 
-    <view-state id="couponClientDetail" model="couponForm">
+    <action-state id="appropriateFlow">
+        <evaluate expression="couponFlowActions.selectAppropriateFlow(couponForm)"/>
+        <transition on="G" to="doNothing" />
+        <transition on="F" to="couponGuardianDetail" />
+        <transition on="I" to="couponIndividualSelection" />
+    </action-state>
+
+    <view-state id="couponGuardianDetail" model="couponForm">
         <on-entry>
-            <evaluate expression="couponFlowActions.populateWithClientDetail(couponForm)"/>
+            <evaluate expression="couponFlowActions.populateWithGuardianDetail(couponForm)"/>
+        </on-entry>
+        <transition on="submit" to="couponPopulate"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <view-state id="couponIndividualSelection" model="couponForm">
+        <on-entry>
+            <evaluate expression="couponFlowActions.populateWithFamilyDetail(couponForm)"/>
         </on-entry>
         <transition on="submit" to="couponPopulate"/>
         <transition on="cancel" to="home"/>

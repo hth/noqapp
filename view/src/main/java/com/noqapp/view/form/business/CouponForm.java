@@ -2,6 +2,7 @@ package com.noqapp.view.form.business;
 
 import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.DiscountEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.CouponTypeEnum;
 import com.noqapp.domain.types.DiscountTypeEnum;
@@ -41,6 +42,7 @@ public class CouponForm implements Serializable {
     private List<DiscountEntity> discounts = new LinkedList<>();
     private Map<String, String> discountTypes = DiscountTypeEnum.asMapWithNameAsKey();
     private Map<String, String> couponTypes = CouponTypeEnum.asMapWithNameAsKey();
+    private List<UserProfileEntity> userProfiles = new LinkedList<>();
     private String phoneRaw;
     private String name;
     private String address;
@@ -267,6 +269,20 @@ public class CouponForm implements Serializable {
 
     public CouponForm setAddress(String address) {
         this.address = address;
+        return this;
+    }
+
+    public List<UserProfileEntity> getUserProfiles() {
+        return userProfiles;
+    }
+
+    public CouponForm setUserProfiles(List<UserProfileEntity> userProfiles) {
+        this.userProfiles = userProfiles;
+        return this;
+    }
+
+    public CouponForm addUserProfile(UserProfileEntity userProfile) {
+        this.userProfiles.add(userProfile);
         return this;
     }
 }
