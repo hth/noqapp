@@ -54,7 +54,7 @@ public class DiscountManagerImpl implements DiscountManager {
 
     @Override
     public void deleteHard(DiscountEntity object) {
-
+        throw new UnsupportedOperationException("This method is not supported");
     }
 
     @Override

@@ -24,4 +24,6 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
     List<CouponEntity> findActiveClientCouponByQid(String qid);
 
     long countDiscountUsage(String discountId);
+
+    List<CouponEntity> findActiveGlobalCoupon();
 }

@@ -106,7 +106,7 @@
                                                     <td nowrap align="left">
                                                         <c:choose>
                                                             <c:when test="${coupon.discountType eq DiscountTypeEnum.F}">
-                                                                Rs ${coupon.discountAmount}
+                                                                Rs ${coupon.discountAmountAsString}
                                                             </c:when>
                                                             <c:otherwise>
                                                                 ${coupon.discountAmount}<span style="font-size: large; font-weight: bold">%</span>
