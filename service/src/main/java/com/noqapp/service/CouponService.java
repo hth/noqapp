@@ -96,7 +96,7 @@ public class CouponService {
     }
 
     @Mobile
-    public JsonCouponList findActiveBusinessCouponAsJson(String codeQR, CouponGroupEnum couponGroup) {
+    public JsonCouponList findActiveCouponAsJson(String codeQR, CouponGroupEnum couponGroup) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         List<CouponEntity> coupons = findActiveCouponByBizNameId(bizStore.getBizName().getId(), couponGroup);
 
