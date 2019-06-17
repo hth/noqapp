@@ -8,6 +8,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonCoupon;
 import com.noqapp.domain.json.JsonCouponList;
+import com.noqapp.domain.types.CouponGroupEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.CouponManager;
 import com.noqapp.repository.UserProfileManager;
@@ -55,12 +56,12 @@ public class CouponService {
         return couponManager.findActiveGlobalCoupon();
     }
 
-    public List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId) {
-        return couponManager.findActiveBusinessCouponByBizNameId(bizNameId);
+    public List<CouponEntity> findActiveCouponByBizNameId(String bizNameId, CouponGroupEnum couponGroup) {
+        return couponManager.findActiveCouponByBizNameId(bizNameId, couponGroup);
     }
 
-    public List<CouponEntity> findUpcomingBusinessCouponByBizNameId(String bizNameId) {
-        return couponManager.findUpcomingBusinessCouponByBizNameId(bizNameId);
+    public List<CouponEntity> findUpcomingCouponByBizNameId(String bizNameId, CouponGroupEnum couponGroup) {
+        return couponManager.findUpcomingCouponByBizNameId(bizNameId, couponGroup);
     }
 
     public long countActiveBusinessCouponByDiscountId(String discountId) {
@@ -95,9 +96,9 @@ public class CouponService {
     }
 
     @Mobile
-    public JsonCouponList findActiveBusinessCouponAsJson(String codeQR) {
+    public JsonCouponList findActiveBusinessCouponAsJson(String codeQR, CouponGroupEnum couponGroup) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        List<CouponEntity> coupons = findActiveBusinessCouponByBizNameId(bizStore.getBizName().getId());
+        List<CouponEntity> coupons = findActiveCouponByBizNameId(bizStore.getBizName().getId(), couponGroup);
 
         JsonCouponList jsonDiscountList = new JsonCouponList();
         for (CouponEntity coupon : coupons) {

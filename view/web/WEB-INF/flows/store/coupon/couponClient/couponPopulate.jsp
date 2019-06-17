@@ -57,7 +57,7 @@
                     <form:form modelAttribute="couponForm">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Add Coupon</h2>
+                            <h2>Add Client Coupon</h2>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">

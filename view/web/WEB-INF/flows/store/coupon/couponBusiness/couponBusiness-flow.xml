@@ -49,6 +49,6 @@
     </action-state>
 
     <view-state id="home"
-                view="externalRedirect:contextRelative:/business/coupon/landing.htm"/>
+                view="externalRedirect:contextRelative:/business/coupon/businessLanding.htm"/>
 
 </flow>

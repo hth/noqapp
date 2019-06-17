@@ -77,13 +77,12 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId) {
+    public List<CouponEntity> findActiveCouponByBizNameId(String bizNameId, CouponGroupEnum couponGroup) {
         Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.find(
             query(
                 where("BN").is(bizNameId)
-                    .and("CG").is(CouponGroupEnum.M)
-                    .and("QID").exists(false)
+                    .and("CG").is(couponGroup)
                     .and("SD").lte(midnight)
                     .and("ED").gte(midnight)
                     .and("A").is(true)
@@ -94,13 +93,12 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public List<CouponEntity> findUpcomingBusinessCouponByBizNameId(String bizNameId) {
+    public List<CouponEntity> findUpcomingCouponByBizNameId(String bizNameId, CouponGroupEnum couponGroup) {
         Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.find(
             query(
                 where("BN").is(bizNameId)
-                    .and("CG").is(CouponGroupEnum.M)
-                    .and("QID").exists(false)
+                    .and("CG").is(couponGroup)
                     .and("SD").gt(midnight)
                     .and("A").is(true)
             ).with(new Sort(DESC, "ED")),
@@ -125,7 +123,7 @@ public class CouponManagerImpl implements CouponManager {
     public long countActiveBusinessCouponByDiscountId(String discountId) {
         Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.count(
-            query(where("DI").is(discountId).and("ED").gte(midnight).and("QID").exists(false).and("A").is(true)),
+            query(where("DI").is(discountId).and("ED").gte(midnight).and("CG").is(CouponGroupEnum.M).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );

@@ -33,8 +33,8 @@
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
                         <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Coupon</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/merchantLanding.htm">Merchant Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
@@ -58,13 +58,12 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Active Coupons</h3>
+                        <h3>Active Client Coupons</h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">
                                 <a href="/business/coupon/upcoming.htm" class="add-btn">Upcoming Coupon</a>
                                 <a href="/business/coupon/newClientCoupon.htm" class="add-btn">Add New Client Coupon</a>
-                                <a href="/business/coupon/newBusinessCoupon.htm" class="add-btn">Add New Business Coupon</a>
                             </div>
                             <div class="store-table">
                                 <c:choose>

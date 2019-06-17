@@ -6,6 +6,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.CouponGroupEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.CouponService;
@@ -42,9 +43,11 @@ import javax.servlet.http.HttpServletResponse;
 public class CouponController {
     private static final Logger LOG = LoggerFactory.getLogger(CouponController.class);
 
-    private String nextPage;
-    private String merchantLandingPage;
+    private String landingPage;
+    private String landingBusinessPage;
     private String upcomingPage;
+    private String upcomingBusinessPage;
+
     private String couponFlow;
     private String couponForClientFlow;
 
@@ -54,14 +57,17 @@ public class CouponController {
 
     @Autowired
     public CouponController(
-        @Value("${nextPage:/business/coupon/landing}")
-        String nextPage,
+        @Value("${landingPage:/business/coupon/landing}")
+        String landingPage,
 
-        @Value("${merchantLandingPage:/business/coupon/merchantLanding}")
-        String merchantLandingPage,
+        @Value("${landingBusinessPage:/business/coupon/landingBusiness}")
+        String landingBusinessPage,
 
-        @Value("${nextPage:/business/coupon/upcoming}")
+        @Value("${upcomingPage:/business/coupon/upcoming}")
         String upcomingPage,
+
+        @Value("${upcomingBusinessPage:/business/coupon/upcomingBusiness}")
+        String upcomingBusinessPage,
 
         @Value("${couponFlow:redirect:/store/coupon/couponBusiness.htm}")
         String couponFlow,
@@ -73,9 +79,10 @@ public class CouponController {
         CouponService couponService,
         BusinessUserService businessUserService
     ) {
-        this.nextPage = nextPage;
-        this.merchantLandingPage = merchantLandingPage;
+        this.landingPage = landingPage;
+        this.landingBusinessPage = landingBusinessPage;
         this.upcomingPage = upcomingPage;
+        this.upcomingBusinessPage = upcomingBusinessPage;
         this.couponFlow = couponFlow;
         this.couponForClientFlow = couponForClientFlow;
 
@@ -101,14 +108,14 @@ public class CouponController {
         LOG.info("Landed on active coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        List<CouponEntity> coupons = couponService.findActiveBusinessCouponByBizNameId(businessUser.getBizName().getId());
+        List<CouponEntity> coupons = couponService.findActiveCouponByBizNameId(businessUser.getBizName().getId(), CouponGroupEnum.C);
         for (CouponEntity coupon : coupons) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(coupon.getCouponIssuedByQID());
             coupon.setIssuedBy(userProfile.getName());
             couponForm.addCoupon(coupon);
         }
 
-        return nextPage;
+        return landingPage;
     }
 
     @GetMapping(value = "/upcoming", produces = "text/html;charset=UTF-8")
@@ -128,7 +135,7 @@ public class CouponController {
         LOG.info("Landed on upcoming coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        List<CouponEntity> coupons = couponService.findUpcomingBusinessCouponByBizNameId(businessUser.getBizName().getId());
+        List<CouponEntity> coupons = couponService.findUpcomingCouponByBizNameId(businessUser.getBizName().getId(), CouponGroupEnum.C);
         for (CouponEntity coupon : coupons) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(coupon.getCouponIssuedByQID());
             coupon.setIssuedBy(userProfile.getName());
@@ -136,6 +143,60 @@ public class CouponController {
         }
 
         return upcomingPage;
+    }
+
+    @GetMapping(value = "/businessLanding", produces = "text/html;charset=UTF-8")
+    public String businessLanding(
+        @ModelAttribute("couponForm")
+        CouponForm couponForm,
+
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Landed on active coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        List<CouponEntity> coupons = couponService.findActiveCouponByBizNameId(businessUser.getBizName().getId(), CouponGroupEnum.M);
+        for (CouponEntity coupon : coupons) {
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(coupon.getCouponIssuedByQID());
+            coupon.setIssuedBy(userProfile.getName());
+            couponForm.addCoupon(coupon);
+        }
+
+        return landingBusinessPage;
+    }
+
+    @GetMapping(value = "/businessUpcoming", produces = "text/html;charset=UTF-8")
+    public String businessUpcoming(
+        @ModelAttribute("couponForm")
+        CouponForm couponForm,
+
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Landed on upcoming coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        List<CouponEntity> coupons = couponService.findUpcomingCouponByBizNameId(businessUser.getBizName().getId(), CouponGroupEnum.M);
+        for (CouponEntity coupon : coupons) {
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(coupon.getCouponIssuedByQID());
+            coupon.setIssuedBy(userProfile.getName());
+            couponForm.addCoupon(coupon);
+        }
+
+        return upcomingBusinessPage;
     }
 
     @GetMapping(value = "/newBusinessCoupon", produces = "text/html;charset=UTF-8")
