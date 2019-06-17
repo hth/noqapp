@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.context.ExternalContext;
 
@@ -117,10 +116,6 @@ public class CouponFlowActions {
         BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
         String phone = Formatter.phoneNumberWithCountryCode(couponForm.getPhoneRaw(), bizName.getCountryShortName());
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
-        if (null == userProfile) {
-            LOG.warn("No guardian found {}", phone);
-            throw new UsernameNotFoundException("No user found with " + phone);
-        }
         couponForm
             .setQid(userProfile.getQueueUserId())
             .setName(userProfile.getName())
@@ -133,10 +128,6 @@ public class CouponFlowActions {
         BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
         String phone = Formatter.phoneNumberWithCountryCode(couponForm.getPhoneRaw(), bizName.getCountryShortName());
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
-        if (null == userProfile) {
-            LOG.warn("No guardian found {}", phone);
-            throw new UsernameNotFoundException("No user found with " + phone);
-        }
         couponForm
             .setQid(userProfile.getQueueUserId())
             .setName(userProfile.getName())
