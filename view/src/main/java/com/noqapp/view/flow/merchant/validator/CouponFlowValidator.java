@@ -81,7 +81,7 @@ public class CouponFlowValidator {
                     new MessageBuilder()
                         .error()
                         .source("discountId")
-                        .defaultText(couponCountWithSimilarDiscountId + " coupons already existing that refers to discount name " + discount.getDiscountName())
+                        .defaultText(couponCountWithSimilarDiscountId + " coupon already exists that refers to this discount name " + discount.getDiscountName())
                         .build());
 
                 status = "failure";

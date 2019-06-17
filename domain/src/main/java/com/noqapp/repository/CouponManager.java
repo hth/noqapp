@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.CouponEntity;
+import com.noqapp.domain.types.CouponGroupEnum;
 
 import java.util.List;
 
@@ -13,9 +14,9 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
     List<CouponEntity> findActiveGlobalCoupon();
 
     /** Gets currently active coupons. */
-    List<CouponEntity> findActiveBusinessCouponByBizNameId(String bizNameId);
+    List<CouponEntity> findActiveCouponByBizNameId(String bizNameId, CouponGroupEnum couponGroup);
 
-    List<CouponEntity> findUpcomingBusinessCouponByBizNameId(String bizNameId);
+    List<CouponEntity> findUpcomingCouponByBizNameId(String bizNameId, CouponGroupEnum couponGroup);
 
     long inActiveCouponWithDiscountId(String discountId);
 

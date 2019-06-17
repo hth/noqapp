@@ -58,11 +58,11 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Upcoming Client Coupons</h3>
+                        <h3>Upcoming Business Coupons</h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/coupon/newClientCoupon.htm" class="add-btn">Add New Client Coupon</a>
+                                <a href="/business/coupon/newBusinessCoupon.htm" class="add-btn">Add New Business Coupon</a>
                             </div>
                             <div class="store-table">
                                 <c:choose>
@@ -83,7 +83,7 @@
                                                     <td nowrap>
                                                         <b>${coupon.discountName}</b>
                                                         <br/>
-                                                        ${coupon.discountDescription}
+                                                            ${coupon.discountDescription}
                                                     </td>
                                                     <td nowrap>
                                                         <fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponStartDate}"/>

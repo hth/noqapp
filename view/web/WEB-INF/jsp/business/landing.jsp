@@ -39,8 +39,8 @@
                         <a href="${pageContext.request.contextPath}/business/paymentConfiguration/landing.htm">Payment Permission</a>
                         <a href="${pageContext.request.contextPath}/business/advertisement/landing.htm">Advertisement</a>
                         <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Coupon</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/merchantLanding.htm">Merchant Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
