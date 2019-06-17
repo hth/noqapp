@@ -2,6 +2,7 @@ package com.noqapp.view.controller.business.coupon;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
+import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -11,6 +12,8 @@ import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.CouponService;
 import com.noqapp.view.form.business.CouponForm;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,6 +115,13 @@ public class CouponController {
         for (CouponEntity coupon : coupons) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(coupon.getCouponIssuedByQID());
             coupon.setIssuedBy(userProfile.getName());
+
+            UserProfileEntity issuedPersonUserProfile = userProfileManager.findByQueueUserId(coupon.getQid());
+            coupon
+                .setIssuedTo(issuedPersonUserProfile.getName())
+                .setIssuedToPhone(StringUtils.isBlank(issuedPersonUserProfile.getGuardianPhone())
+                    ? Formatter.phoneNationalFormat(issuedPersonUserProfile.getPhoneRaw(), issuedPersonUserProfile.getCountryShortName())
+                    : Formatter.phoneNationalFormat(issuedPersonUserProfile.getGuardianPhone(), issuedPersonUserProfile.getCountryShortName()));
             couponForm.addCoupon(coupon);
         }
 
@@ -139,6 +149,13 @@ public class CouponController {
         for (CouponEntity coupon : coupons) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(coupon.getCouponIssuedByQID());
             coupon.setIssuedBy(userProfile.getName());
+
+            UserProfileEntity issuedPersonUserProfile = userProfileManager.findByQueueUserId(coupon.getQid());
+            coupon
+                .setIssuedTo(issuedPersonUserProfile.getName())
+                .setIssuedToPhone(StringUtils.isBlank(issuedPersonUserProfile.getGuardianPhone())
+                    ? Formatter.phoneNationalFormat(issuedPersonUserProfile.getPhoneRaw(), issuedPersonUserProfile.getCountryShortName())
+                    : Formatter.phoneNationalFormat(issuedPersonUserProfile.getGuardianPhone(), issuedPersonUserProfile.getCountryShortName()));
             couponForm.addCoupon(coupon);
         }
 
@@ -159,7 +176,7 @@ public class CouponController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on active coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on active business coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         List<CouponEntity> coupons = couponService.findActiveCouponByBizNameId(businessUser.getBizName().getId(), CouponGroupEnum.M);
@@ -186,7 +203,7 @@ public class CouponController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on upcoming coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on upcoming business coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         List<CouponEntity> coupons = couponService.findUpcomingCouponByBizNameId(businessUser.getBizName().getId(), CouponGroupEnum.M);
