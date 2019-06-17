@@ -35,6 +35,7 @@
                         <a href="${pageContext.request.contextPath}/">Home</a>
                         <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
                         <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/merchantLanding.htm">Merchant Coupon</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
