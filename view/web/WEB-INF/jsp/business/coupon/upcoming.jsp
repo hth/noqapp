@@ -71,6 +71,7 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th nowrap>Name & Description</th>
+                                                <th>Issued To</th>
                                                 <th nowrap>Dates</th>
                                                 <th>Issued By</th>
                                                 <th>Multi Use</th>
@@ -86,12 +87,17 @@
                                                         ${coupon.discountDescription}
                                                     </td>
                                                     <td nowrap>
+                                                        ${coupon.issuedTo}
+                                                        <br/>
+                                                        ${coupon.issuedToPhone}
+                                                    </td>
+                                                    <td nowrap>
                                                         <fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponStartDate}"/>
                                                         -
                                                         <fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponEndDate}"/>
                                                     </td>
                                                     <td nowrap>
-                                                            ${coupon.issuedBy}
+                                                        ${coupon.issuedBy}
                                                     </td>
                                                     <td nowrap>
                                                         <c:choose>

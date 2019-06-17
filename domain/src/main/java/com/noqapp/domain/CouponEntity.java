@@ -87,6 +87,12 @@ public class CouponEntity extends BaseEntity {
     @Transient
     private String issuedBy;
 
+    @Transient
+    private String issuedTo;
+
+    @Transient
+    private String issuedToPhone;
+
     public String getBizNameId() {
         return bizNameId;
     }
@@ -239,6 +245,28 @@ public class CouponEntity extends BaseEntity {
     @Transient
     public CouponEntity setIssuedBy(String issuedBy) {
         this.issuedBy = issuedBy;
+        return this;
+    }
+
+    @Transient
+    public String getIssuedTo() {
+        return issuedTo;
+    }
+
+    @Transient
+    public CouponEntity setIssuedTo(String issuedTo) {
+        this.issuedTo = issuedTo;
+        return this;
+    }
+
+    @Transient
+    public String getIssuedToPhone() {
+        return issuedToPhone;
+    }
+
+    @Transient
+    public CouponEntity setIssuedToPhone(String issuedToPhone) {
+        this.issuedToPhone = issuedToPhone;
         return this;
     }
 
