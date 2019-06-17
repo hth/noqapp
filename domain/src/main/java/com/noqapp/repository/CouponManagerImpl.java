@@ -119,7 +119,7 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public List<CouponEntity> findActiveClientCouponByQID(String qid) {
+    public List<CouponEntity> findActiveClientCouponByQid(String qid) {
         Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.find(
             query(where("QID").is(qid)

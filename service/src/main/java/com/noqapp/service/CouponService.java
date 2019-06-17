@@ -86,8 +86,8 @@ public class CouponService {
     }
 
     @Mobile
-    public JsonCouponList findActiveClientCouponByQIDAsJson(String qid) {
-        List<CouponEntity> coupons = couponManager.findActiveClientCouponByQID(qid);
+    public JsonCouponList findActiveClientCouponByQidAsJson(String qid) {
+        List<CouponEntity> coupons = couponManager.findActiveClientCouponByQid(qid);
 
         JsonCouponList jsonDiscountList = new JsonCouponList();
         for (CouponEntity coupon : coupons) {
