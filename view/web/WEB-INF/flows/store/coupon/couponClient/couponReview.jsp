@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.CouponTypeEnum,com.noqapp.domain.types.DiscountTypeEnum" %>
 <%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -161,6 +162,7 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <c:if test="${couponForm.couponType ne CouponTypeEnum.G}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="phoneRaw" cssErrorClass="lb_error">Customer Phone</form:label>
@@ -179,6 +181,7 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    </c:if>
                                 </ul>
 
                                 <div class="col-lable3"></div>

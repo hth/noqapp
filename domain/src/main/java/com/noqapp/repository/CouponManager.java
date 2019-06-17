@@ -17,11 +17,11 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
 
     long inActiveCouponWithDiscountId(String discountId);
 
-    long countActiveCouponWithDiscountId(String discountId);
+    long countActiveBusinessCouponWithDiscountId(String discountId);
 
     CouponEntity findById(String couponId);
 
-    List<CouponEntity> findActiveClientCouponByQID(String qid);
+    List<CouponEntity> findActiveClientCouponByQid(String qid);
 
     long countDiscountUsage(String discountId);
 }

@@ -74,7 +74,7 @@ public class CouponFlowValidator {
                     .build());
             status = "failure";
         } else {
-            long couponCountWithSimilarDiscountId = couponService.countActiveCouponWithDiscountId(couponForm.getDiscountId());
+            long couponCountWithSimilarDiscountId = couponService.countActiveBusinessCouponWithDiscountId(couponForm.getDiscountId());
             if (couponCountWithSimilarDiscountId > 0) {
                 DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
                 messageContext.addMessage(
@@ -108,7 +108,7 @@ public class CouponFlowValidator {
             LocalDate publishDate = LocalDate.parse(couponForm.getCouponStartDate());
             Date publish = Date.from(publishDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date now = Date.from(Instant.now());
-            if (publish.after(now)) {
+            if (publish.before(now)) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()

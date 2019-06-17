@@ -6,6 +6,9 @@
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
     ADD COLUMN `CI` VARCHAR(24) AFTER `CQ`;
 
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
+    MODIFY SN VARCHAR(20);
+
 ### Change May 21 2019
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT` 

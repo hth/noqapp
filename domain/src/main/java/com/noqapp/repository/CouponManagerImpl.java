@@ -104,10 +104,10 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public long countActiveCouponWithDiscountId(String discountId) {
+    public long countActiveBusinessCouponWithDiscountId(String discountId) {
         Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.count(
-            query(where("DI").is(discountId).and("ED").gte(midnight).and("A").is(true)),
+            query(where("DI").is(discountId).and("ED").gte(midnight).and("QID").exists(false).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );
@@ -119,7 +119,7 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public List<CouponEntity> findActiveClientCouponByQID(String qid) {
+    public List<CouponEntity> findActiveClientCouponByQid(String qid) {
         Instant midnight = DateUtil.nowMidnightDate().toInstant();
         return mongoTemplate.find(
             query(where("QID").is(qid)

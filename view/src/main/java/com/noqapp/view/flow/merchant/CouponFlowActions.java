@@ -141,6 +141,8 @@ public class CouponFlowActions {
     }
 
     public void populateClientCouponForm(CouponForm couponForm) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
         couponForm.setBizNamedId(discount.getBizNameId())
             .setCouponCode(RandomString.newInstance(6).nextString())
@@ -149,8 +151,26 @@ public class CouponFlowActions {
             .setDiscountAmount(discount.getDiscountAmount())
             .setDiscountType(discount.getDiscountType())
             .setCouponType(discount.getCouponType())
-            .setMultiUse(false)
-            .setCouponIssuedByQID(couponForm.getQid());
+            .setCouponIssuedByQID(queueUser.getQueueUserId());
+
+        switch (discount.getCouponType()) {
+            case G:
+                BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
+                couponForm
+                    .setCoordinate(bizName.getCoordinate())
+                    .setMultiUse(true);
+                break;
+            case F:
+                couponForm.setMultiUse(true);
+                break;
+            case I:
+                UserProfileEntity userProfile = accountService.findProfileByQueueUserId(couponForm.getQid());
+                couponForm
+                    .setQid(couponForm.getQid())
+                    .setName(userProfile.getName())
+                    .setAddress(userProfile.getAddress());
+                break;
+        }
     }
 
     public void createClientCoupon(CouponForm couponForm) {

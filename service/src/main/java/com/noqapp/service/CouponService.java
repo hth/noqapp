@@ -53,8 +53,8 @@ public class CouponService {
         return couponManager.findUpcomingBusinessCouponByBizNameId(bizNameId);
     }
 
-    public long countActiveCouponWithDiscountId(String discountId) {
-        return couponManager.countActiveCouponWithDiscountId(discountId);
+    public long countActiveBusinessCouponWithDiscountId(String discountId) {
+        return couponManager.countActiveBusinessCouponWithDiscountId(discountId);
     }
 
     public CouponEntity findById(String couponId) {
@@ -86,8 +86,8 @@ public class CouponService {
     }
 
     @Mobile
-    public JsonCouponList findActiveClientCouponByQIDAsJson(String qid) {
-        List<CouponEntity> coupons = couponManager.findActiveClientCouponByQID(qid);
+    public JsonCouponList findActiveClientCouponByQidAsJson(String qid) {
+        List<CouponEntity> coupons = couponManager.findActiveClientCouponByQid(qid);
 
         JsonCouponList jsonDiscountList = new JsonCouponList();
         for (CouponEntity coupon : coupons) {
