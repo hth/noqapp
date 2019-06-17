@@ -26,6 +26,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.webflow.context.ExternalContext;
 
 import java.time.ZoneOffset;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -92,13 +94,35 @@ public class CouponFlowActions {
         couponService.save(coupon);
     }
 
-    public void populateWithClientDetail(CouponForm couponForm) {
+    public String selectAppropriateFlow(CouponForm couponForm) {
+        DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
+        return discount.getCouponType().getName();
+    }
+
+    public void populateWithGuardianDetail(CouponForm couponForm) {
         BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
         String phone = Formatter.phoneNumberWithCountryCode(couponForm.getPhoneRaw(), bizName.getCountryShortName());
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
         couponForm.setQid(userProfile.getQueueUserId())
             .setName(userProfile.getName())
             .setAddress(userProfile.getAddress());
+    }
+
+    public void populateWithFamilyDetail(CouponForm couponForm) {
+        BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
+        String phone = Formatter.phoneNumberWithCountryCode(couponForm.getPhoneRaw(), bizName.getCountryShortName());
+        UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
+        couponForm.setQid(userProfile.getQueueUserId())
+            .setName(userProfile.getName())
+            .setAddress(userProfile.getAddress());
+
+        couponForm.setUserProfiles(new LinkedList<>());
+        List<String> qidOfDependents = userProfile.getQidOfDependents();
+        for (String dependentQid : qidOfDependents) {
+            couponForm.addUserProfile(accountService.findProfileByQueueUserId(dependentQid));
+        }
+
+        couponForm.addUserProfile(userProfile);
     }
 
     public void populateClientCouponForm(CouponForm couponForm) {

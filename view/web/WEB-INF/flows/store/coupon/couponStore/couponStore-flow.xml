@@ -6,5 +6,5 @@
 
     <secured attributes="ROLE_M_ADMIN, ROLE_TECHNICIAN, ROLE_SUPERVISOR" match="any"/>
 
-<!--    TODO-->
+<!--    TODO for specific store, this will be helpful for franchise stores -->
 </flow>
