@@ -442,7 +442,7 @@ public class PurchaseOrderService {
                     /* Add discount as line item. */
                     jsonPurchaseOrder.getJsonPurchaseOrderProducts().add(
                         new JsonPurchaseOrderProduct()
-                            .setProductName("Follow-up discount for visiting within " + lastVisited + " days")
+                            .setProductName("Follow-up discount before " + lastVisited + " days")
                             .setProductPrice(-bizStore.getProductPrice())
                             .setProductQuantity(1)
                     );
@@ -471,7 +471,8 @@ public class PurchaseOrderService {
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
             .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
             .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
-            .setStoreDiscount(bizStore.getDiscount())
+            /* Check for coupon if present of apply store discount if any. */
+            .setStoreDiscount(StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId()) ? jsonPurchaseOrder.getStoreDiscount() : bizStore.getDiscount())
             .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
             .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
             .setDeliveryMode(jsonPurchaseOrder.getDeliveryMode())
