@@ -76,7 +76,7 @@
                                             <form:label path="remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="remoteJoin" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
+                                            <form:checkbox path="remoteJoin" cssClass="form-check-box" cssErrorClass="form-check-box error-field"/>
                                             <span style="display:block; font-size:14px;">(Allow user to join queue from Home, or far of places)</span>
                                         </div>
                                         <div class="clearFix"></div>
@@ -86,7 +86,7 @@
                                             <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"/>
+                                            <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true"/>
                                             <span style="display:block; font-size:14px;">(Default: Only registered users can join)</span>
                                         </div>
                                         <div class="clearFix"></div>

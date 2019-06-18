@@ -104,7 +104,7 @@
                                         <form:label path="ignoreSentiments" cssErrorClass="lb_error">Ignore Negative Sentiments</form:label>
                                     </div>
                                     <div id="addressStoreCheckBox" class="col-fields">
-                                        <form:checkbox path="ignoreSentiments" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" />
+                                        <form:checkbox path="ignoreSentiments" cssClass="form-check-box" cssErrorClass="form-check-box error-field" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>

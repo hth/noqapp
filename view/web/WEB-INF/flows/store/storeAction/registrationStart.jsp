@@ -163,7 +163,7 @@
                                             <form:label path="selectFoundAddressStore" cssErrorClass="lb_error">I choose Best Matching Store Address</form:label>
                                         </div>
                                         <div id="addressStoreCheckBox" class="col-fields">
-                                            <form:checkbox path="selectFoundAddressStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"
+                                            <form:checkbox path="selectFoundAddressStore" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true"
                                                            onclick="handleFoundAddressStoreCheckboxUncheck()" />
                                         </div>
                                         <div class="clearFix"></div>
@@ -183,7 +183,7 @@
                                             <form:label path="businessAddressAsStore" cssErrorClass="lb_error">Same As Business</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="businessAddressAsStore" id="businessAddressAsStore" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" />
+                                            <form:checkbox path="businessAddressAsStore" id="businessAddressAsStore" cssClass="form-check-box" cssErrorClass="form-check-box error-field" />
                                             <span style="display:block; font-size:14px;">(Store Address, Phone is same as Business)</span>
                                         </div>
                                         <div class="clearFix"></div>

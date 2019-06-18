@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface CouponManager extends RepositoryManager<CouponEntity> {
 
-    List<CouponEntity> findActiveGlobalCoupon();
+    List<CouponEntity> findNearByCoupon(double x, double y);
 
     /** Gets currently active coupons. */
     List<CouponEntity> findActiveCouponByBizNameId(String bizNameId, CouponGroupEnum couponGroup);
@@ -27,4 +27,6 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
     List<CouponEntity> findActiveClientCouponByQid(String qid);
 
     long countDiscountUsage(String discountId);
+
+    boolean checkIfCouponExistsForQid(String discountId, String qid);
 }
