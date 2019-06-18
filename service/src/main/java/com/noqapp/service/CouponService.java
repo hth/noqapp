@@ -52,8 +52,8 @@ public class CouponService {
         couponManager.save(coupon);
     }
 
-    public List<CouponEntity> findActiveGlobalCoupon() {
-        return couponManager.findActiveGlobalCoupon();
+    private List<CouponEntity> findNearByCoupon(double x, double y) {
+        return couponManager.findNearByCoupon(x, y);
     }
 
     public List<CouponEntity> findActiveCouponByBizNameId(String bizNameId, CouponGroupEnum couponGroup) {
@@ -73,8 +73,8 @@ public class CouponService {
     }
 
     @Mobile
-    public JsonCouponList findActiveGlobalCouponAsJson() {
-        List<CouponEntity> coupons = findActiveGlobalCoupon();
+    public JsonCouponList findNearByCouponAsJson(double x, double y) {
+        List<CouponEntity> coupons = findNearByCoupon(x, y);
 
         JsonCouponList jsonDiscountList = new JsonCouponList();
         for (CouponEntity coupon : coupons) {

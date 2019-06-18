@@ -70,18 +70,20 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public List<CouponEntity> findActiveGlobalCoupon() {
+    public List<CouponEntity> findNearByCoupon(double x, double y) {
         Instant midnight = DateUtil.nowMidnightDate().toInstant();
-        return mongoTemplate.find(
-            query(where("QID").exists(false)
-                .and("CG").is(CouponGroupEnum.C)
-                .and("SD").lte(midnight)
-                .and("ED").gte(midnight)
-                .and("A").is(true)
-            ).with(new Sort(DESC, "ED")),
-            CouponEntity.class,
-            TABLE
+        Query q = query(where("QID").exists(false)
+            .and("CG").is(CouponGroupEnum.C)
+            .and("SD").lte(midnight)
+            .and("ED").gte(midnight)
+            .and("A").is(true)
         );
+
+        Point location = new Point(x, y);
+        NearQuery query = NearQuery.near(location).maxDistance(new Distance(150, Metrics.KILOMETERS)).query(q);
+
+        GeoResults<CouponEntity> geoResults = mongoTemplate.geoNear(query, CouponEntity.class, TABLE);
+        return geoResults.getContent().stream().map(GeoResult::getContent).collect(Collectors.toList());
     }
 
     @Override
