@@ -30,6 +30,7 @@ import java.util.Date;
     @CompoundIndex(name = "coupon_idx", def = "{'BN': -1, 'DI': -1}", unique = false),
     @CompoundIndex(name = "coupon_code_idx", def = "{'CC': -1}", unique = true),
     @CompoundIndex(name = "coupon_code_qid_idx", def = "{'BN' : -1, 'CC': -1, 'QID': -1, 'BS' : -1}", unique = false, background = true, sparse = true),
+    @CompoundIndex(name = "coupon_cor_idx", def = "{'COR': '2d'}", unique = false, background = true, sparse = true),
 })
 public class CouponEntity extends BaseEntity {
 
