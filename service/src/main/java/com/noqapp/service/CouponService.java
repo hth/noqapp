@@ -153,4 +153,8 @@ public class CouponService {
 
         return jsonDiscountList;
     }
+
+    public boolean checkIfCouponExistsForQid(String discountId, String qid) {
+        return couponManager.checkIfCouponExistsForQid(discountId, qid);
+    }
 }

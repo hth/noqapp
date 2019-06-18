@@ -16,6 +16,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.CouponService;
 import com.noqapp.service.DiscountService;
+import com.noqapp.view.flow.merchant.exception.CouponAlreadyExistsForClient;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import com.noqapp.view.form.business.CouponForm;
 
@@ -23,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.binding.message.MessageBuilder;
+import org.springframework.binding.message.MessageContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.context.ExternalContext;
@@ -112,7 +115,7 @@ public class CouponFlowActions {
 
     /* Coupon for Individual person. */
     @SuppressWarnings("unused")
-    public void populateWithGuardianDetail(CouponForm couponForm) {
+    public void populateWithGuardianDetail(CouponForm couponForm, MessageContext messageContext) {
         BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
         String phone = Formatter.phoneNumberWithCountryCode(couponForm.getPhoneRaw(), bizName.getCountryShortName());
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
@@ -120,6 +123,19 @@ public class CouponFlowActions {
             .setQid(userProfile.getQueueUserId())
             .setName(userProfile.getName())
             .setAddress(userProfile.getAddress());
+
+        if (couponService.checkIfCouponExistsForQid(couponForm.getDiscountId(), couponForm.getQid())) {
+            LOG.warn("Coupon already exists for {} {}", couponForm.getDiscountId(), couponForm.getQid());
+
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("name")
+                    .defaultText("Coupon " + couponForm.getDiscountName() + " already exists for " + userProfile.getPhoneRaw())
+                    .build());
+
+            throw new CouponAlreadyExistsForClient("Coupon already exists. Previous coupon has to expire before creating new coupon");
+        }
     }
 
     /* Coupon for Whole family. */
@@ -144,8 +160,27 @@ public class CouponFlowActions {
         couponForm.addUserProfile(userProfile);
     }
 
-    public void populateClientCouponForm(CouponForm couponForm) {
+    public void populateClientCouponForm(CouponForm couponForm, MessageContext messageContext) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (couponService.checkIfCouponExistsForQid(couponForm.getDiscountId(), couponForm.getQid())) {
+            LOG.warn("Coupon already exists for {} {}", couponForm.getDiscountId(), couponForm.getQid());
+
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(couponForm.getQid());
+            couponForm
+                .setQid(couponForm.getQid())
+                .setName(userProfile.getName())
+                .setAddress(userProfile.getAddress());
+
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("qid")
+                    .defaultText("Coupon " + couponForm.getDiscountName() + " already exists for " + userProfile.getName() + " ( Age " + userProfile.getAgeAsString() + ")")
+                    .build());
+
+            throw new CouponAlreadyExistsForClient("Coupon already exists. Previous coupon has to expire before creating new coupon");
+        }
 
         DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
         couponForm.setBizNamedId(discount.getBizNameId())

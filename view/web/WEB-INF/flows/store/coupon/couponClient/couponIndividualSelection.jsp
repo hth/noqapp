@@ -58,18 +58,6 @@
                         <div class="admin-title">
                             <h2>Add Client Coupon</h2>
                         </div>
-                        <div class="error-box">
-                            <div class="error-txt">
-                                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                <ul>
-                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                    <li>${message.text}</li>
-                                    </c:forEach>
-                                </ul>
-                                </c:if>
-                            </div>
-                        </div>
-
                         <div class="admin-content">
                             <div class="add-new">
                                 <ul class="list-form">
@@ -106,13 +94,24 @@
 
                         <div class="full">
                             <div class="admin-title pT30">
-                                <h2>Select Individual</h2>
+                                <h2>Select Family Member</h2>
+                            </div>
+                            <div class="error-box">
+                                <div class="error-txt">
+                                    <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                                    <ul>
+                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                        <li>${message.text}</li>
+                                        </c:forEach>
+                                    </ul>
+                                    </c:if>
+                                </div>
                             </div>
                             <ul class="col1-grid">
                                 <c:forEach items="${couponForm.userProfiles}" var="userProfile">
                                 <li>
-                                    <div class="col-lable3" style="width: 48%">
-                                        <form:checkbox path="qid" value="${userProfile.queueUserId}" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
+                                    <div class="col-lable3" style="width: 35%">
+                                        <form:checkbox path="qid" value="${userProfile.queueUserId}" cssClass="form-check-box" cssErrorClass="form-check-box error-field"/>
                                     </div>
                                     <div class="col-fields" style="padding: 18px 0 0 0; width: 48%">
                                         <form:label path="qid" cssErrorClass="lb_error">${userProfile.name} (Age ${userProfile.ageAsString})</form:label>

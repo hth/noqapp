@@ -17,12 +17,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.GeoResults;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.NearQuery;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -152,6 +160,15 @@ public class CouponManagerImpl implements CouponManager {
     public long countDiscountUsage(String discountId) {
         return mongoTemplate.count(
             query(where("DI").is(discountId).and("A").is(true)),
+            CouponEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public boolean checkIfCouponExistsForQid(String discountId, String qid) {
+        return mongoTemplate.exists(
+            query(where("DI").is(discountId).and("QID").is(qid).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );
