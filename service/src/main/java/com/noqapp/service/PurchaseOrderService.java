@@ -466,15 +466,18 @@ public class PurchaseOrderService {
         }
 
         setCustomerPhoneAndAddress(qid, jsonPurchaseOrder);
+        /* Check for coupon if present of apply store discount if any. */
+        int storeDiscount = StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId()) ? jsonPurchaseOrder.getStoreDiscount() : bizStore.getDiscount();
+        int originalOrderPrice = Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) - storeDiscount;
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
             .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
             .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
-            /* Check for coupon if present of apply store discount if any. */
-            .setStoreDiscount(StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId()) ? jsonPurchaseOrder.getStoreDiscount() : bizStore.getDiscount())
+            .setCouponId(StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId()) ? jsonPurchaseOrder.getCouponId() : null)
+            .setStoreDiscount(storeDiscount)
             .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
-            .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
+            .setOrderPrice(String.valueOf(originalOrderPrice))
             .setDeliveryMode(jsonPurchaseOrder.getDeliveryMode())
             //.setPaymentMode(jsonPurchaseOrder.getPaymentMode())
             .setBusinessType(bizStore.getBusinessType())
@@ -484,7 +487,7 @@ public class PurchaseOrderService {
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
 
         List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
-        int orderPrice = 0;
+        int computedOrderPrice = 0;
         for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getJsonPurchaseOrderProducts()) {
             StoreProductEntity storeProduct = null;
             if (StringUtils.isNotBlank(jsonPurchaseOrderProduct.getProductId())) {
@@ -516,7 +519,7 @@ public class PurchaseOrderService {
                 .setBusinessType(bizStore.getBusinessType())
                 .setPurchaseOrderId(purchaseOrder.getId());
             purchaseOrderProducts.add(purchaseOrderProduct);
-            orderPrice = orderPrice + purchaseOrderProduct.computeCost();
+            computedOrderPrice = computedOrderPrice + purchaseOrderProduct.computeCost();
         }
 
         if (StringUtils.isBlank(purchaseOrder.getOrderPrice())) {
@@ -525,8 +528,8 @@ public class PurchaseOrderService {
         }
 
         /* Check if total price computed and submitted is same. */
-        if (orderPrice != Integer.parseInt(purchaseOrder.getOrderPrice()) && !jsonPurchaseOrder.isCustomized()) {
-            LOG.error("Computed order price {} and submitted order price {}", orderPrice, purchaseOrder.getOrderPrice());
+        if (computedOrderPrice - storeDiscount != Integer.parseInt(purchaseOrder.getOrderPrice()) && !jsonPurchaseOrder.isCustomized()) {
+            LOG.error("Computed order price {} and submitted order price {}", computedOrderPrice, purchaseOrder.getOrderPrice());
             throw new PriceMismatchException("Price sent and computed does not match");
         }
         JsonToken jsonToken;
