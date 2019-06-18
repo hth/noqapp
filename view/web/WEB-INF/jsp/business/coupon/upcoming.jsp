@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.DiscountTypeEnum,com.noqapp.domain.types.ActionTypeEnum" %>
+<%@ page import="com.noqapp.domain.types.DiscountTypeEnum,com.noqapp.domain.types.ActionTypeEnum,com.noqapp.domain.types.CouponTypeEnum" %>
 <%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -87,9 +87,16 @@
                                                         ${coupon.discountDescription}
                                                     </td>
                                                     <td nowrap>
-                                                        ${coupon.issuedTo}
-                                                        <br/>
-                                                        ${coupon.issuedToPhone}
+                                                        <c:choose>
+                                                        <c:when test="${coupon.couponType ne CouponTypeEnum.G}">
+                                                            ${coupon.issuedTo}
+                                                            <br/>
+                                                            ${coupon.issuedToPhone}
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            --
+                                                        </c:otherwise>
+                                                        </c:choose>
                                                     </td>
                                                     <td nowrap>
                                                         <fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponStartDate}"/>
