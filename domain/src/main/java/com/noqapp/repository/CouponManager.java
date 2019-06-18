@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface CouponManager extends RepositoryManager<CouponEntity> {
 
-    List<CouponEntity> findNearByCoupon(double x, double y);
+    List<CouponEntity> findNearByCoupon(double longitude, double latitude);
 
     /** Gets currently active coupons. */
     List<CouponEntity> findActiveCouponByBizNameId(String bizNameId, CouponGroupEnum couponGroup);

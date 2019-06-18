@@ -52,8 +52,8 @@ public class CouponService {
         couponManager.save(coupon);
     }
 
-    private List<CouponEntity> findNearByCoupon(double x, double y) {
-        return couponManager.findNearByCoupon(x, y);
+    private List<CouponEntity> findNearByCoupon(double longitude, double latitude) {
+        return couponManager.findNearByCoupon(longitude, latitude);
     }
 
     public List<CouponEntity> findActiveCouponByBizNameId(String bizNameId, CouponGroupEnum couponGroup) {
@@ -73,8 +73,8 @@ public class CouponService {
     }
 
     @Mobile
-    public JsonCouponList findNearByCouponAsJson(double x, double y) {
-        List<CouponEntity> coupons = findNearByCoupon(x, y);
+    public JsonCouponList findNearByCouponAsJson(double longitude, double latitude) {
+        List<CouponEntity> coupons = findNearByCoupon(longitude, latitude);
 
         JsonCouponList jsonDiscountList = new JsonCouponList();
         for (CouponEntity coupon : coupons) {
