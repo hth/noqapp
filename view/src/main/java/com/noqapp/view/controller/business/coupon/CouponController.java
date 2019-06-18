@@ -8,6 +8,7 @@ import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.CouponGroupEnum;
+import com.noqapp.domain.types.CouponTypeEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.CouponService;
@@ -116,12 +117,14 @@ public class CouponController {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(coupon.getCouponIssuedByQID());
             coupon.setIssuedBy(userProfile.getName());
 
-            UserProfileEntity issuedPersonUserProfile = userProfileManager.findByQueueUserId(coupon.getQid());
-            coupon
-                .setIssuedTo(issuedPersonUserProfile.getName())
-                .setIssuedToPhone(StringUtils.isBlank(issuedPersonUserProfile.getGuardianPhone())
-                    ? Formatter.phoneNationalFormat(issuedPersonUserProfile.getPhoneRaw(), issuedPersonUserProfile.getCountryShortName())
-                    : Formatter.phoneNationalFormat(issuedPersonUserProfile.getGuardianPhone(), issuedPersonUserProfile.getCountryShortName()));
+            if (coupon.getCouponType() != CouponTypeEnum.G) {
+                UserProfileEntity issuedPersonUserProfile = userProfileManager.findByQueueUserId(coupon.getQid());
+                coupon
+                    .setIssuedTo(issuedPersonUserProfile.getName())
+                    .setIssuedToPhone(StringUtils.isBlank(issuedPersonUserProfile.getGuardianPhone())
+                        ? Formatter.phoneNationalFormat(issuedPersonUserProfile.getPhoneRaw(), issuedPersonUserProfile.getCountryShortName())
+                        : Formatter.phoneNationalFormat(issuedPersonUserProfile.getGuardianPhone(), issuedPersonUserProfile.getCountryShortName()));
+            }
             couponForm.addCoupon(coupon);
         }
 
@@ -150,12 +153,14 @@ public class CouponController {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(coupon.getCouponIssuedByQID());
             coupon.setIssuedBy(userProfile.getName());
 
-            UserProfileEntity issuedPersonUserProfile = userProfileManager.findByQueueUserId(coupon.getQid());
-            coupon
-                .setIssuedTo(issuedPersonUserProfile.getName())
-                .setIssuedToPhone(StringUtils.isBlank(issuedPersonUserProfile.getGuardianPhone())
-                    ? Formatter.phoneNationalFormat(issuedPersonUserProfile.getPhoneRaw(), issuedPersonUserProfile.getCountryShortName())
-                    : Formatter.phoneNationalFormat(issuedPersonUserProfile.getGuardianPhone(), issuedPersonUserProfile.getCountryShortName()));
+            if (coupon.getCouponType() != CouponTypeEnum.G) {
+                UserProfileEntity issuedPersonUserProfile = userProfileManager.findByQueueUserId(coupon.getQid());
+                coupon
+                    .setIssuedTo(issuedPersonUserProfile.getName())
+                    .setIssuedToPhone(StringUtils.isBlank(issuedPersonUserProfile.getGuardianPhone())
+                        ? Formatter.phoneNationalFormat(issuedPersonUserProfile.getPhoneRaw(), issuedPersonUserProfile.getCountryShortName())
+                        : Formatter.phoneNationalFormat(issuedPersonUserProfile.getGuardianPhone(), issuedPersonUserProfile.getCountryShortName()));
+            }
             couponForm.addCoupon(coupon);
         }
 
