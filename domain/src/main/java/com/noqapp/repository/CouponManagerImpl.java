@@ -80,7 +80,7 @@ public class CouponManagerImpl implements CouponManager {
         );
 
         Point location = new Point(x, y);
-        NearQuery query = NearQuery.near(location).maxDistance(new Distance(150, Metrics.KILOMETERS)).query(q);
+        NearQuery query = NearQuery.near(location).maxDistance(new Distance(150, Metrics.KILOMETERS));
 
         GeoResults<CouponEntity> geoResults = mongoTemplate.geoNear(query, CouponEntity.class, TABLE);
         return geoResults.getContent().stream().map(GeoResult::getContent).collect(Collectors.toList());
