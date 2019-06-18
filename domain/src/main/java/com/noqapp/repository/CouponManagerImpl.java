@@ -70,7 +70,7 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
-    public List<CouponEntity> findNearByCoupon(double x, double y) {
+    public List<CouponEntity> findNearByCoupon(double longitude, double latitude) {
         Instant midnight = DateUtil.nowMidnightDate().toInstant();
         Query q = query(where("QID").exists(false)
             .and("CG").is(CouponGroupEnum.C)
@@ -79,8 +79,8 @@ public class CouponManagerImpl implements CouponManager {
             .and("A").is(true)
         );
 
-        Point location = new Point(x, y);
-        NearQuery query = NearQuery.near(location).maxDistance(new Distance(150, Metrics.KILOMETERS));
+        Point location = new Point(longitude, latitude);
+        NearQuery query = NearQuery.near(location).maxDistance(new Distance(150, Metrics.KILOMETERS)).query(q);
 
         GeoResults<CouponEntity> geoResults = mongoTemplate.geoNear(query, CouponEntity.class, TABLE);
         return geoResults.getContent().stream().map(GeoResult::getContent).collect(Collectors.toList());
