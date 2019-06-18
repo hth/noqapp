@@ -76,7 +76,7 @@
                                             <form:label path="appointmentEnable" cssErrorClass="lb_error">Allow Appointment</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="appointmentEnable" cssClass="form-check-box" cssErrorClass="form-field-admin error-field"/>
+                                            <form:checkbox path="appointmentEnable" cssClass="form-check-box" cssErrorClass="form-check-box error-field"/>
                                             <span style="display:block; font-size:14px;">(Allow user to take appointment)</span>
                                         </div>
                                         <div class="clearFix"></div>

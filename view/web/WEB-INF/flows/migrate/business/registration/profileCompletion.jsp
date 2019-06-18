@@ -138,7 +138,7 @@
                                             <form:label path="selectFoundAddress" cssErrorClass="lb_error">I choose Best Matching Address</form:label>
                                         </div>
                                         <div id="addressCheckBox" class="col-fields">
-                                            <form:checkbox path="selectFoundAddress" cssClass="form-check-box" cssErrorClass="form-field-admin error-field" disabled="true"
+                                            <form:checkbox path="selectFoundAddress" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true"
                                                     onclick="handleFoundAddressCheckboxUncheck()" />
                                         </div>
                                         <div class="clearFix"></div>
