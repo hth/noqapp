@@ -128,6 +128,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("cft")
     private JsonResponseWithCFToken jsonResponseWithCFToken;
 
+    @JsonProperty("cp")
+    private JsonCoupon jsonCoupon;
+
     @JsonProperty("cz")
     private boolean customized;
 
@@ -374,6 +377,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setJsonResponseWithCFToken(JsonResponseWithCFToken jsonResponseWithCFToken) {
         this.jsonResponseWithCFToken = jsonResponseWithCFToken;
+        return this;
+    }
+
+    public JsonCoupon getJsonCoupon() {
+        return jsonCoupon;
+    }
+
+    public JsonPurchaseOrder setJsonCoupon(JsonCoupon jsonCoupon) {
+        this.jsonCoupon = jsonCoupon;
         return this;
     }
 

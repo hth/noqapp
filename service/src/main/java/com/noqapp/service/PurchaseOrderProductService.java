@@ -19,14 +19,17 @@ import java.util.List;
 @Service
 public class PurchaseOrderProductService {
 
+    private CouponService couponService;
     private PurchaseOrderProductManager purchaseOrderProductManager;
     private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
 
     @Autowired
     public PurchaseOrderProductService(
+        CouponService couponService,
         PurchaseOrderProductManager purchaseOrderProductManager,
         PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC
     ) {
+        this.couponService = couponService;
         this.purchaseOrderProductManager = purchaseOrderProductManager;
         this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
     }
@@ -34,12 +37,12 @@ public class PurchaseOrderProductService {
     @Mobile
     public JsonPurchaseOrder populateJsonPurchaseOrder(PurchaseOrderEntity purchaseOrder) {
         List<PurchaseOrderProductEntity> products = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
-        return new JsonPurchaseOrder(purchaseOrder, products);
+        return couponService.addCouponInformationIfAny(new JsonPurchaseOrder(purchaseOrder, products));
     }
 
     @Mobile
     public JsonPurchaseOrder populateHistoricalJsonPurchaseOrder(PurchaseOrderEntity purchaseOrder) {
         List<PurchaseOrderProductEntity> products = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
-        return new JsonPurchaseOrder(purchaseOrder, products);
+        return couponService.addCouponInformationIfAny(new JsonPurchaseOrder(purchaseOrder, products));
     }
 }

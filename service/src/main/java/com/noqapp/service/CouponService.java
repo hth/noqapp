@@ -1,29 +1,28 @@
 package com.noqapp.service;
 
-import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
-
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonCoupon;
 import com.noqapp.domain.json.JsonCouponList;
+import com.noqapp.domain.json.JsonPurchaseOrder;
 import com.noqapp.domain.types.CouponGroupEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.CouponManager;
 import com.noqapp.repository.UserProfileManager;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -72,24 +71,19 @@ public class CouponService {
         return couponManager.findById(couponId);
     }
 
+    JsonCoupon findByIdAsJson(String couponId) {
+        Assert.hasText(couponId, "Coupon Id cannot be blank");
+        CouponEntity coupon = couponManager.findById(couponId);
+        return JsonCoupon.populate(coupon);
+    }
+
     @Mobile
     public JsonCouponList findNearByCouponAsJson(double longitude, double latitude) {
         List<CouponEntity> coupons = findNearByCoupon(longitude, latitude);
 
         JsonCouponList jsonDiscountList = new JsonCouponList();
         for (CouponEntity coupon : coupons) {
-            jsonDiscountList.addCoupon(
-                new JsonCoupon()
-                    .setCouponId(coupon.getId())
-                    .setBizNameId(coupon.getBizNameId())
-                    .setCouponCode(coupon.getCouponCode())
-                    .setDiscountName(coupon.getDiscountName())
-                    .setDiscountDescription(coupon.getDiscountDescription())
-                    .setDiscountAmount(coupon.getDiscountAmount())
-                    .setDiscountType(coupon.getDiscountType())
-                    .setCouponStartDate(DateFormatUtils.format(coupon.getCouponStartDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-                    .setCouponEndDate(DateFormatUtils.format(coupon.getCouponEndDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-            );
+            jsonDiscountList.addCoupon(JsonCoupon.populate(coupon));
         }
 
         return jsonDiscountList;
@@ -102,18 +96,7 @@ public class CouponService {
 
         JsonCouponList jsonDiscountList = new JsonCouponList();
         for (CouponEntity coupon : coupons) {
-            jsonDiscountList.addCoupon(
-                new JsonCoupon()
-                    .setCouponId(coupon.getId())
-                    .setBizNameId(coupon.getBizNameId())
-                    .setCouponCode(coupon.getCouponCode())
-                    .setDiscountName(coupon.getDiscountName())
-                    .setDiscountDescription(coupon.getDiscountDescription())
-                    .setDiscountAmount(coupon.getDiscountAmount())
-                    .setDiscountType(coupon.getDiscountType())
-                    .setCouponStartDate(DateFormatUtils.format(coupon.getCouponStartDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-                    .setCouponEndDate(DateFormatUtils.format(coupon.getCouponEndDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-            );
+            jsonDiscountList.addCoupon(JsonCoupon.populate(coupon));
         }
 
         return jsonDiscountList;
@@ -135,19 +118,7 @@ public class CouponService {
         for (String familyQid : dependents) {
             List<CouponEntity> coupons = couponManager.findActiveClientCouponByQid(familyQid);
             for (CouponEntity coupon : coupons) {
-                jsonDiscountList.addCoupon(
-                    new JsonCoupon()
-                        .setCouponId(coupon.getId())
-                        .setBizNameId(coupon.getBizNameId())
-                        .setCouponCode(coupon.getCouponCode())
-                        .setDiscountName(coupon.getDiscountName())
-                        .setDiscountDescription(coupon.getDiscountDescription())
-                        .setDiscountAmount(coupon.getDiscountAmount())
-                        .setDiscountType(coupon.getDiscountType())
-                        .setCouponStartDate(DateFormatUtils.format(coupon.getCouponStartDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-                        .setCouponEndDate(DateFormatUtils.format(coupon.getCouponEndDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-                        .setQid(coupon.getQid())
-                );
+                jsonDiscountList.addCoupon(JsonCoupon.populate(coupon));
             }
         }
 
@@ -156,5 +127,13 @@ public class CouponService {
 
     public boolean checkIfCouponExistsForQid(String discountId, String qid) {
         return couponManager.checkIfCouponExistsForQid(discountId, qid);
+    }
+
+    public JsonPurchaseOrder addCouponInformationIfAny(JsonPurchaseOrder jsonPurchaseOrder) {
+        if (StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId())) {
+            JsonCoupon jsonCoupon = findByIdAsJson(jsonPurchaseOrder.getCouponId());
+            jsonPurchaseOrder.setJsonCoupon(jsonCoupon);
+        }
+        return jsonPurchaseOrder;
     }
 }
