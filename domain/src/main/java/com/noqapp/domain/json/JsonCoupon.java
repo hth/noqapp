@@ -1,12 +1,17 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.types.DiscountTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -60,6 +65,10 @@ public class JsonCoupon extends AbstractDomain {
 
     @JsonProperty("qid")
     private String qid;
+
+    public JsonCoupon() {
+        //Required default constructor
+    }
 
     public String getCouponId() {
         return couponId;
@@ -158,5 +167,19 @@ public class JsonCoupon extends AbstractDomain {
     public JsonCoupon setQid(String qid) {
         this.qid = qid;
         return this;
+    }
+
+    public static JsonCoupon populate(CouponEntity coupon) {
+        return new JsonCoupon()
+            .setCouponId(coupon.getId())
+            .setBizNameId(coupon.getBizNameId())
+            .setCouponCode(coupon.getCouponCode())
+            .setDiscountName(coupon.getDiscountName())
+            .setDiscountDescription(coupon.getDiscountDescription())
+            .setDiscountAmount(coupon.getDiscountAmount())
+            .setDiscountType(coupon.getDiscountType())
+            .setCouponStartDate(DateFormatUtils.format(coupon.getCouponStartDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+            .setCouponEndDate(DateFormatUtils.format(coupon.getCouponEndDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+            .setQid(coupon.getQid());
     }
 }

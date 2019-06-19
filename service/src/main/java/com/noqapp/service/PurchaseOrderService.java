@@ -807,7 +807,7 @@ public class PurchaseOrderService {
 
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
-        return new JsonPurchaseOrder(purchaseOrder);
+        return couponService.addCouponInformationIfAny(new JsonPurchaseOrder(purchaseOrder));
     }
 
     @Mobile
@@ -821,7 +821,7 @@ public class PurchaseOrderService {
             jpo.getPaymentMode(),
             qid);
 
-        return new JsonPurchaseOrder(purchaseOrder);
+        return couponService.addCouponInformationIfAny(new JsonPurchaseOrder(purchaseOrder));
     }
 
     private void updatePurchaseOrderWithUserDetail(PurchaseOrderEntity purchaseOrder) {
