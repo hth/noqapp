@@ -576,7 +576,6 @@ public class PurchaseOrderService {
                 .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
                 .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
 
-            populateWithCFToken(jsonPurchaseOrder, purchaseOrder);
             LOG.debug("JsonPurchaseOrder={}", jsonPurchaseOrder);
         } catch (FailedTransactionException e) {
             LOG.error("Failed transaction on creating order reason={}", e.getLocalizedMessage(), e);
@@ -716,7 +715,7 @@ public class PurchaseOrderService {
 
     @Mobile
     public PurchaseOrderEntity removeCoupon(String qid, String transactionId) {
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByQidAndTransactionId(qid, transactionId);
+        PurchaseOrderEntity purchaseOrder = findByQidAndTransactionId(qid, transactionId);
         switch (purchaseOrder.getPaymentStatus()) {
             case MP:
             case PA:
@@ -1627,6 +1626,14 @@ public class PurchaseOrderService {
         return purchaseOrderManagerJDBC.reviewService(codeQR, token, qid, ratingCount, review, sentimentType);
     }
 
+    @Mobile
+    public PurchaseOrderEntity findByQidAndTransactionId(String qid, String transactionId) {
+        if (StringUtils.isBlank(transactionId)) {
+            return null;
+        }
+        return purchaseOrderManager.findByQidAndTransactionId(qid, transactionId);
+    }
+
     public PurchaseOrderEntity findByTransactionId(String transactionId) {
         if (StringUtils.isBlank(transactionId)) {
             return null;
@@ -1634,6 +1641,7 @@ public class PurchaseOrderService {
         return purchaseOrderManager.findByTransactionId(transactionId);
     }
 
+    @Mobile
     public boolean existsTransactionId(String transactionId) {
         if (StringUtils.isBlank(transactionId)) {
             return false;
