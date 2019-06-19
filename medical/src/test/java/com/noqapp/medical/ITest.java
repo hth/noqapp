@@ -271,7 +271,8 @@ public class ITest extends RealMongoForITest {
             queueManager
         );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
-        purchaseOrderProductService = new PurchaseOrderProductService(purchaseOrderProductManager, purchaseOrderProductManagerJDBC);
+        couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
+        purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC);
 
         accountService = new AccountService(
             5,
@@ -361,7 +362,6 @@ public class ITest extends RealMongoForITest {
         );
 
         storeProductService = new StoreProductService(storeProductManager, bizStoreManager, fileService, transactionService);
-        couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
         purchaseOrderService = new PurchaseOrderService(
             5,
             bizStoreManager,

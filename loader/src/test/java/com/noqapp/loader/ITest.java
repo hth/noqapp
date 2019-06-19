@@ -29,6 +29,8 @@ import com.noqapp.repository.BusinessCustomerManagerImpl;
 import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.BusinessUserStoreManagerImpl;
+import com.noqapp.repository.CouponManager;
+import com.noqapp.repository.CouponManagerImpl;
 import com.noqapp.repository.EmailValidateManager;
 import com.noqapp.repository.EmailValidateManagerImpl;
 import com.noqapp.repository.ForgotRecoverManager;
@@ -79,6 +81,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessCustomerService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.CouponService;
 import com.noqapp.service.EmailValidateService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FirebaseMessageService;
@@ -124,6 +127,7 @@ public class ITest extends RealMongoForITest {
     protected MedicalTransactionService medicalTransactionService;
     protected StatsCronService statsCronService;
     protected PurchaseOrderProductService purchaseOrderProductService;
+    protected CouponService couponService;
 
     protected TokenQueueManager tokenQueueManager;
     protected QueueManager queueManager;
@@ -159,6 +163,7 @@ public class ITest extends RealMongoForITest {
     protected PurchaseOrderManager purchaseOrderManager;
     protected PurchaseOrderProductManager purchaseOrderProductManager;
     protected AdvertisementManager advertisementManager;
+    protected CouponManager couponManager;
 
     protected S3FileManager s3FileManager;
     protected StoreProductManager storeProductManager;
@@ -206,6 +211,7 @@ public class ITest extends RealMongoForITest {
         medicalPathologyManager = new MedicalPathologyManagerImpl(getMongoTemplate());
         statsBizStoreDailyManager = new StatsBizStoreDailyManagerImpl(getMongoTemplate());
         statsCronManager = new StatsCronManagerImpl(getMongoTemplate());
+        couponManager = new CouponManagerImpl(getMongoTemplate());
 
         userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
         firebaseMessageService = new FirebaseMessageService("", okHttpClient);
@@ -219,7 +225,8 @@ public class ITest extends RealMongoForITest {
             queueManager
         );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
-        purchaseOrderProductService = new PurchaseOrderProductService(purchaseOrderProductManager, purchaseOrderProductManagerJDBC);
+        couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
+        purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC);
 
         accountService = new AccountService(
             5,
