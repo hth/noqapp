@@ -154,7 +154,7 @@ public class ScheduleAppointmentService {
             jsonSchedule.getCodeQR(),
             "Appointment requested by " + userProfile.getName() + ".\n\n"
                 + "Date: " + jsonSchedule.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime())
-                + ". Please confirm this appointment at earliest. If not confirmed, this appointment will auto cancelled in 12 hours.");
+                + ". Please confirm this appointment at earliest. If not confirmed, this appointment will auto cancel after 12 hours from booking.");
         /*
          * Do not inform anyone other than the person with the
          * token who is being served. This is personal message.
