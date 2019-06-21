@@ -1,7 +1,6 @@
 package com.noqapp.domain.json.payment.cashfree;
 
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.types.SkipPaymentGatewayEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -41,9 +40,6 @@ public class JsonResponseWithCFToken extends AbstractDomain {
     @JsonProperty("orderAmount")
     private String orderAmount;
 
-    @JsonProperty("spg")
-    private SkipPaymentGatewayEnum skipPaymentGateway = SkipPaymentGatewayEnum.NO;
-
     public String getStatus() {
         return status;
     }
@@ -80,15 +76,6 @@ public class JsonResponseWithCFToken extends AbstractDomain {
         return this;
     }
 
-    public SkipPaymentGatewayEnum getSkipPaymentGateway() {
-        return skipPaymentGateway;
-    }
-
-    public JsonResponseWithCFToken setSkipPaymentGateway(SkipPaymentGatewayEnum skipPaymentGateway) {
-        this.skipPaymentGateway = skipPaymentGateway;
-        return this;
-    }
-
     @Override
     public String toString() {
         return "JsonResponseWithCFToken{" +
@@ -96,7 +83,6 @@ public class JsonResponseWithCFToken extends AbstractDomain {
             ", message='" + message + '\'' +
             ", cftoken='" + cftoken + '\'' +
             ", orderAmount='" + orderAmount + '\'' +
-            ", skipPaymentGateway=" + skipPaymentGateway +
             '}';
     }
 }
