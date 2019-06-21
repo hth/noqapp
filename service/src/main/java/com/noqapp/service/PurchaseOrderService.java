@@ -1693,4 +1693,8 @@ public class PurchaseOrderService {
             }
         }
     }
+
+    public boolean isPaid(String transactionId) {
+        return purchaseOrderManager.isPaid(transactionId);
+    }
 }

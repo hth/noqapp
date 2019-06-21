@@ -96,6 +96,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     PurchaseOrderEntity findByTransactionId(String transactionId);
     boolean existsTransactionId(String transactionId);
     PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId);
+    boolean isPaid(String transactionId);
 
     PurchaseOrderEntity updateOnPaymentGatewayNotification(
         String transactionId,
