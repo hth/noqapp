@@ -779,8 +779,6 @@ public class PurchaseOrderService {
             createTokenForPurchaseOrder(
                 purchaseOrder.orderPriceForTransaction(),
                 purchaseOrder.getTransactionId()));
-
-        jsonPurchaseOrder.setPaymentStatus(purchaseOrder.getPaymentStatus());
     }
 
     @Mobile
