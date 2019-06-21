@@ -17,7 +17,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.util.Assert;
 
 import java.beans.Transient;
 import java.math.BigDecimal;
@@ -572,7 +571,6 @@ public class PurchaseOrderEntity extends BaseEntity {
     }
 
     private static String correctPriceForTransaction(final BigDecimal transactionAmount) {
-        Assert.isTrue(transactionAmount.compareTo(BigDecimal.ZERO) > 0, "Amount should greater than zero");
         return transactionAmount.scaleByPowerOfTen(-2).toString();
     }
 
