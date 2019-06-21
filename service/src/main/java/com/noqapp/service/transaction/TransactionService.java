@@ -180,9 +180,16 @@ public class TransactionService {
         if (priceIsPositive && null != purchaseOrderBeforeCancel.getTransactionVia()) {
             switch (purchaseOrderBeforeCancel.getTransactionVia()) {
                 case E:
-                    if (PurchaseOrderStateEnum.PO != purchaseOrderBeforeCancel.getPresentOrderState()) {
-                        LOG.warn("Payment performed outside of NoQueue. Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
-                        throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
+                    switch (purchaseOrderBeforeCancel.getBusinessType().getMessageOrigin()) {
+                        case O:
+                            if (PurchaseOrderStateEnum.PO != purchaseOrderBeforeCancel.getPresentOrderState()) {
+                                LOG.warn("Payment performed outside of NoQueue. Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
+                                throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
+                            }
+                            break;
+                        case Q:
+                            LOG.warn("Payment performed outside of NoQueue. Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
+                            throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
                     }
                     break;
                 case U:
