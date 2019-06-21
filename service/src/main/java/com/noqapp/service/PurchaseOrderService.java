@@ -405,6 +405,15 @@ public class PurchaseOrderService {
         createOrder(jsonPurchaseOrder, jsonPurchaseOrder.getQueueUserId(), did, tokenService);
     }
 
+    @Mobile
+    public void createOrderWithCFToken(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
+        createOrder(jsonPurchaseOrder, qid, did, tokenService);
+        jsonPurchaseOrder.setJsonResponseWithCFToken(
+            createTokenForPurchaseOrder(
+                jsonPurchaseOrder.getOrderPrice(),
+                jsonPurchaseOrder.getTransactionId()));
+    }
+
     /**
      * @param jsonPurchaseOrder
      * @param qid               purchaserQid
@@ -457,7 +466,7 @@ public class PurchaseOrderService {
                     /* Add discount as line item. */
                     jsonPurchaseOrder.getJsonPurchaseOrderProducts().add(
                         new JsonPurchaseOrderProduct()
-                            .setProductName("Follow-up discount for visiting within " + lastVisited + " days")
+                            .setProductName("Follow-up discount within " + lastVisited + " days")
                             .setProductPrice(-bizStore.getDiscountedFollowupProductPrice())
                             .setProductQuantity(1)
                     );
@@ -468,7 +477,7 @@ public class PurchaseOrderService {
         setCustomerPhoneAndAddress(qid, jsonPurchaseOrder);
         /* Check for coupon if present of apply store discount if any. */
         int storeDiscount = StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId()) ? jsonPurchaseOrder.getStoreDiscount() : bizStore.getDiscount();
-        int originalOrderPrice = Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) - storeDiscount;
+        int receivedOrderPrice = Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) - storeDiscount;
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
@@ -477,7 +486,7 @@ public class PurchaseOrderService {
             .setCouponId(StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId()) ? jsonPurchaseOrder.getCouponId() : null)
             .setStoreDiscount(storeDiscount)
             .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
-            .setOrderPrice(String.valueOf(originalOrderPrice))
+            .setOrderPrice(String.valueOf(receivedOrderPrice))
             .setDeliveryMode(jsonPurchaseOrder.getDeliveryMode())
             //.setPaymentMode(jsonPurchaseOrder.getPaymentMode())
             .setBusinessType(bizStore.getBusinessType())
