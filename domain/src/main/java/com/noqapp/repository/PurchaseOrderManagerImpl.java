@@ -459,6 +459,15 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
+    public boolean isPaid(String transactionId) {
+        return mongoTemplate.exists(
+            query(where("TI").is(transactionId).and("PY").is(PaymentStatusEnum.PA)),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public PurchaseOrderEntity updateOnPaymentGatewayNotification(
         String transactionId,
         String transactionMessage,
