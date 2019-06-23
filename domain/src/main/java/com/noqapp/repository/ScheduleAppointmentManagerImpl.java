@@ -14,6 +14,8 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 
+import com.mongodb.client.result.UpdateResult;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,13 +107,15 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
-    public void cancelAppointment(String id, String qid, String codeQR) {
-        mongoTemplate.updateFirst(
+    public boolean cancelAppointment(String id, String qid, String codeQR) {
+        UpdateResult updateResult = mongoTemplate.updateFirst(
             query(where("id").is(id).and("QID").is(qid).and("QR").is(codeQR)),
             entityUpdate(update("AS", AppointmentStatusEnum.C)),
             ScheduleAppointmentEntity.class,
             TABLE
         );
+
+        return updateResult.wasAcknowledged();
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.noqapp.service;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
+import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
@@ -33,6 +34,7 @@ import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.exceptions.AppointmentBookingException;
+import com.noqapp.service.exceptions.AppointmentCancellationException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,6 +45,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +62,7 @@ public class ScheduleAppointmentService {
 
     private int untilDaysInPast;
     private int untilDaysInFuture;
+    private int appointmentCancelLimitedToHours;
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
     private BizStoreManager bizStoreManager;
@@ -80,6 +85,9 @@ public class ScheduleAppointmentService {
         @Value("${untilDaysInFuture:2}")
         int untilDaysInFuture,
 
+        @Value("${appointmentCancelLimitedToHours:24}")
+        int appointmentCancelLimitedToHours,
+
         ScheduleAppointmentManager scheduleAppointmentManager,
         BizStoreManager bizStoreManager,
         StoreHourManager storeHourManager,
@@ -93,6 +101,7 @@ public class ScheduleAppointmentService {
     ) {
         this.untilDaysInPast = untilDaysInPast;
         this.untilDaysInFuture = untilDaysInFuture;
+        this.appointmentCancelLimitedToHours = appointmentCancelLimitedToHours;
 
         this.scheduleAppointmentManager = scheduleAppointmentManager;
         this.bizStoreManager = bizStoreManager;
@@ -152,6 +161,7 @@ public class ScheduleAppointmentService {
 
         sendMessageToTopic(
             jsonSchedule.getCodeQR(),
+            "Appointment Received",
             "Appointment requested by " + userProfile.getName() + ".\n\n"
                 + "Date: " + jsonSchedule.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime())
                 + ". Please confirm this appointment at earliest. If not confirmed, this appointment will auto cancel after 12 hours from booking.");
@@ -178,7 +188,6 @@ public class ScheduleAppointmentService {
             .setStartTime(jsonSchedule.getStartTime())
             .setEndTime(jsonSchedule.getEndTime())
             .setRescheduleCount(scheduleAppointment.getRescheduleCount() + 1);
-
         save(scheduleAppointment);
 
         BizStoreEntity bizStore = bizService.findByCodeQR(scheduleAppointment.getCodeQR());
@@ -207,8 +216,29 @@ public class ScheduleAppointmentService {
     }
 
     @Mobile
-    public void cancelAppointment(String id, String qid, String codeQR) {
-        scheduleAppointmentManager.cancelAppointment(id, qid, codeQR);
+    public boolean cancelAppointment(String id, String qid, String codeQR) {
+        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+        ScheduleAppointmentEntity scheduleAppointment = scheduleAppointmentManager.findAppointment(id, qid, codeQR);
+        int startTime = scheduleAppointment.getStartTime();
+        LocalDate appointmentDate = LocalDate.parse(scheduleAppointment.getScheduleDate());
+        LocalDateTime appointmentDateTime = LocalDateTime.of(appointmentDate, DateFormatter.getLocalTime(startTime));
+
+        long durationInHours = DateUtil.getHoursBetween(LocalDateTime.now(), appointmentDateTime);
+        if (durationInHours < appointmentCancelLimitedToHours && scheduleAppointment.getAppointmentStatus() == AppointmentStatusEnum.A) {
+            LOG.warn("Failed to cancel appointment as within {}hrs {} {} {}", appointmentCancelLimitedToHours, id, qid, codeQR);
+            throw new AppointmentCancellationException("Failed to cancel appointment as appointment is within " + appointmentCancelLimitedToHours + " hours.");
+        }
+
+        boolean status = scheduleAppointmentManager.cancelAppointment(id, qid, codeQR);
+
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+        sendMessageToTopic(
+            scheduleAppointment.getCodeQR(),
+            "Appointment Cancelled",
+            "Appointment cancelled for " + bizStore.getDisplayName() + " by " + userProfile.getName() + ".\n\n"
+                + "Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
+                + ". It was cancelled before 24hrs period.");
+        return status;
     }
 
     public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate) {
@@ -396,8 +426,8 @@ public class ScheduleAppointmentService {
     }
 
     /** Send FCM message to Topic asynchronously. */
-    private void sendMessageToTopic(String codeQR, String message) {
-        executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, message));
+    private void sendMessageToTopic(String codeQR, String title, String message) {
+        executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, title, message));
     }
 
     /** Send FCM message to person with specific token number asynchronously. */
@@ -406,7 +436,7 @@ public class ScheduleAppointmentService {
     }
 
     /** Formulates and send messages to FCM. */
-    void invokeThreadSendMessageToTopic(String codeQR, String message) {
+    void invokeThreadSendMessageToTopic(String codeQR, String title, String message) {
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
         LOG.debug("Sending message codeQR={} tokenQueue={} firebaseMessageType={}", codeQR, tokenQueue, FirebaseMessageTypeEnum.M);
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
@@ -422,11 +452,11 @@ public class ScheduleAppointmentService {
             if (DeviceTypeEnum.I == deviceType) {
                 jsonMessage.getNotification()
                     .setBody(message)
-                    .setTitle("Appointment Received");
+                    .setTitle(title);
             } else {
                 jsonMessage.setNotification(null);
                 jsonData.setBody(message)
-                    .setTitle("Appointment Received");
+                    .setTitle(title);
             }
 
             jsonMessage.setData(jsonData);
