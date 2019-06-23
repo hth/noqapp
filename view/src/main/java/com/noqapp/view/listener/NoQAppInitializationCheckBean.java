@@ -5,6 +5,7 @@ import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.service.FtpService;
+import com.noqapp.service.SmsService;
 import com.noqapp.service.payment.PaymentGatewayService;
 
 import com.maxmind.geoip2.DatabaseReader;
@@ -66,6 +67,7 @@ public class NoQAppInitializationCheckBean {
     private FtpService ftpService;
     private PaymentGatewayService paymentGatewayService;
     private StanfordCoreNLP stanfordCoreNLP;
+    private SmsService smsService;
 
     private String buildEnvironment;
     private String thisIs;
@@ -81,7 +83,8 @@ public class NoQAppInitializationCheckBean {
         DatabaseReader databaseReader,
         FtpService ftpService,
         PaymentGatewayService paymentGatewayService,
-        StanfordCoreNLP stanfordCoreNLP
+        StanfordCoreNLP stanfordCoreNLP,
+        SmsService smsService
     ) {
         this.buildEnvironment = environment.getProperty("build.env");
         this.thisIs = environment.getProperty("thisis");
@@ -95,6 +98,7 @@ public class NoQAppInitializationCheckBean {
         this.ftpService = ftpService;
         this.paymentGatewayService = paymentGatewayService;
         this.stanfordCoreNLP = stanfordCoreNLP;
+        this.smsService = smsService;
     }
 
     @PostConstruct
@@ -215,6 +219,16 @@ public class NoQAppInitializationCheckBean {
         for (CoreMap sentence : sentences) {
             String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
             LOG.info("{} {}", sentence, sentiment);
+        }
+    }
+
+    @PostConstruct
+    public void checkAvailableSMS() {
+        int availableSMS = smsService.findAvailableSMS();
+        if (0 == availableSMS) {
+            LOG.error("SMS balance is now {}. Will no longer send SMS", availableSMS);
+        } else {
+            LOG.info("SMS available {}", availableSMS);
         }
     }
 

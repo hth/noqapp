@@ -18,7 +18,7 @@ import java.util.Objects;
 })
 public class ScrubbedInput implements Serializable {
     private static final long serialVersionUID = -4941918823207463880L;
-    static final String UTF_8 = StandardCharsets.UTF_8.name();
+    public static final String UTF_8 = StandardCharsets.UTF_8.name();
 
     protected String text;
 
