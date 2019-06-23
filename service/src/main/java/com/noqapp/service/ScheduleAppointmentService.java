@@ -163,9 +163,34 @@ public class ScheduleAppointmentService {
         sendMessageToSelectedTokenUser(
             jsonSchedule.getCodeQR(),
             jsonProfile.getQueueUserId(),
+            "Appointment Booked",
             "Your appointment has been booked. Awaiting confirmation from " + bizStore.getDisplayName());
 
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour));
+    }
+
+    @Mobile
+    public JsonSchedule rescheduleAppointment(JsonSchedule jsonSchedule) {
+        ScheduleAppointmentEntity scheduleAppointment = findAppointment(jsonSchedule.getScheduleAppointmentId(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
+        scheduleAppointment
+            .setChiefComplain(jsonSchedule.getChiefComplain())
+            .setScheduleDate(jsonSchedule.getScheduleDate())
+            .setStartTime(jsonSchedule.getStartTime())
+            .setEndTime(jsonSchedule.getEndTime())
+            .setRescheduleCount(scheduleAppointment.getRescheduleCount() + 1);
+
+        save(scheduleAppointment);
+
+        BizStoreEntity bizStore = bizService.findByCodeQR(scheduleAppointment.getCodeQR());
+        sendMessageToSelectedTokenUser(
+            scheduleAppointment.getCodeQR(),
+            scheduleAppointment.getQueueUserId(),
+            "Appointment Re-Scheduled",
+            "Your appointment has been re-scheduled by " + bizStore.getDisplayName() + "\n\n"
+                + "For Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
+                + ". Please arrive 20 minutes before your appointment.");
+
+        return populateJsonSchedule(scheduleAppointment);
     }
 
     @Mobile
@@ -258,6 +283,28 @@ public class ScheduleAppointmentService {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+        BizStoreEntity bizStore = bizService.findByCodeQR(scheduleAppointment.getCodeQR());
+
+        switch (appointmentStatus) {
+            case A:
+                sendMessageToSelectedTokenUser(
+                    scheduleAppointment.getCodeQR(),
+                    jsonProfile.getQueueUserId(),
+                    "Appointment Confirmed",
+                    "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
+                        + "On Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
+                        + ". Please arrive 20 minutes before your appointment.");
+                break;
+            case R:
+                sendMessageToSelectedTokenUser(
+                    scheduleAppointment.getCodeQR(),
+                    jsonProfile.getQueueUserId(),
+                    "Appointment Cancelled",
+                    "Your appointment has been cancelled by " + bizStore.getDisplayName() + "\n\n"
+                        + "For Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
+                        + ". Please re-book appointment or call " + bizStore.getDisplayName() +".");
+                break;
+        }
 
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile);
     }
@@ -354,8 +401,8 @@ public class ScheduleAppointmentService {
     }
 
     /** Send FCM message to person with specific token number asynchronously. */
-    private void sendMessageToSelectedTokenUser(String codeQR, String qid, String message) {
-        executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, qid, message));
+    private void sendMessageToSelectedTokenUser(String codeQR, String qid, String title, String message) {
+        executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, qid, title, message));
     }
 
     /** Formulates and send messages to FCM. */
@@ -393,7 +440,7 @@ public class ScheduleAppointmentService {
     }
 
     /** When client is booking appointment send message and mark it as personal. */
-    private void invokeThreadSendMessageToSelectedTokenUser(String codeQR, String qid, String message) {
+    private void invokeThreadSendMessageToSelectedTokenUser(String codeQR, String qid, String title, String message) {
         LOG.debug("Sending personal message codeQR={} qid={} message={}", codeQR, qid, message);
 
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
@@ -410,12 +457,12 @@ public class ScheduleAppointmentService {
         if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
             jsonMessage.getNotification()
                 .setBody(message)
-                .setTitle("Appointment Booked");
+                .setTitle(title);
         } else {
             jsonMessage.setNotification(null);
             jsonData
                 .setBody(message)
-                .setTitle("Appointment Booked");
+                .setTitle(title);
         }
 
         jsonMessage.setData(jsonData);
