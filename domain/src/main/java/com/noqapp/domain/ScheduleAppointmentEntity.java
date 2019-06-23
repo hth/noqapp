@@ -55,6 +55,9 @@ public class ScheduleAppointmentEntity extends BaseEntity {
     @Field("TA")
     private int totalAppointments;
 
+    @Field("RS")
+    private int rescheduleCount;
+
     public String getCodeQR() {
         return codeQR;
     }
@@ -133,6 +136,15 @@ public class ScheduleAppointmentEntity extends BaseEntity {
 
     public ScheduleAppointmentEntity setTotalAppointments(int totalAppointments) {
         this.totalAppointments = totalAppointments;
+        return this;
+    }
+
+    public int getRescheduleCount() {
+        return rescheduleCount;
+    }
+
+    public ScheduleAppointmentEntity setRescheduleCount(int rescheduleCount) {
+        this.rescheduleCount = rescheduleCount;
         return this;
     }
 

@@ -13,7 +13,6 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PaginationEnum;
-import com.noqapp.domain.types.ServicePaymentEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -458,7 +457,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         String codeQR,
         int productPrice,
         int cancellationPrice,
-        ServicePaymentEnum servicePayment,
         int freeFollowupDays,
         int discountedFollowupDays,
         int discountedFollowupProductPrice
@@ -468,7 +466,6 @@ public final class BizStoreManagerImpl implements BizStoreManager {
             entityUpdate(update("EP", true)
                 .set("PP", productPrice)
                 .set("CF", cancellationPrice)
-                .set("SP", servicePayment)
                 .set("FD", freeFollowupDays)
                 .set("DF", discountedFollowupDays)
                 .set("DP", discountedFollowupProductPrice)),

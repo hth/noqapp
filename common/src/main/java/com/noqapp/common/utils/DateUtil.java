@@ -234,6 +234,12 @@ public final class DateUtil {
         return ChronoUnit.DAYS.between(start, end);
     }
 
+    public static long getHoursBetween(LocalDateTime start, LocalDateTime end) {
+        Assert.notNull(start, "Start date is null");
+        Assert.notNull(end, "End date is null");
+        return ChronoUnit.HOURS.between(start, end);
+    }
+
     public static int getYearsBetween(Date start, Date end) {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");

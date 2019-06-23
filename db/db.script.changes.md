@@ -8,6 +8,8 @@
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
     MODIFY SN VARCHAR(20);
+    
+    db.getCollection('BIZ_STORE').update({}, {$unset: {SP:""}}, {multi: true});
 
 ### Change May 21 2019
 
