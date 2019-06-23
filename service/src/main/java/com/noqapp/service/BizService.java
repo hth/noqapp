@@ -21,7 +21,6 @@ import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PaymentPermissionEnum;
-import com.noqapp.domain.types.ServicePaymentEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
@@ -188,7 +187,6 @@ public class BizService {
                 if (bizStore.isEnabledPayment()) {
                     rootMap.put("productPrice", bizStore.getProductPrice() == 0 ? 0 : MathUtil.displayPrice(bizStore.getProductPrice()));
                     rootMap.put("cancellationPrice", bizStore.getCancellationPrice() == 0 ? 0 : MathUtil.displayPrice(bizStore.getCancellationPrice()));
-                    rootMap.put("servicePayment", bizStore.getServicePayment().getDescription());
                 } else {
                     rootMap.put("paymentForService", "OFF");
                 }
@@ -620,7 +618,6 @@ public class BizService {
         String codeQR,
         int productPrice,
         int cancellationPrice,
-        ServicePaymentEnum servicePayment,
         int freeFollowupDays,
         int discountedFollowupDays,
         int discountedFollowupProductPrice
@@ -629,7 +626,6 @@ public class BizService {
             codeQR,
             productPrice,
             cancellationPrice,
-            servicePayment,
             freeFollowupDays,
             discountedFollowupDays,
             discountedFollowupProductPrice);

@@ -7,7 +7,6 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
-import com.noqapp.domain.types.ServicePaymentEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -156,9 +155,6 @@ public class JsonQueue extends AbstractDomain {
 
     @JsonProperty("cp")
     private int cancellationPrice;
-
-    @JsonProperty("sp")
-    private ServicePaymentEnum servicePayment;
     //*********************************/
     //*  Queue Price Settings Ends.   */
     //*********************************/
@@ -512,15 +508,6 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setCancellationPrice(int cancellationPrice) {
         this.cancellationPrice = cancellationPrice;
-        return this;
-    }
-
-    public ServicePaymentEnum getServicePayment() {
-        return servicePayment;
-    }
-
-    public JsonQueue setServicePayment(ServicePaymentEnum servicePayment) {
-        this.servicePayment = servicePayment;
         return this;
     }
 

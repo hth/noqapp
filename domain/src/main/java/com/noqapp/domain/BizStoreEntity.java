@@ -10,7 +10,6 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
-import com.noqapp.domain.types.ServicePaymentEnum;
 
 import com.google.maps.model.LatLng;
 
@@ -223,9 +222,6 @@ public class BizStoreEntity extends BaseEntity {
 
     @Field("CF")
     private int cancellationPrice;
-
-    @Field("SP")
-    private ServicePaymentEnum servicePayment = ServicePaymentEnum.O;
 
     @Field("FD")
     private int freeFollowupDays;
@@ -749,15 +745,6 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setCancellationPrice(int cancellationPrice) {
         this.cancellationPrice = cancellationPrice;
-        return this;
-    }
-
-    public ServicePaymentEnum getServicePayment() {
-        return servicePayment;
-    }
-
-    public BizStoreEntity setServicePayment(ServicePaymentEnum servicePayment) {
-        this.servicePayment = servicePayment;
         return this;
     }
 
