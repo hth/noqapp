@@ -26,7 +26,6 @@ import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
-import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
 import com.noqapp.repository.StoreHourManager;
@@ -65,7 +64,6 @@ public class ScheduleAppointmentService {
     private int appointmentCancelLimitedToHours;
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
-    private BizStoreManager bizStoreManager;
     private StoreHourManager storeHourManager;
     private UserProfileManager userProfileManager;
     private UserAccountManager userAccountManager;
@@ -89,7 +87,6 @@ public class ScheduleAppointmentService {
         int appointmentCancelLimitedToHours,
 
         ScheduleAppointmentManager scheduleAppointmentManager,
-        BizStoreManager bizStoreManager,
         StoreHourManager storeHourManager,
         UserProfileManager userProfileManager,
         UserAccountManager userAccountManager,
@@ -104,7 +101,6 @@ public class ScheduleAppointmentService {
         this.appointmentCancelLimitedToHours = appointmentCancelLimitedToHours;
 
         this.scheduleAppointmentManager = scheduleAppointmentManager;
-        this.bizStoreManager = bizStoreManager;
         this.storeHourManager = storeHourManager;
         this.userProfileManager = userProfileManager;
         this.userAccountManager = userAccountManager;
@@ -119,7 +115,7 @@ public class ScheduleAppointmentService {
 
     @Mobile
     public JsonSchedule bookAppointment(String guardianQid, JsonSchedule jsonSchedule) {
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(jsonSchedule.getCodeQR());
+        BizStoreEntity bizStore = bizService.findByCodeQR(jsonSchedule.getCodeQR());
         if (!bizStore.isAppointmentEnable()) {
             LOG.warn("Appointment is not enabled {} for {}", jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is not accepting appointments");
@@ -197,7 +193,7 @@ public class ScheduleAppointmentService {
             "Appointment Re-Scheduled",
             "Your appointment has been re-scheduled by " + bizStore.getDisplayName() + "\n\n"
                 + "For Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
-                + ". Please arrive 20 minutes before your appointment.");
+                + ". Please arrive 30 minutes before your appointment.");
 
         return populateJsonSchedule(scheduleAppointment);
     }
@@ -275,7 +271,7 @@ public class ScheduleAppointmentService {
     @Mobile
     public JsonScheduleList numberOfAppointmentsForMonth(String codeQR, String month) {
         LOG.info("Appointments for {} {}", month, codeQR);
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
         Date date = DateUtil.convertToDate(month, bizStore.getTimeZone());
         Date startOfMonth = DateUtil.startOfMonth(date, bizStore.getTimeZone());
         Date endOfMonth = DateUtil.endOfMonth(date, bizStore.getTimeZone());
@@ -323,7 +319,7 @@ public class ScheduleAppointmentService {
                     "Appointment Confirmed",
                     "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
                         + "On Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
-                        + ". Please arrive 20 minutes before your appointment.");
+                        + ". Please arrive 30 minutes before your appointment.");
                 break;
             case R:
                 sendMessageToSelectedTokenUser(
@@ -408,7 +404,7 @@ public class ScheduleAppointmentService {
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(scheduleAppointment.getCodeQR());
+            BizStoreEntity bizStore = bizService.findByCodeQR(scheduleAppointment.getCodeQR());
             StoreHourEntity storeHour = storeHourManager.findOne(
                 bizStore.getId(),
                 DateUtil.getDayOfWeekFromDate(scheduleAppointment.getScheduleDate()));
