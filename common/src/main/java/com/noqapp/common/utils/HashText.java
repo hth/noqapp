@@ -35,7 +35,7 @@ public final class HashText {
             md5 = MessageDigest.getInstance("SHA-512");
             sCryptPasswordEncoder = new SCryptPasswordEncoder();
         } catch (NoSuchAlgorithmException e) {
-            LOG.error("No hashing algorithm found={}", e);
+            LOG.error("No hashing algorithm found={}", e.getLocalizedMessage(), e);
         }
     }
 
