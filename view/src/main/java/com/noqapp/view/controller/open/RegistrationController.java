@@ -6,6 +6,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.SmsService;
 import com.noqapp.service.exceptions.DuplicateAccountException;
 import com.noqapp.view.form.MerchantRegistrationForm;
 import com.noqapp.view.helper.AvailabilityStatus;
@@ -44,6 +45,7 @@ public class RegistrationController {
     private AccountService accountService;
     private MailService mailService;
     private LoginController loginController;
+    private SmsService smsService;
 
     @Value("${registrationPage:/open/register}")
     private String registrationPage;
@@ -52,11 +54,13 @@ public class RegistrationController {
     public RegistrationController(
         AccountService accountService,
         MailService mailService,
-        LoginController loginController
+        LoginController loginController,
+        SmsService smsService
     ) {
         this.accountService = accountService;
         this.mailService = mailService;
         this.loginController = loginController;
+        this.smsService = smsService;
     }
 
     @PostMapping
@@ -93,6 +97,10 @@ public class RegistrationController {
                 LOG.error("Failed creating account for phone={}", merchantRegistration.getPhone());
                 return registrationPage;
             }
+
+            String message = "You are registered on NoQueue. For future Doctor appointments from home download NoQApp " +
+                "https://play.google.com/store/apps/details?id=com.noqapp.android.client";
+            smsService.sendPromotionalSMS(merchantRegistration.getPhone(), message);
         } catch (DuplicateAccountException e) {
             LOG.error("Duplicate Account found reason={}", e.getLocalizedMessage(), e);
             return registrationPage;

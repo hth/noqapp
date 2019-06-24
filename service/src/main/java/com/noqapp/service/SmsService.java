@@ -2,6 +2,7 @@ package com.noqapp.service;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.json.sms.textlocal.BalanceResponse;
+import com.noqapp.domain.json.sms.textlocal.SendResponse;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import okhttp3.OkHttpClient;
@@ -42,6 +44,7 @@ public class SmsService {
     private String smsApiKey;
     private OkHttpClient okHttpClient;
     private ApiHealthService apiHealthService;
+    private boolean sendSMSTurnedOn;
 
     @Autowired
     public SmsService(
@@ -49,7 +52,8 @@ public class SmsService {
         String smsApiKey,
 
         OkHttpClient okHttpClient,
-        ApiHealthService apiHealthService
+        ApiHealthService apiHealthService,
+        Environment environment
     ) {
         try {
             this.smsApiKey = "apikey=" + URLEncoder.encode(smsApiKey, ScrubbedInput.UTF_8);
@@ -59,17 +63,21 @@ public class SmsService {
         }
         this.okHttpClient = okHttpClient;
         this.apiHealthService = apiHealthService;
+        if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
+            sendSMSTurnedOn = true;
+        }
     }
 
     public int findAvailableSMS() {
         Instant start = Instant.now();
-        Request request = new Request.Builder()
-            .url("https://api.textlocal.in/balance/?" + smsApiKey)
-            .build();
         Response response = null;
         BalanceResponse balanceResponse;
         try {
+            Request request = new Request.Builder()
+                .url("https://api.textlocal.in/balance/?" + smsApiKey)
+                .build();
             response = okHttpClient.newCall(request).execute();
+
             ObjectMapper mapper = new ObjectMapper();
             balanceResponse = mapper.readValue(response.body() != null ? response.body().string() : null, BalanceResponse.class);
             LOG.info("{} {}", response.message(), balanceResponse.asJson());
@@ -94,5 +102,93 @@ public class SmsService {
         return 0;
     }
 
+    /**
+     * You are registered on NoQueue. For future Doctor appointments from home download NoQApp
+     * https://play.google.com/store/apps/details?id=com.noqapp.android.client
+     */
+    public String sendPromotionalSMS(String phoneWithCountryCode, String messageToSend) {
+        Instant start = Instant.now();
+        Response response = null;
+        SendResponse sendResponse;
+        try {
+            String message = "&message=" + URLEncoder.encode(messageToSend, ScrubbedInput.UTF_8);
+            String sender = "&sender=" + URLEncoder.encode("TXTLCL", ScrubbedInput.UTF_8);
+            String numbers = "&numbers=" + URLEncoder.encode(phoneWithCountryCode, ScrubbedInput.UTF_8);
 
+            Request request = new Request.Builder()
+                .url("https://api.textlocal.in/send/?" + smsApiKey + numbers + message + sender)
+                .build();
+
+            if (sendSMSTurnedOn) {
+                response = okHttpClient.newCall(request).execute();
+                ObjectMapper mapper = new ObjectMapper();
+                sendResponse = mapper.readValue(response.body() != null ? response.body().string() : null, SendResponse.class);
+                LOG.info("SMS sent {} {} {} {} {}", phoneWithCountryCode, messageToSend, response.message(), sendResponse.getStatus(), sendResponse.getBalance());
+                return sendResponse.getStatus();
+            } else {
+                LOG.info("SMS sent skipped {} {}", phoneWithCountryCode, messageToSend);
+                return "success";
+            }
+        } catch (UnknownHostException e) {
+            LOG.error("Failed connecting to SMS host reason={}", e.getLocalizedMessage(), e);
+        } catch (IOException e) {
+            LOG.error("Failed sending SMS request reason={}", e.getLocalizedMessage(), e);
+        } finally {
+            apiHealthService.insert(
+                "/sendPromotionalSMS",
+                "sendPromotionalSMS",
+                this.getClass().getName(),
+                Duration.between(start, Instant.now()),
+                HealthStatusEnum.G);
+
+            if (response != null) {
+                response.body().close();
+            }
+        }
+
+        return "failure";
+    }
+
+    public String sendTransactionalSMS(String phoneWithCountryCode, String messageToSend) {
+        Instant start = Instant.now();
+        Response response = null;
+        SendResponse sendResponse;
+        try {
+            String message = "&message=" + URLEncoder.encode(messageToSend, ScrubbedInput.UTF_8);
+            String sender = "&sender=" + URLEncoder.encode("TXTLCL", ScrubbedInput.UTF_8);
+            String numbers = "&numbers=" + URLEncoder.encode(phoneWithCountryCode, ScrubbedInput.UTF_8);
+
+            Request request = new Request.Builder()
+                .url("https://api.textlocal.in/send/?" + smsApiKey + numbers + message + sender)
+                .build();
+
+            if (sendSMSTurnedOn) {
+                response = okHttpClient.newCall(request).execute();
+                ObjectMapper mapper = new ObjectMapper();
+                sendResponse = mapper.readValue(response.body() != null ? response.body().string() : null, SendResponse.class);
+                LOG.info("SMS sent {} {} {} {} {}", phoneWithCountryCode, messageToSend, response.message(), sendResponse.getStatus(), sendResponse.getBalance());
+                return sendResponse.getStatus();
+            } else {
+                LOG.info("SMS sent skipped {} {}", phoneWithCountryCode, messageToSend);
+                return "success";
+            }
+        } catch (UnknownHostException e) {
+            LOG.error("Failed connecting to SMS host reason={}", e.getLocalizedMessage(), e);
+        } catch (IOException e) {
+            LOG.error("Failed sending SMS request reason={}", e.getLocalizedMessage(), e);
+        } finally {
+            apiHealthService.insert(
+                "/sendTransactionalSMS",
+                "sendTransactionalSMS",
+                this.getClass().getName(),
+                Duration.between(start, Instant.now()),
+                HealthStatusEnum.G);
+
+            if (response != null) {
+                response.body().close();
+            }
+        }
+
+        return "failure";
+    }
 }
