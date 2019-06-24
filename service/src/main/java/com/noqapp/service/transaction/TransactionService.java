@@ -182,13 +182,36 @@ public class TransactionService {
                 case E:
                     switch (purchaseOrderBeforeCancel.getBusinessType().getMessageOrigin()) {
                         case O:
-                            if (PurchaseOrderStateEnum.PO != purchaseOrderBeforeCancel.getPresentOrderState()) {
-                                LOG.warn("Order Payment performed outside of NoQueue. Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
-                                throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
+                            switch (purchaseOrderBeforeCancel.getPresentOrderState()) {
+                                case IN:
+                                case PC:
+                                case VB:
+                                case IB:
+                                case FO:
+                                case PO:
+                                case NM:
+                                    LOG.warn("Order Payment performed outside of NoQueue. " +
+                                        "Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
+                                    throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
+                                case OP:
+                                case PR:
+                                case RP:
+                                case RD:
+                                case OW:
+                                case LO:
+                                case FD:
+                                case DA:
+                                case OD:
+                                case CO:
+                                    /* Should not reach here. But for safe condition taking care of it. */
+                                    LOG.error("Cannot cancel order state, payment via {} {}. Cannot cancel",
+                                        purchaseOrderBeforeCancel.getTransactionVia(), transactionId);
+                                    throw new PurchaseOrderCancelException("Cannot cancel this transaction");
                             }
                             break;
                         case Q:
-                            LOG.warn("Queue Payment performed outside of NoQueue. Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
+                            LOG.warn("Queue Payment performed outside of NoQueue. " +
+                                "Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
                             throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
                     }
                     break;
