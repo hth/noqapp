@@ -73,7 +73,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate) {
         LOG.info("ScheduleDate={} codeQR={}", scheduleDate, codeQR);
         return mongoTemplate.find(
-            query(where("QR").is(codeQR).and("SD").is(scheduleDate)),
+            query(where("QR").is(codeQR).and("SD").is(scheduleDate).and("AS").in(AppointmentStatusEnum.A, AppointmentStatusEnum.U)),
             ScheduleAppointmentEntity.class,
             TABLE
         );
