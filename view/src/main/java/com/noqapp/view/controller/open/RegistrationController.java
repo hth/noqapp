@@ -42,6 +42,8 @@ import java.io.IOException;
 public class RegistrationController {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationController.class);
 
+    private String smsTxtOnRegistration;
+
     private AccountService accountService;
     private MailService mailService;
     private LoginController loginController;
@@ -52,11 +54,16 @@ public class RegistrationController {
 
     @Autowired
     public RegistrationController(
+        @Value("${sms.txt.on.registration}")
+        String smsTxtOnRegistration,
+
         AccountService accountService,
         MailService mailService,
         LoginController loginController,
         SmsService smsService
     ) {
+        this.smsTxtOnRegistration = smsTxtOnRegistration;
+
         this.accountService = accountService;
         this.mailService = mailService;
         this.loginController = loginController;
@@ -98,9 +105,7 @@ public class RegistrationController {
                 return registrationPage;
             }
 
-            String message = "You are registered on NoQueue. For future Doctor appointments from home download NoQApp " +
-                "https://play.google.com/store/apps/details?id=com.noqapp.android.client";
-            smsService.sendPromotionalSMS(merchantRegistration.getPhone(), message);
+            smsService.sendPromotionalSMS(merchantRegistration.getPhone(), smsTxtOnRegistration);
         } catch (DuplicateAccountException e) {
             LOG.error("Duplicate Account found reason={}", e.getLocalizedMessage(), e);
             return registrationPage;
