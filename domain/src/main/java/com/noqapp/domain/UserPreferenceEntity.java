@@ -27,10 +27,10 @@ public class UserPreferenceEntity extends BaseEntity {
     private String queueUserId;
 
     @Field("PS")
-    private CommunicationModeEnum promotionalSMS = CommunicationModeEnum.R;
+    private CommunicationModeEnum promotionalSMS;
 
     @Field("FN")
-    private CommunicationModeEnum firebaseNotification = CommunicationModeEnum.R;
+    private CommunicationModeEnum firebaseNotification;
 
     /**
      * To make bean happy

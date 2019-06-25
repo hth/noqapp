@@ -10,6 +10,10 @@
     MODIFY SN VARCHAR(20);
     
     db.getCollection('BIZ_STORE').update({}, {$unset: {SP:""}}, {multi: true});
+    db.getCollection('USER_PREFERENCE').dropIndex( "USER_PROFILE" );
+    db.getCollection('USER_PREFERENCE').update({}, {$unset: {USER_PROFILE:""}}, {multi: true});
+    db.getCollection('USER_PREFERENCE').update({},  { $set : {"PS" : "R"}}, false, true);
+    db.getCollection('USER_PREFERENCE').update({},  { $set : {"FN" : "R"}}, false, true);
 
 ### Change May 21 2019
 

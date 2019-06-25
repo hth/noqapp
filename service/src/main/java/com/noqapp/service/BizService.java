@@ -133,7 +133,7 @@ public class BizService {
         long queuedRemoved = queueService.deleteByCodeQR(bizStore.getCodeQR());
         deleteSoft(bizStore);
         storeHourManager.removeAll(storeId);
-        long removedRecords = businessUserStoreManager.deleteAllManagingStore(storeId);
+        long removedRecords = deleteAllManagingStore(storeId);
         LOG.info("Deleted Store id={} removed reference to number of people managing queue={} queuedRemoved={}",
                 storeId,
                 removedRecords,
@@ -639,5 +639,9 @@ public class BizService {
     @Mobile
     public BizStoreEntity updateAppointment(String codeQR, int appointmentDuration, int appointmentOpenHowFar) {
         return bizStoreManager.updateAppointment(codeQR, appointmentDuration, appointmentOpenHowFar);
+    }
+
+    public long deleteAllManagingStore(String bizStoreId) {
+        return businessUserStoreManager.deleteAllManagingStore(bizStoreId);
     }
 }
