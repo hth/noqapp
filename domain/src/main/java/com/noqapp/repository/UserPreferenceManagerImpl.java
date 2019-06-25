@@ -5,9 +5,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserPreferenceEntity;
-import com.noqapp.domain.UserProfileEntity;
-
-import org.bson.types.ObjectId;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -48,20 +45,13 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     }
 
     @Override
-    public UserPreferenceEntity getById(String id) {
+    public UserPreferenceEntity findById(String id) {
         Assert.hasText(id, "Id is empty");
-        return mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), UserPreferenceEntity.class, TABLE);
+        return mongoTemplate.findById(id, UserPreferenceEntity.class, TABLE);
     }
 
     @Override
-    public UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile) {
-        return mongoTemplate.findOne(query(where("USER_PROFILE.$id").is(new ObjectId(userProfile.getId()))),
-                UserPreferenceEntity.class,
-                TABLE);
-    }
-
-    @Override
-    public UserPreferenceEntity getByQueueUserId(String qid) {
+    public UserPreferenceEntity findByQueueUserId(String qid) {
         return mongoTemplate.findOne(query(where("QID").is(qid)), UserPreferenceEntity.class, TABLE);
     }
 

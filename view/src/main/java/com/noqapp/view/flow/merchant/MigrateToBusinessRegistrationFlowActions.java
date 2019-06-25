@@ -23,7 +23,6 @@ import com.noqapp.service.ExternalService;
 import com.noqapp.service.FetcherService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
-import com.noqapp.service.UserProfilePreferenceService;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -48,7 +47,6 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     private static final Logger LOG = LoggerFactory.getLogger(MigrateToBusinessRegistrationFlowActions.class);
 
     private FetcherService fetcherService;
-    private UserProfilePreferenceService userProfilePreferenceService;
     private AccountService accountService;
     private BusinessUserService businessUserService;
 
@@ -57,7 +55,6 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     public MigrateToBusinessRegistrationFlowActions(
         Environment environment,
         FetcherService fetcherService,
-        UserProfilePreferenceService userProfilePreferenceService,
         AccountService accountService,
         BusinessUserService businessUserService,
         BizService bizService,
@@ -68,7 +65,6 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     ) {
         super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
         this.fetcherService = fetcherService;
-        this.userProfilePreferenceService = userProfilePreferenceService;
         this.accountService = accountService;
         this.businessUserService = businessUserService;
     }
@@ -94,7 +90,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
 
         Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);
         UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
-        UserProfileEntity userProfile = userProfilePreferenceService.findByQueueUserId(qid);
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
         register.getRegisterUser().setEmail(new ScrubbedInput(userProfile.getEmail()))
             .setGender(userProfile.getGender())
             .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
@@ -198,8 +194,6 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 }
                 break;
             case GS:
-                registerBusiness.setAmenitiesAvailable(AmenityEnum.ALL);
-                break;
             case RS:
                 registerBusiness.setAmenitiesAvailable(AmenityEnum.ALL);
                 break;

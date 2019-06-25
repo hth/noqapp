@@ -248,7 +248,7 @@ public class AccountService {
                 throw new RuntimeException("Error saving user profile");
             }
 
-            createPreferences(userProfile);
+            createPreferences(userProfile.getQueueUserId());
             if (StringUtils.isNotBlank(inviteCode)) {
                 UserProfileEntity userProfileOfInvitee = findProfileByInviteCode(inviteCode);
                 if (null != userProfileOfInvitee) {
@@ -356,7 +356,7 @@ public class AccountService {
                 throw new RuntimeException("Error saving user profile");
             }
 
-            createPreferences(userProfile);
+            createPreferences(userProfile.getQueueUserId());
             InviteEntity invite = new InviteEntity(qid, userProfileOfAdmin.getQueueUserId(), userProfileOfAdmin.getInviteCode(), freeRemoteJoins);
             inviteService.save(invite);
             return userAccount;
@@ -429,13 +429,13 @@ public class AccountService {
     /**
      * Create and Save user preferences. Shared with social registration.
      */
-    public void createPreferences(UserProfileEntity userProfile) {
+    public void createPreferences(String qid) {
         try {
-            UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(userProfile);
+            UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(qid);
             userPreferenceManager.save(userPreferenceEntity);
             LOG.debug("Created UserPreferenceEntity={}", userPreferenceEntity.getQueueUserId());
         } catch (Exception e) {
-            LOG.error("Saving UserPreferenceEntity qid={} reason={}", userProfile.getQueueUserId(), e.getLocalizedMessage(), e);
+            LOG.error("Saving UserPreferenceEntity qid={} reason={}", qid, e.getLocalizedMessage(), e);
             throw new RuntimeException("Error saving user preference");
         }
     }
@@ -470,7 +470,7 @@ public class AccountService {
         userAuthenticationManager.deleteHard(userAccount.getUserAuthentication());
         userAccountManager.deleteHard(userAccount);
 
-        UserPreferenceEntity userPreference = userPreferenceManager.getByQueueUserId(userAccount.getQueueUserId());
+        UserPreferenceEntity userPreference = userPreferenceManager.findByQueueUserId(userAccount.getQueueUserId());
         if (null != userPreference) {
             userPreferenceManager.deleteHard(userPreference);
         }
