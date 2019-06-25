@@ -37,9 +37,6 @@ import java.util.List;
 public class RewardsController {
     private static final Logger LOG = LoggerFactory.getLogger(RewardsController.class);
 
-    /**
-     * Refers to rewards.jsp.
-     */
     private String nextPage;
 
     private BizService bizService;
@@ -47,11 +44,11 @@ public class RewardsController {
 
     @Autowired
     public RewardsController(
-            @Value("${nextPage:/access/rewards}")
-            String nextPage,
+        @Value("${nextPage:/access/rewards}")
+        String nextPage,
 
-            BizService bizService,
-            AccountService accountService
+        BizService bizService,
+        AccountService accountService
     ) {
         this.nextPage = nextPage;
         this.bizService = bizService;
@@ -60,8 +57,8 @@ public class RewardsController {
 
     @GetMapping
     public String loadForm(
-            @ModelAttribute("rewards")
-            RewardsForm rewards
+        @ModelAttribute("rewards")
+        RewardsForm rewards
     ) {
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
