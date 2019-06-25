@@ -36,9 +36,9 @@ public class SignOffController extends SimpleUrlLogoutSuccessHandler implements 
 
     @Override
     public void onLogoutSuccess(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Authentication authentication
+        HttpServletRequest request,
+        HttpServletResponse response,
+        Authentication authentication
     ) throws IOException, ServletException {
 
         String queueUserId = "Not Available";
