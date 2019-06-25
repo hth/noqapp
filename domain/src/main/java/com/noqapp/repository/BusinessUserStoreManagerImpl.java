@@ -32,18 +32,18 @@ import java.util.List;
  * Date: 12/13/16 10:30 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessUserStoreManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            BusinessUserStoreEntity.class,
-            Document.class,
-            "collection");
+        BusinessUserStoreEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -75,9 +75,9 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     public boolean hasAccessWithUserLevel(String qid, String codeQR, UserLevelEnum userLevel) {
         Assert.hasText(codeQR, "codeQR is empty");
         return mongoTemplate.exists(
-                query(where("QID").is(qid).and("QR").is(codeQR).and("UL").is(userLevel)),
-                BusinessUserStoreEntity.class,
-                TABLE);
+            query(where("QID").is(qid).and("QR").is(codeQR).and("UL").is(userLevel)),
+            BusinessUserStoreEntity.class,
+            TABLE);
     }
 
     @Override
@@ -90,10 +90,10 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     @Override
     public List<BusinessUserStoreEntity> getQueues(String qid, int limit) {
         Query query = query(where("QID").is(qid)
-                .andOperator(
-                        isActive(),
-                        isNotDeleted()
-                )
+            .andOperator(
+                isActive(),
+                isNotDeleted()
+            )
         );
 
         if (limit > 0) {
@@ -105,52 +105,52 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     @Override
     public long findNumberOfPeopleAssignedToQueue(String bizStoreId) {
         return mongoTemplate.count(
-                query(where("BS").is(bizStoreId)
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
-                ),
-                BusinessUserStoreEntity.class,
-                TABLE
+            query(where("BS").is(bizStoreId)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ),
+            BusinessUserStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public long findNumberOfPeoplePendingApprovalToQueue(String bizStoreId) {
         return mongoTemplate.count(
-                query(where("BS").is(bizStoreId)
-                        .andOperator(
-                                isNotActive(),
-                                isNotDeleted()
-                        )
-                ),
-                BusinessUserStoreEntity.class,
-                TABLE
+            query(where("BS").is(bizStoreId)
+                .andOperator(
+                    isNotActive(),
+                    isNotDeleted()
+                )
+            ),
+            BusinessUserStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public List<BusinessUserStoreEntity> getAllManagingStore(String bizStoreId) {
         return mongoTemplate.find(
-                query(where("BS").is(bizStoreId).andOperator(isNotDeleted())),
-                BusinessUserStoreEntity.class,
-                TABLE
+            query(where("BS").is(bizStoreId).andOperator(isNotDeleted())),
+            BusinessUserStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public BusinessUserStoreEntity findUserManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
         return mongoTemplate.findOne(
-                query(where("QID").is(qid)
-                        .and("UL").is(userLevel)
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
-                ),
-                BusinessUserStoreEntity.class,
-                TABLE
+            query(where("QID").is(qid)
+                .and("UL").is(userLevel)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ),
+            BusinessUserStoreEntity.class,
+            TABLE
         );
     }
 
@@ -172,18 +172,18 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     @Override
     public List<BusinessUserStoreEntity> findAllManagingStoreWithUserLevel(String bizStoreId, UserLevelEnum userLevel) {
         return mongoTemplate.find(
-                query(where("BS").is(bizStoreId).and("UL").is(userLevel).andOperator(isNotDeleted())),
-                BusinessUserStoreEntity.class,
-                TABLE
+            query(where("BS").is(bizStoreId).and("UL").is(userLevel).andOperator(isNotDeleted())),
+            BusinessUserStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public long deleteAllManagingStore(String bizStoreId) {
         DeleteResult deleteResult = mongoTemplate.remove(
-                query(where("BS").is(bizStoreId)),
-                BusinessUserStoreEntity.class,
-                TABLE
+            query(where("BS").is(bizStoreId)),
+            BusinessUserStoreEntity.class,
+            TABLE
         );
 
         return deleteResult.getDeletedCount();
@@ -192,28 +192,28 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     @Override
     public void activateAccount(String qid, String bizNameId) {
         mongoTemplate.updateFirst(
-                query(where("QID").is(qid).and("BN").is(bizNameId)),
-                entityUpdate(update("A", true)),
-                BusinessUserStoreEntity.class,
-                TABLE
+            query(where("QID").is(qid).and("BN").is(bizNameId)),
+            entityUpdate(update("A", true)),
+            BusinessUserStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public void removeFromBusiness(String qid, String bizNameId) {
         mongoTemplate.remove(
-                query(where("QID").is(qid).and("BN").is(bizNameId)),
-                BusinessUserStoreEntity.class,
-                TABLE
+            query(where("QID").is(qid).and("BN").is(bizNameId)),
+            BusinessUserStoreEntity.class,
+            TABLE
         );
     }
 
     @Override
     public void removeFromStore(String qid, String bizStoreId) {
         mongoTemplate.remove(
-                query(where("QID").is(qid).and("BS").is(bizStoreId)),
-                BusinessUserStoreEntity.class,
-                TABLE);
+            query(where("QID").is(qid).and("BS").is(bizStoreId)),
+            BusinessUserStoreEntity.class,
+            TABLE);
     }
 
     @Override
@@ -228,10 +228,10 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     @Override
     public long updateUserLevel(String qid, UserLevelEnum userLevel) {
         UpdateResult updateResult = mongoTemplate.updateMulti(
-                query(where("QID").is(qid)),
-                entityUpdate(update("UL", userLevel)),
-                BusinessUserStoreEntity.class,
-                TABLE
+            query(where("QID").is(qid)),
+            entityUpdate(update("UL", userLevel)),
+            BusinessUserStoreEntity.class,
+            TABLE
         );
 
         LOG.info("Updated record for qid={} userLevel={} count={}", qid, userLevel, updateResult.getModifiedCount());
