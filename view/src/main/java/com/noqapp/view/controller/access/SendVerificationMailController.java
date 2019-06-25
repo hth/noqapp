@@ -37,9 +37,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SendVerificationMailController {
     private static final Logger LOG = LoggerFactory.getLogger(SendVerificationMailController.class);
 
-    /**
-     * Refers to rewards.jsp.
-     */
     private String nextPage;
 
     private MailService mailService;
@@ -48,12 +45,12 @@ public class SendVerificationMailController {
 
     @Autowired
     public SendVerificationMailController(
-            @Value("${nextPage:/access/sendVerificationMail}")
-            String nextPage,
+        @Value("${nextPage:/access/sendVerificationMail}")
+        String nextPage,
 
-            MailService mailService,
-            AccountService accountService,
-            ApiHealthService apiHealthService
+        MailService mailService,
+        AccountService accountService,
+        ApiHealthService apiHealthService
     ) {
         this.nextPage = nextPage;
         this.mailService = mailService;
@@ -68,8 +65,8 @@ public class SendVerificationMailController {
      */
     @GetMapping
     public String getSendVerificationMailController(
-            @ModelAttribute("profile")
-            ProfileForm profile
+        @ModelAttribute("profile")
+        ProfileForm profile
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on sendMailVerification page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
@@ -94,19 +91,19 @@ public class SendVerificationMailController {
 
     @PostMapping
     public String sendVerificationMailController(
-            @ModelAttribute("profile")
-            ProfileForm profile,
+        @ModelAttribute("profile")
+        ProfileForm profile,
 
-            RedirectAttributes redirectAttrs
+        RedirectAttributes redirectAttrs
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Landed on sendMailVerification page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
         mailService.sendValidationMailOnAccountCreation(
-                userAccount.getUserId(),
-                userAccount.getQueueUserId(),
-                userAccount.getName()
+            userAccount.getUserId(),
+            userAccount.getQueueUserId(),
+            userAccount.getName()
         );
 
         profile.setSubmitState(true);
