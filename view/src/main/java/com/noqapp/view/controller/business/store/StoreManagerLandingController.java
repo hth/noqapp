@@ -144,6 +144,7 @@ public class StoreManagerLandingController {
                     bizStore.inActive();
                     bizService.saveStore(bizStore, "Store is now offline");
                     bizStoreElasticService.delete(bizStore.getId());
+                    bizService.deleteAllManagingStore(bizStore.getId());
                     return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }", storeId.getText(), ActionTypeEnum.ACTIVE.name());
                 default:
                     LOG.error("Reached unreachable condition {}", actionType);
