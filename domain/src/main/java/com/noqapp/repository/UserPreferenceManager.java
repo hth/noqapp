@@ -1,7 +1,6 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.UserPreferenceEntity;
-import com.noqapp.domain.UserProfileEntity;
 
 /**
  * User: hitender
@@ -9,10 +8,8 @@ import com.noqapp.domain.UserProfileEntity;
  */
 public interface UserPreferenceManager extends RepositoryManager<UserPreferenceEntity> {
 
-    UserPreferenceEntity getById(String id);
+    UserPreferenceEntity findById(String id);
 
-    UserPreferenceEntity getByQueueUserId(String qid);
-
-    UserPreferenceEntity getObjectUsingUserProfile(UserProfileEntity userProfile);
+    UserPreferenceEntity findByQueueUserId(String qid);
 }
 

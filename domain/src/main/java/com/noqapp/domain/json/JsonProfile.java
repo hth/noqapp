@@ -91,6 +91,9 @@ public final class JsonProfile extends AbstractDomain {
     @JsonProperty("ads")
     private List<JsonUserAddress> jsonUserAddresses = new ArrayList<>();
 
+    @JsonProperty("up")
+    private JsonUserPreference jsonUserPreference;
+
     public JsonProfile() {
         //Required Default Constructor
     }
@@ -226,6 +229,15 @@ public final class JsonProfile extends AbstractDomain {
 
     public JsonProfile setJsonUserAddresses(List<JsonUserAddress> jsonUserAddresses) {
         this.jsonUserAddresses = jsonUserAddresses;
+        return this;
+    }
+
+    public JsonUserPreference getJsonUserPreference() {
+        return jsonUserPreference;
+    }
+
+    public JsonProfile setJsonUserPreference(JsonUserPreference jsonUserPreference) {
+        this.jsonUserPreference = jsonUserPreference;
         return this;
     }
 }

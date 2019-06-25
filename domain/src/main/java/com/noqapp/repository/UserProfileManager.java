@@ -17,8 +17,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     UserProfileEntity findByQueueUserId(String qid);
 
-    UserProfileEntity forProfilePreferenceFindByQueueUserId(String qid);
-
     /**
      * Used for searching user based on name. Search could be based on First Name or Last Name.
      * The list is sorted based on First Name. Displayed with format First Name, Last Name.

@@ -3,6 +3,7 @@ package com.noqapp.service;
 import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.json.JsonUserPreference;
 import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
 
@@ -40,24 +41,12 @@ public class UserProfilePreferenceService {
         return userProfileManager.findOneByMail(mail);
     }
 
-    public UserProfileEntity findByQueueUserId(String qid) {
-        return userProfileManager.findByQueueUserId(qid);
+    public UserPreferenceEntity findByQueueUserId(String qid) {
+        return userPreferenceManager.findByQueueUserId(qid);
     }
 
     public UserProfileEntity checkUserExistsByPhone(String phone) {
         return userProfileManager.findOneByPhone(phone);
-    }
-
-    public UserProfileEntity forProfilePreferenceFindByQueueUserId(String qid) {
-        return userProfileManager.forProfilePreferenceFindByQueueUserId(qid);
-    }
-
-    public void updateProfile(UserProfileEntity userProfile) {
-        userProfileManager.save(userProfile);
-    }
-
-    public UserPreferenceEntity loadFromProfile(UserProfileEntity userProfileEntity) {
-        return userPreferenceManager.getObjectUsingUserProfile(userProfileEntity);
     }
 
     @Mobile
@@ -72,5 +61,12 @@ public class UserProfilePreferenceService {
 
     public void deleteHard(UserPreferenceEntity userPreference) {
         userPreferenceManager.deleteHard(userPreference);
+    }
+
+    public JsonUserPreference findUserPreferenceAsJson(String qid) {
+        UserPreferenceEntity userPreference = findByQueueUserId(qid);
+        return new JsonUserPreference()
+            .setPromotionalSMS(userPreference.getPromotionalSMS())
+            .setFirebaseNotification(userPreference.getFirebaseNotification());
     }
 }

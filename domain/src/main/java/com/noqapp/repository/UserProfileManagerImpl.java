@@ -109,11 +109,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         return mongoTemplate.findOne(byQueueUserId(qid, true), UserProfileEntity.class, TABLE);
     }
 
-    @Override
-    public UserProfileEntity forProfilePreferenceFindByQueueUserId(String qid) {
-        return mongoTemplate.findOne(byQueueUserId(qid, false), UserProfileEntity.class, TABLE);
-    }
-
     private Query byQueueUserId(String qid, boolean activeProfile) {
         if (activeProfile) {
             return query(where("QID").is(qid).andOperator(isActive()));

@@ -11,7 +11,6 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.MailTypeEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.MailService;
-import com.noqapp.service.UserProfilePreferenceService;
 import com.noqapp.view.form.ForgotAuthenticateForm;
 import com.noqapp.view.form.ForgotRecoverForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
@@ -83,7 +82,6 @@ public class ForgotController {
 
     private AccountService accountService;
     private ForgotRecoverValidator forgotRecoverValidator;
-    private UserProfilePreferenceService userProfilePreferenceService;
     private ForgotAuthenticateValidator forgotAuthenticateValidator;
     private MailService mailService;
 
@@ -91,13 +89,11 @@ public class ForgotController {
     public ForgotController(
         AccountService accountService,
         ForgotRecoverValidator forgotRecoverValidator,
-        UserProfilePreferenceService userProfilePreferenceService,
         ForgotAuthenticateValidator forgotAuthenticateValidator,
         MailService mailService
     ) {
         this.accountService = accountService;
         this.forgotRecoverValidator = forgotRecoverValidator;
-        this.userProfilePreferenceService = userProfilePreferenceService;
         this.forgotAuthenticateValidator = forgotAuthenticateValidator;
         this.mailService = mailService;
     }
@@ -226,7 +222,7 @@ public class ForgotController {
             if (null == forgotRecover) {
                 modelMap.addAttribute(SUCCESS, false);
             } else {
-                UserProfileEntity userProfile = userProfilePreferenceService.findByQueueUserId(forgotRecover.getQueueUserId());
+                UserProfileEntity userProfile = accountService.findProfileByQueueUserId(forgotRecover.getQueueUserId());
                 UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
                     HashText.computeSCrypt(forgotAuthenticateForm.getPassword()),
                     HashText.computeBCrypt(RandomString.newInstance().nextString())
