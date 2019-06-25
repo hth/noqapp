@@ -41,9 +41,6 @@ public class LandingController {
 
     public static final String SUCCESS = "success";
 
-    /**
-     * Refers to landing.jsp.
-     */
     private String nextPage;
     private String migrateToBusinessRegistrationFlowActions;
 
@@ -54,16 +51,16 @@ public class LandingController {
 
     @Autowired
     public LandingController(
-            @Value ("${nextPage:/access/landing}")
-            String nextPage,
+        @Value ("${nextPage:/access/landing}")
+        String nextPage,
 
-            @Value ("${migrateToBusinessRegistrationFlowActions:redirect:/migrate/business/registration.htm}")
-            String migrateToBusinessRegistrationFlowActions,
+        @Value ("${migrateToBusinessRegistrationFlowActions:redirect:/migrate/business/registration.htm}")
+        String migrateToBusinessRegistrationFlowActions,
 
-            BusinessUserService businessUserService,
-            QueueService queueService,
-            ApiHealthService apiHealthService,
-            AccountService accountService
+        BusinessUserService businessUserService,
+        QueueService queueService,
+        ApiHealthService apiHealthService,
+        AccountService accountService
     ) {
         this.nextPage = nextPage;
         this.migrateToBusinessRegistrationFlowActions = migrateToBusinessRegistrationFlowActions;
@@ -76,8 +73,8 @@ public class LandingController {
 
     @GetMapping(value = "/landing")
     public String landing(
-            @ModelAttribute("landingForm")
-            LandingForm landingForm
+        @ModelAttribute("landingForm")
+        LandingForm landingForm
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");

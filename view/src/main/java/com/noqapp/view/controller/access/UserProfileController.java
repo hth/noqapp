@@ -86,22 +86,22 @@ public class UserProfileController {
 
     @Autowired
     public UserProfileController(
-            @Value("${nextPage:/access/userProfile}")
-            String nextPage,
+        @Value("${nextPage:/access/userProfile}")
+        String nextPage,
 
-            @Value("${aws.s3.endpoint}")
-            String awsEndPoint,
+        @Value("${aws.s3.endpoint}")
+        String awsEndPoint,
 
-            @Value("${aws.s3.bucketName}")
-            String awsBucket,
+        @Value("${aws.s3.bucketName}")
+        String awsBucket,
 
-            ApiHealthService apiHealthService,
-            AccountService accountService,
-            ProfessionalProfileService professionalProfileService,
-            ProfessionalProfileValidator professionalProfileValidator,
-            FileService fileService,
-            BusinessUserService businessUserService,
-            ImageValidator imageValidator
+        ApiHealthService apiHealthService,
+        AccountService accountService,
+        ProfessionalProfileService professionalProfileService,
+        ProfessionalProfileValidator professionalProfileValidator,
+        FileService fileService,
+        BusinessUserService businessUserService,
+        ImageValidator imageValidator
     ) {
         this.nextPage = nextPage;
         this.awsEndPoint = awsEndPoint;
@@ -122,16 +122,16 @@ public class UserProfileController {
      */
     @GetMapping
     public String landing(
-            @ModelAttribute("userProfileForm")
-            UserProfileForm userProfileForm,
+        @ModelAttribute("userProfileForm")
+        UserProfileForm userProfileForm,
 
-            @ModelAttribute("professionalProfileForm")
-            ProfessionalProfileForm professionalProfileForm,
+        @ModelAttribute("professionalProfileForm")
+        ProfessionalProfileForm professionalProfileForm,
 
-            @ModelAttribute("fileUploadForm")
-            FileUploadForm fileUploadForm,
+        @ModelAttribute("fileUploadForm")
+        FileUploadForm fileUploadForm,
 
-            Model model
+        Model model
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
@@ -140,17 +140,15 @@ public class UserProfileController {
 
         /* Different binding for different form. */
         if (model.asMap().containsKey("resultImage")) {
-            model.addAttribute(
-                    "org.springframework.validation.BindingResult.fileUploadForm",
-                    model.asMap().get("resultImage"));
+            model.addAttribute("org.springframework.validation.BindingResult.fileUploadForm", model.asMap().get("resultImage"));
         }
 
         apiHealthService.insert(
-                "/",
-                "landing",
-                UserProfileController.class.getName(),
-                Duration.between(start, Instant.now()),
-                HealthStatusEnum.G);
+            "/",
+            "landing",
+            UserProfileController.class.getName(),
+            Duration.between(start, Instant.now()),
+            HealthStatusEnum.G);
         return nextPage;
     }
 
@@ -182,10 +180,10 @@ public class UserProfileController {
     }
 
     private void populateProfile(
-            UserProfileForm userProfileForm,
-            ProfessionalProfileForm professionalProfileForm,
-            String queueUserId,
-            Model model
+        UserProfileForm userProfileForm,
+        ProfessionalProfileForm professionalProfileForm,
+        String queueUserId,
+        Model model
     ) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUserId);
         UserAccountEntity userAccount = accountService.findByQueueUserId(queueUserId);
@@ -217,9 +215,7 @@ public class UserProfileController {
 
             //Gymnastic to show BindingResult errors if any
             if (model.asMap().containsKey("result")) {
-                model.addAttribute(
-                    "org.springframework.validation.BindingResult.professionalProfileForm",
-                    model.asMap().get("result"));
+                model.addAttribute("org.springframework.validation.BindingResult.professionalProfileForm", model.asMap().get("result"));
             }
         }
     }
@@ -227,8 +223,8 @@ public class UserProfileController {
     /** Updates basic profile. */
     @PostMapping(value = "/updateProfile")
     public String updateProfile(
-            @ModelAttribute("userProfileForm")
-            UserProfileForm userProfileForm
+        @ModelAttribute("userProfileForm")
+        UserProfileForm userProfileForm
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
@@ -237,36 +233,36 @@ public class UserProfileController {
 
         //TODO(hth) to support change of address, this will need to be changed to flow
         RegisterUser registerUser = new RegisterUser()
-                .setEmail(new ScrubbedInput(userProfile.getEmail()))
-                .setAddress(new ScrubbedInput(userProfile.getAddress()))
-                .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
-                .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
-                .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
-                .setBirthday(userProfileForm.getBirthday())
-                .setAddressOrigin(userProfile.getAddressOrigin())
-                .setFirstName(userProfileForm.getFirstName())
-                .setLastName(userProfileForm.getLastName())
-                .setGender(userProfileForm.getGender())
-                .setQueueUserId(userProfile.getQueueUserId());
+            .setEmail(new ScrubbedInput(userProfile.getEmail()))
+            .setAddress(new ScrubbedInput(userProfile.getAddress()))
+            .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
+            .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
+            .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
+            .setBirthday(userProfileForm.getBirthday())
+            .setAddressOrigin(userProfile.getAddressOrigin())
+            .setFirstName(userProfileForm.getFirstName())
+            .setLastName(userProfileForm.getLastName())
+            .setGender(userProfileForm.getGender())
+            .setQueueUserId(userProfile.getQueueUserId());
         accountService.updateUserProfile(registerUser, userProfile.getEmail());
 
         apiHealthService.insert(
-                "/updateProfile",
-                "updateProfile",
-                UserProfileController.class.getName(),
-                Duration.between(start, Instant.now()),
-                HealthStatusEnum.G);
+            "/updateProfile",
+            "updateProfile",
+            UserProfileController.class.getName(),
+            Duration.between(start, Instant.now()),
+            HealthStatusEnum.G);
         return "redirect:/access/userProfile.htm";
     }
 
     /** Updated practising since of professional profile. */
     @PostMapping(value = "/updateProfessionalProfile")
     public String updateProfessionalProfile(
-            @ModelAttribute("professionalProfileForm")
-            ProfessionalProfileForm professionalProfileForm,
+        @ModelAttribute("professionalProfileForm")
+        ProfessionalProfileForm professionalProfileForm,
 
-            BindingResult result,
-            RedirectAttributes redirectAttrs
+        BindingResult result,
+        RedirectAttributes redirectAttrs
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
@@ -287,11 +283,11 @@ public class UserProfileController {
         professionalProfileService.save(professionalProfile);
 
         apiHealthService.insert(
-                "/updateProfessionalProfile",
-                "updateProfessionalProfile",
-                UserProfileController.class.getName(),
-                Duration.between(start, Instant.now()),
-                HealthStatusEnum.G);
+            "/updateProfessionalProfile",
+            "updateProfessionalProfile",
+            UserProfileController.class.getName(),
+            Duration.between(start, Instant.now()),
+            HealthStatusEnum.G);
         return "redirect:/access/userProfile.htm";
     }
 
@@ -471,12 +467,12 @@ public class UserProfileController {
      */
     @PostMapping (value = "/upload", params = "upload")
     public String upload(
-            @ModelAttribute("fileUploadForm")
-            FileUploadForm fileUploadForm,
+        @ModelAttribute("fileUploadForm")
+        FileUploadForm fileUploadForm,
 
-            BindingResult result,
-            RedirectAttributes redirectAttrs,
-            HttpServletRequest httpServletRequest
+        BindingResult result,
+        RedirectAttributes redirectAttrs,
+        HttpServletRequest httpServletRequest
     ) {
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -504,11 +500,11 @@ public class UserProfileController {
                 } catch (Exception e) {
                     LOG.error("document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
-                            "/upload",
-                            "upload",
-                            LandingController.class.getName(),
-                            Duration.between(start, Instant.now()),
-                            HealthStatusEnum.F);
+                        "/upload",
+                        "upload",
+                        LandingController.class.getName(),
+                        Duration.between(start, Instant.now()),
+                        HealthStatusEnum.F);
                 }
 
                 return "redirect:" + nextPage + ".htm";
