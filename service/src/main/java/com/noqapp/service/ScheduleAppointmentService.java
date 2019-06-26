@@ -226,14 +226,14 @@ public class ScheduleAppointmentService {
         }
 
         boolean status = scheduleAppointmentManager.cancelAppointment(id, qid, codeQR);
-
+        String additionalInfo = scheduleAppointment.getAppointmentStatus() == AppointmentStatusEnum.U ? "Un-Confirmed appointment was cancelled." : "Accepted appointment was cancelled before 24hrs period.";
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
         sendMessageToTopic(
             scheduleAppointment.getCodeQR(),
             "Appointment Cancelled",
             "Appointment cancelled for " + bizStore.getDisplayName() + " by " + userProfile.getName() + ".\n\n"
-                + "Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
-                + ". It was cancelled before 24hrs period.");
+                + "Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime()) + ". "
+                + additionalInfo);
         return status;
     }
 
