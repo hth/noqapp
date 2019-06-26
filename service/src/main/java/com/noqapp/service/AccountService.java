@@ -74,17 +74,17 @@ public class AccountService {
 
     @Autowired
     public AccountService(
-            @Value("${AccountService.freeRemoteJoins}")
-            int freeRemoteJoins,
+        @Value("${AccountService.freeRemoteJoins}")
+        int freeRemoteJoins,
 
-            UserAccountManager userAccountManager,
-            UserAuthenticationManager userAuthenticationManager,
-            UserPreferenceManager userPreferenceManager,
-            UserProfileManager userProfileManager,
-            GenerateUserIdService generateUserIdService,
-            EmailValidateService emailValidateService,
-            InviteService inviteService,
-            ForgotRecoverManager forgotRecoverManager
+        UserAccountManager userAccountManager,
+        UserAuthenticationManager userAuthenticationManager,
+        UserPreferenceManager userPreferenceManager,
+        UserProfileManager userProfileManager,
+        GenerateUserIdService generateUserIdService,
+        EmailValidateService emailValidateService,
+        InviteService inviteService,
+        ForgotRecoverManager forgotRecoverManager
     ) {
         this.freeRemoteJoins = freeRemoteJoins;
 
