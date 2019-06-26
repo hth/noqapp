@@ -241,6 +241,10 @@ public class ScheduleAppointmentService {
         return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
     }
 
+    private List<ScheduleAppointmentEntity> findScheduleForDay(String codeQR, String scheduleDate) {
+        return scheduleAppointmentManager.findScheduleForDay(codeQR, scheduleDate);
+    }
+
     /** Safe to use for client only. */
     @Mobile
     public JsonScheduleList findBookedAppointmentsForDayAsJson(String codeQR, String scheduleDate) {
@@ -256,7 +260,7 @@ public class ScheduleAppointmentService {
     /** Contains profile information. To be used by merchant only. */
     @Mobile
     public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
-        List<ScheduleAppointmentEntity> scheduleAppointments = findBookedAppointmentsForDay(codeQR, scheduleDate);
+        List<ScheduleAppointmentEntity> scheduleAppointments = findScheduleForDay(codeQR, scheduleDate);
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
