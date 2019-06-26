@@ -158,7 +158,7 @@ public class ScheduleAppointmentService {
         sendMessageToTopic(
             jsonSchedule.getCodeQR(),
             "Appointment Received",
-            "Appointment requested by " + userProfile.getName() + ".\n\n"
+            "Appointment requested for " + bizStore.getDisplayName() + " by " + userProfile.getName() + ".\n\n"
                 + "Date: " + jsonSchedule.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime())
                 + ". Please confirm this appointment at earliest. If not confirmed, this appointment will auto cancel after 12 hours from booking.");
         /*

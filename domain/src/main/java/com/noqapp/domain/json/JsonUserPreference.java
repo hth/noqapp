@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.types.CommunicationModeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -52,5 +53,11 @@ public class JsonUserPreference extends AbstractDomain {
     public JsonUserPreference setFirebaseNotification(CommunicationModeEnum firebaseNotification) {
         this.firebaseNotification = firebaseNotification;
         return this;
+    }
+
+    public static JsonUserPreference convertToJsonUserPreference(UserPreferenceEntity userPreference) {
+        return new JsonUserPreference()
+            .setPromotionalSMS(userPreference.getPromotionalSMS())
+            .setFirebaseNotification(userPreference.getFirebaseNotification());
     }
 }

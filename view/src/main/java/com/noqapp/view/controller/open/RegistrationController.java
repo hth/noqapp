@@ -1,5 +1,7 @@
 package com.noqapp.view.controller.open;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import com.noqapp.common.utils.ParseJsonStringToMap;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
 
 /**
  * User: hitender
@@ -42,6 +45,7 @@ import java.io.IOException;
 public class RegistrationController {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationController.class);
 
+    private String registrationPage;
     private String smsTxtOnRegistration;
 
     private AccountService accountService;
@@ -49,11 +53,13 @@ public class RegistrationController {
     private LoginController loginController;
     private SmsService smsService;
 
-    @Value("${registrationPage:/open/register}")
-    private String registrationPage;
+    private ExecutorService executorService;
 
     @Autowired
     public RegistrationController(
+        @Value("${registrationPage:/open/register}")
+        String registrationPage,
+
         @Value("${sms.txt.on.registration}")
         String smsTxtOnRegistration,
 
@@ -62,12 +68,15 @@ public class RegistrationController {
         LoginController loginController,
         SmsService smsService
     ) {
+        this.registrationPage = registrationPage;
         this.smsTxtOnRegistration = smsTxtOnRegistration;
 
         this.accountService = accountService;
         this.mailService = mailService;
         this.loginController = loginController;
         this.smsService = smsService;
+
+        this.executorService = newCachedThreadPool();
     }
 
     @PostMapping
@@ -105,7 +114,7 @@ public class RegistrationController {
                 return registrationPage;
             }
 
-            smsService.sendPromotionalSMS(merchantRegistration.getPhone(), smsTxtOnRegistration);
+            executorService.submit(() -> smsService.sendPromotionalSMS(merchantRegistration.getPhone(), smsTxtOnRegistration));
         } catch (DuplicateAccountException e) {
             LOG.error("Duplicate Account found reason={}", e.getLocalizedMessage(), e);
             return registrationPage;

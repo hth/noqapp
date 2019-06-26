@@ -4,8 +4,12 @@ import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonUserPreference;
+import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,7 @@ import java.util.Date;
 })
 @Service
 public class UserProfilePreferenceService {
+    private static final Logger LOG = LoggerFactory.getLogger(UserProfilePreferenceService.class);
 
     private UserProfileManager userProfileManager;
     private UserPreferenceManager userPreferenceManager;
@@ -35,6 +40,10 @@ public class UserProfilePreferenceService {
 
         this.userProfileManager = userProfileManager;
         this.userPreferenceManager = userPreferenceManager;
+    }
+
+    public void save(UserPreferenceEntity userPreference) {
+        userPreferenceManager.save(userPreference);
     }
 
     public UserProfileEntity findOneByMail(String mail) {
@@ -63,10 +72,47 @@ public class UserProfilePreferenceService {
         userPreferenceManager.deleteHard(userPreference);
     }
 
+    @Mobile
     public JsonUserPreference findUserPreferenceAsJson(String qid) {
         UserPreferenceEntity userPreference = findByQueueUserId(qid);
-        return new JsonUserPreference()
-            .setPromotionalSMS(userPreference.getPromotionalSMS())
-            .setFirebaseNotification(userPreference.getFirebaseNotification());
+        return JsonUserPreference.convertToJsonUserPreference(userPreference);
+    }
+
+    @Mobile
+    public UserPreferenceEntity changeNotificationSound(String qid) {
+        UserPreferenceEntity userPreference = findByQueueUserId(qid);
+        switch (userPreference.getFirebaseNotification()) {
+            case R:
+                userPreference.setFirebaseNotification(CommunicationModeEnum.M);
+                break;
+            case M:
+                userPreference.setFirebaseNotification(CommunicationModeEnum.R);
+                break;
+            case S:
+            default:
+                LOG.error("Reached unsupported communication mode {}", userPreference.getFirebaseNotification());
+                throw new UnsupportedOperationException("Reached unsupported communication mode " + userPreference.getFirebaseNotification().getDescription());
+        }
+        save(userPreference);
+        return userPreference;
+    }
+
+    @Mobile
+    public UserPreferenceEntity changeReceivePromotionalSMS(String qid) {
+        UserPreferenceEntity userPreference = findByQueueUserId(qid);
+        switch (userPreference.getPromotionalSMS()) {
+            case R:
+                userPreference.setPromotionalSMS(CommunicationModeEnum.S);
+                break;
+            case S:
+                userPreference.setPromotionalSMS(CommunicationModeEnum.R);
+                break;
+            case M:
+            default:
+                LOG.error("Reached unsupported communication mode {}", userPreference.getPromotionalSMS());
+                throw new UnsupportedOperationException("Reached unsupported communication mode " + userPreference.getFirebaseNotification().getDescription());
+        }
+        save(userPreference);
+        return userPreference;
     }
 }
