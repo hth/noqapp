@@ -159,6 +159,20 @@ public class CouponManagerImpl implements CouponManager {
     }
 
     @Override
+    public List<CouponEntity> findActiveClientCouponByQid(String qid, String bizNameId) {
+        Instant midnight = DateUtil.nowMidnightDate().toInstant();
+        return mongoTemplate.find(
+            query(where("QID").is(qid).and("BN").is(bizNameId)
+                .andOperator(
+                    where("SD").lt(midnight),
+                    where("ED").gte(midnight)
+                ).and("A").is(true)),
+            CouponEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public long countDiscountUsage(String discountId) {
         return mongoTemplate.count(
             query(where("DI").is(discountId).and("A").is(true)),
