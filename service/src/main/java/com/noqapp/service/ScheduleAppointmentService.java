@@ -226,7 +226,10 @@ public class ScheduleAppointmentService {
         }
 
         boolean status = scheduleAppointmentManager.cancelAppointment(id, qid, codeQR);
-        String additionalInfo = scheduleAppointment.getAppointmentStatus() == AppointmentStatusEnum.U ? "Un-Confirmed appointment was cancelled." : "Accepted appointment was cancelled before 24hrs period.";
+        String additionalInfo = scheduleAppointment.getAppointmentStatus() == AppointmentStatusEnum.U
+            ? "Un-Confirmed appointment was cancelled."
+            : "Accepted appointment was cancelled before 24hrs period.";
+
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
         sendMessageToTopic(
             scheduleAppointment.getCodeQR(),
