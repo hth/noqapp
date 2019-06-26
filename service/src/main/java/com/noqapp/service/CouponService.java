@@ -104,8 +104,20 @@ public class CouponService {
 
     @Mobile
     public JsonCouponList findActiveClientCouponByQidAsJson(String qid) {
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
         JsonCouponList jsonDiscountList = new JsonCouponList();
+        List<String> qidOfFamily = populateWithFamily(qid);
+        for (String familyQid : qidOfFamily) {
+            List<CouponEntity> coupons = couponManager.findActiveClientCouponByQid(familyQid);
+            for (CouponEntity coupon : coupons) {
+                jsonDiscountList.addCoupon(JsonCoupon.populate(coupon));
+            }
+        }
+
+        return jsonDiscountList;
+    }
+
+    private List<String> populateWithFamily(String qid) {
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
         List<String> dependents = userProfile.getQidOfDependents();
         if (null == dependents) {
             dependents = new ArrayList<String>() {{
@@ -114,9 +126,16 @@ public class CouponService {
         } else {
             dependents.add(qid);
         }
+        return dependents;
+    }
 
-        for (String familyQid : dependents) {
-            List<CouponEntity> coupons = couponManager.findActiveClientCouponByQid(familyQid);
+    @Mobile
+    public JsonCouponList findActiveClientCouponByQidAsJson(String qid, String codeQR) {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        JsonCouponList jsonDiscountList = new JsonCouponList();
+        List<String> qidOfFamily = populateWithFamily(qid);
+        for (String familyQid : qidOfFamily) {
+            List<CouponEntity> coupons = couponManager.findActiveClientCouponByQid(familyQid, bizStore.getBizName().getId());
             for (CouponEntity coupon : coupons) {
                 jsonDiscountList.addCoupon(JsonCoupon.populate(coupon));
             }
@@ -129,7 +148,7 @@ public class CouponService {
         return couponManager.checkIfCouponExistsForQid(discountId, qid);
     }
 
-    public JsonPurchaseOrder addCouponInformationIfAny(JsonPurchaseOrder jsonPurchaseOrder) {
+    JsonPurchaseOrder addCouponInformationIfAny(JsonPurchaseOrder jsonPurchaseOrder) {
         if (StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId())) {
             JsonCoupon jsonCoupon = findByIdAsJson(jsonPurchaseOrder.getCouponId());
             jsonPurchaseOrder.setJsonCoupon(jsonCoupon);
