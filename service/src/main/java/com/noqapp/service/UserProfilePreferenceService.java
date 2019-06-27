@@ -36,8 +36,8 @@ public class UserProfilePreferenceService {
     @Autowired
     public UserProfilePreferenceService(
         UserProfileManager userProfileManager,
-        UserPreferenceManager userPreferenceManager) {
-
+        UserPreferenceManager userPreferenceManager
+    ) {
         this.userProfileManager = userProfileManager;
         this.userPreferenceManager = userPreferenceManager;
     }
