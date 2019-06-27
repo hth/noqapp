@@ -148,7 +148,8 @@ public class CouponService {
         return couponManager.checkIfCouponExistsForQid(discountId, qid);
     }
 
-    JsonPurchaseOrder addCouponInformationIfAny(JsonPurchaseOrder jsonPurchaseOrder) {
+    @Mobile
+    public JsonPurchaseOrder addCouponInformationIfAny(JsonPurchaseOrder jsonPurchaseOrder) {
         if (StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId())) {
             JsonCoupon jsonCoupon = findByIdAsJson(jsonPurchaseOrder.getCouponId());
             jsonPurchaseOrder.setJsonCoupon(jsonCoupon);
