@@ -16,6 +16,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
+import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
@@ -429,9 +430,11 @@ public class AccountService {
     /**
      * Create and Save user preferences. Shared with social registration.
      */
-    public void createPreferences(String qid) {
+    private void createPreferences(String qid) {
         try {
-            UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(qid);
+            UserPreferenceEntity userPreferenceEntity = UserPreferenceEntity.newInstance(qid)
+                .setPromotionalSMS(CommunicationModeEnum.R)
+                .setFirebaseNotification(CommunicationModeEnum.R);
             userPreferenceManager.save(userPreferenceEntity);
             LOG.debug("Created UserPreferenceEntity={}", userPreferenceEntity.getQueueUserId());
         } catch (Exception e) {
