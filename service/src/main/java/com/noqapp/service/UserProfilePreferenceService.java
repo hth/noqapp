@@ -83,18 +83,14 @@ public class UserProfilePreferenceService {
         UserPreferenceEntity userPreference = findByQueueUserId(qid);
         switch (userPreference.getFirebaseNotification()) {
             case R:
-                userPreference.setFirebaseNotification(CommunicationModeEnum.M);
-                break;
+                return userPreferenceManager.changePromotionalSMS(qid, CommunicationModeEnum.M);
             case M:
-                userPreference.setFirebaseNotification(CommunicationModeEnum.R);
-                break;
+                return userPreferenceManager.changePromotionalSMS(qid, CommunicationModeEnum.R);
             case S:
             default:
                 LOG.error("Reached unsupported communication mode {}", userPreference.getFirebaseNotification());
                 throw new UnsupportedOperationException("Reached unsupported communication mode " + userPreference.getFirebaseNotification().getDescription());
         }
-        save(userPreference);
-        return userPreference;
     }
 
     @Mobile
@@ -102,17 +98,13 @@ public class UserProfilePreferenceService {
         UserPreferenceEntity userPreference = findByQueueUserId(qid);
         switch (userPreference.getPromotionalSMS()) {
             case R:
-                userPreference.setPromotionalSMS(CommunicationModeEnum.S);
-                break;
+                return userPreferenceManager.changePromotionalSMS(qid, CommunicationModeEnum.S);
             case S:
-                userPreference.setPromotionalSMS(CommunicationModeEnum.R);
-                break;
+                return userPreferenceManager.changePromotionalSMS(qid, CommunicationModeEnum.R);
             case M:
             default:
                 LOG.error("Reached unsupported communication mode {}", userPreference.getPromotionalSMS());
                 throw new UnsupportedOperationException("Reached unsupported communication mode " + userPreference.getFirebaseNotification().getDescription());
         }
-        save(userPreference);
-        return userPreference;
     }
 }

@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.UserPreferenceEntity;
+import com.noqapp.domain.types.CommunicationModeEnum;
 
 /**
  * User: hitender
@@ -11,5 +12,9 @@ public interface UserPreferenceManager extends RepositoryManager<UserPreferenceE
     UserPreferenceEntity findById(String id);
 
     UserPreferenceEntity findByQueueUserId(String qid);
+
+    UserPreferenceEntity changePromotionalSMS(String qid, CommunicationModeEnum communicationMode);
+
+    UserPreferenceEntity changeFirebaseNotification(String qid, CommunicationModeEnum communicationMode);
 }
 
