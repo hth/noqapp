@@ -83,9 +83,9 @@ public class UserProfilePreferenceService {
         UserPreferenceEntity userPreference = findByQueueUserId(qid);
         switch (userPreference.getFirebaseNotification()) {
             case R:
-                return userPreferenceManager.changePromotionalSMS(qid, CommunicationModeEnum.M);
+                return userPreferenceManager.changeFirebaseNotification(qid, CommunicationModeEnum.M);
             case M:
-                return userPreferenceManager.changePromotionalSMS(qid, CommunicationModeEnum.R);
+                return userPreferenceManager.changeFirebaseNotification(qid, CommunicationModeEnum.R);
             case S:
             default:
                 LOG.error("Reached unsupported communication mode {}", userPreference.getFirebaseNotification());
