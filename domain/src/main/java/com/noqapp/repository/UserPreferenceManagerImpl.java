@@ -1,12 +1,16 @@
 package com.noqapp.repository;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserPreferenceEntity;
+import com.noqapp.domain.types.CommunicationModeEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
@@ -53,6 +57,28 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     @Override
     public UserPreferenceEntity findByQueueUserId(String qid) {
         return mongoTemplate.findOne(query(where("QID").is(qid)), UserPreferenceEntity.class, TABLE);
+    }
+
+    @Override
+    public UserPreferenceEntity changePromotionalSMS(String qid, CommunicationModeEnum communicationMode) {
+        return mongoTemplate.findAndModify(
+            query(where("QID").is(qid)),
+            entityUpdate(update("PS", communicationMode)),
+            FindAndModifyOptions.options().returnNew(true),
+            UserPreferenceEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public UserPreferenceEntity changeFirebaseNotification(String qid, CommunicationModeEnum communicationMode) {
+        return mongoTemplate.findAndModify(
+            query(where("QID").is(qid)),
+            entityUpdate(update("FN", communicationMode)),
+            FindAndModifyOptions.options().returnNew(true),
+            UserPreferenceEntity.class,
+            TABLE
+        );
     }
 
     @Override
