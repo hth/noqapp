@@ -445,7 +445,13 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public BizStoreEntity disableServiceCost(String codeQR) {
         return mongoTemplate.findAndModify(
             query(where("QR").is(codeQR)),
-            entityUpdate(update("EP", false)),
+            entityUpdate(update("EP", false)
+                .unset("PP")
+                .unset("CF")
+                .unset("FD")
+                .unset("DF")
+                .unset("DP")
+            ),
             FindAndModifyOptions.options().returnNew(true),
             BizStoreEntity.class,
             TABLE
