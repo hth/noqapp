@@ -195,6 +195,7 @@ public class ArchiveAndReset {
     private void runSelectiveArchiveBasedOnBusinessType(BizStoreEntity bizStore) {
         switch (bizStore.getBusinessType().getMessageOrigin()) {
             case Q:
+                queueRemoveAllWithQueueUserStateAsInitial(bizStore);
                 queueArchiveAndReset(bizStore);
                 break;
             case O:
@@ -204,6 +205,27 @@ public class ArchiveAndReset {
                 LOG.error("Reached un-supported condition bizStoreId={}", bizStore.getId());
                 throw new UnsupportedOperationException("Reached Unsupported Condition");
         }
+    }
+
+    private void queueRemoveAllWithQueueUserStateAsInitial(BizStoreEntity bizStore) {
+        LOG.info("Remove {} state queue={} lastRun={} bizName={} id={}",
+            QueueUserStateEnum.I,
+            bizStore.getDisplayName(),
+            bizStore.getQueueHistory(),
+            bizStore.getBizName().getBusinessName(),
+            bizStore.getId());
+
+        List<QueueEntity> queues = queueManager.findByCodeQRWithInitialStateAndTransactionId(bizStore.getCodeQR());
+        for (QueueEntity queue : queues) {
+            PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
+            //Only for DeliveryMode QS
+            purchaseOrderProductManager.removePurchaseOrderProduct(purchaseOrder.getId());
+            purchaseOrderManager.removePurchaseOrderForService(queue.getTransactionId());
+
+            queueManager.deleteReferenceToTransactionId(queue.getCodeQR(), queue.getTransactionId());
+        }
+
+        LOG.info("Deleted {} records with {} state", queues.size(), QueueUserStateEnum.I);
     }
 
     private void queueArchiveAndReset(BizStoreEntity bizStore) {

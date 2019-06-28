@@ -116,6 +116,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     List<QueueEntity> findAllByCodeQR(String codeQR);
     List<QueueEntity> findByCodeQR(String codeQR);
     List<QueueEntity> findByCodeQRSortedByTokenIgnoreInitialState(String codeQR);
+    List<QueueEntity> findByCodeQRWithInitialStateAndTransactionId(String codeQR);
 
     long deleteByCodeQR(String codeQR);
     long countByCodeQR(String codeQR);

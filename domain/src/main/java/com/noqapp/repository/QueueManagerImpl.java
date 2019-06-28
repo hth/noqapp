@@ -466,6 +466,15 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
+    public List<QueueEntity> findByCodeQRWithInitialStateAndTransactionId(String codeQR) {
+        return mongoTemplate.find(
+            query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.I).and("TI").exists(true)),
+            QueueEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public long deleteByCodeQR(String codeQR) {
         return mongoTemplate.remove(
                 query(where("QR").is(codeQR)),
