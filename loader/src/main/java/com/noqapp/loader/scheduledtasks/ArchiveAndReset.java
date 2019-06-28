@@ -225,7 +225,7 @@ public class ArchiveAndReset {
             queueManager.deleteReferenceToTransactionId(queue.getCodeQR(), queue.getTransactionId());
         }
 
-        LOG.info("Delete records with {} state {}", QueueUserStateEnum.I, queues.size());
+        LOG.info("Deleted {} records with {} state", queues.size(), QueueUserStateEnum.I);
     }
 
     private void queueArchiveAndReset(BizStoreEntity bizStore) {
