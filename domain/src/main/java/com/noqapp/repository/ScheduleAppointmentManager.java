@@ -30,4 +30,6 @@ public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAp
     List<ScheduleAppointmentEntity> findAllUpComingAppointments(String qid);
 
     ScheduleAppointmentEntity findAppointment(String id, String qid, String codeQR);
+
+    long countNumberOfAppointments(String codeQR, String day);
 }
