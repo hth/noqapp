@@ -187,4 +187,13 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
             TABLE
         );
     }
+
+    @Override
+    public long countNumberOfAppointments(String codeQR, String day) {
+        return mongoTemplate.count(
+            query(where("QR").is(codeQR).and("SD").is(day).and("AS").in(AppointmentStatusEnum.A, AppointmentStatusEnum.U)),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        );
+    }
 }
