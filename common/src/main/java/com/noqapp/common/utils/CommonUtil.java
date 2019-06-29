@@ -7,6 +7,8 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.util.Assert;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +16,7 @@ import org.json.JSONObject;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -203,5 +206,18 @@ public final class CommonUtil {
         }
 
         return null;
+    }
+
+    private static String currencyLocal(Locale locale) {
+        return Currency.getInstance(locale).getSymbol();
+    }
+
+    public static String currencyLocal(String countryCode) {
+        Assert.hasText(countryCode, "Country code cannot be empty");
+        return currencyLocal(new Locale("en", countryCode));
+    }
+    
+    public static String displayWithCurrencyCode(String orderPrice, String countryCode) {
+        return currencyLocal(countryCode) + orderPrice;
     }
 }
