@@ -86,7 +86,8 @@ public class ComposeMessagesForFCM {
     }
 
     /**
-     * When merchant adds client to queue. This message is sent to client.
+     * Personal message sent by client to self or by merchant to client.
+     * @param messageOriginEnum based of this message behaves differently.
      */
     @Mobile
     public static JsonMessage composeMessage(
@@ -94,10 +95,11 @@ public class ComposeMessagesForFCM {
         List<JsonTokenAndQueue> jsonTokenAndQueues,
         String body,
         String title,
-        String codeQR
+        String codeQR,
+        MessageOriginEnum messageOrigin
     ) {
         JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
-        JsonData jsonData = new JsonClientTokenAndQueueData(FirebaseMessageTypeEnum.P, MessageOriginEnum.CQO)
+        JsonData jsonData = new JsonClientTokenAndQueueData(FirebaseMessageTypeEnum.P, messageOrigin)
             .setTokenAndQueues(jsonTokenAndQueues)
             .setCodeQR(codeQR);
 
@@ -115,7 +117,21 @@ public class ComposeMessagesForFCM {
         return jsonMessage;
     }
 
-    public static JsonMessage composeMessage(RegisteredDeviceEntity registeredDevice, TokenQueueEntity tokenQueue, PurchaseOrderEntity purchaseOrder) {
+    @Mobile
+    public static JsonMessage composeMessageForClientDisplay(
+        RegisteredDeviceEntity registeredDevice,
+        String body,
+        String title,
+        String codeQR
+    ) {
+        return composeMessage(registeredDevice, null, body, title, codeQR, MessageOriginEnum.D);
+    }
+
+    public static JsonMessage composeMessage(
+        RegisteredDeviceEntity registeredDevice,
+        TokenQueueEntity tokenQueue,
+        PurchaseOrderEntity purchaseOrder
+    ) {
         JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
         JsonData jsonData = new JsonClientOrderData(FirebaseMessageTypeEnum.P, MessageOriginEnum.OR)
             .setCodeQR(purchaseOrder.getCodeQR())
