@@ -16,4 +16,6 @@ public interface ProfessionalProfileManager extends RepositoryManager<Profession
     ProfessionalProfileEntity removeMarkedAsDeleted(String qid);
 
     ProfessionalProfileEntity findByWebProfileId(String webProfileId);
+
+    ProfessionalProfileEntity findByStoreCodeQR(String codeQR);
 }

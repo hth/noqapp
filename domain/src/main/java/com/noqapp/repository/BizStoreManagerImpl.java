@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static com.noqapp.repository.util.AppendAdditionalFields.isActive;
 import static com.noqapp.repository.util.AppendAdditionalFields.isNotDeleted;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -250,6 +251,15 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> getAllBizStores(String bizNameId) {
         return mongoTemplate.find(
             query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())).with(new Sort(ASC, "DN")),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<BizStoreEntity> getAllBizStoresActive(String bizNameId) {
+        return mongoTemplate.find(
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted(), isActive())).with(new Sort(ASC, "DN")),
             BizStoreEntity.class,
             TABLE
         );
