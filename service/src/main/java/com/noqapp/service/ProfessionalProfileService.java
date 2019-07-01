@@ -9,6 +9,7 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonProfessionalProfile;
 import com.noqapp.domain.json.JsonReviewList;
 import com.noqapp.domain.json.tv.JsonProfessionalProfileTV;
+import com.noqapp.domain.json.tv.JsonProfessionalProfileTVList;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.CommonStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
@@ -25,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,6 +45,7 @@ public class ProfessionalProfileService {
     private UserProfileManager userProfileManager;
     private BusinessUserStoreManager businessUserStoreManager;
     private BizStoreManager bizStoreManager;
+    private BizService bizService;
 
     @Autowired
     public ProfessionalProfileService(
@@ -50,13 +53,15 @@ public class ProfessionalProfileService {
         ProfessionalProfileManager professionalProfileManager,
         UserProfileManager userProfileManager,
         BusinessUserStoreManager businessUserStoreManager,
-        BizStoreManager bizStoreManager
+        BizStoreManager bizStoreManager,
+        BizService bizService
     ) {
         this.reviewService = reviewService;
         this.professionalProfileManager = professionalProfileManager;
         this.userProfileManager = userProfileManager;
         this.businessUserStoreManager = businessUserStoreManager;
         this.bizStoreManager = bizStoreManager;
+        this.bizService = bizService;
     }
 
     /** Create professional profile or activate existing profile if marked deleted. */
@@ -119,6 +124,20 @@ public class ProfessionalProfileService {
     public JsonProfessionalProfile getJsonProfessionalProfile(String qid, POPULATE_PROFILE populateProfile) {
         ProfessionalProfileEntity professionalProfile = professionalProfileManager.findOne(qid);
         return getJsonProfessionalProfile(professionalProfile, populateProfile);
+    }
+
+    /** This can have duplicate profiles as multiple store can have same professional person. */
+    @Mobile
+    public JsonProfessionalProfileTVList findAllProfessionalProfile(String bizNameId) {
+        JsonProfessionalProfileTVList jsonProfessionalProfileTVList = new JsonProfessionalProfileTVList();
+
+        List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStoresActive(bizNameId);
+        for (BizStoreEntity bizStore : bizStores) {
+            ProfessionalProfileEntity professionalProfile = professionalProfileManager.findByStoreCodeQR(bizStore.getCodeQR());
+            jsonProfessionalProfileTVList.addJsonProfessionalProfileTV(getJsonProfessionalProfile(professionalProfile, POPULATE_PROFILE.TV));
+        }
+
+        return jsonProfessionalProfileTVList;
     }
 
     private JsonProfessionalProfile getJsonProfessionalProfile(ProfessionalProfileEntity professionalProfile, POPULATE_PROFILE populateProfile) {

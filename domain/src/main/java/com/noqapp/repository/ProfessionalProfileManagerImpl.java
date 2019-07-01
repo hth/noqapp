@@ -92,4 +92,13 @@ public class ProfessionalProfileManagerImpl implements ProfessionalProfileManage
             TABLE
         );
     }
+
+    @Override
+    public ProfessionalProfileEntity findByStoreCodeQR(String codeQR) {
+        return mongoTemplate.findOne(
+            query(where("MA").in(codeQR)),
+            ProfessionalProfileEntity.class,
+            TABLE
+        );
+    }
 }

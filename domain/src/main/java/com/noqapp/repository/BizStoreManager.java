@@ -55,6 +55,9 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     /** Get all the stores for business. */
     List<BizStoreEntity> getAllBizStores(String bizNameId);
 
+    /** Get all the active stores for business. */
+    List<BizStoreEntity> getAllBizStoresActive(String bizNameId);
+
     List<BizStoreEntity> getAllBizStores(String bizNameId, Point point, double maxDistance);
 
     /** Get not deleted stores with matching address. */
