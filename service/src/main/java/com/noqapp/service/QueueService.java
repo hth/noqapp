@@ -609,14 +609,6 @@ public class QueueService {
     }
 
     @Mobile
-    public JsonQueuePersonList findYetToBeServed(String codeQR) {
-        List<QueueEntity> queues = queueManager.findYetToBeServed(codeQR);
-        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
-        populateInJsonQueuePersonList(queuedPeople, queues);
-        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
-    }
-
-    @Mobile
     public List<JsonQueuedPersonTV> findYetToBeServedForTV(String codeQR) {
         List<QueueEntity> queues = queueManager.findYetToBeServed(codeQR);
         List<JsonQueuedPersonTV> jsonQueuedPersonTVList = new ArrayList<>();
