@@ -96,12 +96,15 @@ public class ShowProfessionalProfileHTMLService {
                     showHTMLService.populateStore(rootMap, selectedBizStore);
                     return freemarkerService.freemarkerToString("html/show-store.ftl", rootMap);
                 } catch (IOException | TemplateException e) {
-                    LOG.error("Failed generating html page for store blank reason={}", e.getLocalizedMessage(), e);
+                    LOG.error("Failed generating html page for store blank {} {} reason={}",
+                        selectedBizStore.getDisplayName(), selectedBizStore.getCodeQR(), e.getLocalizedMessage(), e);
                     return showStoreBlank;
                 }
             } else {
                 BusinessUserStoreEntity businessUserStore = businessUserStores.get(0);
-                JsonProfessionalProfile jsonProfessionalProfile = professionalProfileService.getJsonProfessionalProfile(businessUserStore.getQueueUserId(), PUBLIC);
+                JsonProfessionalProfile jsonProfessionalProfile = professionalProfileService.getJsonProfessionalProfile(
+                    businessUserStore.getQueueUserId(),
+                    PUBLIC);
 
                 List<BizStoreEntity> bizStores = new ArrayList<>();
                 Set<String> managersAtStoreCodeQRs = jsonProfessionalProfile.getManagerAtStoreCodeQRs();
@@ -125,7 +128,8 @@ public class ShowProfessionalProfileHTMLService {
                     showHTMLService.populateMedicalProfile(rootMap, userProfile, jsonProfessionalProfile, bizStores);
                     return freemarkerService.freemarkerToStringComplex("html/show-store-healthCare.ftl", rootMap);
                 } catch (IOException | TemplateException e) {
-                    LOG.error("Failed generating html page for store userProfile={} reason={}", userProfile.getQueueUserId(), e.getLocalizedMessage(), e);
+                    LOG.error("Failed generating html page for store userProfile={} reason={}",
+                        userProfile.getQueueUserId(), e.getLocalizedMessage(), e);
                     return showStoreBlank;
                 }
             }
