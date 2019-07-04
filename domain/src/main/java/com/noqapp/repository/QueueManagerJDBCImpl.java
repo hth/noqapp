@@ -147,6 +147,8 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             " FROM " +
             "QUEUE WHERE QID = ? AND QR = ? AND TN = ? AND TI IS NOT NULL";
 
+    private static final String deleteFrom = "DELETE FROM QUEUE WHERE ID = ?";
+
     private static final String findAfterCreateDate = "SELECT * FROM QUEUE WHERE C >= ? ORDER BY C DESC";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
@@ -366,6 +368,11 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             new Object[]{codeQR, qid, token},
             new QueueRowMapper()
         );
+    }
+
+    @Override
+    public void deleteQueue(String id) {
+        jdbcTemplate.update(deleteFrom, id);
     }
 
     @Override
