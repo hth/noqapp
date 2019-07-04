@@ -112,7 +112,7 @@ public class GenerateStoreQueueHTML {
                 SiteUrlMap siteUrlMap = new SiteUrlMap();
                 for (BizStoreEntity bizStore : bizStores) {
                     try {
-                        String htmlData = bizStore.getBusinessType() == BusinessTypeEnum.DO ? showProfessionalProfileHTMLService.showStoreByWebLocation(bizStore) : showHTMLService.showStoreByWebLocation(bizStore);
+                        String htmlData = BusinessTypeEnum.DO == bizStore.getBusinessType() ? showProfessionalProfileHTMLService.showStoreByWebLocation(bizStore) : showHTMLService.showStoreByWebLocation(bizStore);
                         String filePath = storeBaseDirectory + bizStore.getWebLocation() + ".html";
                         Path pathToFile = Paths.get(filePath);
                         try {
