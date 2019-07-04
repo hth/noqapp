@@ -69,6 +69,9 @@ public interface QueueManagerJDBC {
     QueueEntity findQueueThatHasTransaction(String codeQR, String qid, int token);
 
     @Mobile
+    void deleteQueue(String id);
+
+    @Mobile
     boolean isDBAlive();
 
     List<QueueEntity> findAfterCreateDate(Date since);
