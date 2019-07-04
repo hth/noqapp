@@ -70,4 +70,6 @@ public interface QueueManagerJDBC {
 
     @Mobile
     boolean isDBAlive();
+
+    List<QueueEntity> findAfterCreateDate(Date since);
 }
