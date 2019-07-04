@@ -147,6 +147,8 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             " FROM " +
             "QUEUE WHERE QID = ? AND QR = ? AND TN = ? AND TI IS NOT NULL";
 
+    private static final String findAfterCreateDate = "SELECT * FROM QUEUE WHERE C >= ? ORDER BY C DESC";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
 
@@ -369,5 +371,13 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     @Override
     public boolean isDBAlive() {
         return jdbcTemplate.queryForMap("SELECT 1").size() == 0;
+    }
+
+    @Override
+    public List<QueueEntity> findAfterCreateDate(Date since) {
+        return jdbcTemplate.query(
+            findAfterCreateDate,
+            new Object[]{since},
+            new QueueRowMapper());
     }
 }
