@@ -3,7 +3,6 @@ package com.noqapp.loader.scheduledtasks;
 import static com.noqapp.domain.types.catgeory.HealthCareServiceEnum.MRI;
 import static com.noqapp.domain.types.catgeory.HealthCareServiceEnum.SCAN;
 
-import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.medical.domain.MasterLabEntity;
 import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.repository.BizStoreManager;
@@ -214,16 +213,6 @@ public class AnyTask {
 
         for (MasterLabEntity masterRadiology : masterRadiologies) {
             masterLabManager.save(masterRadiology);
-        }
-
-        List<BizStoreEntity> bizStores = bizStoreManager.getAll(0, 1000);
-        for (BizStoreEntity bizStore : bizStores) {
-            tokenQueueManager.updateDisplayNameAndBusinessType(
-                bizStore.getCodeQR(),
-                bizStore.getTopic(),
-                bizStore.getDisplayName(),
-                bizStore.getBusinessType(),
-                bizStore.getBizCategoryId());
         }
     }
 }
