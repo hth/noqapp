@@ -45,7 +45,6 @@ public class ProfessionalProfileService {
     private UserProfileManager userProfileManager;
     private BusinessUserStoreManager businessUserStoreManager;
     private BizStoreManager bizStoreManager;
-    private BizService bizService;
 
     @Autowired
     public ProfessionalProfileService(
@@ -53,15 +52,13 @@ public class ProfessionalProfileService {
         ProfessionalProfileManager professionalProfileManager,
         UserProfileManager userProfileManager,
         BusinessUserStoreManager businessUserStoreManager,
-        BizStoreManager bizStoreManager,
-        BizService bizService
+        BizStoreManager bizStoreManager
     ) {
         this.reviewService = reviewService;
         this.professionalProfileManager = professionalProfileManager;
         this.userProfileManager = userProfileManager;
         this.businessUserStoreManager = businessUserStoreManager;
         this.bizStoreManager = bizStoreManager;
-        this.bizService = bizService;
     }
 
     /** Create professional profile or activate existing profile if marked deleted. */
