@@ -44,7 +44,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     BizStoreEntity findOne(String bizNameId);
 
     /** This is mostly being used when data is corrupted, like missing addresses or lat or lng. */
-    List<BizStoreEntity> getAll(int skip, int limit);
+    List<BizStoreEntity> getAllActive(int skip, int limit);
 
     /** Gets all the data where the addresses have not been validated using external api. */
     List<BizStoreEntity> getAllWhereNotValidatedUsingExternalAPI(int validationCountTry, int skip, int limit);
