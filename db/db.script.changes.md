@@ -17,6 +17,10 @@
     
     /* This store is no longer active. */
     db.BIZ_STORE.remove({"_id" : ObjectId("5cf0bbfd96799f4f42326faf")});
+    
+    SET SQL_SAFE_UPDATES = 0;
+    UPDATE noqapp.PURCHASE_ORDER SET QID = '100000000935'  where TI = 'ad518e-6862-106-5cc1958d';
+    SET SQL_SAFE_UPDATES = 1;    
 
 ### Change May 21 2019
 
