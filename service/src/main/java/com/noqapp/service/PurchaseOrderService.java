@@ -476,9 +476,13 @@ public class PurchaseOrderService {
         }
 
         setCustomerPhoneAndAddress(qid, jsonPurchaseOrder);
-        /* Check for coupon if present of apply store discount if any. */
+        /* Check for coupon if present or apply store discount if any. */
         int storeDiscount = StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId()) ? jsonPurchaseOrder.getStoreDiscount() : bizStore.getDiscount();
-        int receivedOrderPrice = Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) - storeDiscount;
+
+        int receivedOrderPrice = 0;
+        if (null != jsonPurchaseOrder.getOrderPrice()) {
+            receivedOrderPrice = Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) - storeDiscount;
+        }
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
