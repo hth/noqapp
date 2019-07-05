@@ -764,9 +764,17 @@ public class PurchaseOrderService {
     @Mobile
     public void deleteReferenceToTransactionId(String transactionId) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(transactionId);
-        //Only for DeliveryMode QS
-        purchaseOrderProductManager.removePurchaseOrderProduct(purchaseOrder.getId());
-        purchaseOrderManager.removePurchaseOrderForService(transactionId);
+        if (null != purchaseOrder) {
+            //Only for DeliveryMode QS
+            purchaseOrderProductManager.removePurchaseOrderProduct(purchaseOrder.getId());
+            purchaseOrderManager.removePurchaseOrderForService(transactionId);
+        } else {
+            purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(transactionId);
+            if (null != purchaseOrder) {
+                purchaseOrderProductManagerJDBC.deleteByPurchaseOrderId(purchaseOrder.getId());
+                purchaseOrderManagerJDBC.deleteById(purchaseOrder.getId());
+            }
+        }
     }
 
     @Mobile
