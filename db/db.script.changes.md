@@ -21,8 +21,7 @@
     db.getCollection('USER_PREFERENCE').update({},  { $set : {"FN" : "R"}}, false, true);
     
     /* This store is no longer active. */
-    db.BIZ_STORE.remove({"_id" : ObjectId("5cf0bbfd96799f4f42326faf")});
-    
+    db.BIZ_STORE.remove({"_id" : ObjectId("5cf0bbfd96799f4f42326faf"), "QR" : "5cf0bbfd96799f4f42326fb0"});
 
 ### Change May 21 2019
 
