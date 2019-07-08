@@ -147,16 +147,21 @@ public class ProfessionalProfileService {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(professionalProfile.getQueueUserId());
         switch (populateProfile) {
             case TV:
+                String nameWithSalutation = userProfile.getName();
                 String professionType = "";
                 if (BusinessTypeEnum.DO == userProfile.getBusinessType()) {
                     BusinessUserStoreEntity businessUserStore = businessUserStoreManager.findUserManagingStoreWithUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
                     BizStoreEntity bizStore = bizStoreManager.findByCodeQR(businessUserStore.getCodeQR());
                     professionType = MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
+
+                    if (MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()) != MedicalDepartmentEnum.PHY) {
+                        nameWithSalutation = "Dr. " + userProfile.getName();
+                    }
                 }
                 return new JsonProfessionalProfileTV()
                     .setProfileImage(userProfile.getProfileImage())
                     .setProfessionType(professionType)
-                    .setName(userProfile.getName())
+                    .setName(nameWithSalutation)
                     .setWebProfileId(professionalProfile.getWebProfileId())
                     .setPracticeStart(professionalProfile.getPracticeStart())
                     .setAboutMe(professionalProfile.getAboutMe())
