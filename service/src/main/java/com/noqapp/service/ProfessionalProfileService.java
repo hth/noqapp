@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.HashMap;
 import java.util.List;
@@ -131,13 +132,18 @@ public class ProfessionalProfileService {
         List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStoresActive(bizNameId);
         for (BizStoreEntity bizStore : bizStores) {
             ProfessionalProfileEntity professionalProfile = professionalProfileManager.findByStoreCodeQR(bizStore.getCodeQR());
-            jsonProfessionalProfileTVList.addJsonProfessionalProfileTV(getJsonProfessionalProfile(professionalProfile, POPULATE_PROFILE.TV));
+            if (null != professionalProfile) {
+                jsonProfessionalProfileTVList.addJsonProfessionalProfileTV(getJsonProfessionalProfile(professionalProfile, POPULATE_PROFILE.TV));
+            } else {
+                LOG.warn("Missing professional profile {} {}", bizStore.getDisplayName(), bizStore.getCodeQR());
+            }
         }
 
         return jsonProfessionalProfileTVList;
     }
 
     private JsonProfessionalProfile getJsonProfessionalProfile(ProfessionalProfileEntity professionalProfile, POPULATE_PROFILE populateProfile) {
+        Assert.notNull(populateProfile, "Professional profile cannot be null");
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(professionalProfile.getQueueUserId());
         switch (populateProfile) {
             case TV:
