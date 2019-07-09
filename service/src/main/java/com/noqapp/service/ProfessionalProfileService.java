@@ -152,9 +152,10 @@ public class ProfessionalProfileService {
                 if (BusinessTypeEnum.DO == userProfile.getBusinessType()) {
                     BusinessUserStoreEntity businessUserStore = businessUserStoreManager.findUserManagingStoreWithUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
                     BizStoreEntity bizStore = bizStoreManager.findByCodeQR(businessUserStore.getCodeQR());
-                    professionType = MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
+                    MedicalDepartmentEnum medicalDepartment = MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId());
+                    professionType = medicalDepartment.getDescription();
 
-                    if (MedicalDepartmentEnum.valueOf(bizStore.getBizCategoryId()) != MedicalDepartmentEnum.PHY) {
+                    if (medicalDepartment != MedicalDepartmentEnum.PHY) {
                         nameWithSalutation = "Dr. " + userProfile.getName();
                     }
                 }
