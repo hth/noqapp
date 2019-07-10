@@ -226,6 +226,7 @@ public class QueueService {
                 LOG.error("Failed populating from queue with transactionId={} id={} {}", queue.getTransactionId(), queue.getId(), e.getLocalizedMessage(), e);
             }
         }
+        LOG.info("Queue history size {}", jsonQueueHistoricalList.getQueueHistoricals().size());
         return jsonQueueHistoricalList;
     }
 
