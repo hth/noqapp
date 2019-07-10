@@ -19,7 +19,7 @@ import java.util.Map;
  * hitender
  * 2019-02-12 06:41
  */
-@SuppressWarnings ({
+@SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
     "PMD.LocalVariableCouldBeFinal",
     "PMD.MethodArgumentCouldBeFinal",
@@ -58,7 +58,7 @@ public class SendNotificationValidator implements Validator {
                     errors.rejectValue("title",
                         "field.length.min.max",
                         new Object[]{"Title", MIN_TEXT_SIZE, MAX_TITLE_SIZE},
-                        "Title minimum length is should be greater than 3 and less than 32 characters");
+                        "Title minimum length is should be greater than " + MIN_TEXT_SIZE + " and less than " + MAX_TITLE_SIZE + " characters");
                 }
 
                 if (form.getBody().getText().length() < MIN_TEXT_SIZE || form.getBody().getText().length() > MAX_BODY_SIZE) {
@@ -66,7 +66,7 @@ public class SendNotificationValidator implements Validator {
                     errors.rejectValue("body",
                         "field.length.min.max",
                         new Object[]{"Body", MIN_TEXT_SIZE, MAX_BODY_SIZE},
-                        "Body minimum length is should be greater than 3 and less than 256 characters");
+                        "Body minimum length is should be greater than " + MIN_TEXT_SIZE + " and less than " + MAX_BODY_SIZE + " characters");
                 }
 
                 if (!form.isIgnoreSentiments()) {
