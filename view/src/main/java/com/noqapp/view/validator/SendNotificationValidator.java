@@ -19,7 +19,7 @@ import java.util.Map;
  * hitender
  * 2019-02-12 06:41
  */
-@SuppressWarnings ({
+@SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
     "PMD.LocalVariableCouldBeFinal",
     "PMD.MethodArgumentCouldBeFinal",
@@ -28,6 +28,9 @@ import java.util.Map;
 @Component
 public class SendNotificationValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(StoreCategoryValidator.class);
+    private static final int MAX_BODY_SIZE = 256;
+    private static final int MIN_TEXT_SIZE = 3;
+    private static final int MAX_TITLE_SIZE = 32;
 
     private NLPService nlpService;
 
@@ -50,18 +53,20 @@ public class SendNotificationValidator implements Validator {
             SendNotificationForm form = (SendNotificationForm) target;
 
             if (!errors.hasErrors()) {
-                if (form.getTitle().getText().length() < 3 || form.getTitle().getText().length() > 32) {
+                if (form.getTitle().getText().length() < MIN_TEXT_SIZE || form.getTitle().getText().length() > MAX_TITLE_SIZE) {
+                    LOG.warn("Title length is {}", form.getTitle().getText().length());
                     errors.rejectValue("title",
                         "field.length.min.max",
-                        new Object[]{"Title", 3, 32},
-                        "Title minimum length is should be greater than 3 and less than 32 characters");
+                        new Object[]{"Title", MIN_TEXT_SIZE, MAX_TITLE_SIZE},
+                        "Title minimum length is should be greater than " + MIN_TEXT_SIZE + " and less than " + MAX_TITLE_SIZE + " characters");
                 }
 
-                if (form.getBody().getText().length() < 3 || form.getBody().getText().length() > 256) {
+                if (form.getBody().getText().length() < MIN_TEXT_SIZE || form.getBody().getText().length() > MAX_BODY_SIZE) {
+                    LOG.warn("Body length is {}", form.getBody().getText().length());
                     errors.rejectValue("body",
                         "field.length.min.max",
-                        new Object[]{"Body", 3, 256},
-                        "Body minimum length is should be greater than 3 and less than 256 characters");
+                        new Object[]{"Body", MIN_TEXT_SIZE, MAX_BODY_SIZE},
+                        "Body minimum length is should be greater than " + MIN_TEXT_SIZE + " and less than " + MAX_BODY_SIZE + " characters");
                 }
 
                 if (!form.isIgnoreSentiments()) {

@@ -1091,6 +1091,7 @@ public class PurchaseOrderService {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
             jsonPurchaseOrderHistoricalList.addJsonPurchaseOrderHistorical(new JsonPurchaseOrderHistorical(purchaseOrder, purchaseOrderProducts, bizStore));
         }
+        LOG.info("Order history size {}", jsonPurchaseOrderHistoricalList.getJsonPurchaseOrderHistoricals().size());
         return jsonPurchaseOrderHistoricalList;
     }
 
