@@ -129,6 +129,7 @@ public class CouponService {
         return dependents;
     }
 
+    /** Gets all family coupon associated to guardian. */
     @Mobile
     public JsonCouponList findActiveClientCouponByQidAsJson(String qid, String codeQR) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
@@ -139,6 +140,19 @@ public class CouponService {
             for (CouponEntity coupon : coupons) {
                 jsonDiscountList.addCoupon(JsonCoupon.populate(coupon));
             }
+        }
+
+        return jsonDiscountList;
+    }
+
+    /** Gets all coupon for client associated to Business. */
+    @Mobile
+    public JsonCouponList findAllGlobalCouponForClient(String codeQR) {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        JsonCouponList jsonDiscountList = new JsonCouponList();
+        List<CouponEntity> coupons = couponManager.findAllGlobalCouponForClient(bizStore.getBizName().getId());
+        for (CouponEntity coupon : coupons) {
+            jsonDiscountList.addCoupon(JsonCoupon.populate(coupon));
         }
 
         return jsonDiscountList;

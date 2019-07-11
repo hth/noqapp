@@ -10,6 +10,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.types.CouponGroupEnum;
+import com.noqapp.domain.types.CouponTypeEnum;
 
 import com.mongodb.client.result.UpdateResult;
 
@@ -185,6 +186,22 @@ public class CouponManagerImpl implements CouponManager {
     public boolean checkIfCouponExistsForQid(String discountId, String qid) {
         return mongoTemplate.exists(
             query(where("DI").is(discountId).and("QID").is(qid).and("A").is(true)),
+            CouponEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<CouponEntity> findAllGlobalCouponForClient(String bizNameId) {
+        Instant midnight = DateUtil.nowMidnightDate().toInstant();
+        return mongoTemplate.find(
+            query(where("BN").is(bizNameId)
+                .and("CT").is(CouponTypeEnum.G)
+                .and("CG").is(CouponGroupEnum.C)
+                .andOperator(
+                    where("SD").lt(midnight),
+                    where("ED").gte(midnight)
+                ).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );
