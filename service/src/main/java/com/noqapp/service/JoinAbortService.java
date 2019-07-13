@@ -7,6 +7,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.common.ComposeMessagesForFCM;
 import com.noqapp.domain.json.JsonPurchaseOrder;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
@@ -75,10 +76,12 @@ public class JoinAbortService {
         this.executorService = newSingleThreadExecutor();
     }
 
+    @Mobile
     public JsonToken joinQueue(String codeQR, String did, long averageServiceTime, TokenServiceEnum tokenService) {
         return joinQueue(codeQR, did, null, null, averageServiceTime, tokenService);
     }
 
+    @Mobile
     public JsonToken joinQueue(String codeQR, String did, String qid, String guardianQid, long averageServiceTime, TokenServiceEnum tokenService) {
         LOG.info("joinQueue codeQR={} did={} qid={} guardianQid={}", codeQR, did, qid, guardianQid);
         JsonToken jsonToken = tokenQueueService.getNextToken(codeQR, did, qid, guardianQid, averageServiceTime, tokenService);
@@ -91,6 +94,7 @@ public class JoinAbortService {
     }
 
     /** Invoke by client and hence has a token service as Client. */
+    @Mobile
     public JsonToken payBeforeJoinQueue(String codeQR, String did, String qid, String guardianQid, BizStoreEntity bizStore, TokenServiceEnum tokenService) {
         JsonToken jsonToken = tokenQueueService.getPaidNextToken(codeQR, did, qid, guardianQid, bizStore.getAverageServiceTime(), tokenService);
 
@@ -118,6 +122,7 @@ public class JoinAbortService {
      * Note: When client skips, the state is VB (Valid before purchase). PO when Paid. After skip, if client make a Paid API request, server
      * sends VB then client is trying to pay when its should skip. Hence send SKIP CFToken.
      */
+    @Mobile
     public JsonToken skipPayBeforeJoinQueue(String codeQR, String did, String qid, String guardianQid, BizStoreEntity bizStore, TokenServiceEnum tokenService) {
         JsonToken jsonToken = payBeforeJoinQueue(codeQR, did, qid, guardianQid, bizStore, tokenService);
 
@@ -129,6 +134,7 @@ public class JoinAbortService {
         return jsonToken;
     }
 
+    @Mobile
     public JsonResponse abortQueue(String codeQR, String did, String qid) {
         LOG.info("abortQueue codeQR={} did={} qid={}", codeQR, did, qid);
         QueueEntity queue = queueManager.findToAbort(codeQR, qid);
@@ -153,12 +159,25 @@ public class JoinAbortService {
         }
     }
 
+    @Mobile
     public void abort(String id, String codeQR) {
         queueManager.abort(id);
         /* Irrespective of Queue with order or without order, notify merchant of abort by just sending a refresh notification. */
         tokenQueueService.forceRefreshOnSomeActivity(codeQR);
     }
 
+    @Mobile
+    public JsonResponseWithCFToken createTokenForPaymentGateway(String purchaserQid, String codeQR, String transactionId) {
+        PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByQidAndTransactionId(purchaserQid, transactionId);
+        if (null != purchaseOrder) {
+            return purchaseOrderService.createTokenForPurchaseOrder(purchaseOrder.orderPriceForTransaction(), purchaseOrder.getTransactionId());
+        }
+
+        LOG.error("Purchase Order qid mis-match for {} {} {}", purchaserQid, codeQR, transactionId);
+        return null;
+    }
+
+    @Mobile
     public JsonToken updateWhenPaymentSuccessful(String codeQR, String transactionId) {
         JsonToken jsonToken = tokenQueueService.updateJsonToken(codeQR, transactionId);
         purchaseOrderService.updatePurchaseOrderWithToken(jsonToken.getToken(), jsonToken.getExpectedServiceBegin(), transactionId);
@@ -214,16 +233,7 @@ public class JoinAbortService {
         }
     }
 
-    public JsonResponseWithCFToken createTokenForPaymentGateway(String purchaserQid, String codeQR, String transactionId) {
-        PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByQidAndTransactionId(purchaserQid, transactionId);
-        if (null != purchaseOrder) {
-            return purchaseOrderService.createTokenForPurchaseOrder(purchaseOrder.orderPriceForTransaction(), purchaseOrder.getTransactionId());
-        }
-
-        LOG.error("Purchase Order qid mis-match for {} {} {}", purchaserQid, codeQR, transactionId);
-        return null;
-    }
-
+    @Mobile
     public void deleteReferenceToTransactionId(String codeQR, String transactionId) {
         queueManager.deleteReferenceToTransactionId(codeQR, transactionId);
         purchaseOrderService.deleteReferenceToTransactionId(transactionId);
