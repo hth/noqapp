@@ -1,6 +1,6 @@
 import com.eriwen.gradle.css.tasks.MinifyCssTask
 import com.eriwen.gradle.js.tasks.MinifyJsTask
-import com.github.spotbugs.SpotBugsTask 
+import com.github.spotbugs.SpotBugsTask
 
 if (!hasProperty('env')) {
     ext.env = System.env['GRADLE_ENV']
@@ -48,7 +48,7 @@ ext {
     firebaseFileLocal = file('view/resources/conf/noq-app-inc-firebase-adminsdk.json')
     firebaseFileTest = file(firebaseAdminTestFileLocation)
     firebaseFileProd = file(firebaseAdminProdFileLocation)
-    
+
     dkimCertLocal = file('view/resources/dkim/dkim.der')
     dkimCertTest = file(dkimCertificateTestFileLocation)
     dkimCertProd = file(dkimCertificateProdFileLocation)
@@ -243,7 +243,7 @@ subprojects {
         implementation "com.google.maps:google-maps-services:$googleMapsServices"
         implementation "com.googlecode.libphonenumber:libphonenumber:$libphonenumber"
         implementation "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239"
-        implementation ("com.google.firebase:firebase-admin:$firebase") {
+        implementation("com.google.firebase:firebase-admin:$firebase") {
             exclude group: 'com.google.guava'
         }
 
@@ -853,7 +853,7 @@ task prepWar(dependsOn: [
 
 //import org.apache.tools.ant.filters.ReplaceTokens
 task war(type: War, dependsOn: prepWar) {
-    doFirst { 
+    doFirst {
         exclude('**/noqapp-loader-*.jar')
 //        filter(ReplaceTokens, tokens: ['style': 'style-min.css'])
 //        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
@@ -871,7 +871,7 @@ task loaderWar(type: War, dependsOn: [createLoaderBuildInfoFile, prepWar]) {
 //        filter(ReplaceTokens, tokens: ['stylelogin': 'stylelogin-min.css'])
     }
 
-    archiveBaseName =  "ROOT-loader-$env" + "." + project.version.toString()
+    archiveBaseName = "ROOT-loader-$env" + "." + project.version.toString()
     from warDir
     version ""
     destinationDir = file("$buildDir/war/$env-loader")
