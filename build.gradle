@@ -77,8 +77,6 @@ buildscript {
 apply plugin: 'maven-publish'
 apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'css'
-apply plugin: 'com.github.spotbugs'
-apply plugin: 'org.owasp.dependencycheck'
 
 allprojects {
     group = 'com.noqapp'
@@ -92,6 +90,8 @@ subprojects {
     apply plugin: 'checkstyle'  //for java code conventions, you can use sonar instead but it need DB
     apply plugin: 'pmd'
     apply plugin: 'jacoco'      //for code coverage
+    apply plugin: 'com.github.spotbugs'
+    apply plugin: 'org.owasp.dependencycheck'
 
     compileJava {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -315,6 +315,9 @@ subprojects {
     
     spotbugs {
         toolVersion = '3.1.12'
+        ignoreFailures = true
+        effort = 'max'
+        showProgress = true
     }
 
     tasks.withType(SpotBugsTask) {
@@ -328,14 +331,6 @@ subprojects {
         reports {
             xml.enabled = true
             html.enabled = true
-        }
-    }
-
-    tasks.withType(FindBugs) {
-        reports {
-            xml.enabled true
-            html.enabled false
-            html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
         }
     }
 
