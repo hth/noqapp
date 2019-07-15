@@ -71,6 +71,7 @@ buildscript {
         classpath "com.eriwen:gradle-css-plugin:2.14.0"
         classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:$spotbugsPluginGradle"
         classpath 'org.owasp:dependency-check-gradle:5.1.0'
+        classpath 'de.aaschmid:gradle-cpd-plugin:2.0'
     }
 }
 
@@ -92,6 +93,7 @@ subprojects {
     apply plugin: 'jacoco'      //for code coverage
     apply plugin: 'com.github.spotbugs'
     apply plugin: 'org.owasp.dependencycheck'
+    apply plugin: 'cpd'
 
     compileJava {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -202,7 +204,7 @@ subprojects {
         implementation "com.google.code.gson:gson:$gson"
         implementation "com.google.maps:google-maps-services:$googleMapsServices"
         implementation "com.googlecode.libphonenumber:libphonenumber:$libphonenumber"
-        implementation "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:r239"
+        implementation "com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20190610.1"
         implementation("com.google.firebase:firebase-admin:$firebase") {
             exclude group: 'com.google.guava'
         }
@@ -307,6 +309,21 @@ subprojects {
                 "java-typeresolution",
                 "java-unusedcode"
         ]
+    }
+
+    cpd {
+        language = 'java'
+        toolVersion = '6.1.0'
+        minimumTokenCount = 100 // approximately 5-10 lines
+    }
+
+    cpdCheck {
+        reports {
+            text.enabled = false
+            xml.enabled = true
+        }
+        ignoreAnnotations = true
+        source = sourceSets.main.allJava
     }
 
     jacoco {
