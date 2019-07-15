@@ -5,6 +5,7 @@ import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.QueueManagerJDBC;
+import com.noqapp.service.SystemMailNotificationService;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,14 +36,17 @@ public class TransactionDataValidation {
 
     private QueueManagerJDBC queueManagerJDBC;
     private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
+    private SystemMailNotificationService systemMailNotificationService;
 
     @Autowired
     public TransactionDataValidation(
         QueueManagerJDBC queueManagerJDBC,
-        PurchaseOrderManagerJDBC purchaseOrderManagerJDBC
+        PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
+        SystemMailNotificationService systemMailNotificationService
     ) {
         this.queueManagerJDBC = queueManagerJDBC;
         this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
+        this.systemMailNotificationService = systemMailNotificationService;
     }
 
     @Scheduled(fixedDelayString = "${loader.BusinessStatsMail.businessStatusMail}")
@@ -68,6 +72,11 @@ public class TransactionDataValidation {
 
         for (String found : anomalies) {
             LOG.error("{}", found);
+        }
+        if (!anomalies.isEmpty()) {
+            systemMailNotificationService.sentAlertMail(
+                "Transaction Data Anomaly",
+                "Found transaction anomaly, Please check");
         }
         LOG.info("Found anomalies {}", anomalies.size());
     }
