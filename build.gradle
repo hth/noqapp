@@ -70,7 +70,8 @@ buildscript {
         classpath "com.eriwen:gradle-js-plugin:2.14.1"
         classpath "com.eriwen:gradle-css-plugin:2.14.0"
         classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:$spotbugsPluginGradle"
-        classpath 'org.owasp:dependency-check-gradle:5.1.0'
+        //classpath 'org.owasp:dependency-check-gradle:5.1.0'
+        //classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1'
         classpath 'de.aaschmid:gradle-cpd-plugin:2.0'
     }
 }
@@ -92,7 +93,8 @@ subprojects {
     apply plugin: 'pmd'
     apply plugin: 'jacoco'      //for code coverage
     apply plugin: 'com.github.spotbugs'
-    apply plugin: 'org.owasp.dependencycheck'
+    //apply plugin: 'org.owasp.dependencycheck'
+    //apply plugin: 'org.sonarqube'
     apply plugin: 'cpd'
 
     compileJava {
@@ -311,6 +313,11 @@ subprojects {
         ]
     }
 
+    //https://medium.com/@mladen.bolic/setting-up-static-code-analysis-for-java-3428dc79f7f9
+    //https://github.com/google/error-prone
+    //https://github.com/tbroyer/gradle-errorprone-plugin
+    //https://ci.jenkins.io/job/Plugins/job/warnings-ng-plugin/job/master/lastStableBuild/java/
+    //https://ci.jenkins.io/job/Plugins/job/warnings-ng-plugin/job/master/lastStableBuild/
     cpd {
         language = 'java'
         toolVersion = '6.1.0'
@@ -355,6 +362,32 @@ subprojects {
     tasks.withType(JavaCompile) {
         options.incremental = true
     }
+
+// Sonar run rests here. I could not run this using gradle but standalone is working well
+//    apply plugin: 'sonar'
+//    apply plugin: 'sonar-runner'
+//    sonarRunner {
+//        sonarProperties {
+//            property 'sonar.projectKey', 'receipt-mobile-application'
+//            property 'sonar.projectName', 'Receipt Mobile Application'
+//            property 'sonar.projectDescription', 'Receipt Mobile Application'
+//            property 'sonar.projectVersion', '1.0'
+//
+//            property 'sonar.language', 'java'
+//            property 'sonar.verbose', 'true'
+//            property 'sonar.sourceEncoding', 'UTF-8'
+//
+//            // sonar server and database
+//            property "sonar.host.url", "sonar.receiptofi.com"
+//            property "sonar.jdbc.url", 'jdbc:mysql://192.168.1.68:3306/sonar?useUnicode=true&amp;characterEncoding=utf8'
+//            //property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+//            property "sonar.jdbc.username", 'receiptofi'
+//            property "sonar.jdbc.password", 'r3f02\\!M'
+//
+//            property 'sonar.jacoco.reportPath', "${buildDir}/jacoco/test.exec"
+//            property 'sonar.junit.reportsPath', "${buildDir}/test-results"
+//        }
+//    }
 }
 
 project(':common') {
