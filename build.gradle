@@ -323,6 +323,7 @@ subprojects {
             xml.enabled = true
         }
         ignoreAnnotations = true
+        ignoreFailures = true
         source = sourceSets.main.allJava
     }
 
