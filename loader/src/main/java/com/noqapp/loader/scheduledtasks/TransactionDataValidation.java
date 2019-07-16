@@ -76,7 +76,7 @@ public class TransactionDataValidation {
         if (!anomalies.isEmpty()) {
             systemMailNotificationService.sentAlertMail(
                 "Transaction Data Anomaly",
-                "Found transaction anomaly, Please check");
+                "Found transaction anomaly, Please check.");
         }
         LOG.info("Found anomalies {}", anomalies.size());
     }
