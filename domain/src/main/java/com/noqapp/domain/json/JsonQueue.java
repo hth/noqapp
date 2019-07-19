@@ -2,6 +2,7 @@ package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.types.AmenityEnum;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
@@ -162,8 +163,8 @@ public class JsonQueue extends AbstractDomain {
     //******************************************/
     //*  Queue Appointment Setting Starts.     */
     //******************************************/
-    @JsonProperty("pe")
-    private boolean appointmentEnable;
+    @JsonProperty("ps")
+    private AppointmentStateEnum appointmentState;
 
     @JsonProperty("pd")
     private int appointmentDuration;
@@ -511,12 +512,12 @@ public class JsonQueue extends AbstractDomain {
         return this;
     }
 
-    public boolean isAppointmentEnable() {
-        return appointmentEnable;
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
     }
 
-    public JsonQueue setAppointmentEnable(boolean appointmentEnable) {
-        this.appointmentEnable = appointmentEnable;
+    public JsonQueue setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
         return this;
     }
 
