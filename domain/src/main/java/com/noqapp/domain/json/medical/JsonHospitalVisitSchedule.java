@@ -25,35 +25,26 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class JsonImmunization extends AbstractDomain {
+public class JsonHospitalVisitSchedule extends AbstractDomain {
 
-    @JsonProperty("mn")
+    @JsonProperty("vn")
     private String name;
 
-    @JsonProperty("md")
-    private String immunizationDate;
-
-    @JsonProperty("mh")
+    @JsonProperty("vh")
     private String header;
 
-    @JsonProperty("dd")
-    private String dueDate;
+    @JsonProperty("vd")
+    private String visitedDate;
+
+    @JsonProperty("ed")
+    private String expectedDate;
 
     public String getName() {
         return name;
     }
 
-    public JsonImmunization setName(String name) {
+    public JsonHospitalVisitSchedule setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public String getImmunizationDate() {
-        return immunizationDate;
-    }
-
-    public JsonImmunization setImmunizationDate(String immunizationDate) {
-        this.immunizationDate = immunizationDate;
         return this;
     }
 
@@ -61,17 +52,26 @@ public class JsonImmunization extends AbstractDomain {
         return header;
     }
 
-    public JsonImmunization setHeader(String header) {
+    public JsonHospitalVisitSchedule setHeader(String header) {
         this.header = header;
         return this;
     }
 
-    public String getDueDate() {
-        return dueDate;
+    public String getVisitedDate() {
+        return visitedDate;
     }
 
-    public JsonImmunization setDueDate(String dueDate) {
-        this.dueDate = dueDate;
+    public JsonHospitalVisitSchedule setVisitedDate(String visitedDate) {
+        this.visitedDate = visitedDate;
+        return this;
+    }
+
+    public String getExpectedDate() {
+        return expectedDate;
+    }
+
+    public JsonHospitalVisitSchedule setExpectedDate(String expectedDate) {
+        this.expectedDate = expectedDate;
         return this;
     }
 }
