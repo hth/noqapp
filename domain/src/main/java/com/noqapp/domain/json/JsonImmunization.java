@@ -36,6 +36,9 @@ public class JsonImmunization extends AbstractDomain {
     @JsonProperty("is")
     private boolean status;
 
+    @JsonProperty("ih")
+    private String header;
+
     public String getName() {
         return name;
     }
@@ -60,6 +63,15 @@ public class JsonImmunization extends AbstractDomain {
 
     public JsonImmunization setStatus(boolean status) {
         this.status = status;
+        return this;
+    }
+
+    public String getHeader() {
+        return header;
+    }
+
+    public JsonImmunization setHeader(String header) {
+        this.header = header;
         return this;
     }
 }
