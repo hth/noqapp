@@ -30,8 +30,25 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonImmunizationList extends AbstractDomain {
 
+    @JsonProperty("ir")
+    private List<JsonImmunization> jsonImmunizationStaticData = new ArrayList<>();
+
     @JsonProperty("ims")
     private List<JsonImmunization> jsonImmunizations = new ArrayList<>();
+
+    public List<JsonImmunization> getJsonImmunizationStaticData() {
+        return jsonImmunizationStaticData;
+    }
+
+    public JsonImmunizationList setJsonImmunizationStaticData(List<JsonImmunization> jsonImmunizationStaticData) {
+        this.jsonImmunizationStaticData = jsonImmunizationStaticData;
+        return this;
+    }
+
+    public JsonImmunizationList addJsonImmunizationStaticData(JsonImmunization jsonImmunization) {
+        this.jsonImmunizationStaticData.add(jsonImmunization);
+        return this;
+    }
 
     public List<JsonImmunization> getJsonImmunizations() {
         return jsonImmunizations;
