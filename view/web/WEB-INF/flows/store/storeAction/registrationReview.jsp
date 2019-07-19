@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.AppointmentStateEnum" %>
 <%@ include file="../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -25,11 +26,11 @@
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">
-                    <sec:authentication property="principal.userShortName"/></button>
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow">
-                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/>
+                    </div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
@@ -216,35 +217,35 @@
                                                 <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
                                                 <c:choose>
                                                     <c:when test="${businessHour.dayClosed}">
-                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                            <tr>
-                                                                <td>Closed for the day</td>
-                                                            </tr>
-                                                        </table>
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td>Closed for the day</td>
+                                                        </tr>
+                                                    </table>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                            <tr>
-                                                                <td>Token Available Time</td>
-                                                                <td><c:out value="${businessHour.tokenAvailableFromAsString}"/></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Store Start Time</td>
-                                                                <td><c:out value="${businessHour.startHourStoreAsString}"/></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>&nbsp;</td>
-                                                                <td>&nbsp;</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Token Not Available After</td>
-                                                                <td><c:out value="${businessHour.tokenNotAvailableFromAsString}"/></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Store Close Time</td>
-                                                                <td><c:out value="${businessHour.endHourStoreAsString}"/></td>
-                                                            </tr>
-                                                        </table>
+                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <tr>
+                                                            <td>Token Available Time</td>
+                                                            <td><c:out value="${businessHour.tokenAvailableFromAsString}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Store Start Time</td>
+                                                            <td><c:out value="${businessHour.startHourStoreAsString}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Token Not Available After</td>
+                                                            <td><c:out value="${businessHour.tokenNotAvailableFromAsString}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Store Close Time</td>
+                                                            <td><c:out value="${businessHour.endHourStoreAsString}"/></td>
+                                                        </tr>
+                                                    </table>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </li>
@@ -261,17 +262,20 @@
                                     <ul class="list-form">
                                         <li>
                                             <div class="col-lable3">
-                                                <form:label path="appointmentEnable" cssErrorClass="lb_error">Allow Appointment</form:label>
+                                                <form:label path="appointmentState" cssErrorClass="lb_error">Allow Appointment</form:label>
                                             </div>
                                             <div class="col-fields">
-                                                <form:checkbox path="appointmentEnable" cssClass="form-check-box" disabled="true"/>
+                                                <form:select path="appointmentState" cssClass="form-field-select single-dropdown" multiple="false" disabled="true">
+                                                    <form:option value="" label="--- Select ---"/>
+                                                    <form:options items="${registerBusiness.appointmentStates}" />
+                                                </form:select>
                                                 <span style="display:block; font-size:14px;">(Allow user to take appointment)</span>
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
                                         <li>
                                             <div class="col-lable3">
-                                                <form:label path="appointmentEnable" cssErrorClass="lb_error">Duration of Appointment</form:label>
+                                                <form:label path="appointmentDuration" cssErrorClass="lb_error">Duration of Appointment</form:label>
                                             </div>
                                             <div class="col-fields">
                                                 <form:input path="appointmentDuration" cssClass="form-field-admin" disabled="true"/>
@@ -281,7 +285,7 @@
                                         </li>
                                         <li>
                                             <div class="col-lable3">
-                                                <form:label path="appointmentEnable" cssErrorClass="lb_error">Booking Window</form:label>
+                                                <form:label path="appointmentOpenHowFar" cssErrorClass="lb_error">Booking Window</form:label>
                                             </div>
                                             <div class="col-fields">
                                                 <form:input path="appointmentOpenHowFar" cssClass="form-field-admin" disabled="true"/>
@@ -292,7 +296,7 @@
                                     </ul>
                                 </div>
 
-                                <c:if test="${registerBusiness.appointmentEnable}">
+                                <c:if test="${registerBusiness.appointmentState ne AppointmentStateEnum.O}">
                                 <div>
                                     <div class="admin-title pT30">
                                         <h2>Appointment Hours</h2>
@@ -303,35 +307,35 @@
                                             <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
                                             <c:choose>
                                                 <c:when test="${businessHour.dayClosed}">
-                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                        <tr>
-                                                            <td>Closed for the day</td>
-                                                        </tr>
-                                                    </table>
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td>Closed for the day</td>
+                                                    </tr>
+                                                </table>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                        <tr>
-                                                            <td>Store Start Time</td>
-                                                            <td><c:out value="${businessHour.startHourStoreAsString}"/></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Appointment Start Time</td>
-                                                            <td><c:out value="${businessHour.appointmentStartHourStoreAsString}"/></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>&nbsp;</td>
-                                                            <td>&nbsp;</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Store Close Time</td>
-                                                            <td><c:out value="${businessHour.endHourStoreAsString}"/></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Appointment End Time</td>
-                                                            <td><c:out value="${businessHour.appointmentEndHourStoreAsString}"/></td>
-                                                        </tr>
-                                                    </table>
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td>Store Start Time</td>
+                                                        <td><c:out value="${businessHour.startHourStoreAsString}"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Appointment Start Time</td>
+                                                        <td><c:out value="${businessHour.appointmentStartHourStoreAsString}"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>&nbsp;</td>
+                                                        <td>&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Store Close Time</td>
+                                                        <td><c:out value="${businessHour.endHourStoreAsString}"/></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Appointment End Time</td>
+                                                        <td><c:out value="${businessHour.appointmentEndHourStoreAsString}"/></td>
+                                                    </tr>
+                                                </table>
                                                 </c:otherwise>
                                             </c:choose>
                                         </li>

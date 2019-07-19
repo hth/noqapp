@@ -69,7 +69,7 @@
     </view-state>
 
     <decision-state id="decideIfAppointmentIsEnabled">
-        <if test="registerBusiness.appointmentEnable == true" then="validateAppointmentSettings" else="registrationReview"/>
+        <if test="registerBusiness.appointmentState ne registerBusiness.appointmentIsOff" then="validateAppointmentSettings" else="registrationReview"/>
     </decision-state>
 
     <action-state id="validateAppointmentSettings">
