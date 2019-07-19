@@ -11,6 +11,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PaginationEnum;
@@ -495,7 +496,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public BizStoreEntity disableAppointment(String codeQR) {
         return mongoTemplate.findAndModify(
             query(where("QR").is(codeQR)),
-            entityUpdate(update("PE", false)),
+            entityUpdate(update("PS", AppointmentStateEnum.O)),
             FindAndModifyOptions.options().returnNew(true),
             BizStoreEntity.class,
             TABLE
@@ -503,10 +504,10 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public BizStoreEntity updateAppointment(String codeQR, int appointmentDuration, int appointmentOpenHowFar) {
+    public BizStoreEntity updateAppointment(String codeQR, AppointmentStateEnum appointmentState, int appointmentDuration, int appointmentOpenHowFar) {
         return mongoTemplate.findAndModify(
             query(where("QR").is(codeQR)),
-            entityUpdate(update("PE", true)
+            entityUpdate(update("PS", appointmentState)
                 .set("PD", appointmentDuration)
                 .set("PF", appointmentOpenHowFar)),
             FindAndModifyOptions.options().returnNew(true),
