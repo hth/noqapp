@@ -21,6 +21,7 @@ import com.noqapp.domain.json.JsonScheduleList;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
@@ -116,7 +117,7 @@ public class ScheduleAppointmentService {
     @Mobile
     public JsonSchedule bookAppointment(String guardianQid, JsonSchedule jsonSchedule) {
         BizStoreEntity bizStore = bizService.findByCodeQR(jsonSchedule.getCodeQR());
-        if (!bizStore.isAppointmentEnable()) {
+        if (bizStore.getAppointmentState() == AppointmentStateEnum.O) {
             LOG.warn("Appointment is not enabled {} for {}", jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is not accepting appointments");
         }
@@ -301,7 +302,7 @@ public class ScheduleAppointmentService {
         jsonScheduleList
             .setJsonHours(bizService.findAllStoreHoursAsJson(bizStore.getId()))
             .setAppointmentDuration(bizStore.getAppointmentDuration())
-            .setAppointmentEnable(bizStore.isAppointmentEnable())
+            .setAppointmentState(bizStore.getAppointmentState())
             .setAppointmentOpenHowFar(bizStore.getAppointmentOpenHowFar());
         return jsonScheduleList;
     }

@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.AppointmentStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -37,8 +38,8 @@ public class JsonScheduleList extends AbstractDomain {
     @JsonProperty("hours")
     private List<JsonHour> jsonHours = new LinkedList<>();
 
-    @JsonProperty("pe")
-    private boolean appointmentEnable;
+    @JsonProperty("ps")
+    private AppointmentStateEnum appointmentState;
 
     @JsonProperty("pd")
     private int appointmentDuration;
@@ -69,12 +70,12 @@ public class JsonScheduleList extends AbstractDomain {
         return this;
     }
 
-    public boolean isAppointmentEnable() {
-        return appointmentEnable;
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
     }
 
-    public JsonScheduleList setAppointmentEnable(boolean appointmentEnable) {
-        this.appointmentEnable = appointmentEnable;
+    public JsonScheduleList setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
         return this;
     }
 

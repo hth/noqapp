@@ -8,6 +8,7 @@ import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AccreditationEnum;
 import com.noqapp.domain.types.AmenityEnum;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
@@ -164,8 +165,8 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("PP")
     private int productPrice;
 
-    @JsonProperty("PE")
-    private boolean appointmentEnable;
+    @JsonProperty("PS")
+    private AppointmentStateEnum appointmentState;
 
     @JsonProperty("PD")
     private int appointmentDuration;
@@ -503,12 +504,12 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
-    public boolean isAppointmentEnable() {
-        return appointmentEnable;
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
     }
 
-    public BizStoreElastic setAppointmentEnable(boolean appointmentEnable) {
-        this.appointmentEnable = appointmentEnable;
+    public BizStoreElastic setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
         return this;
     }
 
@@ -629,7 +630,7 @@ public class BizStoreElastic extends AbstractDomain {
             .setDisplayName(bizStore.getDisplayName())
             .setEnabledPayment(bizStore.isEnabledPayment())
             .setProductPrice(bizStore.getProductPrice())
-            .setAppointmentEnable(bizStore.isAppointmentEnable())
+            .setAppointmentState(bizStore.getAppointmentState())
             .setAppointmentDuration(bizStore.getAppointmentDuration())
             .setAppointmentOpenHowFar(bizStore.getAppointmentOpenHowFar())
             .setCodeQR(bizStore.getCodeQR())

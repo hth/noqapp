@@ -100,7 +100,7 @@ public class DomainConversion {
             .setDisplayName(bizStore.getDisplayName())
             .setEnabledPayment(bizStore.isEnabledPayment())
             .setProductPrice(bizStore.getProductPrice())
-            .setAppointmentEnable(bizStore.isAppointmentEnable())
+            .setAppointmentState(bizStore.getAppointmentState())
             .setAppointmentDuration(bizStore.getAppointmentDuration())
             .setAppointmentOpenHowFar(bizStore.getAppointmentOpenHowFar())
             .setCodeQR(bizStore.getCodeQR())

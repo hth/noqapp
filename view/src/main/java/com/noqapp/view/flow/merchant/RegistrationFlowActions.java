@@ -287,7 +287,7 @@ class RegistrationFlowActions {
             .setFamousFor(registerBusiness.getFamousFor())
             .setFacilities(registerBusiness.getFacilitiesStore())
             .setAmenities(registerBusiness.getAmenitiesStore())
-            .setAppointmentEnable(registerBusiness.isAppointmentEnable())
+            .setAppointmentState(registerBusiness.getAppointmentState())
             .setAppointmentDuration(registerBusiness.getAppointmentDuration())
             .setAppointmentOpenHowFar(registerBusiness.getAppointmentOpenHowFar());
 
