@@ -1,4 +1,4 @@
-package com.noqapp.domain.json;
+package com.noqapp.domain.json.medical;
 
 import com.noqapp.common.utils.AbstractDomain;
 
@@ -27,17 +27,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonImmunization extends AbstractDomain {
 
-    @JsonProperty("in")
+    @JsonProperty("mn")
     private String name;
+
+    @JsonProperty("md")
+    private String immunizationDate;
+
+    @JsonProperty("mh")
+    private String header;
 
     @JsonProperty("dd")
     private String dueDate;
-
-    @JsonProperty("is")
-    private boolean status;
-
-    @JsonProperty("ih")
-    private String header;
 
     public String getName() {
         return name;
@@ -48,21 +48,12 @@ public class JsonImmunization extends AbstractDomain {
         return this;
     }
 
-    public String getDueDate() {
-        return dueDate;
+    public String getImmunizationDate() {
+        return immunizationDate;
     }
 
-    public JsonImmunization setDueDate(String dueDate) {
-        this.dueDate = dueDate;
-        return this;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public JsonImmunization setStatus(boolean status) {
-        this.status = status;
+    public JsonImmunization setImmunizationDate(String immunizationDate) {
+        this.immunizationDate = immunizationDate;
         return this;
     }
 
@@ -72,6 +63,15 @@ public class JsonImmunization extends AbstractDomain {
 
     public JsonImmunization setHeader(String header) {
         this.header = header;
+        return this;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public JsonImmunization setDueDate(String dueDate) {
+        this.dueDate = dueDate;
         return this;
     }
 }

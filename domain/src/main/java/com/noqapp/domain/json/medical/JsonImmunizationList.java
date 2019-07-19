@@ -1,4 +1,4 @@
-package com.noqapp.domain.json;
+package com.noqapp.domain.json.medical;
 
 import com.noqapp.common.utils.AbstractDomain;
 
