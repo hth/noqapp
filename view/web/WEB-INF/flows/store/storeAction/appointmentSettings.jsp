@@ -60,11 +60,11 @@
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                    <ul>
-                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
-                                        </c:forEach>
-                                    </ul>
+                                <ul>
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <li>${message.text}</li>
+                                    </c:forEach>
+                                </ul>
                                 </c:if>
                             </div>
                         </div>
@@ -73,17 +73,20 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="appointmentEnable" cssErrorClass="lb_error">Allow Appointment</form:label>
+                                            <form:label path="appointmentState" cssErrorClass="lb_error">Allow Appointment</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="appointmentEnable" cssClass="form-check-box" cssErrorClass="form-check-box error-field"/>
+                                            <form:select path="appointmentState" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                <form:option value="" label="--- Select ---"/>
+                                                <form:options items="${registerBusiness.appointmentStates}" />
+                                            </form:select>
                                             <span style="display:block; font-size:14px;">(Allow user to take appointment)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="appointmentEnable" cssErrorClass="lb_error">Duration of Appointment</form:label>
+                                            <form:label path="appointmentDuration" cssErrorClass="lb_error">Duration of Appointment</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="appointmentDuration" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
@@ -93,7 +96,7 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="appointmentEnable" cssErrorClass="lb_error">Booking Window</form:label>
+                                            <form:label path="appointmentOpenHowFar" cssErrorClass="lb_error">Booking Window</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="appointmentOpenHowFar" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>

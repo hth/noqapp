@@ -85,7 +85,6 @@ public class RegisterBusiness implements Serializable {
 
     private HashMap<String, DecodedAddress> foundAddressStores = new LinkedHashMap<>();
     private String foundAddressStorePlaceId;
-
     public RegisterBusiness() {
         for (int i = 1; i <= 7; i++) {
             BusinessHour businessHour = new BusinessHour(DayOfWeek.of(i));
@@ -117,6 +116,12 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     private Set<FacilityEnum> facilitiesAvailable = new LinkedHashSet<>();
+
+    @Transient
+    private Map<String, String> appointmentStates = AppointmentStateEnum.asMapWithNameAsKey();
+
+    @Transient
+    private AppointmentStateEnum appointmentIsOff = AppointmentStateEnum.O;
 
     public String getBizId() {
         return bizId;
@@ -470,6 +475,24 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setAppointmentState(AppointmentStateEnum appointmentState) {
         this.appointmentState = appointmentState;
+        return this;
+    }
+
+    public Map<String, String> getAppointmentStates() {
+        return appointmentStates;
+    }
+
+    public RegisterBusiness setAppointmentStates(Map<String, String> appointmentStates) {
+        this.appointmentStates = appointmentStates;
+        return this;
+    }
+
+    public AppointmentStateEnum getAppointmentIsOff() {
+        return appointmentIsOff;
+    }
+
+    public RegisterBusiness setAppointmentIsOff(AppointmentStateEnum appointmentIsOff) {
+        this.appointmentIsOff = appointmentIsOff;
         return this;
     }
 
