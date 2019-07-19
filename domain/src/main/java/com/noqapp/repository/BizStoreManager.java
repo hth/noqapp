@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.types.AppointmentStateEnum;
 
 import org.springframework.data.geo.Point;
 
@@ -113,6 +114,6 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
         int discountedFollowupProductPrice);
 
     BizStoreEntity disableAppointment(String codeQR);
-    BizStoreEntity updateAppointment(String codeQR, int appointmentDuration, int appointmentOpenHowFar);
+    BizStoreEntity updateAppointment(String codeQR, AppointmentStateEnum appointmentState, int appointmentDuration, int appointmentOpenHowFar);
 }
 

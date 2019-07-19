@@ -18,6 +18,7 @@ import com.noqapp.domain.json.JsonHour;
 import com.noqapp.domain.site.JsonBusiness;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ActionTypeEnum;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PaymentPermissionEnum;
@@ -646,8 +647,8 @@ public class BizService {
     }
 
     @Mobile
-    public BizStoreEntity updateAppointment(String codeQR, int appointmentDuration, int appointmentOpenHowFar) {
-        return bizStoreManager.updateAppointment(codeQR, appointmentDuration, appointmentOpenHowFar);
+    public BizStoreEntity updateAppointment(String codeQR, AppointmentStateEnum appointmentState, int appointmentDuration, int appointmentOpenHowFar) {
+        return bizStoreManager.updateAppointment(codeQR, appointmentState, appointmentDuration, appointmentOpenHowFar);
     }
 
     public long deleteAllManagingStore(String bizStoreId) {
