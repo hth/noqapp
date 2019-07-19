@@ -6,6 +6,7 @@ import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.AmenityEnum;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
@@ -238,8 +239,8 @@ public class BizStoreEntity extends BaseEntity {
     //******************************************/
     //*  Queue Appointment Setting Starts.     */
     //******************************************/
-    @Field("PE")
-    private boolean appointmentEnable = false;
+    @Field("PS")
+    private AppointmentStateEnum appointmentState = AppointmentStateEnum.O;
 
     @Field("PD")
     private int appointmentDuration = 20;
@@ -775,12 +776,12 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
-    public boolean isAppointmentEnable() {
-        return appointmentEnable;
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
     }
 
-    public BizStoreEntity setAppointmentEnable(boolean appointmentEnable) {
-        this.appointmentEnable = appointmentEnable;
+    public BizStoreEntity setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
         return this;
     }
 

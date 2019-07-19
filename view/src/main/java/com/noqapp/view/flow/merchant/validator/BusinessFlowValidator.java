@@ -11,6 +11,7 @@ import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.view.controller.access.LandingController;
@@ -581,7 +582,7 @@ public class BusinessFlowValidator {
     public String validateAppointmentSettings(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
-        if (registerBusiness.isAppointmentEnable()) {
+        if (registerBusiness.getAppointmentState() != AppointmentStateEnum.O) {
             if (registerBusiness.getAppointmentDuration() < 5) {
                 messageContext.addMessage(
                     new MessageBuilder()

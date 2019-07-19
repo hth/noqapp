@@ -9,6 +9,7 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.AmenityEnum;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 
@@ -75,7 +76,7 @@ public class RegisterBusiness implements Serializable {
     private List<BusinessHour> businessHours = new LinkedList<>();
 
     /* Appointment. */
-    private boolean appointmentEnable;
+    private AppointmentStateEnum appointmentState;
     private int appointmentDuration;
     private int appointmentOpenHowFar;
 
@@ -463,12 +464,12 @@ public class RegisterBusiness implements Serializable {
         this.businessHours = businessHours;
     }
 
-    public boolean isAppointmentEnable() {
-        return appointmentEnable;
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
     }
 
-    public RegisterBusiness setAppointmentEnable(boolean appointmentEnable) {
-        this.appointmentEnable = appointmentEnable;
+    public RegisterBusiness setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
         return this;
     }
 
@@ -592,7 +593,7 @@ public class RegisterBusiness implements Serializable {
         this.famousFor = bizStore.getFamousFor();
         this.amenitiesStore = bizStore.getAmenities();
         this.facilitiesStore = bizStore.getFacilities();
-        this.appointmentEnable = bizStore.isAppointmentEnable();
+        this.appointmentState = bizStore.getAppointmentState();
         this.appointmentDuration = bizStore.getAppointmentDuration();
         this.appointmentOpenHowFar = bizStore.getAppointmentOpenHowFar();
     }
