@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface HospitalVisitScheduleManager extends RepositoryManager<HospitalVisitScheduleEntity> {
 
+    List<HospitalVisitScheduleEntity> findAll(String qid);
     List<HospitalVisitScheduleEntity> findAll(String qid, HospitalVisitForEnum hospitalVisitFor);
 
     HospitalVisitScheduleEntity removeVisit(String id, String qid);

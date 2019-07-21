@@ -52,14 +52,28 @@ public class HospitalVisitScheduleService {
         return hospitalVisitScheduleManager.removeVisit(id, qid);
     }
 
+    public List<HospitalVisitScheduleEntity> findAll(String qid) {
+        return hospitalVisitScheduleManager.findAll(qid);
+    }
+
+    @Mobile
+    public List<JsonHospitalVisitSchedule> findAllAsJson(String qid) {
+        List<HospitalVisitScheduleEntity> hospitalVisitSchedules = findAll(qid);
+        return populateWithHospitalVisitScheduleAsJson(hospitalVisitSchedules);
+    }
+
     public List<HospitalVisitScheduleEntity> findAll(String qid, HospitalVisitForEnum hospitalVisitFor) {
         return hospitalVisitScheduleManager.findAll(qid, hospitalVisitFor);
     }
 
     @Mobile
     public List<JsonHospitalVisitSchedule> findAllAsJson(String qid, HospitalVisitForEnum hospitalVisitFor) {
-        List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = new ArrayList<>();
         List<HospitalVisitScheduleEntity> hospitalVisitSchedules = findAll(qid, hospitalVisitFor);
+        return populateWithHospitalVisitScheduleAsJson(hospitalVisitSchedules);
+    }
+
+    private List<JsonHospitalVisitSchedule> populateWithHospitalVisitScheduleAsJson(List<HospitalVisitScheduleEntity> hospitalVisitSchedules) {
+        List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = new ArrayList<>();
         for (HospitalVisitScheduleEntity hospitalVisitSchedule : hospitalVisitSchedules) {
             jsonHospitalVisitSchedules.add(
                 new JsonHospitalVisitSchedule()
