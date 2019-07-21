@@ -1,6 +1,7 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.medical.HospitalVisitForEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -8,6 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -28,20 +31,26 @@ public class HospitalVisitScheduleEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
-    @Field("VN")
-    private String visitName;
+    @Field("HV")
+    private HospitalVisitForEnum hospitalVisitFor;
+
+    @Field("VF")
+    private List<String> visitingFor = new LinkedList<>();
 
     @Field("VH")
     private String header;
 
-    @Field("VD")
-    private Date visitedDate;
-
     @Field("ED")
     private Date expectedDate;
 
+    @Field("VD")
+    private Date visitedDate;
+
     @Field("PQ")
     private String performedByQid;
+
+    @Field("SN")
+    private boolean stopNotification;
 
     public String getQueueUserId() {
         return queueUserId;
@@ -52,12 +61,26 @@ public class HospitalVisitScheduleEntity extends BaseEntity {
         return this;
     }
 
-    public String getVisitName() {
-        return visitName;
+    public HospitalVisitForEnum getHospitalVisitFor() {
+        return hospitalVisitFor;
     }
 
-    public HospitalVisitScheduleEntity setVisitName(String visitName) {
-        this.visitName = visitName;
+    public HospitalVisitScheduleEntity setHospitalVisitFor(HospitalVisitForEnum hospitalVisitFor) {
+        this.hospitalVisitFor = hospitalVisitFor;
+        return this;
+    }
+
+    public List<String> getVisitingFor() {
+        return visitingFor;
+    }
+
+    public HospitalVisitScheduleEntity setVisitingFor(List<String> visitingFor) {
+        this.visitingFor = visitingFor;
+        return this;
+    }
+
+    public HospitalVisitScheduleEntity addVisitingFor(String visitName) {
+        this.visitingFor.add(visitName);
         return this;
     }
 
@@ -70,15 +93,6 @@ public class HospitalVisitScheduleEntity extends BaseEntity {
         return this;
     }
 
-    public Date getVisitedDate() {
-        return visitedDate;
-    }
-
-    public HospitalVisitScheduleEntity setVisitedDate(Date visitedDate) {
-        this.visitedDate = visitedDate;
-        return this;
-    }
-
     public Date getExpectedDate() {
         return expectedDate;
     }
@@ -88,12 +102,30 @@ public class HospitalVisitScheduleEntity extends BaseEntity {
         return this;
     }
 
+    public Date getVisitedDate() {
+        return visitedDate;
+    }
+
+    public HospitalVisitScheduleEntity setVisitedDate(Date visitedDate) {
+        this.visitedDate = visitedDate;
+        return this;
+    }
+
     public String getPerformedByQid() {
         return performedByQid;
     }
 
     public HospitalVisitScheduleEntity setPerformedByQid(String performedByQid) {
         this.performedByQid = performedByQid;
+        return this;
+    }
+
+    public boolean isStopNotification() {
+        return stopNotification;
+    }
+
+    public HospitalVisitScheduleEntity setStopNotification(boolean stopNotification) {
+        this.stopNotification = stopNotification;
         return this;
     }
 }

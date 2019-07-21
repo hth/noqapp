@@ -1,19 +1,26 @@
 package com.noqapp.medical.repository;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.medical.HospitalVisitForEnum;
 import com.noqapp.medical.domain.HospitalVisitScheduleEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,9 +57,31 @@ public class HospitalVisitScheduleManagerImpl implements HospitalVisitScheduleMa
     }
 
     @Override
-    public List<HospitalVisitScheduleEntity> findAll(String qid) {
+    public List<HospitalVisitScheduleEntity> findAll(String qid, HospitalVisitForEnum hospitalVisitFor) {
         return mongoTemplate.find(
-            query(where("QID").is(qid)),
+            query(where("QID").is(qid).and("HV").is(hospitalVisitFor)).with(new Sort(Sort.Direction.ASC, "ED")),
+            HospitalVisitScheduleEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public HospitalVisitScheduleEntity markAsVisited(String id, String qid, String performedByQid) {
+        return mongoTemplate.findAndModify(
+            query(where("id").is(id).and("QID").is(qid)),
+            entityUpdate(update("VD", new Date()).set("PQ", performedByQid)),
+            FindAndModifyOptions.options().returnNew(true),
+            HospitalVisitScheduleEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public HospitalVisitScheduleEntity removeVisit(String id, String qid) {
+        return mongoTemplate.findAndModify(
+            query(where("id").is(id).and("QID").is(qid)),
+            entityUpdate(new Update().unset("VD").unset("PQ")),
+            FindAndModifyOptions.options().returnNew(true),
             HospitalVisitScheduleEntity.class,
             TABLE
         );

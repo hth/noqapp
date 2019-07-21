@@ -6,6 +6,7 @@ import com.noqapp.common.utils.ParseJsonStringToMap;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.GenderEnum;
+import com.noqapp.medical.service.HospitalVisitScheduleService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.SmsService;
@@ -52,6 +53,7 @@ public class RegistrationController {
     private MailService mailService;
     private LoginController loginController;
     private SmsService smsService;
+    private HospitalVisitScheduleService hospitalVisitScheduleService;
 
     private ExecutorService executorService;
 
@@ -66,7 +68,8 @@ public class RegistrationController {
         AccountService accountService,
         MailService mailService,
         LoginController loginController,
-        SmsService smsService
+        SmsService smsService,
+        HospitalVisitScheduleService hospitalVisitScheduleService
     ) {
         this.registrationPage = registrationPage;
         this.smsTxtOnRegistration = smsTxtOnRegistration;
@@ -75,6 +78,7 @@ public class RegistrationController {
         this.mailService = mailService;
         this.loginController = loginController;
         this.smsService = smsService;
+        this.hospitalVisitScheduleService = hospitalVisitScheduleService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -114,7 +118,13 @@ public class RegistrationController {
                 return registrationPage;
             }
 
-            executorService.submit(() -> smsService.sendPromotionalSMS(merchantRegistration.getPhone(), smsTxtOnRegistration));
+            executorService.submit(() -> smsService.sendPromotionalSMS(
+                merchantRegistration.getPhone(),
+                smsTxtOnRegistration));
+
+            executorService.submit(() -> hospitalVisitScheduleService.addImmunizationRecord(
+                userAccount.getQueueUserId(),
+                merchantRegistration.getBirthday().getText()));
         } catch (DuplicateAccountException e) {
             LOG.error("Duplicate Account found reason={}", e.getLocalizedMessage(), e);
             return registrationPage;
