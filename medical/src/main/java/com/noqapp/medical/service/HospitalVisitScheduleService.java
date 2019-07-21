@@ -2,11 +2,13 @@ package com.noqapp.medical.service;
 
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 
-import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.medical.JsonHospitalVisitSchedule;
+import com.noqapp.domain.types.medical.HospitalVisitForEnum;
 import com.noqapp.medical.domain.HospitalVisitScheduleEntity;
 import com.noqapp.medical.repository.HospitalVisitScheduleManager;
+import com.noqapp.medical.visit.Immunization;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -14,10 +16,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -36,38 +41,45 @@ public class HospitalVisitScheduleService {
         this.hospitalVisitScheduleManager = hospitalVisitScheduleManager;
     }
 
-    public void updateVisit(String qid, String visitName, String performedByQid, Date immunizationDate, String header) {
-        HospitalVisitScheduleEntity hospitalVisitSchedule = new HospitalVisitScheduleEntity()
-            .setQueueUserId(qid)
-            .setVisitName(visitName)
-            .setHeader(header)
-            .setVisitedDate(new Date())
-            .setPerformedByQid(performedByQid);
-
-        hospitalVisitScheduleManager.save(hospitalVisitSchedule);
-    }
-
-    public List<HospitalVisitScheduleEntity> findAll(String qid) {
-        return hospitalVisitScheduleManager.findAll(qid);
+    @Mobile
+    public HospitalVisitScheduleEntity markAsVisited(String id, String qid, String performedByQid) {
+        return hospitalVisitScheduleManager.markAsVisited(id, qid, performedByQid);
     }
 
     @Mobile
-    public List<JsonHospitalVisitSchedule> findAllAsJson(String qid) {
+    @Secured({"ROLE_S_MANAGER", "ROLE_MEDICAL_TECHNICIAN"})
+    public HospitalVisitScheduleEntity removeVisit(String id, String qid) {
+        return hospitalVisitScheduleManager.removeVisit(id, qid);
+    }
+
+    public List<HospitalVisitScheduleEntity> findAll(String qid, HospitalVisitForEnum hospitalVisitFor) {
+        return hospitalVisitScheduleManager.findAll(qid, hospitalVisitFor);
+    }
+
+    @Mobile
+    public List<JsonHospitalVisitSchedule> findAllAsJson(String qid, HospitalVisitForEnum hospitalVisitFor) {
         List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = new ArrayList<>();
-        List<HospitalVisitScheduleEntity> medicalImmunizations = findAll(qid);
-        for (HospitalVisitScheduleEntity medicalImmunization : medicalImmunizations) {
+        List<HospitalVisitScheduleEntity> hospitalVisitSchedules = findAll(qid, hospitalVisitFor);
+        for (HospitalVisitScheduleEntity hospitalVisitSchedule : hospitalVisitSchedules) {
             jsonHospitalVisitSchedules.add(
                 new JsonHospitalVisitSchedule()
-                    .setName(medicalImmunization.getVisitName())
-                    .setHeader(medicalImmunization.getHeader())
-                    .setVisitedDate(DateFormatUtils.format(medicalImmunization.getVisitedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-                    .setExpectedDate(DateFormatUtils.format(medicalImmunization.getExpectedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
+                    .setVisitingFor(hospitalVisitSchedule.getVisitingFor())
+                    .setHeader(hospitalVisitSchedule.getHeader())
+                    .setVisitedDate(hospitalVisitSchedule.getVisitedDate() == null ? null : DateFormatUtils.format(hospitalVisitSchedule.getVisitedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+                    .setExpectedDate(DateFormatUtils.format(hospitalVisitSchedule.getExpectedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
         }
 
         return jsonHospitalVisitSchedules;
     }
 
-    @Mobile List<JsonHospitalVisitSchedule> populateStaticImmunizationData(UserProfileEntity userProfile) {
-        return null;
+    @Mobile
+    public void addImmunizationRecord(String qid, String dob) {
+        LocalDate birthday = DateUtil.asLocalDate(DateUtil.convertToDate(dob, ZoneOffset.UTC));
+        if (Period.between(birthday, LocalDate.now()).getYears() < 18) {
+            List<HospitalVisitScheduleEntity> hospitalVisitSchedules = Immunization.populateImmunizationVisit(qid, birthday);
+            for (HospitalVisitScheduleEntity hospitalVisitSchedule : hospitalVisitSchedules) {
+                hospitalVisitScheduleManager.save(hospitalVisitSchedule);
+            }
+        }
     }
 }

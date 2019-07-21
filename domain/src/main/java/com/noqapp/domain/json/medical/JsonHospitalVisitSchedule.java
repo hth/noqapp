@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 2019-07-19 08:17
@@ -27,8 +29,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHospitalVisitSchedule extends AbstractDomain {
 
-    @JsonProperty("vn")
-    private String name;
+    @JsonProperty("vf")
+    private List<String> visitingFor;
 
     @JsonProperty("vh")
     private String header;
@@ -39,12 +41,12 @@ public class JsonHospitalVisitSchedule extends AbstractDomain {
     @JsonProperty("ed")
     private String expectedDate;
 
-    public String getName() {
-        return name;
+    public List<String> getVisitingFor() {
+        return visitingFor;
     }
 
-    public JsonHospitalVisitSchedule setName(String name) {
-        this.name = name;
+    public JsonHospitalVisitSchedule setVisitingFor(List<String> visitingFor) {
+        this.visitingFor = visitingFor;
         return this;
     }
 
