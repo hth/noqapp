@@ -136,18 +136,18 @@ public class AccountService {
 
     /** Creates new user for client or merchant account. There are some rollback but this process should not fail. */
     public UserAccountEntity createNewAccount(
-            String phone,
-            String firstName,
-            String lastName,
-            String mail,
-            String birthday,
-            GenderEnum gender,
-            String countryShortName,
-            String timeZone,
-            String password,
-            String inviteCode,
-            boolean phoneValidated,
-            boolean dependent
+        String phone,
+        String firstName,
+        String lastName,
+        String mail,
+        String birthday,
+        GenderEnum gender,
+        String countryShortName,
+        String timeZone,
+        String password,
+        String inviteCode,
+        boolean phoneValidated,
+        boolean dependent
     ) {
         String phoneWithCountryCode = Formatter.phoneCleanup(phone);
         String phoneRaw = Formatter.phoneStripCountryCode("+" + phoneWithCountryCode);
@@ -175,10 +175,10 @@ public class AccountService {
 
             try {
                 userAccount = UserAccountEntity.newInstance(
-                        qid,
-                        mail,
-                        firstNameCleanedUp,
-                        lastNameCleanedUp
+                    qid,
+                    mail,
+                    firstNameCleanedUp,
+                    lastNameCleanedUp
                 );
                 userAccount.setAccountValidated(false);
                 userAccount.setAccountValidatedBeginDate();
@@ -197,11 +197,11 @@ public class AccountService {
                 LOG.info("Created UserAccount={}", userAccount);
 
                 userProfile = UserProfileEntity.newInstance(
-                        mail,
-                        firstNameCleanedUp,
-                        lastNameCleanedUp,
-                        qid,
-                        birthday
+                    mail,
+                    firstNameCleanedUp,
+                    lastNameCleanedUp,
+                    qid,
+                    birthday
                 );
 
                 if (dependent) {
@@ -405,8 +405,8 @@ public class AccountService {
 
     private UserAuthenticationEntity getUserAuthenticationEntity(String password) {
         UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                HashText.computeSCrypt(password),
-                HashText.computeBCrypt(RandomString.newInstance().nextString())
+            HashText.computeSCrypt(password),
+            HashText.computeBCrypt(RandomString.newInstance().nextString())
         );
         userAuthenticationManager.save(userAuthentication);
         return userAuthentication;
@@ -420,8 +420,8 @@ public class AccountService {
      */
     public UserAuthenticationEntity getUserAuthenticationEntity() {
         UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                HashText.computeSCrypt(RandomString.newInstance().nextString()),
-                HashText.computeBCrypt(RandomString.newInstance().nextString())
+            HashText.computeSCrypt(RandomString.newInstance().nextString()),
+            HashText.computeBCrypt(RandomString.newInstance().nextString())
         );
         userAuthenticationManager.save(userAuthentication);
         return userAuthentication;
@@ -711,10 +711,10 @@ public class AccountService {
         if (!userProfile.getName().equalsIgnoreCase(registerUser.getName())) {
             updateName(registerUser.getFirstName(), registerUser.getLastName(), registerUser.getQueueUserId());
             LOG.info("Updated name of user from={} to firstName={} lastName={} for qid={}",
-                    userProfile.getName(),
-                    registerUser.getFirstName(),
-                    registerUser.getLastName(),
-                    registerUser.getQueueUserId());
+                userProfile.getName(),
+                registerUser.getFirstName(),
+                registerUser.getLastName(),
+                registerUser.getQueueUserId());
         }
     }
 
@@ -747,8 +747,8 @@ public class AccountService {
     public String updatePhoneNumber(String qid, String newPhone, String countryShortName, String timeZone) {
         RegisterUser registerUser = new RegisterUser();
         registerUser.setPhone(new ScrubbedInput(newPhone))
-                .setCountryShortName(new ScrubbedInput(countryShortName))
-                .setTimeZone(new ScrubbedInput(timeZone));
+            .setCountryShortName(new ScrubbedInput(countryShortName))
+            .setTimeZone(new ScrubbedInput(timeZone));
 
         UserProfileEntity userProfile  = userProfileManager.findByQueueUserId(qid);
         userProfile.setPhone(registerUser.getPhoneWithCountryCode());
@@ -758,10 +758,10 @@ public class AccountService {
 
         save(userProfile);
         executorService.submit(() -> updateDependentsPhoneNumber(
-                registerUser.getPhoneWithCountryCode(),
-                registerUser.getCountryShortName(),
-                registerUser.getTimeZone(),
-                userProfile.getPhone()));
+            registerUser.getPhoneWithCountryCode(),
+            registerUser.getCountryShortName(),
+            registerUser.getTimeZone(),
+            userProfile.getPhone()));
         UserAccountEntity userAccount = findByQueueUserId(qid);
         return updateAuthenticationKey(userAccount.getUserAuthentication().getId());
     }
@@ -770,10 +770,10 @@ public class AccountService {
         List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfilesByPhone(phone);
         for (UserProfileEntity dependentUserProfile : dependentUserProfiles) {
             boolean status = userProfileManager.updateDependentDetailsOnPhoneMigration(
-                    dependentUserProfile.getQueueUserId(),
-                    newPhone,
-                    countryShortName,
-                    timeZone
+                dependentUserProfile.getQueueUserId(),
+                newPhone,
+                countryShortName,
+                timeZone
             );
             LOG.info("Guardian phone updated status={} for qid={}", status, dependentUserProfile.getQueueUserId());
         }
