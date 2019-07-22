@@ -1,6 +1,7 @@
 package com.noqapp.medical.domain;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.BooleanReplacementEnum;
 import com.noqapp.domain.types.medical.HospitalVisitForEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -9,8 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -35,7 +36,7 @@ public class HospitalVisitScheduleEntity extends BaseEntity {
     private HospitalVisitForEnum hospitalVisitFor;
 
     @Field("VF")
-    private List<String> visitingFor = new LinkedList<>();
+    private Map<String, BooleanReplacementEnum> visitingFor = new LinkedHashMap<>();
 
     @Field("VH")
     private String header;
@@ -70,17 +71,17 @@ public class HospitalVisitScheduleEntity extends BaseEntity {
         return this;
     }
 
-    public List<String> getVisitingFor() {
+    public Map<String, BooleanReplacementEnum> getVisitingFor() {
         return visitingFor;
     }
 
-    public HospitalVisitScheduleEntity setVisitingFor(List<String> visitingFor) {
+    public HospitalVisitScheduleEntity setVisitingFor(Map<String, BooleanReplacementEnum> visitingFor) {
         this.visitingFor = visitingFor;
         return this;
     }
 
-    public HospitalVisitScheduleEntity addVisitingFor(String visitName) {
-        this.visitingFor.add(visitName);
+    public HospitalVisitScheduleEntity addVisitingFor(String visitName, BooleanReplacementEnum booleanReplacement) {
+        this.visitingFor.put(visitName, booleanReplacement);
         return this;
     }
 

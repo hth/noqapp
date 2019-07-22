@@ -77,6 +77,7 @@ public class HospitalVisitScheduleService {
         for (HospitalVisitScheduleEntity hospitalVisitSchedule : hospitalVisitSchedules) {
             jsonHospitalVisitSchedules.add(
                 new JsonHospitalVisitSchedule()
+                    .setHospitalVisitScheduleId(hospitalVisitSchedule.getId())
                     .setHospitalVisitFor(hospitalVisitSchedule.getHospitalVisitFor())
                     .setVisitingFor(hospitalVisitSchedule.getVisitingFor())
                     .setHeader(hospitalVisitSchedule.getHeader())
