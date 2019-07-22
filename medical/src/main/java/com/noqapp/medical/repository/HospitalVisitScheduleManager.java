@@ -1,5 +1,6 @@
 package com.noqapp.medical.repository;
 
+import com.noqapp.domain.types.BooleanReplacementEnum;
 import com.noqapp.domain.types.medical.HospitalVisitForEnum;
 import com.noqapp.medical.domain.HospitalVisitScheduleEntity;
 import com.noqapp.repository.RepositoryManager;
@@ -17,4 +18,6 @@ public interface HospitalVisitScheduleManager extends RepositoryManager<Hospital
 
     HospitalVisitScheduleEntity removeVisit(String id, String qid);
     HospitalVisitScheduleEntity markAsVisited(String id, String qid, String performedByQid);
+
+    HospitalVisitScheduleEntity modifyVisitingFor(String id, String qid, String visitingFor, BooleanReplacementEnum booleanReplacement, String performedByQid);
 }

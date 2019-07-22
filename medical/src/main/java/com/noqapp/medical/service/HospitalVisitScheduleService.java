@@ -5,6 +5,7 @@ import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.medical.JsonHospitalVisitSchedule;
+import com.noqapp.domain.types.BooleanReplacementEnum;
 import com.noqapp.domain.types.medical.HospitalVisitForEnum;
 import com.noqapp.medical.domain.HospitalVisitScheduleEntity;
 import com.noqapp.medical.repository.HospitalVisitScheduleManager;
@@ -75,17 +76,20 @@ public class HospitalVisitScheduleService {
     private List<JsonHospitalVisitSchedule> populateWithHospitalVisitScheduleAsJson(List<HospitalVisitScheduleEntity> hospitalVisitSchedules) {
         List<JsonHospitalVisitSchedule> jsonHospitalVisitSchedules = new ArrayList<>();
         for (HospitalVisitScheduleEntity hospitalVisitSchedule : hospitalVisitSchedules) {
-            jsonHospitalVisitSchedules.add(
-                new JsonHospitalVisitSchedule()
-                    .setHospitalVisitScheduleId(hospitalVisitSchedule.getId())
-                    .setHospitalVisitFor(hospitalVisitSchedule.getHospitalVisitFor())
-                    .setVisitingFor(hospitalVisitSchedule.getVisitingFor())
-                    .setHeader(hospitalVisitSchedule.getHeader())
-                    .setVisitedDate(hospitalVisitSchedule.getVisitedDate() == null ? null : DateFormatUtils.format(hospitalVisitSchedule.getVisitedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-                    .setExpectedDate(DateFormatUtils.format(hospitalVisitSchedule.getExpectedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC"))));
+            jsonHospitalVisitSchedules.add(populateHospitalVisitScheduleAsJson(hospitalVisitSchedule));
         }
 
         return jsonHospitalVisitSchedules;
+    }
+
+    public JsonHospitalVisitSchedule populateHospitalVisitScheduleAsJson(HospitalVisitScheduleEntity hospitalVisitSchedule) {
+        return new JsonHospitalVisitSchedule()
+            .setHospitalVisitScheduleId(hospitalVisitSchedule.getId())
+            .setHospitalVisitFor(hospitalVisitSchedule.getHospitalVisitFor())
+            .setVisitingFor(hospitalVisitSchedule.getVisitingFor())
+            .setHeader(hospitalVisitSchedule.getHeader())
+            .setVisitedDate(hospitalVisitSchedule.getVisitedDate() == null ? null : DateFormatUtils.format(hospitalVisitSchedule.getVisitedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+            .setExpectedDate(DateFormatUtils.format(hospitalVisitSchedule.getExpectedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
     }
 
     @Mobile
@@ -97,5 +101,10 @@ public class HospitalVisitScheduleService {
                 hospitalVisitScheduleManager.save(hospitalVisitSchedule);
             }
         }
+    }
+
+    @Mobile
+    public HospitalVisitScheduleEntity modifyVisitingFor(String id, String qid, String visitingFor, BooleanReplacementEnum booleanReplacement, String performedByQid) {
+        return hospitalVisitScheduleManager.modifyVisitingFor(id, qid, visitingFor, booleanReplacement, performedByQid);
     }
 }
