@@ -77,6 +77,7 @@ public class HospitalVisitScheduleService {
         for (HospitalVisitScheduleEntity hospitalVisitSchedule : hospitalVisitSchedules) {
             jsonHospitalVisitSchedules.add(
                 new JsonHospitalVisitSchedule()
+                    .setHospitalVisitFor(hospitalVisitSchedule.getHospitalVisitFor())
                     .setVisitingFor(hospitalVisitSchedule.getVisitingFor())
                     .setHeader(hospitalVisitSchedule.getHeader())
                     .setVisitedDate(hospitalVisitSchedule.getVisitedDate() == null ? null : DateFormatUtils.format(hospitalVisitSchedule.getVisitedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
