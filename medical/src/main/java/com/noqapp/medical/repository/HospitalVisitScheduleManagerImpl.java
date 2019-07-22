@@ -6,6 +6,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.types.BooleanReplacementEnum;
 import com.noqapp.domain.types.medical.HospitalVisitForEnum;
 import com.noqapp.medical.domain.HospitalVisitScheduleEntity;
 
@@ -90,6 +91,16 @@ public class HospitalVisitScheduleManagerImpl implements HospitalVisitScheduleMa
         return mongoTemplate.findAndModify(
             query(where("id").is(id).and("QID").is(qid)),
             entityUpdate(new Update().unset("VD").unset("PQ")),
+            FindAndModifyOptions.options().returnNew(true),
+            HospitalVisitScheduleEntity.class,
+            TABLE
+        );
+    }
+
+    public HospitalVisitScheduleEntity modifyVisitingFor(String id, String qid, String visitingFor, BooleanReplacementEnum booleanReplacement, String performedByQid) {
+        return mongoTemplate.findAndModify(
+            query(where("id").is(id).and("QID").is(qid).and("VF." + visitingFor).exists(true)),
+            entityUpdate(update("VF." + visitingFor, booleanReplacement).set("VD", new Date()).set("PQ", performedByQid)),
             FindAndModifyOptions.options().returnNew(true),
             HospitalVisitScheduleEntity.class,
             TABLE
