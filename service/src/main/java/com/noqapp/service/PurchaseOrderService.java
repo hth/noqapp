@@ -768,9 +768,24 @@ public class PurchaseOrderService {
     @Mobile
     public void deleteReferenceToTransactionId(String transactionId) {
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(transactionId);
-        //Only for DeliveryMode QS
+        //Process all steps below for DeliveryMode QS only
+        revertAppliedCouponIfAny(purchaseOrder);
         purchaseOrderProductManager.removePurchaseOrderProduct(purchaseOrder.getId());
         purchaseOrderManager.removePurchaseOrderForService(transactionId);
+    }
+
+    /**
+     * Revert coupon used.
+     * Refer coupon apply {@link #applyCoupon}
+     */
+    private void revertAppliedCouponIfAny(PurchaseOrderEntity purchaseOrder) {
+        if (StringUtils.isNotBlank(purchaseOrder.getCouponId())) {
+            CouponEntity coupon = couponService.findById(purchaseOrder.getCouponId());
+            if (!coupon.isMultiUse() && !coupon.isActive() && purchaseOrder.getQueueUserId().equalsIgnoreCase(coupon.getQid())) {
+                coupon.active();
+                couponService.save(coupon);
+            }
+        }
     }
 
     @Mobile
