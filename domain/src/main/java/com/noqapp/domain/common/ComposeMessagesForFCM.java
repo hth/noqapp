@@ -87,7 +87,7 @@ public class ComposeMessagesForFCM {
 
     /**
      * Personal message sent by client to self or by merchant to client.
-     * @param messageOriginEnum based of this message behaves differently.
+     * @param messageOrigin based of this message behaves differently.
      */
     @Mobile
     public static JsonMessage composeMessage(

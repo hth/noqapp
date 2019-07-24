@@ -50,8 +50,8 @@ public class HospitalVisitScheduleEntity extends BaseEntity {
     @Field("PQ")
     private String performedByQid;
 
-    @Field ("NS")
-    private boolean notifyForUpcomingVisit = false;
+    @Field ("NC")
+    private int notificationCount;
 
     public String getQueueUserId() {
         return queueUserId;
@@ -121,12 +121,12 @@ public class HospitalVisitScheduleEntity extends BaseEntity {
         return this;
     }
 
-    public boolean isNotifyForUpcomingVisit() {
-        return notifyForUpcomingVisit;
+    public int getNotificationCount() {
+        return notificationCount;
     }
 
-    public HospitalVisitScheduleEntity setNotifyForUpcomingVisit(boolean notifyForUpcomingVisit) {
-        this.notifyForUpcomingVisit = notifyForUpcomingVisit;
+    public HospitalVisitScheduleEntity setNotificationCount(int notificationCount) {
+        this.notificationCount = notificationCount;
         return this;
     }
 }
