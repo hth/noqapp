@@ -127,9 +127,9 @@ public class MailProcess {
     @Scheduled (fixedDelayString = "${loader.MailProcess.sendMail}")
     public void sendMail() {
         StatsCronEntity statsCron = new StatsCronEntity(
-                MailProcess.class.getName(),
-                "sendMail",
-                emailSwitch);
+            MailProcess.class.getName(),
+            "sendMail",
+            emailSwitch);
 
         if ("OFF".equalsIgnoreCase(emailSwitch)) {
             return;
