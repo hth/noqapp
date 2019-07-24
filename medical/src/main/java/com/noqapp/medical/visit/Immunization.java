@@ -95,7 +95,7 @@ public class Immunization {
                 .addVisitingFor("Hepatitis A Vaccine 2", BooleanReplacementEnum.N)
                 .addVisitingFor("Vericella Vaccine", BooleanReplacementEnum.N)
                 .addVisitingFor("Meningococcal Conjugate Vaccine", BooleanReplacementEnum.N)
-                .setHeader("12 Months Onwards")
+                .setHeader("12 Months")
                 .setExpectedDate(DateUtil.asDate(birthday.plus(12, ChronoUnit.MONTHS))));
 
         visits.add(

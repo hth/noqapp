@@ -5,6 +5,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.types.BooleanReplacementEnum;
 import com.noqapp.domain.types.medical.HospitalVisitForEnum;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -102,6 +104,25 @@ public class HospitalVisitScheduleManagerImpl implements HospitalVisitScheduleMa
             query(where("id").is(id).and("QID").is(qid).and("VF." + visitingFor).exists(true)),
             entityUpdate(update("VF." + visitingFor, booleanReplacement).set("VD", new Date()).set("PQ", performedByQid)),
             FindAndModifyOptions.options().returnNew(true),
+            HospitalVisitScheduleEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public Stream<HospitalVisitScheduleEntity> notifyAllUpComingHospitalVisit() {
+        return mongoTemplate.find(
+            query(where("ED").lte(DateUtil.plusDays(7)).and("NC").is(0)),
+            HospitalVisitScheduleEntity.class,
+            TABLE
+        ).stream();
+    }
+
+    @Override
+    public void increaseNotificationCount(String id) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            entityUpdate(new Update().inc("NC", 1)),
             HospitalVisitScheduleEntity.class,
             TABLE
         );

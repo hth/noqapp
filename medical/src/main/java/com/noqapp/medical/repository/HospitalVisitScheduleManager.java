@@ -6,6 +6,7 @@ import com.noqapp.medical.domain.HospitalVisitScheduleEntity;
 import com.noqapp.repository.RepositoryManager;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -20,4 +21,7 @@ public interface HospitalVisitScheduleManager extends RepositoryManager<Hospital
     HospitalVisitScheduleEntity markAsVisited(String id, String qid, String performedByQid);
 
     HospitalVisitScheduleEntity modifyVisitingFor(String id, String qid, String visitingFor, BooleanReplacementEnum booleanReplacement, String performedByQid);
+
+    Stream<HospitalVisitScheduleEntity> notifyAllUpComingHospitalVisit();
+    void increaseNotificationCount(String id);
 }

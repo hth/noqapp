@@ -82,6 +82,7 @@ public class HospitalVisitScheduleService {
         return jsonHospitalVisitSchedules;
     }
 
+    @Mobile
     public JsonHospitalVisitSchedule populateHospitalVisitScheduleAsJson(HospitalVisitScheduleEntity hospitalVisitSchedule) {
         return new JsonHospitalVisitSchedule()
             .setHospitalVisitScheduleId(hospitalVisitSchedule.getId())
