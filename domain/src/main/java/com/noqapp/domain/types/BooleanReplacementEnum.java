@@ -7,7 +7,7 @@ package com.noqapp.domain.types;
 public enum BooleanReplacementEnum {
     S("S", "Skip", "#CD334E"),
     Y("Y", "Yes", "#19769f"),
-    N("N", "No", "#dddddd");
+    N("N", "No", "#aaaaaa");
 
     private final String description;
     private final String name;
