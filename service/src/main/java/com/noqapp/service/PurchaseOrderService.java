@@ -318,9 +318,12 @@ public class PurchaseOrderService {
     ) {
         Assert.hasText(transactionId, "No transaction id found");
         PurchaseOrderEntity purchaseOrderExisting = purchaseOrderManager.findByTransactionId(transactionId);
+        String transactionMessageAppended = StringUtils.isBlank(purchaseOrderExisting.getTransactionMessage())
+            ? transactionMessage
+            : purchaseOrderExisting.getTransactionMessage() + ";" + transactionMessage,
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateOnPaymentGatewayNotification(
             transactionId,
-            StringUtils.isBlank(purchaseOrderExisting.getTransactionMessage()) ? transactionMessage : purchaseOrderExisting.getTransactionMessage() + ";" + transactionMessage,
+            transactionMessageAppended,
             transactionReferenceId,
             paymentStatus,
             purchaseOrderState,
