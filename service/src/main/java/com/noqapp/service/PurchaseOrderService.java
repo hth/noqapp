@@ -317,9 +317,10 @@ public class PurchaseOrderService {
         PaymentModeEnum paymentMode
     ) {
         Assert.hasText(transactionId, "No transaction id found");
+        PurchaseOrderEntity purchaseOrderExisting = purchaseOrderManager.findByTransactionId(transactionId);
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateOnPaymentGatewayNotification(
             transactionId,
-            transactionMessage,
+            StringUtils.isBlank(purchaseOrderExisting.getTransactionMessage()) ? transactionMessage : purchaseOrderExisting.getTransactionMessage() + ";" + transactionMessage,
             transactionReferenceId,
             paymentStatus,
             purchaseOrderState,
