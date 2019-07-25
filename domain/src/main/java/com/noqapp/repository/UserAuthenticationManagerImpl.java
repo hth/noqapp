@@ -6,7 +6,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
 
@@ -29,18 +28,18 @@ import java.util.List;
  * Date: 11/19/16 1:48 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public final class UserAuthenticationManagerImpl implements UserAuthenticationManager {
     private static final Logger LOG = LoggerFactory.getLogger(UserAuthenticationManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            UserAuthenticationEntity.class,
-            Document.class,
-            "collection");
+        UserAuthenticationEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -71,10 +70,10 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
     @Override
     public void updateAuthenticationKey(String id, String authenticationKey) {
         mongoTemplate.updateFirst(
-                query(where("id").is(id)),
-                entityUpdate(update("AU", authenticationKey)),
-                UserAuthenticationEntity.class,
-                TABLE
+            query(where("id").is(id)),
+            entityUpdate(update("AU", authenticationKey)),
+            UserAuthenticationEntity.class,
+            TABLE
         );
     }
 

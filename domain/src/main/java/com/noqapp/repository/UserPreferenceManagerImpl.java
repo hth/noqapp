@@ -21,17 +21,17 @@ import org.springframework.util.Assert;
  * Date: 11/19/16 1:55 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            UserPreferenceEntity.class,
-            Document.class,
-            "collection");
+        UserPreferenceEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 

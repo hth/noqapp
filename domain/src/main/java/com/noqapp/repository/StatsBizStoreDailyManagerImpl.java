@@ -32,18 +32,18 @@ import java.util.List;
  * Date: 6/16/17 4:48 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager {
     private static final Logger LOG = LoggerFactory.getLogger(StatsBizStoreDailyManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            StatsBizStoreDailyEntity.class,
-            Document.class,
-            "collection");
+        StatsBizStoreDailyEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -69,15 +69,15 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
     public StatsBizStoreDailyEntity computeRatingForEachQueue(String bizStoreId) {
         try {
             TypedAggregation<StatsBizStoreDailyEntity> agg = newAggregation(StatsBizStoreDailyEntity.class,
-                    match(where("BS").is(bizStoreId).and("TR").gt(0)
-                            .andOperator(
-                                    isActive(),
-                                    isNotDeleted()
-                            )),
-                    group("bizStoreId")
-                            .first("bizStoreId").as("BS")
-                            .sum("totalRating").as("TR")
-                            .sum("totalCustomerRated").as("CR")
+                match(where("BS").is(bizStoreId).and("TR").gt(0)
+                    .andOperator(
+                        isActive(),
+                        isNotDeleted()
+                    )),
+                group("bizStoreId")
+                    .first("bizStoreId").as("BS")
+                    .sum("totalRating").as("TR")
+                    .sum("totalCustomerRated").as("CR")
             );
             /* Above totalCustomerRated in group is used as a place holder to count the number of records that has TR > 0. */
             List<StatsBizStoreDailyEntity> statsBizStores = mongoTemplate.aggregate(agg, TABLE, StatsBizStoreDailyEntity.class).getMappedResults();
@@ -113,7 +113,7 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
             Date sinceBeginningOfThisMonth = DateUtil.sinceBeginningOfThisMonth();
             TypedAggregation<StatsBizStoreDailyEntity> agg = newAggregation(StatsBizStoreDailyEntity.class,
                 match(where("QR").is(codeQR).and("C").gte(sinceBeginningOfThisMonth)
-                //match(where("QR").is(codeQR).and("C").gte(DateUtil.midnight(DateUtil.minusDays(30)))
+                    //match(where("QR").is(codeQR).and("C").gte(DateUtil.midnight(DateUtil.minusDays(30)))
                     .andOperator(
                         isActive(),
                         isNotDeleted()

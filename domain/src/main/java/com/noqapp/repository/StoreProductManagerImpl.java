@@ -27,18 +27,18 @@ import java.util.List;
  * 3/21/18 5:07 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class StoreProductManagerImpl implements StoreProductManager {
     private static final Logger LOG = LoggerFactory.getLogger(StoreProductManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            StoreProductEntity.class,
-            Document.class,
-            "collection");
+        StoreProductEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -76,37 +76,37 @@ public class StoreProductManagerImpl implements StoreProductManager {
     @Override
     public boolean existProductName(String storeId, String productName) {
         return mongoTemplate.exists(
-                query(where("BS").is(storeId).and("PN").regex("^" + productName + "$", "i")),
-                StoreProductEntity.class,
-                TABLE
+            query(where("BS").is(storeId).and("PN").regex("^" + productName + "$", "i")),
+            StoreProductEntity.class,
+            TABLE
         );
     }
 
     @Override
     public long countCategoryUse(String storeId, String storeCategoryId) {
         return mongoTemplate.count(
-                query(where("BS").is(storeId).and("SC").is(storeCategoryId)),
-                StoreProductEntity.class,
-                TABLE
+            query(where("BS").is(storeId).and("SC").is(storeCategoryId)),
+            StoreProductEntity.class,
+            TABLE
         );
     }
 
     @Override
     public StoreProductEntity findOne(String id) {
         return mongoTemplate.findOne(
-                query(where("id").is(id)),
-                StoreProductEntity.class,
-                TABLE
+            query(where("id").is(id)),
+            StoreProductEntity.class,
+            TABLE
         );
     }
 
     @Override
     public void removeStoreCategoryReference(String storeCategoryId) {
         mongoTemplate.updateMulti(
-                query(where("SC").is(storeCategoryId)),
-                entityUpdate(new Update().unset("SC")),
-                StoreProductEntity.class,
-                TABLE
+            query(where("SC").is(storeCategoryId)),
+            entityUpdate(new Update().unset("SC")),
+            StoreProductEntity.class,
+            TABLE
         );
     }
 
