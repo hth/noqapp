@@ -320,7 +320,7 @@ public class PurchaseOrderService {
         PurchaseOrderEntity purchaseOrderExisting = purchaseOrderManager.findByTransactionId(transactionId);
         String transactionMessageAppended = StringUtils.isBlank(purchaseOrderExisting.getTransactionMessage())
             ? transactionMessage
-            : purchaseOrderExisting.getTransactionMessage() + ";" + transactionMessage,
+            : purchaseOrderExisting.getTransactionMessage() + ";" + transactionMessage;
         PurchaseOrderEntity purchaseOrder = purchaseOrderManager.updateOnPaymentGatewayNotification(
             transactionId,
             transactionMessageAppended,
