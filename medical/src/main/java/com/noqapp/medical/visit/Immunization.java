@@ -72,8 +72,8 @@ public class Immunization {
                 .setQueueUserId(qid)
                 .setHospitalVisitFor(HospitalVisitForEnum.IMU)
                 .addVisitingFor("Oral Vaccine", BooleanReplacementEnum.N)
-                .addVisitingFor("Flu Vaccine", BooleanReplacementEnum.N)
-                .addVisitingFor("Flu Vaccine", BooleanReplacementEnum.N)
+                .addVisitingFor("Flu Vaccine 1", BooleanReplacementEnum.N)
+                .addVisitingFor("Flu Vaccine 2", BooleanReplacementEnum.N)
                 .setHeader("6-9 Months")
                 .setExpectedDate(DateUtil.asDate(birthday.plus(6, ChronoUnit.MONTHS))));
 
