@@ -49,6 +49,9 @@ public class JsonHospitalVisitSchedule extends AbstractDomain {
     @JsonProperty("ed")
     private String expectedDate;
 
+    @JsonProperty("pb")
+    private String performedBy;
+
     public String getHospitalVisitScheduleId() {
         return hospitalVisitScheduleId;
     }
@@ -100,6 +103,15 @@ public class JsonHospitalVisitSchedule extends AbstractDomain {
 
     public JsonHospitalVisitSchedule setExpectedDate(String expectedDate) {
         this.expectedDate = expectedDate;
+        return this;
+    }
+
+    public String getPerformedBy() {
+        return performedBy;
+    }
+
+    public JsonHospitalVisitSchedule setPerformedBy(String performedBy) {
+        this.performedBy = performedBy;
         return this;
     }
 }

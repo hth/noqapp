@@ -10,7 +10,9 @@ import com.noqapp.domain.types.medical.HospitalVisitForEnum;
 import com.noqapp.medical.domain.HospitalVisitScheduleEntity;
 import com.noqapp.medical.repository.HospitalVisitScheduleManager;
 import com.noqapp.medical.visit.Immunization;
+import com.noqapp.repository.UserProfileManager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.slf4j.Logger;
@@ -36,10 +38,15 @@ public class HospitalVisitScheduleService {
     private static final Logger LOG = LoggerFactory.getLogger(HospitalVisitScheduleService.class);
 
     private HospitalVisitScheduleManager hospitalVisitScheduleManager;
+    private UserProfileManager userProfileManager;
 
     @Autowired
-    public HospitalVisitScheduleService(HospitalVisitScheduleManager hospitalVisitScheduleManager) {
+    public HospitalVisitScheduleService(
+        HospitalVisitScheduleManager hospitalVisitScheduleManager,
+        UserProfileManager userProfileManager
+    ) {
         this.hospitalVisitScheduleManager = hospitalVisitScheduleManager;
+        this.userProfileManager = userProfileManager;
     }
 
     @Mobile
@@ -84,13 +91,19 @@ public class HospitalVisitScheduleService {
 
     @Mobile
     public JsonHospitalVisitSchedule populateHospitalVisitScheduleAsJson(HospitalVisitScheduleEntity hospitalVisitSchedule) {
+        String performedBy = null;
+        if (StringUtils.isNotBlank(hospitalVisitSchedule.getPerformedByQid())) {
+            performedBy = userProfileManager.findByQueueUserId(hospitalVisitSchedule.getPerformedByQid()).getName();
+        }
+
         return new JsonHospitalVisitSchedule()
             .setHospitalVisitScheduleId(hospitalVisitSchedule.getId())
             .setHospitalVisitFor(hospitalVisitSchedule.getHospitalVisitFor())
             .setVisitingFor(hospitalVisitSchedule.getVisitingFor())
             .setHeader(hospitalVisitSchedule.getHeader())
             .setVisitedDate(hospitalVisitSchedule.getVisitedDate() == null ? null : DateFormatUtils.format(hospitalVisitSchedule.getVisitedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-            .setExpectedDate(DateFormatUtils.format(hospitalVisitSchedule.getExpectedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
+            .setExpectedDate(DateFormatUtils.format(hospitalVisitSchedule.getExpectedDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+            .setPerformedBy(performedBy);
     }
 
     @Mobile
