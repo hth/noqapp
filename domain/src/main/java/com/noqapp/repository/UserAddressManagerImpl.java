@@ -30,28 +30,28 @@ import java.util.List;
  * 5/15/18 10:45 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class UserAddressManagerImpl implements UserAddressManager {
     private static final Logger LOG = LoggerFactory.getLogger(UserAddressManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            UserAddressEntity.class,
-            Document.class,
-            "collection");
+        UserAddressEntity.class,
+        Document.class,
+        "collection");
 
     private int numberOfAddressAllowed;
     private MongoTemplate mongoTemplate;
 
     @Autowired
     public UserAddressManagerImpl(
-            @Value("${UserAddressManagerImpl.numberOfAddressAllowed}")
-            int numberOfAddressAllowed,
+        @Value("${UserAddressManagerImpl.numberOfAddressAllowed}")
+        int numberOfAddressAllowed,
 
-            MongoTemplate mongoTemplate
+        MongoTemplate mongoTemplate
     ) {
         this.numberOfAddressAllowed = numberOfAddressAllowed;
         this.mongoTemplate = mongoTemplate;
@@ -74,44 +74,44 @@ public class UserAddressManagerImpl implements UserAddressManager {
     @Override
     public void deleteAddress(String id, String qid) {
         mongoTemplate.remove(
-                query(where("id").is(new ObjectId(id)).and("QID").is(qid)),
-                UserAddressEntity.class,
-                TABLE
+            query(where("id").is(new ObjectId(id)).and("QID").is(qid)),
+            UserAddressEntity.class,
+            TABLE
         );
     }
 
     @Override
     public List<UserAddressEntity> getAll(String qid) {
         return mongoTemplate.find(
-                query(where("QID").is(qid)).with(new Sort(ASC, "LU")),
-                UserAddressEntity.class,
-                TABLE
+            query(where("QID").is(qid)).with(new Sort(ASC, "LU")),
+            UserAddressEntity.class,
+            TABLE
         );
     }
 
     @Override
     public void updateLastUsedAddress(String address, String qid) {
         mongoTemplate.updateFirst(
-                query(where("QID").is(qid).and("AD").regex("^" + address, "i")),
-                entityUpdate(update("LU", new Date())),
-                UserAddressEntity.class,
-                TABLE
+            query(where("QID").is(qid).and("AD").regex("^" + address, "i")),
+            entityUpdate(update("LU", new Date())),
+            UserAddressEntity.class,
+            TABLE
         );
     }
 
     private long count(String qid) {
         return mongoTemplate.count(
-                query(where("QID").is(qid)),
-                UserAddressEntity.class,
-                TABLE
+            query(where("QID").is(qid)),
+            UserAddressEntity.class,
+            TABLE
         );
     }
 
     private UserAddressEntity leastUsedAddress(String qid) {
         return mongoTemplate.findOne(
-                query(where("QID").is(qid)).with(new Sort(DESC, "LU")),
-                UserAddressEntity.class,
-                TABLE
+            query(where("QID").is(qid)).with(new Sort(DESC, "LU")),
+            UserAddressEntity.class,
+            TABLE
         );
     }
 }

@@ -30,18 +30,18 @@ import java.util.List;
  * Date: 6/13/17 6:44 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class StoreHourManagerImpl implements StoreHourManager {
     private static final Logger LOG = LoggerFactory.getLogger(StoreHourManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            StoreHourEntity.class,
-            Document.class,
-            "collection");
+        StoreHourEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -72,9 +72,9 @@ public class StoreHourManagerImpl implements StoreHourManager {
     @Override
     public void removeAll(String bizStoreId) {
         mongoTemplate.remove(
-                query(where("BS").is(bizStoreId)),
-                StoreHourEntity.class,
-                TABLE);
+            query(where("BS").is(bizStoreId)),
+            StoreHourEntity.class,
+            TABLE);
     }
 
     @Override
@@ -85,81 +85,81 @@ public class StoreHourManagerImpl implements StoreHourManager {
     @Override
     public StoreHourEntity findOne(String bizStoreId, int dayOfWeek) {
         return mongoTemplate.findOne(
-                query(where("BS").is(bizStoreId).and("DW").is(dayOfWeek)),
-                StoreHourEntity.class,
-                TABLE
+            query(where("BS").is(bizStoreId).and("DW").is(dayOfWeek)),
+            StoreHourEntity.class,
+            TABLE
         );
     }
 
     @Override
     public List<StoreHourEntity> findAll(String bizStoreId) {
         return mongoTemplate.find(
-                query(where("BS").is(bizStoreId)).with(new Sort(Sort.Direction.ASC, "DW")),
-                StoreHourEntity.class,
-                TABLE
+            query(where("BS").is(bizStoreId)).with(new Sort(Sort.Direction.ASC, "DW")),
+            StoreHourEntity.class,
+            TABLE
         );
     }
 
     @Override
     public StoreHourEntity modifyOne(
-            String bizStoreId,
-            DayOfWeek dayOfWeek,
-            int tokenAvailableFrom,
-            int startHour,
-            int tokenNotAvailableFrom,
-            int endHour,
-            boolean dayClosed,
-            boolean tempDayClosed,
-            boolean preventJoining,
-            int delayedInMinutes
+        String bizStoreId,
+        DayOfWeek dayOfWeek,
+        int tokenAvailableFrom,
+        int startHour,
+        int tokenNotAvailableFrom,
+        int endHour,
+        boolean dayClosed,
+        boolean tempDayClosed,
+        boolean preventJoining,
+        int delayedInMinutes
     ) {
         LOG.info("Hour Change for bizStoreId={} " +
-                        "dayOfWeek={} " +
-                        "tokenAvailableFrom={} " +
-                        "startHour={} " +
-                        "tokenNotAvailableFrom={} " +
-                        "endHour={} " +
-                        "dayClosed={} " +
-                        "tempDayClosed={} " +
-                        "preventJoining={} " +
-                        "delayedInMinutes={}",
-                bizStoreId,
-                dayOfWeek.getValue(),
-                tokenAvailableFrom,
-                startHour,
-                tokenNotAvailableFrom,
-                endHour,
-                dayClosed,
-                tempDayClosed,
-                preventJoining,
-                delayedInMinutes);
+                "dayOfWeek={} " +
+                "tokenAvailableFrom={} " +
+                "startHour={} " +
+                "tokenNotAvailableFrom={} " +
+                "endHour={} " +
+                "dayClosed={} " +
+                "tempDayClosed={} " +
+                "preventJoining={} " +
+                "delayedInMinutes={}",
+            bizStoreId,
+            dayOfWeek.getValue(),
+            tokenAvailableFrom,
+            startHour,
+            tokenNotAvailableFrom,
+            endHour,
+            dayClosed,
+            tempDayClosed,
+            preventJoining,
+            delayedInMinutes);
         return mongoTemplate.findAndModify(
-                query(where("BS").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
-                entityUpdate(update("TF", tokenAvailableFrom)
-                        .set("SH", startHour)
-                        .set("TE", tokenNotAvailableFrom)
-                        .set("EH", endHour)
-                        .set("DC", dayClosed)
-                        .set("TC", tempDayClosed)
-                        .set("PJ", preventJoining)
-                        .set("DE", delayedInMinutes)),
-                FindAndModifyOptions.options().returnNew(true),
-                StoreHourEntity.class,
-                TABLE
+            query(where("BS").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
+            entityUpdate(update("TF", tokenAvailableFrom)
+                .set("SH", startHour)
+                .set("TE", tokenNotAvailableFrom)
+                .set("EH", endHour)
+                .set("DC", dayClosed)
+                .set("TC", tempDayClosed)
+                .set("PJ", preventJoining)
+                .set("DE", delayedInMinutes)),
+            FindAndModifyOptions.options().returnNew(true),
+            StoreHourEntity.class,
+            TABLE
         );
     }
 
     @Override
     public boolean resetTemporarySettingsOnStoreHour(String id) {
         UpdateResult updateResult = mongoTemplate.updateFirst(
-                query(where("id").is(new ObjectId(id))),
-                entityUpdate(
-                    update("PJ", false)
-                        .set("DE", 0)
-                        .set("TC", false)
-                ),
-                StoreHourEntity.class,
-                TABLE
+            query(where("id").is(new ObjectId(id))),
+            entityUpdate(
+                update("PJ", false)
+                    .set("DE", 0)
+                    .set("TC", false)
+            ),
+            StoreHourEntity.class,
+            TABLE
         );
 
         LOG.info("ResetStoreHour id={} ack={} modifiedCount={}", id, updateResult.wasAcknowledged(), updateResult.getModifiedCount());
@@ -168,10 +168,10 @@ public class StoreHourManagerImpl implements StoreHourManager {
 
     public void resetQueueSettingWhenQueueStarts(String bizStoreId, DayOfWeek dayOfWeek) {
         UpdateResult result = mongoTemplate.updateFirst(
-                query(where("BS").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
-                entityUpdate(update("DE", 0)),
-                StoreHourEntity.class,
-                TABLE
+            query(where("BS").is(bizStoreId).and("DW").is(dayOfWeek.getValue())),
+            entityUpdate(update("DE", 0)),
+            StoreHourEntity.class,
+            TABLE
         );
 
         LOG.info("ResetQueueSettingWhenQueueStarts ack={} modifiedCount={}", result.wasAcknowledged(), result.getModifiedCount());

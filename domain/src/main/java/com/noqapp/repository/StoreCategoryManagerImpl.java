@@ -24,18 +24,18 @@ import java.util.List;
  * 3/22/18 11:10 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class StoreCategoryManagerImpl implements StoreCategoryManager {
     private static final Logger LOG = LoggerFactory.getLogger(StoreCategoryManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            StoreCategoryEntity.class,
-            Document.class,
-            "collection");
+        StoreCategoryEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -60,9 +60,9 @@ public class StoreCategoryManagerImpl implements StoreCategoryManager {
     @Override
     public List<StoreCategoryEntity> findAll(String storeId) {
         return mongoTemplate.find(
-                query(where("BS").is(storeId)).with(new Sort(ASC, "CN")),
-                StoreCategoryEntity.class,
-                TABLE);
+            query(where("BS").is(storeId)).with(new Sort(ASC, "CN")),
+            StoreCategoryEntity.class,
+            TABLE);
     }
 
     @Override
@@ -73,9 +73,9 @@ public class StoreCategoryManagerImpl implements StoreCategoryManager {
     @Override
     public boolean existCategoryName(String storeId, String categoryName) {
         return mongoTemplate.exists(
-                Query.query(where("BS").is(storeId).and("CN").regex("^" + categoryName + "$", "i")),
-                StoreCategoryEntity.class,
-                TABLE
+            Query.query(where("BS").is(storeId).and("CN").regex("^" + categoryName + "$", "i")),
+            StoreCategoryEntity.class,
+            TABLE
         );
     }
 

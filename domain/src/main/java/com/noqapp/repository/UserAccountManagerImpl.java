@@ -29,18 +29,18 @@ import java.util.Date;
  * Date: 11/19/16 1:42 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class UserAccountManagerImpl implements UserAccountManager {
     private static final Logger LOG = LoggerFactory.getLogger(UserAccountManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            UserAccountEntity.class,
-            Document.class,
-            "collection");
+        UserAccountEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -86,18 +86,18 @@ public class UserAccountManagerImpl implements UserAccountManager {
     @Override
     public void updateAccountToValidated(String id, AccountInactiveReasonEnum air) {
         mongoTemplate.updateFirst(
-                query(where("id").is(id).and("AIR").is(air)),
-                entityUpdate(update("A", true).set("AV", true).unset("AIR")),
-                UserAccountEntity.class
+            query(where("id").is(id).and("AIR").is(air)),
+            entityUpdate(update("A", true).set("AV", true).unset("AIR")),
+            UserAccountEntity.class
         );
     }
 
     @Override
     public long countRegisteredBetweenDates(Date from, Date to) {
         return mongoTemplate.count(
-                new Query().addCriteria(where("C").gte(from).lt(to)),
-                UserAccountEntity.class,
-                TABLE
+            new Query().addCriteria(where("C").gte(from).lt(to)),
+            UserAccountEntity.class,
+            TABLE
         );
     }
 

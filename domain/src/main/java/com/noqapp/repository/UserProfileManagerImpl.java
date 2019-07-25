@@ -40,18 +40,18 @@ import java.util.stream.Stream;
  * Date: 11/19/16 12:36 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public final class UserProfileManagerImpl implements UserProfileManager {
     private static final Logger LOG = LoggerFactory.getLogger(UserProfileManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            UserProfileEntity.class,
-            Document.class,
-            "collection");
+        UserProfileEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -80,12 +80,12 @@ public final class UserProfileManagerImpl implements UserProfileManager {
             if (ignoreOptimisticLockingFailureException) {
                 /* This will re-create user profile with same details every time when there is a failure. */
                 LOG.error("UserProfile saving optimistic locking failure, override optimistic locking qid={} reason={}",
-                        object.getQueueUserId(), e.getLocalizedMessage(), e);
+                    object.getQueueUserId(), e.getLocalizedMessage(), e);
 
                 DeleteResult deleteResult = mongoTemplate.remove(
-                        query(where("QID").is(object.getQueueUserId())),
-                        UserProfileEntity.class,
-                        TABLE);
+                    query(where("QID").is(object.getQueueUserId())),
+                    UserProfileEntity.class,
+                    TABLE);
                 if (deleteResult.getDeletedCount() > 0) {
                     LOG.info("Deleted optimistic locking data issue for qid={}", object.getQueueUserId());
                     object.setId(null);
@@ -135,13 +135,13 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
         //Can add "^" + to force search only the names starting with
         return mongoTemplate.find(
-                query(new Criteria()
-                        .orOperator(
-                                where("FN").regex(name, "i"),
-                                where("LN").regex(name, "i")
-                        )
-                ),
-                UserProfileEntity.class, TABLE
+            query(new Criteria()
+                .orOperator(
+                    where("FN").regex(name, "i"),
+                    where("LN").regex(name, "i")
+                )
+            ),
+            UserProfileEntity.class, TABLE
         );
     }
 
@@ -169,9 +169,9 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public UserProfileEntity getProfileUpdateSince(String qid, Date since) {
         return mongoTemplate.findOne(
-                query(where("QID").is(qid).and("U").gte(since)),
-                UserProfileEntity.class,
-                TABLE
+            query(where("QID").is(qid).and("U").gte(since)),
+            UserProfileEntity.class,
+            TABLE
         );
     }
 
@@ -180,10 +180,10 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         Assert.isTrue(countryShortName.equals(countryShortName.toUpperCase()), "Country short name has to be upper case " + countryShortName);
 
         mongoTemplate.updateFirst(
-                query(where("QID").is(qid)),
-                entityUpdate(update("CS", countryShortName)),
-                UserProfileEntity.class,
-                TABLE
+            query(where("QID").is(qid)),
+            entityUpdate(update("CS", countryShortName)),
+            UserProfileEntity.class,
+            TABLE
         );
     }
 
@@ -191,18 +191,18 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     public UserProfileEntity inviteCodeExists(String inviteCode) {
         Assert.hasLength(inviteCode, "Invite code cannot be empty");
         return mongoTemplate.findOne(
-                query(where("IC").is(inviteCode)),
-                UserProfileEntity.class,
-                TABLE
+            query(where("IC").is(inviteCode)),
+            UserProfileEntity.class,
+            TABLE
         );
     }
 
     @Override
     public List<UserProfileEntity> findDependentProfilesByPhone(String phone) {
         return mongoTemplate.find(
-                query(where("GP").is(phone)),
-                UserProfileEntity.class,
-                TABLE
+            query(where("GP").is(phone)),
+            UserProfileEntity.class,
+            TABLE
         );
     }
 
@@ -231,10 +231,10 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public void addUserProfileImage(String qid, String profileImage) {
         mongoTemplate.updateFirst(
-                query(where("QID").is(qid)),
-                entityUpdate(update("PI", profileImage)),
-                UserProfileEntity.class,
-                TABLE);
+            query(where("QID").is(qid)),
+            entityUpdate(update("PI", profileImage)),
+            UserProfileEntity.class,
+            TABLE);
     }
 
     @Override
@@ -249,10 +249,10 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public boolean updateDependentDetailsOnPhoneMigration(String qid, String newPhone, String countryShortName, String timeZone) {
         UpdateResult updateResult = mongoTemplate.updateFirst(
-                query(where("QID").is(qid).and("PH").is(qid)),
-                entityUpdate(update("GP", newPhone).set("CS", countryShortName).set("TZ", timeZone)),
-                UserProfileEntity.class,
-                TABLE);
+            query(where("QID").is(qid).and("PH").is(qid)),
+            entityUpdate(update("GP", newPhone).set("CS", countryShortName).set("TZ", timeZone)),
+            UserProfileEntity.class,
+            TABLE);
 
         return updateResult.getModifiedCount() == 1;
     }

@@ -33,18 +33,18 @@ import java.util.List;
  * Date: 12/16/16 8:51 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class TokenQueueManagerImpl implements TokenQueueManager {
     private static final Logger LOG = LoggerFactory.getLogger(TokenQueueManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            TokenQueueEntity.class,
-            Document.class,
-            "collection");
+        TokenQueueEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -81,36 +81,36 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     @Override
     public TokenQueueEntity getNextToken(String codeQR) {
         return mongoTemplate.findAndModify(
-                query(where("id").is(codeQR)),
-                new Update().inc("LN", 1),
-                FindAndModifyOptions.options().returnNew(true),
-                TokenQueueEntity.class,
-                TABLE);
+            query(where("id").is(codeQR)),
+            new Update().inc("LN", 1),
+            FindAndModifyOptions.options().returnNew(true),
+            TokenQueueEntity.class,
+            TABLE);
     }
 
     @Override
     public TokenQueueEntity updateServing(String codeQR, int serving, QueueStatusEnum queueStatus) {
         return mongoTemplate.findAndModify(
-                query(where("id").is(codeQR)),
-                entityUpdate(update("CS", serving).set("QS", queueStatus)),
-                FindAndModifyOptions.options().returnNew(true),
-                TokenQueueEntity.class,
-                TABLE);
+            query(where("id").is(codeQR)),
+            entityUpdate(update("CS", serving).set("QS", queueStatus)),
+            FindAndModifyOptions.options().returnNew(true),
+            TokenQueueEntity.class,
+            TABLE);
     }
 
     @Override
     public List<TokenQueueEntity> getTokenQueues(String[] ids) {
         try {
             return mongoTemplate.find(
-                    /* Make sure ids does not contain null as List.of(ids) fails when null is encountered. */
-                    query(where("id").in(Arrays.asList(ids))),
-                    TokenQueueEntity.class,
-                    TABLE
+                /* Make sure ids does not contain null as List.of(ids) fails when null is encountered. */
+                query(where("id").in(Arrays.asList(ids))),
+                TokenQueueEntity.class,
+                TABLE
             );
         } catch (NullPointerException e) {
             String[] cleanedIds = Arrays.stream(ids)
-                    .filter(s -> (s != null))
-                    .toArray(String[]::new);
+                .filter(s -> (s != null))
+                .toArray(String[]::new);
 
             if (cleanedIds.length < ids.length) {
                 LOG.warn("Attempting to recover when getting tokens reason={}", e.getLocalizedMessage());
@@ -128,19 +128,19 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
             mongoTemplate.setWriteConcern(WriteConcern.W3);
         }
         mongoTemplate.updateFirst(
-                query(where("id").is(codeQR)),
-                entityUpdate(update("QS", queueStatus)),
-                TokenQueueEntity.class,
-                TABLE);
+            query(where("id").is(codeQR)),
+            entityUpdate(update("QS", queueStatus)),
+            TokenQueueEntity.class,
+            TABLE);
     }
 
     @Override
     public void resetForNewDay(String codeQR) {
         mongoTemplate.updateFirst(
-                query(where("id").is(codeQR).and("QS").ne(QueueStatusEnum.C)),
-                entityUpdate(update("LN", 0).set("CS", 0).set("QS", QueueStatusEnum.S)),
-                TokenQueueEntity.class,
-                TABLE);
+            query(where("id").is(codeQR).and("QS").ne(QueueStatusEnum.C)),
+            entityUpdate(update("LN", 0).set("CS", 0).set("QS", QueueStatusEnum.S)),
+            TokenQueueEntity.class,
+            TABLE);
     }
 
     @Override

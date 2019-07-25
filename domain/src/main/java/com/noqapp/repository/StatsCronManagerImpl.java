@@ -24,18 +24,18 @@ import java.util.List;
  * Date: 12/10/16 8:01 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class StatsCronManagerImpl implements StatsCronManager {
     private static final Logger LOG = LoggerFactory.getLogger(StatsCronManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            StatsCronEntity.class,
-            Document.class,
-            "collection");
+        StatsCronEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -63,9 +63,9 @@ public class StatsCronManagerImpl implements StatsCronManager {
     @Override
     public List<StatsCronEntity> getHistoricalData(String task, int limit) {
         return mongoTemplate.find(
-                query(where("TN").is(task)).with(new Sort(Sort.Direction.DESC, "C")).limit(10),
-                StatsCronEntity.class,
-                TABLE
+            query(where("TN").is(task)).with(new Sort(Sort.Direction.DESC, "C")).limit(10),
+            StatsCronEntity.class,
+            TABLE
         );
     }
 }
