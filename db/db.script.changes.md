@@ -1,7 +1,7 @@
 ### Change July 20 2019
 
     db.getCollection('BIZ_STORE').update({}, {$unset: {PE:""}}, {multi: true});
-    db.getCollection('BIZ_STORE').update({}, {set: {PS:"O"}}, {multi: true});
+    db.getCollection('BIZ_STORE').update({}, {$set: {PS:"O"}}, {multi: true});
 
 ### Change June 4 2019
 
