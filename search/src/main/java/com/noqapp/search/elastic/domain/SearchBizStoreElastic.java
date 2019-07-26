@@ -6,6 +6,7 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.AmenityEnum;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
@@ -150,6 +151,21 @@ public class SearchBizStoreElastic extends AbstractDomain {
 
     @JsonProperty("SH")
     private List<StoreHourElastic> storeHourElasticList = new ArrayList<>();
+
+    @JsonProperty("EP")
+    private boolean enabledPayment = false;
+
+    @JsonProperty("PP")
+    private int productPrice;
+
+    @JsonProperty("PS")
+    private AppointmentStateEnum appointmentState;
+
+    @JsonProperty("PD")
+    private int appointmentDuration;
+
+    @JsonProperty("PF")
+    private int appointmentOpenHowFar;
 
     @Transient
     @JsonProperty("BI")
@@ -454,6 +470,51 @@ public class SearchBizStoreElastic extends AbstractDomain {
 
     public SearchBizStoreElastic setStoreHourElasticList(List<StoreHourElastic> storeHourElasticList) {
         this.storeHourElasticList = storeHourElasticList;
+        return this;
+    }
+
+    public boolean isEnabledPayment() {
+        return enabledPayment;
+    }
+
+    public SearchBizStoreElastic setEnabledPayment(boolean enabledPayment) {
+        this.enabledPayment = enabledPayment;
+        return this;
+    }
+
+    public int getProductPrice() {
+        return productPrice;
+    }
+
+    public SearchBizStoreElastic setProductPrice(int productPrice) {
+        this.productPrice = productPrice;
+        return this;
+    }
+
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
+    }
+
+    public SearchBizStoreElastic setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
+        return this;
+    }
+
+    public int getAppointmentDuration() {
+        return appointmentDuration;
+    }
+
+    public SearchBizStoreElastic setAppointmentDuration(int appointmentDuration) {
+        this.appointmentDuration = appointmentDuration;
+        return this;
+    }
+
+    public int getAppointmentOpenHowFar() {
+        return appointmentOpenHowFar;
+    }
+
+    public SearchBizStoreElastic setAppointmentOpenHowFar(int appointmentOpenHowFar) {
+        this.appointmentOpenHowFar = appointmentOpenHowFar;
         return this;
     }
 
