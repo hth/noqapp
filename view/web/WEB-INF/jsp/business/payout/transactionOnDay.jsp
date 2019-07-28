@@ -55,16 +55,15 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Current Transactions</h3>
+                        <c:set var="currentPage" value="${requestScope['javax.servlet.forward.request_uri']}"/>
+                        <c:set var="splitURI" value="${fn:split(currentPage, '/ .')}"/>
+                        <c:set var="lastValue" value="${splitURI[fn:length(splitURI)-2]}"/>
+                        <h3>Transaction on day: <c:out value="${lastValue}"></c:out></h3>
 
                         <div class="add-store">
-                            <div class="addbtn-store">
-<%--                                <a href="/business/payout/couponUsed.htm" class="add-btn">Coupon Used</a>--%>
-                                <a href="/business/payout/historical.htm" class="add-btn">Earnings</a>
-                            </div>
                             <div class="store-table">
-                            <c:choose>
-                                <c:when test="${fn:length(payoutLandingForm.purchaseOrders) gt 0}">
+                                <c:choose>
+                                    <c:when test="${fn:length(payoutLandingForm.purchaseOrders) gt 0}">
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <th>&nbsp;</th>
@@ -75,42 +74,40 @@
                                             <th>Transaction Message</th>
                                         </tr>
                                         <c:forEach items="${payoutLandingForm.purchaseOrders}" var="item" varStatus="status">
-                                        <tr>
-                                            <td>
-                                                <span style="display:block; font-size:13px;">${status.count}</span>
-                                            </td>
-                                            <td nowrap>
-                                                <span style="display:block; font-size:13px;">${item.customerName}</span>
-                                                <span style="display:block; font-size:13px;">${item.customerPhone}</span>
-                                                <span style="display:block; font-size:13px;">Token/Order: <b style="color: #1b1b1b;">${item.tokenNumber}</b></span>
-                                            </td>
-                                            <td nowrap>
-                                                <span style="display:block; font-size:13px;">${item.displayName}</span>
-                                            </td>
-                                            <td>
-                                                <span style="display:block; font-size:13px;"><b style="color: #1b1b1b;">${item.orderPriceForDisplay}</b></span>
-                                                <c:if test="${fn:length(item.partialPayment) gt 0}">
-                                                <span style="display:block; font-size:12px; color:red;">Partial: ${item.partialPaymentForDisplay}</span>
-                                                </c:if>
-                                                <c:if test="${fn:length(item.couponId) gt 0}">
-                                                <span style="display:block; font-size:12px; color:red;">Used Coupon</span>
-                                                </c:if>
-                                            </td>
-                                            <td>
-                                                <c:choose>
-                                                <c:when test="${item.paymentStatus eq PaymentStatusEnum.PA}">
-                                                    <span style="display:block; font-size:13px;"><b style="color: darkgreen;">${item.paymentStatus.description}</b> via <b style="color: #1b1b1b;">${item.paymentMode.description}</b></span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span style="display:block; font-size:13px;"><b style="color: darkred;">${item.paymentStatus.description}</b></span>
-                                                </c:otherwise>
-                                                </c:choose>
-<%--                                                <span style="display:block; font-size:13px;">Payment Mode: <b style="color: #1b1b1b;">${item.paymentMode.description}</b></span>--%>
-<%--                                                <span style="display:block; font-size:13px;">Order State: <b style="color: #1b1b1b;">${item.presentOrderState.description}</b></span>--%>
-                                            </td>
-                                            <td>
-                                                <span style="display:block; font-size:13px;">&nbsp;${item.transactionMessage}</span>
-                                                <span style="display:block; font-size:13px;">
+                                            <tr>
+                                                <td>
+                                                    <span style="display:block; font-size:13px;">${status.count}</span>
+                                                </td>
+                                                <td nowrap>
+                                                    <span style="display:block; font-size:13px;">${item.customerName}</span>
+                                                    <span style="display:block; font-size:13px;">${item.customerPhone}</span>
+                                                    <span style="display:block; font-size:13px;">Token/Order: <b style="color: #1b1b1b;">${item.tokenNumber}</b></span>
+                                                </td>
+                                                <td nowrap>
+                                                    <span style="display:block; font-size:13px;">${item.displayName}</span>
+                                                </td>
+                                                <td>
+                                                    <span style="display:block; font-size:13px;"><b style="color: #1b1b1b;">${item.orderPriceForDisplay}</b></span>
+                                                    <c:if test="${fn:length(item.partialPayment) gt 0}">
+                                                    <span style="display:block; font-size:12px; color:red;">Partial: ${item.partialPaymentForDisplay}</span>
+                                                    </c:if>
+                                                    <c:if test="${fn:length(item.couponId) gt 0}">
+                                                    <span style="display:block; font-size:12px; color:red;">Used Coupon</span>
+                                                    </c:if>
+                                                </td>
+                                                <td>
+                                                    <c:choose>
+                                                    <c:when test="${item.paymentStatus eq PaymentStatusEnum.PA}">
+                                                        <span style="display:block; font-size:13px;"><b style="color: darkgreen;">${item.paymentStatus.description}</b> via <b style="color: #1b1b1b;">${item.paymentMode.description}</b></span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span style="display:block; font-size:13px;"><b style="color: darkred;">${item.paymentStatus.description}</b></span>
+                                                    </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <span style="display:block; font-size:13px;">&nbsp;${item.transactionMessage}</span>
+                                                    <span style="display:block; font-size:13px;">
                                                     <c:choose>
                                                         <c:when test="${item.transactionVia eq TransactionViaEnum.I}">
                                                             <span style="display:block; font-size:13px;"><b style="color: darkgreen;">&nbsp;Payment Through NoQueue</b></span>
@@ -122,21 +119,19 @@
                                                             <span style="display:block; font-size:13px;"><b style="color: darkred;">&nbsp;N/A</b></span>
                                                         </c:otherwise>
                                                     </c:choose>
-                                                </span>
-                                                <span style="display:block; font-size:13px;">
-                                                    &nbsp;Date Time: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${item.created}"/>
-                                                </span>
-                                            </td>
-                                        </tr>
+                                                    </span>
+                                                    <span style="display:block; font-size:13px;">&nbsp;Date Time: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${item.created}"/></span>
+                                                </td>
+                                            </tr>
                                         </c:forEach>
                                     </table>
-                                </c:when>
-                                <c:otherwise>
+                                    </c:when>
+                                    <c:otherwise>
                                     <div class="alert-info">
                                         <p>No transaction for the day</p>
                                     </div>
-                                </c:otherwise>
-                            </c:choose>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>

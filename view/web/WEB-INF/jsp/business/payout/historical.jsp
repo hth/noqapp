@@ -59,7 +59,7 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/payout/couponUsed.htm" class="add-btn">Coupon Used</a>
+<%--                                <a href="/business/payout/couponUsed.htm" class="add-btn">Coupon Used</a>--%>
                             </div>
                             <div class="store-table">
                             <c:choose>
@@ -80,7 +80,7 @@
                                                 <span style="display:block; font-size:13px;">${status.count}</span>
                                             </td>
                                             <td>
-                                                <span style="display:block; font-size:13px;">${item.key}</span>
+                                                <span style="display:block; font-size:13px;"><a href="/business/payout/transactionOnDay/${item.key}.htm" target="_blank">${item.key}</a></span>
                                             </td>
                                             <td nowrap>
                                                 <span style="display:block; font-size:13px;">${item.value.deliveryMode.description}</span>
