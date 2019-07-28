@@ -80,7 +80,7 @@
                                                 <span style="display:block; font-size:13px;">${status.count}</span>
                                             </td>
                                             <td>
-                                                <span style="display:block; font-size:13px;"><a href="/business/payout/transactionByDate/${item.key}.htm" target="_blank">${item.key}</a></span>
+                                                <span style="display:block; font-size:13px;"><a href="/business/payout/transactionOnDay/${item.key}.htm" target="_blank">${item.key}</a></span>
                                             </td>
                                             <td nowrap>
                                                 <span style="display:block; font-size:13px;">${item.value.deliveryMode.description}</span>

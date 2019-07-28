@@ -47,8 +47,7 @@ public class PayoutService {
     public List<PurchaseOrderEntity> findTransactionOnDay(String bizNameId, String day) {
         Assert.isTrue(DateUtil.DOB_PATTERN.matcher(day).matches(), "Day pattern does not match");
         LocalDate localDate = LocalDate.parse(day);
-        LocalDate until = localDate.plusDays(1);
-        return purchaseOrderManagerJDBC.findTransactionBetweenDays(bizNameId, DateUtil.asDate(localDate), DateUtil.asDate(until));
+        return purchaseOrderManagerJDBC.findTransactionBetweenDays(bizNameId, DateUtil.asDate(localDate), DateUtil.asDate(localDate.plusDays(1)));
     }
 
     public List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId) {

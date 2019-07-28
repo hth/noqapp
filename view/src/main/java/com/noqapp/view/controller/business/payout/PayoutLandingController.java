@@ -46,7 +46,7 @@ public class PayoutLandingController {
 
     private String nextPage;
     private String historicalTransactionPage;
-    private String transactionByDatePage;
+    private String transactionOnDayPage;
 
     private BusinessUserService businessUserService;
     private PayoutService payoutService;
@@ -59,15 +59,15 @@ public class PayoutLandingController {
         @Value("${historicalTransactionPage:/business/payout/historical}")
         String historicalTransactionPage,
 
-        @Value("${historicalTransactionPage:/business/payout/transactionByDate}")
-        String transactionByDatePage,
+        @Value("${historicalTransactionPage:/business/payout/transactionOnDay}")
+        String transactionOnDayPage,
 
         BusinessUserService businessUserService,
         PayoutService payoutService
     ) {
         this.nextPage = nextPage;
         this.historicalTransactionPage = historicalTransactionPage;
-        this.transactionByDatePage = transactionByDatePage;
+        this.transactionOnDayPage = transactionOnDayPage;
 
         this.businessUserService = businessUserService;
         this.payoutService = payoutService;
@@ -123,8 +123,8 @@ public class PayoutLandingController {
         return historicalTransactionPage;
     }
 
-    @GetMapping(value = "/transactionByDate/{day}", produces = "text/html;charset=UTF-8")
-    public String transactionByDate(
+    @GetMapping(value = "/transactionOnDay/{day}", produces = "text/html;charset=UTF-8")
+    public String transactionOnDay(
         @PathVariable("day")
         ScrubbedInput day,
 
@@ -146,6 +146,6 @@ public class PayoutLandingController {
         String bizNameId = businessUser.getBizName().getId();
         List<PurchaseOrderEntity> purchaseOrders = payoutService.findTransactionOnDay(bizNameId, day.getText());
         payoutLandingForm.setPurchaseOrders(purchaseOrders);
-        return transactionByDatePage;
+        return transactionOnDayPage;
     }
 }
