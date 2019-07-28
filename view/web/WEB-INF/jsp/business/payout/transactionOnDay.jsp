@@ -92,7 +92,7 @@
                                                     <span style="display:block; font-size:12px; color:red;">Partial: ${item.partialPaymentForDisplay}</span>
                                                     </c:if>
                                                     <c:if test="${fn:length(item.couponId) gt 0}">
-                                                    <span style="display:block; font-size:12px; color:red;">Used Coupon</span>
+                                                        <span style="display:block; font-size:12px;"><a href="/business/payout/coupon/${item.couponId}.htm">Used Coupon</a></span>
                                                     </c:if>
                                                 </td>
                                                 <td>

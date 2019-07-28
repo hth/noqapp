@@ -71,6 +71,10 @@ public class CouponService {
         return couponManager.findById(couponId);
     }
 
+    public CouponEntity findById(String couponId, String bizNameId) {
+        return couponManager.findById(couponId, bizNameId);
+    }
+
     JsonCoupon findByIdAsJson(String couponId) {
         Assert.hasText(couponId, "Coupon Id cannot be blank");
         CouponEntity coupon = couponManager.findById(couponId);
