@@ -73,8 +73,7 @@
                                 <th nowrap>
                                     Category Name
                                     &nbsp;
-                                    <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                         alt="Sort" height="16px;"/>
+                                    <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png" alt="Sort" height="16px;"/>
                                 </th>
                                 <th>Referred Count</th>
                             </tr>
@@ -83,9 +82,7 @@
                                 <td>${status.count}&nbsp;</td>
                                 <td nowrap>${category.value}</td>
                                 <td nowrap>
-                                    <a href="/business/category/${category.key}/storeByCategory.htm">
-                                            ${categoryLanding.categoryCounts.get(category.key)}
-                                    </a>
+                                    <a href="/business/category/${category.key}/storeByCategory.htm">${categoryLanding.categoryCounts.get(category.key)}</a>
                                 </td>
                             </tr>
                             </c:forEach>
