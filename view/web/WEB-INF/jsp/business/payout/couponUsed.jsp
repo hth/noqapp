@@ -59,7 +59,7 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/payout/balance.htm" class="add-btn">Balance</a>
+                                <a href="/business/payout/historical.htm" class="add-btn">Earnings</a>
                             </div>
                             <div class="store-table">
 

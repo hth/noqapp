@@ -607,7 +607,8 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                     where("DM").is(DeliveryModeEnum.HD),
                     where("DM").is(DeliveryModeEnum.TO)
                 )),
-            update("PS", PurchaseOrderStateEnum.CO).push("OS", PurchaseOrderStateEnum.CO)
+            update("PS", PurchaseOrderStateEnum.CO)
+                .push("OS", PurchaseOrderStateEnum.CO)
                 .set("PY", PaymentStatusEnum.PC),
             PurchaseOrderEntity.class,
             TABLE
@@ -618,6 +619,15 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     public List<PurchaseOrderEntity> findByBizNameId(String bizNameId) {
         return mongoTemplate.find(
             query(where("BN").is(bizNameId)).with(new Sort(DESC, "C")),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId) {
+        return mongoTemplate.find(
+            query(where("BN").is(bizNameId).and("CI").exists(true)).with(new Sort(DESC, "C")),
             PurchaseOrderEntity.class,
             TABLE
         );

@@ -128,4 +128,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     void cancelOrderWhenBackedAwayFromGateway(String transactionId);
 
     List<PurchaseOrderEntity> findByBizNameId(String bizNameId);
+
+    List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId);
 }

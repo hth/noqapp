@@ -47,4 +47,6 @@ public interface PurchaseOrderManagerJDBC {
 
     @Mobile
     Date clientVisitedStoreAndServicedDate(String codeQR, String qid);
+
+    List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId);
 }
