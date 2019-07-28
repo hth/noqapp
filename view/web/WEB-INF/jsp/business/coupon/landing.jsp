@@ -81,49 +81,49 @@
                                     </tr>
                                     <c:forEach items="${couponForm.coupons}" var="coupon" varStatus="status">
                                     <tr>
-                                        <td>${status.count}&nbsp;</td>
+                                        <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
                                         <td nowrap>
-                                            <b>${coupon.discountName}</b>
+                                            <span style="display:block; font-size:13px;"><b>${coupon.discountName}</b></span>
                                             <br/>
-                                            ${coupon.discountDescription}
+                                            <span style="display:block; font-size:13px;">${coupon.discountDescription}</span>
                                         </td>
                                         <td nowrap>
                                             <c:choose>
                                             <c:when test="${coupon.couponType ne CouponTypeEnum.G}">
-                                                ${coupon.issuedTo}
+                                                <span style="display:block; font-size:13px;">${coupon.issuedTo}</span>
                                                 <br/>
-                                                ${coupon.issuedToPhone}
+                                                <span style="display:block; font-size:13px;">${coupon.issuedToPhone}</span>
                                             </c:when>
                                             <c:otherwise>
-                                                --
+                                                <span style="display:block; font-size:13px;">--</span>
                                             </c:otherwise>
                                             </c:choose>
                                         </td>
                                         <td nowrap>
-                                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponStartDate}"/>
-                                            -
-                                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponEndDate}"/>
+                                            <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponStartDate}"/></span>
+                                            <span style="display:block; font-size:13px;">-</span>
+                                            <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponEndDate}"/></span>
                                         </td>
                                         <td nowrap>
-                                            ${coupon.issuedBy}
+                                            <span style="display:block; font-size:13px;">${coupon.issuedBy}</span>
                                         </td>
                                         <td nowrap>
                                             <c:choose>
                                                 <c:when test="${coupon.multiUse}">
-                                                    Yes
+                                                    <span style="display:block; font-size:13px;">Yes</span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    No
+                                                    <span style="display:block; font-size:13px;">No</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
                                         <td nowrap align="left">
                                             <c:choose>
                                                 <c:when test="${coupon.discountType eq DiscountTypeEnum.F}">
-                                                    Rs ${coupon.discountAmountAsString}
+                                                    <span style="display:block; font-size:13px;">Rs ${coupon.discountAmountAsString}</span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    ${coupon.discountAmount}<span style="font-size: large; font-weight: bold">%</span>
+                                                    <span style="display:block; font-size:13px;">${coupon.discountAmount}<span style="font-size: large; font-weight: bold">%</span></span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
