@@ -2,6 +2,7 @@ package com.noqapp.view.controller.business.payout;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.site.QueueUser;
@@ -20,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
@@ -44,6 +46,7 @@ public class PayoutLandingController {
 
     private String nextPage;
     private String historicalTransactionPage;
+    private String transactionByDatePage;
 
     private BusinessUserService businessUserService;
     private PayoutService payoutService;
@@ -56,11 +59,15 @@ public class PayoutLandingController {
         @Value("${historicalTransactionPage:/business/payout/historical}")
         String historicalTransactionPage,
 
+        @Value("${historicalTransactionPage:/business/payout/transactionByDate}")
+        String transactionByDatePage,
+
         BusinessUserService businessUserService,
         PayoutService payoutService
     ) {
         this.nextPage = nextPage;
         this.historicalTransactionPage = historicalTransactionPage;
+        this.transactionByDatePage = transactionByDatePage;
 
         this.businessUserService = businessUserService;
         this.payoutService = payoutService;
@@ -114,5 +121,31 @@ public class PayoutLandingController {
         List<PurchaseOrderEntity> purchaseOrderUnknown = payoutService.computeEarning(bizNameId, TransactionViaEnum.U, 45);
         historicalTransactionForm.populate(purchaseOrderUnknown);
         return historicalTransactionPage;
+    }
+
+    @GetMapping(value = "/transactionByDate/{day}", produces = "text/html;charset=UTF-8")
+    public String transactionByDate(
+        @PathVariable("day")
+        ScrubbedInput day,
+
+        @ModelAttribute("payoutLandingForm")
+        PayoutLandingForm payoutLandingForm,
+
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Landed on payout page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        String bizNameId = businessUser.getBizName().getId();
+        List<PurchaseOrderEntity> purchaseOrders = payoutService.findTransactionOnDay(bizNameId, day.getText());
+        payoutLandingForm.setPurchaseOrders(purchaseOrders);
+        return transactionByDatePage;
     }
 }

@@ -91,6 +91,12 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         "PURCHASE_ORDER WHERE BN = ? AND (PS LIKE ? or PS LIKE ?) AND TV = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
         "GROUP BY DateOnly, DM, PY ORDER BY DateOnly DESC";
 
+    private static final String transactionOnDay =
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, SD, PP, OP, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+            " FROM " +
+            "PURCHASE_ORDER WHERE BN = ? AND C >= ? AND C < ?" +
+            "ORDER BY C DESC";
+
     private static final String query_by_codeQR =
         "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, SD, PP, OP, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
@@ -315,5 +321,10 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     public List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId) {
         LOG.info("Fetch historical order by bizNameId={}", bizNameId);
         return jdbcTemplate.query(query_where_coupon_applied, new Object[]{bizNameId}, new PurchaseOrderRowMapper());
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> findTransactionBetweenDays(String bizNameId, Date from, Date until) {
+        return jdbcTemplate.query(transactionOnDay, new Object[]{bizNameId, from, until}, new PurchaseOrderRowMapper());
     }
 }
