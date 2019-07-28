@@ -105,13 +105,13 @@ public class PayoutLandingController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         String bizNameId = businessUser.getBizName().getId();
-        historicalTransactionForm.setDurationInDays(30);
+        historicalTransactionForm.setDurationInDays(45);
 
-        List<PurchaseOrderEntity> purchaseOrderInternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.I, 30);
+        List<PurchaseOrderEntity> purchaseOrderInternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.I, 45);
         historicalTransactionForm.populate(purchaseOrderInternal);
-        List<PurchaseOrderEntity> purchaseOrderExternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.E, 30);
+        List<PurchaseOrderEntity> purchaseOrderExternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.E, 45);
         historicalTransactionForm.populate(purchaseOrderExternal);
-        List<PurchaseOrderEntity> purchaseOrderUnknown = payoutService.computeEarning(bizNameId, TransactionViaEnum.U, 30);
+        List<PurchaseOrderEntity> purchaseOrderUnknown = payoutService.computeEarning(bizNameId, TransactionViaEnum.U, 45);
         historicalTransactionForm.populate(purchaseOrderUnknown);
         return historicalTransactionPage;
     }

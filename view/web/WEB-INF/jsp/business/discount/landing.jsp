@@ -79,25 +79,25 @@
                                     </tr>
                                     <c:forEach items="${discountForm.discounts}" var="discount" varStatus="status">
                                     <tr>
-                                        <td>${status.count}&nbsp;</td>
+                                        <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
                                         <td nowrap>
-                                            ${discount.discountName}
+                                            <span style="display:block; font-size:13px;">${discount.discountName}</span>
                                             <br/>
-                                            ${discount.discountDescription}
+                                            <span style="display:block; font-size:13px;">${discount.discountDescription}</span>
                                         </td>
                                         <td nowrap align="left">
                                             <c:choose>
                                                 <c:when test="${discount.discountType eq DiscountTypeEnum.F}">
-                                                    Rs ${discount.discountAmountAsString}
+                                                    <span style="display:block; font-size:13px;">Rs ${discount.discountAmountAsString}</span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    ${discount.discountAmount}<span style="font-size: large; font-weight: bold">%</span>
+                                                    <span style="display:block; font-size:13px;">${discount.discountAmount}<span style="font-size: large; font-weight: bold">%</span></span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        <td>${discount.discountType.description}</td>
-                                        <td>${discount.couponType.description}</td>
-                                        <td>${discount.usageCount}</td>
+                                        <td><span style="display:block; font-size:13px;">${discount.discountType.description}</span></td>
+                                        <td><span style="display:block; font-size:13px;">${discount.couponType.description}</span></td>
+                                        <td><span style="display:block; font-size:13px;">${discount.usageCount}</span></td>
                                         <td>
                                             <c:choose>
                                             <c:when test="${discount.active}">
@@ -108,7 +108,7 @@
                                                 </form:form>
                                             </c:when>
                                             <c:when test="${discount.canDeletedAfterDays > 0}">
-                                                Available to delete in ${discount.canDeletedAfterDays} days
+                                                <span style="display:block; font-size:13px;">Available to delete in ${discount.canDeletedAfterDays} days</span>
                                             </c:when>
                                             <c:otherwise>
                                                 <form:form action="${pageContext.request.contextPath}/business/discount/action.htm" modelAttribute="discountForm" method="post">

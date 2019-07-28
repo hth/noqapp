@@ -1,5 +1,7 @@
 package com.noqapp.view.form.business.payout;
 
+import com.noqapp.domain.types.DeliveryModeEnum;
+import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
 import java.util.Date;
@@ -11,6 +13,8 @@ import java.util.Date;
 public class TransactionForm {
 
     private Date dayOfTransaction;
+    private DeliveryModeEnum deliveryMode;
+    private PaymentStatusEnum paymentStatus;
     private String internalTransaction;
     private String externalTransaction;
     private String unknownTransaction;
@@ -23,6 +27,24 @@ public class TransactionForm {
 
     public TransactionForm setDayOfTransaction(Date dayOfTransaction) {
         this.dayOfTransaction = dayOfTransaction;
+        return this;
+    }
+
+    public DeliveryModeEnum getDeliveryMode() {
+        return deliveryMode;
+    }
+
+    public TransactionForm setDeliveryMode(DeliveryModeEnum deliveryMode) {
+        this.deliveryMode = deliveryMode;
+        return this;
+    }
+
+    public PaymentStatusEnum getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public TransactionForm setPaymentStatus(PaymentStatusEnum paymentStatus) {
+        this.paymentStatus = paymentStatus;
         return this;
     }
 

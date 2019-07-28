@@ -4,6 +4,7 @@ import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.annotation.CustomTransactional;
 import com.noqapp.domain.mapper.PurchaseOrderRowMapper;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
@@ -64,6 +65,11 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             " FROM " +
             "PURCHASE_ORDER WHERE TI = ? ";
 
+    private static final String query_where_coupon_applied =
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, SD, PP, OP, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+            " FROM " +
+            "PURCHASE_ORDER WHERE BN = ? AND CI <> ? ";
+
     private static final String query_by_qid_where_ps =
         "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, SD, PP, OP, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
@@ -80,10 +86,10 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String computeEarning =
-        "SELECT SUM(OP), DATE(C) DateOnly" +
+        "SELECT SUM(OP), DM, PY, DATE(C) DateOnly" +
         " FROM " +
-        "PURCHASE_ORDER WHERE BN = ? AND PS = ? AND TV = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
-        "GROUP BY DateOnly ORDER BY DateOnly DESC";
+        "PURCHASE_ORDER WHERE BN = ? AND (PS LIKE ? or PS LIKE ?) AND TV = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
+        "GROUP BY DateOnly, DM, PY ORDER BY DateOnly DESC";
 
     private static final String query_by_codeQR =
         "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, SD, PP, OP, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
@@ -265,12 +271,14 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     public List<PurchaseOrderEntity> computeEarning(String bizNameId, TransactionViaEnum transactionVia, int durationInDays) {
         return jdbcTemplate.query(
             computeEarning,
-            new Object[]{bizNameId, PurchaseOrderStateEnum.OD.name(), transactionVia.name(), durationInDays},
+            new Object[]{bizNameId, PurchaseOrderStateEnum.OD.name(), PurchaseOrderStateEnum.PO.name(), transactionVia.name(), durationInDays},
             (rs, rowNum) -> {
                 PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(null, null, bizNameId, null)
                     .setTransactionVia(transactionVia)
-                    .setOrderPrice(rs.getString(1));
-                purchaseOrder.setCreated(rs.getDate(2));
+                    .setOrderPrice(rs.getString(1))
+                    .setDeliveryMode(DeliveryModeEnum.valueOf(rs.getString(2)))
+                    .setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(3)));
+                purchaseOrder.setCreated(rs.getDate(4));
                 return purchaseOrder;
             }
         );
@@ -301,5 +309,11 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             //TODO fix this error or query
             return null;
         }
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId) {
+        LOG.info("Fetch historical order by bizNameId={}", bizNameId);
+        return jdbcTemplate.query(query_where_coupon_applied, new Object[]{bizNameId}, new PurchaseOrderRowMapper());
     }
 }

@@ -49,13 +49,22 @@ public class HistoricalTransactionForm {
     private void populateExistingForm(TransactionForm transactionForm, TransactionForm existingForm) {
         switch (transactionForm.getTransactionVia()) {
             case E:
-                existingForm.setExternalTransaction(transactionForm.getExternalTransaction());
+                existingForm
+                    .setDeliveryMode(transactionForm.getDeliveryMode())
+                    .setPaymentStatus(transactionForm.getPaymentStatus())
+                    .setExternalTransaction(transactionForm.getExternalTransaction());
                 break;
             case I:
-                existingForm.setInternalTransaction(transactionForm.getExternalTransaction());
+                existingForm
+                    .setDeliveryMode(transactionForm.getDeliveryMode())
+                    .setPaymentStatus(transactionForm.getPaymentStatus())
+                    .setInternalTransaction(transactionForm.getExternalTransaction());
                 break;
             case U:
-                existingForm.setUnknownTransaction(transactionForm.getExternalTransaction());
+                existingForm
+                    .setDeliveryMode(transactionForm.getDeliveryMode())
+                    .setPaymentStatus(transactionForm.getPaymentStatus())
+                    .setUnknownTransaction(transactionForm.getExternalTransaction());
                 break;
         }
     }
@@ -63,6 +72,8 @@ public class HistoricalTransactionForm {
     public void populate(List<PurchaseOrderEntity> purchaseOrders) {
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             TransactionForm transactionForm = new TransactionForm()
+                .setDeliveryMode(purchaseOrder.getDeliveryMode())
+                .setPaymentStatus(purchaseOrder.getPaymentStatus())
                 .setDayOfTransaction(purchaseOrder.getCreated())
                 .setExternalTransaction(MathUtil.displayPrice(purchaseOrder.getOrderPrice()))
                 .setTransactionVia(purchaseOrder.getTransactionVia());

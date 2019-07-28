@@ -40,4 +40,13 @@ public class PayoutService {
     public List<PurchaseOrderEntity> computeEarning(String bizNameId, TransactionViaEnum transactionVia, int durationInDays) {
         return purchaseOrderManagerJDBC.computeEarning(bizNameId, transactionVia, durationInDays);
     }
+
+    public List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId) {
+        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManager.findPurchaseMadeUsingCoupon(bizNameId);
+        List<PurchaseOrderEntity> purchaseOrdersHistorical = purchaseOrderManagerJDBC.findPurchaseMadeUsingCoupon(bizNameId);
+        if (null != purchaseOrdersHistorical && !purchaseOrdersHistorical.isEmpty()) {
+            purchaseOrders.addAll(purchaseOrdersHistorical);
+        }
+        return purchaseOrdersHistorical;
+    }
 }

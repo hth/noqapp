@@ -55,11 +55,11 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Transactions</h3>
+                        <h3>Current Transactions</h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/payout/balance.htm" class="add-btn">Balance</a>
+                                <a href="/business/payout/couponUsed.htm" class="add-btn">Coupon Used</a>
                                 <a href="/business/payout/historical.htm" class="add-btn">Earnings</a>
                             </div>
                             <div class="store-table">

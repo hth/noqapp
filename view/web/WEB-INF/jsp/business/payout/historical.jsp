@@ -55,12 +55,11 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Transactions: <span>${historicalTransactionForm.historicalTransaction.size()}</span></h3>
+                        <h3>Earnings: <span>${historicalTransactionForm.historicalTransaction.size()}</span></h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/payout/balance.htm" class="add-btn">Balance</a>
-                                <a href="/business/payout/historical.htm" class="add-btn">Earnings</a>
+                                <a href="/business/payout/couponUsed.htm" class="add-btn">Coupon Used</a>
                             </div>
                             <div class="store-table">
                             <c:choose>
@@ -69,6 +68,8 @@
                                         <tr>
                                             <th>&nbsp;</th>
                                             <th nowrap>Date</th>
+                                            <th nowrap>Delivery Mode</th>
+                                            <th nowrap>Payment Status</th>
                                             <th nowrap>Through NoQueue</th>
                                             <th>At Counter</th>
                                             <th>Unknown</th>
@@ -82,6 +83,12 @@
                                                 <span style="display:block; font-size:13px;">${item.key}</span>
                                             </td>
                                             <td nowrap>
+                                                <span style="display:block; font-size:13px;">${item.value.deliveryMode.description}</span>
+                                            </td>
+                                            <td nowrap>
+                                                <span style="display:block; font-size:13px;">${item.value.paymentStatus.description}</span>
+                                            </td>
+                                            <td nowrap>
                                                 <span style="display:block; font-size:13px;">${item.value.internalTransaction}</span>
                                             </td>
                                             <td nowrap>
@@ -93,6 +100,8 @@
                                         </tr>
                                         </c:forEach>
                                     </table>
+                                    <br/>
+                                    <h4 style="display:block; font-size:13px; float: right;">Records for last ${historicalTransactionForm.durationInDays} days</h4>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="alert-info">
