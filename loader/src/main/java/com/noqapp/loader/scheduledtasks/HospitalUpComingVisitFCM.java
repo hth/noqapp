@@ -51,12 +51,10 @@ public class HospitalUpComingVisitFCM {
     private MailService mailService;
     private StatsCronService statsCronService;
 
-    private StatsCronEntity statsCron;
-
     @Autowired
     public HospitalUpComingVisitFCM(
         @Value("${HospitalUpComingVisitFCM.notifyVisit.switch:ON}")
-            String notifyVisitSwitch,
+        String notifyVisitSwitch,
 
         HospitalVisitScheduleManager hospitalVisitScheduleManager,
         UserProfileManager userProfileManager,
@@ -109,7 +107,7 @@ public class HospitalUpComingVisitFCM {
                 rootMap.put("message", body);
 
                 mailService.sendAnyMail(
-                    userProfileGuardian == null ? userProfile.getQueueUserId() : userProfileGuardian.getQueueUserId(),
+                    userProfileGuardian == null ? userProfile.getEmail() : userProfileGuardian.getEmail(),
                     userProfileGuardian == null ? userProfile.getName() : userProfileGuardian.getName(),
                     title,
                     rootMap,
