@@ -19,6 +19,7 @@ public enum UserLevelEnum {
 
     /* Maintain the order otherwise there could be bug. Client is always less than Queue Supervisor. */
     Q_SUPERVISOR("Queue Supervisor", 22),
+    A_SUPERVISOR("Asset Supervisor", 23),
     S_MANAGER("Store Manager", 24),
     M_ACCOUNTANT("Merchant Accountant", 26),
     M_ADMIN("Merchant Admin", 29),
@@ -63,7 +64,7 @@ public enum UserLevelEnum {
      * @since 12/22/2017
      */
     public static List<UserLevelEnum> allowedBusinessUserLevel() {
-        return Arrays.asList(Q_SUPERVISOR, M_ACCOUNTANT, S_MANAGER);
+        return Arrays.asList(Q_SUPERVISOR, A_SUPERVISOR, M_ACCOUNTANT, S_MANAGER);
     }
 
     @Override

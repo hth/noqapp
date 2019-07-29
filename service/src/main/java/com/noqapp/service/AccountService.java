@@ -580,6 +580,15 @@ public class AccountService {
                 }
                 userAccount.setRoles(roles);
                 break;
+            case A_SUPERVISOR:
+                if (!userAccount.isPhoneValidated()) {
+                    roles.add(RoleEnum.ROLE_MAS);
+                } else {
+                    roles.add(RoleEnum.ROLE_CLIENT);
+                    roles.add(RoleEnum.ROLE_MAS);
+                }
+                userAccount.setRoles(roles);
+                break;
             case S_MANAGER:
                 if (!userAccount.isPhoneValidated()) {
                     roles.add(RoleEnum.ROLE_S_MANAGER);
