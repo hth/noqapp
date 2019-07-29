@@ -24,6 +24,9 @@ public enum RoleEnum {
     /** A Store manager. */
     ROLE_S_MANAGER,
 
+    /** A Merchant Asset Supervisor for a business. */
+    ROLE_MAS,
+
     /** A Merchant bursar for a business. */
     ROLE_M_ACCOUNTANT,
 
