@@ -480,6 +480,17 @@ project(':medical') {
     }
 }
 
+project(':inventory') {
+    jar.archiveBaseName = archiveName + '-inventory'
+
+    dependencies {
+        compile project(':common'),
+                project(':domain'),
+                project(':health'),
+                project(':service')
+    }
+}
+
 project(':view') {
     apply plugin: 'war'
     jar.archiveBaseName = archiveName + '-view'
@@ -1014,6 +1025,28 @@ publishing {
         medical(MavenPublication) {
             artifactId 'medical'
             artifact "medical/build/libs/$archiveName" + '-medical-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'NoQueue Web')
+                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('inceptionYear', '2016')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2016-2019. All rights reserved.')
+                license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
+                license.appendNode('distribution', 'NoQueue private repository')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'NoQueue')
+                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('email', 'contact@noqapp.com')
+            }
+        }
+
+        inventory(MavenPublication) {
+            artifactId 'inventory'
+            artifact "inventory/build/libs/$archiveName" + '-inventory-' + version + '.jar'
 
             pom.withXml {
                 def root = asNode()

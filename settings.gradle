@@ -5,6 +5,7 @@ include "common",
         "service",
         "search",
         "medical",
+        "inventory",
         "social",
         "view",
         "loader"
