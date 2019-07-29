@@ -1,11 +1,14 @@
 package com.noqapp.view.form.business;
 
+import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.DiscountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.CouponTypeEnum;
 import com.noqapp.domain.types.DiscountTypeEnum;
+
+import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -284,5 +287,10 @@ public class CouponForm implements Serializable {
     public CouponForm addUserProfile(UserProfileEntity userProfile) {
         this.userProfiles.add(userProfile);
         return this;
+    }
+
+    @Transient
+    public String getDiscountAmountAsString() {
+        return MathUtil.displayPrice(discountAmount);
     }
 }
