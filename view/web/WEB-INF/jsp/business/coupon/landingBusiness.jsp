@@ -32,7 +32,9 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
+                        <sec:authorize access="hasRole('ROLE_M_ADMIN')">
                         <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
+                        </sec:authorize>
                         <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
                         <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
