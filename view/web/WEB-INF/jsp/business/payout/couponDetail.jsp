@@ -90,7 +90,7 @@
                                                         <form:label path="discountAmount" cssErrorClass="lb_error">Coupon Amount</form:label>
                                                     </div>
                                                     <div class="col-fields">
-                                                        <form:input path="discountAmount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                                        <form:input path="discountAmountAsString" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
