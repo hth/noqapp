@@ -52,7 +52,7 @@
     <div class="content">
         <div class="warp-inner">
             <!-- Add New Supervisor -->
-            <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')">
+            <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_Q_SUPERVISOR', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')">
                 <div class="admin-main">
                     <form:form modelAttribute="couponForm">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
