@@ -201,4 +201,20 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
         LOG.info("Updated record for qid={} userLevel={} count={}", qid, userLevel, updateResult.getModifiedCount());
         return updateResult.getModifiedCount();
     }
+
+    @Override
+    public boolean hasAccess(String qid, String bizNameId) {
+        Query query = query(where("QID").is(qid)
+            .andOperator(
+                isActive(),
+                isNotDeleted()
+            )
+        );
+
+        if (null != bizNameId) {
+            query.addCriteria(where("B_N.$id").is(new ObjectId(bizNameId)));
+        }
+
+        return mongoTemplate.exists(query, BusinessUserEntity.class, TABLE);
+    }
 }

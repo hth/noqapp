@@ -80,7 +80,12 @@ public class CheckAssetManagerImpl implements CheckAssetManager {
     }
 
     @Override
-    public void deleteHard(CheckAssetEntity object) {
+    public CheckAssetEntity findById(String id) {
+        return mongoTemplate.findById(id, CheckAssetEntity.class, TABLE);
+    }
 
+    @Override
+    public void deleteHard(CheckAssetEntity object) {
+        mongoTemplate.remove(object);
     }
 }

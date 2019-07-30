@@ -1,6 +1,7 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BusinessUserManager;
@@ -135,5 +136,10 @@ public class BusinessUserService {
 
     long updateUserLevel(String qid, UserLevelEnum userLevel) {
         return businessUserManager.updateUserLevel(qid, userLevel);
+    }
+
+    @Mobile
+    public boolean hasAccess(String qid, String bizNameId) {
+        return businessUserManager.hasAccess(qid, bizNameId);
     }
 }

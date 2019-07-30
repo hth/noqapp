@@ -16,4 +16,6 @@ public interface CheckAssetManager extends RepositoryManager<CheckAssetEntity> {
     List<String> findDistinctRoomsOnFloor(String bizNameId, String floor);
 
     List<CheckAssetEntity> findAssetInRoom(String bizNameId, String floor, String room);
+
+    CheckAssetEntity findById(String id);
 }
