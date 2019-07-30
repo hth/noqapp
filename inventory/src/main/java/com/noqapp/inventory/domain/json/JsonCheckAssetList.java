@@ -4,6 +4,7 @@ import com.noqapp.common.utils.AbstractDomain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.LinkedList;
@@ -29,6 +30,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonCheckAssetList extends AbstractDomain {
 
+    @JsonProperty("cas")
     private List<JsonCheckAsset> jsonCheckAssets = new LinkedList<>();
 
     public List<JsonCheckAsset> getJsonCheckAssets() {
