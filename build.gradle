@@ -505,6 +505,7 @@ project(':view') {
                 project(':domain'),
                 project(':health'),
                 project(':security'),
+                project(':inventory'),
                 project(':medical'),
                 project(':social'),
                 project(':service'),
@@ -521,6 +522,7 @@ task copyJars(type: Copy) {
     from 'domain/build/libs'
     from 'health/build/libs'
     from 'security/build/libs'
+    from 'inventory/build/libs'
     from 'medical/build/libs'
     from 'service/build/libs'
     from 'search/build/libs'
