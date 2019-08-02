@@ -105,7 +105,7 @@ public class MasterLabController {
             MasterLabController.class.getName(),
             Duration.between(start, Instant.now()),
             HealthStatusEnum.G);
-        return "/emp/medical/bulk";
+        return empMedicalLanding;
     }
 
     @PostMapping(value = "/bulk/upload", params = "cancel_Upload")
@@ -199,7 +199,7 @@ public class MasterLabController {
         boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Downloading master med lab data as CSV tar qid={} healthCareService={}", queueUser.getQueueUserId());
+        LOG.info("Downloading master med lab data as CSV tar qid={}", queueUser.getQueueUserId());
 
         try (DefaultFileSystemManager manager = new StandardFileSystemManager()) {
             manager.init();
