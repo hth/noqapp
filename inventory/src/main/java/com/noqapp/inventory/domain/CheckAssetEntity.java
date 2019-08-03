@@ -2,6 +2,7 @@ package com.noqapp.inventory.domain;
 
 import com.noqapp.domain.BaseEntity;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -69,5 +70,10 @@ public class CheckAssetEntity extends BaseEntity {
     public CheckAssetEntity setAssetName(String assetName) {
         this.assetName = assetName;
         return this;
+    }
+
+    @Transient
+    public String toCommaSeparatedString() {
+        return assetName + "," + roomNumber + "," + floor + "," + id;
     }
 }

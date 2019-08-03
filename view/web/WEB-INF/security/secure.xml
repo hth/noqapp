@@ -135,6 +135,9 @@
         <intercept-url pattern="/business/payout/**"
                        access="hasRole('ROLE_M_ACCOUNTANT')" />
 
+        <intercept-url pattern="/business/inventory/**"
+                       access="hasRole('ROLE_MAS')" />
+
         <intercept-url pattern="/medical/**"
                        access="hasAnyRole('ROLE_S_MANAGER', 'ROLE_Q_SUPERVISOR')" />
 

@@ -1,16 +1,18 @@
-package com.noqapp.view.controller.emp.medical;
+package com.noqapp.view.controller.business.inventory;
 
 import static com.noqapp.view.controller.access.UserProfileController.getMultipartFiles;
 
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.medical.service.MasterLabService;
-import com.noqapp.service.FtpService;
+import com.noqapp.inventory.service.CheckAssetService;
+import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.exceptions.CSVParsingException;
 import com.noqapp.service.exceptions.CSVProcessingException;
 import com.noqapp.service.exceptions.FailedTransactionException;
-import com.noqapp.view.form.emp.medical.MasterLabForm;
+import com.noqapp.view.controller.emp.medical.MasterLabController;
+import com.noqapp.view.form.business.inventory.AssetForm;
 import com.noqapp.view.validator.CSVFileValidator;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -50,41 +52,44 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * hitender
- * 2018-12-11 10:32
+ * User: hitender
+ * Date: 2019-08-01 07:15
  */
 @Controller
-@RequestMapping(value = "/emp/medical/masterLab")
-public class MasterLabController {
-    private static final Logger LOG = LoggerFactory.getLogger(EmpMedicalLandingController.class);
+@RequestMapping(value = "/business/inventory/asset")
+public class CheckAssetBulkController {
+    private static final Logger LOG = LoggerFactory.getLogger(CheckAssetBulkController.class);
 
     private String empMedicalLanding;
 
     private CSVFileValidator csvFileValidator;
-    private MasterLabService masterLabService;
+    private CheckAssetService checkAssetService;
+    private BusinessUserService businessUserService;
     private ApiHealthService apiHealthService;
 
     @Autowired
-    public MasterLabController(
-        @Value("${empMedicalLanding:/emp/medical/bulk}")
+    public CheckAssetBulkController(
+        @Value("${empMedicalLanding:/business/inventory/asset/bulk}")
         String empMedicalLanding,
 
         CSVFileValidator csvFileValidator,
-        MasterLabService masterLabService,
+        CheckAssetService checkAssetService,
+        BusinessUserService businessUserService,
         ApiHealthService apiHealthService
     ) {
         this.empMedicalLanding = empMedicalLanding;
 
         this.csvFileValidator = csvFileValidator;
-        this.masterLabService = masterLabService;
+        this.checkAssetService = checkAssetService;
+        this.businessUserService = businessUserService;
         this.apiHealthService = apiHealthService;
     }
 
     /** Gymnastic for PRG. */
     @GetMapping(value = "/bulk")
     public String bulk(
-        @ModelAttribute("masterLabForm")
-        MasterLabForm masterLabForm,
+        @ModelAttribute("assetForm")
+        AssetForm assetForm,
 
         Model model,
         RedirectAttributes redirectAttrs,
@@ -96,7 +101,7 @@ public class MasterLabController {
 
         /* Different binding for different form. */
         if (model.asMap().containsKey("resultImage")) {
-            model.addAttribute("org.springframework.validation.BindingResult.masterLabForm", model.asMap().get("resultImage"));
+            model.addAttribute("org.springframework.validation.BindingResult.assetForm", model.asMap().get("resultImage"));
         }
 
         apiHealthService.insert(
@@ -110,13 +115,13 @@ public class MasterLabController {
 
     @PostMapping(value = "/bulk/upload", params = "cancel_Upload")
     public String cancel() {
-        return "redirect:/emp/medical/landing.htm";
+        return "redirect:/business/inventory/landing.htm";
     }
 
     @PostMapping(value = "/bulk/upload", params = "upload")
     public String upload(
-        @ModelAttribute("masterLabForm")
-        MasterLabForm masterLabForm,
+        @ModelAttribute("assetForm")
+        AssetForm assetForm,
 
         BindingResult result,
         RedirectAttributes redirectAttrs,
@@ -125,7 +130,8 @@ public class MasterLabController {
         boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Uploading data to master lab {} as CSV qid={}", masterLabForm.getHealthCareService(), queueUser.getQueueUserId());
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        LOG.info("Uploading asset data qid={}", queueUser.getQueueUserId());
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
         if (isMultipart) {
@@ -140,54 +146,54 @@ public class MasterLabController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed CSV validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/business/inventory/asset/bulk" + ".htm";
                 }
 
                 try {
-                    int recordsUpdated = masterLabService.bulkUpdateStoreProduct(multipartFile.getInputStream(), masterLabForm.getHealthCareService());
+                    int recordsUpdated = checkAssetService.bulkUpdateAsset(multipartFile.getInputStream(), businessUser.getBizName().getId());
                     redirectAttrs
                         .addFlashAttribute("uploadSuccess", true)
                         .addFlashAttribute("recordsUpdated", recordsUpdated);
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/business/inventory/asset/bulk" + ".htm";
                 } catch (CSVParsingException e) {
-                    LOG.warn("Failed parsing CSV file healthCareService={} reason={}", masterLabForm.getHealthCareService(), e.getLocalizedMessage());
+                    LOG.warn("Failed parsing CSV file reason={}", e.getLocalizedMessage());
                     methodStatusSuccess = false;
                     ObjectError error = new ObjectError("file","Failed to parser file " + e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/business/inventory/asset/bulk" + ".htm";
                 } catch (CSVProcessingException e) {
-                    LOG.warn("Failed processing CSV data healthCareService={} reason={}", masterLabForm.getHealthCareService(), e.getLocalizedMessage());
+                    LOG.warn("Failed processing CSV data reason={}", e.getLocalizedMessage());
                     methodStatusSuccess = false;
                     ObjectError error = new ObjectError("file","Failed processing " + e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/business/inventory/asset/bulk" + ".htm";
                 } catch (FailedTransactionException e) {
                     LOG.error("Document upload transaction failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     methodStatusSuccess = false;
                     ObjectError error = new ObjectError("file", e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/business/inventory/asset/bulk" + ".htm";
                 } catch (Exception e) {
                     LOG.error("Document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     methodStatusSuccess = false;
                     ObjectError error = new ObjectError("file","Failed processing " + e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/business/inventory/asset/bulk" + ".htm";
                 } finally {
                     apiHealthService.insert(
                         "/bulk/upload",
                         "upload",
-                        MasterLabController.class.getName(),
+                        CheckAssetBulkController.class.getName(),
                         Duration.between(start, Instant.now()),
                         methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
                 }
             }
         }
-        return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+        return "redirect:" + "/business/inventory/asset/bulk" + ".htm";
     }
 
     /** Gets file of all products as zip in CSV format for preferred business store id. */
@@ -195,15 +201,16 @@ public class MasterLabController {
         value = "/bulk/download",
         produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
-    public void download(HttpServletResponse response) {
+    public void downloadAsset(HttpServletResponse response) {
         boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         LOG.info("Downloading master med lab data as CSV tar qid={}", queueUser.getQueueUserId());
 
         try (DefaultFileSystemManager manager = new StandardFileSystemManager()) {
             manager.init();
-            FileObject fileObject = masterLabService.getMasterTarGZ(manager);
+            FileObject fileObject = checkAssetService.getAssetsInFile(manager, businessUser.getBizName().getId());
             if (fileObject != null && fileObject.getContent() != null) {
                 response.setHeader("Content-disposition", "attachment; filename=\"" + com.noqapp.common.utils.FileUtil.getFileName(fileObject) + "\"");
                 response.setContentType("application/gzip");
@@ -213,25 +220,25 @@ public class MasterLabController {
                 } catch (IOException e) {
                     LOG.error("Failed to get file for reason={}", e.getLocalizedMessage(), e);
                 }
-
+                fileObject.delete();
                 return;
             }
 
-            LOG.warn("Failed getting lab file");
+            LOG.warn("Failed getting asset file");
             response.setContentType("application/gzip");
             response.setHeader("Content-Disposition", String.format("attachment; filename=%s", ""));
             response.setContentLength(0);
         } catch (FileSystemException e) {
-            LOG.error("Failed to get directory={} reason={}", FtpService.MASTER_MEDICAL, e.getLocalizedMessage(), e);
+            LOG.error("Failed to get asset file reason={}", e.getLocalizedMessage(), e);
             methodStatusSuccess = false;
         } catch (Exception e) {
             LOG.error("Failed getting lab qid={} message={}", queueUser.getQueueUserId(), e.getLocalizedMessage(), e);
             methodStatusSuccess = false;
         } finally {
             apiHealthService.insert(
-                "/api/m/h/lab/file",
-                "file",
-                MasterLabController.class.getName(),
+                "/business/inventory/asset/bulk/download",
+                "downloadAsset",
+                CheckAssetBulkController.class.getName(),
                 Duration.between(start, Instant.now()),
                 methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
         }

@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface CheckAssetManager extends RepositoryManager<CheckAssetEntity> {
 
+    void insertOrUpdate(CheckAssetEntity object);
+
     List<String> findDistinctFloors(String bizNameId);
 
     List<String> findDistinctRoomsOnFloor(String bizNameId, String floor);
@@ -18,4 +20,6 @@ public interface CheckAssetManager extends RepositoryManager<CheckAssetEntity> {
     List<CheckAssetEntity> findAssetInRoom(String bizNameId, String floor, String room);
 
     CheckAssetEntity findById(String id);
+
+    List<CheckAssetEntity> findAllByBizNameId(String bizNameId);
 }
