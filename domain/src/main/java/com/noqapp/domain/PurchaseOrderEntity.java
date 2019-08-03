@@ -43,7 +43,6 @@ import java.util.List;
 })
 public class PurchaseOrderEntity extends BaseEntity {
 
-
     @DBMapping
     @Field("QID")
     private String queueUserId;
