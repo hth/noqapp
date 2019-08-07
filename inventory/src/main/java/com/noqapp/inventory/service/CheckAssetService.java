@@ -3,11 +3,13 @@ package com.noqapp.inventory.service;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.RandomString;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.inventory.domain.CheckAssetEntity;
 import com.noqapp.inventory.domain.json.JsonCheckAsset;
 import com.noqapp.inventory.domain.json.JsonCheckAssetList;
 import com.noqapp.inventory.repository.CheckAssetManager;
+import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.exceptions.CSVParsingException;
 import com.noqapp.service.exceptions.CSVProcessingException;
@@ -43,18 +45,31 @@ public class CheckAssetService {
     private static final Logger LOG = LoggerFactory.getLogger(CheckAssetService.class);
 
     private CheckAssetManager checkAssetManager;
+    private BusinessUserService businessUserService;
     private AssetFileService assetFileService;
     private FileService fileService;
 
     @Autowired
     public CheckAssetService(
         CheckAssetManager checkAssetManager,
+        BusinessUserService businessUserService,
         AssetFileService assetFileService,
         FileService fileService
     ) {
         this.checkAssetManager = checkAssetManager;
+        this.businessUserService = businessUserService;
         this.assetFileService = assetFileService;
         this.fileService = fileService;
+    }
+
+    @Mobile
+    public String findBizNameAssociatedForQid(String qid) {
+        BusinessUserEntity businessUser = businessUserService.findByQid(qid);
+        if (null != businessUser) {
+            return businessUser.getBizName().getId();
+        }
+
+        return null;
     }
 
     public void save(String bizNameId, String floor, String roomNumber, String assetName) {
@@ -175,7 +190,7 @@ public class CheckAssetService {
             }
             Files.write(pathOfCSV, strings, StandardCharsets.UTF_8);
 
-            String fileName = "asset" + "_" + RandomString.newInstance(10).nextString() + "_" + DateUtil.dateToString(new Date());
+            String fileName = "asset" + "_" + RandomString.newInstance(10).nextString().toLowerCase() + "_" + DateUtil.dateToString(new Date());
             File tar = new File(FileUtil.getTmpDir(), fileName + ".tar.gz");
             fileService.createTarGZ(pathOfCSV.toFile(), tar, fileName);
             return manager.resolveFile(tar.getAbsolutePath());
