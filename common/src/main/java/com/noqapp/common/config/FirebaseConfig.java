@@ -37,6 +37,9 @@ public class FirebaseConfig {
     private static FirebaseAuth firebaseAuth;
     private static FirebaseMessaging firebaseMessaging;
 
+    private static String prodDB = "https://noq-app-inc.firebaseio.com";
+    private static String sandboxDB = "https://noqueue-sandbox.firebaseio.com";
+
     @Autowired
     private FirebaseConfig(Environment environment) {
         if (null == options) {
@@ -50,9 +53,7 @@ public class FirebaseConfig {
                 GoogleCredentials googleCredentials = GoogleCredentials.fromStream(credentialsStream);
                 options = new FirebaseOptions.Builder()
                         .setCredentials(googleCredentials)
-                        .setDatabaseUrl(environment.getProperty("build.env").equalsIgnoreCase("prod")
-                            ? "https://noq-app-inc.firebaseio.com"
-                            : "https://noqueue-sandbox.firebaseio.com")
+                        .setDatabaseUrl(environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodDB : sandboxDB)
                         .build();
             } catch (IOException e) {
                 LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
