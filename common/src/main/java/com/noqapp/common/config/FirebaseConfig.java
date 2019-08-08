@@ -11,6 +11,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -35,16 +37,22 @@ public class FirebaseConfig {
     private static FirebaseAuth firebaseAuth;
     private static FirebaseMessaging firebaseMessaging;
 
-    private FirebaseConfig() {
+    @Autowired
+    private FirebaseConfig(Environment environment) {
         if (null == options) {
             LOG.info("FirebaseApp initialization started");
             /* JSON downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
-            InputStream credentialsStream = getClass().getClassLoader().getResourceAsStream("conf/noq-app-inc-firebase-adminsdk.json");
+            String adminSdk = environment.getProperty("build.env").equalsIgnoreCase("prod")
+                ? "conf/noq-app-inc-firebase-adminsdk.json"
+                : "conf/noqueue-sandbox-firebase-adminsdk.json";
+            InputStream credentialsStream = getClass().getClassLoader().getResourceAsStream(adminSdk);
             try {
                 GoogleCredentials googleCredentials = GoogleCredentials.fromStream(credentialsStream);
                 options = new FirebaseOptions.Builder()
                         .setCredentials(googleCredentials)
-                        .setDatabaseUrl("https://noq-app-inc.firebaseio.com")
+                        .setDatabaseUrl(environment.getProperty("build.env").equalsIgnoreCase("prod")
+                            ? "https://noq-app-inc.firebaseio.com"
+                            : "https://noqueue-sandbox.firebaseio.com")
                         .build();
             } catch (IOException e) {
                 LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
