@@ -47,6 +47,9 @@ public class StoreProductEntity extends BaseEntity {
     @Field("PI")
     private String productInfo;
 
+    @Field("IM")
+    private String productImage = "https://cdn.shopify.com/s/files/1/1006/4028/products/640_640_gel.png?v=1558213076";
+
     @Field("SC")
     private String storeCategoryId;
 
@@ -113,6 +116,15 @@ public class StoreProductEntity extends BaseEntity {
         return this;
     }
 
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public StoreProductEntity setProductImage(String productImage) {
+        this.productImage = productImage;
+        return this;
+    }
+
     public String getStoreCategoryId() {
         return storeCategoryId;
     }
@@ -166,7 +178,6 @@ public class StoreProductEntity extends BaseEntity {
         this.productReference = productReference;
         return this;
     }
-
 
     /* On Web. */
     @SuppressWarnings("unused")
