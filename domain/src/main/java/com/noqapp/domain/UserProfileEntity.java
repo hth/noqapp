@@ -10,11 +10,6 @@ import com.noqapp.domain.types.UserLevelEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.WordUtils;
 
-import org.joda.time.DateTime;
-import org.joda.time.Days;
-import org.joda.time.Months;
-import org.joda.time.Years;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -353,14 +348,12 @@ public class UserProfileEntity extends BaseEntity {
     public String getAgeAsString() {
         try {
             Date dob = DateUtil.SDF_YYYY_MM_DD.parse(birthday);
-            DateTime dateTime = new DateTime(dob);
-            DateTime now = DateTime.now();
-            int years = Years.yearsBetween(dateTime, now).getYears();
+            int years = DateUtil.getYearsBetween(dob, new Date());
             String age;
             if (years <= 1) {
-                int months = Months.monthsBetween(dateTime, now).getMonths();
+                int months = DateUtil.getMonthsBetween(dob, new Date());
                 if (months <= 1) {
-                    int days = Days.daysBetween(dateTime, now).getDays();
+                    int days = DateUtil.getDaysBetween(dob, new Date());
                     if (days == 0) {
                         age = "Today";
                     } else {
