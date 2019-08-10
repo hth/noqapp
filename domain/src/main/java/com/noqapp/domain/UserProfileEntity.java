@@ -348,12 +348,13 @@ public class UserProfileEntity extends BaseEntity {
     public String getAgeAsString() {
         try {
             Date dob = DateUtil.SDF_YYYY_MM_DD.parse(birthday);
-            int years = DateUtil.getYearsBetween(dob, new Date());
+            Date now = new Date();
+            int years = DateUtil.getYearsBetween(dob, now);
             String age;
             if (years <= 1) {
-                int months = DateUtil.getMonthsBetween(dob, new Date());
+                int months = DateUtil.getMonthsBetween(dob, now);
                 if (months <= 1) {
-                    int days = DateUtil.getDaysBetween(dob, new Date());
+                    int days = DateUtil.getDaysBetween(dob, now);
                     if (days == 0) {
                         age = "Today";
                     } else {
