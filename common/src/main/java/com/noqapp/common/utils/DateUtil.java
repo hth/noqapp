@@ -248,6 +248,13 @@ public final class DateUtil {
         return interval.toPeriod(PeriodType.years()).getYears();
     }
 
+    public static int getMonthsBetween(Date start, Date end) {
+        Assert.notNull(start, "Start date is null");
+        Assert.notNull(end, "End date is null");
+        Interval interval = new Interval(start.getTime(), end.getTime());
+        return interval.toPeriod(PeriodType.months()).getYears();
+    }
+
     private static int getMillisBetween(Date start, Date end) {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");
@@ -298,7 +305,8 @@ public final class DateUtil {
         return !thisDay.before(fromDay) && !thisDay.after(untilDay);
     }
 
-    public static Date dateAtTimeZone(ZoneId zoneId) {
+    private static Date dateAtTimeZone(ZoneId zoneId) {
+        LOG.info("{} {}", LocalDateTime.now(), zoneId.getId());
         return Date.from(ZonedDateTime.of(LocalDateTime.now(), zoneId).toInstant());
     }
 
