@@ -460,6 +460,8 @@ public class PurchaseOrderService {
                             .setProductPrice(-bizStore.getProductPrice())
                             .setProductQuantity(1)
                     );
+
+                    jsonPurchaseOrder.setDiscountedPurchase(true);
                 } else if (lastVisited <= bizStore.getDiscountedFollowupDays()) {
                     discountIfAny = true;
                     /* When it is between the specified days then set the order price. */
@@ -475,6 +477,8 @@ public class PurchaseOrderService {
                             .setProductPrice(-bizStore.getDiscountedFollowupProductPrice())
                             .setProductQuantity(1)
                     );
+
+                    jsonPurchaseOrder.setDiscountedPurchase(true);
                 }
             }
         }
@@ -493,6 +497,7 @@ public class PurchaseOrderService {
             .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
             .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
             .setCouponId(StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId()) ? jsonPurchaseOrder.getCouponId() : null)
+            .setDiscountedPurchase(jsonPurchaseOrder.isDiscountedPurchase())
             .setStoreDiscount(storeDiscount)
             .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
             .setOrderPrice(String.valueOf(receivedOrderPrice))
@@ -648,6 +653,11 @@ public class PurchaseOrderService {
                 case PR:
                     LOG.error("Cannot apply coupon {} {}", purchaseOrder.getTransactionId(), purchaseOrder.getPaymentStatus());
                     throw new CouponCannotApplyException("Cannot apply coupon");
+            }
+
+            if (purchaseOrder.isDiscountedPurchase()) {
+                LOG.error("Cannot apply coupon when already discounted {} {}", purchaseOrder.getTransactionId(), purchaseOrder.getPaymentStatus());
+                throw new CouponCannotApplyException("Cannot apply coupon when already discounted");
             }
 
             CouponEntity coupon = couponService.findById(couponId);

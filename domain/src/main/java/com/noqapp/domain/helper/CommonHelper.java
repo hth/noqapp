@@ -66,6 +66,7 @@ public class CommonHelper {
                     ? null
                     : PharmacyCategoryEnum.asMapWithNameAsKey(); /* For Store show default categories. */
             case RS:
+            case FT:
             case BA:
             case ST:
             case SM:
@@ -121,6 +122,7 @@ public class CommonHelper {
                     bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
                     break;
                 case RS:
+                case FT:
                     bannerImage = bizStore.getStoreInteriorImages().isEmpty()
                         ? bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next()
                         : bizStore.getCodeQR() + "/" + bizStore.getStoreInteriorImages().iterator().next();
