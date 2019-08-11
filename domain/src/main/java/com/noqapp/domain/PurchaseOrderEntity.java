@@ -135,6 +135,9 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("CI")
     private String couponId;
 
+    @Field("DP")
+    private boolean discountedPurchase;
+
     @DBMapping
     @Field ("RA")
     private int ratingCount;
@@ -403,6 +406,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setCouponId(String couponId) {
         this.couponId = couponId;
+        return this;
+    }
+
+    public boolean isDiscountedPurchase() {
+        return discountedPurchase;
+    }
+
+    public PurchaseOrderEntity setDiscountedPurchase(boolean discountedPurchase) {
+        this.discountedPurchase = discountedPurchase;
         return this;
     }
 

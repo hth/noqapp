@@ -88,6 +88,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("ci")
     private String couponId;
 
+    @JsonProperty("dp")
+    private boolean discountedPurchase;
+
     @JsonProperty("dn")
     private String displayName;
 
@@ -264,6 +267,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setCouponId(String couponId) {
         this.couponId = couponId;
+        return this;
+    }
+
+    public boolean isDiscountedPurchase() {
+        return discountedPurchase;
+    }
+
+    public JsonPurchaseOrder setDiscountedPurchase(boolean discountedPurchase) {
+        this.discountedPurchase = discountedPurchase;
         return this;
     }
 
@@ -458,6 +470,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.deliveryMode = purchaseOrder.getDeliveryMode();
         this.businessType = purchaseOrder.getBusinessType();
         this.couponId = purchaseOrder.getCouponId();
+        this.discountedPurchase = purchaseOrder.isDiscountedPurchase();
         this.displayName = purchaseOrder.getDisplayName();
 
         this.token = purchaseOrder.getTokenNumber();
