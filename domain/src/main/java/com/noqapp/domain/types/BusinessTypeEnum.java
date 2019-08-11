@@ -13,6 +13,7 @@ import java.util.List;
  */
 public enum BusinessTypeEnum {
     RS("RS", "Restaurant", O),
+    FT("FT", "Food Truck", O),
     BA("BA", "Bar", O),
     ST("ST", "Store", O),
     SM("SM", "Shopping Mall", Q),

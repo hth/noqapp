@@ -169,6 +169,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 registerBusiness.setFacilitiesAvailable(FacilityEnum.GROCERY);
                 break;
             case RS:
+            case FT:
                 registerBusiness.setFacilitiesAvailable(FacilityEnum.RESTAURANT);
                 break;
             default:
@@ -196,6 +197,9 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             case GS:
             case RS:
                 registerBusiness.setAmenitiesAvailable(AmenityEnum.ALL);
+                break;
+            case FT:
+                //registerBusiness.setAmenitiesAvailable(null);
                 break;
             default:
                 registerBusiness.addAmenitiesAvailable(AmenityEnum.ALL);
