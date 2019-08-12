@@ -126,6 +126,7 @@
 
                                             <c:choose>
                                                 <c:when test="${BusinessTypeEnum.RS eq store.businessType
+                                                || BusinessTypeEnum.FT eq store.businessType
                                                 || BusinessTypeEnum.BA eq store.businessType
                                                 || BusinessTypeEnum.ST eq store.businessType
                                                 || BusinessTypeEnum.GS eq store.businessType
