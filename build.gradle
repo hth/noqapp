@@ -176,6 +176,7 @@ subprojects {
         implementation "$springDataGroup:spring-data-redis:$redis"
         implementation "redis.clients:jedis:$jedis"
         implementation "org.quartz-scheduler:quartz:$quartz"
+        implementation "com.braintreepayments.gateway:braintree-java:$braintree"
 
         /** --- Specific to NoQueue Web Application ---- */
         implementation "com.amazonaws:aws-java-sdk-s3:$amazonaws"
