@@ -1,5 +1,7 @@
 package com.noqapp.medical.domain;
 
+import static com.noqapp.domain.types.medical.DentalOptionEnum.NOR;
+
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.helper.NameDateHealth;
 import com.noqapp.domain.json.JsonNameDateHealth;
@@ -58,6 +60,42 @@ public class UserMedicalProfileEntity extends BaseEntity {
 
     @Field("PG")
     private boolean pregnant;
+
+    @Field("DA")
+    private String [] dentalAnatomy = new String[] {
+        "11:" + NOR,
+        "12:" + NOR,
+        "13:" + NOR,
+        "14:" + NOR,
+        "15:" + NOR,
+        "16:" + NOR,
+        "17:" + NOR,
+        "18:" + NOR,
+        "21:" + NOR,
+        "22:" + NOR,
+        "23:" + NOR,
+        "24:" + NOR,
+        "25:" + NOR,
+        "26:" + NOR,
+        "27:" + NOR,
+        "28:" + NOR,
+        "31:" + NOR,
+        "32:" + NOR,
+        "33:" + NOR,
+        "34:" + NOR,
+        "35:" + NOR,
+        "36:" + NOR,
+        "37:" + NOR,
+        "38:" + NOR,
+        "41:" + NOR,
+        "42:" + NOR,
+        "43:" + NOR,
+        "44:" + NOR,
+        "45:" + NOR,
+        "46:" + NOR,
+        "47:" + NOR,
+        "48:" + NOR
+    };
 
     @Field("EB")
     private String editedByQID;
@@ -136,6 +174,15 @@ public class UserMedicalProfileEntity extends BaseEntity {
 
     public UserMedicalProfileEntity setPregnant(boolean pregnant) {
         this.pregnant = pregnant;
+        return this;
+    }
+
+    public String[] getDentalAnatomy() {
+        return dentalAnatomy;
+    }
+
+    public UserMedicalProfileEntity setDentalAnatomy(String[] dentalAnatomy) {
+        this.dentalAnatomy = dentalAnatomy;
         return this;
     }
 

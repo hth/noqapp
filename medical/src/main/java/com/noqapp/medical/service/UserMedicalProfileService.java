@@ -40,6 +40,7 @@ public class UserMedicalProfileService {
                 .setFamilyHistory(history.getFamilyHistory())
                 .setKnownAllergies(history.getKnownAllergies())
                 .setMedicineAllergies(history.getMedicineAllergies())
+                .setDentalAnatomy(history.getDentalAnatomy())
                 .setEditedByQID(history.getEditedByQID());
             userMedicalProfileHistoryManager.save(userMedicalProfileHistory);
         }
@@ -62,6 +63,7 @@ public class UserMedicalProfileService {
                 .setFamilyHistory(userMedicalProfile.getFamilyHistory())
                 .setKnownAllergies(userMedicalProfile.getKnownAllergies())
                 .setMedicineAllergies(userMedicalProfile.getMedicineAllergies())
+                .setDentalAnatomy(userMedicalProfile.getDentalAnatomy())
                 .setExternalMedicalReports(userMedicalProfile.getExternalMedicalReportsAsJson());
         }
 
