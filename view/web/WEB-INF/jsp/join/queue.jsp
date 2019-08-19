@@ -22,12 +22,12 @@
     <script>
         // Initialize Firebase
         var config = {
-            apiKey: "AIzaSyCjItDxJb8bl_0pHTfis6xSv8tpRtoL4Do",
-            authDomain: "${pageContext.request.serverName}",
-            databaseURL: "https://noq-app-inc.firebaseio.com",
-            projectId: "noq-app-inc",
-            storageBucket: "noq-app-inc.appspot.com",
-            messagingSenderId: "129734883266"
+            apiKey: "${firebaseApiKey}",
+            authDomain: "${firebaseAuthDomain}",
+            databaseURL: "${firebaseDatabaseURL}",
+            projectId: "${firebaseProjectId}",
+            storageBucket: "${firebaseStorageBucket}",
+            messagingSenderId: "${firebaseMessagingSenderId}"
         };
         firebase.initializeApp(config);
     </script>

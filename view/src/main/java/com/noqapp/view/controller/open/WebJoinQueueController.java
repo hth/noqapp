@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,6 +87,24 @@ public class WebJoinQueueController {
     @Value ("${joinQueueConfirmPage:/join/queueConfirm}")
     private String joinQueueConfirmPage;
 
+    @Value("${firebase.apiKey}")
+    private String firebaseApiKey;
+
+    @Value("${firebase.authDomain}")
+    private String firebaseAuthDomain;
+
+    @Value("${firebase.databaseURL}")
+    private String firebaseDatabaseURL;
+
+    @Value("${firebase.projectId}")
+    private String firebaseProjectId;
+
+    @Value("${firebase.storageBucket}")
+    private String firebaseStorageBucket;
+
+    @Value("${firebase.messagingSenderId}")
+    private String firebaseMessagingSenderId;
+
     private BizService bizService;
     private ShowHTMLService showHTMLService;
     private TokenQueueService tokenQueueService;
@@ -127,6 +146,7 @@ public class WebJoinQueueController {
         @ModelAttribute("webJoinQueue")
         WebJoinQueueForm webJoinQueue,
 
+        Model model,
         HttpServletRequest request,
         HttpServletResponse response
     ) throws IOException {
@@ -171,6 +191,14 @@ public class WebJoinQueueController {
             }
 
             webJoinQueue.setRootMap(rootMap).setCodeQR(new ScrubbedInput(((String) rootMap.get("codeQR"))));
+
+            model.addAttribute("firebaseApiKey", firebaseApiKey);
+            model.addAttribute("firebaseAuthDomain", firebaseAuthDomain);
+            model.addAttribute("firebaseDatabaseURL", firebaseDatabaseURL);
+            model.addAttribute("firebaseProjectId", firebaseProjectId);
+            model.addAttribute("firebaseStorageBucket", firebaseStorageBucket);
+            model.addAttribute("firebaseMessagingSenderId", firebaseMessagingSenderId);
+
             return joinQueuePage;
         } catch (Exception e) {
             LOG.error("Failed to load join queue page reason={}", e.getLocalizedMessage(), e);

@@ -33,6 +33,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,6 +65,24 @@ public class LoginController {
 
     @Value("${loginPage:login}")
     private String loginPage;
+
+    @Value("${firebase.apiKey}")
+    private String firebaseApiKey;
+
+    @Value("${firebase.authDomain}")
+    private String firebaseAuthDomain;
+
+    @Value("${firebase.databaseURL}")
+    private String firebaseDatabaseURL;
+
+    @Value("${firebase.projectId}")
+    private String firebaseProjectId;
+
+    @Value("${firebase.storageBucket}")
+    private String firebaseStorageBucket;
+
+    @Value("${firebase.messagingSenderId}")
+    private String firebaseMessagingSenderId;
 
     private final CachedUserAgentStringParser parser;
 
@@ -120,6 +139,7 @@ public class LoginController {
         @ModelAttribute("userLoginPhoneForm")
         UserLoginPhoneForm userLoginPhoneForm,
 
+        Model model,
         Locale locale,
         HttpServletRequest request
     ) {
@@ -165,6 +185,13 @@ public class LoginController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LOG.info("Auth {}", authentication.getPrincipal().toString());
         if (authentication instanceof AnonymousAuthenticationToken) {
+            model.addAttribute("firebaseApiKey", firebaseApiKey);
+            model.addAttribute("firebaseAuthDomain", firebaseAuthDomain);
+            model.addAttribute("firebaseDatabaseURL", firebaseDatabaseURL);
+            model.addAttribute("firebaseProjectId", firebaseProjectId);
+            model.addAttribute("firebaseStorageBucket", firebaseStorageBucket);
+            model.addAttribute("firebaseMessagingSenderId", firebaseMessagingSenderId);
+
             return loginPage;
         }
 
