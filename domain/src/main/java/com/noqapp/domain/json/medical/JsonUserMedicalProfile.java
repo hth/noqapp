@@ -50,6 +50,9 @@ public class JsonUserMedicalProfile extends AbstractDomain {
     @JsonProperty("ma")
     private String medicineAllergies;
 
+    @JsonProperty("da")
+    private String [] dentalAnatomy;
+
     @JsonProperty("hd")
     private boolean historyDirty;
 
@@ -107,6 +110,15 @@ public class JsonUserMedicalProfile extends AbstractDomain {
 
     public JsonUserMedicalProfile setMedicineAllergies(String medicineAllergies) {
         this.medicineAllergies = medicineAllergies;
+        return this;
+    }
+
+    public String[] getDentalAnatomy() {
+        return dentalAnatomy;
+    }
+
+    public JsonUserMedicalProfile setDentalAnatomy(String[] dentalAnatomy) {
+        this.dentalAnatomy = dentalAnatomy;
         return this;
     }
 
