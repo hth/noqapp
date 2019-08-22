@@ -12,6 +12,7 @@ import com.noqapp.domain.ScheduledTaskEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
@@ -363,6 +364,7 @@ public class ArchiveAndReset {
                 bizStore.getTimeZone(),
                 /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
                 Date.from(archiveNextRun.toInstant()),
+                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore, nowDayOfWeek).toInstant()) : null,
                 (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
                 bizStoreRating.getTotalCustomerRated(),
                 //TODO(hth) should we compute with yesterday average time or overall average time?
@@ -371,7 +373,8 @@ public class ArchiveAndReset {
             bizStoreManager.updateNextRun(
                 bizStore.getId(),
                 bizStore.getTimeZone(),
-                Date.from(archiveNextRun.toInstant()));
+                Date.from(archiveNextRun.toInstant()),
+                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore, nowDayOfWeek).toInstant()) : null);
         }
 
         tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
@@ -408,8 +411,21 @@ public class ArchiveAndReset {
         /* When closed set hour to 23 and minute to 59. */
         int hourOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeClosingHourOfDay();
         int minuteOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay();
-        LOG.info("Tomorrow Closing dayOfWeek={} Hour={} Minutes={} id={}",
-            DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay, tomorrow.getId());
+        LOG.info("Tomorrow Closing dayOfWeek={} Hour={} Minutes={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay, tomorrow.getId());
+        return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TOMORROW);
+    }
+
+    private ZonedDateTime setupTokenAvailableForTomorrow(BizStoreEntity bizStore, DayOfWeek dayOfWeek) {
+        StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(dayOfWeek).getValue() - 1);
+        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
+            populateForScheduledTask(bizStore, tomorrow);
+        }
+
+        TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
+        /* When closed set hour to 23 and minute to 59. */
+        int hourOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeTokenAvailableFromHourOfDay();
+        int minuteOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeTokenAvailableFromMinuteOfDay();
+        LOG.info("Tomorrow token available from  dayOfWeek={} Hour={} Minutes={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay, tomorrow.getId());
         return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TOMORROW);
     }
 

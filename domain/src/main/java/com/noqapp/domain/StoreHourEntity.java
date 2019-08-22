@@ -188,6 +188,16 @@ public class StoreHourEntity extends BaseEntity {
         return endHour % 100;
     }
 
+    @Transient
+    public int storeTokenAvailableFromHourOfDay() {
+        return tokenAvailableFrom / 100;
+    }
+
+    @Transient
+    public int storeTokenAvailableFromMinuteOfDay() {
+        return tokenAvailableFrom % 100;
+    }
+
     /**
      * Used for displaying store hours on JSP.
      *

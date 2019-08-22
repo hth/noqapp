@@ -295,8 +295,8 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean updateNextRun(String id, String zoneId, Date archiveNextRun) {
-        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, archiveNextRun, 0, 0, 0);
+    public boolean updateNextRun(String id, String zoneId, Date archiveNextRun, Date queueAppointment) {
+        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, archiveNextRun, queueAppointment, 0, 0, 0);
     }
 
     @Override
@@ -304,6 +304,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
         String id,
         String zoneId,
         Date archiveNextRun,
+        Date queueAppointment,
         float rating,
         int ratingCount,
         long averageServiceTime
@@ -326,6 +327,12 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                 .set("RA", rating));
         }
 
+        if (null != queueAppointment) {
+            update.set("QA", queueAppointment);
+        } else {
+            update.unset("QA");
+        }
+
         /* Do not update the average service time when its zero. */
         if (0 != averageServiceTime) {
             update.set("AS", averageServiceTime);
@@ -343,9 +350,24 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllQueueEndedForTheDay(Date now) {
         LOG.info("Fetch past now={}", now);
         return mongoTemplate.find(
-            query(where("QH").lte(now).and("BT").in(BusinessTypeEnum.getSelectedMessageOrigin(MessageOriginEnum.Q)).and("A").is(true).and("D").is(false)),
+            query(where("QH").lte(now)
+                    .and("BT").in(BusinessTypeEnum.getSelectedMessageOrigin(MessageOriginEnum.Q))
+                    .and("A").is(true).and("D").is(false)),
             BizStoreEntity.class,
             TABLE
+        );
+    }
+
+    @Override
+    public List<BizStoreEntity> findAllQueueAcceptingAppointmentForTheDay(Date now) {
+        LOG.info("Fetch past now={}", now);
+        return mongoTemplate.find(
+                query(where("PS").is(AppointmentStateEnum.S)
+                        .and("QA").lte(now)
+                        .and("BT").in(BusinessTypeEnum.getSelectedMessageOrigin(MessageOriginEnum.Q))
+                        .and("A").is(true).and("D").is(false)),
+                BizStoreEntity.class,
+                TABLE
         );
     }
 
