@@ -157,6 +157,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field("QH")
     private Date queueHistory = new Date();
 
+    @Field("QA")
+    private Date queueAppointment = new Date();
+
     @NotNull
     @Field("AO")
     private AddressOriginEnum addressOrigin;
