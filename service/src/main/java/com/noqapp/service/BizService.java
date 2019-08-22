@@ -603,7 +603,8 @@ public class BizService {
         return bizStoreManager.updateNextRun(
             bizStore.getId(),
             bizStore.getTimeZone(),
-            archiveNextRun);
+            archiveNextRun,
+            bizStore.getQueueAppointment());
     }
 
     public BizStoreEntity unsetScheduledTask(String bizStoreId) {

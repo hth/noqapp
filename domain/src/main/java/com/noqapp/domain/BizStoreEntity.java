@@ -576,6 +576,15 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
+    public Date getQueueAppointment() {
+        return queueAppointment;
+    }
+
+    public BizStoreEntity setQueueAppointment(Date queueAppointment) {
+        this.queueAppointment = queueAppointment;
+        return this;
+    }
+
     public AddressOriginEnum getAddressOrigin() {
         return addressOrigin;
     }
