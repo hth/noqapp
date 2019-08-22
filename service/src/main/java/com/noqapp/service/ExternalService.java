@@ -256,7 +256,7 @@ public class ExternalService {
                         int minuteOfDay = today.storeClosingMinuteOfDay();
                         ZonedDateTime archiveNextRun = DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TODAY);
                         /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
-                        boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, Date.from(archiveNextRun.toInstant()));
+                        boolean status = bizStoreManager.updateNextRun(bizStore.getId(), zoneId, Date.from(archiveNextRun.toInstant()), bizStore.getQueueAppointment());
                         if (status) {
                             LOG.info("Successful first run set UTC time={} for store={} address={}",
                                 archiveNextRun,
