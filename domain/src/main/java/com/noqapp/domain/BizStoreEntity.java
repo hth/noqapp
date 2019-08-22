@@ -158,7 +158,7 @@ public class BizStoreEntity extends BaseEntity {
     private Date queueHistory = new Date();
 
     @Field("QA")
-    private Date queueAppointment = new Date();
+    private Date queueAppointment;
 
     @NotNull
     @Field("AO")
