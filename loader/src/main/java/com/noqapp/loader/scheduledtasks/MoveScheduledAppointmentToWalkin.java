@@ -100,7 +100,7 @@ public class MoveScheduledAppointmentToWalkin {
                     success++;
                 } catch (Exception e) {
                     failure++;
-                    LOG.error("Insert fail on Queues to RDB bizStore={} codeQR={} reason={}",
+                    LOG.error("Insert fail on joining queue bizStore={} codeQR={} reason={}",
                             bizStore.getId(),
                             bizStore.getCodeQR(),
                             e.getLocalizedMessage(),
