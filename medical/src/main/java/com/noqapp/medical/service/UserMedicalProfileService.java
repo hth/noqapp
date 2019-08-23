@@ -69,4 +69,8 @@ public class UserMedicalProfileService {
 
         return new JsonUserMedicalProfile();
     }
+
+    void updateDentalAnatomy(String qid, String dentalAnatomy, String diagnosedById) {
+        userMedicalProfileManager.updateDentalAnatomy(qid, dentalAnatomy, diagnosedById);
+    }
 }

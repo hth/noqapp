@@ -56,6 +56,9 @@ public class JsonUserMedicalProfile extends AbstractDomain {
     @JsonProperty("hd")
     private boolean historyDirty;
 
+    @JsonProperty("dd")
+    private boolean dentalAnatomyDirty;
+
     @JsonProperty("er")
     private List<JsonNameDateHealth> externalMedicalReports;
 
@@ -128,6 +131,15 @@ public class JsonUserMedicalProfile extends AbstractDomain {
 
     public JsonUserMedicalProfile setHistoryDirty(boolean historyDirty) {
         this.historyDirty = historyDirty;
+        return this;
+    }
+
+    public boolean isDentalAnatomyDirty() {
+        return dentalAnatomyDirty;
+    }
+
+    public JsonUserMedicalProfile setDentalAnatomyDirty(boolean dentalAnatomyDirty) {
+        this.dentalAnatomyDirty = dentalAnatomyDirty;
         return this;
     }
 

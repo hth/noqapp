@@ -472,6 +472,10 @@ public class MedicalRecordService {
     }
 
     private void updateUserMedicalProfile(JsonMedicalRecord jsonRecord, String diagnosedById) {
+        if (jsonRecord.getJsonUserMedicalProfile().isDentalAnatomyDirty()) {
+            userMedicalProfileService.updateDentalAnatomy(jsonRecord.getQueueUserId(), jsonRecord.getJsonUserMedicalProfile().getDentalAnatomy(), diagnosedById);
+        }
+
         if (jsonRecord.getJsonUserMedicalProfile().isHistoryDirty()) {
             JsonUserMedicalProfile jsonUserMedicalProfile = jsonRecord.getJsonUserMedicalProfile();
             UserMedicalProfileEntity userMedicalProfile = userMedicalProfileService.findOne(jsonRecord.getQueueUserId());
@@ -494,8 +498,9 @@ public class MedicalRecordService {
                 .setMedicineAllergies(StringUtils.isBlank(jsonUserMedicalProfile.getMedicineAllergies())
                     ? null
                     : StringUtils.capitalize(jsonUserMedicalProfile.getMedicineAllergies().trim()))
-                .setDentalAnatomy(jsonUserMedicalProfile.getDentalAnatomy())
                 .setEditedByQID(diagnosedById);
+
+            /* Sequence is important as this also backs up user medical profile to history. */
             userMedicalProfileService.save(userMedicalProfile);
         }
     }
