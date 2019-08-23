@@ -65,7 +65,7 @@ public class UserMedicalProfileManagerImpl implements UserMedicalProfileManager 
 
     @Override
     public void updateDentalAnatomy(String qid, String dentalAnatomy, String diagnosedById) {
-        mongoTemplate.updateFirst(
+        mongoTemplate.upsert(
             query(where("QID").is(qid)),
             entityUpdate(update("DA", dentalAnatomy).set("EB", diagnosedById)),
             UserMedicalProfileEntity.class,
