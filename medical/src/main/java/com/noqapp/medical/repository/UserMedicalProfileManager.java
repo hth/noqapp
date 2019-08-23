@@ -10,4 +10,6 @@ import com.noqapp.repository.RepositoryManager;
 public interface UserMedicalProfileManager extends RepositoryManager<UserMedicalProfileEntity> {
 
     UserMedicalProfileEntity findOne(String qid);
+
+    void updateDentalAnatomy(String qid, String dentalAnatomy, String diagnosedById);
 }

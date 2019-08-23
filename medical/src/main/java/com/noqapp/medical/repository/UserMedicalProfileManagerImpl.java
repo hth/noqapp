@@ -1,7 +1,9 @@
 package com.noqapp.medical.repository;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.UserMedicalProfileEntity;
@@ -58,6 +60,16 @@ public class UserMedicalProfileManagerImpl implements UserMedicalProfileManager 
                 query(where("QID").is(qid)),
                 UserMedicalProfileEntity.class,
                 TABLE
+        );
+    }
+
+    @Override
+    public void updateDentalAnatomy(String qid, String dentalAnatomy, String diagnosedById) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            entityUpdate(update("DA", dentalAnatomy).set("EB", diagnosedById)),
+            UserMedicalProfileEntity.class,
+            TABLE
         );
     }
 }
