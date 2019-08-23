@@ -340,6 +340,7 @@ public class MedicalRecordService {
                 }
             }
 
+            /* Updated User Medical Profile. */
             updateUserMedicalProfile(jsonRecord, diagnosedById);
             switch (userProfile.getLevel()) {
                 case S_MANAGER:
@@ -493,6 +494,7 @@ public class MedicalRecordService {
                 .setMedicineAllergies(StringUtils.isBlank(jsonUserMedicalProfile.getMedicineAllergies())
                     ? null
                     : StringUtils.capitalize(jsonUserMedicalProfile.getMedicineAllergies().trim()))
+                .setDentalAnatomy(jsonUserMedicalProfile.getDentalAnatomy())
                 .setEditedByQID(diagnosedById);
             userMedicalProfileService.save(userMedicalProfile);
         }
