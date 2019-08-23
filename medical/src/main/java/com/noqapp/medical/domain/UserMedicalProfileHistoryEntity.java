@@ -50,7 +50,7 @@ public class UserMedicalProfileHistoryEntity extends BaseEntity {
     private String medicineAllergies;
 
     @Field("DA")
-    private String [] dentalAnatomy;
+    private String dentalAnatomy;
 
     @Field("EB")
     private String editedByQID;
@@ -118,11 +118,11 @@ public class UserMedicalProfileHistoryEntity extends BaseEntity {
         return this;
     }
 
-    public String[] getDentalAnatomy() {
+    public String getDentalAnatomy() {
         return dentalAnatomy;
     }
 
-    public UserMedicalProfileHistoryEntity setDentalAnatomy(String[] dentalAnatomy) {
+    public UserMedicalProfileHistoryEntity setDentalAnatomy(String dentalAnatomy) {
         this.dentalAnatomy = dentalAnatomy;
         return this;
     }
