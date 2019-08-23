@@ -473,6 +473,12 @@ public class MedicalRecordService {
 
     private void updateUserMedicalProfile(JsonMedicalRecord jsonRecord, String diagnosedById) {
         if (jsonRecord.getJsonUserMedicalProfile().isDentalAnatomyDirty()) {
+            UserMedicalProfileEntity userMedicalProfile = userMedicalProfileService.findOne(jsonRecord.getQueueUserId());
+            if (null == userMedicalProfile) {
+                userMedicalProfile = new UserMedicalProfileEntity(jsonRecord.getQueueUserId());
+                userMedicalProfileService.save(userMedicalProfile);
+            }
+
             userMedicalProfileService.updateDentalAnatomy(jsonRecord.getQueueUserId(), jsonRecord.getJsonUserMedicalProfile().getDentalAnatomy(), diagnosedById);
         }
 
