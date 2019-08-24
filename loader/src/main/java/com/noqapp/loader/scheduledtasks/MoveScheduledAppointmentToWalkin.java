@@ -4,6 +4,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
@@ -124,7 +125,7 @@ public class MoveScheduledAppointmentToWalkin {
 
     private void moveFromAppointmentToWalkin(BizStoreEntity bizStore) {
         Date now = DateUtil.dateAtTimeZone(bizStore.getTimeZone());
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForDay(bizStore.getCodeQR(), DateUtil.dateToString(now));
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedWalkinAppointmentsForDay(bizStore.getCodeQR(), DateUtil.dateToString(now));
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             tokenQueueService.getNextToken(
                     bizStore.getCodeQR(),
@@ -134,6 +135,9 @@ public class MoveScheduledAppointmentToWalkin {
                     bizStore.getAverageServiceTime(),
                     TokenServiceEnum.C
             );
+
+            scheduleAppointment.setAppointmentStatus(AppointmentStatusEnum.W);
+            scheduleAppointmentManager.save(scheduleAppointment);
         }
     }
 

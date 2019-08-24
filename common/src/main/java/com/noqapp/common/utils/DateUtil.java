@@ -307,7 +307,7 @@ public final class DateUtil {
 
     private static Date dateAtTimeZone(ZoneId zoneId) {
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(Instant.now(), zoneId);
-        LOG.info("{} {} {}", LocalDateTime.now(), zoneId.getId(), zonedDateTime);
+        LOG.info("UTC={} Zone={} TimeAtZone={}", LocalDateTime.now(), zoneId.getId(), zonedDateTime);
         return Date.from(zonedDateTime.toInstant());
     }
 

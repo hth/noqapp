@@ -80,6 +80,21 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
+    public List<ScheduleAppointmentEntity> findBookedWalkinAppointmentsForDay(String codeQR, String scheduleDate) {
+        LOG.info("ScheduleDate={} codeQR={}", scheduleDate, codeQR);
+        return mongoTemplate.find(
+            query(where("QR").is(codeQR).and("SD").is(scheduleDate)
+                .orOperator(
+                    where("AS").in(AppointmentStatusEnum.A, AppointmentStatusEnum.U),
+                    where("AS").ne(AppointmentStatusEnum.W)
+                )
+            ),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<ScheduleAppointmentEntity> findScheduleForDay(String codeQR, String scheduleDate) {
         LOG.info("ScheduleDate={} codeQR={}", scheduleDate, codeQR);
         return mongoTemplate.find(
@@ -164,11 +179,11 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
         Query query;
         if (untilDaysInFuture > 0) {
             query = query(where("QID").is(qid)
-                .and("AS").nin(AppointmentStatusEnum.C, AppointmentStatusEnum.R, AppointmentStatusEnum.S)
+                .and("AS").nin(AppointmentStatusEnum.C, AppointmentStatusEnum.R, AppointmentStatusEnum.S, AppointmentStatusEnum.W)
                 .and("SD").gte(Formatter.toDefaultDateFormatAsString(DateUtil.nowMidnightDate())).lte(Formatter.toDefaultDateFormatAsString(DateUtil.plusDays(untilDaysInFuture))));
         } else {
             query = query(where("QID").is(qid)
-                .and("AS").nin(AppointmentStatusEnum.C, AppointmentStatusEnum.R, AppointmentStatusEnum.S)
+                .and("AS").nin(AppointmentStatusEnum.C, AppointmentStatusEnum.R, AppointmentStatusEnum.S, AppointmentStatusEnum.W)
                 .and("SD").gte(Formatter.toDefaultDateFormatAsString(DateUtil.nowMidnightDate())));
         }
         return mongoTemplate.find(query, ScheduleAppointmentEntity.class, TABLE);
