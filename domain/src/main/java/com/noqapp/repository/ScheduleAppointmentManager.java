@@ -13,6 +13,7 @@ public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAp
 
     /** Appointment is for client. */
     List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate);
+    List<ScheduleAppointmentEntity> findBookedWalkinAppointmentsForDay(String codeQR, String scheduleDate);
 
     /** Schedule is for merchant. */
     List<ScheduleAppointmentEntity> findScheduleForDay(String codeQR, String scheduleDate);
