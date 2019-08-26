@@ -1,5 +1,6 @@
 package com.noqapp.medical.repository;
 
+import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.medical.domain.MedicalRecordEntity;
 import com.noqapp.repository.RepositoryManager;
 
@@ -12,6 +13,7 @@ import java.util.List;
 public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEntity> {
 
     List<MedicalRecordEntity> historicalRecords(String qid, int limit);
+    List<MedicalRecordEntity> historicalRecords(String qid, MedicalDepartmentEnum medicalDepartment, int limit);
 
     MedicalRecordEntity findById(String id);
 

@@ -846,6 +846,10 @@ public class MedicalRecordService {
         return medicalRecordManager.historicalRecords(qid, limitRecords);
     }
 
+    public List<MedicalRecordEntity> historicalRecords(String qid, MedicalDepartmentEnum medicalDepartment) {
+        return medicalRecordManager.historicalRecords(qid, medicalDepartment, limitRecords);
+    }
+
     public List<MedicalPhysicalEntity> findByQid(String qid) {
         return medicalPhysicalManager.findByQid(qid);
     }
@@ -906,6 +910,34 @@ public class MedicalRecordService {
                 JsonMedicalRecord jsonMedicalRecord = getJsonMedicalRecord(medicalRecord);
                 jsonMedicalRecordList.addJsonMedicalRecords(jsonMedicalRecord);
             }
+        }
+
+        return jsonMedicalRecordList;
+    }
+
+    /** Populate case histories of patient for doctor. */
+    @Mobile
+    public JsonMedicalRecordList populateMedicalHistoryForDoctor(String qid) {
+        JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
+
+        List<MedicalRecordEntity> medicalRecords = historicalRecords(qid);
+        for (MedicalRecordEntity medicalRecord : medicalRecords) {
+            JsonMedicalRecord jsonMedicalRecord = getJsonMedicalRecord(medicalRecord);
+            jsonMedicalRecordList.addJsonMedicalRecords(jsonMedicalRecord);
+        }
+
+        return jsonMedicalRecordList;
+    }
+
+    /** Populate case histories of patient for doctor associated with medical department. */
+    @Mobile
+    public JsonMedicalRecordList populateMedicalHistoryForDoctorByMedicalDepartment(String qid, MedicalDepartmentEnum medicalDepartment) {
+        JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
+
+        List<MedicalRecordEntity> medicalRecords = historicalRecords(qid, medicalDepartment);
+        for (MedicalRecordEntity medicalRecord : medicalRecords) {
+            JsonMedicalRecord jsonMedicalRecord = getJsonMedicalRecord(medicalRecord);
+            jsonMedicalRecordList.addJsonMedicalRecords(jsonMedicalRecord);
         }
 
         return jsonMedicalRecordList;
