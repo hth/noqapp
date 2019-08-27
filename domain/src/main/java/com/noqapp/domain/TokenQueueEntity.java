@@ -12,6 +12,8 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.StringJoiner;
+
 /**
  * Token should exists only when open for business or when token is suppose to be made available.
  * User: hitender
@@ -220,5 +222,19 @@ public class TokenQueueEntity extends BaseEntity {
     @Transient
     public int numberOfPeopleInQueue() {
         return lastNumber - currentlyServing;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", TokenQueueEntity.class.getSimpleName() + "[", "]")
+            .add("lastNumber=" + lastNumber)
+            .add("currentlyServing=" + currentlyServing)
+            .add("topic='" + topic + "'")
+            .add("displayName='" + displayName + "'")
+            .add("businessType=" + businessType)
+            .add("bizCategoryId='" + bizCategoryId + "'")
+            .add("queueStatus=" + queueStatus)
+            .add("firebaseMessageType=" + firebaseMessageType)
+            .toString();
     }
 }
