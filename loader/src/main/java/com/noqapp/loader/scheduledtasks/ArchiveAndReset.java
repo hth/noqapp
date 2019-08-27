@@ -384,7 +384,7 @@ public class ArchiveAndReset {
      * Note: When time is 11:59 PM and during run the clock switches to 12:00 AM, queue reset is missed. This ensures reset for correct
      * history.
      */
-    private DayOfWeek computeDayOfWeekHistoryIsSupposeToRun(BizStoreEntity bizStore) {
+    DayOfWeek computeDayOfWeekHistoryIsSupposeToRun(BizStoreEntity bizStore) {
         DayOfWeek nowDayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
         DayOfWeek historyRunDayOfWeek = DateUtil.convertToLocalDateTime(bizStore.getQueueHistory()).getDayOfWeek();
         if (nowDayOfWeek != historyRunDayOfWeek) {
@@ -415,7 +415,12 @@ public class ArchiveAndReset {
         return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TOMORROW);
     }
 
-    private ZonedDateTime setupTokenAvailableForTomorrow(BizStoreEntity bizStore, DayOfWeek dayOfWeek) {
+    /**
+     * This method is run from two places as archiveAndReset starts the process of scheduling and MoveScheduledAppointmentToWalkin
+     * takes over for next run. Archive reset might over write the same at every run but duplicate update is acceptable for now.
+     * To make it single run, a date needs to be set when Walkin Appointment feature is turned ON. //TODO fix this when there is time
+     */
+    ZonedDateTime setupTokenAvailableForTomorrow(BizStoreEntity bizStore, DayOfWeek dayOfWeek) {
         StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(dayOfWeek).getValue() - 1);
         if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
             populateForScheduledTask(bizStore, tomorrow);
