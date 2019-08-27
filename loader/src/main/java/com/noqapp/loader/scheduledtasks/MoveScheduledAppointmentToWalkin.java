@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -44,20 +45,22 @@ public class MoveScheduledAppointmentToWalkin {
     private TokenQueueService tokenQueueService;
     private DeviceService deviceService;
     private StatsCronService statsCronService;
+    private ArchiveAndReset archiveAndReset;
 
     private String moveScheduledAppointmentToWalkin;
     private StatsCronEntity statsCron;
 
     @Autowired
     public MoveScheduledAppointmentToWalkin(
-            @Value("${MoveScheduledAppointmentToWalkin.moveScheduledAppointmentToWalkin}")
-            String moveScheduledAppointmentToWalkin,
+        @Value("${MoveScheduledAppointmentToWalkin.moveScheduledAppointmentToWalkin}")
+        String moveScheduledAppointmentToWalkin,
 
-            ScheduleAppointmentManager scheduleAppointmentManager,
-            BizStoreManager bizStoreManager,
-            TokenQueueService tokenQueueService,
-            DeviceService deviceService,
-            StatsCronService statsCronService
+        ScheduleAppointmentManager scheduleAppointmentManager,
+        BizStoreManager bizStoreManager,
+        TokenQueueService tokenQueueService,
+        DeviceService deviceService,
+        StatsCronService statsCronService,
+        ArchiveAndReset archiveAndReset
     ) {
         this.moveScheduledAppointmentToWalkin = moveScheduledAppointmentToWalkin;
 
@@ -66,6 +69,7 @@ public class MoveScheduledAppointmentToWalkin {
         this.tokenQueueService = tokenQueueService;
         this.deviceService = deviceService;
         this.statsCronService = statsCronService;
+        this.archiveAndReset = archiveAndReset;
     }
 
     @Scheduled(fixedDelayString = "${loader.MoveScheduledAppointmentToWalkin.scheduleToWalkin}")
@@ -99,6 +103,10 @@ public class MoveScheduledAppointmentToWalkin {
                 try {
                     moveFromAppointmentToWalkin(bizStore);
                     success++;
+
+                    /* Set date and time for next run. */
+                    DayOfWeek dayOfWeek = archiveAndReset.computeDayOfWeekHistoryIsSupposeToRun(bizStore);
+                    bizStore.setQueueAppointment(Date.from(archiveAndReset.setupTokenAvailableForTomorrow(bizStore, dayOfWeek).toInstant()));
                 } catch (Exception e) {
                     failure++;
                     LOG.error("Insert fail on joining queue bizStore={} codeQR={} reason={}",

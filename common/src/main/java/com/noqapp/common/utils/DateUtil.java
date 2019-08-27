@@ -315,9 +315,7 @@ public final class DateUtil {
         return dateAtTimeZone(ZoneId.of(timeZone));
     }
 
-    /**
-     * Compute UTC based DateTime.
-     */
+    /** Compute UTC based DateTime. */
     public static ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay, DAY day) {
         try {
             Assert.notNull(timeZone, "TimeZone should not be null");
