@@ -402,11 +402,7 @@ public class ArchiveAndReset {
     }
 
     private ZonedDateTime setupStoreForTomorrow(BizStoreEntity bizStore) {
-        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
-        StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(dayOfWeek).getValue() - 1);
-        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
-            populateForScheduledTask(bizStore, tomorrow);
-        }
+        StoreHourEntity tomorrow = populateStoreHour(bizStore);
 
         TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
         /* When closed set hour to 23 and minute to 59. */
@@ -422,11 +418,7 @@ public class ArchiveAndReset {
      * To make it single run, a date needs to be set when Walkin Appointment feature is turned ON. //TODO fix this when there is time
      */
     ZonedDateTime setupTokenAvailableForTomorrow(BizStoreEntity bizStore) {
-        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
-        StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(dayOfWeek).getValue() - 1);
-        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
-            populateForScheduledTask(bizStore, tomorrow);
-        }
+        StoreHourEntity tomorrow = populateStoreHour(bizStore);
 
         TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
         /* When closed set hour to 23 and minute to 59. */
@@ -434,6 +426,15 @@ public class ArchiveAndReset {
         int minuteOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeTokenAvailableFromMinuteOfDay();
         LOG.info("Tomorrow token available from  dayOfWeek={} Hour={} Minutes={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay, tomorrow.getId());
         return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TOMORROW);
+    }
+
+    private StoreHourEntity populateStoreHour(BizStoreEntity bizStore) {
+        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
+        StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(dayOfWeek).getValue() - 1);
+        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
+            populateForScheduledTask(bizStore, tomorrow);
+        }
+        return tomorrow;
     }
 
     private void populateForScheduledTask(BizStoreEntity bizStore, StoreHourEntity storeHour) {
