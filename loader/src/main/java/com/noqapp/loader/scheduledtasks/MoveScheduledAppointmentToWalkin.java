@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -104,9 +103,7 @@ public class MoveScheduledAppointmentToWalkin {
                     moveFromAppointmentToWalkin(bizStore);
                     success++;
 
-                    /* Set date and time for next run. */
-                    DayOfWeek dayOfWeek = archiveAndReset.computeDayOfWeekHistoryIsSupposeToRun(bizStore);
-                    bizStore.setQueueAppointment(Date.from(archiveAndReset.setupTokenAvailableForTomorrow(bizStore, dayOfWeek).toInstant()));
+                    bizStore.setQueueAppointment(Date.from(archiveAndReset.setupTokenAvailableForTomorrow(bizStore).toInstant()));
                 } catch (Exception e) {
                     failure++;
                     LOG.error("Insert fail on joining queue bizStore={} codeQR={} reason={}",
