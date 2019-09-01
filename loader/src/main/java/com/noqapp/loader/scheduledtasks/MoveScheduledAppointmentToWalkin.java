@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -31,10 +30,10 @@ import java.util.List;
  * Date: 2019-08-22 11:03
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Component
 public class MoveScheduledAppointmentToWalkin {
@@ -75,9 +74,9 @@ public class MoveScheduledAppointmentToWalkin {
     @Scheduled(fixedDelayString = "${loader.MoveScheduledAppointmentToWalkin.scheduleToWalkin}")
     public void scheduleToWalkin() {
         statsCron = new StatsCronEntity(
-                MoveScheduledAppointmentToWalkin.class.getName(),
-                "scheduleToWalkin",
-                moveScheduledAppointmentToWalkin);
+            MoveScheduledAppointmentToWalkin.class.getName(),
+            "scheduleToWalkin",
+            moveScheduledAppointmentToWalkin);
 
         int found = 0, failure = 0, success = 0;
         if ("OFF".equalsIgnoreCase(moveScheduledAppointmentToWalkin)) {
@@ -104,16 +103,14 @@ public class MoveScheduledAppointmentToWalkin {
                     moveFromAppointmentToWalkin(bizStore);
                     success++;
 
-                    /* Set date and time for next run. */
-                    DayOfWeek dayOfWeek = archiveAndReset.computeDayOfWeekHistoryIsSupposeToRun(bizStore);
-                    bizStore.setQueueAppointment(Date.from(archiveAndReset.setupTokenAvailableForTomorrow(bizStore, dayOfWeek).toInstant()));
+                    bizStore.setQueueAppointment(Date.from(archiveAndReset.setupTokenAvailableForTomorrow(bizStore).toInstant()));
                 } catch (Exception e) {
                     failure++;
                     LOG.error("Insert fail on joining queue bizStore={} codeQR={} reason={}",
-                            bizStore.getId(),
-                            bizStore.getCodeQR(),
-                            e.getLocalizedMessage(),
-                            e);
+                        bizStore.getId(),
+                        bizStore.getCodeQR(),
+                        e.getLocalizedMessage(),
+                        e);
                 }
             }
         } catch (Exception e) {
@@ -136,12 +133,12 @@ public class MoveScheduledAppointmentToWalkin {
         List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedWalkinAppointmentsForDay(bizStore.getCodeQR(), DateUtil.dateToString(now));
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             tokenQueueService.getNextToken(
-                    bizStore.getCodeQR(),
-                    deviceService.findRegisteredDeviceByQid(scheduleAppointment.getQueueUserId()).getDeviceId(),
-                    scheduleAppointment.getQueueUserId(),
-                    scheduleAppointment.getGuardianQid(),
-                    bizStore.getAverageServiceTime(),
-                    TokenServiceEnum.C
+                bizStore.getCodeQR(),
+                deviceService.findRegisteredDeviceByQid(scheduleAppointment.getQueueUserId()).getDeviceId(),
+                scheduleAppointment.getQueueUserId(),
+                scheduleAppointment.getGuardianQid(),
+                bizStore.getAverageServiceTime(),
+                TokenServiceEnum.C
             );
 
             scheduleAppointment.setAppointmentStatus(AppointmentStatusEnum.W);
