@@ -353,18 +353,18 @@ public class ArchiveAndReset {
 
     private void doReset(BizStoreEntity bizStore, StatsBizStoreDailyEntity statsBizStoreDaily) {
         DayOfWeek nowDayOfWeek = computeDayOfWeekHistoryIsSupposeToRun(bizStore);
+        /* In queue history, we set things for tomorrow. */
+        ZonedDateTime archiveNextRun = setupStoreForTomorrow(bizStore, nowDayOfWeek);
         resetStoreOfToday(bizStore, nowDayOfWeek);
 
         StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
-        /* In queue history, we set things for tomorrow. */
-        ZonedDateTime archiveNextRun = setupStoreForTomorrow(bizStore);
         if (null != bizStoreRating) {
             bizStoreManager.updateNextRunAndRatingWithAverageServiceTime(
                 bizStore.getId(),
                 bizStore.getTimeZone(),
                 /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
                 Date.from(archiveNextRun.toInstant()),
-                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore).toInstant()) : null,
+                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore, nowDayOfWeek).toInstant()) : null,
                 (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
                 bizStoreRating.getTotalCustomerRated(),
                 //TODO(hth) should we compute with yesterday average time or overall average time?
@@ -374,7 +374,7 @@ public class ArchiveAndReset {
                 bizStore.getId(),
                 bizStore.getTimeZone(),
                 Date.from(archiveNextRun.toInstant()),
-                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore).toInstant()) : null);
+                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore, nowDayOfWeek).toInstant()) : null);
         }
 
         tokenQueueManager.resetForNewDay(bizStore.getCodeQR());
@@ -401,8 +401,7 @@ public class ArchiveAndReset {
         bizService.resetTemporarySettingsOnStoreHour(today.getId());
     }
 
-    private ZonedDateTime setupStoreForTomorrow(BizStoreEntity bizStore) {
-        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
+    private ZonedDateTime setupStoreForTomorrow(BizStoreEntity bizStore, DayOfWeek dayOfWeek) {
         StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(dayOfWeek).getValue() - 1);
         if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
             populateForScheduledTask(bizStore, tomorrow);
@@ -421,8 +420,7 @@ public class ArchiveAndReset {
      * takes over for next run. Archive reset might over write the same at every run but duplicate update is acceptable for now.
      * To make it single run, a date needs to be set when Walkin Appointment feature is turned ON. //TODO fix this when there is time
      */
-    ZonedDateTime setupTokenAvailableForTomorrow(BizStoreEntity bizStore) {
-        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
+    ZonedDateTime setupTokenAvailableForTomorrow(BizStoreEntity bizStore, DayOfWeek dayOfWeek) {
         StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(dayOfWeek).getValue() - 1);
         if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
             populateForScheduledTask(bizStore, tomorrow);
