@@ -108,7 +108,7 @@ public class MoveScheduledAppointmentToWalkin {
                     moveFromAppointmentToWalkin(bizStore);
                     success++;
 
-                    bizStore.setQueueAppointment(Date.from(archiveAndReset.setupTokenAvailableForTomorrow(bizStore).toInstant()));
+                    bizStoreManager.updateNextRunQueueAppointment(bizStore.getId(), Date.from(archiveAndReset.setupTokenAvailableForTomorrow(bizStore).toInstant()));
                 } catch (Exception e) {
                     failure++;
                     LOG.error("Insert fail on joining queue bizStore={} codeQR={} reason={}",

@@ -300,6 +300,19 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
+    public boolean updateNextRunQueueAppointment(String id, Date queueAppointment) {
+        LOG.info("Run next queue appointment id={} queueAppointment={}", id, queueAppointment);
+        Update update = new Update();
+        if (null != queueAppointment) {
+            update.set("QA", queueAppointment);
+        } else {
+            update.unset("QA");
+        }
+
+        return mongoTemplate.updateFirst(query(where("id").is(id)), update, BizStoreEntity.class, TABLE).getModifiedCount() > 0;
+    }
+
+    @Override
     public boolean updateNextRunAndRatingWithAverageServiceTime(
         String id,
         String zoneId,
