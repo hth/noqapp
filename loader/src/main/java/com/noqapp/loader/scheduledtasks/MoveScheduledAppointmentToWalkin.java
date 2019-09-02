@@ -8,6 +8,7 @@ import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
+import com.noqapp.service.BizService;
 import com.noqapp.service.DeviceService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.TokenQueueService;
@@ -43,6 +44,7 @@ public class MoveScheduledAppointmentToWalkin {
     private BizStoreManager bizStoreManager;
     private TokenQueueService tokenQueueService;
     private DeviceService deviceService;
+    private BizService bizService;
     private StatsCronService statsCronService;
     private ArchiveAndReset archiveAndReset;
 
@@ -58,6 +60,7 @@ public class MoveScheduledAppointmentToWalkin {
         BizStoreManager bizStoreManager,
         TokenQueueService tokenQueueService,
         DeviceService deviceService,
+        BizService bizService,
         StatsCronService statsCronService,
         ArchiveAndReset archiveAndReset
     ) {
@@ -67,6 +70,7 @@ public class MoveScheduledAppointmentToWalkin {
         this.bizStoreManager = bizStoreManager;
         this.tokenQueueService = tokenQueueService;
         this.deviceService = deviceService;
+        this.bizService = bizService;
         this.statsCronService = statsCronService;
         this.archiveAndReset = archiveAndReset;
     }
@@ -100,6 +104,7 @@ public class MoveScheduledAppointmentToWalkin {
             LOG.info("Stores accepting walkins found={} date={}", bizStores.size(), date);
             for (BizStoreEntity bizStore : bizStores) {
                 try {
+                    bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
                     moveFromAppointmentToWalkin(bizStore);
                     success++;
 
