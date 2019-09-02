@@ -70,6 +70,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     /** Set next cron run date for moving history from previous day. */
     boolean updateNextRun(String id, String zoneId, Date archiveNextRun, Date queueAppointment);
+    boolean updateNextRunQueueAppointment(String id, Date queueAppointment);
 
     boolean updateNextRunAndRatingWithAverageServiceTime(
             String id,

@@ -424,7 +424,7 @@ public class ArchiveAndReset {
         /* When closed set hour to 23 and minute to 59. */
         int hourOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeTokenAvailableFromHourOfDay();
         int minuteOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeTokenAvailableFromMinuteOfDay();
-        LOG.info("Tomorrow token available from  dayOfWeek={} Hour={} Minutes={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay, tomorrow.getId());
+        LOG.info("Tomorrow token available from dayOfWeek={} Hour={} Minutes={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay, tomorrow.getId());
         return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TOMORROW);
     }
 
