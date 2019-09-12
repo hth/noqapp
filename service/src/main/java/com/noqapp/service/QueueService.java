@@ -48,6 +48,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -290,24 +291,37 @@ public class QueueService {
     }
 
     @Mobile
+    @Deprecated
     public JsonQueuePersonList findAllRegisteredClientHistorical(String codeQR) {
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
 
         List<QueueEntity> queues = queueManagerJDBC.getByCodeQRAndNotNullQID(codeQR, limitedToDays);
         populateInJsonQueuePersonList(queuedPeople, queues);
+        populateHistoricallyQueuePeople(codeQR, queuedPeople);
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
+    }
 
+    @Mobile
+    public JsonQueuePersonList findAllRegisteredClientHistorical(String codeQR, Date start, Date until) {
+        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
+
+        List<QueueEntity> queues = queueManagerJDBC.getByCodeQRDateRangeAndNotNullQID(codeQR, start, until);
+        populateInJsonQueuePersonList(queuedPeople, queues);
+        populateHistoricallyQueuePeople(codeQR, queuedPeople);
+        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
+    }
+
+    private void populateHistoricallyQueuePeople(String codeQR, List<JsonQueuedPerson> queuedPeople) {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         for (JsonQueuedPerson jsonQueuedPerson : queuedPeople) {
             String qid = jsonQueuedPerson.getQueueUserId();
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
-            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
             BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
             jsonQueuedPerson.setCustomerName(userProfile.getName())
                 .setBusinessCustomerId(businessCustomer == null ? "" : businessCustomer.getBusinessCustomerId())
                 .setBusinessCustomerIdChangeCount(businessCustomer == null ? 0 : businessCustomer.getVersion())
                 .setCustomerPhone(StringUtils.isNotBlank(userProfile.getGuardianPhone()) ? userProfile.getGuardianPhone() : userProfile.getPhone());
         }
-
-        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
     }
 
     private void populateInJsonQueuePersonList(List<JsonQueuedPerson> queuedPeople, List<QueueEntity> queues) {
