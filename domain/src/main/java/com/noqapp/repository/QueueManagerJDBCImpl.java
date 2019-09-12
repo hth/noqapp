@@ -87,6 +87,16 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
             "ORDER BY C DESC";
 
+    private static final String findHistoricalRecordByCodeQRDateRange =
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE QR = ? " +
+            "AND " +
+            "QID IS NOT NULL " +
+            "AND " +
+            "C BETWEEN ? AND ? " +
+            "ORDER BY C DESC";
+
     private static final String findByCodeQR =
         "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
             " FROM " +
@@ -274,6 +284,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public List<QueueEntity> getByCodeQRAndNotNullQID(String codeQR, int limitedToDays) {
         LOG.info("Fetch history by codeQR={} and not null QID limitedToDays={}", codeQR, limitedToDays);
         return jdbcTemplate.query(findByCodeQR_AndNotNullQID, new Object[]{codeQR, limitedToDays}, new QueueRowMapper());
+    }
+
+    @Override
+    public List<QueueEntity> getByCodeQRDateRangeAndNotNullQID(String codeQR, Date start, Date until) {
+        LOG.info("Fetch history by codeQR={} and not null QID range from start={} until={}", codeQR, start, until);
+        return jdbcTemplate.query(findHistoricalRecordByCodeQRDateRange, new Object[]{codeQR, start, until}, new QueueRowMapper());
     }
 
     @Override

@@ -41,6 +41,9 @@ public interface QueueManagerJDBC {
     @Mobile
     List<QueueEntity> getByCodeQRAndNotNullQID(String codeQR, int limitedToDays);
 
+    @Mobile
+    List<QueueEntity> getByCodeQRDateRangeAndNotNullQID(String codeQR, Date start, Date until);
+
     List<QueueEntity> getByCodeQR(String codeQR, int limitedToDays);
 
     @Mobile
