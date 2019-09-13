@@ -39,9 +39,6 @@ public interface QueueManagerJDBC {
     List<QueueEntity> getByQid(String qid, Date lastAccessed);
 
     @Mobile
-    List<QueueEntity> getByCodeQRAndNotNullQID(String codeQR, int limitedToDays);
-
-    @Mobile
     List<QueueEntity> getByCodeQRDateRangeAndNotNullQID(String codeQR, Date start, Date until);
 
     List<QueueEntity> getByCodeQR(String codeQR, int limitedToDays);
