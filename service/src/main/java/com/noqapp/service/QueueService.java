@@ -291,17 +291,6 @@ public class QueueService {
     }
 
     @Mobile
-    @Deprecated
-    public JsonQueuePersonList findAllRegisteredClientHistorical(String codeQR) {
-        List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
-
-        List<QueueEntity> queues = queueManagerJDBC.getByCodeQRAndNotNullQID(codeQR, limitedToDays);
-        populateInJsonQueuePersonList(queuedPeople, queues);
-        populateHistoricallyQueuePeople(codeQR, queuedPeople);
-        return new JsonQueuePersonList().setQueuedPeople(queuedPeople);
-    }
-
-    @Mobile
     public JsonQueuePersonList findAllRegisteredClientHistorical(String codeQR, Date start, Date until) {
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
 
