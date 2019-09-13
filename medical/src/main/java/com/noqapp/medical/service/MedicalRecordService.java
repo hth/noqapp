@@ -21,6 +21,7 @@ import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.domain.types.medical.LabCategoryEnum;
+import com.noqapp.domain.types.medical.MedicalRecordFieldFilterEnum;
 import com.noqapp.medical.domain.MedicalMedicationEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 import com.noqapp.medical.domain.MedicalPathologyEntity;
@@ -531,6 +532,20 @@ public class MedicalRecordService {
         }
         populateJsonMedicalRecordWithStoreDetails(codeQR, jsonMedicalRecord);
         return jsonMedicalRecord;
+    }
+
+    @Mobile
+    public JsonMedicalRecordList retrieveMedicalRecord(String codeQR, MedicalRecordFieldFilterEnum medicalRecordFieldFilter, Date from, Date until) {
+        JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
+
+        JsonMedicalRecord jsonMedicalRecord;
+        List<MedicalRecordEntity> medicalRecords = medicalRecordManager.findByCodeQRFilteredOnFieldWithinDateRange(codeQR, medicalRecordFieldFilter.getName(), from, until);
+        for (MedicalRecordEntity medicalRecord : medicalRecords) {
+            jsonMedicalRecord = getJsonMedicalRecord(medicalRecord);
+            populateJsonMedicalRecordWithStoreDetails(codeQR, jsonMedicalRecord);
+            jsonMedicalRecordList.addJsonMedicalRecords(jsonMedicalRecord);
+        }
+        return jsonMedicalRecordList;
     }
 
     @Mobile

@@ -23,9 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,6 +91,13 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
     @Override
     public MedicalRecordEntity findById(String id) {
         return mongoTemplate.findById(new ObjectId(id), MedicalRecordEntity.class);
+    }
+
+    @Override
+    public List<MedicalRecordEntity> findByCodeQRFilteredOnFieldWithinDateRange(String codeQR, String populateField, Date from, Date until) {
+        Query query = query(where("QR").is(codeQR).and("C").gte(from).lt(until));
+        query.fields().include(populateField).include("QID");
+        return mongoTemplate.find(query, MedicalRecordEntity.class, TABLE);
     }
 
     @Override
