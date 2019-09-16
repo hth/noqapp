@@ -96,7 +96,7 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
     @Override
     public List<MedicalRecordEntity> findByCodeQRFilteredOnFieldWithinDateRange(String codeQR, String populateField, Date from, Date until) {
         Query query = query(where("QR").is(codeQR).and("C").gte(from).lt(until));
-        query.fields().include(populateField).include("QID");
+        query.fields().include(populateField).include("QID").include("BT");
         return mongoTemplate.find(query, MedicalRecordEntity.class, TABLE);
     }
 
