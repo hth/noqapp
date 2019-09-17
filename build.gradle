@@ -932,7 +932,7 @@ task war(type: War, dependsOn: prepWar) {
     archiveBaseName = "ROOT-$env" + "." + project.version.toString()
     from warDir
     version ""
-    destinationDir = file("$buildDir/war/$env")
+    destinationDirectory = file("$buildDir/war/$env")
 }
 
 task loaderWar(type: War, dependsOn: [createLoaderBuildInfoFile, prepWar]) {
@@ -944,7 +944,7 @@ task loaderWar(type: War, dependsOn: [createLoaderBuildInfoFile, prepWar]) {
     archiveBaseName = "ROOT-loader-$env" + "." + project.version.toString()
     from warDir
     version ""
-    destinationDir = file("$buildDir/war/$env-loader")
+    destinationDirectory = file("$buildDir/war/$env-loader")
 }
 
 task testReport(type: TestReport) {
