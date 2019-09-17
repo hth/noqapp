@@ -535,11 +535,11 @@ public class MedicalRecordService {
     }
 
     @Mobile
-    public JsonMedicalRecordList retrieveMedicalRecord(String codeQR, MedicalRecordFieldFilterEnum medicalRecordFieldFilter, Date from, Date until) {
+    public JsonMedicalRecordList retrieveMedicalRecord(String codeQR, MedicalRecordFieldFilterEnum medicalRecordFieldFilter, Date from, Date until, int currentPosition) {
         JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
 
         JsonMedicalRecord jsonMedicalRecord;
-        List<MedicalRecordEntity> medicalRecords = medicalRecordManager.findByCodeQRFilteredOnFieldWithinDateRange(codeQR, medicalRecordFieldFilter.getName(), from, until);
+        List<MedicalRecordEntity> medicalRecords = medicalRecordManager.findByCodeQRFilteredOnFieldWithinDateRange(codeQR, medicalRecordFieldFilter.getName(), from, until, currentPosition);
         for (MedicalRecordEntity medicalRecord : medicalRecords) {
             jsonMedicalRecord = getJsonMedicalRecord(medicalRecord);
             populateJsonMedicalRecordWithStoreDetails(codeQR, jsonMedicalRecord);
