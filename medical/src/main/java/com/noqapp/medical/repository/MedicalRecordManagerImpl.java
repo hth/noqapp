@@ -98,7 +98,8 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
         //Pageable sortedByPriceDesc = PageRequest.of(0, 3, Sort.Direction.ASC, "C");
         Query query = query(where("QR").is(codeQR).and("C").gte(from).lt(until));
         query.with(new Sort(DESC, "C")).fields().include(populateField).include("QID").include("BT").include("C");
-        return mongoTemplate.find(query.skip(currentPosition).limit(20).slaveOk(), MedicalRecordEntity.class, TABLE);
+        //return mongoTemplate.find(query.skip(currentPosition).limit(20).slaveOk(), MedicalRecordEntity.class, TABLE);
+        return mongoTemplate.find(query.skip(currentPosition).limit(20), MedicalRecordEntity.class, TABLE);
     }
 
     @Override
