@@ -217,7 +217,6 @@ subprojects {
         implementation "com.fasterxml.jackson.core:jackson-core:$jackson"
         implementation "com.fasterxml.jackson.core:jackson-databind:$jackson"
         implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jackson"
-        implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlin"
 
         implementation "org.json:json:$json"
         implementation "com.maxmind.geoip2:geoip2:$geoip2"
@@ -282,14 +281,14 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = '8.24'
+        toolVersion = '8.22'
         ignoreFailures = true
         configDir = file("$rootProject.projectDir/config/checkstyle")
     }
 
     pmd {
         ignoreFailures = true
-        toolVersion = '6.17.0'
+        toolVersion = '6.16.0'
 
         ruleSets = [
                 "java-basic",
@@ -933,7 +932,7 @@ task war(type: War, dependsOn: prepWar) {
     archiveBaseName = "ROOT-$env" + "." + project.version.toString()
     from warDir
     version ""
-    destinationDirectory = file("$buildDir/war/$env")
+    destinationDir = file("$buildDir/war/$env")
 }
 
 task loaderWar(type: War, dependsOn: [createLoaderBuildInfoFile, prepWar]) {
@@ -945,7 +944,7 @@ task loaderWar(type: War, dependsOn: [createLoaderBuildInfoFile, prepWar]) {
     archiveBaseName = "ROOT-loader-$env" + "." + project.version.toString()
     from warDir
     version ""
-    destinationDirectory = file("$buildDir/war/$env-loader")
+    destinationDir = file("$buildDir/war/$env-loader")
 }
 
 task testReport(type: TestReport) {
