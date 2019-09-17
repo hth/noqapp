@@ -17,7 +17,7 @@ public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEnt
     List<MedicalRecordEntity> historicalRecords(String qid, MedicalDepartmentEnum medicalDepartment, int limit);
 
     MedicalRecordEntity findById(String id);
-    List<MedicalRecordEntity> findByCodeQRFilteredOnFieldWithinDateRange(String codeQR, String populateField, Date from, Date until);
+    List<MedicalRecordEntity> findByCodeQRFilteredOnFieldWithinDateRange(String codeQR, String populateField, Date from, Date until, int currentPosition);
 
     List<MedicalRecordEntity> findByFollowUpWithoutNotificationSent(int afterHour, int beforeHour);
 
