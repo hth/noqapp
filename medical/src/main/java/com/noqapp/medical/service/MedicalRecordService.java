@@ -536,6 +536,7 @@ public class MedicalRecordService {
 
     @Mobile
     public JsonMedicalRecordList retrieveMedicalRecord(String codeQR, MedicalRecordFieldFilterEnum medicalRecordFieldFilter, Date from, Date until, int currentPosition) {
+        LOG.info("Search Work History {} {} {} {} {} ", codeQR, medicalRecordFieldFilter, from, until, currentPosition);
         JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
 
         JsonMedicalRecord jsonMedicalRecord;
