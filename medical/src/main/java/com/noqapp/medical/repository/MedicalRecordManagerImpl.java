@@ -97,8 +97,7 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
     public List<MedicalRecordEntity> findByCodeQRFilteredOnFieldWithinDateRange(String codeQR, String populateField, Date from, Date until, int currentPosition) {
         //Pageable sortedByPriceDesc = PageRequest.of(0, 3, Sort.Direction.ASC, "C");
         Query query = query(where("QR").is(codeQR).and("C").gte(from).lt(until));
-        query.with(new Sort(DESC, "C")).fields().include(populateField).include("QID").include("BT").include("C");
-        //return mongoTemplate.find(query.skip(currentPosition).limit(20).slaveOk(), MedicalRecordEntity.class, TABLE);
+        query.with(new Sort(ASC, "C")).fields().include(populateField).include("QID").include("BT").include("C");
         return mongoTemplate.find(query.skip(currentPosition).limit(20), MedicalRecordEntity.class, TABLE);
     }
 
