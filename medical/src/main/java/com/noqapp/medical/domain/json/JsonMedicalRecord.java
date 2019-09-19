@@ -122,7 +122,7 @@ public class JsonMedicalRecord extends AbstractDomain {
     private JsonUserMedicalProfile jsonUserMedicalProfile;
 
     @Transient
-    @JsonProperty("pbn")
+    @JsonProperty("pdn")
     private String patientDisplayName;
 
     @Transient
