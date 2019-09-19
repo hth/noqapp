@@ -122,6 +122,14 @@ public class JsonMedicalRecord extends AbstractDomain {
     private JsonUserMedicalProfile jsonUserMedicalProfile;
 
     @Transient
+    @JsonProperty("pbn")
+    private String patientDisplayName;
+
+    @Transient
+    @JsonProperty("ppr")
+    private String patientPhoneRaw;
+
+    @Transient
     @JsonProperty("dbn")
     private String diagnosedByDisplayName;
 
@@ -384,6 +392,24 @@ public class JsonMedicalRecord extends AbstractDomain {
 
     public JsonMedicalRecord setJsonUserMedicalProfile(JsonUserMedicalProfile jsonUserMedicalProfile) {
         this.jsonUserMedicalProfile = jsonUserMedicalProfile;
+        return this;
+    }
+
+    public String getPatientDisplayName() {
+        return patientDisplayName;
+    }
+
+    public JsonMedicalRecord setPatientDisplayName(String patientDisplayName) {
+        this.patientDisplayName = patientDisplayName;
+        return this;
+    }
+
+    public String getPatientPhoneRaw() {
+        return patientPhoneRaw;
+    }
+
+    public JsonMedicalRecord setPatientPhoneRaw(String patientPhoneRaw) {
+        this.patientPhoneRaw = patientPhoneRaw;
         return this;
     }
 

@@ -540,10 +540,18 @@ public class MedicalRecordService {
         JsonMedicalRecordList jsonMedicalRecordList = new JsonMedicalRecordList();
 
         JsonMedicalRecord jsonMedicalRecord;
-        List<MedicalRecordEntity> medicalRecords = medicalRecordManager.findByCodeQRFilteredOnFieldWithinDateRange(codeQR, medicalRecordFieldFilter.getName(), from, until, currentPosition);
+        List<MedicalRecordEntity> medicalRecords = medicalRecordManager.findByCodeQRFilteredOnFieldWithinDateRange(
+            codeQR,
+            medicalRecordFieldFilter.getName(),
+            from,
+            until,
+            currentPosition);
         for (MedicalRecordEntity medicalRecord : medicalRecords) {
             jsonMedicalRecord = getJsonMedicalRecord(medicalRecord);
-            populateJsonMedicalRecordWithStoreDetails(codeQR, jsonMedicalRecord);
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(medicalRecord.getQueueUserId());
+            jsonMedicalRecord
+                .setPatientDisplayName(userProfile.getName())
+                .setPatientPhoneRaw(userProfile.getPhoneRaw());
             jsonMedicalRecordList.addJsonMedicalRecords(jsonMedicalRecord);
         }
         return jsonMedicalRecordList;
