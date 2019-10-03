@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
@@ -100,6 +101,24 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
             query(where("VS").is(ValidateStatusEnum.A)
                 .and("AD").is(AdvertisementDisplayEnum.MC)
                 .and("AT").is(AdvertisementTypeEnum.MA)
+                .and("PD").lte(now)
+                .and("ED").gte(now)
+                .and("D").is(false)
+                .and("A").is(true)
+            ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
+            AdvertisementEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<AdvertisementEntity> findAllMobileClientApprovedAdvertisements(Point point, double maxDistance, int limit) {
+        Date now = new Date();
+        return mongoTemplate.find(
+            query(where("VS").is(ValidateStatusEnum.A)
+                .and("AD").is(AdvertisementDisplayEnum.MC)
+                .and("AT").is(AdvertisementTypeEnum.MA)
+                .and("COR").near(point).maxDistance(maxDistance)
                 .and("PD").lte(now)
                 .and("ED").gte(now)
                 .and("D").is(false)
