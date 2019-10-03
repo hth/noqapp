@@ -2,6 +2,8 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.AdvertisementEntity;
 
+import org.springframework.data.geo.Point;
+
 import java.util.List;
 
 /**
@@ -18,6 +20,7 @@ public interface AdvertisementManager extends RepositoryManager<AdvertisementEnt
     long findApprovalPendingAdvertisementCount();
 
     List<AdvertisementEntity> findAllMobileClientApprovedAdvertisements(int limit);
+    List<AdvertisementEntity> findAllMobileClientApprovedAdvertisements(Point point, double maxDistance, int limit);
     List<AdvertisementEntity> findAllMobileMerchantApprovedAdvertisements(int limit);
 
     /**

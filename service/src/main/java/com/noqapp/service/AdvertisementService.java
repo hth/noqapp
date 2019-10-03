@@ -5,6 +5,7 @@ import com.noqapp.repository.AdvertisementManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,6 +59,10 @@ public class AdvertisementService {
 
     public List<AdvertisementEntity> findAllMobileApprovedAdvertisements() {
         return advertisementManager.findAllMobileClientApprovedAdvertisements(limit);
+    }
+
+    public List<AdvertisementEntity> findAllMobileApprovedAdvertisements(Point point) {
+        return advertisementManager.findAllMobileClientApprovedAdvertisements(point, 1000.0, limit);
     }
 
     public List<AdvertisementEntity> findAllMobileMerchantApprovedAdvertisements() {
