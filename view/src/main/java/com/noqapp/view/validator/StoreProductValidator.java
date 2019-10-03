@@ -73,7 +73,7 @@ public class StoreProductValidator implements Validator {
 
                 if (!isNumeric(form.getProductPrice().getText())) {
                     errors.rejectValue("productPrice",
-                        "field.number",
+                        "field.price",
                         new Object[]{"Price of Product"},
                         "Price of Product should be number and not exceed more than two decimal place");
                 }
