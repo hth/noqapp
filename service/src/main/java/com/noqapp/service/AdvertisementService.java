@@ -62,7 +62,7 @@ public class AdvertisementService {
     }
 
     public List<AdvertisementEntity> findAllMobileApprovedAdvertisements(Point point) {
-        return advertisementManager.findAllMobileClientApprovedAdvertisements(point, 1000.0, limit);
+        return advertisementManager.findAllMobileClientApprovedAdvertisements(point, 1000, limit);
     }
 
     public List<AdvertisementEntity> findAllMobileMerchantApprovedAdvertisements() {
