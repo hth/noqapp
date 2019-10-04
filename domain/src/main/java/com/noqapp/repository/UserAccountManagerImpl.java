@@ -118,5 +118,15 @@ public class UserAccountManagerImpl implements UserAccountManager {
             TABLE
         );
     }
+
+    @Override
+    public void updateName(String firstName, String lastName, String displayName, String qid) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            entityUpdate(update("FN", firstName).set("LN", lastName).set("DN", displayName)),
+            UserAccountEntity.class,
+            TABLE
+        );
+    }
 }
 
