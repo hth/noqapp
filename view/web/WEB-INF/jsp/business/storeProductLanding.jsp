@@ -420,6 +420,16 @@
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="inventoryCount" cssErrorClass="lb_error">Inventory Count</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="inventoryCount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Number"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
                                             </ul>
                                             <div class="col-lable3"></div>
                                             <div class="col-fields">
@@ -498,6 +508,7 @@
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">${storeProduct.productName}</span>
+                                            <span style="display:block; font-size:13px;">Inventory: ${storeProduct.invetoryCount}</span>
                                             <span>Description: ${storeProduct.productInfo}</span>
                                         </td>
                                         <td>

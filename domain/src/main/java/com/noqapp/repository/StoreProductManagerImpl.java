@@ -120,4 +120,14 @@ public class StoreProductManagerImpl implements StoreProductManager {
 
         return deleteResult.getDeletedCount();
     }
+
+    @Override
+    public void changeInventoryCount(String productId, int count) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(productId)),
+            new Update().inc("IC", count),
+            StoreProductEntity.class,
+            TABLE
+        );
+    }
 }

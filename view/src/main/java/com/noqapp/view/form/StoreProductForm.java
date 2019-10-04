@@ -26,6 +26,7 @@ public class StoreProductForm {
     private ScrubbedInput unitOfMeasurement;
     private ScrubbedInput unitValue;
     private ScrubbedInput packageSize;
+    private ScrubbedInput inventoryCount;
     private ScrubbedInput productType;
 
     private Map<String, String> categories;
@@ -130,6 +131,15 @@ public class StoreProductForm {
 
     public StoreProductForm setPackageSize(ScrubbedInput packageSize) {
         this.packageSize = packageSize;
+        return this;
+    }
+
+    public ScrubbedInput getInventoryCount() {
+        return inventoryCount;
+    }
+
+    public StoreProductForm setInventoryCount(ScrubbedInput inventoryCount) {
+        this.inventoryCount = inventoryCount;
         return this;
     }
 

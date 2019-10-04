@@ -23,4 +23,6 @@ public interface StoreProductManager extends RepositoryManager<StoreProductEntit
     void removeStoreCategoryReference(String storeCategoryId);
 
     long removedStoreProduct(String storeId);
+
+    void changeInventoryCount(String productId, int count);
 }
