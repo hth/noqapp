@@ -493,28 +493,28 @@
                                         <td>
                                             <span style="display:block; font-size:13px;">${status.count}&nbsp;</span>
                                         </td>
-                                        <td nowrap>
+                                        <td>
                                             <span style="display:block; font-size:13px;">${storeProductForm.categories.get(storeProduct.storeCategoryId)}</span>
                                         </td>
-                                        <td nowrap>
+                                        <td>
                                             <span style="display:block; font-size:13px;">${storeProduct.productName}</span>
-                                            <span style="display:block; font-size:13px;">Description: ${storeProduct.productInfo}</span>
+                                            <span>Description: ${storeProduct.productInfo}</span>
                                         </td>
-                                        <td nowrap>
+                                        <td>
                                             <span style="display:block; font-size:13px;">${storeProduct.displayPrice}</span>
                                             <span style="display:block; font-size:13px;">Discount: ${storeProduct.displayDiscount}</span>
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">${storeProduct.productType.description}</span>
                                         </td>
-                                        <td nowrap>
+                                        <td>
                                             <span style="display:block; font-size:13px;">${storeProduct.unitValue}${storeProduct.unitOfMeasurement.name.toLowerCase()}</span>
                                             <span style="display:block; font-size:13px;">Package: ${storeProduct.packageSize}</span>
                                         </td>
-                                        <td nowrap>
+                                        <td>
                                             <a href="/business/store/product/${storeProductForm.bizStoreId}/${storeProduct.id}/edit.htm" class="add-btn">Edit</a>
                                         </td>
-                                        <td nowrap>
+                                        <td>
                                             <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/delete.htm" modelAttribute="storeProductForm">
                                                 <form:hidden path="bizStoreId" value="${storeProductForm.bizStoreId}" />
                                                 <form:hidden path="storeProductId" value="${storeProduct.id}" />
