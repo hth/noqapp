@@ -504,7 +504,7 @@
                                             <span style="display:block; font-size:13px;">${storeProduct.displayPrice}</span>
                                             <span style="display:block; font-size:13px;">Discount: ${storeProduct.displayDiscount}</span>
                                         </td>
-                                        <td nowrap>
+                                        <td>
                                             <span style="display:block; font-size:13px;">${storeProduct.productType.description}</span>
                                         </td>
                                         <td nowrap>
