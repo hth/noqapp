@@ -68,4 +68,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     Stream<UserProfileEntity> findAllPhoneOwners();
 
     boolean dependentExists(String qid, String guardianPhone);
+
+    void updateName(String firstName, String lastName, String qid);
 }

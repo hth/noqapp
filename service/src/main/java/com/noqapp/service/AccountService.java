@@ -492,15 +492,14 @@ public class AccountService {
         UserAccountEntity userAccount = findByQueueUserId(qid);
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
 
+        /* For display name we set the first name and last name. */
         userAccount.setFirstName(firstName);
         userAccount.setLastName(lastName);
         userAccount.setDisplayName(userAccount.getName());
 
-        userProfile.setFirstName(firstName);
-        userProfile.setLastName(lastName);
-
-        userProfileManager.save(userProfile);
-        userAccountManager.save(userAccount);
+        /* Changed to use a query as it fixes versioning issue. */
+        userAccountManager.updateName(firstName, lastName, userAccount.getName(), qid);
+        userProfileManager.updateName(firstName, lastName, qid);
     }
 
     public void validateAccount(EmailValidateEntity emailValidate, UserAccountEntity userAccount) {

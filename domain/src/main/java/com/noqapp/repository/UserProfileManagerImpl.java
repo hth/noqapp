@@ -289,4 +289,14 @@ public final class UserProfileManagerImpl implements UserProfileManager {
             TABLE
         );
     }
+
+    @Override
+    public void updateName(String firstName, String lastName, String qid) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            entityUpdate(update("FN", firstName).set("LN", lastName)),
+            UserProfileEntity.class,
+            TABLE
+        );
+    }
 }

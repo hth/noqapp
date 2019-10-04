@@ -23,4 +23,6 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     boolean isPhoneValidated(String qid);
 
     boolean existWithAuth(String id);
+
+    void updateName(String firstName, String lastName, String displayName, String qid);
 }
