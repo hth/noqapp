@@ -67,6 +67,9 @@ public class StoreProductEntity extends BaseEntity {
     @Field("PS")
     private int packageSize;
 
+    @Field("IC")
+    private int inventoryCount;
+
     //TODO product description references to html location.
     @Field("PR")
     private String productReference;
@@ -170,6 +173,15 @@ public class StoreProductEntity extends BaseEntity {
         return this;
     }
 
+    public int getInventoryCount() {
+        return inventoryCount;
+    }
+
+    public StoreProductEntity setInventoryCount(int inventoryCount) {
+        this.inventoryCount = inventoryCount;
+        return this;
+    }
+
     public String getProductReference() {
         return productReference;
     }
@@ -218,7 +230,8 @@ public class StoreProductEntity extends BaseEntity {
             .setProductType(jsonStoreProduct.getProductType())
             .setUnitValue(jsonStoreProduct.getUnitValue())
             .setUnitOfMeasurement(jsonStoreProduct.getUnitOfMeasurement())
-            .setPackageSize(jsonStoreProduct.getPackageSize());
+            .setPackageSize(jsonStoreProduct.getPackageSize())
+            .setInventoryCount(jsonStoreProduct.getInventoryCount());
 
         storeProduct.setId(jsonStoreProduct.getProductId());
         return storeProduct;

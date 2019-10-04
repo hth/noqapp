@@ -248,6 +248,12 @@ public class PurchaseOrderService {
             PurchaseOrderEntity purchaseOrder = transactionService.cancelPurchaseInitiatedByClient(qid, transactionId);
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
             doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
+
+            /* Increase inventory when purchase successful. */
+            List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
+            for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
+                storeProductService.changeInventoryCount(purchaseOrderProduct.getProductId(), purchaseOrderProduct.getProductQuantity());
+            }
             return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
         } catch (PurchaseOrderRefundPartialException | PurchaseOrderRefundExternalException | PurchaseOrderCancelException e) {
             LOG.warn("Failed cancel order reason={}", e.getLocalizedMessage());
@@ -366,6 +372,12 @@ public class PurchaseOrderService {
         PurchaseOrderEntity purchaseOrder = transactionService.cancelPurchaseInitiatedByMerchant(qid, transactionId);
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
+
+        /* Increase inventory when purchase successful. */
+        List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
+        for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
+            storeProductService.changeInventoryCount(purchaseOrderProduct.getProductId(), purchaseOrderProduct.getProductQuantity());
+        }
         return new JsonPurchaseOrderList().addPurchaseOrder(JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder));
     }
 
@@ -511,6 +523,7 @@ public class PurchaseOrderService {
 
         List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
         int computedOrderPrice = 0;
+        Map<String, Integer> productPurchases = new HashMap<>();
         for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getJsonPurchaseOrderProducts()) {
             StoreProductEntity storeProduct = null;
             if (StringUtils.isNotBlank(jsonPurchaseOrderProduct.getProductId())) {
@@ -527,6 +540,21 @@ public class PurchaseOrderService {
                     .setUnitValue(storeProduct.getUnitValue())
                     .setUnitOfMeasurement(storeProduct.getUnitOfMeasurement())
                     .setPackageSize(storeProduct.getPackageSize());
+
+                switch(bizStore.getBusinessType()) {
+                    case RS:
+                    case FT:
+                        if (storeProduct.getInventoryCount() > 0) {
+                            productPurchases.put(storeProduct.getId(), -jsonPurchaseOrderProduct.getProductQuantity());
+                        } else {
+                            LOG.error("Out of product {} {} {} {} {}",
+                                storeProduct.getId(),
+                                storeProduct.getProductName(),
+                                bizStore.getId(),
+                                bizStore.getDisplayName(), qid);
+                        }
+                        break;
+                }
             } else {
                 purchaseOrderProduct
                     .setProductName(jsonPurchaseOrderProduct.getProductName())
@@ -589,6 +617,11 @@ public class PurchaseOrderService {
             purchaseOrderManager.save(purchaseOrder);
             executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
             userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);
+
+            /* Decrease inventory when purchase successful. */
+            for (String productId : productPurchases.keySet()) {
+                storeProductService.changeInventoryCount(productId, productPurchases.get(productId));
+            }
 
             doActionBasedOnQueueStatus(bizStore.getCodeQR(), purchaseOrder, tokenQueueService.findByCodeQR(bizStore.getCodeQR()), null);
             jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())

@@ -96,4 +96,8 @@ public class StoreProductService {
         List<StoreProductEntity> storeProducts = storeProductManager.findAll(bizStore.getId());
         return fileService.writeStoreProductToCSVFile(storeProducts, bizStore);
     }
+
+    void changeInventoryCount(String productId, int count) {
+        storeProductManager.changeInventoryCount(productId, count);
+    }
 }

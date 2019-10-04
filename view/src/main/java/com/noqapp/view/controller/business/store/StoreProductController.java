@@ -337,6 +337,7 @@ public class StoreProductController {
             .setStoreCategoryId(StringUtils.isBlank(storeProduct.getStoreCategoryId()) ? new ScrubbedInput("") : new ScrubbedInput(storeProduct.getStoreCategoryId()))
             .setUnitOfMeasurement(new ScrubbedInput(storeProduct.getUnitOfMeasurement().name()))
             .setPackageSize(new ScrubbedInput(storeProduct.getPackageSize()))
+            .setInventoryCount(new ScrubbedInput(storeProduct.getInventoryCount()))
             .setUnitValue(new ScrubbedInput(storeProduct.getUnitValue()));
 
         redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
