@@ -283,6 +283,7 @@ public class StoreProductController {
             .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
             .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
             .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
+            .setInventoryCount(new BigDecimal(storeProductForm.getInventoryCount().getText()).intValue())
             .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
         storeProductService.save(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId() + ".htm";
@@ -388,6 +389,7 @@ public class StoreProductController {
             .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
             .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
             .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
+            .setInventoryCount(new BigDecimal(storeProductForm.getInventoryCount().getText()).intValue())
             .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
         storeProductService.save(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
