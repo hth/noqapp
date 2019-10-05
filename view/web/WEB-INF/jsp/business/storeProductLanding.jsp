@@ -508,7 +508,7 @@
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">${storeProduct.productName}</span>
-                                            <span style="display:block; font-size:13px;">Inventory: ${storeProduct.invetoryCount}</span>
+                                            <span style="display:block; font-size:13px;">Inventory: ${storeProduct.inventoryCount}</span>
                                             <span>Description: ${storeProduct.productInfo}</span>
                                         </td>
                                         <td>
