@@ -503,22 +503,22 @@
                                         <td>
                                             <span style="display:block; font-size:13px;">${status.count}&nbsp;</span>
                                         </td>
-                                        <td>
+                                        <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProductForm.categories.get(storeProduct.storeCategoryId)}</span>
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">${storeProduct.productName}</span>
                                             <span style="display:block; font-size:13px;">Inventory: ${storeProduct.inventoryCount}</span>
-                                            <span>Description: ${storeProduct.productInfo}</span>
+                                            <span style="font-size:13px;">Description: ${storeProduct.productInfo}</span>
                                         </td>
-                                        <td>
+                                        <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.displayPrice}</span>
                                             <span style="display:block; font-size:13px;">Discount: ${storeProduct.displayDiscount}</span>
                                         </td>
-                                        <td>
+                                        <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.productType.description}</span>
                                         </td>
-                                        <td>
+                                        <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.unitValue}${storeProduct.unitOfMeasurement.name.toLowerCase()}</span>
                                             <span style="display:block; font-size:13px;">Package: ${storeProduct.packageSize}</span>
                                         </td>
