@@ -544,7 +544,7 @@ public class PurchaseOrderService {
                 switch(bizStore.getBusinessType()) {
                     case RS:
                     case FT:
-                        if (storeProduct.getInventoryCount() > 0) {
+                        if (storeProduct.getInventoryCurrent() > 0) {
                             productPurchases.put(storeProduct.getId(), -jsonPurchaseOrderProduct.getProductQuantity());
                         } else {
                             LOG.error("Out of product {} {} {} {} {}",

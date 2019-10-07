@@ -234,6 +234,16 @@
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="inventoryLimit" cssErrorClass="lb_error">Inventory</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="inventoryLimit" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Number"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
                                             </ul>
                                             <div class="col-lable3"></div>
                                             <div class="col-fields">
@@ -422,10 +432,10 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
-                                                        <form:label path="inventoryCount" cssErrorClass="lb_error">Inventory Count</form:label>
+                                                        <form:label path="inventoryLimit" cssErrorClass="lb_error">Inventory</form:label>
                                                     </div>
                                                     <div class="col-fields">
-                                                        <form:input path="inventoryCount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                        <form:input path="inventoryLimit" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number"/>
                                                     </div>
                                                     <div class="clearFix"></div>
@@ -508,7 +518,7 @@
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">${storeProduct.productName}</span>
-                                            <span style="display:block; font-size:13px;">Inventory: ${storeProduct.inventoryCount}</span>
+                                            <span style="display:block; font-size:13px;">Inventory: ${storeProduct.inventoryCurrent} out of ${storeProduct.inventoryLimit}</span>
                                             <span style="font-size:13px;">Description: ${storeProduct.productInfo}</span>
                                         </td>
                                         <td nowrap>

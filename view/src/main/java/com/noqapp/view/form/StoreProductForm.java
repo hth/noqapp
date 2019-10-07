@@ -26,7 +26,8 @@ public class StoreProductForm {
     private ScrubbedInput unitOfMeasurement;
     private ScrubbedInput unitValue;
     private ScrubbedInput packageSize;
-    private ScrubbedInput inventoryCount;
+    private ScrubbedInput inventoryCurrent;
+    private ScrubbedInput inventoryLimit;
     private ScrubbedInput productType;
 
     private Map<String, String> categories;
@@ -134,12 +135,21 @@ public class StoreProductForm {
         return this;
     }
 
-    public ScrubbedInput getInventoryCount() {
-        return inventoryCount;
+    public ScrubbedInput getInventoryCurrent() {
+        return inventoryCurrent;
     }
 
-    public StoreProductForm setInventoryCount(ScrubbedInput inventoryCount) {
-        this.inventoryCount = inventoryCount;
+    public StoreProductForm setInventoryCurrent(ScrubbedInput inventoryCurrent) {
+        this.inventoryCurrent = inventoryCurrent;
+        return this;
+    }
+
+    public ScrubbedInput getInventoryLimit() {
+        return inventoryLimit;
+    }
+
+    public StoreProductForm setInventoryLimit(ScrubbedInput inventoryLimit) {
+        this.inventoryLimit = inventoryLimit;
         return this;
     }
 
