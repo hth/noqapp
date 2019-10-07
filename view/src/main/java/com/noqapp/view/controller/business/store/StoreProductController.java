@@ -283,7 +283,8 @@ public class StoreProductController {
             .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
             .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
             .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
-            .setInventoryCount(new BigDecimal(storeProductForm.getInventoryCount().getText()).intValue())
+            .setInventoryCurrent(new BigDecimal(storeProductForm.getInventoryCurrent().getText()).intValue())
+            .setInventoryLimit(new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
             .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
         storeProductService.save(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId() + ".htm";
@@ -338,7 +339,8 @@ public class StoreProductController {
             .setStoreCategoryId(StringUtils.isBlank(storeProduct.getStoreCategoryId()) ? new ScrubbedInput("") : new ScrubbedInput(storeProduct.getStoreCategoryId()))
             .setUnitOfMeasurement(new ScrubbedInput(storeProduct.getUnitOfMeasurement().name()))
             .setPackageSize(new ScrubbedInput(storeProduct.getPackageSize()))
-            .setInventoryCount(new ScrubbedInput(storeProduct.getInventoryCount()))
+            .setInventoryCurrent(new ScrubbedInput(storeProduct.getInventoryCurrent()))
+            .setInventoryLimit(new ScrubbedInput(storeProduct.getInventoryLimit()))
             .setUnitValue(new ScrubbedInput(storeProduct.getUnitValue()));
 
         redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
@@ -389,7 +391,8 @@ public class StoreProductController {
             .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
             .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
             .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
-            .setInventoryCount(new BigDecimal(storeProductForm.getInventoryCount().getText()).intValue())
+            .setInventoryCurrent(new BigDecimal(storeProductForm.getInventoryCurrent().getText()).intValue())
+            .setInventoryLimit(new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
             .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
         storeProductService.save(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";

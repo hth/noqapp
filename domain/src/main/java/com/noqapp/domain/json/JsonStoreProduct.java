@@ -64,7 +64,10 @@ public class JsonStoreProduct extends AbstractDomain {
     private int packageSize;
 
     @JsonProperty("ic")
-    private int inventoryCount;
+    private int inventoryCurrent;
+
+    @JsonProperty("il")
+    private int inventoryLimit;
 
     @JsonProperty("um")
     private UnitOfMeasurementEnum unitOfMeasurement;
@@ -166,12 +169,21 @@ public class JsonStoreProduct extends AbstractDomain {
         return this;
     }
 
-    public int getInventoryCount() {
-        return inventoryCount;
+    public int getInventoryCurrent() {
+        return inventoryCurrent;
     }
 
-    public JsonStoreProduct setInventoryCount(int inventoryCount) {
-        this.inventoryCount = inventoryCount;
+    public JsonStoreProduct setInventoryCurrent(int inventoryCurrent) {
+        this.inventoryCurrent = inventoryCurrent;
+        return this;
+    }
+
+    public int getInventoryLimit() {
+        return inventoryLimit;
+    }
+
+    public JsonStoreProduct setInventoryLimit(int inventoryLimit) {
+        this.inventoryLimit = inventoryLimit;
         return this;
     }
 

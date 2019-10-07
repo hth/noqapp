@@ -68,7 +68,10 @@ public class StoreProductEntity extends BaseEntity {
     private int packageSize;
 
     @Field("IC")
-    private int inventoryCount;
+    private int inventoryCurrent;
+
+    @Field("IL")
+    private int inventoryLimit;
 
     //TODO product description references to html location.
     @Field("PR")
@@ -173,12 +176,21 @@ public class StoreProductEntity extends BaseEntity {
         return this;
     }
 
-    public int getInventoryCount() {
-        return inventoryCount;
+    public int getInventoryCurrent() {
+        return inventoryCurrent;
     }
 
-    public StoreProductEntity setInventoryCount(int inventoryCount) {
-        this.inventoryCount = inventoryCount;
+    public StoreProductEntity setInventoryCurrent(int inventoryCurrent) {
+        this.inventoryCurrent = inventoryCurrent;
+        return this;
+    }
+
+    public int getInventoryLimit() {
+        return inventoryLimit;
+    }
+
+    public StoreProductEntity setInventoryLimit(int inventoryLimit) {
+        this.inventoryLimit = inventoryLimit;
         return this;
     }
 
@@ -231,7 +243,8 @@ public class StoreProductEntity extends BaseEntity {
             .setUnitValue(jsonStoreProduct.getUnitValue())
             .setUnitOfMeasurement(jsonStoreProduct.getUnitOfMeasurement())
             .setPackageSize(jsonStoreProduct.getPackageSize())
-            .setInventoryCount(jsonStoreProduct.getInventoryCount());
+            .setInventoryCurrent(jsonStoreProduct.getInventoryCurrent())
+            .setInventoryLimit(jsonStoreProduct.getInventoryLimit());
 
         storeProduct.setId(jsonStoreProduct.getProductId());
         return storeProduct;
