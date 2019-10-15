@@ -1,6 +1,8 @@
 package com.noqapp.domain;
 
 import com.noqapp.domain.types.CommunicationModeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
+import com.noqapp.domain.types.PaymentMethodEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -31,6 +33,15 @@ public class UserPreferenceEntity extends BaseEntity {
 
     @Field("FN")
     private CommunicationModeEnum firebaseNotification;
+
+    @Field("DM")
+    private DeliveryModeEnum deliveryMode;
+
+    @Field("PM")
+    private PaymentMethodEnum paymentMethod;
+
+    @Field("UAI")
+    private String userAddressId;
 
     /**
      * To make bean happy
@@ -73,6 +84,33 @@ public class UserPreferenceEntity extends BaseEntity {
 
     public UserPreferenceEntity setFirebaseNotification(CommunicationModeEnum firebaseNotification) {
         this.firebaseNotification = firebaseNotification;
+        return this;
+    }
+
+    public DeliveryModeEnum getDeliveryMode() {
+        return deliveryMode;
+    }
+
+    public UserPreferenceEntity setDeliveryMode(DeliveryModeEnum deliveryMode) {
+        this.deliveryMode = deliveryMode;
+        return this;
+    }
+
+    public PaymentMethodEnum getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public UserPreferenceEntity setPaymentMethod(PaymentMethodEnum paymentMethod) {
+        this.paymentMethod = paymentMethod;
+        return this;
+    }
+
+    public String getUserAddressId() {
+        return userAddressId;
+    }
+
+    public UserPreferenceEntity setUserAddressId(String userAddressId) {
+        this.userAddressId = userAddressId;
         return this;
     }
 }
