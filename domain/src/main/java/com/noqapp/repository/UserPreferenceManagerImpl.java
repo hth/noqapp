@@ -8,6 +8,8 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.types.CommunicationModeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
+import com.noqapp.domain.types.PaymentMethodEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -75,6 +77,17 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
         return mongoTemplate.findAndModify(
             query(where("QID").is(qid)),
             entityUpdate(update("FN", communicationMode)),
+            FindAndModifyOptions.options().returnNew(true),
+            UserPreferenceEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public UserPreferenceEntity updateOrderPreference(String qid, DeliveryModeEnum deliveryMode, PaymentMethodEnum paymentMethod, String userAddressId) {
+        return mongoTemplate.findAndModify(
+            query(where("QID").is(qid)),
+            entityUpdate(update("DM", deliveryMode).set("PM", paymentMethod).set("UAI", userAddressId)),
             FindAndModifyOptions.options().returnNew(true),
             UserPreferenceEntity.class,
             TABLE
