@@ -81,6 +81,15 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     @Override
+    public boolean doesAddressExists(String id, String qid) {
+        return mongoTemplate.exists(
+            query(where("id").is(new ObjectId(id)).and("QID").is(qid)),
+            UserAddressEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<UserAddressEntity> getAll(String qid) {
         return mongoTemplate.find(
             query(where("QID").is(qid)).with(new Sort(ASC, "LU")),

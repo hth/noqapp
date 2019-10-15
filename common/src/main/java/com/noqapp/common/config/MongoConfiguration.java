@@ -97,7 +97,7 @@ public class MongoConfiguration {
             String[] mongoInternetAddresses = mongoReplicaSet.split(",");
             for (String mongoInternetAddress : mongoInternetAddresses) {
                 String[] mongoIpAndPort = mongoInternetAddress.split(":");
-                ServerAddress serverAddress = new ServerAddress(mongoIpAndPort[0], Integer.valueOf(mongoIpAndPort[1]));
+                ServerAddress serverAddress = new ServerAddress(mongoIpAndPort[0], Integer.parseInt(mongoIpAndPort[1]));
                 serverAddresses.add(serverAddress);
             }
         } else {

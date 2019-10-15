@@ -2,6 +2,8 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.types.CommunicationModeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
+import com.noqapp.domain.types.PaymentMethodEnum;
 
 /**
  * User: hitender
@@ -16,5 +18,7 @@ public interface UserPreferenceManager extends RepositoryManager<UserPreferenceE
     UserPreferenceEntity changePromotionalSMS(String qid, CommunicationModeEnum communicationMode);
 
     UserPreferenceEntity changeFirebaseNotification(String qid, CommunicationModeEnum communicationMode);
+
+    UserPreferenceEntity updateOrderPreference(String qid, DeliveryModeEnum deliveryMode, PaymentMethodEnum paymentMethod, String userAddressId);
 }
 

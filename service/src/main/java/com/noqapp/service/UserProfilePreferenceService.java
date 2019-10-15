@@ -5,8 +5,13 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonUserPreference;
 import com.noqapp.domain.types.CommunicationModeEnum;
+import com.noqapp.domain.types.DeliveryModeEnum;
+import com.noqapp.domain.types.PaymentMethodEnum;
+import com.noqapp.repository.UserAddressManager;
 import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,14 +37,17 @@ public class UserProfilePreferenceService {
 
     private UserProfileManager userProfileManager;
     private UserPreferenceManager userPreferenceManager;
+    private UserAddressManager userAddressManager;
 
     @Autowired
     public UserProfilePreferenceService(
         UserProfileManager userProfileManager,
-        UserPreferenceManager userPreferenceManager
+        UserPreferenceManager userPreferenceManager,
+        UserAddressManager userAddressManager
     ) {
         this.userProfileManager = userProfileManager;
         this.userPreferenceManager = userPreferenceManager;
+        this.userAddressManager = userAddressManager;
     }
 
     public void save(UserPreferenceEntity userPreference) {
@@ -106,5 +114,35 @@ public class UserProfilePreferenceService {
                 LOG.error("Reached unsupported communication mode {}", userPreference.getPromotionalSMS());
                 throw new UnsupportedOperationException("Reached unsupported communication mode " + userPreference.getFirebaseNotification().getDescription());
         }
+    }
+
+    @Mobile
+    public UserPreferenceEntity updateOrderPreference(
+        String qid,
+        DeliveryModeEnum deliveryMode,
+        PaymentMethodEnum paymentMethod,
+        String userAddressId
+    ) {
+        UserPreferenceEntity userPreference = findByQueueUserId(qid);
+        if (null != deliveryMode) {
+            userPreference.setDeliveryMode(deliveryMode);
+        }
+
+        if (null != paymentMethod) {
+            userPreference.setPaymentMethod(paymentMethod);
+        }
+
+        if (StringUtils.isNotBlank(userAddressId)) {
+            if (userAddressManager.doesAddressExists(qid, userAddressId)) {
+                userPreference.setUserAddressId(userAddressId);
+            } else {
+                LOG.warn("No such user address id={} qid={}", userAddressId, qid);
+            }
+        }
+
+        return userPreferenceManager.updateOrderPreference(qid,
+            userPreference.getDeliveryMode(),
+            userPreference.getPaymentMethod(),
+            userPreference.getUserAddressId());
     }
 }
