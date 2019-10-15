@@ -1,5 +1,7 @@
 package com.noqapp.domain.types;
 
+import java.util.EnumSet;
+
 /**
  * hitender
  * 3/29/18 3:04 PM
@@ -45,6 +47,12 @@ public enum PurchaseOrderStateEnum {
     public String getFriendlyDescription() {
         return friendlyDescription;
     }
+
+    //Home Delivery
+    public static EnumSet<PurchaseOrderStateEnum> HD = EnumSet.of(PO, OP, PR, RP);
+
+    //To Go /Takeaway Mode (Either one of the choice LO, FD, DA, OD)
+    public static EnumSet<PurchaseOrderStateEnum> TO = EnumSet.of(PO, OP, RD, OW, LO, FD, DA, OD);
 
     @Override
     public String toString() {
