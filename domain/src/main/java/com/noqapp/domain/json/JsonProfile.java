@@ -94,6 +94,9 @@ public final class JsonProfile extends AbstractDomain {
     @JsonProperty("up")
     private JsonUserPreference jsonUserPreference;
 
+    @JsonProperty("bn")
+    private String bizNameId;
+
     public JsonProfile() {
         //Required Default Constructor
     }
@@ -238,6 +241,15 @@ public final class JsonProfile extends AbstractDomain {
 
     public JsonProfile setJsonUserPreference(JsonUserPreference jsonUserPreference) {
         this.jsonUserPreference = jsonUserPreference;
+        return this;
+    }
+
+    public String getBizNameId() {
+        return bizNameId;
+    }
+
+    public JsonProfile setBizNameId(String bizNameId) {
+        this.bizNameId = bizNameId;
         return this;
     }
 }
