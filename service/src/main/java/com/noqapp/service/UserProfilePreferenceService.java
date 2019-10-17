@@ -133,7 +133,7 @@ public class UserProfilePreferenceService {
         }
 
         if (StringUtils.isNotBlank(userAddressId)) {
-            if (userAddressManager.doesAddressExists(qid, userAddressId)) {
+            if (userAddressManager.doesAddressExists(userAddressId, qid)) {
                 userPreference.setUserAddressId(userAddressId);
             } else {
                 LOG.warn("No such user address id={} qid={}", userAddressId, qid);
