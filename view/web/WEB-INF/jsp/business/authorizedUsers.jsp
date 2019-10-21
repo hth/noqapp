@@ -88,7 +88,6 @@
                                                      alt="Sort" height="16px;"/>
                                             </th>
                                             <th>Address</th>
-                                            <th>Email</th>
                                             <th>Role</th>
                                             <th>Since</th>
                                             <th>&nbsp;</th>
@@ -97,7 +96,7 @@
                                         <c:forEach items="${queueSupervisorForm.queueSupervisors}" var="queueSupervisor" varStatus="status">
                                             <tr id="authorized_${status.count}">
                                                 <td>${status.count}&nbsp;</td>
-                                                <td nowrap>
+                                                <td>
                                                     <c:choose>
                                                         <c:when test="${queueSupervisor.businessUserRegistrationStatus eq BusinessUserRegistrationStatusEnum.V && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
                                                             <span style="display:block; font-size:13px;"><a href="/business/queueUserDetail/${queueSupervisor.businessUserId}.htm">${queueSupervisor.name}</a></span>
@@ -135,8 +134,15 @@
                                                         </c:choose>
                                                     </c:if>
                                                 </td>
-                                                <td>
-                                                    <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
+                                                <td nowrap>
+                                                    <c:choose>
+                                                        <c:when test="${fn:length(queueSupervisor.address) < 55}">
+                                                            <span style="display:block; font-size:13px;">${queueSupervisor.address}</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="display:block; font-size:13px;">${fn:substring(queueSupervisor.address, 0, 55)}...</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                     <c:choose>
                                                         <c:when test="${queueSupervisor.phoneValidated}">
                                                             <span style="display:block; font-size:13px;"><p>Phone: ${queueSupervisor.phone}</p></span>
@@ -145,8 +151,7 @@
                                                             <span style="display:block; font-size:13px;"><p>Phone: N/A</p></span>
                                                         </c:otherwise>
                                                     </c:choose>
-                                                </td>
-                                                <td>
+
                                                     <c:choose>
                                                         <c:when test="${fn:endsWith(queueSupervisor.email, '@mail.noqapp.com')}">
                                                             <span style="display:block; font-size:13px;">
@@ -155,7 +160,7 @@
                                                         </c:when>
                                                         <c:otherwise>
                                                             <span style="display:block; font-size:13px;">
-                                                                <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm" target="_blank">${queueSupervisor.email}</a>
+                                                                Profile: <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm" target="_blank">${queueSupervisor.email}</a>
                                                             </span>
                                                         </c:otherwise>
                                                     </c:choose>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+    <secured attributes="ROLE_M_ADMIN" match="any"/>
+
+    <on-start>
+        <evaluate expression="addSurveyFlowActions.initiate(externalContext)"
+                  result="flowScope.questionnaire"/>
+    </on-start>
+
+    <view-state id="surveyStart" model="questionnaire">
+        <transition on="add" to="addLocaleToBeSupported"/>
+        <transition on="next" to="validateLocaleAdded"/>
+        <transition on="cancel" to="invitationCancel"/>
+    </view-state>
+
+    <action-state id="validateLocaleAdded">
+        <evaluate expression="surveyFlowValidator.validateLocaleAdded(questionnaire, messageContext)"/>
+        <transition on="success" to="surveyQuestion"/>
+        <transition on="failure" to="surveyStart"/>
+    </action-state>
+
+    <action-state id="addLocaleToBeSupported">
+        <evaluate expression="addSurveyFlowActions.addLocale(questionnaire, messageContext)" />
+        <transition on="success" to="surveyStart"/>
+    </action-state>
+
+    <view-state id="surveyQuestion" model="questionnaire">
+        <on-entry>
+            <evaluate expression="addSurveyFlowActions.addQuestion(questionnaire)"/>
+        </on-entry>
+        <transition on="add" to="validateQuestion"/>
+        <transition on="submit" to="validateQuestionnaire"/>
+        <transition on="cancel" to="invitationCancel"/>
+    </view-state>
+
+    <action-state id="validateQuestion">
+        <evaluate expression="surveyFlowValidator.validateQuestion(questionnaire, messageContext)"/>
+        <transition on="success" to="surveyQuestion"/>
+        <transition on="failure" to="surveyQuestion"/>
+    </action-state>
+
+    <action-state id="validateQuestionnaire">
+        <evaluate expression="surveyFlowValidator.validate(questionnaire, messageContext)"/>
+        <transition on="success" to="surveyReview"/>
+        <transition on="failure" to="surveyQuestion"/>
+    </action-state>
+
+    <view-state id="surveyReview">
+        <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
+        <transition on="confirm" to="completeSurvey" history="invalidate"/>
+        <transition on="revise" to="surveyStart"/>
+        <transition on="cancel" to="surveyCancel"/>
+    </view-state>
+
+    <action-state id="completeSurvey">
+        <!-- Need the result to show correct message on JSP -->
+        <evaluate result="questionnaire"
+                  expression="addSurveyFlowActions.completeSurvey(questionnaire, messageContext)"/>
+
+        <transition on-exception="com.noqapp.view.flow.merchant.exception.SurveyException"
+                    to="surveyStart"/>
+
+        <transition to="surveyComplete"/>
+    </action-state>
+
+    <view-state id="surveyCancel"
+                view="externalRedirect:contextRelative:/business/landing.htm"/>
+    <view-state id="surveyComplete"
+                view="externalRedirect:contextRelative:/business/landing.htm"/>
+</flow>
