@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
@@ -17,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -66,7 +66,7 @@ public class ScheduledTaskManagerImpl implements ScheduledTaskManager {
     @Override
     public void inActive(String id) {
         UpdateResult result = mongoTemplate.updateFirst(
-            Query.query(where("id").is(new ObjectId(id))),
+            query(where("id").is(new ObjectId(id))),
             entityUpdate(update("A", false)),
             ScheduledTaskEntity.class,
             TABLE

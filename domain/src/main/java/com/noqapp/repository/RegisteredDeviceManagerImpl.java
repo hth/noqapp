@@ -175,10 +175,12 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public List<RegisteredDeviceEntity> findAll(String qid) {
         return mongoTemplate.find(
-                query(where("QID").is(qid).andOperator(
+                query(where("QID").is(qid)
+                    .andOperator(
                         isActive(),
                         isNotDeleted()
-                )),
+                    )
+                ),
                 RegisteredDeviceEntity.class,
                 TABLE
         );

@@ -16,7 +16,9 @@ import org.json.JSONObject;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Currency;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -37,8 +39,14 @@ public final class CommonUtil {
     public static final String AUTH_KEY_HIDDEN = "*********";
     public static final String UNAUTHORIZED = "Unauthorized";
     private static final Pattern p = Pattern.compile("\\{([^}]*)\\}");
+    private static Random random;
+    private static Map<String, String> languages;
 
-    private static Random random = new Random();
+    static {
+        random = new Random();
+        languages = new LinkedHashMap<>();
+        Arrays.stream(Locale.getISOLanguages()).map(Locale::new).forEachOrdered(loc -> languages.put(loc.getLanguage(), loc.getDisplayLanguage()));
+    }
 
     private CommonUtil() {
     }
@@ -150,7 +158,7 @@ public final class CommonUtil {
      */
     public static int getTimeIn24HourFormat(ZonedDateTime zonedDateTime) {
         /* To make sure minute in time 11:06 AM is not represented as 116 but as 1106 hence string formatting. */
-        return Integer.valueOf(zonedDateTime.getHour() + String.format(Locale.US, "%02d", zonedDateTime.getMinute()));
+        return Integer.parseInt(zonedDateTime.getHour() + String.format(Locale.US, "%02d", zonedDateTime.getMinute()));
     }
 
     /**
@@ -219,5 +227,9 @@ public final class CommonUtil {
     
     public static String displayWithCurrencyCode(String orderPrice, String countryCode) {
         return currencyLocal(countryCode) + orderPrice;
+    }
+
+    public static Map<String, String> getLanguages() {
+        return languages;
     }
 }

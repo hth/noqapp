@@ -8,6 +8,7 @@ import static org.springframework.data.mongodb.core.aggregation.Aggregation.matc
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.project;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
@@ -21,7 +22,6 @@ import org.springframework.data.mapping.context.InvalidPersistentPropertyPath;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -101,7 +101,7 @@ public class StatsBizStoreDailyManagerImpl implements StatsBizStoreDailyManager 
     @Override
     public List<StatsBizStoreDailyEntity> findStores(String bizNameId, Date since) {
         return mongoTemplate.find(
-            Query.query(where("BN").is(bizNameId).and("C").gte(since)),
+            query(where("BN").is(bizNameId).and("C").gte(since)),
             StatsBizStoreDailyEntity.class,
             TABLE
         );

@@ -132,6 +132,9 @@
         <intercept-url pattern="/business/store/**"
                        access="hasRole('ROLE_S_MANAGER')" />
 
+        <intercept-url pattern="/business/survey/**"
+                       access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_SUPERVISOR')" />
+
         <intercept-url pattern="/business/payout/**"
                        access="hasRole('ROLE_M_ACCOUNTANT')" />
 
