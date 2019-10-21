@@ -48,12 +48,14 @@ public class SurveyController {
         @Value("${addSurveyFlow:redirect:/store/addSurvey.htm}")
         String addSurveyFlow,
 
-        SurveyService surveyService
+        SurveyService surveyService,
+        BusinessUserService businessUserService
     ) {
         this.nextPage = nextPage;
         this.addSurveyFlow = addSurveyFlow;
 
         this.surveyService = surveyService;
+        this.businessUserService = businessUserService;
     }
 
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
