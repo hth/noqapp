@@ -1,8 +1,10 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.QuestionnaireEntity;
+import com.noqapp.domain.SurveyEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonQuestionnaire;
+import com.noqapp.domain.json.JsonSurvey;
 import com.noqapp.domain.types.QuestionTypeEnum;
 import com.noqapp.repository.QuestionnaireManager;
 import com.noqapp.repository.SurveyManager;
@@ -50,5 +52,18 @@ public class SurveyService {
     @Mobile
     public JsonQuestionnaire findOne(String bizNameId) {
         return JsonQuestionnaire.populateJsonQuestionnaire(findLatest(bizNameId));
+    }
+
+    @Mobile
+    public void saveSurveyResponse(JsonSurvey jsonSurvey) {
+        SurveyEntity survey = new SurveyEntity()
+            .setBizStoreId(jsonSurvey.getBizStoreId())
+            .setBizNameId(jsonSurvey.getBizNameId())
+            .setCodeQR(jsonSurvey.getCodeQR())
+            .setDid(jsonSurvey.getDid())
+            .setOverallRating(jsonSurvey.getOverallRating())
+            .setDetailedResponse(jsonSurvey.getDetailedResponse())
+            .setQuestionnaireId(jsonSurvey.getQuestionnaireId());
+        surveyManager.save(survey);
     }
 }
