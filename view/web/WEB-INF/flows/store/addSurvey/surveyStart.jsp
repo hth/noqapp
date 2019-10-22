@@ -106,12 +106,12 @@
                         </div>
                         <div class="add-new">
                             <c:choose>
-                                <c:when test="${fn:length(questionnaire.questionsWithLocale) != 0}">
+                                <c:when test="${fn:length(questionnaire.localeWithQuestions) != 0}">
                                     <ul class="list-form">
-                                        <c:forEach items="${questionnaire.questionsWithLocale}" var="questionsWithLocale" varStatus="status">
+                                        <c:forEach items="${questionnaire.localeWithQuestions}" var="localeWithQuestions" varStatus="status">
                                         <li>
                                             <div class="col-lable3">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                            <div class="col-fields">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${questionsWithLocale.key.displayLanguage}</div>
+                                            <div class="col-fields">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${localeWithQuestions.key.displayLanguage}</div>
                                         </li>
                                         </c:forEach>
                                     </ul>

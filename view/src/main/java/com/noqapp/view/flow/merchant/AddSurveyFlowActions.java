@@ -65,7 +65,7 @@ public class AddSurveyFlowActions {
             return questionnaire;
         }
 
-        if (questionnaire.getQuestionsWithLocale().containsKey(questionnaire.getLocale())) {
+        if (questionnaire.getLocaleWithQuestions().containsKey(questionnaire.getLocale())) {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
@@ -75,7 +75,7 @@ public class AddSurveyFlowActions {
 
             return questionnaire;
         }
-        questionnaire.getQuestionsWithLocale().put(questionnaire.getLocale(), new LinkedHashMap<>());
+        questionnaire.getLocaleWithQuestions().put(questionnaire.getLocale(), new LinkedHashMap<>());
         questionnaire.setLocale(null);
         return questionnaire;
     }
@@ -84,9 +84,9 @@ public class AddSurveyFlowActions {
     @SuppressWarnings("all")
     public Questionnaire addQuestion(Questionnaire questionnaire) {
         if (StringUtils.isNotBlank(questionnaire.getQuestion())) {
-            Map<String, QuestionTypeEnum> update =  questionnaire.getQuestionsWithLocale().get(questionnaire.getLocale());
+            Map<String, QuestionTypeEnum> update =  questionnaire.getLocaleWithQuestions().get(questionnaire.getLocale());
             update.put(questionnaire.getQuestion(), questionnaire.getQuestionType());
-            questionnaire.getQuestionsWithLocale().put(questionnaire.getLocale(), update);
+            questionnaire.getLocaleWithQuestions().put(questionnaire.getLocale(), update);
         }
         questionnaire.setLocale(null).setQuestion("").setQuestionType(null);
         return questionnaire;
@@ -97,7 +97,7 @@ public class AddSurveyFlowActions {
     public Questionnaire completeSurvey(Questionnaire questionnaire, MessageContext messageContext) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        surveyService.saveSurveyQuestionnaire(businessUser.getBizName().getId(), questionnaire.getQuestionsWithLocale());
+        surveyService.saveSurveyQuestionnaire(businessUser.getBizName().getId(), questionnaire.getLocaleWithQuestions());
         return questionnaire;
     }
 }

@@ -80,8 +80,8 @@
                                         <form:select path="locale" cssClass="form-field-select single-dropdown"
                                                 cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                             <form:option value="" label="--- Select ---"/>
-                                            <c:forEach items="${questionnaire.questionsWithLocale}" var="questionsWithLocale" varStatus="status">
-                                                <option value="${questionsWithLocale.key}">${questionsWithLocale.key.displayLanguage}</option>
+                                            <c:forEach items="${questionnaire.localeWithQuestions}" var="localeWithQuestions" varStatus="status">
+                                                <option value="${localeWithQuestions.key}">${localeWithQuestions.key.displayLanguage}</option>
                                             </c:forEach>
                                         </form:select>
                                     </div>
@@ -129,12 +129,12 @@
                         <div class="admin-title">
                             <h2>Survey</h2>
                         </div>
-                        <c:forEach items="${questionnaire.questionsWithLocale}" var="questionsWithLocale" varStatus="status">
+                        <c:forEach items="${questionnaire.localeWithQuestions}" var="localeWithQuestions" varStatus="status">
                             <div class="admin-title">
-                                <h3>Language: ${questionsWithLocale.key.displayLanguage}</h3>
+                                <h3>Language: ${localeWithQuestions.key.displayLanguage}</h3>
                             </div>
                             <c:choose>
-                                <c:when test="${fn:length(questionsWithLocale.value) > 0}">
+                                <c:when test="${fn:length(localeWithQuestions.value) > 0}">
                                 <div class="store-table">
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
@@ -142,7 +142,7 @@
                                             <th nowrap>Survey Questions</th>
                                             <th nowrap>Response Format</th>
                                         </tr>
-                                        <c:forEach items="${questionsWithLocale.value}" var="question" varStatus="status">
+                                        <c:forEach items="${localeWithQuestions.value}" var="question" varStatus="status">
                                         <tr>
                                             <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
                                             <td nowrap>

@@ -43,7 +43,7 @@ public class JsonSurvey extends AbstractDomain {
     @JsonProperty ("did")
     private String did;
 
-    @JsonProperty("qr")
+    @JsonProperty("or")
     private int overallRating;
 
     @JsonProperty("dr")
