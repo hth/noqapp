@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.webflow.context.ExternalContext;
 
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -65,6 +66,20 @@ public class AddSurveyFlowActions {
             return questionnaire;
         }
 
+        if (questionnaire.getLocaleWithQuestions().keySet().isEmpty() && null != questionnaire.getLocale()) {
+            if (!"en".equals(questionnaire.getLocale().getLanguage())) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("locale")
+                        .defaultText("First locale has to be English")
+                        .build());
+
+                questionnaire.setLocale(Locale.ENGLISH);
+                return questionnaire;
+            }
+        }
+
         if (questionnaire.getLocaleWithQuestions().containsKey(questionnaire.getLocale())) {
             messageContext.addMessage(
                 new MessageBuilder()
@@ -82,7 +97,11 @@ public class AddSurveyFlowActions {
 
     /** Add question to each locale. */
     @SuppressWarnings("all")
-    public Questionnaire addQuestion(Questionnaire questionnaire) {
+    public Questionnaire addQuestion(Questionnaire questionnaire, MessageContext messageContext) {
+        if (messageContext.hasErrorMessages()) {
+            return questionnaire;
+        }
+
         if (StringUtils.isNotBlank(questionnaire.getQuestion())) {
             Map<String, QuestionTypeEnum> update =  questionnaire.getLocaleWithQuestions().get(questionnaire.getLocale());
             update.put(questionnaire.getQuestion(), questionnaire.getQuestionType());
