@@ -34,11 +34,23 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonQuestionnaire extends AbstractDomain {
 
+    @JsonProperty("id")
+    private String questionnaireId;
+
     @JsonProperty("bn")
     private String bizNameId;
 
     @JsonProperty("qs")
     private Map<Locale, Map<String, QuestionTypeEnum>> questions;
+
+    public String getQuestionnaireId() {
+        return questionnaireId;
+    }
+
+    public JsonQuestionnaire setQuestionnaireId(String questionnaireId) {
+        this.questionnaireId = questionnaireId;
+        return this;
+    }
 
     public String getBizNameId() {
         return bizNameId;
@@ -60,6 +72,7 @@ public class JsonQuestionnaire extends AbstractDomain {
 
     public static JsonQuestionnaire populateJsonQuestionnaire(QuestionnaireEntity questionnaire) {
         return new JsonQuestionnaire()
+            .setQuestionnaireId(questionnaire.getId())
             .setBizNameId(questionnaire.getBizNameId())
             .setQuestions(questionnaire.getQuestions());
     }
