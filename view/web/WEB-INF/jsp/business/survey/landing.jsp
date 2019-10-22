@@ -75,7 +75,7 @@
                                                 <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
                                                 <td nowrap><span style="display:block; font-size:13px;">${questionnaire.firstEntry}</span></td>
                                                 <td>
-                                                    <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy" value="${questionnaire.created}"/></span>
+                                                    <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${questionnaire.created}"/></span>
                                                 </td>
                                             </tr>
                                             </c:forEach>

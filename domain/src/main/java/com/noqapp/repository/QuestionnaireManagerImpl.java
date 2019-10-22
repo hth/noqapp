@@ -1,6 +1,6 @@
 package com.noqapp.repository;
 
-import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -59,7 +59,7 @@ public class QuestionnaireManagerImpl implements QuestionnaireManager {
     @Override
     public List<QuestionnaireEntity> findAll(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId)).with(new Sort(ASC, "C")),
+            query(where("BN").is(bizNameId)).with(new Sort(DESC, "C")),
             QuestionnaireEntity.class,
             TABLE
         );
@@ -68,7 +68,7 @@ public class QuestionnaireManagerImpl implements QuestionnaireManager {
     @Override
     public QuestionnaireEntity findLatest(String bizNameId) {
         return mongoTemplate.findOne(
-            query(where("BN").is(bizNameId)).with(new Sort(ASC, "C")),
+            query(where("BN").is(bizNameId)).with(new Sort(DESC, "C")),
             QuestionnaireEntity.class,
             TABLE
         );
