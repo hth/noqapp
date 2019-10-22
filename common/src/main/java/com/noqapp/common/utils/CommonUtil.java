@@ -18,6 +18,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Currency;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -44,8 +45,13 @@ public final class CommonUtil {
 
     static {
         random = new Random();
-        languages = new LinkedHashMap<>();
-        Arrays.stream(Locale.getISOLanguages()).map(Locale::new).forEachOrdered(loc -> languages.put(loc.getLanguage(), loc.getDisplayLanguage()));
+
+        Map<String, String> temp = new HashMap<>();
+        Arrays.stream(Locale.getISOLanguages()).map(Locale::new).forEachOrdered(loc -> temp.put(loc.getLanguage(), loc.getDisplayLanguage()));
+        
+        languages = temp.entrySet().stream()
+            .sorted(Map.Entry.comparingByValue())
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 
     private CommonUtil() {

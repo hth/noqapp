@@ -4,6 +4,8 @@ import com.noqapp.domain.flow.Questionnaire;
 import com.noqapp.domain.types.QuestionTypeEnum;
 import com.noqapp.view.controller.access.LandingController;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +39,7 @@ public class SurveyFlowValidator {
             status = "failure";
         }
 
-        LOG.info("validatePhoneNumber status={}", status);
+        LOG.info("validateLocaleAdded status={}", status);
         return status;
     }
 
@@ -52,12 +54,13 @@ public class SurveyFlowValidator {
                 new MessageBuilder()
                     .error()
                     .source("locale")
-                    .defaultText("No select Language")
+                    .defaultText("Select a language")
                     .build());
             status = "failure";
+            return status;
         }
 
-        if (null == questions) {
+        if (questions.size() == 0 && StringUtils.isBlank(questionnaire.getQuestion())) {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
@@ -65,6 +68,25 @@ public class SurveyFlowValidator {
                     .defaultText("No questions added. Please add question.")
                     .build());
             status = "failure";
+        }
+
+        if (questions.size() == 0 && StringUtils.isNotBlank(questionnaire.getQuestion()) && null != questionnaire.getQuestionType()) {
+            switch (questionnaire.getQuestionType()) {
+                case R:
+                    break;
+                case B:
+                case M:
+                case S:
+                case T:
+                default:
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source("questionType")
+                            .defaultText("Response format for the first question has to be type " + QuestionTypeEnum.R.getDescription())
+                            .build());
+                    status = "failure";
+            }
         }
 
         if (null == questionnaire.getQuestionType()) {
@@ -77,7 +99,7 @@ public class SurveyFlowValidator {
             status = "failure";
         }
 
-        if (null != questions && questions.size() > 5) {
+        if (questions.size() > 5) {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()

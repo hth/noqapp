@@ -14,7 +14,7 @@
     <view-state id="surveyStart" model="questionnaire">
         <transition on="add" to="addLocaleToBeSupported"/>
         <transition on="next" to="validateLocaleAdded"/>
-        <transition on="cancel" to="invitationCancel"/>
+        <transition on="cancel" to="surveyCancel"/>
     </view-state>
 
     <action-state id="validateLocaleAdded">
@@ -30,11 +30,11 @@
 
     <view-state id="surveyQuestion" model="questionnaire">
         <on-entry>
-            <evaluate expression="addSurveyFlowActions.addQuestion(questionnaire)"/>
+            <evaluate expression="addSurveyFlowActions.addQuestion(questionnaire, messageContext)"/>
         </on-entry>
         <transition on="add" to="validateQuestion"/>
         <transition on="submit" to="validateQuestionnaire"/>
-        <transition on="cancel" to="invitationCancel"/>
+        <transition on="cancel" to="surveyCancel"/>
     </view-state>
 
     <action-state id="validateQuestion">
@@ -68,7 +68,7 @@
     </action-state>
 
     <view-state id="surveyCancel"
-                view="externalRedirect:contextRelative:/business/landing.htm"/>
+                view="externalRedirect:contextRelative:/business/survey/landing.htm"/>
     <view-state id="surveyComplete"
                 view="externalRedirect:contextRelative:/business/landing.htm"/>
 </flow>
