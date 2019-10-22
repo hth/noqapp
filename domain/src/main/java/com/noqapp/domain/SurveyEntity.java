@@ -49,4 +49,67 @@ public class SurveyEntity extends BaseEntity {
 
     @Field("QV")
     private String questionnaireId;
+
+    public String getBizStoreId() {
+        return bizStoreId;
+    }
+
+    public SurveyEntity setBizStoreId(String bizStoreId) {
+        this.bizStoreId = bizStoreId;
+        return this;
+    }
+
+    public String getBizNameId() {
+        return bizNameId;
+    }
+
+    public SurveyEntity setBizNameId(String bizNameId) {
+        this.bizNameId = bizNameId;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public SurveyEntity setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
+    public String getDid() {
+        return did;
+    }
+
+    public SurveyEntity setDid(String did) {
+        this.did = did;
+        return this;
+    }
+
+    public int getOverallRating() {
+        return overallRating;
+    }
+
+    public SurveyEntity setOverallRating(int overallRating) {
+        this.overallRating = overallRating;
+        return this;
+    }
+
+    public String[] getDetailedResponse() {
+        return detailedResponse;
+    }
+
+    public SurveyEntity setDetailedResponse(String[] detailedResponse) {
+        this.detailedResponse = detailedResponse;
+        return this;
+    }
+
+    public String getQuestionnaireId() {
+        return questionnaireId;
+    }
+
+    public SurveyEntity setQuestionnaireId(String questionnaireId) {
+        this.questionnaireId = questionnaireId;
+        return this;
+    }
 }
