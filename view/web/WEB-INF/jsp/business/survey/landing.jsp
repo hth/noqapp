@@ -62,7 +62,31 @@
                                 <a href="/business/survey/add.htm" class="add-btn">Add New Survey</a>
                             </div>
                             <div class="store-table">
-<%--                                Coupon landing--%>
+                                <c:choose>
+                                    <c:when test="${!empty questionnaireForm.questionnaires}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th nowrap>Survey</th>
+                                                <th nowrap>Published</th>
+                                            </tr>
+                                            <c:forEach items="${questionnaireForm.questionnaires}" var="questionnaire" varStatus="status">
+                                            <tr>
+                                                <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
+                                                <td nowrap><span style="display:block; font-size:13px;">${questionnaire.firstEntry}</span></td>
+                                                <td>
+                                                    <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy" value="${questionnaire.created}"/></span>
+                                                </td>
+                                            </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert-info">
+                                            <p>There are no survey listed.</p>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>

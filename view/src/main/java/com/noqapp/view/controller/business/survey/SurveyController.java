@@ -1,9 +1,11 @@
 package com.noqapp.view.controller.business.survey;
 
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.QuestionnaireEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.SurveyService;
+import com.noqapp.view.form.business.QuestionnaireForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +15,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -59,13 +63,17 @@ public class SurveyController {
     }
 
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
-    public String landing() {
+    public String landing(
+        @ModelAttribute("questionnaireForm")
+        QuestionnaireForm questionnaireForm
+    ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         LOG.info("Landed on survey page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        surveyService.findAll(businessUser.getBizName().getId());
+        List<QuestionnaireEntity> questionnaires = surveyService.findAll(businessUser.getBizName().getId());
+        questionnaireForm.setQuestionnaires(questionnaires);
 
         return nextPage;
     }

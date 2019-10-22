@@ -3,6 +3,7 @@ package com.noqapp.domain;
 import com.noqapp.domain.annotation.DBMapping;
 import com.noqapp.domain.types.QuestionTypeEnum;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -49,5 +50,19 @@ public class QuestionnaireEntity extends BaseEntity {
     public QuestionnaireEntity setQuestions(Map<Locale, Map<String, QuestionTypeEnum>> questions) {
         this.questions = questions;
         return this;
+    }
+
+    @Transient
+    public String getFirstEntry() {
+        for (Locale locale : questions.keySet()) {
+            if (questions.get(locale).isEmpty()) {
+                return "N/A";
+            }
+
+            Map<String, QuestionTypeEnum> localeWithQuestions = questions.get(locale);
+            return localeWithQuestions.keySet().iterator().next();
+        }
+
+        return "N/A";
     }
 }
