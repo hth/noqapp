@@ -24,10 +24,10 @@ public class SurveyFlowValidator {
 
     @SuppressWarnings("unused")
     public String validateLocaleAdded(Questionnaire questionnaire, MessageContext messageContext) {
-        LOG.info("validate locale added={}", questionnaire.getQuestionsWithLocale().keySet());
+        LOG.info("validate locale added={}", questionnaire.getLocaleWithQuestions().keySet());
 
         String status = LandingController.SUCCESS;
-        if (questionnaire.getQuestionsWithLocale().keySet().isEmpty()) {
+        if (questionnaire.getLocaleWithQuestions().keySet().isEmpty()) {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
@@ -46,7 +46,7 @@ public class SurveyFlowValidator {
         LOG.info("validate questionnaire for locale={}", questionnaire.getLocale());
 
         String status = LandingController.SUCCESS;
-        Map<String, QuestionTypeEnum> questions = questionnaire.getQuestionsWithLocale().get(questionnaire.getLocale());
+        Map<String, QuestionTypeEnum> questions = questionnaire.getLocaleWithQuestions().get(questionnaire.getLocale());
         if (null == questionnaire.getLocale()) {
             messageContext.addMessage(
                 new MessageBuilder()
@@ -95,9 +95,9 @@ public class SurveyFlowValidator {
         LOG.info("validate all questionnaire");
 
         String status = LandingController.SUCCESS;
-        Map<Locale, Map<String, QuestionTypeEnum>> questionsWithLocale = questionnaire.getQuestionsWithLocale();
-        for (Locale locale : questionsWithLocale.keySet()) {
-            Map<String, QuestionTypeEnum> questions = questionsWithLocale.get(locale);
+        Map<Locale, Map<String, QuestionTypeEnum>> localeWithQuestions = questionnaire.getLocaleWithQuestions();
+        for (Locale locale : localeWithQuestions.keySet()) {
+            Map<String, QuestionTypeEnum> questions = localeWithQuestions.get(locale);
             if (questions.isEmpty()) {
                 messageContext.addMessage(
                     new MessageBuilder()

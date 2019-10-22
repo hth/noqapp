@@ -70,12 +70,12 @@
                     </div>
 
                     <div class="add-store">
-                        <c:forEach items="${questionnaire.questionsWithLocale}" var="questionsWithLocale" varStatus="status">
+                        <c:forEach items="${questionnaire.localeWithQuestions}" var="localeWithQuestions" varStatus="status">
                             <div class="admin-title">
-                                <h3>Language: ${questionsWithLocale.key.displayLanguage}</h3>
+                                <h3>Language: ${localeWithQuestions.key.displayLanguage}</h3>
                             </div>
                             <c:choose>
-                                <c:when test="${fn:length(questionsWithLocale.value) > 0}">
+                                <c:when test="${fn:length(localeWithQuestions.value) > 0}">
                                     <div class="store-table">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
@@ -83,7 +83,7 @@
                                                 <th nowrap>Survey Questions</th>
                                                 <th nowrap>Response Format</th>
                                             </tr>
-                                            <c:forEach items="${questionsWithLocale.value}" var="question" varStatus="status">
+                                            <c:forEach items="${localeWithQuestions.value}" var="question" varStatus="status">
                                             <tr>
                                                 <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
                                                 <td nowrap><span style="display:block; font-size:13px;">${question.key}</span></td>

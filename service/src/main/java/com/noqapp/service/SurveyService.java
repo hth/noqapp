@@ -34,10 +34,10 @@ public class SurveyService {
         this.questionnaireManager = questionnaireManager;
     }
 
-    public void saveSurveyQuestionnaire(String bizNameId, Map<Locale, Map<String, QuestionTypeEnum>> questionsWithLocale) {
+    public void saveSurveyQuestionnaire(String bizNameId, Map<Locale, Map<String, QuestionTypeEnum>> localeWithQuestions) {
         QuestionnaireEntity questionnaire = new QuestionnaireEntity()
             .setBizNameId(bizNameId)
-            .setQuestions(questionsWithLocale);
+            .setQuestions(localeWithQuestions);
         questionnaireManager.save(questionnaire);
     }
 

@@ -19,7 +19,7 @@ public class Questionnaire implements Serializable {
     private QuestionTypeEnum questionType;
 
     /** Master record. */
-    private Map<Locale, Map<String, QuestionTypeEnum>> questionsWithLocale = new LinkedHashMap<>();
+    private Map<Locale, Map<String, QuestionTypeEnum>> localeWithQuestions = new LinkedHashMap<>();
 
     /** Pre-filled. */
     private Map<String, String> questionTypes = QuestionTypeEnum.asMapWithNameAsKey();
@@ -52,17 +52,17 @@ public class Questionnaire implements Serializable {
         return this;
     }
 
-    public Map<Locale, Map<String, QuestionTypeEnum>> getQuestionsWithLocale() {
-        return questionsWithLocale;
+    public Map<Locale, Map<String, QuestionTypeEnum>> getLocaleWithQuestions() {
+        return localeWithQuestions;
     }
 
-    public Questionnaire setQuestionsWithLocale(Map<Locale, Map<String, QuestionTypeEnum>> questionsWithLocale) {
-        this.questionsWithLocale = questionsWithLocale;
+    public Questionnaire setLocaleWithQuestions(Map<Locale, Map<String, QuestionTypeEnum>> localeWithQuestions) {
+        this.localeWithQuestions = localeWithQuestions;
         return this;
     }
 
-    public Questionnaire addQuestionsWithLocale(Locale locale, Map<String, QuestionTypeEnum> questions) {
-        this.questionsWithLocale.put(locale, questions);
+    public Questionnaire addLocaleWithQuestions(Locale locale, Map<String, QuestionTypeEnum> questions) {
+        this.localeWithQuestions.put(locale, questions);
         return this;
     }
 
