@@ -189,7 +189,9 @@ public class BizStoreElastic extends AbstractDomain {
     @Transient
     @JsonProperty("AC")
     private List<AccreditationEnum> accreditation = new LinkedList<AccreditationEnum>() {{
-        add(AccreditationEnum.NABHP);
+        if (businessType == BusinessTypeEnum.DO) {
+            add(AccreditationEnum.NABHP);
+        }
     }};
 
     /** WP is populated when the BT is of type BusinessTypeEnum.DO. */
