@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 import org.elasticsearch.common.geo.GeoPoint;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * User: hitender
@@ -158,6 +159,24 @@ public class DecodedAddress implements Serializable {
         }
 
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "DecodedAddress{" +
+            "formattedAddress='" + formattedAddress + '\'' +
+            ", area='" + area + '\'' +
+            ", town='" + town + '\'' +
+            ", district='" + district + '\'' +
+            ", state='" + state + '\'' +
+            ", stateShortName='" + stateShortName + '\'' +
+            ", postalCode='" + postalCode + '\'' +
+            ", country='" + country + '\'' +
+            ", countryShortName='" + countryShortName + '\'' +
+            ", coordinate=" + Arrays.toString(coordinate) +
+            ", placeId='" + placeId + '\'' +
+            ", blank=" + blank +
+            '}';
     }
 }
 
