@@ -169,7 +169,9 @@ public class RegisterUser implements Serializable {
         String phoneRaw = null;
         if (StringUtils.isNotBlank(countryShortName)) {
             int countryCode = Formatter.findCountryCodeFromCountryShortCode(countryShortName);
-            phoneRaw = phone.replaceFirst(String.valueOf(countryCode), "");
+            if (phone.startsWith(String.valueOf(countryCode))) {
+                phoneRaw = phone.replaceFirst(String.valueOf(countryCode), "");
+            }
         }
         return Formatter.phoneCleanup(StringUtils.isBlank(phoneRaw) ? phone : phoneRaw);
     }
