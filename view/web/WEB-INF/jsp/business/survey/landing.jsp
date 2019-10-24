@@ -65,8 +65,9 @@
                         <h3>Survey</h3>
 
                         <div class="add-store">
-                            <div class="addbtn-store">
+                            <div class="addbtn-store" style="padding-bottom: 10px;">
                                 <a href="/business/survey/add.htm" class="add-btn">Add New Survey</a>
+                                <a href="/business/survey/dashboard.htm" class="add-btn">Dashboard</a>
                             </div>
                             <div id="container"></div>
                             <div class="store-table">
@@ -144,6 +145,9 @@
         },
         time: {
             useUTC: false
+        },
+        credits: {
+            enabled: false
         },
         title: {
             text: 'Live Survey Overall Rating'
