@@ -81,12 +81,15 @@ public class SurveyService {
         SurveyEntity survey = surveyManager.getRecentOverallRating(bizNameId);
         if (null != survey) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(survey.getCodeQR());
-            return new ChartLineData()
+            ChartLineData chartLineData = new ChartLineData()
                 .setValue(String.valueOf(survey.getOverallRating()))
                 .setName(bizStore.getAddress())
                 .setArea(bizStore.getArea())
                 .setTown(bizStore.getTown())
                 .setDate(survey.getCreated().getTime());
+
+            LOG.debug("{}", chartLineData);
+            return chartLineData;
         }
 
         return new ChartLineData().setValue(String.valueOf(0))

@@ -157,8 +157,8 @@
             }
         },
         tooltip: {
-            headerFormat: '<b>{point.area}, {point.town}</b><br/>',
-            pointFormat: 'Rating: {point.y}<br/>{point.x:%H:%M:%S}'
+            headerFormat: '',
+            pointFormat: '<b>{point.area}, {point.town}</b><br/>Rating: <b>{point.y}</b>'
         },
         legend: {
             enabled: false
