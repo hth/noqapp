@@ -7,4 +7,6 @@ import com.noqapp.domain.SurveyEntity;
  * Date: 10/20/19 6:38 AM
  */
 public interface SurveyManager extends RepositoryManager<SurveyEntity> {
+
+    SurveyEntity getRecentOverallRating(String bizNameId);
 }
