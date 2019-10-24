@@ -81,7 +81,7 @@ public class SurveyService {
     public ChartLineData getRecentOverallRating(String bizNameId) {
         SurveyEntity survey = surveyManager.getRecentOverallRating(bizNameId);
         if (null != survey) {
-            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(survey.getCodeQR());
+            BizStoreEntity bizStore = bizStoreManager.getById(survey.getBizStoreId());
             ChartLineData chartLineData = new ChartLineData()
                 .setValue(String.valueOf(survey.getOverallRating()))
                 .setName(bizStore.getAddress())
