@@ -86,4 +86,15 @@ public class ChartLineData extends AbstractDomain {
         this.town = town;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "ChartLineData{" +
+            "value='" + value + '\'' +
+            ", name='" + name + '\'' +
+            ", date=" + date +
+            ", area='" + area + '\'' +
+            ", town='" + town + '\'' +
+            '}';
+    }
 }
