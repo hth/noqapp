@@ -157,8 +157,8 @@
             }
         },
         tooltip: {
-            headerFormat: '<b>{series.name}</b><br/>',
-            pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+            headerFormat: '<b>{point.area}</b><br/>',
+            pointFormat: '{point.x:%H:%M:%S}<br/>{point.y}'
         },
         legend: {
             enabled: false
@@ -180,7 +180,7 @@
                 return response.json()
             }).then(function (data) {
                 console.log(data);
-                chart.series[0].addPoint({x: data.d, y: Number(data.v)})
+                chart.series[0].addPoint({x: data.d, y: Number(data.v), area: data.a})
             })
         }, 10000)
     }
