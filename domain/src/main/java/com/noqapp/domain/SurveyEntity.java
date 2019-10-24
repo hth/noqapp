@@ -32,11 +32,6 @@ public class SurveyEntity extends BaseEntity {
     @Field("QR")
     private String codeQR;
 
-    /**
-     * Device Id of purchaser. DID is of the purchaserQid. Helps in notifying user of changes through FCM.
-     * Or
-     * Guardian's DID.
-     */
     @DBMapping
     @Field ("DID")
     private String did;
@@ -49,6 +44,9 @@ public class SurveyEntity extends BaseEntity {
 
     @Field("QV")
     private String questionnaireId;
+
+    @Field("FE")
+    private boolean fetched;
 
     public String getBizStoreId() {
         return bizStoreId;
@@ -110,6 +108,15 @@ public class SurveyEntity extends BaseEntity {
 
     public SurveyEntity setQuestionnaireId(String questionnaireId) {
         this.questionnaireId = questionnaireId;
+        return this;
+    }
+
+    public boolean isFetched() {
+        return fetched;
+    }
+
+    public SurveyEntity setFetched(boolean fetched) {
+        this.fetched = fetched;
         return this;
     }
 }

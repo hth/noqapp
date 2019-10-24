@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.util.List;
@@ -85,5 +86,19 @@ public class SurveyController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         return addSurveyFlow;
+    }
+
+    @GetMapping(
+        value = "/live/rating",
+        headers = "Accept=application/json",
+        produces = "application/json")
+    @ResponseBody
+    public String liveRating() {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        LOG.info("Live rating business {} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        return surveyService.getRecentOverallRating(businessUser.getBizName().getId()).asJson();
     }
 }

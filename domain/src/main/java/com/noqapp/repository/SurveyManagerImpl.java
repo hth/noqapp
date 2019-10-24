@@ -1,11 +1,18 @@
 package com.noqapp.repository;
 
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
+
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.SurveyEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
@@ -45,5 +52,16 @@ public class SurveyManagerImpl implements SurveyManager {
     @Override
     public void deleteHard(SurveyEntity object) {
 
+    }
+
+    @Override
+    public SurveyEntity getRecentOverallRating(String bizNameId) {
+        return mongoTemplate.findAndModify(
+            query(where("BN").is(bizNameId).and("FE").is(false)).with(new Sort(DESC, "C")),
+            update("FE", true),
+            FindAndModifyOptions.options().returnNew(true),
+            SurveyEntity.class,
+            TABLE
+        );
     }
 }

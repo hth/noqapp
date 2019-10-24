@@ -1,4 +1,3 @@
-<%@ page import="com.noqapp.domain.types.DiscountTypeEnum,com.noqapp.domain.types.ActionTypeEnum,com.noqapp.domain.types.CouponTypeEnum" %>
 <%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -14,6 +13,14 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+
+    <style type="text/css" media="screen">
+        #container {
+            min-width: 310px;
+            height: 200px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -61,6 +68,7 @@
                             <div class="addbtn-store">
                                 <a href="/business/survey/add.htm" class="add-btn">Add New Survey</a>
                             </div>
+                            <div id="container"></div>
                             <div class="store-table">
                                 <c:choose>
                                     <c:when test="${!empty questionnaireForm.questionnaires}">
@@ -124,4 +132,57 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script type="application/javascript">
+    // Chart
+    var options = {
+        chart: {
+            type: 'spline',
+            events: {
+                load: getData
+            }
+        },
+        time: {
+            useUTC: false
+        },
+        title: {
+            text: 'Live Survey Overall Rating'
+        },
+        xAxis: {
+            type: 'datetime',
+        },
+        yAxis: {
+            title: {
+                text: 'Rating'
+            }
+        },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b><br/>',
+            pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+        },
+        legend: {
+            enabled: false
+        },
+        exporting: {
+            enabled: false
+        },
+        series: [{
+            name: 'Live Survey Overall Rating',
+            data: []
+        }]
+    };
+    var chart = Highcharts.chart('container', options)
+
+    // Data
+    function getData() {
+        setInterval(function () {
+            fetch('/business/survey/live/rating.htm').then(function (response) {
+                return response.json()
+            }).then(function (data) {
+                console.log(data);
+                chart.series[0].addPoint({x: data.d, y: Number(data.v)})
+            })
+        }, 10000)
+    }
+</script>
 </html>
