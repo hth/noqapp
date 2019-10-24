@@ -77,6 +77,7 @@ public class SurveyService {
         surveyManager.save(survey);
     }
 
+    /** Support realtime overall rating. */
     public ChartLineData getRecentOverallRating(String bizNameId) {
         SurveyEntity survey = surveyManager.getRecentOverallRating(bizNameId);
         if (null != survey) {

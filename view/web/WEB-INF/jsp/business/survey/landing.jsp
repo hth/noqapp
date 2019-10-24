@@ -145,6 +145,9 @@
         time: {
             useUTC: false
         },
+        credits: {
+            enabled: false
+        },
         title: {
             text: 'Live Survey Overall Rating'
         },
