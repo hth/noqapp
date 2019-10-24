@@ -88,6 +88,7 @@ public class SurveyService {
                 .setTown(bizStore.getTown())
                 .setDate(survey.getCreated().getTime());
 
+            chartLineData.populateLocation();
             LOG.debug("{}", chartLineData);
             return chartLineData;
         }

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import net.logstash.logback.encoder.org.apache.commons.lang3.StringUtils;
+
 /**
  * User: hitender
  * Date: 10/24/19 6:50 AM
@@ -41,6 +43,9 @@ public class ChartLineData extends AbstractDomain {
 
     @JsonProperty("t")
     private String town;
+
+    @JsonProperty("l")
+    private String location;
 
     public String getValue() {
         return value;
@@ -85,6 +90,14 @@ public class ChartLineData extends AbstractDomain {
     public ChartLineData setTown(String town) {
         this.town = town;
         return this;
+    }
+
+    public void populateLocation() {
+        if (StringUtils.isNotBlank(this.town)) {
+            this.location = this.area;
+        }
+
+        this.location = this.area + ", " + this.town;
     }
 
     @Override
