@@ -64,6 +64,10 @@ public class SurveyService {
         questionnaireManager.save(questionnaire);
     }
 
+    public QuestionnaireEntity findByQuestionnaireId(String questionnaireId) {
+        return questionnaireManager.findById(questionnaireId);
+    }
+
     public List<QuestionnaireEntity> findAll(String bizNameId) {
         return questionnaireManager.findAll(bizNameId);
     }
@@ -108,12 +112,12 @@ public class SurveyService {
 
         return new ChartLineData()
             .setValue(String.valueOf(0))
-            .setSentimentColor("#808080")
+            .setSentimentColor("#d3d3d3")
             .setDate(new Date().getTime());
     }
 
     protected void analyzeSurveyResponse(SurveyEntity survey) {
-        QuestionnaireEntity questionnaire = questionnaireManager.findById(survey.getQuestionnaireId());
+        QuestionnaireEntity questionnaire = findByQuestionnaireId(survey.getQuestionnaireId());
         Locale locale = questionnaire.getQuestions().keySet().iterator().next();
         Map<String, QuestionTypeEnum> questions = questionnaire.getQuestions().get(locale);
 
