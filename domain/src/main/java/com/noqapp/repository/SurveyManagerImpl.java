@@ -7,6 +7,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.SurveyEntity;
+import com.noqapp.domain.types.SentimentTypeEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,16 @@ public class SurveyManagerImpl implements SurveyManager {
             query(where("BN").is(bizNameId).and("FE").is(false)).with(new Sort(ASC, "C")),
             update("FE", true),
             FindAndModifyOptions.options().returnNew(true),
+            SurveyEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void updateSentiment(String id, SentimentTypeEnum sentimentType) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            update("ST", sentimentType),
             SurveyEntity.class,
             TABLE
         );

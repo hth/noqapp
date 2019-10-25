@@ -128,6 +128,7 @@ public class SurveyService {
         }
 
         SentimentTypeEnum sentimentType = nlpService.computeSentiment(allText.toString());
-        survey.setSentimentType(sentimentType);
+        LOG.debug("{} {}", sentimentType, allText);
+        surveyManager.updateSentiment(survey.getId(), sentimentType);
     }
 }
