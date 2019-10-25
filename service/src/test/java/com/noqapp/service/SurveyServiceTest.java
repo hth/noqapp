@@ -74,8 +74,8 @@ class SurveyServiceTest {
             .setBizStoreId("bizStoreId");
 
         Map<String, QuestionTypeEnum> questionForEnglishLocale = new LinkedHashMap<>();
-        questionForEnglishLocale.put("This is world", QuestionTypeEnum.R);
-        questionForEnglishLocale.put("This is a bad service", QuestionTypeEnum.T);
+        questionForEnglishLocale.put("Rate this service", QuestionTypeEnum.R);
+        questionForEnglishLocale.put("Describe in your own word", QuestionTypeEnum.T);
 
         Map<Locale, Map<String, QuestionTypeEnum>> questions = new HashMap<>();
         questions.put(Locale.ENGLISH, questionForEnglishLocale);
