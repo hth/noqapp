@@ -91,7 +91,6 @@
                                                             <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm"><span style="display:block; font-size:13px;">${questionnaire.firstEntry}</span></a>
                                                         </c:otherwise>
                                                     </c:choose>
-
                                                 </td>
                                                 <td>
                                                     <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${questionnaire.created}"/></span>
