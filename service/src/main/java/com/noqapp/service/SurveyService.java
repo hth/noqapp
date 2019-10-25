@@ -15,6 +15,9 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QuestionnaireManager;
 import com.noqapp.repository.SurveyManager;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -27,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * User: hitender
@@ -42,6 +46,11 @@ public class SurveyService {
     private NLPService nlpService;
 
     private ExecutorService executorService;
+
+    private final Cache<String, String> cache = CacheBuilder.newBuilder()
+        .maximumSize(100)
+        .expireAfterWrite(2, TimeUnit.HOURS)
+        .build();
 
     public SurveyService(
         SurveyManager surveyManager,
@@ -98,21 +107,27 @@ public class SurveyService {
     /** Support realtime overall rating. */
     public ChartLineData getRecentOverallRating(String bizNameId) {
         SurveyEntity survey = surveyManager.getRecentOverallRating(bizNameId);
+        String sentimentColor = "#d3d3d3";
         if (null != survey) {
             BizStoreEntity bizStore = bizStoreManager.getById(survey.getBizStoreId());
+            if (null != survey.getSentimentType()) {
+                sentimentColor = survey.getSentimentType() == SentimentTypeEnum.P ? "#008800" : "#7C0A02";
+            }
             ChartLineData chartLineData = new ChartLineData()
                 .setValue(String.valueOf(survey.getOverallRating()))
-                .setSentimentColor(survey.getSentimentType() == SentimentTypeEnum.P ? "#008800" : "#7C0A02")
+                .setSentimentColor(sentimentColor)
                 .setDate(survey.getCreated().getTime());
 
             chartLineData.populateLocation(bizStore.getArea(), bizStore.getTown());
             LOG.debug("{}", chartLineData);
+            cache.put(bizNameId, sentimentColor);
             return chartLineData;
         }
 
+        sentimentColor = cache.getIfPresent(bizNameId);
         return new ChartLineData()
             .setValue(String.valueOf(0))
-            .setSentimentColor("#d3d3d3")
+            .setSentimentColor(StringUtils.isNotBlank(sentimentColor) ? sentimentColor : "#d3d3d3")
             .setDate(new Date().getTime());
     }
 
