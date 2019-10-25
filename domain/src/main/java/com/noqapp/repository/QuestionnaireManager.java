@@ -13,4 +13,6 @@ public interface QuestionnaireManager extends RepositoryManager<QuestionnaireEnt
     List<QuestionnaireEntity> findAll(String bizNameId);
 
     QuestionnaireEntity findLatest(String bizNameId);
+
+    QuestionnaireEntity findById(String questionnaireId);
 }

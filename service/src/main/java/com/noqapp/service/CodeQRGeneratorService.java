@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -45,12 +46,12 @@ public class CodeQRGeneratorService {
     private BufferedImage overlay;
 
     public CodeQRGeneratorService(
-            @Value ("${imageSize:300}")
-            int imageSize,
+        @Value ("${imageSize:300}")
+        int imageSize,
 
-            /* Relative path from base folder. */
-            @Value ("${overlayFileLocation:conf/300x300_overlay_code_qr.png}")
-            String overlayFileLocation
+        /* Relative path from base folder. */
+        @Value ("${overlayFileLocation:conf/300x300_overlay_code_qr.png}")
+        String overlayFileLocation
     ) {
         this.imageSize = imageSize;
 
@@ -60,7 +61,7 @@ public class CodeQRGeneratorService {
 
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(overlayFileLocation);
-            this.overlay = ImageIO.read(inputStream);
+            this.overlay = ImageIO.read(Objects.requireNonNull(inputStream));
         } catch (IOException e) {
             LOG.error("Failed to load image={} reason={}", overlayFileLocation, e.getLocalizedMessage(), e);
         }
