@@ -131,6 +131,7 @@ public class SurveyService {
             LOG.debug("{} {}", key, allText.toString());
             counter++;
         }
+        LOG.debug("{} {} {} {}", questionnaire.getId(), questions.keySet(), counter, allText);
 
         if (StringUtils.isNotBlank(allText.toString())) {
             SentimentTypeEnum sentimentType = nlpService.computeSentiment(allText.toString());
