@@ -172,7 +172,7 @@
         },
         tooltip: {
             headerFormat: '',
-            pointFormat: '<b>{point.location}</b><br/>Rating: <b>{point.y}</b>'
+            pointFormat: '<b>{point.location}</b><br/><b>{point.y}</b>'
         },
         legend: {
             enabled: false

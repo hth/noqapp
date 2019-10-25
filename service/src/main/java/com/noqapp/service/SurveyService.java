@@ -108,7 +108,7 @@ public class SurveyService {
 
         return new ChartLineData()
             .setValue(String.valueOf(0))
-            .setSentimentColor("#808080")
+            .setSentimentColor("#d3d3d3")
             .setDate(new Date().getTime());
     }
 
