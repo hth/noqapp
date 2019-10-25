@@ -15,6 +15,8 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QuestionnaireManager;
 import com.noqapp.repository.SurveyManager;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -127,7 +129,10 @@ public class SurveyService {
             }
         }
 
-        SentimentTypeEnum sentimentType = nlpService.computeSentiment(allText.toString());
-        survey.setSentimentType(sentimentType);
+        if (StringUtils.isNotBlank(allText.toString())) {
+            SentimentTypeEnum sentimentType = nlpService.computeSentiment(allText.toString());
+            LOG.debug("{} {}", sentimentType, allText);
+            surveyManager.updateSentiment(survey.getId(), sentimentType);
+        }
     }
 }

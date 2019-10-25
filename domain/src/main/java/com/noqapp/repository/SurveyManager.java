@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.SurveyEntity;
+import com.noqapp.domain.types.SentimentTypeEnum;
 
 /**
  * User: hitender
@@ -9,4 +10,6 @@ import com.noqapp.domain.SurveyEntity;
 public interface SurveyManager extends RepositoryManager<SurveyEntity> {
 
     SurveyEntity getRecentOverallRating(String bizNameId);
+
+    void updateSentiment(String id, SentimentTypeEnum sentimentType);
 }
