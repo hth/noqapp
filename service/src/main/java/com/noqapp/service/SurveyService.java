@@ -64,6 +64,10 @@ public class SurveyService {
         questionnaireManager.save(questionnaire);
     }
 
+    public QuestionnaireEntity findByQuestionnaireId(String questionnaireId) {
+        return questionnaireManager.findById(questionnaireId);
+    }
+
     public List<QuestionnaireEntity> findAll(String bizNameId) {
         return questionnaireManager.findAll(bizNameId);
     }
@@ -113,7 +117,7 @@ public class SurveyService {
     }
 
     protected void analyzeSurveyResponse(SurveyEntity survey) {
-        QuestionnaireEntity questionnaire = questionnaireManager.findById(survey.getQuestionnaireId());
+        QuestionnaireEntity questionnaire = findByQuestionnaireId(survey.getQuestionnaireId());
         Locale locale = questionnaire.getQuestions().keySet().iterator().next();
         Map<String, QuestionTypeEnum> questions = questionnaire.getQuestions().get(locale);
 

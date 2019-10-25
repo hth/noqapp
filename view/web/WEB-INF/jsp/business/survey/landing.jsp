@@ -85,10 +85,10 @@
                                                 <td nowrap>
                                                     <c:choose>
                                                         <c:when test="${fn:length(questionnaire.firstEntry) > 100}">
-                                                            <span style="display:block; font-size:13px;">${fn:substring(questionnaire.firstEntry, 0, 100)}...</span>
+                                                            <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm"><span style="display:block; font-size:13px;">${fn:substring(questionnaire.firstEntry, 0, 100)}...</span></a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <span style="display:block; font-size:13px;">${questionnaire.firstEntry}</span>
+                                                            <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm"><span style="display:block; font-size:13px;">${questionnaire.firstEntry}</span></a>
                                                         </c:otherwise>
                                                     </c:choose>
 
