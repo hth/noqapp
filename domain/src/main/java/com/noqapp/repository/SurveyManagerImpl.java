@@ -1,6 +1,6 @@
 package com.noqapp.repository;
 
-import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -57,7 +57,7 @@ public class SurveyManagerImpl implements SurveyManager {
     @Override
     public SurveyEntity getRecentOverallRating(String bizNameId) {
         return mongoTemplate.findAndModify(
-            query(where("BN").is(bizNameId).and("FE").is(false)).with(new Sort(DESC, "C")),
+            query(where("BN").is(bizNameId).and("FE").is(false)).with(new Sort(ASC, "C")),
             update("FE", true),
             FindAndModifyOptions.options().returnNew(true),
             SurveyEntity.class,
