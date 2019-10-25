@@ -123,10 +123,12 @@ public class SurveyService {
         StringBuilder allText = new StringBuilder();
         int counter = 0;
         for (String key : questions.keySet()) {
-            if (questions.get(key) == QuestionTypeEnum.T) {
-                allText.append(survey.getDetailedResponse()[counter]);
-                counter++;
+            if (counter != 0) {
+                if (questions.get(key) == QuestionTypeEnum.T) {
+                    allText.append(survey.getDetailedResponse()[counter]);
+                }
             }
+            counter++;
         }
 
         if (StringUtils.isNotBlank(allText.toString())) {
