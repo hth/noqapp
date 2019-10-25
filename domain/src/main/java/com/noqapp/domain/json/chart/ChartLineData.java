@@ -32,17 +32,11 @@ public class ChartLineData extends AbstractDomain {
     @JsonProperty("v")
     private String value;
 
-    @JsonProperty("n")
-    private String name;
-
     @JsonProperty("d")
     private long date;
 
-    @JsonProperty("a")
-    private String area;
-
-    @JsonProperty("t")
-    private String town;
+    @JsonProperty("sc")
+    private String sentimentColor;
 
     @JsonProperty("l")
     private String location;
@@ -56,15 +50,6 @@ public class ChartLineData extends AbstractDomain {
         return this;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public ChartLineData setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     public long getDate() {
         return date;
     }
@@ -74,40 +59,28 @@ public class ChartLineData extends AbstractDomain {
         return this;
     }
 
-    public String getArea() {
-        return area;
+    public String getSentimentColor() {
+        return sentimentColor;
     }
 
-    public ChartLineData setArea(String area) {
-        this.area = area;
+    public ChartLineData setSentimentColor(String sentimentColor) {
+        this.sentimentColor = sentimentColor;
         return this;
     }
 
-    public String getTown() {
-        return town;
-    }
-
-    public ChartLineData setTown(String town) {
-        this.town = town;
-        return this;
-    }
-
-    public void populateLocation() {
-        if (StringUtils.isNotBlank(this.town)) {
-            this.location = this.area;
+    public void populateLocation(String area, String town) {
+        if (StringUtils.isNotBlank(town)) {
+            this.location = area;
         }
 
-        this.location = this.area + ", " + this.town;
+        this.location = area + ", " + town;
     }
 
     @Override
     public String toString() {
         return "ChartLineData{" +
             "value='" + value + '\'' +
-            ", name='" + name + '\'' +
             ", date=" + date +
-            ", area='" + area + '\'' +
-            ", town='" + town + '\'' +
             '}';
     }
 }

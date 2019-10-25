@@ -98,20 +98,17 @@ public class SurveyService {
             BizStoreEntity bizStore = bizStoreManager.getById(survey.getBizStoreId());
             ChartLineData chartLineData = new ChartLineData()
                 .setValue(String.valueOf(survey.getOverallRating()))
-                .setName(bizStore.getAddress())
-                .setArea(bizStore.getArea())
-                .setTown(bizStore.getTown())
+                .setSentimentColor(survey.getSentimentType() == SentimentTypeEnum.P ? "#008800" : "#7C0A02")
                 .setDate(survey.getCreated().getTime());
 
-            chartLineData.populateLocation();
+            chartLineData.populateLocation(bizStore.getArea(), bizStore.getTown());
             LOG.debug("{}", chartLineData);
             return chartLineData;
         }
 
-        return new ChartLineData().setValue(String.valueOf(0))
-            .setName("")
-            .setArea("")
-            .setTown("")
+        return new ChartLineData()
+            .setValue(String.valueOf(0))
+            .setSentimentColor("#808080")
             .setDate(new Date().getTime());
     }
 
