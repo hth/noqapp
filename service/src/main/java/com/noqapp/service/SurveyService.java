@@ -128,12 +128,13 @@ public class SurveyService {
                     allText.append(survey.getDetailedResponse()[counter]);
                 }
             }
+            LOG.debug("{} {}", key, allText.toString());
             counter++;
         }
 
         if (StringUtils.isNotBlank(allText.toString())) {
             SentimentTypeEnum sentimentType = nlpService.computeSentiment(allText.toString());
-            LOG.debug("{} {}", sentimentType, allText);
+            LOG.debug("{} {}", sentimentType, allText.toString());
             surveyManager.updateSentiment(survey.getId(), sentimentType);
         }
     }
