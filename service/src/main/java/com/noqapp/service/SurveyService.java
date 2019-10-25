@@ -115,27 +115,26 @@ public class SurveyService {
             .setDate(new Date().getTime());
     }
 
-    private void analyzeSurveyResponse(SurveyEntity survey) {
+    protected void analyzeSurveyResponse(SurveyEntity survey) {
         QuestionnaireEntity questionnaire = questionnaireManager.findById(survey.getQuestionnaireId());
         Locale locale = questionnaire.getQuestions().keySet().iterator().next();
         Map<String, QuestionTypeEnum> questions = questionnaire.getQuestions().get(locale);
 
         StringBuilder allText = new StringBuilder();
-        int counter = 0;
+        int counter = -1;
         for (String key : questions.keySet()) {
-            if (counter != 0) {
+            if (counter > -1) {
                 if (questions.get(key) == QuestionTypeEnum.T) {
                     allText.append(survey.getDetailedResponse()[counter]);
                 }
             }
-            LOG.debug("{} {}", key, allText.toString());
             counter++;
         }
-        LOG.debug("{} {} {} {}", questionnaire.getId(), questions.keySet(), counter, allText);
+        LOG.debug("id={} keySet={} counter={} computeSentimentOn={}", questionnaire.getId(), questions.keySet(), counter, allText);
 
         if (StringUtils.isNotBlank(allText.toString())) {
             SentimentTypeEnum sentimentType = nlpService.computeSentiment(allText.toString());
-            LOG.debug("{} {}", sentimentType, allText.toString());
+            LOG.debug("sentiment={} text={}", sentimentType, allText.toString());
             surveyManager.updateSentiment(survey.getId(), sentimentType);
         }
     }
