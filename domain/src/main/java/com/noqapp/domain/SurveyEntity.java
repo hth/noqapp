@@ -1,6 +1,7 @@
 package com.noqapp.domain;
 
 import com.noqapp.domain.annotation.DBMapping;
+import com.noqapp.domain.types.SentimentTypeEnum;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -47,6 +48,9 @@ public class SurveyEntity extends BaseEntity {
 
     @Field("FE")
     private boolean fetched;
+
+    @Field("ST")
+    private SentimentTypeEnum sentimentType;
 
     public String getBizStoreId() {
         return bizStoreId;
@@ -117,6 +121,15 @@ public class SurveyEntity extends BaseEntity {
 
     public SurveyEntity setFetched(boolean fetched) {
         this.fetched = fetched;
+        return this;
+    }
+
+    public SentimentTypeEnum getSentimentType() {
+        return sentimentType;
+    }
+
+    public SurveyEntity setSentimentType(SentimentTypeEnum sentimentType) {
+        this.sentimentType = sentimentType;
         return this;
     }
 }

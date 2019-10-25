@@ -73,4 +73,9 @@ public class QuestionnaireManagerImpl implements QuestionnaireManager {
             TABLE
         );
     }
+
+    @Override
+    public QuestionnaireEntity findById(String questionnaireId) {
+        return mongoTemplate.findById(questionnaireId, QuestionnaireEntity.class, TABLE);
+    }
 }

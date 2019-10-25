@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import static java.util.concurrent.Executors.newCachedThreadPool;
+
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QuestionnaireEntity;
 import com.noqapp.domain.SurveyEntity;
@@ -8,6 +10,7 @@ import com.noqapp.domain.json.JsonQuestionnaire;
 import com.noqapp.domain.json.JsonSurvey;
 import com.noqapp.domain.json.chart.ChartLineData;
 import com.noqapp.domain.types.QuestionTypeEnum;
+import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QuestionnaireManager;
 import com.noqapp.repository.SurveyManager;
@@ -21,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
 
 /**
  * User: hitender
@@ -33,15 +37,22 @@ public class SurveyService {
     private SurveyManager surveyManager;
     private QuestionnaireManager questionnaireManager;
     private BizStoreManager bizStoreManager;
+    private NLPService nlpService;
+
+    private ExecutorService executorService;
 
     public SurveyService(
         SurveyManager surveyManager,
         QuestionnaireManager questionnaireManager,
-        BizStoreManager bizStoreManager
+        BizStoreManager bizStoreManager,
+        NLPService nlpService
     ) {
         this.surveyManager = surveyManager;
         this.questionnaireManager = questionnaireManager;
         this.bizStoreManager = bizStoreManager;
+        this.nlpService = nlpService;
+
+        this.executorService = newCachedThreadPool();
     }
 
     public void saveSurveyQuestionnaire(String bizNameId, Map<Locale, Map<String, QuestionTypeEnum>> localeWithQuestions) {
@@ -75,6 +86,7 @@ public class SurveyService {
             .setDetailedResponse(jsonSurvey.getDetailedResponse())
             .setQuestionnaireId(jsonSurvey.getQuestionnaireId());
         surveyManager.save(survey);
+        executorService.submit(() -> analyzeSurveyResponse(survey));
     }
 
     /** Support realtime overall rating. */
@@ -99,5 +111,23 @@ public class SurveyService {
             .setArea("")
             .setTown("")
             .setDate(new Date().getTime());
+    }
+
+    private void analyzeSurveyResponse(SurveyEntity survey) {
+        QuestionnaireEntity questionnaire = questionnaireManager.findById(survey.getQuestionnaireId());
+        Locale locale = questionnaire.getQuestions().keySet().iterator().next();
+        Map<String, QuestionTypeEnum> questions = questionnaire.getQuestions().get(locale);
+
+        StringBuilder allText = new StringBuilder();
+        int counter = 0;
+        for (String key : questions.keySet()) {
+            if (questions.get(key) == QuestionTypeEnum.T) {
+                allText.append(survey.getDetailedResponse()[counter]);
+                counter++;
+            }
+        }
+
+        SentimentTypeEnum sentimentType = nlpService.computeSentiment(allText.toString());
+        survey.setSentimentType(sentimentType);
     }
 }
