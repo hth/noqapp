@@ -194,9 +194,11 @@
                 return response.json()
             }).then(function (data) {
                 console.log(data);
-                chart.series[0].addPoint({x: data.d, y: Number(data.v), location: data.l})
-                chart.series[0].options.color = data.sc;
-                chart.series[0].update(chart.series[0].options);
+                chart.series[0].addPoint({x: data.d, y: Number(data.v), location: data.l});
+                if (data.sc.lenght === 0) {
+                    chart.series[0].options.color = data.sc;
+                    chart.series[0].update(chart.series[0].options);
+                }
             })
         }, 10000)
     }
