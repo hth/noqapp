@@ -166,7 +166,7 @@
         },
         yAxis: {
             title: {
-                text: 'Rating'
+                text: 'Rating &amp; Review Sentiments'
             }
         },
         tooltip: {
