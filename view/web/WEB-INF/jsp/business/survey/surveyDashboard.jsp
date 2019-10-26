@@ -52,48 +52,60 @@
         <div class="warp-inner">
             <!-- Add New Supervisor -->
             <div class="admin-main">
-                <div class="admin-title">
-                    <h2>Dashboard</h2>
-                </div>
-
-                <div class="add-store">
-                    <c:choose>
-                    <c:when test="${!empty surveyGroupedValues}">
-                        <div class="store-table">
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                <tr>
-                                    <th>&nbsp;</th>
-                                    <th nowrap>Queue Name</th>
-                                    <th nowrap>Location</th>
-                                    <th nowrap>Survey Count</th>
-                                    <th nowrap>Overall Rating</th>
-                                    <th nowrap>Positive Reviews</th>
-                                    <th nowrap>Negative Reviews</th>
-                                    <th nowrap>Without Reviews</th>
-                                </tr>
-                                <c:forEach items="${surveyGroupedValues}" var="surveyGroupedValue" varStatus="status">
-                                    <tr>
-                                        <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
-                                        <td nowrap><span style="display:block; font-size:13px;">${surveyGroupedValue.displayName}</span></td>
-                                        <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.area}, ${surveyGroupedValue.town}</b></span></td>
-                                        <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.numberOfSurvey}</b></span></td>
-                                        <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.summationOverallRating}</b></span></td>
-                                        <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.sumOfPositiveSentiments}</b></span></td>
-                                        <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.sumOfNegativeSentiments}</b></span></td>
-                                        <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.numberOfSurvey - surveyGroupedValue.sumOfPositiveSentiments - surveyGroupedValue.sumOfNegativeSentiments}</b></span></td>
-                                    </tr>
-                                </c:forEach>
-                            </table>
+                <div class="admin-content">
+                    <div class="store">
+                        <h3>Dashboard</h3>
+                        <div class="add-store">
+                            <c:choose>
+                            <c:when test="${!empty surveyGroupedValues}">
+                                <div class="store-table">
+                                    <p align="right"><span style="display:block; font-size:13px;">Last 30 days</span></p>
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <thead>
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th nowrap>Queue Name</th>
+                                                <th nowrap>Location</th>
+                                                <th nowrap>Survey Count</th>
+                                                <th nowrap>Overall Rating</th>
+                                                <th colspan="3" nowrap>Reviews</th>
+                                            </tr>
+                                            <tr>
+                                                <th style="border-top: 0">&nbsp;</th>
+                                                <th style="border-top: 0"></th>
+                                                <th style="border-top: 0"></th>
+                                                <th style="border-top: 0"></th>
+                                                <th style="border-top: 0"></th>
+                                                <th nowrap>Positive</th>
+                                                <th nowrap>Negative</th>
+                                                <th nowrap>Without</th>
+                                            </tr>
+                                        </thead>
+                                        <c:forEach items="${surveyGroupedValues}" var="surveyGroupedValue" varStatus="status">
+                                        <tr>
+                                            <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
+                                            <td nowrap><span style="display:block; font-size:13px;">${surveyGroupedValue.displayName}</span></td>
+                                            <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.area}, ${surveyGroupedValue.town}</b></span></td>
+                                            <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.numberOfSurvey}</b></span></td>
+                                            <td nowrap><span style="display:block; font-size:13px;"><b><fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${surveyGroupedValue.summationOverallRating}" /></b></span></td>
+                                            <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.sumOfPositiveSentiments}</b></span></td>
+                                            <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.sumOfNegativeSentiments}</b></span></td>
+                                            <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.numberOfSurvey - surveyGroupedValue.sumOfPositiveSentiments - surveyGroupedValue.sumOfNegativeSentiments}</b></span></td>
+                                        </tr>
+                                        </c:forEach>
+                                    </table>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="alert-info">
+                                    <p>There is no data available.</p>
+                                </div>
+                            </c:otherwise>
+                            </c:choose>
+                            <div class="col-lable3"></div>
+                            <div class="clearFix"></div>
                         </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="alert-info">
-                            <p>There are no survey questions to show.</p>
-                        </div>
-                    </c:otherwise>
-                    </c:choose>
-                    <div class="col-lable3"></div>
-                    <div class="clearFix"></div>
+                    </div>
                 </div>
             </div>
             <!-- Add New Supervisor -->
