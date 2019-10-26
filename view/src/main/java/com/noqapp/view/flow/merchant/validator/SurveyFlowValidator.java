@@ -89,6 +89,16 @@ public class SurveyFlowValidator {
             }
         }
 
+        if (questionnaire.getQuestion().contains(".")) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("question")
+                    .defaultText("Avoid statement ending with dot")
+                    .build());
+            status = "failure";
+        }
+
         if (null == questionnaire.getQuestionType()) {
             messageContext.addMessage(
                 new MessageBuilder()
