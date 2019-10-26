@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.SurveyEntity;
+import com.noqapp.domain.aggregate.SurveyGroupedValue;
 import com.noqapp.domain.types.SentimentTypeEnum;
 
 /**
@@ -12,4 +13,6 @@ public interface SurveyManager extends RepositoryManager<SurveyEntity> {
     SurveyEntity getRecentOverallRating(String bizNameId);
 
     void updateSentiment(String id, SentimentTypeEnum sentimentType);
+
+    SurveyGroupedValue findOverallRating(String bizStoreId);
 }
