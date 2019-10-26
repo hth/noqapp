@@ -66,8 +66,8 @@
 
                         <div class="add-store">
                             <div class="addbtn-store" style="padding-bottom: 10px;">
-                                <a href="/business/survey/add.htm" class="add-btn">Add New Survey</a>
-                                <a href="/business/survey/dashboard.htm" class="add-btn">Dashboard</a>
+                                <a href="/business/survey/add.htm" class="add-btn" target="_blank">Add New Survey</a>
+                                <a href="/business/survey/dashboard.htm" class="add-btn" target="_blank">Dashboard</a>
                             </div>
                             <div id="container"></div>
                             <div class="store-table">
