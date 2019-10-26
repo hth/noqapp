@@ -85,10 +85,10 @@
                                                 <td nowrap>
                                                     <c:choose>
                                                         <c:when test="${fn:length(questionnaire.firstEntry) > 100}">
-                                                            <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm"><span style="display:block; font-size:13px;">${fn:substring(questionnaire.firstEntry, 0, 100)}...</span></a>
+                                                            <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm" target="_blank"><span style="display:block; font-size:13px;">${fn:substring(questionnaire.firstEntry, 0, 100)}...</span></a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm"><span style="display:block; font-size:13px;">${questionnaire.firstEntry}</span></a>
+                                                            <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm" target="_blank"><span style="display:block; font-size:13px;">${questionnaire.firstEntry}</span></a>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
@@ -171,7 +171,7 @@
         },
         tooltip: {
             headerFormat: '',
-            pointFormat: '<b>{point.location}</b><br/><b>{point.y}</b>'
+            pointFormat: '<b>{point.location}: {point.y}</b>'
         },
         legend: {
             enabled: false
@@ -181,7 +181,8 @@
         },
         series: [{
             name: 'Live Survey Overall Rating',
-            data: []
+            data: [],
+            lineWidth: 7
         }]
     };
     var chart = Highcharts.chart('container', options)
@@ -199,7 +200,7 @@
                     chart.series[0].update(chart.series[0].options);
                 }
             })
-        }, 15000)
+        }, 12000)
     }
 </script>
 </html>
