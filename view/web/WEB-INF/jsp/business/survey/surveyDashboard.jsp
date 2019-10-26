@@ -85,7 +85,16 @@
                                         <tr>
                                             <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
                                             <td nowrap><span style="display:block; font-size:13px;">${surveyGroupedValue.displayName}</span></td>
-                                            <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.area}, ${surveyGroupedValue.town}</b></span></td>
+                                            <td nowrap>
+                                                <c:choose>
+                                                    <c:when test="${empty surveyGroupedValue.town}">
+                                                        <span style="display:block; font-size:13px;"><b>${surveyGroupedValue.area}</b></span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span style="display:block; font-size:13px;"><b>${surveyGroupedValue.area}, ${surveyGroupedValue.town}</b></span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
                                             <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.numberOfSurvey}</b></span></td>
                                             <td nowrap><span style="display:block; font-size:13px;"><b><fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${surveyGroupedValue.summationOverallRating}" /></b></span></td>
                                             <td nowrap><span style="display:block; font-size:13px;"><b>${surveyGroupedValue.sumOfPositiveSentiments}</b></span></td>
