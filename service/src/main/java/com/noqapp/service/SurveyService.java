@@ -5,6 +5,7 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QuestionnaireEntity;
 import com.noqapp.domain.SurveyEntity;
+import com.noqapp.domain.aggregate.SurveyGroupedValue;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonQuestionnaire;
 import com.noqapp.domain.json.JsonSurvey;
@@ -25,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -81,7 +83,7 @@ public class SurveyService {
         return questionnaireManager.findAll(bizNameId);
     }
 
-    public QuestionnaireEntity findLatest(String bizNameId) {
+    private QuestionnaireEntity findLatest(String bizNameId) {
         return questionnaireManager.findLatest(bizNameId);
     }
 
@@ -153,5 +155,18 @@ public class SurveyService {
             LOG.debug("sentiment={} text={}", sentimentType, allText.toString());
             surveyManager.updateSentiment(survey.getId(), sentimentType);
         }
+    }
+
+    public List<SurveyGroupedValue> populateDashboard(String bizNameId) {
+        List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizNameId);
+        List<SurveyGroupedValue> surveyGroupedValues = new ArrayList<>();
+        for (BizStoreEntity bizStore : bizStores) {
+            SurveyGroupedValue surveyGroupedValue = surveyManager.findOverallRating(bizStore.getId());
+            if (null != surveyGroupedValue) {
+                surveyGroupedValue.setArea(bizStore.getArea()).setTown(bizStore.getTown()).setDisplayName(bizStore.getDisplayName());
+                surveyGroupedValues.add(surveyGroupedValue);
+            }
+        }
+        return surveyGroupedValues;
     }
 }

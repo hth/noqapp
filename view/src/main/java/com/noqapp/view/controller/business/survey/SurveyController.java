@@ -3,6 +3,7 @@ package com.noqapp.view.controller.business.survey;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.QuestionnaireEntity;
+import com.noqapp.domain.aggregate.SurveyGroupedValue;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.SurveyService;
@@ -44,6 +45,7 @@ public class SurveyController {
 
     private String nextPage;
     private String questionnaireDetailPage;
+    private String dashboardPage;
     private String addSurveyFlow;
 
     private SurveyService surveyService;
@@ -54,8 +56,11 @@ public class SurveyController {
         @Value("${nextPage:/business/survey/landing}")
         String nextPage,
 
-        @Value("${nextPage:/business/survey/questionnaireDetail}")
+        @Value("${questionnaireDetailPage:/business/survey/questionnaireDetail}")
         String questionnaireDetailPage,
+
+        @Value("${dashboardPage:/business/survey/dashboard}")
+        String dashboardPage,
 
         @Value("${addSurveyFlow:redirect:/store/addSurvey.htm}")
         String addSurveyFlow,
@@ -65,6 +70,7 @@ public class SurveyController {
     ) {
         this.nextPage = nextPage;
         this.questionnaireDetailPage = questionnaireDetailPage;
+        this.dashboardPage = dashboardPage;
         this.addSurveyFlow = addSurveyFlow;
 
         this.surveyService = surveyService;
@@ -129,12 +135,14 @@ public class SurveyController {
     }
 
     @GetMapping(value = "/dashboard", produces = "text/html;charset=UTF-8")
-    public String dashboard() {
+    public String dashboard(Model model) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         LOG.info("Live rating business {} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        return surveyService.getRecentOverallRating(businessUser.getBizName().getId()).asJson();
+        List<SurveyGroupedValue> surveyGroupedValues = surveyService.populateDashboard(businessUser.getBizName().getId());
+        model.addAttribute("surveyGroupedValues", surveyGroupedValues);
+        return dashboardPage;
     }
 }
