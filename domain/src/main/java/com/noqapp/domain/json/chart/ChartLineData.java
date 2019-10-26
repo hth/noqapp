@@ -69,11 +69,10 @@ public class ChartLineData extends AbstractDomain {
     }
 
     public void populateLocation(String area, String town) {
+        this.location = area + ": ";
         if (StringUtils.isNotBlank(town)) {
-            this.location = area;
+            this.location = area + ", " + town + ": ";
         }
-
-        this.location = area + ", " + town;
     }
 
     @Override

@@ -171,7 +171,7 @@
         },
         tooltip: {
             headerFormat: '',
-            pointFormat: '<b>{point.location}: {point.y}</b>'
+            pointFormat: '<b>{point.location} {point.y}</b>'
         },
         legend: {
             enabled: false
@@ -182,7 +182,7 @@
         series: [{
             name: 'Live Survey Overall Rating',
             data: [],
-            lineWidth: 7
+            lineWidth: 4
         }]
     };
     var chart = Highcharts.chart('container', options)
