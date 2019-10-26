@@ -45,7 +45,7 @@ public class SurveyController {
 
     private String nextPage;
     private String questionnaireDetailPage;
-    private String dashboardPage;
+    private String surveyDashboardPage;
     private String addSurveyFlow;
 
     private SurveyService surveyService;
@@ -59,8 +59,8 @@ public class SurveyController {
         @Value("${questionnaireDetailPage:/business/survey/questionnaireDetail}")
         String questionnaireDetailPage,
 
-        @Value("${dashboardPage:/business/survey/dashboard}")
-        String dashboardPage,
+        @Value("${surveyDashboardPage:/business/survey/surveyDashboard}")
+        String surveyDashboardPage,
 
         @Value("${addSurveyFlow:redirect:/store/addSurvey.htm}")
         String addSurveyFlow,
@@ -70,7 +70,7 @@ public class SurveyController {
     ) {
         this.nextPage = nextPage;
         this.questionnaireDetailPage = questionnaireDetailPage;
-        this.dashboardPage = dashboardPage;
+        this.surveyDashboardPage = surveyDashboardPage;
         this.addSurveyFlow = addSurveyFlow;
 
         this.surveyService = surveyService;
@@ -143,6 +143,6 @@ public class SurveyController {
 
         List<SurveyGroupedValue> surveyGroupedValues = surveyService.populateDashboard(businessUser.getBizName().getId());
         model.addAttribute("surveyGroupedValues", surveyGroupedValues);
-        return dashboardPage;
+        return surveyDashboardPage;
     }
 }
