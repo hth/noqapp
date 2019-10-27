@@ -12,7 +12,7 @@ public enum QuestionTypeEnum {
     S("S", "Single Select"),
     M("M", "Multi Select"),
     R("R", "Rating"),
-    T("T", "Text Area");
+    T("T", "Free Text");
 
     private final String name;
     private final String description;
