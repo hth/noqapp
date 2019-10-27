@@ -64,27 +64,24 @@
                                         <thead>
                                             <tr>
                                                 <th>&nbsp;</th>
-                                                <th nowrap>Queue Name</th>
                                                 <th nowrap>Location</th>
                                                 <th nowrap>Survey Count</th>
                                                 <th nowrap>Overall Rating</th>
                                                 <th colspan="3" nowrap>Reviews</th>
                                             </tr>
                                             <tr>
-                                                <th style="border-top: 0">&nbsp;</th>
                                                 <th style="border-top: 0"></th>
                                                 <th style="border-top: 0"></th>
                                                 <th style="border-top: 0"></th>
                                                 <th style="border-top: 0"></th>
                                                 <th nowrap>Positive</th>
                                                 <th nowrap>Negative</th>
-                                                <th nowrap>Without</th>
+                                                <th nowrap>Missing</th>
                                             </tr>
                                         </thead>
                                         <c:forEach items="${surveyGroupedValues}" var="surveyGroupedValue" varStatus="status">
                                         <tr>
                                             <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
-                                            <td nowrap><span style="display:block; font-size:13px;">${surveyGroupedValue.displayName}</span></td>
                                             <td nowrap>
                                                 <c:choose>
                                                     <c:when test="${empty surveyGroupedValue.town}">
