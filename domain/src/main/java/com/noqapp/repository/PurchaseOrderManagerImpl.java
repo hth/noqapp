@@ -146,7 +146,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR) {
         return mongoTemplate.find(
-                query(where("QR").is(codeQR).and("PS").ne(PurchaseOrderStateEnum.OD)).with(new Sort(DESC, "C")),
+                query(where("QR").is(codeQR).and("PS").ne(PurchaseOrderStateEnum.OD)).with(Sort.by(DESC, "C")),
                 PurchaseOrderEntity.class,
                 TABLE);
     }
@@ -154,7 +154,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR) {
         return mongoTemplate.find(
-            query(where("QR").is(codeQR)).with(new Sort(ASC, "TN")),
+            query(where("QR").is(codeQR)).with(Sort.by(ASC, "TN")),
             PurchaseOrderEntity.class,
             TABLE);
     }
@@ -162,7 +162,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public List<PurchaseOrderEntity> findAllOrderByCodeQRUntil(String codeQR, Date until) {
         return mongoTemplate.find(
-            query(where("QR").is(codeQR).and("C").lte(until)).with(new Sort(DESC, "C")),
+            query(where("QR").is(codeQR).and("C").lte(until)).with(Sort.by(DESC, "C")),
             PurchaseOrderEntity.class,
             TABLE);
     }
@@ -178,7 +178,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public long countAllPlacedOrder(String codeQR) {
         return mongoTemplate.count(
-            query(where("QR").is(codeQR).and("PS").is(PurchaseOrderStateEnum.PO)).with(new Sort(DESC, "C")),
+            query(where("QR").is(codeQR).and("PS").is(PurchaseOrderStateEnum.PO)).with(Sort.by(DESC, "C")),
             PurchaseOrderEntity.class,
             TABLE);
     }
@@ -200,7 +200,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                      */
                     where("PS").is(PurchaseOrderStateEnum.PO).and("SE").exists(false).and("SID").is(sid)
                 )
-            ).with(new Sort(ASC, "TN")),
+            ).with(Sort.by(ASC, "TN")),
             PurchaseOrderEntity.class,
             TABLE);
 
@@ -618,7 +618,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public List<PurchaseOrderEntity> findByBizNameId(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId)).with(new Sort(DESC, "C")),
+            query(where("BN").is(bizNameId)).with(Sort.by(DESC, "C")),
             PurchaseOrderEntity.class,
             TABLE
         );
@@ -627,7 +627,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     @Override
     public List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId).and("CI").exists(true)).with(new Sort(DESC, "C")),
+            query(where("BN").is(bizNameId).and("CI").exists(true)).with(Sort.by(DESC, "C")),
             PurchaseOrderEntity.class,
             TABLE
         );

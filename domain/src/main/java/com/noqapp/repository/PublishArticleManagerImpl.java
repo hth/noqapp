@@ -111,7 +111,7 @@ public class PublishArticleManagerImpl implements PublishArticleManager {
     @Override
     public List<PublishArticleEntity> findPendingApprovals() {
         return mongoTemplate.find(
-            query(where("VS").is(ValidateStatusEnum.P)).with(new Sort(Sort.Direction.ASC, "C")),
+            query(where("VS").is(ValidateStatusEnum.P)).with(Sort.by(Sort.Direction.ASC, "C")),
             PublishArticleEntity.class,
             TABLE
         );
@@ -134,7 +134,7 @@ public class PublishArticleManagerImpl implements PublishArticleManager {
                     isActive(),
                     isNotDeleted()
                 )
-            ).limit(10).with(new Sort(Sort.Direction.ASC, "PD")),
+            ).limit(10).with(Sort.by(Sort.Direction.ASC, "PD")),
             PublishArticleEntity.class,
             TABLE
         );

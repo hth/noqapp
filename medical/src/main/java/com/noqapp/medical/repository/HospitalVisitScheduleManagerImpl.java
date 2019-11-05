@@ -62,7 +62,7 @@ public class HospitalVisitScheduleManagerImpl implements HospitalVisitScheduleMa
     @Override
     public List<HospitalVisitScheduleEntity> findAll(String qid) {
         return mongoTemplate.find(
-            query(where("QID").is(qid)).with(new Sort(Sort.Direction.ASC, "ED")),
+            query(where("QID").is(qid)).with(Sort.by(Sort.Direction.ASC, "ED")),
             HospitalVisitScheduleEntity.class,
             TABLE
         );
@@ -71,7 +71,7 @@ public class HospitalVisitScheduleManagerImpl implements HospitalVisitScheduleMa
     @Override
     public List<HospitalVisitScheduleEntity> findAll(String qid, HospitalVisitForEnum hospitalVisitFor) {
         return mongoTemplate.find(
-            query(where("QID").is(qid).and("HV").is(hospitalVisitFor)).with(new Sort(Sort.Direction.ASC, "ED")),
+            query(where("QID").is(qid).and("HV").is(hospitalVisitFor)).with(Sort.by(Sort.Direction.ASC, "ED")),
             HospitalVisitScheduleEntity.class,
             TABLE
         );

@@ -71,7 +71,7 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
                     where("BT").is(BusinessTypeEnum.DO).and("DBI").exists(true),
                     where("BT").is(BusinessTypeEnum.HS)
                 )
-            ).limit(limit).with(new Sort(ASC, "C")),
+            ).limit(limit).with(Sort.by(ASC, "C")),
             MedicalRecordEntity.class,
             TABLE
         );
@@ -82,7 +82,7 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
         return mongoTemplate.find(
             query(
                 where("QID").is(qid).and("BT").is(BusinessTypeEnum.DO).and("BCI").is(medicalDepartment).and("DBI").exists(true)
-            ).limit(limit).with(new Sort(ASC, "C")),
+            ).limit(limit).with(Sort.by(ASC, "C")),
             MedicalRecordEntity.class,
             TABLE
         );
@@ -97,7 +97,7 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
     public List<MedicalRecordEntity> findByCodeQRFilteredOnFieldWithinDateRange(String codeQR, String populateField, Date from, Date until, int currentPosition) {
         //Pageable sortedByPriceDesc = PageRequest.of(0, 3, Sort.Direction.ASC, "C");
         Query query = query(where("QR").is(codeQR).and("C").gte(from).lt(until));
-        query.with(new Sort(ASC, "C")).fields().include(populateField).include("QID").include("BT").include("C");
+        query.with(Sort.by(ASC, "C")).fields().include(populateField).include("QID").include("BT").include("C");
         return mongoTemplate.find(query.skip(currentPosition).limit(20), MedicalRecordEntity.class, TABLE);
     }
 
@@ -138,7 +138,7 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
     @Override
     public MedicalRecordEntity findByBizNameId(String bizNameId) {
         return mongoTemplate.findOne(
-            query(where("BN").is(bizNameId).and("DBI").exists(true)).with(new Sort(DESC, "C")),
+            query(where("BN").is(bizNameId).and("DBI").exists(true)).with(Sort.by(DESC, "C")),
             MedicalRecordEntity.class,
             TABLE
         );

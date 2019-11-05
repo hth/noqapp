@@ -274,7 +274,7 @@ public class QueueManagerImpl implements QueueManager {
                                  */
                                 where("QS").is(QueueUserStateEnum.Q).and("SE").exists(false).and("SID").is(sid)
                         )
-                ).with(new Sort(ASC, "TN")),
+                ).with(Sort.by(ASC, "TN")),
                 QueueEntity.class,
                 TABLE);
 
@@ -347,7 +347,7 @@ public class QueueManagerImpl implements QueueManager {
     public List<QueueEntity> findAllQueuedByDid(String did) {
         Assertions.assertTrue(StringUtils.isNotBlank(did), "DID should not be blank");
         return mongoTemplate.find(
-                query(where("DID").is(did).and("QS").is(QueueUserStateEnum.Q)).with(new Sort(ASC, "C")),
+                query(where("DID").is(did).and("QS").is(QueueUserStateEnum.Q)).with(Sort.by(ASC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
@@ -360,7 +360,7 @@ public class QueueManagerImpl implements QueueManager {
                                 where("QID").is(qid),
                                 where("GQ").is(qid)
                         )
-                ).with(new Sort(ASC, "C")),
+                ).with(Sort.by(ASC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
@@ -373,7 +373,7 @@ public class QueueManagerImpl implements QueueManager {
                                 where("QID").is(qid),
                                 where("GQ").is(qid)
                         )
-                ).with(new Sort(ASC, "C")),
+                ).with(Sort.by(ASC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
@@ -386,7 +386,7 @@ public class QueueManagerImpl implements QueueManager {
                     where("QID").is(qid),
                     where("GQ").is(qid)
                 )
-            ).with(new Sort(ASC, "C")),
+            ).with(Sort.by(ASC, "C")),
             QueueEntity.class,
             TABLE);
     }
@@ -403,7 +403,7 @@ public class QueueManagerImpl implements QueueManager {
     public List<QueueEntity> findAllNotQueuedByDid(String did) {
         Assertions.assertTrue(StringUtils.isNotBlank(did), "DID should not be blank");
         return mongoTemplate.find(
-                query(where("DID").is(did).and("QS").ne(QueueUserStateEnum.Q)).with(new Sort(DESC, "C")),
+                query(where("DID").is(did).and("QS").ne(QueueUserStateEnum.Q)).with(Sort.by(DESC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
@@ -420,7 +420,7 @@ public class QueueManagerImpl implements QueueManager {
                                 where("QID").is(qid),
                                 where("GQ").is(qid)
                         )
-                ).with(new Sort(DESC, "C")),
+                ).with(Sort.by(DESC, "C")),
                 QueueEntity.class,
                 TABLE);
     }
@@ -459,7 +459,7 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public List<QueueEntity> findByCodeQRSortedByTokenIgnoreInitialState(String codeQR) {
         return mongoTemplate.find(
-                query(where("QR").is(codeQR).and("QS").ne(QueueUserStateEnum.I)).with(new Sort(ASC, "TN")),
+                query(where("QR").is(codeQR).and("QS").ne(QueueUserStateEnum.I)).with(Sort.by(ASC, "TN")),
                 QueueEntity.class,
                 TABLE
         );
@@ -554,7 +554,7 @@ public class QueueManagerImpl implements QueueManager {
                         .orOperator(
                                 where("QS").is(QueueUserStateEnum.Q),
                                 where("QS").is(QueueUserStateEnum.A))
-                ).with(new Sort(ASC, "TN")),
+                ).with(Sort.by(ASC, "TN")),
                 QueueEntity.class,
                 TABLE
         );
@@ -650,7 +650,7 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public List<QueueEntity> findYetToBeServed(String codeQR) {
         return mongoTemplate.find(
-            query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)).with(new Sort(DESC, "TN")).limit(10),
+            query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)).with(Sort.by(DESC, "TN")).limit(10),
             QueueEntity.class,
             TABLE
         );

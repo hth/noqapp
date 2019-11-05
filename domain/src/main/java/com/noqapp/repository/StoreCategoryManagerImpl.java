@@ -60,7 +60,7 @@ public class StoreCategoryManagerImpl implements StoreCategoryManager {
     @Override
     public List<StoreCategoryEntity> findAll(String storeId) {
         return mongoTemplate.find(
-            query(where("BS").is(storeId)).with(new Sort(ASC, "CN")),
+            query(where("BS").is(storeId)).with(Sort.by(ASC, "CN")),
             StoreCategoryEntity.class,
             TABLE);
     }

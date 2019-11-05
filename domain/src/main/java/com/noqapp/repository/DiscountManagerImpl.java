@@ -60,7 +60,7 @@ public class DiscountManagerImpl implements DiscountManager {
     @Override
     public List<DiscountEntity> findAll(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId)).with(new Sort(ASC, "DN")),
+            query(where("BN").is(bizNameId)).with(Sort.by(ASC, "DN")),
             DiscountEntity.class,
             TABLE
         );
@@ -69,7 +69,7 @@ public class DiscountManagerImpl implements DiscountManager {
     @Override
     public List<DiscountEntity> findAllActive(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId).and("A").is(true)).with(new Sort(ASC, "DN")),
+            query(where("BN").is(bizNameId).and("A").is(true)).with(Sort.by(ASC, "DN")),
             DiscountEntity.class,
             TABLE
         );

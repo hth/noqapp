@@ -90,7 +90,7 @@ public class MedicalPhysicalManagerImpl implements MedicalPhysicalManager {
     @Override
     public List<MedicalPhysicalEntity> findByQid(String qid) {
         return mongoTemplate.find(
-                query(where("QID").is(qid)).with(new Sort(DESC, "C")),
+                query(where("QID").is(qid)).with(Sort.by(DESC, "C")),
                 MedicalPhysicalEntity.class,
                 TABLE
         );

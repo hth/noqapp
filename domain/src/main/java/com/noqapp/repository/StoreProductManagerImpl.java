@@ -63,7 +63,7 @@ public class StoreProductManagerImpl implements StoreProductManager {
     @Override
     public List<StoreProductEntity> findAll(String storeId) {
         return mongoTemplate.find(
-            query(where("BS").is(storeId)).with(new Sort(ASC, "PN")),
+            query(where("BS").is(storeId)).with(Sort.by(ASC, "PN")),
             StoreProductEntity.class,
             TABLE);
     }

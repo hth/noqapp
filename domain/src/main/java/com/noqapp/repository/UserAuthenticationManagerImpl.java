@@ -85,7 +85,7 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
     @Override
     public List<UserAuthenticationEntity> listAll(Date sinceThen) {
         return mongoTemplate.find(
-            query(where("C").gte(sinceThen)).with(new Sort(ASC, "C")),
+            query(where("C").gte(sinceThen)).with(Sort.by(ASC, "C")),
             UserAuthenticationEntity.class,
             TABLE);
     }
