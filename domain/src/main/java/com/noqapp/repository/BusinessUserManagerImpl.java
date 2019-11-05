@@ -129,7 +129,7 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
                                 isActive(),
                                 isNotDeleted()
                         )
-                ).limit(10).with(new Sort(ASC, "U")),
+                ).limit(10).with(Sort.by(ASC, "U")),
                 BusinessUserEntity.class,
                 TABLE);
     }

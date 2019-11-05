@@ -58,7 +58,7 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
     @Override
     public List<AdvertisementEntity> findAllAdvertisements(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId).and("D").is(false)).with(new Sort(Sort.Direction.DESC, "C")),
+            query(where("BN").is(bizNameId).and("D").is(false)).with(Sort.by(Sort.Direction.DESC, "C")),
             AdvertisementEntity.class,
             TABLE
         );
@@ -70,7 +70,7 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
             query(where("VS").is(ValidateStatusEnum.P)
                 .and("D").is(false)
                 .and("A").is(true)
-            ).with(new Sort(Sort.Direction.ASC, "C")),
+            ).with(Sort.by(Sort.Direction.ASC, "C")),
             AdvertisementEntity.class,
             TABLE
         );
@@ -105,7 +105,7 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
                 .and("ED").gte(now)
                 .and("D").is(false)
                 .and("A").is(true)
-            ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
+            ).with(Sort.by(Sort.Direction.ASC, "C")).limit(limit),
             AdvertisementEntity.class,
             TABLE
         );
@@ -123,7 +123,7 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
                 .and("ED").gte(now)
                 .and("D").is(false)
                 .and("A").is(true)
-            ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
+            ).with(Sort.by(Sort.Direction.ASC, "C")).limit(limit),
             AdvertisementEntity.class,
             TABLE
         );
@@ -140,7 +140,7 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
                 .and("ED").gte(now)
                 .and("D").is(false)
                 .and("A").is(true)
-            ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
+            ).with(Sort.by(Sort.Direction.ASC, "C")).limit(limit),
             AdvertisementEntity.class,
             TABLE
         );
@@ -157,7 +157,7 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
                 .and("ED").gte(now)
                 .and("D").is(false)
                 .and("A").is(true)
-            ).with(new Sort(Sort.Direction.ASC, "C")).limit(limit),
+            ).with(Sort.by(Sort.Direction.ASC, "C")).limit(limit),
             AdvertisementEntity.class,
             TABLE
         );

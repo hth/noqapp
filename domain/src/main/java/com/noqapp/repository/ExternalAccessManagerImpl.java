@@ -61,7 +61,7 @@ public class ExternalAccessManagerImpl implements ExternalAccessManager {
     @Override
     public List<ExternalAccessEntity> findAll(String bizId) {
         return mongoTemplate.find(
-                query(where("BN").is(bizId)).with(new Sort(Sort.Direction.ASC, "QID")),
+                query(where("BN").is(bizId)).with(Sort.by(Sort.Direction.ASC, "QID")),
                 ExternalAccessEntity.class,
                 TABLE
         );

@@ -203,7 +203,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllAddress(BizNameEntity bizNameEntity, int limit) {
         return mongoTemplate.find(
             query(where("BIZ_NAME.$id").is(new ObjectId(bizNameEntity.getId())))
-                .with(new Sort(Sort.Direction.DESC, "C"))
+                .with(Sort.by(Sort.Direction.DESC, "C"))
                 .limit(limit),
             BizStoreEntity.class,
             TABLE
@@ -213,7 +213,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public BizStoreEntity findOne(String bizNameId) {
         return mongoTemplate.findOne(
-            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId))).with(new Sort(Sort.Direction.DESC, "C")),
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId))).with(Sort.by(Sort.Direction.DESC, "C")),
             BizStoreEntity.class,
             TABLE
         );
@@ -251,7 +251,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllBizStores(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())).with(new Sort(ASC, "DN")),
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted())).with(Sort.by(ASC, "DN")),
             BizStoreEntity.class,
             TABLE
         );
@@ -260,7 +260,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllBizStoresActive(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted(), isActive())).with(new Sort(ASC, "DN")),
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).andOperator(isNotDeleted(), isActive())).with(Sort.by(ASC, "DN")),
             BizStoreEntity.class,
             TABLE
         );
@@ -425,7 +425,7 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getBizStoresByCategory(String bizCategoryId, String bizNameId) {
         return mongoTemplate.find(
-            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BC").is(bizCategoryId)).with(new Sort(ASC, "DN")),
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BC").is(bizCategoryId)).with(Sort.by(ASC, "DN")),
             BizStoreEntity.class,
             TABLE
         );

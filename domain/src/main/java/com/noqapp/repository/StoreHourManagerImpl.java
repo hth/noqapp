@@ -94,7 +94,7 @@ public class StoreHourManagerImpl implements StoreHourManager {
     @Override
     public List<StoreHourEntity> findAll(String bizStoreId) {
         return mongoTemplate.find(
-            query(where("BS").is(bizStoreId)).with(new Sort(Sort.Direction.ASC, "DW")),
+            query(where("BS").is(bizStoreId)).with(Sort.by(Sort.Direction.ASC, "DW")),
             StoreHourEntity.class,
             TABLE
         );

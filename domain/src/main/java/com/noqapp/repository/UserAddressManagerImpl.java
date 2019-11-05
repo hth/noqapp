@@ -92,7 +92,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
     @Override
     public List<UserAddressEntity> getAll(String qid) {
         return mongoTemplate.find(
-            query(where("QID").is(qid)).with(new Sort(ASC, "LU")),
+            query(where("QID").is(qid)).with(Sort.by(ASC, "LU")),
             UserAddressEntity.class,
             TABLE
         );
@@ -118,7 +118,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
 
     private UserAddressEntity leastUsedAddress(String qid) {
         return mongoTemplate.findOne(
-            query(where("QID").is(qid)).with(new Sort(DESC, "LU")),
+            query(where("QID").is(qid)).with(Sort.by(DESC, "LU")),
             UserAddressEntity.class,
             TABLE
         );

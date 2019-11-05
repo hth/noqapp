@@ -70,7 +70,7 @@ public class SurveyManagerImpl implements SurveyManager {
     @Override
     public SurveyEntity getRecentOverallRating(String bizNameId) {
         return mongoTemplate.findAndModify(
-            query(where("BN").is(bizNameId).and("FE").is(false)).with(new Sort(ASC, "C")),
+            query(where("BN").is(bizNameId).and("FE").is(false)).with(Sort.by(ASC, "C")),
             update("FE", true),
             FindAndModifyOptions.options().returnNew(true),
             SurveyEntity.class,

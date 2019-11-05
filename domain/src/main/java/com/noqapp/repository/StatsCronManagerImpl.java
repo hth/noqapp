@@ -63,7 +63,7 @@ public class StatsCronManagerImpl implements StatsCronManager {
     @Override
     public List<StatsCronEntity> getHistoricalData(String task, int limit) {
         return mongoTemplate.find(
-            query(where("TN").is(task)).with(new Sort(Sort.Direction.DESC, "C")).limit(10),
+            query(where("TN").is(task)).with(Sort.by(Sort.Direction.DESC, "C")).limit(10),
             StatsCronEntity.class,
             TABLE
         );

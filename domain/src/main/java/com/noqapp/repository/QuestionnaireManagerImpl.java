@@ -59,7 +59,7 @@ public class QuestionnaireManagerImpl implements QuestionnaireManager {
     @Override
     public List<QuestionnaireEntity> findAll(String bizNameId) {
         return mongoTemplate.find(
-            query(where("BN").is(bizNameId)).with(new Sort(DESC, "C")),
+            query(where("BN").is(bizNameId)).with(Sort.by(DESC, "C")),
             QuestionnaireEntity.class,
             TABLE
         );
@@ -68,7 +68,7 @@ public class QuestionnaireManagerImpl implements QuestionnaireManager {
     @Override
     public QuestionnaireEntity findLatest(String bizNameId) {
         return mongoTemplate.findOne(
-            query(where("BN").is(bizNameId)).with(new Sort(DESC, "C")),
+            query(where("BN").is(bizNameId)).with(Sort.by(DESC, "C")),
             QuestionnaireEntity.class,
             TABLE
         );

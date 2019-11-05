@@ -97,7 +97,7 @@ public class CouponManagerImpl implements CouponManager {
                     .and("SD").lte(midnight)
                     .and("ED").gte(midnight)
                     .and("A").is(true)
-            ).with(new Sort(DESC, "ED")),
+            ).with(Sort.by(DESC, "ED")),
             CouponEntity.class,
             TABLE
         );
@@ -112,7 +112,7 @@ public class CouponManagerImpl implements CouponManager {
                     .and("CG").is(couponGroup)
                     .and("SD").gt(midnight)
                     .and("A").is(true)
-            ).with(new Sort(DESC, "ED")),
+            ).with(Sort.by(DESC, "ED")),
             CouponEntity.class,
             TABLE
         );
