@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -97,11 +99,8 @@ public final class JsonProfile extends AbstractDomain {
     @JsonProperty("bn")
     private String bizNameId;
 
-    @JsonProperty("bss")
-    private List<String> bizStoreIds;
-
-    @JsonProperty("qrs")
-    private List<String> codeQRs;
+    @JsonProperty("cbs")
+    private Map<String, String> codeQRAndBizStoreIds = new HashMap<>();
 
     public JsonProfile() {
         //Required Default Constructor
@@ -259,21 +258,17 @@ public final class JsonProfile extends AbstractDomain {
         return this;
     }
 
-    public List<String> getBizStoreIds() {
-        return bizStoreIds;
+    public Map<String, String> getCodeQRAndBizStoreIds() {
+        return codeQRAndBizStoreIds;
     }
 
-    public JsonProfile setBizStoreIds(List<String> bizStoreIds) {
-        this.bizStoreIds = bizStoreIds;
+    public JsonProfile setCodeQRAndBizStoreIds(Map<String, String> codeQRAndBizStoreIds) {
+        this.codeQRAndBizStoreIds = codeQRAndBizStoreIds;
         return this;
     }
 
-    public List<String> getCodeQRs() {
-        return codeQRs;
-    }
-
-    public JsonProfile setCodeQRs(List<String> codeQRs) {
-        this.codeQRs = codeQRs;
+    public JsonProfile addCodeQRAndBizStoreId(String codeQR, String bizStoreId) {
+        this.codeQRAndBizStoreIds.put(codeQR, bizStoreId);
         return this;
     }
 }
