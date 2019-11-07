@@ -273,14 +273,30 @@ public final class DateUtil {
         return interval.toPeriod(PeriodType.minutes()).getMinutes();
     }
 
-    public static Date minusDays(long days) {
+    @Deprecated
+    public static Date minusDays_old(long days) {
         LocalDateTime localDateTime = LocalDateTime.now().minusDays(days);
         Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);
     }
 
-    public static Date plusDays(int days) {
+    @Deprecated
+    public static Date plusDays_old(int days) {
         return Date.from(LocalDate.now().plusDays(days).atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date minusDays(long days) {
+        return minusDays(new Date(), days);
+    }
+
+    public static Date minusDays(Date date, long days) {
+        Instant instant = date.toInstant().minus(days, ChronoUnit.DAYS).atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
+    }
+
+    public static Date plusDays(int days) {
+        LocalDateTime tomorrowMidnight = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).plusDays(days);
+        return Date.from(tomorrowMidnight.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public static boolean isThisDayBetween(Date fromDay, Date untilDay, DAY day, ZoneId zoneId) {
