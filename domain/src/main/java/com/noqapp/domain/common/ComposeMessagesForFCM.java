@@ -19,8 +19,6 @@ import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 
-import org.joda.time.DateTime;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -168,21 +166,20 @@ public class ComposeMessagesForFCM {
         String displayName,
         Date followUpDay
     ) {
-        DateTime followUpScheduledFor = DateUtil.toDateTime(followUpDay);
         JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
         JsonData jsonData = new JsonTopicData(MessageOriginEnum.MF, FirebaseMessageTypeEnum.P).getJsonMedicalFollowUp()
             .setQueueUserId(queueUserId)
             .setCodeQR(codeQR)
-            .setPopFollowUpAlert(followUpScheduledFor.minusDays(2).toDate())
-            .setFollowUpDay(followUpScheduledFor.toDate());
+            .setPopFollowUpAlert(DateUtil.minusDays(followUpDay, 2))
+            .setFollowUpDay(followUpDay);
 
         if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
             jsonMessage.getNotification()
-                .setBody("Follow up has been scheduled for " + SDF_DD_MMM_YYYY.format(followUpScheduledFor.toDate()))
+                .setBody("Follow up has been scheduled for " + SDF_DD_MMM_YYYY.format(followUpDay))
                 .setTitle(displayName + " follow-up");
         } else {
             jsonMessage.setNotification(null);
-            jsonData.setBody("Follow up has been scheduled for " + SDF_DD_MMM_YYYY.format(followUpScheduledFor.toDate()))
+            jsonData.setBody("Follow up has been scheduled for " + SDF_DD_MMM_YYYY.format(followUpDay))
                 .setTitle(displayName + " follow-up");
         }
 
