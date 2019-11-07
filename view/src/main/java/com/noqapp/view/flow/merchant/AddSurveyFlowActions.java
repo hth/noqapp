@@ -1,9 +1,11 @@
 package com.noqapp.view.flow.merchant;
 
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.QuestionnaireEntity;
 import com.noqapp.domain.flow.Questionnaire;
+import com.noqapp.domain.json.survey.SurveyQuestion;
 import com.noqapp.domain.site.QueueUser;
-import com.noqapp.domain.types.QuestionTypeEnum;
+import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.SurveyService;
 
@@ -19,9 +21,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.context.ExternalContext;
 
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * User: hitender
@@ -49,12 +51,28 @@ public class AddSurveyFlowActions {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         /* Above condition to make sure users with right roles and access gets access. */
 
-        return new Questionnaire();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+
+        QuestionnaireEntity questionnaire = new QuestionnaireEntity().setBizNameId(businessUser.getBizName().getId());
+        surveyService.saveSurveyQuestionnaire(questionnaire);
+        return new Questionnaire()
+            .setQuestionnaireId(questionnaire.getId());
     }
 
     /** Add locale. */
     @SuppressWarnings("all")
     public Questionnaire addLocale(Questionnaire questionnaire, MessageContext messageContext) {
+        if (StringUtils.isBlank(questionnaire.getTitle())) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("title")
+                    .defaultText("Title cannot be empty")
+                    .build());
+
+            return questionnaire;
+        }
+
         if (null == questionnaire.getLocale()) {
             messageContext.addMessage(
                 new MessageBuilder()
@@ -90,7 +108,9 @@ public class AddSurveyFlowActions {
 
             return questionnaire;
         }
-        questionnaire.getLocaleWithQuestions().put(questionnaire.getLocale(), new LinkedHashMap<>());
+
+        questionnaire.getLocaleWithQuestions().put(questionnaire.getLocale(), new LinkedList<>());
+        updateQuestionnaire(questionnaire, ValidateStatusEnum.I);
         questionnaire.setLocale(null);
         return questionnaire;
     }
@@ -103,9 +123,14 @@ public class AddSurveyFlowActions {
         }
 
         if (StringUtils.isNotBlank(questionnaire.getQuestion())) {
-            Map<String, QuestionTypeEnum> update =  questionnaire.getLocaleWithQuestions().get(questionnaire.getLocale());
-            update.put(questionnaire.getQuestion(), questionnaire.getQuestionType());
+            List<SurveyQuestion> update = questionnaire.getLocaleWithQuestions().get(questionnaire.getLocale());
+            SurveyQuestion surveyQuestion = new SurveyQuestion()
+                .setQuestion(questionnaire.getQuestion())
+                .setQuestionType(questionnaire.getQuestionType());
+            update.add(surveyQuestion);
+
             questionnaire.getLocaleWithQuestions().put(questionnaire.getLocale(), update);
+            updateQuestionnaire(questionnaire, ValidateStatusEnum.I);
         }
         questionnaire.setLocale(null).setQuestion("").setQuestionType(null);
         return questionnaire;
@@ -116,7 +141,17 @@ public class AddSurveyFlowActions {
     public Questionnaire completeSurvey(Questionnaire questionnaire, MessageContext messageContext) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        surveyService.saveSurveyQuestionnaire(businessUser.getBizName().getId(), questionnaire.getLocaleWithQuestions());
+        updateQuestionnaire(questionnaire, ValidateStatusEnum.P);
         return questionnaire;
+    }
+
+    private void updateQuestionnaire(Questionnaire questionnaire, ValidateStatusEnum validateStatus) {
+        QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity()
+            .setValidateStatus(validateStatus)
+            .setQuestions(questionnaire.getLocaleWithQuestions())
+            .setTitle(questionnaire.getTitle());
+
+        questionnaireEntity.setId(questionnaire.getQuestionnaireId());
+        surveyService.saveSurveyQuestionnaire(questionnaireEntity);
     }
 }

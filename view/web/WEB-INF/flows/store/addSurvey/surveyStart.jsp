@@ -74,6 +74,15 @@
                             <ul class="list-form">
                                 <li>
                                     <div class="col-lable3">
+                                        <form:label path="title" cssErrorClass="lb_error">Title</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="title" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false"/>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
                                         <form:label path="locale" cssErrorClass="lb_error">Select Language</form:label>
                                     </div>
                                     <div class="col-fields">

@@ -1,6 +1,7 @@
 package com.noqapp.view.flow.merchant.validator;
 
 import com.noqapp.domain.flow.Questionnaire;
+import com.noqapp.domain.json.survey.SurveyQuestion;
 import com.noqapp.domain.types.QuestionTypeEnum;
 import com.noqapp.view.controller.access.LandingController;
 
@@ -13,6 +14,7 @@ import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -48,7 +50,7 @@ public class SurveyFlowValidator {
         LOG.info("validate questionnaire for locale={}", questionnaire.getLocale());
 
         String status = LandingController.SUCCESS;
-        Map<String, QuestionTypeEnum> questions = questionnaire.getLocaleWithQuestions().get(questionnaire.getLocale());
+        List<SurveyQuestion> questions = questionnaire.getLocaleWithQuestions().get(questionnaire.getLocale());
         if (null == questionnaire.getLocale()) {
             messageContext.addMessage(
                 new MessageBuilder()
@@ -127,9 +129,9 @@ public class SurveyFlowValidator {
         LOG.info("validate all questionnaire");
 
         String status = LandingController.SUCCESS;
-        Map<Locale, Map<String, QuestionTypeEnum>> localeWithQuestions = questionnaire.getLocaleWithQuestions();
+        Map<Locale, List<SurveyQuestion>> localeWithQuestions = questionnaire.getLocaleWithQuestions();
         for (Locale locale : localeWithQuestions.keySet()) {
-            Map<String, QuestionTypeEnum> questions = localeWithQuestions.get(locale);
+            List<SurveyQuestion> questions = localeWithQuestions.get(locale);
             if (questions.isEmpty()) {
                 messageContext.addMessage(
                     new MessageBuilder()

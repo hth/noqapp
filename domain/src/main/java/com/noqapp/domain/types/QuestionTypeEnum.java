@@ -9,8 +9,8 @@ import java.util.Map;
  */
 public enum QuestionTypeEnum {
     B("B", "Boolean"),
-    S("S", "Single Select"),
-    M("M", "Multi Select"),
+    S("S", "Single Choice"),
+    M("M", "Multiple Choice"),
     R("R", "Rating"),
     T("T", "Free Text");
 

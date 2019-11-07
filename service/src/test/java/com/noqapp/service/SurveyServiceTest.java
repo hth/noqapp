@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import com.noqapp.domain.QuestionnaireEntity;
 import com.noqapp.domain.SurveyEntity;
 import com.noqapp.domain.json.JsonSurvey;
+import com.noqapp.domain.json.survey.SurveyQuestion;
 import com.noqapp.domain.types.QuestionTypeEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QuestionnaireManager;
@@ -18,8 +19,9 @@ import org.mockito.MockitoAnnotations;
 
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
@@ -73,11 +75,11 @@ class SurveyServiceTest {
             .setBizNameId("bizNameId")
             .setBizStoreId("bizStoreId");
 
-        Map<String, QuestionTypeEnum> questionForEnglishLocale = new LinkedHashMap<>();
-        questionForEnglishLocale.put("Rate this service", QuestionTypeEnum.R);
-        questionForEnglishLocale.put("Describe in your own word", QuestionTypeEnum.T);
+        List<SurveyQuestion> questionForEnglishLocale = new ArrayList<>();
+        questionForEnglishLocale.add(new SurveyQuestion().setQuestion("Rate this service").setQuestionType(QuestionTypeEnum.R));
+        questionForEnglishLocale.add(new SurveyQuestion().setQuestion("Describe in your own word").setQuestionType(QuestionTypeEnum.T));
 
-        Map<Locale, Map<String, QuestionTypeEnum>> questions = new HashMap<>();
+        Map<Locale, List<SurveyQuestion>> questions = new HashMap<>();
         questions.put(Locale.ENGLISH, questionForEnglishLocale);
         QuestionnaireEntity questionnaire = new QuestionnaireEntity()
             .setBizNameId("bizNameId")
