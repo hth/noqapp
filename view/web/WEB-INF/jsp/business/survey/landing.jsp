@@ -76,23 +76,17 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
-                                                <th nowrap>Survey</th>
-                                                <th nowrap>Published</th>
+                                                <th nowrap>Title</th>
+                                                <th nowrap>Published Status</th>
                                             </tr>
                                             <c:forEach items="${questionnaireForm.questionnaires}" var="questionnaire" varStatus="status">
                                             <tr>
                                                 <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
                                                 <td nowrap>
-                                                    <c:choose>
-                                                        <c:when test="${fn:length(questionnaire.firstEntry) > 100}">
-                                                            <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm" target="_blank"><span style="display:block; font-size:13px;">${fn:substring(questionnaire.firstEntry, 0, 100)}...</span></a>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm" target="_blank"><span style="display:block; font-size:13px;">${questionnaire.firstEntry}</span></a>
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                    <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm" target="_blank"><span style="display:block; font-size:13px;">${questionnaire.title}</span></a>
                                                 </td>
                                                 <td>
+                                                    <span style="display:block; font-size:13px;">${questionnaire.validateStatus.description}</span>
                                                     <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${questionnaire.created}"/></span>
                                                 </td>
                                             </tr>

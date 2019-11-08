@@ -1,10 +1,12 @@
 package com.noqapp.domain.flow;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.domain.json.survey.SurveyQuestion;
 import com.noqapp.domain.types.QuestionTypeEnum;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -14,16 +16,36 @@ import java.util.Map;
  */
 public class Questionnaire implements Serializable {
 
+    private String questionnaireId;
+    private String title;
     private Locale locale;
     private String question;
     private QuestionTypeEnum questionType;
 
     /** Master record. */
-    private Map<Locale, Map<String, QuestionTypeEnum>> localeWithQuestions = new LinkedHashMap<>();
+    private Map<Locale, List<SurveyQuestion>> localeWithQuestions = new LinkedHashMap<>();
 
     /** Pre-filled. */
     private Map<String, String> questionTypes = QuestionTypeEnum.asMapWithNameAsKey();
     private Map<String, String> supportedLocales = CommonUtil.getLanguages();
+
+    public String getQuestionnaireId() {
+        return questionnaireId;
+    }
+
+    public Questionnaire setQuestionnaireId(String questionnaireId) {
+        this.questionnaireId = questionnaireId;
+        return this;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Questionnaire setTitle(String title) {
+        this.title = title;
+        return this;
+    }
 
     public Locale getLocale() {
         return locale;
@@ -52,16 +74,16 @@ public class Questionnaire implements Serializable {
         return this;
     }
 
-    public Map<Locale, Map<String, QuestionTypeEnum>> getLocaleWithQuestions() {
+    public Map<Locale, List<SurveyQuestion>> getLocaleWithQuestions() {
         return localeWithQuestions;
     }
 
-    public Questionnaire setLocaleWithQuestions(Map<Locale, Map<String, QuestionTypeEnum>> localeWithQuestions) {
+    public Questionnaire setLocaleWithQuestions(Map<Locale, List<SurveyQuestion>> localeWithQuestions) {
         this.localeWithQuestions = localeWithQuestions;
         return this;
     }
 
-    public Questionnaire addLocaleWithQuestions(Locale locale, Map<String, QuestionTypeEnum> questions) {
+    public Questionnaire addLocaleWithQuestions(Locale locale, List<SurveyQuestion> questions) {
         this.localeWithQuestions.put(locale, questions);
         return this;
     }

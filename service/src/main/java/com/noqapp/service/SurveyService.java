@@ -7,9 +7,10 @@ import com.noqapp.domain.QuestionnaireEntity;
 import com.noqapp.domain.SurveyEntity;
 import com.noqapp.domain.aggregate.SurveyGroupedValue;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.json.JsonQuestionnaire;
 import com.noqapp.domain.json.JsonSurvey;
 import com.noqapp.domain.json.chart.ChartLineData;
+import com.noqapp.domain.json.survey.JsonQuestionnaire;
+import com.noqapp.domain.json.survey.SurveyQuestion;
 import com.noqapp.domain.types.QuestionTypeEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.repository.BizStoreManager;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -68,11 +68,19 @@ public class SurveyService {
         this.executorService = newCachedThreadPool();
     }
 
-    public void saveSurveyQuestionnaire(String bizNameId, Map<Locale, Map<String, QuestionTypeEnum>> localeWithQuestions) {
-        QuestionnaireEntity questionnaire = new QuestionnaireEntity()
-            .setBizNameId(bizNameId)
-            .setQuestions(localeWithQuestions);
-        questionnaireManager.save(questionnaire);
+    public QuestionnaireEntity saveSurveyQuestionnaire(QuestionnaireEntity questionnaire) {
+        if (StringUtils.isBlank(questionnaire.getId())) {
+            questionnaireManager.save(questionnaire);
+            return questionnaire;
+        } else {
+            QuestionnaireEntity questionnaireUpdate = questionnaireManager.findById(questionnaire.getId());
+            questionnaireUpdate.setTitle(questionnaire.getTitle())
+                .setQuestions(questionnaire.getQuestions())
+                .setValidateStatus(questionnaire.getValidateStatus());
+
+            questionnaireManager.save(questionnaireUpdate);
+            return questionnaireUpdate;
+        }
     }
 
     public QuestionnaireEntity findByQuestionnaireId(String questionnaireId) {
@@ -136,19 +144,19 @@ public class SurveyService {
     protected void analyzeSurveyResponse(SurveyEntity survey) {
         QuestionnaireEntity questionnaire = findByQuestionnaireId(survey.getQuestionnaireId());
         Locale locale = questionnaire.getQuestions().keySet().iterator().next();
-        Map<String, QuestionTypeEnum> questions = questionnaire.getQuestions().get(locale);
+        List<SurveyQuestion> questions = questionnaire.getQuestions().get(locale);
 
         StringBuilder allText = new StringBuilder();
         int counter = -1;
-        for (String key : questions.keySet()) {
+        for (SurveyQuestion surveyQuestion : questions) {
             if (counter > -1) {
-                if (questions.get(key) == QuestionTypeEnum.T) {
+                if (surveyQuestion.getQuestionType() == QuestionTypeEnum.T) {
                     allText.append(survey.getDetailedResponse()[counter]);
                 }
             }
             counter++;
         }
-        LOG.debug("id={} keySet={} counter={} computeSentimentOn={}", questionnaire.getId(), questions.keySet(), counter, allText);
+        LOG.debug("id={} counter={} computeSentimentOn={}", questionnaire.getId(), counter, allText);
 
         if (StringUtils.isNotBlank(allText.toString())) {
             SentimentTypeEnum sentimentType = nlpService.computeSentiment(allText.toString());

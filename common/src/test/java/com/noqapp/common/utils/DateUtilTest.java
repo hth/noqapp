@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -36,5 +37,37 @@ class DateUtilTest {
         ZonedDateTime nyc = DateUtil.computeNextRunTimeAtUTC(TimeZone.getTimeZone("America/New_York"), 20, 0, TODAY);
         ZonedDateTime pst = DateUtil.computeNextRunTimeAtUTC(TimeZone.getTimeZone("PST"), 17, 0, TODAY);
         assertEquals(nyc, pst, "Both dates should be same");
+    }
+
+    @Test
+    void dayAtTimezone() {
+        String day = Formatter.toDefaultDateFormatAsString(DateUtil.dateAtTimeZone("Asia/Calcutta"));
+        assertEquals(day, day, "Both dates should be same");
+    }
+
+    @Test
+    void minusDays() {
+        assertEquals(
+            DateUtil.dateToISO_8601(DateUtil.minusDays_old(1)),
+            DateUtil.dateToISO_8601(DateUtil.minusDays(1)),
+            "Should be equal " + DateUtil.dateToISO_8601(DateUtil.minusDays(1)) + " with " + DateUtil.dateToISO_8601(DateUtil.minusDays(1)));
+
+        assertEquals(
+            DateUtil.dateToString(DateUtil.minusDays_old(1)),
+            DateUtil.dateToString(DateUtil.minusDays(new Date(), 1)),
+            "Should be equal " + DateUtil.dateToString(DateUtil.minusDays(1)) + " with " + DateUtil.dateToString(DateUtil.minusDays(new Date(), 1)));
+
+        assertEquals(
+            DateUtil.dateToString(DateUtil.minusDays(1)),
+            DateUtil.dateToString(DateUtil.minusDays(new Date(), 1)),
+            "Should be equal " + DateUtil.dateToString(DateUtil.minusDays(1)) + " with " + DateUtil.dateToString(DateUtil.minusDays(new Date(), 1)));
+    }
+
+    @Test
+    void plusDays() {
+        assertEquals(
+            DateUtil.dateToString(DateUtil.plusDays_old(1)),
+            DateUtil.dateToString(DateUtil.plusDays(1)),
+            "Should be equal " + DateUtil.dateToISO_8601(DateUtil.plusDays_old(1)) + " with " + DateUtil.dateToISO_8601(DateUtil.plusDays(1)));
     }
 }

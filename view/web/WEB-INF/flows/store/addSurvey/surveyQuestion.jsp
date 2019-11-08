@@ -142,14 +142,14 @@
                                             <th nowrap>Survey Questions</th>
                                             <th nowrap>Response Format</th>
                                         </tr>
-                                        <c:forEach items="${localeWithQuestions.value}" var="question" varStatus="status">
+                                        <c:forEach items="${localeWithQuestions.value}" var="localeWithQuestion" varStatus="status">
                                         <tr>
                                             <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
                                             <td nowrap>
-                                                <span style="display:block; font-size:13px;">${question.key}</span>
+                                                <span style="display:block; font-size:13px;">${localeWithQuestion.question}</span>
                                             </td>
                                             <td nowrap>
-                                                <span style="display:block; font-size:13px;"><b>${question.value.description}</b></span>
+                                                <span style="display:block; font-size:13px;"><b>${localeWithQuestion.questionType.description}</b></span>
                                             </td>
                                         </tr>
                                         </c:forEach>

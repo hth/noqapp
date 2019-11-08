@@ -73,8 +73,8 @@
                                         <c:forEach items="${localeWithQuestions.value}" var="question" varStatus="status">
                                         <tr>
                                             <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
-                                            <td nowrap><span style="display:block; font-size:13px;">${question.key}</span></td>
-                                            <td nowrap><span style="display:block; font-size:13px;"><b>${question.value.description}</b></span></td>
+                                            <td nowrap><span style="display:block; font-size:13px;">${question.question}</span></td>
+                                            <td nowrap><span style="display:block; font-size:13px;"><b>${question.questionType.description}</b></span></td>
                                         </tr>
                                         </c:forEach>
                                     </table>
