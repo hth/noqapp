@@ -228,18 +228,18 @@ public class UserAccountEntity extends BaseEntity {
     @Override
     public String toString() {
         return "UserAccountEntity{" +
-                "queueUserId='" + queueUserId + '\'' +
-                ", userId='" + userId + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", roles=" + roles +
-                ", accountValidated=" + accountValidated +
-                ", accountValidatedBeginDate=" + accountValidatedBeginDate +
-                ", phoneValidated=" + phoneValidated +
-                ", accountInactiveReason=" + accountInactiveReason +
-                ", userAuthentication=" + userAuthentication +
-                '}';
+            "queueUserId='" + queueUserId + '\'' +
+            ", userId='" + userId + '\'' +
+            ", displayName='" + displayName + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", roles=" + roles +
+            ", accountValidated=" + accountValidated +
+            ", accountValidatedBeginDate=" + accountValidatedBeginDate +
+            ", phoneValidated=" + phoneValidated +
+            ", accountInactiveReason=" + accountInactiveReason +
+            ", userAuthentication=" + userAuthentication +
+            '}';
     }
 }
 

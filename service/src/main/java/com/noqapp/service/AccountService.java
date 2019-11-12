@@ -194,7 +194,7 @@ public class AccountService {
                     userAccount.setUserId(mail);
                     userAccountManager.save(userAccount);
                 }
-                LOG.info("Created UserAccount={}", userAccount);
+                LOG.info("Created UserAccount={} dob={}", userAccount, birthday);
 
                 userProfile = UserProfileEntity.newInstance(
                     mail,
