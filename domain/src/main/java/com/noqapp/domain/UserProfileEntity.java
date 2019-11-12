@@ -374,4 +374,30 @@ public class UserProfileEntity extends BaseEntity {
 
         return "N/A";
     }
+
+    @Override
+    public String toString() {
+        return "UserProfileEntity{" +
+            "queueUserId='" + queueUserId + '\'' +
+            ", profileImage='" + profileImage + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", gender=" + gender +
+            ", locale=" + locale +
+            ", email='" + email + '\'' +
+            ", timeZone='" + timeZone + '\'' +
+            ", birthday='" + birthday + '\'' +
+            ", level=" + level +
+            ", address='" + address + '\'' +
+            ", countryShortName='" + countryShortName + '\'' +
+            ", phone='" + phone + '\'' +
+            ", phoneRaw='" + phoneRaw + '\'' +
+            ", guardianPhone='" + guardianPhone + '\'' +
+            ", qidOfDependents=" + qidOfDependents +
+            ", inviteCode='" + inviteCode + '\'' +
+            ", addressOrigin=" + addressOrigin +
+            ", businessType=" + businessType +
+            ", mailOTP='" + mailOTP + '\'' +
+            '}';
+    }
 }
