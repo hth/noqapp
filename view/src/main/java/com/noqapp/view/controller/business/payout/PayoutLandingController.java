@@ -48,6 +48,8 @@ import javax.servlet.http.HttpServletResponse;
 public class PayoutLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(PayoutLandingController.class);
 
+    private int durationInDays;
+
     private String nextPage;
     private String historicalTransactionPage;
     private String transactionOnDayPage;
@@ -59,6 +61,9 @@ public class PayoutLandingController {
 
     @Autowired
     public PayoutLandingController(
+        @Value("${durationInDays:365}")
+        int durationInDays,
+
         @Value("${nextPage:/business/payout/landing}")
         String nextPage,
 
@@ -75,6 +80,7 @@ public class PayoutLandingController {
         PayoutService payoutService,
         CouponService couponService
     ) {
+        this.durationInDays = durationInDays;
         this.nextPage = nextPage;
         this.historicalTransactionPage = historicalTransactionPage;
         this.transactionOnDayPage = transactionOnDayPage;
@@ -124,13 +130,13 @@ public class PayoutLandingController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         String bizNameId = businessUser.getBizName().getId();
-        historicalTransactionForm.setDurationInDays(365);
+        historicalTransactionForm.setDurationInDays(durationInDays);
 
-        List<PurchaseOrderEntity> purchaseOrderInternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.I, 45);
+        List<PurchaseOrderEntity> purchaseOrderInternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.I, durationInDays);
         historicalTransactionForm.populate(purchaseOrderInternal);
-        List<PurchaseOrderEntity> purchaseOrderExternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.E, 45);
+        List<PurchaseOrderEntity> purchaseOrderExternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.E, durationInDays);
         historicalTransactionForm.populate(purchaseOrderExternal);
-        List<PurchaseOrderEntity> purchaseOrderUnknown = payoutService.computeEarning(bizNameId, TransactionViaEnum.U, 45);
+        List<PurchaseOrderEntity> purchaseOrderUnknown = payoutService.computeEarning(bizNameId, TransactionViaEnum.U, durationInDays);
         historicalTransactionForm.populate(purchaseOrderUnknown);
         return historicalTransactionPage;
     }
