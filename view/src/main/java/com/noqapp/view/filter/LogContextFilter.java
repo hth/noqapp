@@ -1,5 +1,7 @@
 package com.noqapp.view.filter;
 
+import static net.logstash.logback.argument.StructuredArguments.kv;
+
 import com.noqapp.search.elastic.config.IPGeoConfiguration;
 
 import com.maxmind.geoip2.exception.AddressNotFoundException;
@@ -78,17 +80,16 @@ public class LogContextFilter implements Filter {
             LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
         }
 
-        LOG.info("Request received:"
-            + " Host=\"" + getHeader(headerMap, "host") + "\""
-            + " UserAgent=\"" + getHeader(headerMap, "user-agent") + "\""
-            + " Accept=\"" + getHeader(headerMap, "accept") + "\""
-            + " ForwardedFor=\"" + ip + "\""
-            + " Country=\"" + countryCode + "\""
-            + " City=\"" + city + "\""
-            + " Endpoint=\"" + extractDataFromURL(url, "$5") + "\""
-            + " Query=\"" + (query == null ? "none" : query) + "\""
-            + " URL=\"" + url + "\""
-        );
+        LOG.info("Request received {} {} {} {} {} {} {} {} {}",
+            kv("host", getHeader(headerMap, "host")),
+            kv("userAgent", getHeader(headerMap, "user-agent")),
+            kv("accept", getHeader(headerMap, "accept")),
+            kv("forwardedFor", ip),
+            kv("countryCode", countryCode),
+            kv("city", city),
+            kv("endPoint", extractDataFromURL(url, "$5")),
+            kv("query", (query == null ? "none" : query)),
+            kv("url", url));
 
         if (isHttpHead(httpServletRequest)) {
             HttpServletResponse httpServletResponse = (HttpServletResponse) res;
