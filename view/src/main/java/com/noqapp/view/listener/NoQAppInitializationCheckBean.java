@@ -148,7 +148,7 @@ public class NoQAppInitializationCheckBean {
             }
 
             MainResponse mainResponse = restHighLevelClient.info(RequestOptions.DEFAULT);
-            LOG.info("Elastic connected clusterName={} nodeName={}\n  build={}\n  clusterUuid={}\n luceneVersion={}\n",
+            LOG.info("Elastic connected clusterName={} nodeName={}\n  build={}\n  clusterUuid={}\n  luceneVersion={}\n",
                 mainResponse.getClusterName(),
                 mainResponse.getNodeName(),
                 mainResponse.getVersion().getNumber(),
@@ -170,13 +170,22 @@ public class NoQAppInitializationCheckBean {
 
         if (!elasticAdministrationService.doesIndexExists(BizStoreElastic.INDEX)) {
             LOG.info("Elastic Index={} not found. Building Indexes... please wait", BizStoreElastic.INDEX);
-            boolean createdMappingSuccessfully = elasticAdministrationService.addMapping(
-                BizStoreElastic.INDEX,
-                BizStoreElastic.TYPE);
 
-            if (createdMappingSuccessfully) {
-                LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
-                bizStoreElasticService.addAllBizStoreToElastic();
+            try {
+                MainResponse mainResponse = restHighLevelClient.info(RequestOptions.DEFAULT);
+                boolean createdMappingSuccessfully = elasticAdministrationService.addMapping(
+                    BizStoreElastic.INDEX,
+                    BizStoreElastic.TYPE,
+                    mainResponse.getVersion().getNumber()
+                    );
+
+                if (createdMappingSuccessfully) {
+                    LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
+                    bizStoreElasticService.addAllBizStoreToElastic();
+                }
+            } catch (IOException e) {
+                LOG.error("Elastic could not be connected");
+                throw new RuntimeException("Elastic could not be connected");
             }
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);

@@ -72,10 +72,10 @@ public class ElasticAdministrationService {
      * @param type  select a specific mapping file name
      * @return
      */
-    public boolean addMapping(String index, String type) {
+    public boolean addMapping(String index, String type, String buildNUmber) {
         Instant start = Instant.now();
         try {
-            String json = LoadMappingFiles.loadMapping(type);
+            String json = LoadMappingFiles.loadMapping(type, buildNUmber);
             if (StringUtils.isBlank(json)) {
                 LOG.error("Failed to load file mapping for Elastic type={}", type);
                 throw new RuntimeException("Failed to load file mapping for " + type);
