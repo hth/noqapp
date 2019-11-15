@@ -170,22 +170,13 @@ public class NoQAppInitializationCheckBean {
 
         if (!elasticAdministrationService.doesIndexExists(BizStoreElastic.INDEX)) {
             LOG.info("Elastic Index={} not found. Building Indexes... please wait", BizStoreElastic.INDEX);
+            boolean createdMappingSuccessfully = elasticAdministrationService.addMapping(
+                BizStoreElastic.INDEX,
+                BizStoreElastic.TYPE);
 
-            try {
-                MainResponse mainResponse = restHighLevelClient.info(RequestOptions.DEFAULT);
-                boolean createdMappingSuccessfully = elasticAdministrationService.addMapping(
-                    BizStoreElastic.INDEX,
-                    BizStoreElastic.TYPE,
-                    mainResponse.getVersion().getNumber()
-                    );
-
-                if (createdMappingSuccessfully) {
-                    LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
-                    bizStoreElasticService.addAllBizStoreToElastic();
-                }
-            } catch (IOException e) {
-                LOG.error("Elastic could not be connected");
-                throw new RuntimeException("Elastic could not be connected");
+            if (createdMappingSuccessfully) {
+                LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
+                bizStoreElasticService.addAllBizStoreToElastic();
             }
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);

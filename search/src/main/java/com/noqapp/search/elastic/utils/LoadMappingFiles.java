@@ -31,20 +31,9 @@ public class LoadMappingFiles {
      * @param loadFileOfType Name of Type who's mapping need to be loaded. Example, biz_store type mapping
      * @return
      */
-    public static String loadMapping(String loadFileOfType, String buildNumber) {
-        URL url = null;
+    public static String loadMapping(String loadFileOfType) {
         try {
-            String supportedVersion;
-            if ("6".equalsIgnoreCase(buildNumber.split("\\.")[0])) {
-                supportedVersion = "e6";
-            } else {
-                supportedVersion = "e7";
-            }
-            url = LoadMappingFiles.class.getClassLoader().getResource(
-                MAPPING_LOCATION + File.separator
-                    + supportedVersion + File.separator
-                    + loadFileOfType + ".mapping.json");
-
+            URL url = LoadMappingFiles.class.getClassLoader().getResource(MAPPING_LOCATION + loadFileOfType + ".mapping.json");
             Path path = Paths.get(url.toURI());
             StringBuilder data = new StringBuilder();
             Stream<String> lines = Files.lines(path);
@@ -53,9 +42,9 @@ public class LoadMappingFiles {
 
             return data.toString();
         } catch (URISyntaxException e) {
-            LOG.error("Failed creating URI url={} fileName={} reason={}", url.toString(), loadFileOfType, e.getLocalizedMessage(), e);
+            LOG.error("Failed creating URI fileName={} reason={}", loadFileOfType, e.getLocalizedMessage(), e);
         } catch (IOException e) {
-            LOG.error("Failed reading url={} fileName={} reason={}", url.toString(), loadFileOfType, e.getLocalizedMessage(), e);
+            LOG.error("Failed reading fileName={} reason={}", loadFileOfType, e.getLocalizedMessage(), e);
         }
 
         return null;
