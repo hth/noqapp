@@ -14,6 +14,6 @@ public class OkHttpClientConfiguration {
 
     @Bean
     OkHttpClient getOkHttpClient() {
-        return new OkHttpClient();
+        return new OkHttpClient.Builder().build();
     }
 }
