@@ -367,7 +367,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("QueueUserDetail businessUserId={} {}", businessUserId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), queueUserDetailFlow);
+        LOG.info("QueueUserDetail businessUserId={} {} {} {}", businessUserId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), queueUserDetailFlow);
         /* Above condition to make sure users with right roles and access gets access. */
 
         redirectAttributes.addFlashAttribute("businessUserId", businessUserId.getText());

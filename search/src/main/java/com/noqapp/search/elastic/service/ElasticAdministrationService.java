@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 
 /**
  * hitender
@@ -241,7 +242,7 @@ public class ElasticAdministrationService {
             return null;
         } finally {
             if (response != null) {
-                response.body().close();
+                Objects.requireNonNull(response.body()).close();
             }
 
             apiHealthService.insert(
@@ -271,7 +272,7 @@ public class ElasticAdministrationService {
             return false;
         } finally {
             if (response != null) {
-                response.body().close();
+                Objects.requireNonNull(response.body()).close();
             }
         }
     }
