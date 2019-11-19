@@ -6,6 +6,8 @@ import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -71,7 +73,7 @@ public class LogContextFilter implements Filter {
             InetAddress ipAddress = InetAddress.getByName(ip);
             CityResponse response = ipGeoConfiguration.getDatabaseReader().city(ipAddress);
             countryCode = response.getCountry().getIsoCode();
-            city = response.getCity().getName();
+            city = StringUtils.isEmpty(response.getCity().getName()) ? "" : response.getCity().getName();
         } catch (AddressNotFoundException e) {
             LOG.warn("Failed finding address={} reason={}", ip, e.getLocalizedMessage());
         } catch (GeoIp2Exception e) {
