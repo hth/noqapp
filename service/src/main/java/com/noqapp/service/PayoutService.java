@@ -2,10 +2,12 @@ package com.noqapp.service;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.TransactionViaEnum;
 import com.noqapp.repository.PayoutManager;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
+import com.noqapp.repository.UserProfileManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,16 +26,19 @@ public class PayoutService {
     private PayoutManager payoutManager;
     private PurchaseOrderManager purchaseOrderManager;
     private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
+    private UserProfileManager userProfileManager;
 
     @Autowired
     public PayoutService(
         PayoutManager payoutManager,
         PurchaseOrderManager purchaseOrderManager,
-        PurchaseOrderManagerJDBC purchaseOrderManagerJDBC
+        PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
+        UserProfileManager userProfileManager
     ) {
         this.payoutManager = payoutManager;
         this.purchaseOrderManager = purchaseOrderManager;
         this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
+        this.userProfileManager = userProfileManager;
     }
 
     public List<PurchaseOrderEntity> currentTransactions(String bizNameId) {
@@ -47,7 +52,15 @@ public class PayoutService {
     public List<PurchaseOrderEntity> findTransactionOnDay(String bizNameId, String day) {
         Assert.isTrue(DateUtil.DOB_PATTERN.matcher(day).matches(), "Day pattern does not match");
         LocalDate localDate = LocalDate.parse(day);
-        return purchaseOrderManagerJDBC.findTransactionBetweenDays(bizNameId, DateUtil.asDate(localDate), DateUtil.asDate(localDate.plusDays(1)));
+        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManagerJDBC.findTransactionBetweenDays(bizNameId, DateUtil.asDate(localDate), DateUtil.asDate(localDate.plusDays(1)));
+        for(PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(purchaseOrder.getQueueUserId());
+            purchaseOrder
+                .setCustomerPhone(userProfile.getPhoneRaw())
+                .setCustomerName(userProfile.getName());
+        }
+
+        return purchaseOrders;
     }
 
     public List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId) {
