@@ -9,6 +9,8 @@ import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.UserProfileManager;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -53,10 +55,10 @@ public class PayoutService {
         Assert.isTrue(DateUtil.DOB_PATTERN.matcher(day).matches(), "Day pattern does not match");
         LocalDate localDate = LocalDate.parse(day);
         List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManagerJDBC.findTransactionBetweenDays(bizNameId, DateUtil.asDate(localDate), DateUtil.asDate(localDate.plusDays(1)));
-        for(PurchaseOrderEntity purchaseOrder : purchaseOrders) {
+        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(purchaseOrder.getQueueUserId());
             purchaseOrder
-                .setCustomerPhone(userProfile.getPhoneRaw())
+                .setCustomerPhone(StringUtils.isNotBlank(userProfile.getGuardianPhone()) ? userProfile.getGuardianPhone() : userProfile.getPhone())
                 .setCustomerName(userProfile.getName());
         }
 
