@@ -20,6 +20,8 @@ import com.maxmind.geoip2.model.CityResponse;
 
 import net.pieroxy.ua.detection.UserAgentDetectionResult;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -161,13 +163,13 @@ public class LoginController {
             String operatingSystem = res.getOperatingSystem().getFamily().getLabel();
             String operatingSystemVersion = res.getOperatingSystem().getVersion();
 
-            String countryCode = null;
-            String city = null;
+            String countryCode = "";
+            String city = "";
             try {
                 InetAddress ipAddress = InetAddress.getByName(ip);
                 CityResponse response = databaseReader.city(ipAddress);
-                countryCode = response.getCountry().getIsoCode();
-                city = response.getCity().getName();
+                countryCode = StringUtils.isEmpty(response.getCountry().getIsoCode()) ? "" : response.getCountry().getIsoCode();
+                city = StringUtils.isEmpty(response.getCity().getName()) ? "" : response.getCity().getName();
             } catch (AddressNotFoundException e) {
                 LOG.warn("Failed finding address={} reason={}", ip, e.getLocalizedMessage());
             } catch (GeoIp2Exception e) {
