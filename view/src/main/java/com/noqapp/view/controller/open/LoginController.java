@@ -178,7 +178,7 @@ public class LoginController {
                 LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
             }
 
-            LOG.info("cookie={}, ip={}, countryCode={}, city={}, user-agent={}", cookieId, ip, countryCode, city, userAgent);
+            LOG.info("Web login cookie={}, ip={}, country={}, city={}, user-agent={}", cookieId, ip, countryCode, city, userAgent);
             loginService.saveUpdateBrowserInfo(cookieId, ip, countryCode, city, userAgent, browserName, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
         }
 
