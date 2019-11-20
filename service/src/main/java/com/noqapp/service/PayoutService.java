@@ -54,11 +54,17 @@ public class PayoutService {
     public List<PurchaseOrderEntity> findTransactionOnDay(String bizNameId, String day) {
         Assert.isTrue(DateUtil.DOB_PATTERN.matcher(day).matches(), "Day pattern does not match");
         LocalDate localDate = LocalDate.parse(day);
-        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManagerJDBC.findTransactionBetweenDays(bizNameId, DateUtil.asDate(localDate), DateUtil.asDate(localDate.plusDays(1)));
+        List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManagerJDBC.findTransactionBetweenDays(
+            bizNameId,
+            DateUtil.asDate(localDate),
+            DateUtil.asDate(localDate.plusDays(1)));
+
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(purchaseOrder.getQueueUserId());
             purchaseOrder
-                .setCustomerPhone(StringUtils.isNotBlank(userProfile.getGuardianPhone()) ? userProfile.getGuardianPhone() : userProfile.getPhone())
+                .setCustomerPhone(StringUtils.isNotBlank(userProfile.getGuardianPhone())
+                    ? userProfile.getGuardianPhone()
+                    : userProfile.getPhone())
                 .setCustomerName(userProfile.getName());
         }
 
