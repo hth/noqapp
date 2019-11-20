@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.StringJoiner;
+
 /**
  * hitender
  * 3/29/18 3:43 AM
@@ -218,18 +220,22 @@ public class PurchaseOrderProductEntity extends BaseEntity {
 
     @Override
     public String toString() {
-        return "PurchaseOrderProductEntity{" +
-            "productId='" + productId + '\'' +
-            ", productName='" + productName + '\'' +
-            ", productPrice=" + productPrice +
-            ", productDiscount=" + productDiscount +
-            ", productQuantity=" + productQuantity +
-            ", purchaseOrderId='" + purchaseOrderId + '\'' +
-            ", queueUserId='" + queueUserId + '\'' +
-            ", bizStoreId='" + bizStoreId + '\'' +
-            ", bizNameId='" + bizNameId + '\'' +
-            ", codeQR='" + codeQR + '\'' +
-            ", businessType=" + businessType +
-            '}';
+        return new StringJoiner(", ", PurchaseOrderProductEntity.class.getSimpleName() + "[", "]")
+            .add("productId=\"" + productId + "\"")
+            .add("productName=\"" + productName + "\"")
+            .add("productPrice=" + productPrice)
+            .add("productDiscount=" + productDiscount)
+            .add("productType=" + productType)
+            .add("unitValue=" + unitValue)
+            .add("unitOfMeasurement=" + unitOfMeasurement)
+            .add("packageSize=" + packageSize)
+            .add("productQuantity=" + productQuantity)
+            .add("purchaseOrderId=\"" + purchaseOrderId + "\"")
+            .add("queueUserId=\"" + queueUserId + "\"")
+            .add("bizStoreId=\"" + bizStoreId + "\"")
+            .add("bizNameId=\"" + bizNameId + "\"")
+            .add("codeQR=\"" + codeQR + "\"")
+            .add("businessType=" + businessType)
+            .toString();
     }
 }
