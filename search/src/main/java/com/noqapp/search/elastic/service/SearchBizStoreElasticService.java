@@ -111,7 +111,7 @@ public class SearchBizStoreElasticService {
      * are fetched when searched. Fetched fields are populated in mapped object.
      */
     private String executeSearchOnBizStoreUsingDSLFilteredData(String dslQuery) {
-        LOG.info("DSL Query={}", dslQuery);
+        LOG.info("DSL dslQuery={}", dslQuery);
         String result = elasticAdministrationService.executeDSLQuerySearch(
             BizStoreElastic.INDEX
                 + "/"
