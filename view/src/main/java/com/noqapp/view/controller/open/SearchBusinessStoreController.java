@@ -86,7 +86,7 @@ public class SearchBusinessStoreController {
             }
         }
 
-        LOG.info("ipAddress={} cityName={}", ipAddress, searchForm.getGeoIP().getCityName());
+        LOG.info("ip={} cityName={}", ipAddress, searchForm.getGeoIP().getCityName());
         return nextPage;
     }
 

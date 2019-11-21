@@ -215,7 +215,7 @@ public class BizStoreElasticService {
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
-                LOG.info("Search N={} GH={} searchSourceBuilder={}", query, geoHash, searchSourceBuilder);
+                LOG.info("Search query={} geoHash={} searchSourceBuilder={}", query, geoHash, searchSourceBuilder);
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());
