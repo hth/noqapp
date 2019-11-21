@@ -163,7 +163,7 @@ public class BizStoreElasticService {
      * Performs search on the index with provided DSL.
      */
     private String executeSearchOnBizStoreUsingDSL(String dslQuery) {
-        LOG.info("DSL Query={}", dslQuery);
+        LOG.info("DSL dslQuery={}", dslQuery);
         String result = elasticAdministrationService.executeDSLQuerySearch(
             BizStoreElastic.INDEX
                 + "/"

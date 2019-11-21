@@ -171,7 +171,7 @@ public class LoginController {
                 countryCode = StringUtils.isEmpty(response.getCountry().getIsoCode()) ? "" : response.getCountry().getIsoCode();
                 city = StringUtils.isEmpty(response.getCity().getName()) ? "" : response.getCity().getName();
             } catch (AddressNotFoundException e) {
-                LOG.warn("Failed finding address={} reason={}", ip, e.getLocalizedMessage());
+                LOG.warn("Failed finding ip={} reason={}", ip, e.getLocalizedMessage());
             } catch (GeoIp2Exception e) {
                 LOG.error("Failed geoIp reason={}", e.getLocalizedMessage(), e);
             } catch (UnknownHostException e) {
