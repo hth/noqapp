@@ -63,7 +63,7 @@ public class GeoIP {
     @Override
     public String toString() {
         return "GeoIP{" +
-                "ipAddress='" + ipAddress + '\'' +
+                "ip='" + ipAddress + '\'' +
                 ", cityName='" + cityName + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +

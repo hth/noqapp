@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
+import java.util.StringJoiner;
 
 /**
  * User: hitender
@@ -109,9 +110,12 @@ public final class QueueUser extends User {
 
     @Override
     public String toString() {
-        return "QueueUser{" +
-                "queueUserId='" + queueUserId + '\'' +
-                ", userLevel=" + userLevel +
-                '}';
+        return new StringJoiner(", ", QueueUser.class.getSimpleName() + "[", "]")
+            .add("queueUserId=\"" + queueUserId + "\"")
+            .add("userLevel=" + userLevel)
+            .add("accountValidated=" + accountValidated)
+            .add("countryShortName=\"" + countryShortName + "\"")
+            .add("userShortName=\"" + userShortName + "\"")
+            .toString();
     }
 }

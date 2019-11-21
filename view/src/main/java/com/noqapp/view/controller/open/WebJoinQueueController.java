@@ -163,7 +163,7 @@ public class WebJoinQueueController {
             String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
             LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
             int requesterTime = DateFormatter.getTimeIn24HourFormat(localTime);
-            LOG.info("Web requester originator time is {} ipAddress={} codeQRDecoded={} requestOriginatorTimeZone={}",
+            LOG.info("Web requester originator time is {} ip={} codeQRDecoded={} requestOriginatorTimeZone={}",
                 requesterTime,
                 ipAddress,
                 codeQRDecoded,

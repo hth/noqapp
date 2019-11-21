@@ -11,7 +11,6 @@ import com.noqapp.search.elastic.dsl.Query;
 import com.noqapp.search.elastic.dsl.QueryString;
 import com.noqapp.search.elastic.dsl.Search;
 import com.noqapp.search.elastic.json.ElasticResult;
-import com.noqapp.search.elastic.json.ElasticSource;
 import com.noqapp.search.elastic.json.SearchElasticBizStoreSource;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -64,7 +63,7 @@ public class SearchBizStoreElasticService {
                 ElasticResult elasticResult = objectMapper.readValue(result, new TypeReference<ElasticResult<SearchElasticBizStoreSource>>(){});
                 return elasticResult.getHits() == null ? new ArrayList<>() : elasticResult.getHits().getElasticSources();
             } catch (IOException e) {
-                LOG.error("Failed parsing elastic result searchParameter={} reason={}", searchParameter, e.getLocalizedMessage(), e);
+                LOG.error("Failed parsing elastic result query={} reason={}", searchParameter, e.getLocalizedMessage(), e);
                 return new ArrayList<>();
             }
         }
@@ -73,7 +72,7 @@ public class SearchBizStoreElasticService {
     }
 
     private String searchResultAsString(String searchParameter, String geoHash) {
-        LOG.info("User search parameter={}", searchParameter);
+        LOG.info("User search query={} geoHash={}", searchParameter, geoHash);
 
         Query q = new Query();
         if (StringUtils.isNotBlank(searchParameter)) {
