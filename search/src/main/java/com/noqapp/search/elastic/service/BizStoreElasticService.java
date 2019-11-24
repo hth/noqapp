@@ -245,7 +245,7 @@ public class BizStoreElasticService {
                 searchSourceBuilder.query(geoDistanceQuery("GH")
                     .geohash(geoHash)
                     .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
-                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
+                searchSourceBuilder.size(PaginationEnum.TEN.getLimit() * PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
@@ -345,7 +345,7 @@ public class BizStoreElasticService {
         if (null == businessType) {
             bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
         } else {
-            bizStoreElastics = executeFilterBySearchOnBizStoreUsingRestClient(businessType, geoHash, scrollId);
+            bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
         }
         Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
         int hits = 0;
