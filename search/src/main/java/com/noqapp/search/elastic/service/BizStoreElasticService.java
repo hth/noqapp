@@ -241,9 +241,15 @@ public class BizStoreElasticService {
                 SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
-                searchSourceBuilder.query(geoDistanceQuery("GH")
-                    .geohash(geoHash)
-                    .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+
+                /* Search All Query. */
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchAllQuery())
+                    .filter(geoDistanceQuery("GH")
+                        .geohash(geoHash)
+                        .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                searchSourceBuilder.query(boolQueryBuilder);
+
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
@@ -274,7 +280,7 @@ public class BizStoreElasticService {
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
 
-                /* Search Query. */
+                /* Search just DO Query. */
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
                     .must(QueryBuilders.matchQuery("BT", businessType.getName()))
                     .filter(geoDistanceQuery("GH")
