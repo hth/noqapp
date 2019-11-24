@@ -33,8 +33,7 @@ import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.common.unit.TimeValue;
-import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -276,11 +275,12 @@ public class BizStoreElasticService {
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
 
                 /* Search Query. */
-                MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery("BT", businessType);
-                GeoDistanceQueryBuilder geoDistanceQueryBuilder = geoDistanceQuery("GH")
-                    .geohash(geoHash)
-                    .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS);
-                searchSourceBuilder.query(matchQueryBuilder);
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchQuery("BT", businessType.getName()))
+                    .filter(geoDistanceQuery("GH")
+                        .geohash(geoHash)
+                        .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                searchSourceBuilder.query(boolQueryBuilder);
 
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
@@ -345,7 +345,13 @@ public class BizStoreElasticService {
         if (null == businessType) {
             bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
         } else {
-            bizStoreElastics = executeFilterBySearchOnBizStoreUsingRestClient(businessType, geoHash, scrollId);
+            switch (businessType) {
+                case DO:
+                    bizStoreElastics = executeFilterBySearchOnBizStoreUsingRestClient(businessType, geoHash, scrollId);
+                    break;
+                default:
+                    bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
+            }
         }
         Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
         int hits = 0;
