@@ -280,7 +280,7 @@ public class BizStoreElasticService {
                 GeoDistanceQueryBuilder geoDistanceQueryBuilder = geoDistanceQuery("GH")
                     .geohash(geoHash)
                     .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS);
-                searchSourceBuilder.query(QueryBuilders.boolQuery().must(matchQueryBuilder).filter(geoDistanceQueryBuilder));
+                searchSourceBuilder.query(QueryBuilders.boolQuery().must(matchQueryBuilder).must(geoDistanceQueryBuilder));
 
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
