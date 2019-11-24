@@ -38,10 +38,10 @@ import java.util.regex.Pattern;
  * Date: 11/18/16 6:08 PM
  */
 @SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 public final class DateUtil {
     private static final Logger LOG = LoggerFactory.getLogger(DateUtil.class);
