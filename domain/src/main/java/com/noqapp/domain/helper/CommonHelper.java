@@ -109,7 +109,7 @@ public class CommonHelper {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Failed getting category {} {}", bizStore.getId(), bizStore.getBusinessType());
+            LOG.error("Failed getting category bizStoreId={} businessType{}", bizStore.getId(), bizStore.getBusinessType());
         }
         return categoryName;
     }
@@ -134,10 +134,10 @@ public class CommonHelper {
                         bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
                     }
             }
-            LOG.info("bizStore Id={} name={} bannerImage={}", bizStore.getId(), bizStore.getDisplayName(), bannerImage);
+            LOG.info("bizStore Id={} name=\"{}\" bannerImage={}", bizStore.getId(), bizStore.getDisplayName(), bannerImage);
             return bannerImage;
         } catch (Exception e) {
-            LOG.error("Failed getting banner image for bizStore={} displayName={} reason={}",
+            LOG.error("Failed getting banner image for bizStoreId={} displayName=\"{}\" reason={}",
                 bizStore.getId(),
                 bizStore.getDisplayName(),
                 e.getLocalizedMessage(),
