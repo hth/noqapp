@@ -250,7 +250,7 @@ public class BizStoreElasticService {
                         .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder);
 
-                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
+                searchSourceBuilder.size(PaginationEnum.TEN.getLimit() * PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
@@ -288,7 +288,7 @@ public class BizStoreElasticService {
                         .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder);
 
-                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
+                searchSourceBuilder.size(PaginationEnum.TEN.getLimit() * PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
