@@ -72,7 +72,7 @@ public class SearchBizStoreElasticService {
     }
 
     private String searchResultAsString(String searchParameter, String geoHash) {
-        LOG.info("User search query={} geoHash={}", searchParameter, geoHash);
+        LOG.info("User search query=\"{}\" geoHash={}", searchParameter, geoHash);
 
         Query q = new Query();
         if (StringUtils.isNotBlank(searchParameter)) {
