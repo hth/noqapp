@@ -2,7 +2,9 @@ package com.noqapp.view.listener;
 
 import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
+import com.noqapp.search.elastic.service.BizStoreSpatialElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.SmsService;
@@ -21,9 +23,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import org.elasticsearch.client.core.MainResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.core.MainResponse;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -63,6 +65,7 @@ public class NoQAppInitializationCheckBean {
     private RestHighLevelClient restHighLevelClient;
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreElasticService bizStoreElasticService;
+    private BizStoreSpatialElasticService bizStoreSpatialElasticService;
     private DatabaseReader databaseReader;
     private FtpService ftpService;
     private PaymentGatewayService paymentGatewayService;
@@ -80,6 +83,7 @@ public class NoQAppInitializationCheckBean {
         RestHighLevelClient restHighLevelClient,
         ElasticAdministrationService elasticAdministrationService,
         BizStoreElasticService bizStoreElasticService,
+        BizStoreSpatialElasticService bizStoreSpatialElasticService,
         DatabaseReader databaseReader,
         FtpService ftpService,
         PaymentGatewayService paymentGatewayService,
@@ -93,6 +97,7 @@ public class NoQAppInitializationCheckBean {
         this.firebaseConfig = firebaseConfig;
         this.restHighLevelClient = restHighLevelClient;
         this.elasticAdministrationService = elasticAdministrationService;
+        this.bizStoreSpatialElasticService = bizStoreSpatialElasticService;
         this.bizStoreElasticService = bizStoreElasticService;
         this.databaseReader = databaseReader;
         this.ftpService = ftpService;
@@ -170,11 +175,15 @@ public class NoQAppInitializationCheckBean {
 
         if (!elasticAdministrationService.doesIndexExists(BizStoreElastic.INDEX)) {
             LOG.info("Elastic Index={} not found. Building Indexes... please wait", BizStoreElastic.INDEX);
-            boolean createdMappingSuccessfully = elasticAdministrationService.addMapping(
+            boolean createdBizStoreMappingSuccessfully = elasticAdministrationService.addMapping(
                 BizStoreElastic.INDEX,
                 BizStoreElastic.TYPE);
 
-            if (createdMappingSuccessfully) {
+            boolean createdSpatialMappingSuccessfully = elasticAdministrationService.addMapping(
+                BizStoreSpatialElastic.INDEX,
+                BizStoreSpatialElastic.TYPE);
+
+            if (createdBizStoreMappingSuccessfully && createdSpatialMappingSuccessfully) {
                 LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
                 bizStoreElasticService.addAllBizStoreToElastic();
             }

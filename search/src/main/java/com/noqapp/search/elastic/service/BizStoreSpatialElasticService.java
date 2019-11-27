@@ -1,0 +1,196 @@
+package com.noqapp.search.elastic.service;
+
+import static com.noqapp.search.elastic.service.BizStoreElasticService.excludeFields;
+import static com.noqapp.search.elastic.service.BizStoreElasticService.includeFields;
+import static com.noqapp.search.elastic.service.BizStoreElasticService.populateSearchData;
+import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
+
+import com.noqapp.common.utils.Constants;
+import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.PaginationEnum;
+import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
+import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.domain.BizStoreElasticList;
+import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
+import com.noqapp.search.elastic.repository.BizStoreSpatialElasticManager;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+
+import java.io.IOException;
+import java.util.Set;
+
+/**
+ * User: hitender
+ * Date: 11/27/19 7:02 AM
+ */
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
+})
+@Service
+public class BizStoreSpatialElasticService {
+    private static final Logger LOG = LoggerFactory.getLogger(BizStoreSpatialElasticService.class);
+    private static final long MINUTES = 10L;
+
+    private BizStoreSpatialElasticManager<BizStoreElastic> bizStoreSpatialElasticManager;
+    private ElasticsearchClientConfiguration elasticsearchClientConfiguration;
+
+    @Autowired
+    public BizStoreSpatialElasticService(
+        BizStoreSpatialElasticManager<BizStoreElastic> bizStoreSpatialElasticManager,
+        ElasticsearchClientConfiguration elasticsearchClientConfiguration
+    ) {
+        this.bizStoreSpatialElasticManager = bizStoreSpatialElasticManager;
+        this.elasticsearchClientConfiguration = elasticsearchClientConfiguration;
+    }
+
+    @Async
+    public void save(BizStoreElastic bizStoreElastic) {
+        bizStoreSpatialElasticManager.save(bizStoreElastic);
+    }
+
+    @Async
+    void save(Set<BizStoreElastic> bizStoreElastics) {
+        LOG.info("Bulk save size={}", bizStoreElastics.size());
+        if (!bizStoreElastics.isEmpty()) {
+            bizStoreSpatialElasticManager.save(bizStoreElastics);
+        }
+    }
+
+    @Async
+    public void delete(String id) {
+        LOG.info("Deleting store from elastic id={}", id);
+        bizStoreSpatialElasticManager.delete(id);
+    }
+
+    @Mobile
+    public BizStoreElasticList nearMeSearch(String geoHash, String scrollId) {
+        return searchByBusinessType(null, geoHash, scrollId);
+    }
+
+    @Mobile
+    public BizStoreElasticList searchByBusinessType(BusinessTypeEnum businessType, String geoHash, String scrollId) {
+        BizStoreElasticList bizStoreElastics;
+        if (null == businessType) {
+            bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
+        } else {
+            switch (businessType) {
+                case DO:
+                    bizStoreElastics = executeFilterBySearchOnBizStoreUsingRestClient(businessType, geoHash, scrollId);
+                    break;
+                default:
+                    bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
+            }
+        }
+//        Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
+//        int hits = 0;
+//        while (bizStoreElasticSet.size() < PaginationEnum.TEN.getLimit() && hits < 3) {
+//            LOG.debug("NearMe found size={} scrollId={}",
+//                bizStoreElasticSet.size(),
+//                bizStoreElastics.getScrollId().substring(bizStoreElastics.getScrollId().length() - 10));
+//            BizStoreElasticList bizStoreElasticsFetched = executeNearMeSearchOnBizStoreUsingRestClient(null, bizStoreElastics.getScrollId());
+//            bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
+//            bizStoreElasticSet.addAll(bizStoreElasticsFetched.getBizStoreElastics());
+//
+//            hits++;
+//        }
+//        bizStoreElastics.setBizStoreElastics(bizStoreElasticSet);
+        return bizStoreElastics;
+    }
+
+    @Mobile
+    public BizStoreElasticList executeNearMeSearchOnBizStoreUsingRestClient(String geoHash, String scrollId) {
+        BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
+        try {
+            SearchResponse searchResponse;
+            if (StringUtils.isNotBlank(scrollId)) {
+                SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+                scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+            } else {
+                SearchRequest searchRequest = new SearchRequest(BizStoreSpatialElastic.INDEX);
+                SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+                searchSourceBuilder.fetchSource(includeFields, excludeFields);
+
+                /* Search All Query. */
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchAllQuery())
+                    .filter(geoDistanceQuery("GH")
+                        .geohash(geoHash)
+                        .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                searchSourceBuilder.query(boolQueryBuilder);
+
+                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
+                searchRequest.source(searchSourceBuilder);
+                searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+            }
+
+            bizStoreElastics.setScrollId(searchResponse.getScrollId());
+            populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
+            return bizStoreElastics;
+        } catch (IOException e) {
+            LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
+            return bizStoreElastics;
+        }
+    }
+
+    @Mobile
+    public BizStoreElasticList executeFilterBySearchOnBizStoreUsingRestClient(BusinessTypeEnum businessType, String geoHash, String scrollId) {
+        BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
+        try {
+            SearchResponse searchResponse;
+            if (StringUtils.isNotBlank(scrollId)) {
+                SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+                scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+            } else {
+                SearchRequest searchRequest = new SearchRequest(BizStoreSpatialElastic.INDEX);
+                SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+                searchSourceBuilder.fetchSource(includeFields, excludeFields);
+
+                /* Search just DO Query. */
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                    .must(QueryBuilders.matchQuery("BT", businessType.getName()))
+                    .filter(geoDistanceQuery("GH")
+                        .geohash(geoHash)
+                        .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                searchSourceBuilder.query(boolQueryBuilder);
+
+                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
+                searchRequest.source(searchSourceBuilder);
+                searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+            }
+
+            bizStoreElastics.setScrollId(searchResponse.getScrollId());
+            populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
+            return bizStoreElastics;
+        } catch (IOException e) {
+            LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
+            return bizStoreElastics;
+        }
+    }
+}

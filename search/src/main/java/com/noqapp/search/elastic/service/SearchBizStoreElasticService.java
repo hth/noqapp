@@ -1,8 +1,17 @@
 package com.noqapp.search.elastic.service;
 
+import static com.noqapp.search.elastic.service.BizStoreElasticService.MINUTES;
+import static com.noqapp.search.elastic.service.BizStoreElasticService.includeFields;
+import static com.noqapp.search.elastic.service.BizStoreElasticService.excludeFields;
+import static com.noqapp.search.elastic.service.BizStoreElasticService.populateSearchData;
+import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
+
 import com.noqapp.common.utils.Constants;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.PaginationEnum;
+import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.domain.BizStoreElasticList;
 import com.noqapp.search.elastic.dsl.Conditions;
 import com.noqapp.search.elastic.dsl.Filter;
 import com.noqapp.search.elastic.dsl.GeoDistance;
@@ -25,6 +34,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,15 +64,20 @@ public class SearchBizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(SearchBizStoreElasticService.class);
 
     private ElasticAdministrationService elasticAdministrationService;
+    private ElasticsearchClientConfiguration elasticsearchClientConfiguration;
 
     private ObjectMapper objectMapper;
 
     @Autowired
-    public SearchBizStoreElasticService(ElasticAdministrationService elasticAdministrationService) {
+    public SearchBizStoreElasticService(
+        ElasticAdministrationService elasticAdministrationService,
+        ElasticsearchClientConfiguration elasticsearchClientConfiguration
+    ) {
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         this.elasticAdministrationService = elasticAdministrationService;
+        this.elasticsearchClientConfiguration = elasticsearchClientConfiguration;
     }
 
     /** Search executed through website or mobile. */
@@ -122,5 +147,56 @@ public class SearchBizStoreElasticService {
 
         LOG.debug("DSL Query result={}", result);
         return result;
+    }
+
+    @Mobile
+    public BizStoreElasticList executeNearMeSearchOnBizStoreUsingRestClient(
+        String query,
+        String cityName,
+        String geoHash,
+        String filters,
+        String scrollId
+    ) {
+        BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
+        try {
+            SearchResponse searchResponse;
+            if (StringUtils.isNotBlank(scrollId)) {
+                SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+                scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+            } else {
+                SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
+                SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+                searchSourceBuilder.fetchSource(includeFields, excludeFields);
+
+                /* Choose field match or matchAllQuery. */
+                searchSourceBuilder.query(QueryBuilders.multiMatchQuery(query, "N", "DN", "BC"));
+//                searchSourceBuilder.query(QueryBuilders
+//                        .matchPhrasePrefixQuery("N", query)
+//                        /* to limit the number of wildcard matches that can possibly match. */
+//                        .maxExpansions(1));
+
+                /* Term for exact query. */
+                //searchSourceBuilder.query(QueryBuilders.termQuery(query, "N"));
+
+                searchSourceBuilder.query(geoDistanceQuery("GH")
+                    .geohash(geoHash)
+                    .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                searchSourceBuilder.sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.DESC));
+                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
+                searchRequest.source(searchSourceBuilder);
+                searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+                LOG.info("Search query={} geoHash={} searchSourceBuilder={}", query, geoHash, searchSourceBuilder);
+            }
+
+            bizStoreElastics.setScrollId(searchResponse.getScrollId());
+            populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
+            return bizStoreElastics;
+        } catch (IOException e) {
+            LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
+            return bizStoreElastics;
+        }
     }
 }
