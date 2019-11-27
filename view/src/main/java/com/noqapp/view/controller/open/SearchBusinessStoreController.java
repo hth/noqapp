@@ -2,7 +2,7 @@ package com.noqapp.view.controller.open;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.search.elastic.service.GeoIPLocationService;
-import com.noqapp.search.elastic.service.SearchBizStoreElasticService;
+import com.noqapp.search.elastic.service.BizStoreSearchElasticService;
 import com.noqapp.view.form.SearchForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 import com.noqapp.view.validator.SearchValidator;
@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletRequest;
 public class SearchBusinessStoreController {
     private static final Logger LOG = LoggerFactory.getLogger(SearchBusinessStoreController.class);
 
-    private SearchBizStoreElasticService searchBizStoreElasticService;
+    private BizStoreSearchElasticService bizStoreSearchElasticService;
     private GeoIPLocationService geoIPLocationService;
     private SearchValidator searchValidator;
 
@@ -49,13 +49,13 @@ public class SearchBusinessStoreController {
         @Value("${nextPage:/search}")
         String nextPage,
 
-        SearchBizStoreElasticService searchBizStoreElasticService,
+        BizStoreSearchElasticService bizStoreSearchElasticService,
         GeoIPLocationService geoIPLocationService,
         SearchValidator searchValidator
     ) {
         this.nextPage = nextPage;
 
-        this.searchBizStoreElasticService = searchBizStoreElasticService;
+        this.bizStoreSearchElasticService = bizStoreSearchElasticService;
         this.geoIPLocationService = geoIPLocationService;
         this.searchValidator = searchValidator;
     }
@@ -80,7 +80,7 @@ public class SearchBusinessStoreController {
                 searchForm.setSearch(((SearchForm) model.asMap().get("search")).getSearch());
                 model.addAttribute(
                     "searchResult",
-                    searchBizStoreElasticService.createBizStoreSearchDSLQuery(
+                    bizStoreSearchElasticService.createBizStoreSearchDSLQuery(
                         searchForm.getSearch().getText(),
                         searchForm.getGeoIP().getGeoHash()));
             }

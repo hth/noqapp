@@ -2,7 +2,7 @@ package com.noqapp.search.elastic.domain;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.json.JsonCategory;
-import com.noqapp.search.elastic.json.SearchElasticBizStoreSource;
+import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -17,11 +17,12 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
- * hitender
- * 2019-01-24 18:14
+ * User: hitender
+ * Date: 11/27/19 7:06 AM
  */
 @SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
@@ -38,8 +39,8 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SearchBizStoreElasticList extends AbstractDomain {
-    private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticList.class);
+public class BizStoreSpatialElasticList extends AbstractDomain {
+    private static final Logger LOG = LoggerFactory.getLogger(BizStoreSpatialElasticList.class);
 
     @Transient
     @JsonProperty("si")
@@ -51,15 +52,15 @@ public class SearchBizStoreElasticList extends AbstractDomain {
     @JsonProperty("categories")
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
-    /** Do not make it a Set. Intentionally using List here */
+    /** Do not make it a Set. Intentionally using List here. When Set, level up stops working and shows just one store. */
     @JsonProperty("result")
-    private Collection<SearchBizStoreElastic> searchBizStoreElastics = new ArrayList<>();
+    private Collection<BizStoreElastic> bizStoreElastics = new ArrayList<>();
 
     public String getScrollId() {
         return scrollId;
     }
 
-    public SearchBizStoreElasticList setScrollId(String scrollId) {
+    public BizStoreSpatialElasticList setScrollId(String scrollId) {
         this.scrollId = scrollId;
         return this;
     }
@@ -68,7 +69,7 @@ public class SearchBizStoreElasticList extends AbstractDomain {
         return cityName;
     }
 
-    public SearchBizStoreElasticList setCityName(String cityName) {
+    public BizStoreSpatialElasticList setCityName(String cityName) {
         this.cityName = cityName;
         return this;
     }
@@ -77,50 +78,54 @@ public class SearchBizStoreElasticList extends AbstractDomain {
         return jsonCategories;
     }
 
-    public SearchBizStoreElasticList setJsonCategories(List<JsonCategory> jsonCategories) {
+    public BizStoreSpatialElasticList setJsonCategories(List<JsonCategory> jsonCategories) {
         this.jsonCategories = jsonCategories;
         return this;
     }
 
-    public SearchBizStoreElasticList addJsonCategory(JsonCategory jsonCategory) {
+    public BizStoreSpatialElasticList addJsonCategory(JsonCategory jsonCategory) {
         this.jsonCategories.add(jsonCategory);
         return this;
     }
 
-    public Collection<SearchBizStoreElastic> getSearchBizStoreElastics() {
-        return searchBizStoreElastics;
+    public Collection<BizStoreElastic> getBizStoreElastics() {
+        return bizStoreElastics;
     }
 
-    public SearchBizStoreElasticList setSearchBizStoreElastics(Collection<SearchBizStoreElastic> searchBizStoreElastics) {
-        this.searchBizStoreElastics = searchBizStoreElastics;
+    public BizStoreSpatialElasticList setBizStoreElastics(Collection<BizStoreElastic> bizStoreElastics) {
+        this.bizStoreElastics = bizStoreElastics;
         return this;
     }
 
-    public SearchBizStoreElasticList addSearchBizStoreElastic(SearchBizStoreElastic searchBizStoreElastic) {
-        this.searchBizStoreElastics.add(searchBizStoreElastic);
+    public BizStoreSpatialElasticList addBizStoreElastic(BizStoreElastic bizStoreElastic) {
+        this.bizStoreElastics.add(bizStoreElastic);
         return this;
     }
 
     @Transient
-    public SearchBizStoreElasticList populateSearchBizStoreElasticArray(List<SearchElasticBizStoreSource> searchElasticBizStoreSources) {
-        LOG.info("Before count={}", searchElasticBizStoreSources.size());
+    public BizStoreSpatialElasticList populateBizStoreElasticSet(List<ElasticBizStoreSource> elasticBizStoreSources) {
+        LOG.info("Before count={}", elasticBizStoreSources.size());
 
-        for (SearchElasticBizStoreSource searchElasticBizStoreSource : searchElasticBizStoreSources) {
-            SearchBizStoreElastic elastic = searchElasticBizStoreSource.getSearchBizStoreElastic();
-            LOG.debug("{}, {}, hashCode={} {}", elastic.getDisplayName(), elastic.getBusinessName(), elastic.hashCode(), elastic);
-            searchBizStoreElastics.add(elastic);
+        if (!elasticBizStoreSources.isEmpty()) {
+            bizStoreElastics = new HashSet<>();
         }
-        LOG.info("After count={}", searchBizStoreElastics.size());
+
+        for (ElasticBizStoreSource elasticBizStoreSource : elasticBizStoreSources) {
+            BizStoreElastic elastic = elasticBizStoreSource.getBizStoreElastic();
+            LOG.debug("{}, {}, hashCode={} {}", elastic.getDisplayName(), elastic.getBusinessName(), elastic.hashCode(), elastic);
+            bizStoreElastics.add(elastic);
+        }
+        LOG.info("After count={}", bizStoreElastics.size());
         return this;
     }
 
     @Override
     public String toString() {
-        return "SearchBizStoreElasticList{" +
+        return "BizStoreSpatialElasticList{" +
             "scrollId='" + scrollId + '\'' +
             ", cityName='" + cityName + '\'' +
             ", jsonCategories=" + jsonCategories +
-            ", searchBizStoreElastics=" + searchBizStoreElastics +
+            ", bizStoreElastics=" + bizStoreElastics +
             '}';
     }
 }

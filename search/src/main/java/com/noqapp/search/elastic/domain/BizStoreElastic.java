@@ -69,7 +69,7 @@ public class BizStoreElastic extends AbstractDomain {
     private String businessName;
 
     @JsonProperty("BT")
-    private BusinessTypeEnum businessType;
+    BusinessTypeEnum businessType;
 
     @JsonProperty("BC")
     private String bizCategoryName;
@@ -79,10 +79,10 @@ public class BizStoreElastic extends AbstractDomain {
     private String bizCategoryDisplayImage;
 
     @JsonProperty("BCI")
-    private String bizCategoryId;
+    String bizCategoryId;
 
     @JsonProperty("AD")
-    private String address;
+    String address;
 
     @JsonProperty("AR")
     private String area;
@@ -121,7 +121,7 @@ public class BizStoreElastic extends AbstractDomain {
     private GeoPointOfQ geoPointOfQ;
 
     @JsonProperty("PI")
-    private String placeId;
+    String placeId;
 
     @JsonProperty("PT")
     private String[] placeType;
@@ -133,7 +133,7 @@ public class BizStoreElastic extends AbstractDomain {
     private int ratingCount;
 
     @JsonProperty("BID")
-    private String bizNameId;
+    String bizNameId;
 
     @JsonProperty("DN")
     private String displayName;

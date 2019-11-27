@@ -1,14 +1,10 @@
 package com.noqapp.search.elastic.repository;
 
-import static org.elasticsearch.action.DocWriteRequest.OpType;
-import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static com.noqapp.search.elastic.repository.BizStoreElasticManagerImpl.replaceCategoryIdWithCategoryName;
 
-import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -20,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.elasticsearch.ElasticsearchException;
+import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -28,31 +25,21 @@ import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.ClearScrollRequest;
-import org.elasticsearch.action.search.ClearScrollResponse;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.action.support.replication.ReplicationResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
  * User: hitender
- * Date: 11/193/16 1:49 AM
+ * Date: 11/27/19 9:18 AM
  */
 @SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
@@ -61,19 +48,20 @@ import java.util.concurrent.TimeUnit;
     "PMD.LongVariable"
 })
 @Repository
-public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizStoreElastic> {
+public class BizStoreSpatialElasticManagerImpl implements BizStoreSpatialElasticManager<BizStoreElastic> {
+
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticManagerImpl.class);
 
     private RestHighLevelClient restHighLevelClient;
 
     //Set cache parameters
-    private static final Cache<BusinessTypeEnum, Map<String, String>> categoryCache = CacheBuilder.newBuilder()
+    private final Cache<BusinessTypeEnum, Map<String, String>> categoryCache = CacheBuilder.newBuilder()
         .maximumSize(1000)
         .expireAfterWrite(2, TimeUnit.MINUTES)
         .build();
 
     @Autowired
-    public BizStoreElasticManagerImpl(RestHighLevelClient restHighLevelClient) {
+    public BizStoreSpatialElasticManagerImpl(RestHighLevelClient restHighLevelClient) {
         this.restHighLevelClient = restHighLevelClient;
     }
 
@@ -81,7 +69,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     public void save(BizStoreElastic bizStoreElastic) {
         try {
             replaceCategoryIdWithCategoryName(bizStoreElastic);
-            IndexRequest request = new IndexRequest(BizStoreElastic.INDEX)
+            IndexRequest request = new IndexRequest(BizStoreSpatialElastic.INDEX)
                 .id(bizStoreElastic.getId())
                 .source(bizStoreElastic.asJson(), XContentType.JSON);
 
@@ -114,7 +102,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
     @Override
     public void delete(String id) {
-        DeleteRequest request = new DeleteRequest(BizStoreElastic.INDEX).id(id);
+        DeleteRequest request = new DeleteRequest(BizStoreSpatialElastic.INDEX).id(id);
 
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
@@ -145,14 +133,14 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     }
 
     @Override
-    public void save(List<BizStoreElastic> bizStoreElastics) {
+    public void save(Set<BizStoreElastic> bizStoreElastics) {
         BulkRequest request = new BulkRequest();
         request.setRefreshPolicy(WriteRequest.RefreshPolicy.WAIT_UNTIL);
 
         for (BizStoreElastic bizStoreElastic : bizStoreElastics) {
             replaceCategoryIdWithCategoryName(bizStoreElastic);
             request.add(
-                new IndexRequest(BizStoreElastic.INDEX)
+                new IndexRequest(BizStoreSpatialElastic.INDEX)
                     .id(bizStoreElastic.getId())
                     .source(bizStoreElastic.asJson(), XContentType.JSON));
         }
@@ -170,11 +158,11 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
             } else {
                 long created = 0, updated = 0, deleted = 0;
                 for (BulkItemResponse bulkItemResponse : bulkResponse) {
-                    if (bulkItemResponse.getOpType() == OpType.INDEX || bulkItemResponse.getOpType() == OpType.CREATE) {
+                    if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.INDEX || bulkItemResponse.getOpType() == DocWriteRequest.OpType.CREATE) {
                         created++;
-                    } else if (bulkItemResponse.getOpType() == OpType.UPDATE) {
+                    } else if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.UPDATE) {
                         updated++;
-                    } else if (bulkItemResponse.getOpType() == OpType.DELETE) {
+                    } else if (bulkItemResponse.getOpType() == DocWriteRequest.OpType.DELETE) {
                         deleted++;
                     }
                 }
@@ -183,94 +171,5 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         } catch (IOException e) {
             LOG.error("Failed bulk save reason={}", e.getLocalizedMessage(), e);
         }
-    }
-
-    static void replaceCategoryIdWithCategoryName(BizStoreElastic bizStoreElastic) {
-        Map<String, String> categories = categoryCache.getIfPresent(bizStoreElastic.getBusinessType());
-        if (null == categories) {
-            Map<String, String> bizCategories = CommonHelper.getCategories(bizStoreElastic.getBusinessType(), InvocationByEnum.STORE);
-            if (null != bizCategories) {
-                categoryCache.put(bizStoreElastic.getBusinessType(), bizCategories);
-                categories = bizCategories;
-            }
-        }
-
-        if (null != categories) {
-            String categoryDescription = categories.getOrDefault(bizStoreElastic.getBizCategoryId(), null);
-            if (null != categoryDescription) {
-                bizStoreElastic.setBizCategoryName(categoryDescription);
-                bizStoreElastic.setBizCategoryDisplayImage("");
-            } else {
-                bizStoreElastic.setBizCategoryName("");
-                bizStoreElastic.setBizCategoryDisplayImage("");
-            }
-        }
-    }
-
-    @Override
-    public List<BizStoreElastic> searchByBusinessName(String businessName, int limitRecords) {
-        List<BizStoreElastic> results = new ArrayList<>();
-
-        /* Size limits to fetching X data. Defaults to 10. */
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
-            .query(matchQuery("N", "+" + businessName))
-            .size(limitRecords);
-
-        SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX)
-            .source(searchSourceBuilder)
-            .scroll(TimeValue.timeValueSeconds(10L));
-        try {
-            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
-            String scrollId = searchResponse.getScrollId();
-            SearchHits hits = searchResponse.getHits();
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            for (SearchHit searchHit : hits) {
-                BizStoreElastic value = objectMapper.readValue(searchHit.getSourceAsString(), BizStoreElastic.class);
-                value.setId(searchHit.getId());
-//                value.setScrollId(scrollId);
-                results.add(value);
-            }
-        } catch (IOException e) {
-            LOG.error("Failed searching for {} reason={}", businessName, e.getLocalizedMessage(), e);
-        }
-
-        return results;
-    }
-
-    @Override
-    public List<BizStoreElastic> searchByScrollId(String scrollId) {
-        List<BizStoreElastic> results = new ArrayList<>();
-
-        SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
-        scrollRequest.scroll(TimeValue.timeValueSeconds(10L));
-
-        try {
-            SearchResponse searchResponse = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
-            scrollId = searchResponse.getScrollId();
-            SearchHits hits = searchResponse.getHits();
-
-            if (0 == hits.getHits().length) {
-                ClearScrollRequest clearScrollRequest = new ClearScrollRequest();
-                clearScrollRequest.addScrollId(scrollId);
-                ClearScrollResponse clearScrollResponse = restHighLevelClient.clearScroll(clearScrollRequest, RequestOptions.DEFAULT);
-                boolean succeeded = clearScrollResponse.isSucceeded();
-                int released = clearScrollResponse.getNumFreed();
-                LOG.info("Removed scrollId status={} released={}", succeeded, released);
-                return results;
-            }
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            for (SearchHit searchHit : hits) {
-                BizStoreElastic value = objectMapper.readValue(searchHit.getSourceAsString(), BizStoreElastic.class);
-                value.setId(searchHit.getId());
-                //value.setScrollId(scrollId);
-                results.add(value);
-            }
-        } catch (IOException e) {
-            LOG.error("Failed searching for {} reason={}", scrollId, e.getLocalizedMessage(), e);
-        }
-
-        return results;
     }
 }
