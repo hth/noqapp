@@ -81,7 +81,8 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     public void save(BizStoreElastic bizStoreElastic) {
         try {
             replaceCategoryIdWithCategoryName(bizStoreElastic);
-            IndexRequest request = new IndexRequest(BizStoreElastic.INDEX).id(bizStoreElastic.getId())
+            IndexRequest request = new IndexRequest(BizStoreElastic.INDEX)
+                .id(bizStoreElastic.getId())
                 .source(bizStoreElastic.asJson(), XContentType.JSON);
 
             IndexResponse indexResponse = restHighLevelClient.index(request, RequestOptions.DEFAULT);
@@ -151,7 +152,8 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         for (BizStoreElastic bizStoreElastic : bizStoreElastics) {
             replaceCategoryIdWithCategoryName(bizStoreElastic);
             request.add(
-                new IndexRequest(BizStoreElastic.INDEX).id(bizStoreElastic.getId())
+                new IndexRequest(BizStoreElastic.INDEX)
+                    .id(bizStoreElastic.getId())
                     .source(bizStoreElastic.asJson(), XContentType.JSON));
         }
 
