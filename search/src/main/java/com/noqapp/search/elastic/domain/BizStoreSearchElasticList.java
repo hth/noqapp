@@ -2,7 +2,7 @@ package com.noqapp.search.elastic.domain;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.json.JsonCategory;
-import com.noqapp.search.elastic.json.SearchElasticBizStoreSource;
+import com.noqapp.search.elastic.json.ElasticBizStoreSearchSource;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -38,7 +38,7 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SearchBizStoreElasticList extends AbstractDomain {
+public class BizStoreSearchElasticList extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticList.class);
 
     @Transient
@@ -53,13 +53,13 @@ public class SearchBizStoreElasticList extends AbstractDomain {
 
     /** Do not make it a Set. Intentionally using List here */
     @JsonProperty("result")
-    private Collection<SearchBizStoreElastic> searchBizStoreElastics = new ArrayList<>();
+    private Collection<BizStoreSearchElastic> bizStoreSearchElastics = new ArrayList<>();
 
     public String getScrollId() {
         return scrollId;
     }
 
-    public SearchBizStoreElasticList setScrollId(String scrollId) {
+    public BizStoreSearchElasticList setScrollId(String scrollId) {
         this.scrollId = scrollId;
         return this;
     }
@@ -68,7 +68,7 @@ public class SearchBizStoreElasticList extends AbstractDomain {
         return cityName;
     }
 
-    public SearchBizStoreElasticList setCityName(String cityName) {
+    public BizStoreSearchElasticList setCityName(String cityName) {
         this.cityName = cityName;
         return this;
     }
@@ -77,40 +77,40 @@ public class SearchBizStoreElasticList extends AbstractDomain {
         return jsonCategories;
     }
 
-    public SearchBizStoreElasticList setJsonCategories(List<JsonCategory> jsonCategories) {
+    public BizStoreSearchElasticList setJsonCategories(List<JsonCategory> jsonCategories) {
         this.jsonCategories = jsonCategories;
         return this;
     }
 
-    public SearchBizStoreElasticList addJsonCategory(JsonCategory jsonCategory) {
+    public BizStoreSearchElasticList addJsonCategory(JsonCategory jsonCategory) {
         this.jsonCategories.add(jsonCategory);
         return this;
     }
 
-    public Collection<SearchBizStoreElastic> getSearchBizStoreElastics() {
-        return searchBizStoreElastics;
+    public Collection<BizStoreSearchElastic> getBizStoreSearchElastics() {
+        return bizStoreSearchElastics;
     }
 
-    public SearchBizStoreElasticList setSearchBizStoreElastics(Collection<SearchBizStoreElastic> searchBizStoreElastics) {
-        this.searchBizStoreElastics = searchBizStoreElastics;
+    public BizStoreSearchElasticList setBizStoreSearchElastics(Collection<BizStoreSearchElastic> bizStoreSearchElastics) {
+        this.bizStoreSearchElastics = bizStoreSearchElastics;
         return this;
     }
 
-    public SearchBizStoreElasticList addSearchBizStoreElastic(SearchBizStoreElastic searchBizStoreElastic) {
-        this.searchBizStoreElastics.add(searchBizStoreElastic);
+    public BizStoreSearchElasticList addSearchBizStoreElastic(BizStoreSearchElastic bizStoreSearchElastic) {
+        this.bizStoreSearchElastics.add(bizStoreSearchElastic);
         return this;
     }
 
     @Transient
-    public SearchBizStoreElasticList populateSearchBizStoreElasticArray(List<SearchElasticBizStoreSource> searchElasticBizStoreSources) {
-        LOG.info("Before count={}", searchElasticBizStoreSources.size());
+    public BizStoreSearchElasticList populateSearchBizStoreElasticArray(List<ElasticBizStoreSearchSource> elasticBizStoreSearchSources) {
+        LOG.info("Before count={}", elasticBizStoreSearchSources.size());
 
-        for (SearchElasticBizStoreSource searchElasticBizStoreSource : searchElasticBizStoreSources) {
-            SearchBizStoreElastic elastic = searchElasticBizStoreSource.getSearchBizStoreElastic();
+        for (ElasticBizStoreSearchSource elasticBizStoreSearchSource : elasticBizStoreSearchSources) {
+            BizStoreSearchElastic elastic = elasticBizStoreSearchSource.getBizStoreSearchElastic();
             LOG.debug("{}, {}, hashCode={} {}", elastic.getDisplayName(), elastic.getBusinessName(), elastic.hashCode(), elastic);
-            searchBizStoreElastics.add(elastic);
+            bizStoreSearchElastics.add(elastic);
         }
-        LOG.info("After count={}", searchBizStoreElastics.size());
+        LOG.info("After count={}", bizStoreSearchElastics.size());
         return this;
     }
 
@@ -120,7 +120,7 @@ public class SearchBizStoreElasticList extends AbstractDomain {
             "scrollId='" + scrollId + '\'' +
             ", cityName='" + cityName + '\'' +
             ", jsonCategories=" + jsonCategories +
-            ", searchBizStoreElastics=" + searchBizStoreElastics +
+            ", searchBizStoreElastics=" + bizStoreSearchElastics +
             '}';
     }
 }

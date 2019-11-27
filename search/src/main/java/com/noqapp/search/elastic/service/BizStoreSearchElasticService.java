@@ -19,8 +19,8 @@ import com.noqapp.search.elastic.dsl.Options;
 import com.noqapp.search.elastic.dsl.Query;
 import com.noqapp.search.elastic.dsl.QueryString;
 import com.noqapp.search.elastic.dsl.Search;
+import com.noqapp.search.elastic.json.ElasticBizStoreSearchSource;
 import com.noqapp.search.elastic.json.ElasticResult;
-import com.noqapp.search.elastic.json.SearchElasticBizStoreSource;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -60,8 +60,8 @@ import java.util.List;
     "PMD.LongVariable"
 })
 @Service
-public class SearchBizStoreElasticService {
-    private static final Logger LOG = LoggerFactory.getLogger(SearchBizStoreElasticService.class);
+public class BizStoreSearchElasticService {
+    private static final Logger LOG = LoggerFactory.getLogger(BizStoreSearchElasticService.class);
 
     private ElasticAdministrationService elasticAdministrationService;
     private ElasticsearchClientConfiguration elasticsearchClientConfiguration;
@@ -69,7 +69,7 @@ public class SearchBizStoreElasticService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    public SearchBizStoreElasticService(
+    public BizStoreSearchElasticService(
         ElasticAdministrationService elasticAdministrationService,
         ElasticsearchClientConfiguration elasticsearchClientConfiguration
     ) {
@@ -81,11 +81,11 @@ public class SearchBizStoreElasticService {
     }
 
     /** Search executed through website or mobile. */
-    public List<SearchElasticBizStoreSource> createBizStoreSearchDSLQuery(String searchParameter, String geoHash) {
+    public List<ElasticBizStoreSearchSource> createBizStoreSearchDSLQuery(String searchParameter, String geoHash) {
         String result = searchResultAsString(searchParameter, geoHash);
         if (StringUtils.isNotBlank(result)) {
             try {
-                ElasticResult elasticResult = objectMapper.readValue(result, new TypeReference<ElasticResult<SearchElasticBizStoreSource>>(){});
+                ElasticResult elasticResult = objectMapper.readValue(result, new TypeReference<ElasticResult<ElasticBizStoreSearchSource>>(){});
                 return elasticResult.getHits() == null ? new ArrayList<>() : elasticResult.getHits().getElasticSources();
             } catch (IOException e) {
                 LOG.error("Failed parsing elastic result query={} reason={}", searchParameter, e.getLocalizedMessage(), e);

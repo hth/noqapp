@@ -1,6 +1,6 @@
 package com.noqapp.search.elastic.json;
 
-import com.noqapp.search.elastic.domain.SearchBizStoreElastic;
+import com.noqapp.search.elastic.domain.BizStoreSearchElastic;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -25,17 +25,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SearchElasticBizStoreSource implements ElasticSource {
+public class ElasticBizStoreSearchSource implements ElasticSource {
 
     @JsonProperty("_source")
-    private SearchBizStoreElastic searchBizStoreElastic;
+    private BizStoreSearchElastic bizStoreSearchElastic;
 
-    public SearchBizStoreElastic getSearchBizStoreElastic() {
-        return searchBizStoreElastic;
+    public BizStoreSearchElastic getBizStoreSearchElastic() {
+        return bizStoreSearchElastic;
     }
 
-    public SearchElasticBizStoreSource setSearchBizStoreElastic(SearchBizStoreElastic searchBizStoreElastic) {
-        this.searchBizStoreElastic = searchBizStoreElastic;
+    public ElasticBizStoreSearchSource setBizStoreSearchElastic(BizStoreSearchElastic bizStoreSearchElastic) {
+        this.bizStoreSearchElastic = bizStoreSearchElastic;
         return this;
     }
 }

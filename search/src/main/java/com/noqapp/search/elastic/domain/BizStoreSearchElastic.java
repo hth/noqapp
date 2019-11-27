@@ -12,7 +12,7 @@ import java.util.Objects;
 
 /**
  * Search to uniquely identify each document and be made available during search.
- * 
+ *
  * hitender
  * 2019-01-24 18:14
  */
@@ -31,14 +31,14 @@ import java.util.Objects;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SearchBizStoreElastic extends BizStoreElastic {
-    private static final Logger LOG = LoggerFactory.getLogger(SearchBizStoreElastic.class);
+public class BizStoreSearchElastic extends BizStoreElastic {
+    private static final Logger LOG = LoggerFactory.getLogger(BizStoreSearchElastic.class);
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SearchBizStoreElastic that = (SearchBizStoreElastic) o;
+        BizStoreSearchElastic that = (BizStoreSearchElastic) o;
 
         switch (businessType) {
             case DO:
