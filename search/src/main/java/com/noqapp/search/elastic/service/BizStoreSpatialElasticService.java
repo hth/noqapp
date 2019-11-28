@@ -84,42 +84,29 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList nearMeSearch(String geoHash, String scrollId) {
-        return searchByBusinessType(null, geoHash, scrollId);
+    public BizStoreElasticList nearMeSearch(BusinessTypeEnum filterMustNotBusinessType, String geoHash, String scrollId) {
+        return searchByBusinessType(null, filterMustNotBusinessType, geoHash, scrollId);
     }
 
     @Mobile
-    public BizStoreElasticList searchByBusinessType(BusinessTypeEnum businessType, String geoHash, String scrollId) {
+    public BizStoreElasticList searchByBusinessType(BusinessTypeEnum filterMustBusinessType, BusinessTypeEnum filterMustNotBusinessType, String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics;
-        if (null == businessType) {
-            bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
+        if (null == filterMustBusinessType) {
+            bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(filterMustNotBusinessType, geoHash, scrollId);
         } else {
-            switch (businessType) {
+            switch (filterMustBusinessType) {
                 case DO:
-                    bizStoreElastics = executeFilterBySearchOnBizStoreUsingRestClient(businessType, geoHash, scrollId);
+                    bizStoreElastics = executeFilterBySearchOnBizStoreUsingRestClient(filterMustBusinessType, filterMustNotBusinessType, geoHash, scrollId);
                     break;
                 default:
-                    bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(geoHash, scrollId);
+                    bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(filterMustNotBusinessType, geoHash, scrollId);
             }
         }
-//        Set<BizStoreElastic> bizStoreElasticSet = new HashSet<>(bizStoreElastics.getBizStoreElastics());
-//        int hits = 0;
-//        while (bizStoreElasticSet.size() < PaginationEnum.TEN.getLimit() && hits < 3) {
-//            LOG.debug("NearMe found size={} scrollId={}",
-//                bizStoreElasticSet.size(),
-//                bizStoreElastics.getScrollId().substring(bizStoreElastics.getScrollId().length() - 10));
-//            BizStoreElasticList bizStoreElasticsFetched = executeNearMeSearchOnBizStoreUsingRestClient(null, bizStoreElastics.getScrollId());
-//            bizStoreElastics.setScrollId(bizStoreElasticsFetched.getScrollId());
-//            bizStoreElasticSet.addAll(bizStoreElasticsFetched.getBizStoreElastics());
-//
-//            hits++;
-//        }
-//        bizStoreElastics.setBizStoreElastics(bizStoreElasticSet);
         return bizStoreElastics;
     }
 
     @Mobile
-    public BizStoreElasticList executeNearMeSearchOnBizStoreUsingRestClient(String geoHash, String scrollId) {
+    public BizStoreElasticList executeNearMeSearchOnBizStoreUsingRestClient(BusinessTypeEnum filterMustNotBusinessType, String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
@@ -133,9 +120,12 @@ public class BizStoreSpatialElasticService {
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
 
                 /* Search All Query. */
-                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                    .must(QueryBuilders.matchAllQuery())
-                    .filter(geoDistanceQuery("GH")
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                boolQueryBuilder.must(QueryBuilders.matchAllQuery());
+                if (null != filterMustNotBusinessType) {
+                    boolQueryBuilder.mustNot(QueryBuilders.matchQuery("BT", filterMustNotBusinessType.getName()));
+                }
+                boolQueryBuilder.filter(geoDistanceQuery("GH")
                         .geohash(geoHash)
                         .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder);
@@ -157,7 +147,12 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList executeFilterBySearchOnBizStoreUsingRestClient(BusinessTypeEnum businessType, String geoHash, String scrollId) {
+    public BizStoreElasticList executeFilterBySearchOnBizStoreUsingRestClient(
+        BusinessTypeEnum filterMustBusinessType,
+        BusinessTypeEnum filterMustNotBusinessType,
+        String geoHash,
+        String scrollId
+    ) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
@@ -171,9 +166,12 @@ public class BizStoreSpatialElasticService {
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
 
                 /* Search just DO Query. */
-                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                    .must(QueryBuilders.matchQuery("BT", businessType.getName()))
-                    .filter(geoDistanceQuery("GH")
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                boolQueryBuilder.must(QueryBuilders.matchQuery("BT", filterMustBusinessType.getName()));
+                if (null != filterMustNotBusinessType) {
+                    boolQueryBuilder.mustNot(QueryBuilders.matchQuery("BT", filterMustNotBusinessType.getName()));
+                }
+                boolQueryBuilder.filter(geoDistanceQuery("GH")
                         .geohash(geoHash)
                         .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder);
