@@ -48,16 +48,6 @@ class DateUtilTest {
     @Test
     void minusDays() {
         assertEquals(
-            DateUtil.dateToISO_8601(DateUtil.minusDays_old(1)),
-            DateUtil.dateToISO_8601(DateUtil.minusDays(1)),
-            "Should be equal " + DateUtil.dateToISO_8601(DateUtil.minusDays(1)) + " with " + DateUtil.dateToISO_8601(DateUtil.minusDays(1)));
-
-        assertEquals(
-            DateUtil.dateToString(DateUtil.minusDays_old(1)),
-            DateUtil.dateToString(DateUtil.minusDays(new Date(), 1)),
-            "Should be equal " + DateUtil.dateToString(DateUtil.minusDays(1)) + " with " + DateUtil.dateToString(DateUtil.minusDays(new Date(), 1)));
-
-        assertEquals(
             DateUtil.dateToString(DateUtil.minusDays(1)),
             DateUtil.dateToString(DateUtil.minusDays(new Date(), 1)),
             "Should be equal " + DateUtil.dateToString(DateUtil.minusDays(1)) + " with " + DateUtil.dateToString(DateUtil.minusDays(new Date(), 1)));

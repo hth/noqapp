@@ -274,13 +274,6 @@ public final class DateUtil {
     }
 
     @Deprecated
-    public static Date minusDays_old(long days) {
-        LocalDateTime localDateTime = LocalDateTime.now().minusDays(days);
-        Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        return Date.from(instant);
-    }
-
-    @Deprecated
     public static Date plusDays_old(int days) {
         return Date.from(LocalDate.now().plusDays(days).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
