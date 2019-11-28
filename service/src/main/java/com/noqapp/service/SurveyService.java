@@ -97,7 +97,11 @@ public class SurveyService {
 
     @Mobile
     public JsonQuestionnaire findOne(String bizNameId) {
-        return JsonQuestionnaire.populateJsonQuestionnaire(findLatest(bizNameId));
+        QuestionnaireEntity questionnaire = findLatest(bizNameId);
+        if (null == questionnaire) {
+            return null;
+        }
+        return JsonQuestionnaire.populateJsonQuestionnaire(questionnaire);
     }
 
     @Mobile
