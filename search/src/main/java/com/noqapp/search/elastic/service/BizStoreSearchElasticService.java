@@ -125,7 +125,7 @@ public class BizStoreSearchElasticService {
         LOG.info("Elastic query q={}", q.asJson());
         Search search = new Search()
             .setFrom(0)
-            .setSize(PaginationEnum.TEN.getLimit())
+            .setSize(PaginationEnum.TWENTY.getLimit())
             .setQuery(q);
 
         return executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
