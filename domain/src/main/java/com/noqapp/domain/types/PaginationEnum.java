@@ -15,7 +15,9 @@ public enum PaginationEnum {
     TWO(2),
     THREE(3),
     FIVE(5),
-    TEN(10);
+    TEN(10),
+    TWENTY(20),
+    THIRTY(30);
 
     private int limit;
 
