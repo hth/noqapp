@@ -2,7 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.annotation.DBMapping;
 import com.noqapp.domain.json.survey.SurveyQuestion;
-import com.noqapp.domain.types.ValidateStatusEnum;
+import com.noqapp.domain.types.PublishStatusEnum;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -39,8 +39,8 @@ public class QuestionnaireEntity extends BaseEntity {
     @Field("QS")
     private Map<Locale, List<SurveyQuestion>> questions = new LinkedHashMap<>();
 
-    @Field ("VS")
-    private ValidateStatusEnum validateStatus = ValidateStatusEnum.I;
+    @Field ("PS")
+    private PublishStatusEnum publishStatus = PublishStatusEnum.I;
 
     @Field("PD")
     private Date publishDate;
@@ -72,12 +72,12 @@ public class QuestionnaireEntity extends BaseEntity {
         return this;
     }
 
-    public ValidateStatusEnum getValidateStatus() {
-        return validateStatus;
+    public PublishStatusEnum getPublishStatus() {
+        return publishStatus;
     }
 
-    public QuestionnaireEntity setValidateStatus(ValidateStatusEnum validateStatus) {
-        this.validateStatus = validateStatus;
+    public QuestionnaireEntity setPublishStatus(PublishStatusEnum publishStatus) {
+        this.publishStatus = publishStatus;
         return this;
     }
 
