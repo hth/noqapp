@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
+import java.util.StringJoiner;
 
 import javax.validation.constraints.NotNull;
 
@@ -402,35 +403,37 @@ public class QueueEntity extends BaseEntity {
 
     @Override
     public String toString() {
-        return "QueueEntity{" +
-            "codeQR='" + codeQR + '\'' +
-            ", did='" + did + '\'' +
-            ", queueUserId='" + queueUserId + '\'' +
-            ", tokenNumber=" + tokenNumber +
-            ", displayName='" + displayName + '\'' +
-            ", businessType=" + businessType +
-            ", queueUserState=" + queueUserState +
-            ", notifiedOnService=" + notifiedOnService +
-            ", attemptToSendNotificationCounts=" + attemptToSendNotificationCounts +
-            ", customerName='" + customerName + '\'' +
-            ", customerPhone='" + customerPhone + '\'' +
-            ", ratingCount=" + ratingCount +
-            ", hoursSaved=" + hoursSaved +
-            ", review='" + review + '\'' +
-            ", serverName='" + serverName + '\'' +
-            ", serverDeviceId='" + serverDeviceId + '\'' +
-            ", serviceBeginTime=" + serviceBeginTime +
-            ", serviceEndTime=" + serviceEndTime +
-            ", expectedServiceBegin=" + expectedServiceBegin +
-            ", tokenService=" + tokenService +
-            ", clientVisitedThisStore=" + clientVisitedThisStore +
-            ", bizNameId='" + bizNameId + '\'' +
-            ", clientVisitedThisBusiness=" + clientVisitedThisBusiness +
-            ", guardianQid='" + guardianQid + '\'' +
-            ", businessCustomerId='" + businessCustomerId + '\'' +
-            ", businessCustomerIdChangeCount=" + businessCustomerIdChangeCount +
-            ", recordReferenceId='" + recordReferenceId + '\'' +
-            ", sentimentType=" + sentimentType +
-            '}';
+        return new StringJoiner(", ", QueueEntity.class.getSimpleName() + "[", "]")
+            .add("codeQR=\"" + codeQR + "\"")
+            .add("did=\"" + did + "\"")
+            .add("queueUserId=\"" + queueUserId + "\"")
+            .add("tokenNumber=" + tokenNumber)
+            .add("displayName=\"" + displayName + "\"")
+            .add("businessType=" + businessType)
+            .add("queueUserState=" + queueUserState)
+            .add("notifiedOnService=" + notifiedOnService)
+            .add("attemptToSendNotificationCounts=" + attemptToSendNotificationCounts)
+            .add("customerName=\"" + customerName + "\"")
+            .add("customerPhone=\"" + customerPhone + "\"")
+            .add("ratingCount=" + ratingCount)
+            .add("hoursSaved=" + hoursSaved)
+            .add("review=\"" + review + "\"")
+            .add("serverName=\"" + serverName + "\"")
+            .add("serverDeviceId=\"" + serverDeviceId + "\"")
+            .add("serviceBeginTime=" + serviceBeginTime)
+            .add("serviceEndTime=" + serviceEndTime)
+            .add("expectedServiceBegin=" + expectedServiceBegin)
+            .add("tokenService=" + tokenService)
+            .add("clientVisitedThisStore=" + clientVisitedThisStore)
+            .add("clientVisitedThisStoreDate=" + clientVisitedThisStoreDate)
+            .add("bizNameId=\"" + bizNameId + "\"")
+            .add("clientVisitedThisBusiness=" + clientVisitedThisBusiness)
+            .add("guardianQid=\"" + guardianQid + "\"")
+            .add("businessCustomerId=\"" + businessCustomerId + "\"")
+            .add("businessCustomerIdChangeCount=" + businessCustomerIdChangeCount)
+            .add("recordReferenceId=\"" + recordReferenceId + "\"")
+            .add("sentimentType=" + sentimentType)
+            .add("transactionId=\"" + transactionId + "\"")
+            .toString();
     }
 }
