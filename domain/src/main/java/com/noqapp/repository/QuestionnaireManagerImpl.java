@@ -6,6 +6,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.QuestionnaireEntity;
+import com.noqapp.domain.types.PublishStatusEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,5 +78,14 @@ public class QuestionnaireManagerImpl implements QuestionnaireManager {
     @Override
     public QuestionnaireEntity findById(String questionnaireId) {
         return mongoTemplate.findById(questionnaireId, QuestionnaireEntity.class, TABLE);
+    }
+
+    @Override
+    public boolean isEditable(String questionnaireId) {
+        return mongoTemplate.exists(
+            query(where("id").is(questionnaireId).and("PS").in(PublishStatusEnum.I, PublishStatusEnum.P, PublishStatusEnum.R)),
+            QuestionnaireEntity.class,
+            TABLE
+        );
     }
 }

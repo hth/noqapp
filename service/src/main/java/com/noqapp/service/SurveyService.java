@@ -11,6 +11,7 @@ import com.noqapp.domain.json.JsonSurvey;
 import com.noqapp.domain.json.chart.ChartLineData;
 import com.noqapp.domain.json.survey.JsonQuestionnaire;
 import com.noqapp.domain.json.survey.SurveyQuestion;
+import com.noqapp.domain.types.PublishStatusEnum;
 import com.noqapp.domain.types.QuestionTypeEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.repository.BizStoreManager;
@@ -76,7 +77,7 @@ public class SurveyService {
             QuestionnaireEntity questionnaireUpdate = questionnaireManager.findById(questionnaire.getId());
             questionnaireUpdate.setTitle(questionnaire.getTitle())
                 .setQuestions(questionnaire.getQuestions())
-                .setValidateStatus(questionnaire.getValidateStatus());
+                .setPublishStatus(questionnaire.getPublishStatus());
 
             questionnaireManager.save(questionnaireUpdate);
             return questionnaireUpdate;
@@ -85,6 +86,10 @@ public class SurveyService {
 
     public QuestionnaireEntity findByQuestionnaireId(String questionnaireId) {
         return questionnaireManager.findById(questionnaireId);
+    }
+
+    public boolean isEditable(String questionnaireId) {
+        return questionnaireManager.isEditable(questionnaireId);
     }
 
     public List<QuestionnaireEntity> findAll(String bizNameId) {
@@ -180,5 +185,13 @@ public class SurveyService {
             }
         }
         return surveyGroupedValues;
+    }
+
+    public void changePublishStatus(PublishStatusEnum publishStatus, QuestionnaireEntity questionnaire) {
+        if (publishStatus == PublishStatusEnum.D) {
+            questionnaire.inActive();
+        }
+        questionnaire.setPublishStatus(publishStatus);
+        saveSurveyQuestionnaire(questionnaire);
     }
 }

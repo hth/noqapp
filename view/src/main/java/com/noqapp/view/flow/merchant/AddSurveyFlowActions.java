@@ -5,7 +5,7 @@ import com.noqapp.domain.QuestionnaireEntity;
 import com.noqapp.domain.flow.Questionnaire;
 import com.noqapp.domain.json.survey.SurveyQuestion;
 import com.noqapp.domain.site.QueueUser;
-import com.noqapp.domain.types.ValidateStatusEnum;
+import com.noqapp.domain.types.PublishStatusEnum;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.SurveyService;
 
@@ -19,7 +19,6 @@ import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.webflow.context.ExternalContext;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,17 +45,26 @@ public class AddSurveyFlowActions {
     }
 
     @SuppressWarnings("all")
-    public Questionnaire initiate(ExternalContext externalContext) {
-        LOG.info("AddQuestionnaire Start");
+    public Questionnaire initiate(String questionnaireId) {
+        LOG.info("AddQuestionnaire Start {}", questionnaireId);
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         /* Above condition to make sure users with right roles and access gets access. */
 
-        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (StringUtils.isBlank(questionnaireId)) {
+            BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
 
-        QuestionnaireEntity questionnaire = new QuestionnaireEntity().setBizNameId(businessUser.getBizName().getId());
-        surveyService.saveSurveyQuestionnaire(questionnaire);
-        return new Questionnaire()
-            .setQuestionnaireId(questionnaire.getId());
+            QuestionnaireEntity questionnaire = new QuestionnaireEntity().setBizNameId(businessUser.getBizName().getId());
+            surveyService.saveSurveyQuestionnaire(questionnaire);
+            return new Questionnaire()
+                .setQuestionnaireId(questionnaire.getId());
+        } else {
+            QuestionnaireEntity questionnaire = surveyService.findByQuestionnaireId(questionnaireId);
+            return new Questionnaire()
+                .setQuestionnaireId(questionnaire.getId())
+                .setLocaleWithQuestions(questionnaire.getQuestions())
+                .setEditable(surveyService.isEditable(questionnaireId))
+                .setTitle(questionnaire.getTitle());
+        }
     }
 
     /** Add locale. */
@@ -110,7 +118,7 @@ public class AddSurveyFlowActions {
         }
 
         questionnaire.getLocaleWithQuestions().put(questionnaire.getLocale(), new LinkedList<>());
-        updateQuestionnaire(questionnaire, ValidateStatusEnum.I);
+        updateQuestionnaire(questionnaire, PublishStatusEnum.I);
         questionnaire.setLocale(null);
         return questionnaire;
     }
@@ -130,7 +138,7 @@ public class AddSurveyFlowActions {
             update.add(surveyQuestion);
 
             questionnaire.getLocaleWithQuestions().put(questionnaire.getLocale(), update);
-            updateQuestionnaire(questionnaire, ValidateStatusEnum.I);
+            updateQuestionnaire(questionnaire, PublishStatusEnum.I);
         }
         questionnaire.setLocale(null).setQuestion("").setQuestionType(null);
         return questionnaire;
@@ -141,13 +149,13 @@ public class AddSurveyFlowActions {
     public Questionnaire completeSurvey(Questionnaire questionnaire, MessageContext messageContext) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        updateQuestionnaire(questionnaire, ValidateStatusEnum.P);
+        updateQuestionnaire(questionnaire, PublishStatusEnum.P);
         return questionnaire;
     }
 
-    private void updateQuestionnaire(Questionnaire questionnaire, ValidateStatusEnum validateStatus) {
+    private void updateQuestionnaire(Questionnaire questionnaire, PublishStatusEnum publishStatus) {
         QuestionnaireEntity questionnaireEntity = new QuestionnaireEntity()
-            .setValidateStatus(validateStatus)
+            .setPublishStatus(publishStatus)
             .setQuestions(questionnaire.getLocaleWithQuestions())
             .setTitle(questionnaire.getTitle());
 

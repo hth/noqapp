@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.PublishStatusEnum" %>
 <%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -77,7 +78,8 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th nowrap>Title</th>
-                                                <th nowrap>Published Status</th>
+                                                <th nowrap>Status</th>
+                                                <th nowrap>Next Action</th>
                                             </tr>
                                             <c:forEach items="${questionnaireForm.questionnaires}" var="questionnaire" varStatus="status">
                                             <tr>
@@ -93,8 +95,35 @@
                                                     </c:choose>
                                                 </td>
                                                 <td>
-                                                    <span style="display:block; font-size:13px;">${questionnaire.validateStatus.description}</span>
-                                                    <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${questionnaire.created}"/></span>
+                                                    <span style="display:block; font-size:13px;">${questionnaire.publishStatus.description}</span>
+                                                    <c:choose>
+                                                        <c:when test="${questionnaire.publishStatus == ValidateStatusEnum.A}">
+                                                            <span style="display:block; font-size:13px; font-weight: bold">Published: <fmt:formatDate pattern="MMM dd, yyyy hh:mm a" value="${questionnaire.publishDate}"/></span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="display:block; font-size:13px;">Created: <fmt:formatDate pattern="MMM dd, yyyy hh:mm a" value="${questionnaire.created}"/></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <c:choose>
+                                                    <c:when test="${questionnaire.publishStatus == PublishStatusEnum.I}">
+                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.I}.htm"><span style="display:block; font-size:13px;">Edit</span></a>
+                                                    </c:when>
+                                                    <c:when test="${questionnaire.publishStatus == PublishStatusEnum.P}">
+                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.A}.htm"><span style="display:block; font-size:13px;">Approve</span></a>
+                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.R}.htm"><span style="display:block; font-size:13px;">Reject</span></a>
+                                                    </c:when>
+                                                    <c:when test="${questionnaire.publishStatus == PublishStatusEnum.A}">
+                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.U}.htm"><span style="display:block; font-size:13px;">Un-published</span></a>
+                                                    </c:when>
+                                                    <c:when test="${questionnaire.publishStatus == PublishStatusEnum.R}">
+                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.D}.htm"><span style="display:block; font-size:13px;">Delete</span></a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span style="display:block; font-size:13px;">Not Active</span>
+                                                    </c:otherwise>
+                                                    </c:choose>
                                                 </td>
                                             </tr>
                                             </c:forEach>

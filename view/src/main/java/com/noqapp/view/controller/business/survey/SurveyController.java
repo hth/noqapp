@@ -1,10 +1,13 @@
 package com.noqapp.view.controller.business.survey;
 
+import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
+
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.QuestionnaireEntity;
 import com.noqapp.domain.aggregate.SurveyGroupedValue;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.PublishStatusEnum;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.SurveyService;
 import com.noqapp.view.form.business.QuestionnaireForm;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -100,6 +104,53 @@ public class SurveyController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         return addSurveyFlow;
+    }
+
+    @GetMapping(value = "/{questionnaireId}/{publishStatus}", produces = "text/html;charset=UTF-8")
+    public String editQuestionnaire(
+        @PathVariable("questionnaireId")
+        ScrubbedInput questionnaireId,
+
+        @PathVariable("publishStatus")
+        ScrubbedInput publishStatus,
+
+        RedirectAttributes redirectAttributes,
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Edit survey by business {} qid={} level={}", addSurveyFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        QuestionnaireEntity questionnaire = surveyService.findByQuestionnaireId(questionnaireId.getText());
+        if (null == questionnaire) {
+            LOG.warn("Could not find questionnaireId={}", questionnaireId);
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+
+        switch (PublishStatusEnum.valueOf(publishStatus.getText())) {
+            case I:
+                redirectAttributes.addFlashAttribute("questionnaireId", questionnaireId.getText());
+                return addSurveyFlow;
+            case P:
+                break;
+            case A:
+                surveyService.changePublishStatus(PublishStatusEnum.A, questionnaire);
+                break;
+            case U:
+                surveyService.changePublishStatus(PublishStatusEnum.U, questionnaire);
+                break;
+            case R:
+                surveyService.changePublishStatus(PublishStatusEnum.R, questionnaire);
+                break;
+            case D:
+                surveyService.changePublishStatus(PublishStatusEnum.D, questionnaire);
+                break;
+            default:
+                return "redirect:/business/survey/landing.htm";
+        }
+
+        return "redirect:/business/survey/landing.htm";
     }
 
     @GetMapping(

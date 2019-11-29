@@ -24,6 +24,7 @@ public class Questionnaire implements Serializable {
 
     /** Master record. */
     private Map<Locale, List<SurveyQuestion>> localeWithQuestions = new LinkedHashMap<>();
+    private boolean editable = true;
 
     /** Pre-filled. */
     private Map<String, String> questionTypes = QuestionTypeEnum.asMapWithNameAsKey();
@@ -85,6 +86,15 @@ public class Questionnaire implements Serializable {
 
     public Questionnaire addLocaleWithQuestions(Locale locale, List<SurveyQuestion> questions) {
         this.localeWithQuestions.put(locale, questions);
+        return this;
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public Questionnaire setEditable(boolean editable) {
+        this.editable = editable;
         return this;
     }
 

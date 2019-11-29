@@ -15,4 +15,6 @@ public interface QuestionnaireManager extends RepositoryManager<QuestionnaireEnt
     QuestionnaireEntity findLatest(String bizNameId);
 
     QuestionnaireEntity findById(String questionnaireId);
+
+    boolean isEditable(String questionnaireId);
 }
