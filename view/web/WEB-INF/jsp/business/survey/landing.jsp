@@ -83,7 +83,14 @@
                                             <tr>
                                                 <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
                                                 <td nowrap>
-                                                    <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm" target="_blank"><span style="display:block; font-size:13px;">${questionnaire.title}</span></a>
+                                                    <c:choose>
+                                                    <c:when test="${fn:length(questionnaire.title) == 0}">
+                                                        <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm"><span style="display:block; font-size:13px;">No Title</span></a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm"><span style="display:block; font-size:13px;">${questionnaire.title}</span></a>
+                                                    </c:otherwise>
+                                                    </c:choose>
                                                 </td>
                                                 <td>
                                                     <span style="display:block; font-size:13px;">${questionnaire.validateStatus.description}</span>
