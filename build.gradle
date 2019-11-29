@@ -217,6 +217,7 @@ subprojects {
         implementation "com.fasterxml.jackson.core:jackson-core:$jackson"
         implementation "com.fasterxml.jackson.core:jackson-databind:$jackson"
         implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jackson"
+        implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlin"
 
         implementation "org.json:json:$json"
         implementation "com.maxmind.geoip2:geoip2:$geoip2"
