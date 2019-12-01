@@ -707,8 +707,8 @@ public class AdminBusinessLandingController {
      */
     @GetMapping (value = "/editBusiness", produces = "text/html;charset=UTF-8")
     public String editBusiness(
-            RedirectAttributes redirectAttrs,
-            HttpServletResponse response
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
