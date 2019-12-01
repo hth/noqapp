@@ -130,4 +130,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     List<PurchaseOrderEntity> findByBizNameId(String bizNameId);
 
     List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId);
+
+    List<PurchaseOrderEntity> findByQidAndBizNameId(String qid, String bizNameId);
 }

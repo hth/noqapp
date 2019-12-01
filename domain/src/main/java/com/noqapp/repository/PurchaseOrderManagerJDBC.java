@@ -51,4 +51,6 @@ public interface PurchaseOrderManagerJDBC {
     List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId);
 
     List<PurchaseOrderEntity> findTransactionBetweenDays(String bizNameId, Date from, Date until);
+
+    List<PurchaseOrderEntity> findByQidAndBizNameId(String qid, String bizNameId);
 }

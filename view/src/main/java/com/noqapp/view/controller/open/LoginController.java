@@ -151,6 +151,8 @@ public class LoginController {
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {
             Cookie cookie = cookies[0];
+            cookie.setSecure(true);
+
             String cookieId = cookie.getValue();
             String ip = HttpRequestResponseParser.getClientIpAddress(request);
 
