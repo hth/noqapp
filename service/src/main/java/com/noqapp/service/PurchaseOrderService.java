@@ -307,6 +307,14 @@ public class PurchaseOrderService {
         return purchaseOrder;
     }
 
+    public List<PurchaseOrderEntity> historicalByQidAndBizNameId(String qid, String bizNameId) {
+        return purchaseOrderManagerJDBC.findByQidAndBizNameId(qid, bizNameId);
+    }
+
+    public List<PurchaseOrderEntity> currentByQidAndBizNameId(String qid, String bizNameId) {
+        return purchaseOrderManager.findByQidAndBizNameId(qid, bizNameId);
+    }
+
     @Mobile
     public boolean isOrderCancelled(String qid, String transactionId) {
         Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid");

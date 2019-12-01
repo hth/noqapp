@@ -162,13 +162,14 @@ public class QueueService {
         return queueManagerJDBC.getByDid(did);
     }
 
+    /** All queue placed today, other historical past queues that have moved to archive. */
     public List<QueueEntity> findAllHistoricalQueue(String qid) {
         List<QueueEntity> queues = findAllNotQueuedByQid(qid);
         queues.addAll(getByQidSimple(qid));
         return queues;
     }
 
-    /** This is for historical queue placed today, other past queues that have moved to archive. */
+    /** This is for queue placed today, other historical past queues that have moved to archive. */
     @Mobile
     public JsonQueueHistoricalList findAllHistoricalQueueAsJson(String qid) {
         UserProfileEntity userProfileOfGuardian = userProfileManager.findByQueueUserId(qid);

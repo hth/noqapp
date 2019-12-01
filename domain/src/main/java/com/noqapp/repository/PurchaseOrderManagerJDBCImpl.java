@@ -94,7 +94,13 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final String transactionOnDay =
         "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, SD, PP, OP, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
-            "PURCHASE_ORDER WHERE BN = ? AND C >= ? AND C < ?" +
+            "PURCHASE_ORDER WHERE BN = ? AND C >= ? AND C < ? " +
+            "ORDER BY C DESC";
+
+    private static final String qidAndBizNameId =
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, SD, PP, OP, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+            " FROM " +
+            "PURCHASE_ORDER WHERE QID = ? AND BN = ? " +
             "ORDER BY C DESC";
 
     private static final String query_by_codeQR =
@@ -326,5 +332,10 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     @Override
     public List<PurchaseOrderEntity> findTransactionBetweenDays(String bizNameId, Date from, Date until) {
         return jdbcTemplate.query(transactionOnDay, new Object[]{bizNameId, from, until}, new PurchaseOrderRowMapper());
+    }
+
+    @Override
+    public List<PurchaseOrderEntity> findByQidAndBizNameId(String qid, String bizNameId) {
+        return jdbcTemplate.query(qidAndBizNameId, new Object[]{qid, bizNameId}, new PurchaseOrderRowMapper());
     }
 }

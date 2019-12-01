@@ -632,4 +632,13 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
             TABLE
         );
     }
+
+    @Override
+    public List<PurchaseOrderEntity> findByQidAndBizNameId(String qid, String bizNameId) {
+        return mongoTemplate.find(
+            query(where("BN").is(bizNameId).and("QID").is(qid)).with(Sort.by(DESC, "C")),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
 }
