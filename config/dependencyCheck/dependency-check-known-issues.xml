@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
+    <suppress>
+        <notes><![CDATA[
+   file name: async-http-client-netty-utils-2.1.0-alpha25.jar
+   ]]></notes>
+        <gav regex="true">^org\.asynchttpclient:async-http-client-netty-utils:.*$</gav>
+        <cve>CVE-2014-3488</cve>
+    </suppress>
+</suppressions>
