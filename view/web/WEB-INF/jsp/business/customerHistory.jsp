@@ -148,7 +148,6 @@
                                                             <tr>
                                                                 <th>&nbsp;</th>
                                                                 <th nowrap>Name</th>
-                                                                <th nowrap>Queue Name</th>
                                                                 <th nowrap>Payment</th>
                                                                 <th nowrap>End State</th>
                                                                 <th>User Rating</th>
@@ -208,7 +207,6 @@
                                                             <tr>
                                                                 <th>&nbsp;</th>
                                                                 <th nowrap>Name</th>
-                                                                <th nowrap>Queue Name</th>
                                                                 <th nowrap>Payment</th>
                                                                 <th nowrap>End State</th>
                                                                 <th>User Rating</th>
