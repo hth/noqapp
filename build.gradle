@@ -86,13 +86,6 @@ allprojects {
     apply from: "$rootDir/versioning.gradle"
 }
 
-dependencyCheck {
-    failOnError = false
-    format = 'ALL'
-    failBuildOnCVSS = 7
-    suppressionFile = file("$rootProject.projectDir/config/dependencyCheck/dependency-check-known-issues.xml")
-}
-
 subprojects {
     apply plugin: 'idea'
     apply plugin: 'java'
@@ -353,6 +346,13 @@ subprojects {
         ignoreFailures = true
         effort = 'max'
         showProgress = true
+    }
+
+    dependencyCheck {
+        failOnError = false
+        format = 'ALL'
+        failBuildOnCVSS = 7
+        suppressionFile = file("$rootProject.projectDir/config/dependencyCheck/dependency-check-known-issues.xml")
     }
 
     tasks.withType(SpotBugsTask) {
