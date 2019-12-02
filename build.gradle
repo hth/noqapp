@@ -79,18 +79,10 @@ buildscript {
 apply plugin: 'maven-publish'
 apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'css'
-apply plugin: 'org.owasp.dependencycheck'
 
 allprojects {
     group = 'com.noqapp'
     apply from: "$rootDir/versioning.gradle"
-}
-
-dependencyCheck {
-    failOnError = false
-    format = 'ALL'
-    failBuildOnCVSS = 7
-    suppressionFile = file("$rootProject.projectDir/config/dependencyCheck/dependency-check-known-issues.xml")
 }
 
 subprojects {
@@ -101,7 +93,7 @@ subprojects {
     apply plugin: 'pmd'
     apply plugin: 'jacoco'      //for code coverage
     apply plugin: 'com.github.spotbugs'
-    //apply plugin: 'org.owasp.dependencycheck'
+    apply plugin: 'org.owasp.dependencycheck'
     //apply plugin: 'org.sonarqube'
     apply plugin: 'cpd'
 
@@ -353,6 +345,13 @@ subprojects {
         ignoreFailures = true
         effort = 'max'
         showProgress = true
+    }
+
+    dependencyCheck {
+        failOnError = false
+        format = 'ALL'
+        failBuildOnCVSS = 7
+        suppressionFile = file("$rootProject.projectDir/config/dependencyCheck/dependency-check-known-issues.xml")
     }
 
     tasks.withType(SpotBugsTask) {
