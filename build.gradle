@@ -350,7 +350,7 @@ subprojects {
     dependencyCheck {
         failOnError = false
         format = 'ALL'
-        failBuildOnCVSS = 7
+        failBuildOnCVSS = 20
         suppressionFile = file("$rootProject.projectDir/config/dependencyCheck/dependency-check-known-issues.xml")
     }
 
