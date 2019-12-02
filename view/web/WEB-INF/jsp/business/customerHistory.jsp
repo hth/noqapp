@@ -149,6 +149,7 @@
                                                                 <th>&nbsp;</th>
                                                                 <th nowrap>Name</th>
                                                                 <th nowrap>Queue Name</th>
+                                                                <th nowrap>Payment</th>
                                                                 <th nowrap>End State</th>
                                                                 <th>User Rating</th>
                                                                 <th>Date of Service</th>
@@ -160,7 +161,7 @@
                                                                     <span style="display:block; font-size:13px;">${customerHistoryForm.qidNameMaps.get(purchaseOrder.queueUserId)}</span>
                                                                 </td>
                                                                 <td nowrap>
-                                                                    <span style="display:block; font-size:13px;">${purchaseOrder.orderPrice}</span>
+                                                                    <span style="display:block; font-size:13px;">${purchaseOrder.orderPriceForDisplay}</span>
                                                                 </td>
                                                                 <td nowrap>
                                                                     <span style="display:block; font-size:13px;">${purchaseOrder.paymentMode.description}</span>
@@ -208,6 +209,7 @@
                                                                 <th>&nbsp;</th>
                                                                 <th nowrap>Name</th>
                                                                 <th nowrap>Queue Name</th>
+                                                                <th nowrap>Payment</th>
                                                                 <th nowrap>End State</th>
                                                                 <th>User Rating</th>
                                                                 <th>Date of Service</th>
@@ -219,7 +221,7 @@
                                                                     <span style="display:block; font-size:13px;">${customerHistoryForm.qidNameMaps.get(purchaseOrder.queueUserId)}</span>
                                                                 </td>
                                                                 <td nowrap>
-                                                                    <span style="display:block; font-size:13px;">${purchaseOrder.orderPrice}</span>
+                                                                    <span style="display:block; font-size:13px;">${purchaseOrder.orderPriceForDisplay}</span>
                                                                 </td>
                                                                 <td nowrap>
                                                                     <span style="display:block; font-size:13px;">${purchaseOrder.paymentMode.description}</span>
