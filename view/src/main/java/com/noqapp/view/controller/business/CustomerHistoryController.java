@@ -138,6 +138,8 @@ public class CustomerHistoryController {
                 customerHistoryForm.addUserProfileOfDependent(dependentProfile);
                 customerHistoryForm.addQidNameMap(qidOfDependent, dependentProfile.getName());
             }
+
+            customerHistoryForm.getUserProfileOfDependents().sort(Comparator.comparing(UserProfileEntity::getBirthday).reversed());
         }
 
         populateWithCurrentAndPastQueue(customerHistoryForm, bizName.getId(), userProfile);
@@ -170,7 +172,7 @@ public class CustomerHistoryController {
             }
         }
 
-        customerHistoryForm.getCurrentAndHistoricalQueues().sort(Comparator.comparing(QueueEntity::getCreated));
+        customerHistoryForm.getCurrentAndHistoricalQueues().sort(Comparator.comparing(QueueEntity::getCreated).reversed());
     }
 
     private void populateWithCurrentAndPastPurchaseOrder(CustomerHistoryForm customerHistoryForm, String bizNameId, UserProfileEntity userProfile) {
@@ -190,7 +192,7 @@ public class CustomerHistoryController {
             }
         }
 
-        customerHistoryForm.getCurrentPurchaseOrders().sort(Comparator.comparing(PurchaseOrderEntity::getCreated));
-        customerHistoryForm.getHistoricalPurchaseOrders().sort(Comparator.comparing(PurchaseOrderEntity::getCreated));
+        customerHistoryForm.getCurrentPurchaseOrders().sort(Comparator.comparing(PurchaseOrderEntity::getCreated).reversed());
+        customerHistoryForm.getHistoricalPurchaseOrders().sort(Comparator.comparing(PurchaseOrderEntity::getCreated).reversed());
     }
 }
