@@ -91,7 +91,7 @@ public class CustomerHistoryController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on data visibility page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on customer lookup page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         //Gymnastic to show BindingResult errors if any
@@ -118,7 +118,10 @@ public class CustomerHistoryController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Update data visibility qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Search customer lookup phone={} qid={} level={}",
+            customerHistoryForm.getLookupPhone().getText(),
+            queueUser.getQueueUserId(),
+            queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         BizNameEntity bizName = businessUser.getBizName();
