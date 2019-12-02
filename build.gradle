@@ -79,7 +79,6 @@ buildscript {
 apply plugin: 'maven-publish'
 apply plugin: 'com.eriwen.gradle.js'
 apply plugin: 'css'
-apply plugin: 'org.owasp.dependencycheck'
 
 allprojects {
     group = 'com.noqapp'
@@ -94,7 +93,7 @@ subprojects {
     apply plugin: 'pmd'
     apply plugin: 'jacoco'      //for code coverage
     apply plugin: 'com.github.spotbugs'
-    //apply plugin: 'org.owasp.dependencycheck'
+    apply plugin: 'org.owasp.dependencycheck'
     //apply plugin: 'org.sonarqube'
     apply plugin: 'cpd'
 
