@@ -348,6 +348,32 @@ subprojects {
         showProgress = true
     }
 
+    dependencyCheck {
+        failBuildOnCVSS = 5
+        failOnError = true
+        suppressionFile = 'config/dependencyCheck/suppressions.xml'
+        analyzers {
+            experimentalEnabled = true
+            archiveEnabled = true
+            jarEnabled = true
+            centralEnabled = true
+            nexusEnabled = true
+            pyDistributionEnabled = false
+            pyPackageEnabled = false
+            rubygemsEnabled = false
+            opensslEnabled = false
+            nuspecEnabled = false
+            assemblyEnabled = false
+            cmakeEnabled = false
+            autoconfEnabled = true
+            composerEnabled = false
+            nodeEnabled = true
+            nspEnabled = false
+            cocoapodsEnabled = false
+            swiftEnabled = false
+        }
+    }
+
     tasks.withType(SpotBugsTask) {
         reports {
             xml.enabled = true
