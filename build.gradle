@@ -203,6 +203,7 @@ subprojects {
         implementation "edu.stanford.nlp:stanford-corenlp:$corenlp"
         implementation "edu.stanford.nlp:stanford-corenlp:$corenlp:models"
 
+        implementation "com.google.cloud:google-cloud-texttospeech:$googleCloudTexttospeech"
         implementation "com.google.guava:guava:$guava"
         implementation "com.google.code.gson:gson:$gson"
         implementation "com.google.maps:google-maps-services:$googleMapsServices"
