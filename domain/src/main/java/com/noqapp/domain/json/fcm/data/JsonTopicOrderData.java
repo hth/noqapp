@@ -1,9 +1,5 @@
 package com.noqapp.domain.json.fcm.data;
 
-import com.noqapp.domain.json.fcm.data.speech.JsonAudioConfig;
-import com.noqapp.domain.json.fcm.data.speech.JsonTextInput;
-import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
-import com.noqapp.domain.json.fcm.data.speech.JsonVoiceInput;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
@@ -68,9 +64,6 @@ public class JsonTopicOrderData extends JsonData {
 
     @JsonProperty("mi")
     private String messageId;
-
-    @JsonProperty("textToSpeech")
-    private JsonTextToSpeech jsonTextToSpeech;
 
     public JsonTopicOrderData(FirebaseMessageTypeEnum firebaseMessageType, MessageOriginEnum messageOrigin) {
         super(firebaseMessageType);
@@ -148,14 +141,5 @@ public class JsonTopicOrderData extends JsonData {
     public JsonTopicOrderData setPurchaseOrderState(PurchaseOrderStateEnum purchaseOrderState) {
         this.purchaseOrderState = purchaseOrderState;
         return this;
-    }
-
-    public JsonTextToSpeech getTextToSpeech() {
-        jsonTextToSpeech = new JsonTextToSpeech()
-            .setJsonTextInput(new JsonTextInput(message))
-            .setJsonVoiceInput(new JsonVoiceInput())
-            .setJsonAudioConfig(new JsonAudioConfig());
-
-        return jsonTextToSpeech;
     }
 }

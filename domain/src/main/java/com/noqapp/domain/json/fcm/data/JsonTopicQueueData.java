@@ -1,9 +1,5 @@
 package com.noqapp.domain.json.fcm.data;
 
-import com.noqapp.domain.json.fcm.data.speech.JsonAudioConfig;
-import com.noqapp.domain.json.fcm.data.speech.JsonTextInput;
-import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
-import com.noqapp.domain.json.fcm.data.speech.JsonVoiceInput;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
@@ -64,9 +60,6 @@ public class JsonTopicQueueData extends JsonData {
 
     @JsonProperty("mi")
     private String messageId;
-
-    @JsonProperty("textToSpeech")
-    private JsonTextToSpeech jsonTextToSpeech;
 
     public JsonTopicQueueData(FirebaseMessageTypeEnum firebaseMessageType, MessageOriginEnum messageOrigin) {
         super(firebaseMessageType);
@@ -139,14 +132,5 @@ public class JsonTopicQueueData extends JsonData {
     public JsonTopicQueueData setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
         return this;
-    }
-
-    public JsonTextToSpeech getTextToSpeech() {
-        jsonTextToSpeech = new JsonTextToSpeech()
-            .setJsonTextInput(new JsonTextInput(message))
-            .setJsonVoiceInput(new JsonVoiceInput())
-            .setJsonAudioConfig(new JsonAudioConfig());
-
-        return jsonTextToSpeech;
     }
 }
