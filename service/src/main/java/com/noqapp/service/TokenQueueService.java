@@ -746,16 +746,22 @@ public class TokenQueueService {
                     }
                     break;
                 default:
+                    String textToSpeech = "No Queue Token number " + tokenQueue.getCurrentlyServing()
+                        + ", please visit " + tokenQueue.getDisplayName()
+                        + ", in " + goTo;
                     if (DeviceTypeEnum.I == deviceType) {
                         jsonMessage.getNotification()
                             .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
                             .setLocKey("serving")
                             .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
                             .setTitle(tokenQueue.getDisplayName());
+
+                        jsonMessage.getData().setJsonTextToSpeech(textToSpeech);
                     } else {
                         jsonMessage.setNotification(null);
                         jsonData.setBody("Now Serving " + tokenQueue.getCurrentlyServing())
-                            .setTitle(tokenQueue.getDisplayName());
+                            .setTitle(tokenQueue.getDisplayName())
+                            .setJsonTextToSpeech(textToSpeech);
                     }
             }
 

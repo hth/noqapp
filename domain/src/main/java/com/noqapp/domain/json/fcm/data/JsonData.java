@@ -1,5 +1,9 @@
 package com.noqapp.domain.json.fcm.data;
 
+import com.noqapp.domain.json.fcm.data.speech.JsonAudioConfig;
+import com.noqapp.domain.json.fcm.data.speech.JsonTextInput;
+import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
+import com.noqapp.domain.json.fcm.data.speech.JsonVoiceInput;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -41,6 +45,9 @@ public abstract class JsonData {
     @JsonProperty("imageURL")
     private String imageURL;
 
+    @JsonProperty("textToSpeech")
+    private JsonTextToSpeech jsonTextToSpeech;
+
     JsonData(FirebaseMessageTypeEnum firebaseMessageType) {
         this.firebaseMessageType = firebaseMessageType;
     }
@@ -69,6 +76,23 @@ public abstract class JsonData {
 
     public JsonData setImageURL(String imageURL) {
         this.imageURL = imageURL;
+        return this;
+    }
+
+    public JsonTextToSpeech getJsonTextToSpeech() {
+        return jsonTextToSpeech;
+    }
+
+    public JsonData setJsonTextToSpeech(JsonTextToSpeech jsonTextToSpeech) {
+        this.jsonTextToSpeech = jsonTextToSpeech;
+        return this;
+    }
+
+    public JsonData setJsonTextToSpeech(String message) {
+        this.jsonTextToSpeech = new JsonTextToSpeech()
+            .setJsonTextInput(new JsonTextInput(message))
+            .setJsonVoiceInput(new JsonVoiceInput())
+            .setJsonAudioConfig(new JsonAudioConfig());
         return this;
     }
 }
