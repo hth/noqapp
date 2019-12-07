@@ -1,5 +1,9 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.TextToSpeechForCountry.foreignLanguageCode;
+import static com.noqapp.common.utils.TextToSpeechForCountry.nationalLanguageCode;
+import static com.noqapp.common.utils.TextToSpeechForCountry.nowServing;
+import static com.noqapp.common.utils.TextToSpeechForCountry.supportedVoice;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -781,6 +785,19 @@ public class TokenQueueService {
         }
     }
 
+    /**
+     * https://cloud.google.com/text-to-speech/docs/voices
+     * https://stackoverflow.com/questions/36681232/android-tts-male-voices
+     * https://www.journaldev.com/21904/android-text-to-speech-tts
+     * https://stackoverflow.com/questions/3058919/text-to-speechtts-android
+     * https://android-developers.googleblog.com/2009/09/introduction-to-text-to-speech-in.html
+     * https://o7planning.org/en/10503/android-text-to-speech-tutorial
+     *
+     * @param goTo
+     * @param codeQR
+     * @param tokenQueue
+     * @return
+     */
     private List<JsonTextToSpeech> populateTextToSpeech(String goTo, String codeQR, TokenQueueEntity tokenQueue) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
 
@@ -788,23 +805,30 @@ public class TokenQueueService {
         switch(tokenQueue.getBusinessType()) {
             case DO:
                 if (bizStore.getCountryShortName().equalsIgnoreCase("IN")) {
-                    JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
-                        .setJsonTextInput(new JsonTextInput("No Queue Token संख्या " + tokenQueue.getCurrentlyServing() + ", कृप्या " + tokenQueue.getDisplayName() + " " + goTo + " पर जाएं"))
-                        .setJsonAudioConfig(new JsonAudioConfig())
-                        .setJsonVoiceInput(new JsonVoiceInput(bizStore.getCountryShortName(), "hi-IN", "hi-IN-Wavenet-A", SsmlVoiceGender.FEMALE.name()));
-                    jsonTextToSpeeches.add(jsonTextToSpeech);
+                    String nationalLanguageCode = nationalLanguageCode(bizStore.getCountryShortName());
+                    if (null != nationalLanguageCode) {
+                        JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
+                            .setJsonAudioConfig(new JsonAudioConfig())
+                            .setJsonVoiceInput(new JsonVoiceInput(nationalLanguageCode, supportedVoice(nationalLanguageCode), SsmlVoiceGender.FEMALE.name()))
+                            .setJsonTextInput(new JsonTextInput(nowServing(nationalLanguageCode, tokenQueue.getCurrentlyServing(), tokenQueue.getDisplayName(), goTo)));
+                        jsonTextToSpeeches.add(jsonTextToSpeech);
+                    }
 
-                    jsonTextToSpeech = new JsonTextToSpeech()
-                        .setJsonTextInput(new JsonTextInput("No Queue Token number " + tokenQueue.getCurrentlyServing() + ", please visit " + tokenQueue.getDisplayName() + ", in " + goTo))
+                    nationalLanguageCode = foreignLanguageCode(bizStore.getCountryShortName());
+                    JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
                         .setJsonAudioConfig(new JsonAudioConfig())
-                        .setJsonVoiceInput(new JsonVoiceInput(bizStore.getCountryShortName(), "en-IN", "en-IN-Wavenet-C", SsmlVoiceGender.MALE.name()));
+                        .setJsonVoiceInput(new JsonVoiceInput(nationalLanguageCode, supportedVoice(nationalLanguageCode), SsmlVoiceGender.MALE.name()))
+                        .setJsonTextInput(new JsonTextInput(nowServing(nationalLanguageCode, tokenQueue.getCurrentlyServing(), tokenQueue.getDisplayName(), goTo)));
                     jsonTextToSpeeches.add(jsonTextToSpeech);
                 } else if (bizStore.getCountryShortName().equalsIgnoreCase("US")) {
-                    JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
-                        .setJsonTextInput(new JsonTextInput("No Queue Token number " + tokenQueue.getCurrentlyServing() + ", please visit " + tokenQueue.getDisplayName() + ", in " + goTo))
-                        .setJsonAudioConfig(new JsonAudioConfig())
-                        .setJsonVoiceInput(new JsonVoiceInput(bizStore.getCountryShortName(), "en-US", "en-US-Standard-D", SsmlVoiceGender.MALE.name()));
-                    jsonTextToSpeeches.add(jsonTextToSpeech);
+                    String nationalLanguageCode = nationalLanguageCode(bizStore.getCountryShortName());
+                    if (null != nationalLanguageCode) {
+                        JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
+                            .setJsonAudioConfig(new JsonAudioConfig())
+                            .setJsonVoiceInput(new JsonVoiceInput(nationalLanguageCode, supportedVoice(nationalLanguageCode), SsmlVoiceGender.MALE.name()))
+                            .setJsonTextInput(new JsonTextInput(nowServing(nationalLanguageCode, tokenQueue.getCurrentlyServing(), tokenQueue.getDisplayName(), goTo)));
+                        jsonTextToSpeeches.add(jsonTextToSpeech);
+                    }
                 }
                 break;
             case HS:
