@@ -755,8 +755,7 @@ public class TokenQueueService {
                             .setLocKey("serving")
                             .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
                             .setTitle(tokenQueue.getDisplayName());
-
-                        jsonMessage.getData().setJsonTextToSpeech(textToSpeech);
+                        jsonData.setJsonTextToSpeech(textToSpeech);
                     } else {
                         jsonMessage.setNotification(null);
                         jsonData.setBody("Now Serving " + tokenQueue.getCurrentlyServing())
