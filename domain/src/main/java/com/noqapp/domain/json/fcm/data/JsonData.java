@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +45,7 @@ public abstract class JsonData {
     private String imageURL;
 
     @JsonProperty("textToSpeeches")
-    private List<JsonTextToSpeech> jsonTextToSpeeches = new ArrayList<>();
+    private List<JsonTextToSpeech> jsonTextToSpeeches;
 
     JsonData(FirebaseMessageTypeEnum firebaseMessageType) {
         this.firebaseMessageType = firebaseMessageType;
