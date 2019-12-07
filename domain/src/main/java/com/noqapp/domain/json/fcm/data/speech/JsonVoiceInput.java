@@ -29,6 +29,9 @@ import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonVoiceInput {
 
+    @JsonProperty("cs")
+    private String countryShortName;
+
     @JsonProperty("languageCode")
     private String languageCode = "en-gb";
 
@@ -41,10 +44,14 @@ public class JsonVoiceInput {
     public JsonVoiceInput() {
     }
 
-    public JsonVoiceInput(String languageCode, String name, String ssmlGender) {
+    public JsonVoiceInput(String countryShortName, String languageCode, String name, String ssmlGender) {
         this.languageCode = languageCode;
         this.name = name;
         this.ssmlGender = ssmlGender;
+    }
+
+    public String getCountryShortName() {
+        return countryShortName;
     }
 
     public String getLanguageCode() {

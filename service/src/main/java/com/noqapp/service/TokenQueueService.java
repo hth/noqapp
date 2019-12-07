@@ -18,6 +18,10 @@ import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
+import com.noqapp.domain.json.fcm.data.speech.JsonAudioConfig;
+import com.noqapp.domain.json.fcm.data.speech.JsonTextInput;
+import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
+import com.noqapp.domain.json.fcm.data.speech.JsonVoiceInput;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
@@ -33,6 +37,8 @@ import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
+
+import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -54,6 +60,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -746,21 +753,21 @@ public class TokenQueueService {
                     }
                     break;
                 default:
-                    String textToSpeech = "No Queue Token number " + tokenQueue.getCurrentlyServing()
-                        + ", please visit " + tokenQueue.getDisplayName()
-                        + ", in " + goTo;
+                    List<JsonTextToSpeech> jsonTextToSpeeches = populateTextToSpeech(goTo, codeQR, tokenQueue);
                     if (DeviceTypeEnum.I == deviceType) {
                         jsonMessage.getNotification()
                             .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
                             .setLocKey("serving")
                             .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
                             .setTitle(tokenQueue.getDisplayName());
-                        jsonData.setJsonTextToSpeech(textToSpeech);
+
+                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
                     } else {
                         jsonMessage.setNotification(null);
                         jsonData.setBody("Now Serving " + tokenQueue.getCurrentlyServing())
-                            .setTitle(tokenQueue.getDisplayName())
-                            .setJsonTextToSpeech(textToSpeech);
+                            .setTitle(tokenQueue.getDisplayName());
+
+                        jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
                     }
             }
 
@@ -772,6 +779,42 @@ public class TokenQueueService {
                 LOG.debug("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
             }
         }
+    }
+
+    private List<JsonTextToSpeech> populateTextToSpeech(String goTo, String codeQR, TokenQueueEntity tokenQueue) {
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+
+        List<JsonTextToSpeech> jsonTextToSpeeches = new LinkedList<>();
+        switch(tokenQueue.getBusinessType()) {
+            case DO:
+                if (bizStore.getCountryShortName().equalsIgnoreCase("IN")) {
+                    JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
+                        .setJsonTextInput(new JsonTextInput("No Queue Token संख्या " + tokenQueue.getCurrentlyServing() + ", कृप्या " + tokenQueue.getDisplayName() + goTo + " पर जाएं"))
+                        .setJsonAudioConfig(new JsonAudioConfig())
+                        .setJsonVoiceInput(new JsonVoiceInput(bizStore.getCountryShortName(), "hi-IN", "hi-IN-Wavenet-A", SsmlVoiceGender.FEMALE.name()));
+                    jsonTextToSpeeches.add(jsonTextToSpeech);
+
+                    jsonTextToSpeech = new JsonTextToSpeech()
+                        .setJsonTextInput(new JsonTextInput("No Queue Token number " + tokenQueue.getCurrentlyServing() + ", please visit " + tokenQueue.getDisplayName() + ", in " + goTo))
+                        .setJsonAudioConfig(new JsonAudioConfig())
+                        .setJsonVoiceInput(new JsonVoiceInput(bizStore.getCountryShortName(), "en-IN", "en-IN-Wavenet-C", SsmlVoiceGender.MALE.name()));
+                    jsonTextToSpeeches.add(jsonTextToSpeech);
+                } else if (bizStore.getCountryShortName().equalsIgnoreCase("US")) {
+                    JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
+                        .setJsonTextInput(new JsonTextInput("No Queue Token number " + tokenQueue.getCurrentlyServing() + ", please visit " + tokenQueue.getDisplayName() + ", in " + goTo))
+                        .setJsonAudioConfig(new JsonAudioConfig())
+                        .setJsonVoiceInput(new JsonVoiceInput(bizStore.getCountryShortName(), "en-US", "en-US-Standard-D", SsmlVoiceGender.MALE.name()));
+                    jsonTextToSpeeches.add(jsonTextToSpeech);
+                }
+                break;
+            case HS:
+            case FT:
+                break;
+            default:
+                throw new UnsupportedOperationException("Reached unreachable condition");
+        }
+
+        return jsonTextToSpeeches;
     }
 
     /**
