@@ -1,9 +1,6 @@
 package com.noqapp.domain.json.fcm.data;
 
-import com.noqapp.domain.json.fcm.data.speech.JsonAudioConfig;
-import com.noqapp.domain.json.fcm.data.speech.JsonTextInput;
 import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
-import com.noqapp.domain.json.fcm.data.speech.JsonVoiceInput;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -11,6 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -45,8 +45,8 @@ public abstract class JsonData {
     @JsonProperty("imageURL")
     private String imageURL;
 
-    @JsonProperty("textToSpeech")
-    private JsonTextToSpeech jsonTextToSpeech;
+    @JsonProperty("textToSpeeches")
+    private List<JsonTextToSpeech> jsonTextToSpeeches = new ArrayList<>();
 
     JsonData(FirebaseMessageTypeEnum firebaseMessageType) {
         this.firebaseMessageType = firebaseMessageType;
@@ -79,20 +79,12 @@ public abstract class JsonData {
         return this;
     }
 
-    public JsonTextToSpeech getJsonTextToSpeech() {
-        return jsonTextToSpeech;
+    public List<JsonTextToSpeech> getJsonTextToSpeeches() {
+        return jsonTextToSpeeches;
     }
 
-    public JsonData setJsonTextToSpeech(JsonTextToSpeech jsonTextToSpeech) {
-        this.jsonTextToSpeech = jsonTextToSpeech;
-        return this;
-    }
-
-    public JsonData setJsonTextToSpeech(String message) {
-        this.jsonTextToSpeech = new JsonTextToSpeech()
-            .setJsonTextInput(new JsonTextInput(message))
-            .setJsonVoiceInput(new JsonVoiceInput())
-            .setJsonAudioConfig(new JsonAudioConfig());
+    public JsonData setJsonTextToSpeeches(List<JsonTextToSpeech> jsonTextToSpeeches) {
+        this.jsonTextToSpeeches = jsonTextToSpeeches;
         return this;
     }
 }
