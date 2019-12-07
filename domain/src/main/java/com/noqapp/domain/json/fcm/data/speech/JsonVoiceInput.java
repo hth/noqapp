@@ -45,6 +45,7 @@ public class JsonVoiceInput {
     }
 
     public JsonVoiceInput(String countryShortName, String languageCode, String name, String ssmlGender) {
+        this.countryShortName = countryShortName;
         this.languageCode = languageCode;
         this.name = name;
         this.ssmlGender = ssmlGender;

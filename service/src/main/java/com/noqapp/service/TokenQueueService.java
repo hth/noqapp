@@ -789,7 +789,7 @@ public class TokenQueueService {
             case DO:
                 if (bizStore.getCountryShortName().equalsIgnoreCase("IN")) {
                     JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
-                        .setJsonTextInput(new JsonTextInput("No Queue Token संख्या " + tokenQueue.getCurrentlyServing() + ", कृप्या " + tokenQueue.getDisplayName() + goTo + " पर जाएं"))
+                        .setJsonTextInput(new JsonTextInput("No Queue Token संख्या " + tokenQueue.getCurrentlyServing() + ", कृप्या " + tokenQueue.getDisplayName() + " " + goTo + " पर जाएं"))
                         .setJsonAudioConfig(new JsonAudioConfig())
                         .setJsonVoiceInput(new JsonVoiceInput(bizStore.getCountryShortName(), "hi-IN", "hi-IN-Wavenet-A", SsmlVoiceGender.FEMALE.name()));
                     jsonTextToSpeeches.add(jsonTextToSpeech);
