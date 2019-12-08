@@ -1,11 +1,15 @@
 package com.noqapp.common.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * https://cloud.google.com/text-to-speech/docs/voices
  * User: hitender
  * Date: 12/8/19 4:02 AM
  */
 public class TextToSpeechForCountry {
+    private static final Logger LOG = LoggerFactory.getLogger(TextToSpeechForCountry.class);
 
     public static String nationalLanguageCode(String countryShortName) {
         switch (countryShortName) {
@@ -13,6 +17,8 @@ public class TextToSpeechForCountry {
                 return "hi-IN";
             case "US":
                 return "en-US";
+            case "UK":
+                return "en-GB";
             default:
                 return null;
         }
@@ -36,22 +42,23 @@ public class TextToSpeechForCountry {
             case "en-IN":
                 return "en-IN-Wavenet-C";
             case "en-US":
-                return "en-US-Standard-D";
+                return "en-US-Wavenet-D";
+            case "en-UK":
             default:
                 return "en-GB-Wavenet-D";
         }
     }
 
     public static String nowServing(String languageCode, int currentlyServing, String displayName, String goTo) {
-        switch(languageCode) {
+        switch (languageCode) {
             case "hi-IN":
                 return "No Queue Token संख्या " + currentlyServing + " कृप्या " + displayName + " " + goTo + " पर जाएं";
             case "en-IN":
             case "en-US":
                 return "No Queue Token number " + currentlyServing + ", please visit " + displayName + ", in " + goTo;
             default:
+                LOG.error("Reach unsupported condition");
                 throw new UnsupportedOperationException("Reached un-supported condition");
-
         }
     }
 }

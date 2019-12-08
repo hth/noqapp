@@ -1,9 +1,9 @@
 package com.noqapp.service;
 
+import static com.google.cloud.texttospeech.v1.SsmlVoiceGender.FEMALE;
+import static com.google.cloud.texttospeech.v1.SsmlVoiceGender.MALE;
 import static com.noqapp.common.utils.TextToSpeechForCountry.foreignLanguageCode;
 import static com.noqapp.common.utils.TextToSpeechForCountry.nationalLanguageCode;
-import static com.noqapp.common.utils.TextToSpeechForCountry.nowServing;
-import static com.noqapp.common.utils.TextToSpeechForCountry.supportedVoice;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -18,14 +18,12 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.common.PopulateTextToSpeech;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
-import com.noqapp.domain.json.fcm.data.speech.JsonAudioConfig;
-import com.noqapp.domain.json.fcm.data.speech.JsonTextInput;
 import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
-import com.noqapp.domain.json.fcm.data.speech.JsonVoiceInput;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
@@ -41,8 +39,6 @@ import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
-
-import com.google.cloud.texttospeech.v1.SsmlVoiceGender;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -802,33 +798,24 @@ public class TokenQueueService {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
 
         List<JsonTextToSpeech> jsonTextToSpeeches = new LinkedList<>();
-        switch(tokenQueue.getBusinessType()) {
+        switch (tokenQueue.getBusinessType()) {
             case DO:
-                if (bizStore.getCountryShortName().equalsIgnoreCase("IN")) {
-                    String nationalLanguageCode = nationalLanguageCode(bizStore.getCountryShortName());
-                    if (null != nationalLanguageCode) {
-                        JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
-                            .setJsonAudioConfig(new JsonAudioConfig())
-                            .setJsonVoiceInput(new JsonVoiceInput(nationalLanguageCode, supportedVoice(nationalLanguageCode), SsmlVoiceGender.FEMALE.name()))
-                            .setJsonTextInput(new JsonTextInput(nowServing(nationalLanguageCode, tokenQueue.getCurrentlyServing(), tokenQueue.getDisplayName(), goTo)));
-                        jsonTextToSpeeches.add(jsonTextToSpeech);
-                    }
+                switch (bizStore.getCountryShortName()) {
+                    case "IN":
+                        String languageCode = nationalLanguageCode(bizStore.getCountryShortName());
+                        if (null != languageCode) {
+                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(languageCode, goTo, tokenQueue, FEMALE));
+                        }
 
-                    nationalLanguageCode = foreignLanguageCode(bizStore.getCountryShortName());
-                    JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
-                        .setJsonAudioConfig(new JsonAudioConfig())
-                        .setJsonVoiceInput(new JsonVoiceInput(nationalLanguageCode, supportedVoice(nationalLanguageCode), SsmlVoiceGender.MALE.name()))
-                        .setJsonTextInput(new JsonTextInput(nowServing(nationalLanguageCode, tokenQueue.getCurrentlyServing(), tokenQueue.getDisplayName(), goTo)));
-                    jsonTextToSpeeches.add(jsonTextToSpeech);
-                } else if (bizStore.getCountryShortName().equalsIgnoreCase("US")) {
-                    String nationalLanguageCode = nationalLanguageCode(bizStore.getCountryShortName());
-                    if (null != nationalLanguageCode) {
-                        JsonTextToSpeech jsonTextToSpeech = new JsonTextToSpeech()
-                            .setJsonAudioConfig(new JsonAudioConfig())
-                            .setJsonVoiceInput(new JsonVoiceInput(nationalLanguageCode, supportedVoice(nationalLanguageCode), SsmlVoiceGender.MALE.name()))
-                            .setJsonTextInput(new JsonTextInput(nowServing(nationalLanguageCode, tokenQueue.getCurrentlyServing(), tokenQueue.getDisplayName(), goTo)));
-                        jsonTextToSpeeches.add(jsonTextToSpeech);
-                    }
+                        languageCode = foreignLanguageCode(bizStore.getCountryShortName());
+                        jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(languageCode, goTo, tokenQueue, MALE));
+                        break;
+                    case "US":
+                        languageCode = nationalLanguageCode(bizStore.getCountryShortName());
+                        if (null != languageCode) {
+                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(languageCode, goTo, tokenQueue, MALE));
+                        }
+                        break;
                 }
                 break;
             case HS:
