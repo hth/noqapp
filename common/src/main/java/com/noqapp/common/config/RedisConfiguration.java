@@ -10,7 +10,7 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.time.Duration;
@@ -30,20 +30,20 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     private int redisPort;
 
     @Bean
-    JedisConnectionFactory jedisConnectionFactory() {
-        return new JedisConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
+    LettuceConnectionFactory lettuceConnectionFactory() {
+        return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
     }
 
     @Bean
     RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(jedisConnectionFactory());
+        redisTemplate.setConnectionFactory(lettuceConnectionFactory());
         return redisTemplate;
     }
 
     @Bean
-    RedisCacheWriter redisCacheWriter(JedisConnectionFactory jedisConnectionFactory) {
-        return RedisCacheWriter.nonLockingRedisCacheWriter(jedisConnectionFactory);
+    RedisCacheWriter redisCacheWriter(LettuceConnectionFactory lettuceConnectionFactory) {
+        return RedisCacheWriter.nonLockingRedisCacheWriter(lettuceConnectionFactory);
     }
 
     @Bean

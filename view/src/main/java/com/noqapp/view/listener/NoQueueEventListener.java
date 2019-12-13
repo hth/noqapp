@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexRes
 import org.springframework.data.mongodb.core.mapping.BasicMongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,11 +26,17 @@ public class NoQueueEventListener {
 
     private MongoTemplate mongoTemplate;
     private MongoMappingContext mongoMappingContext;
+    private LettuceConnectionFactory lettuceConnectionFactory;
 
     @Autowired
-    public NoQueueEventListener(MongoTemplate mongoTemplate, MongoMappingContext mongoMappingContext) {
+    public NoQueueEventListener(
+        MongoTemplate mongoTemplate,
+        MongoMappingContext mongoMappingContext,
+        LettuceConnectionFactory lettuceConnectionFactory
+    ) {
         this.mongoTemplate = mongoTemplate;
         this.mongoMappingContext = mongoMappingContext;
+        this.lettuceConnectionFactory = lettuceConnectionFactory;
     }
 
     /**
@@ -52,5 +59,14 @@ public class NoQueueEventListener {
             }
         }
         LOG.info("Mongo InitIndicesAfterStartup initialization complete count={}", count);
+    }
+
+    @EventListener
+    public void initRedis(ContextRefreshedEvent event) {
+        if (lettuceConnectionFactory.getConnection().isClosed()) {
+            LOG.error("Redis connection failed");
+            throw new RuntimeException("Redis connection failed");
+        }
+        LOG.info("Redis connected {}", lettuceConnectionFactory.getConnection().ping());
     }
 }

@@ -82,7 +82,7 @@ public class ElasticAdministrationService {
                 throw new RuntimeException("Failed to load file mapping for " + type);
             }
 
-            RequestBody body = RequestBody.create(JSON, json);
+            RequestBody body = RequestBody.create(json, JSON);
             Request request = new Request.Builder()
                 .url(elasticURI + index)
                 .put(body)
@@ -114,7 +114,7 @@ public class ElasticAdministrationService {
             if (!doesIndexExists(index)) {
                 Request request = new Request.Builder()
                     .url(elasticURI + index)
-                    .put(RequestBody.create(JSON, "{}"))
+                    .put(RequestBody.create("{}", JSON))
                     .build();
                 boolean result = parseResponse(request);
                 if (!result) {
@@ -216,7 +216,7 @@ public class ElasticAdministrationService {
     //@Async //For now skipping on @Async and missing source
     String executeDSLQuerySearch(String indexPattern, String query) {
         Instant start = Instant.now();
-        RequestBody body = RequestBody.create(JSON, query);
+        RequestBody body = RequestBody.create(query, JSON);
         Request request = new Request.Builder()
             .url(elasticURI + indexPattern)
             .post(body)
