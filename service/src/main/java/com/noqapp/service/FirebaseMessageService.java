@@ -33,7 +33,7 @@ public class FirebaseMessageService {
 
     @Autowired
     public FirebaseMessageService(
-        @Value ("${firebase.server.key}")
+        @Value("${firebase.server.key}")
         String firebaseServerKey,
 
         OkHttpClient okHttpClient
@@ -50,10 +50,10 @@ public class FirebaseMessageService {
 
         RequestBody body = RequestBody.create(jsonMessage.asJson(), Constants.JSON);
         Request request = new Request.Builder()
-                .url("https://fcm.googleapis.com/fcm/send")
-                .addHeader("Authorization", authorizationKey)
-                .post(body)
-                .build();
+            .url("https://fcm.googleapis.com/fcm/send")
+            .addHeader("Authorization", authorizationKey)
+            .post(body)
+            .build();
         Response response = null;
         try {
             response = okHttpClient.newCall(request).execute();
@@ -70,11 +70,11 @@ public class FirebaseMessageService {
         }
 
         LOG.debug("FCM success HTTP={} topic/token={} headers={} message={} body={}",
-                response.code(),
-                jsonMessage.getTo(),
-                response.headers(),
-                response.message(),
-                response.body());
+            response.code(),
+            jsonMessage.getTo(),
+            response.headers(),
+            response.message(),
+            response.body());
 
         return response.isSuccessful();
     }
