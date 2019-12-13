@@ -47,7 +47,7 @@ public class FirebaseMessageService {
     public boolean messageToTopic(JsonMessage jsonMessage) {
         LOG.info("Sending FCM message with body={}", jsonMessage.asJson());
 
-        RequestBody body = RequestBody.create(Constants.JSON, jsonMessage.asJson());
+        RequestBody body = RequestBody.create(jsonMessage.asJson(), Constants.JSON);
         Request request = new Request.Builder()
                 .url("https://fcm.googleapis.com/fcm/send")
                 .addHeader("Authorization", authorizationKey)
