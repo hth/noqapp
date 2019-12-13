@@ -157,7 +157,7 @@ public class BizNameEntity extends BaseEntity {
 
     @Field("PP")
     private Map<String, PaymentPermissionEnum> paymentPermissions = new HashMap<String, PaymentPermissionEnum>() {{
-        put(UserLevelEnum.S_MANAGER.name(), PaymentPermissionEnum.D);
+        put(UserLevelEnum.S_MANAGER.name(), PaymentPermissionEnum.A);
         put(UserLevelEnum.Q_SUPERVISOR.name(), PaymentPermissionEnum.A);
     }};
 
