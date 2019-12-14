@@ -148,8 +148,9 @@
                                                             <tr>
                                                                 <th>&nbsp;</th>
                                                                 <th nowrap>Name</th>
-                                                                <th nowrap>Payment</th>
-                                                                <th nowrap>End State</th>
+                                                                <th nowrap>Amount</th>
+                                                                <th nowrap>Paid Via</th>
+                                                                <th>Order State</th>
                                                                 <th>User Rating</th>
                                                                 <th>Date of Service</th>
                                                             </tr>
@@ -207,8 +208,9 @@
                                                             <tr>
                                                                 <th>&nbsp;</th>
                                                                 <th nowrap>Name</th>
-                                                                <th nowrap>Payment</th>
-                                                                <th nowrap>End State</th>
+                                                                <th nowrap>Amount</th>
+                                                                <th nowrap>Paid Via</th>
+                                                                <th>Order State</th>
                                                                 <th>User Rating</th>
                                                                 <th>Date of Service</th>
                                                             </tr>

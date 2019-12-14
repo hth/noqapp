@@ -67,6 +67,6 @@ public class NoQueueEventListener {
             LOG.error("Redis connection failed");
             throw new RuntimeException("Redis connection failed");
         }
-        LOG.info("Redis connected {}", lettuceConnectionFactory.getConnection().ping());
+        LOG.info("Redis pinged on port={} response={}", lettuceConnectionFactory.getPort(), lettuceConnectionFactory.getConnection().ping());
     }
 }
