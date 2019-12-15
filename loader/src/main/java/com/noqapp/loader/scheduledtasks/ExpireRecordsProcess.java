@@ -16,11 +16,11 @@ import org.springframework.stereotype.Component;
  * User: hitender
  * Date: 9/24/17 12:51 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Component
 public class ExpireRecordsProcess {
@@ -33,11 +33,11 @@ public class ExpireRecordsProcess {
 
     @Autowired
     public ExpireRecordsProcess(
-            @Value ("${ExpireRecordsProcess.forgotPasswordSwitch}")
-            String forgotPasswordSwitch,
+        @Value("${ExpireRecordsProcess.forgotPasswordSwitch}")
+        String forgotPasswordSwitch,
 
-            ForgotRecoverManager forgotRecoverManager,
-            StatsCronService statsCronService
+        ForgotRecoverManager forgotRecoverManager,
+        StatsCronService statsCronService
     ) {
         this.forgotPasswordSwitch = forgotPasswordSwitch;
 
@@ -48,12 +48,12 @@ public class ExpireRecordsProcess {
     /**
      * Expires the password reset link after stipulated time.
      */
-    @Scheduled (fixedDelayString = "${loader.ExpireRecordsProcess.markExpiredForgotPassword}")
+    @Scheduled(fixedDelayString = "${loader.ExpireRecordsProcess.markExpiredForgotPassword}")
     public void markExpiredForgotPassword() {
         StatsCronEntity statsCron = new StatsCronEntity(
-                ExpireRecordsProcess.class.getName(),
-                "MarkExpiredForgotPassword",
-                forgotPasswordSwitch);
+            ExpireRecordsProcess.class.getName(),
+            "MarkExpiredForgotPassword",
+            forgotPasswordSwitch);
 
         if ("OFF".equalsIgnoreCase(forgotPasswordSwitch)) {
             return;
@@ -67,7 +67,7 @@ public class ExpireRecordsProcess {
             LOG.error("Failed marking records in active older than three hours, reason={}", e.getLocalizedMessage(), e);
             failure++;
         } finally {
-            if (0 != recordsModified || 0 !=  failure) {
+            if (0 != recordsModified || 0 != failure) {
                 statsCron.addStats("failure", failure);
                 statsCron.addStats("success", recordsModified);
                 statsCronService.save(statsCron);
