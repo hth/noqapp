@@ -1,5 +1,7 @@
 package com.noqapp.common.config;
 
+import static io.lettuce.core.ReadFrom.REPLICA_PREFERRED;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -10,6 +12,7 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
@@ -31,7 +34,12 @@ public class RedisConfiguration extends CachingConfigurerSupport {
 
     @Bean
     LettuceConnectionFactory lettuceConnectionFactory() {
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort));
+        LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
+            .readFrom(REPLICA_PREFERRED)
+            .build();
+
+        RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
+        return new LettuceConnectionFactory(serverConfig, clientConfig);
     }
 
     @Bean
