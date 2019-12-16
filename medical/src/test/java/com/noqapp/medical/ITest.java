@@ -300,7 +300,7 @@ public class ITest extends RealMongoForITest {
             textToSpeechConfiguration,
             customTextToSpeechService
         );
-        
+
         tokenQueueService = new TokenQueueService(
             tokenQueueManager,
             firebaseMessageService,

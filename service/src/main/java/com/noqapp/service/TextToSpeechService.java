@@ -44,8 +44,8 @@ import javax.validation.constraints.NotNull;
 @Service
 public class TextToSpeechService {
 
-    private String nowServingEnglish = "No Queue token संख्या {currentlyServing} कृप्या {displayName} {goTo} पर जाएं";
-    private String nowServingHindi = "No Queue token number {currentlyServing}, please visit {displayName}, in {goTo}";
+    private String nowServingEnglish = "No Queue token संख्या ${currentlyServing} कृप्या ${displayName} ${goTo} पर जाएं";
+    private String nowServingHindi = "No Queue token number ${currentlyServing}, please visit ${displayName}, in ${goTo}";
 
     private BizStoreManager bizStoreManager;
     private TextToSpeechConfiguration textToSpeechConfiguration;

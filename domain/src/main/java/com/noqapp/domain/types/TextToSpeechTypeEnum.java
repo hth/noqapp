@@ -10,7 +10,7 @@ import java.util.Map;
  * Date: 12/16/19 3:25 AM
  */
 public enum TextToSpeechTypeEnum {
-    SN("SN", "Serving Now", Arrays.asList("{currentlyServing}", "{displayName}", "{goTo}"));
+    SN("SN", "Serving Now", Arrays.asList("${currentlyServing}", "${displayName}", "${goTo}"));
 
     private final String name;
     private final String description;
