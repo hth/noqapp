@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.TextToSpeechTypeEnum, java.util.Locale" %>
+<%@ page import="com.noqapp.domain.types.TextToSpeechTypeEnum, com.noqapp.domain.types.ActionTypeEnum, java.util.Locale" %>
 <%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -149,7 +149,14 @@
                                                 <td><span style="display:block; font-size:13px;">${status.count}&nbsp;</span></td>
                                                 <td><span style="display:block; font-size:13px;">${Locale.forLanguageTag(textToSpeech.languageTag).displayCountry} (${Locale.forLanguageTag(textToSpeech.languageTag).displayLanguage})&nbsp;</span></td>
                                                 <td><span style="display:block; font-size:13px;">${textToSpeech.template}&nbsp;</span></td>
-                                                <td>&nbsp;</td>
+                                                <td>
+                                                    <form:form action="${pageContext.request.contextPath}/business/customTextToSpeech/action.htm" modelAttribute="customTextToSpeechForm" method="post">
+                                                        <form:hidden path="actionType" value="${ActionTypeEnum.REMOVE}" />
+                                                        <form:hidden path="textToSpeechType" value="${textToSpeechTemplate.key}" />
+                                                        <form:hidden path="languageTag" value="${textToSpeech.languageTag}" />
+                                                        <input class="cancel-btn" style="margin: 0;" value="Delete" type="submit" name="action-announcement">
+                                                    </form:form>
+                                                </td>
                                             </tr>
                                             </c:forEach>
                                         </table>
@@ -157,7 +164,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <div class="alert-info">
-                                            <p>System is set for default announcement.</p>
+                                            <p>System is set for default announcement as custom announcement is not configured.</p>
                                         </div>
                                     </c:otherwise>
                                 </c:choose>

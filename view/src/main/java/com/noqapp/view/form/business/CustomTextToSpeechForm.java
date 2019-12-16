@@ -1,6 +1,7 @@
 package com.noqapp.view.form.business;
 
 import com.noqapp.domain.CustomTextToSpeechEntity;
+import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.TextToSpeechTypeEnum;
 
 import java.util.Map;
@@ -14,6 +15,7 @@ public class CustomTextToSpeechForm {
     private TextToSpeechTypeEnum textToSpeechType;
     private String languageTag = "en-US";
     private String template = "NoQueue token number ${currentlyServing}, please visit ${displayName}, in ${goTo}";
+    private ActionTypeEnum actionType;
 
     private CustomTextToSpeechEntity customTextToSpeech;
 
@@ -45,6 +47,15 @@ public class CustomTextToSpeechForm {
 
     public CustomTextToSpeechForm setTemplate(String template) {
         this.template = template;
+        return this;
+    }
+
+    public ActionTypeEnum getActionType() {
+        return actionType;
+    }
+
+    public CustomTextToSpeechForm setActionType(ActionTypeEnum actionType) {
+        this.actionType = actionType;
         return this;
     }
 

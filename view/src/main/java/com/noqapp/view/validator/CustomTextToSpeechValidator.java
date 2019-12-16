@@ -61,7 +61,7 @@ public class CustomTextToSpeechValidator implements Validator {
                 switch (customTextToSpeechForm.getTextToSpeechType()) {
                     case SN:
                         Set<TextToSpeechTemplate> textToSpeechTemplateSet = customTextToSpeechForm.getCustomTextToSpeech().getTextToSpeechTemplates().get(SN.name());
-                        if (textToSpeechTemplateSet.size() >= 2) {
+                        if (null != textToSpeechTemplateSet && textToSpeechTemplateSet.size() >= 2) {
                             errors.rejectValue("template",
                                 "max.limit",
                                 new Object[]{"Custom Announcement", 2, "announcement"},
