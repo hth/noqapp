@@ -189,6 +189,7 @@ public class CustomTextToSpeechController {
                 }
                 break;
             default:
+                LOG.error("Reached unreachable condition {}", customTextToSpeechForm.getActionType());
                 throw new UnsupportedOperationException("Reached Unsupported Condition");
         }
         customTextToSpeechForm
