@@ -31,4 +31,8 @@ public class CustomTextToSpeechService {
     public void save(CustomTextToSpeechEntity customTextToSpeech) {
         customTextToSpeechManager.save(customTextToSpeech);
     }
+
+    public void remove(CustomTextToSpeechEntity customTextToSpeech) {
+        customTextToSpeechManager.deleteHard(customTextToSpeech);
+    }
 }

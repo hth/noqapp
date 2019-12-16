@@ -149,8 +149,6 @@ public class CustomTextToSpeechController {
         customTextToSpeechService.save(customTextToSpeech);
 
         customTextToSpeechForm
-            .setCustomTextToSpeech(customTextToSpeech)
-            .setSupportedSpeechLocaleMap(CommonUtil.localeToLanguage(textToSpeechService.supportedSpeechLocale()))
             .setTextToSpeechType(null)
             .setLanguageTag(null)
             .setTemplate(null);
@@ -158,9 +156,46 @@ public class CustomTextToSpeechController {
         return "redirect:" + "/business/customTextToSpeech/landing.htm";
     }
 
-    /** For uploading service image. */
+    /** For cancelling creating announcement image. */
     @PostMapping (value = "/landing", params = {"cancel-announcement"})
     public String landing() {
         return "redirect:/business/landing.htm";
+    }
+
+    @PostMapping(value = "/action", params = {"action-announcement"}, produces = "text/html;charset=UTF-8")
+    public String action(
+        @ModelAttribute("customTextToSpeechForm")
+        CustomTextToSpeechForm customTextToSpeechForm,
+
+        BindingResult result,
+        RedirectAttributes redirectAttrs
+    ) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        LOG.info("Landed on survey page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        CustomTextToSpeechEntity customTextToSpeech = customTextToSpeechService.findByBizNameId(businessUser.getBizName().getId());
+        switch (customTextToSpeechForm.getActionType()) {
+            case REMOVE:
+                Set<TextToSpeechTemplate> textToSpeechTemplates = customTextToSpeech.getTextToSpeechTemplates().get(customTextToSpeechForm.getTextToSpeechType().name());
+                textToSpeechTemplates.remove(new TextToSpeechTemplate().setLanguageTag(customTextToSpeechForm.getLanguageTag()));
+
+                if (textToSpeechTemplates.size() == 0) {
+                    customTextToSpeech.setTextToSpeechTemplates(null);
+                    customTextToSpeechService.remove(customTextToSpeech);
+                } else {
+                    customTextToSpeechService.save(customTextToSpeech);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Reached Unsupported Condition");
+        }
+        customTextToSpeechForm
+            .setTextToSpeechType(null)
+            .setLanguageTag(null)
+            .setTemplate(null);
+        redirectAttrs.addFlashAttribute("customTextToSpeechForm", customTextToSpeechForm);
+        return "redirect:" + "/business/customTextToSpeech/landing.htm";
     }
 }
