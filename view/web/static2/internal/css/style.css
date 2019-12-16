@@ -224,7 +224,7 @@ span.become-btn a:hover{background:#1c1c1c;}
 .dropdown-content {
     display: none;
     position: absolute; 
-    min-width: 160px;
+    min-width: 220px;
     z-index: 1; margin:3px 0 0 -100px; left:0;
 }
 .dropdown-inner{ background-color: #222; padding:4px 0 8px 0}

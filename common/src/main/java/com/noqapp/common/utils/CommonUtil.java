@@ -238,4 +238,16 @@ public final class CommonUtil {
     public static Map<String, String> getLanguages() {
         return languages;
     }
+
+    public static Map<String, String> localeToLanguage(Set<Locale> locales) {
+        Map<String, String> a = new LinkedHashMap<>();
+        for (Locale locale : locales) {
+            a.put(locale.toLanguageTag(), locale.getDisplayCountry() + " (" + locale.getDisplayLanguage() + ")");
+        }
+
+        /* Sort by value. */
+        return a.entrySet().stream()
+            .sorted(Map.Entry.comparingByValue())
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+    }
 }

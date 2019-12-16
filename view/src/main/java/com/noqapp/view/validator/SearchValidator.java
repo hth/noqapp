@@ -47,7 +47,7 @@ public class SearchValidator implements Validator {
                 errors.rejectValue("search",
                         "field.length",
                         new Object[]{"Search", searchLength},
-                        "Search minimum length is less than 3 characters");
+                        "Search minimum length is less than " + searchLength + " characters");
             }
         }
     }

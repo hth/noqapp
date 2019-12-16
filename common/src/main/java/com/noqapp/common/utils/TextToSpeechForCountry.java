@@ -48,17 +48,4 @@ public class TextToSpeechForCountry {
                 return "en-GB-Wavenet-D";
         }
     }
-
-    public static String nowServing(String languageCode, int currentlyServing, String displayName, String goTo) {
-        switch (languageCode) {
-            case "hi-IN":
-                return "No Queue Token संख्या " + currentlyServing + " कृप्या " + displayName + " " + goTo + " पर जाएं";
-            case "en-IN":
-            case "en-US":
-                return "No Queue Token number " + currentlyServing + ", please visit " + displayName + ", in " + goTo;
-            default:
-                LOG.error("Reach unsupported condition");
-                throw new UnsupportedOperationException("Reached un-supported condition");
-        }
-    }
 }
