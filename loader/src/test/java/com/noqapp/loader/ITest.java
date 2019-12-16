@@ -1,5 +1,6 @@
 package com.noqapp.loader;
 
+import com.noqapp.common.config.TextToSpeechConfiguration;
 import com.noqapp.health.repository.ApiHealthNowManager;
 import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
@@ -31,6 +32,8 @@ import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.BusinessUserStoreManagerImpl;
 import com.noqapp.repository.CouponManager;
 import com.noqapp.repository.CouponManagerImpl;
+import com.noqapp.repository.CustomTextToSpeechManager;
+import com.noqapp.repository.CustomTextToSpeechManagerImpl;
 import com.noqapp.repository.EmailValidateManager;
 import com.noqapp.repository.EmailValidateManagerImpl;
 import com.noqapp.repository.ForgotRecoverManager;
@@ -82,6 +85,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessCustomerService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.CouponService;
+import com.noqapp.service.CustomTextToSpeechService;
 import com.noqapp.service.EmailValidateService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FirebaseMessageService;
@@ -94,6 +98,7 @@ import com.noqapp.service.PurchaseOrderProductService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreCategoryService;
+import com.noqapp.service.TextToSpeechService;
 import com.noqapp.service.TokenQueueService;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -128,6 +133,8 @@ public class ITest extends RealMongoForITest {
     protected StatsCronService statsCronService;
     protected PurchaseOrderProductService purchaseOrderProductService;
     protected CouponService couponService;
+    protected TextToSpeechService textToSpeechService;
+    protected CustomTextToSpeechService customTextToSpeechService;
 
     protected TokenQueueManager tokenQueueManager;
     protected QueueManager queueManager;
@@ -164,6 +171,7 @@ public class ITest extends RealMongoForITest {
     protected PurchaseOrderProductManager purchaseOrderProductManager;
     protected AdvertisementManager advertisementManager;
     protected CouponManager couponManager;
+    protected CustomTextToSpeechManager customTextToSpeechManager;
 
     protected S3FileManager s3FileManager;
     protected StoreProductManager storeProductManager;
@@ -174,6 +182,7 @@ public class ITest extends RealMongoForITest {
     @Mock protected QueueManagerJDBC queueManagerJDBC;
     @Mock protected PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     @Mock protected PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
+    @Mock protected TextToSpeechConfiguration textToSpeechConfiguration;
 
     @BeforeAll
     public void globalISetup() {
@@ -212,6 +221,7 @@ public class ITest extends RealMongoForITest {
         statsBizStoreDailyManager = new StatsBizStoreDailyManagerImpl(getMongoTemplate());
         statsCronManager = new StatsCronManagerImpl(getMongoTemplate());
         couponManager = new CouponManagerImpl(getMongoTemplate());
+        customTextToSpeechManager = new CustomTextToSpeechManagerImpl(getMongoTemplate());
 
         userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
         firebaseMessageService = new FirebaseMessageService("", okHttpClient);
@@ -240,6 +250,13 @@ public class ITest extends RealMongoForITest {
             forgotRecoverManager
         );
 
+        customTextToSpeechService = new CustomTextToSpeechService(customTextToSpeechManager);
+        textToSpeechService = new TextToSpeechService(
+            bizStoreManager,
+            textToSpeechConfiguration,
+            customTextToSpeechService
+        );
+
         tokenQueueService = new TokenQueueService(
             tokenQueueManager,
             firebaseMessageService,
@@ -250,6 +267,7 @@ public class ITest extends RealMongoForITest {
             storeHourManager,
             bizStoreManager,
             businessCustomerService,
+            textToSpeechService,
             apiHealthService
         );
 
