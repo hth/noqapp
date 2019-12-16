@@ -84,6 +84,7 @@ public class TokenQueueService {
     private StoreHourManager storeHourManager;
     private BizStoreManager bizStoreManager;
     private BusinessCustomerService businessCustomerService;
+    private TextToSpeechService textToSpeechService;
     private ApiHealthService apiHealthService;
 
     private ExecutorService executorService;
@@ -99,6 +100,7 @@ public class TokenQueueService {
         StoreHourManager storeHourManager,
         BizStoreManager bizStoreManager,
         BusinessCustomerService businessCustomerService,
+        TextToSpeechService textToSpeechService,
         ApiHealthService apiHealthService
     ) {
         this.tokenQueueManager = tokenQueueManager;
@@ -110,6 +112,7 @@ public class TokenQueueService {
         this.storeHourManager = storeHourManager;
         this.bizStoreManager = bizStoreManager;
         this.businessCustomerService = businessCustomerService;
+        this.textToSpeechService = textToSpeechService;
         this.apiHealthService = apiHealthService;
 
         this.executorService = newCachedThreadPool();
@@ -753,7 +756,7 @@ public class TokenQueueService {
                     }
                     break;
                 default:
-                    List<JsonTextToSpeech> jsonTextToSpeeches = populateTextToSpeech(goTo, codeQR, tokenQueue);
+                    List<JsonTextToSpeech> jsonTextToSpeeches = textToSpeechService.populateTextToSpeech(goTo, codeQR, tokenQueue);
                     if (DeviceTypeEnum.I == deviceType) {
                         jsonMessage.getNotification()
                             .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
@@ -779,53 +782,6 @@ public class TokenQueueService {
                 LOG.debug("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
             }
         }
-    }
-
-    /**
-     * https://cloud.google.com/text-to-speech/docs/voices
-     * https://stackoverflow.com/questions/36681232/android-tts-male-voices
-     * https://www.journaldev.com/21904/android-text-to-speech-tts
-     * https://stackoverflow.com/questions/3058919/text-to-speechtts-android
-     * https://android-developers.googleblog.com/2009/09/introduction-to-text-to-speech-in.html
-     * https://o7planning.org/en/10503/android-text-to-speech-tutorial
-     *
-     * @param goTo
-     * @param codeQR
-     * @param tokenQueue
-     * @return
-     */
-    private List<JsonTextToSpeech> populateTextToSpeech(String goTo, String codeQR, TokenQueueEntity tokenQueue) {
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-
-        List<JsonTextToSpeech> jsonTextToSpeeches = new LinkedList<>();
-        switch (tokenQueue.getBusinessType()) {
-            case DO:
-                switch (bizStore.getCountryShortName()) {
-                    case "IN":
-                        String languageCode = nationalLanguageCode(bizStore.getCountryShortName());
-                        if (null != languageCode) {
-                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(languageCode, goTo, tokenQueue, FEMALE));
-                        }
-
-                        languageCode = foreignLanguageCode(bizStore.getCountryShortName());
-                        jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(languageCode, goTo, tokenQueue, MALE));
-                        break;
-                    case "US":
-                        languageCode = nationalLanguageCode(bizStore.getCountryShortName());
-                        if (null != languageCode) {
-                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(languageCode, goTo, tokenQueue, MALE));
-                        }
-                        break;
-                }
-                break;
-            case HS:
-            case FT:
-                break;
-            default:
-                throw new UnsupportedOperationException("Reached unreachable condition");
-        }
-
-        return jsonTextToSpeeches;
     }
 
     /**

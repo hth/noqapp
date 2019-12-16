@@ -298,15 +298,15 @@
                 <div class="error-box">
                     <div class="error-txt">
                         <spring:hasBindErrors name="professionalProfileForm">
-                            <div class="error-box">
-                                <div class="error-txt">
-                                    <ul>
-                                        <c:forEach items="${errors.allErrors}" var="message">
-                                            <li><spring:message message="${message}" /></li>
-                                        </c:forEach>
-                                    </ul>
-                                </div>
+                        <div class="error-box">
+                            <div class="error-txt">
+                                <ul>
+                                    <c:forEach items="${errors.allErrors}" var="message">
+                                    <li><spring:message message="${message}" /></li>
+                                    </c:forEach>
+                                </ul>
                             </div>
+                        </div>
                         </spring:hasBindErrors>
                     </div>
                 </div>

@@ -134,8 +134,7 @@ public class FileOperationOnS3 {
         }
 
         /* Moved manager initialization here to manage FileContent failure. */
-        DefaultFileSystemManager manager = new StandardFileSystemManager();
-        try {
+        try (DefaultFileSystemManager manager = new StandardFileSystemManager()) {
             manager.init();
             FileObject[] fileObjects = ftpService.getAllFilesInDirectory(PROFILE, manager);
             if (fileObjects.length == 0) {
@@ -210,8 +209,6 @@ public class FileOperationOnS3 {
             }
         } catch (FileSystemException e) {
             LOG.error("Failed to get directory={} reason={}", PROFILE, e.getLocalizedMessage(), e);
-        } finally {
-            manager.close();
         }
     }
 
@@ -323,8 +320,7 @@ public class FileOperationOnS3 {
 
     private void processUploadToS3(String location) {
         /* Moved manager initialization here to manage FileContent failure. */
-        DefaultFileSystemManager manager = new StandardFileSystemManager();
-        try {
+        try (DefaultFileSystemManager manager = new StandardFileSystemManager()) {
             manager.init();
             FileObject[] fileObjects = ftpService.getAllFilesInDirectory(location, manager);
             if (fileObjects.length == 0) {
@@ -401,8 +397,6 @@ public class FileOperationOnS3 {
             }
         } catch (FileSystemException e) {
             LOG.error("Failed to get directory={} reason={}", location, e.getLocalizedMessage(), e);
-        } finally {
-            manager.close();
         }
     }
 
