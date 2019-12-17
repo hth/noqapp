@@ -6,8 +6,8 @@ package com.noqapp.domain.types.medical;
  */
 public enum FormVersionEnum {
     /* Format of four letters, A1 to A9 and then B1 to B9 and so on. */
-    MFD1("MFD1", "Dynamic Option", "Since 2019", "Exp 2020"),
-    MFS1("MFS1", "Scribble", "Since 2019", "Exp 2020");
+    MFD1("MFD1", "Dynamic Option", "Since 2019", "Exp 2021"),
+    MFS1("MFS1", "Scribble", "Since 2019", "Exp 2021");
 
     private final String name;
     private final String description;
