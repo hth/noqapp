@@ -44,8 +44,8 @@ import javax.validation.constraints.NotNull;
 @Service
 public class TextToSpeechService {
 
-    private String nowServingEnglish = "No Queue token संख्या ${currentlyServing} कृप्या ${displayName} ${goTo} पर जाएं";
-    private String nowServingHindi = "No Queue token number ${currentlyServing}, please visit ${displayName}, in ${goTo}";
+    private String nowServingEnglish = "No Queue token संख्या ${currentlyServingToken} कृप्या ${queueServiceName} ${goTo} पर जाएं";
+    private String nowServingHindi = "No Queue token number ${currentlyServingToken}, please visit ${queueServiceName}, in ${goTo}";
 
     private BizStoreManager bizStoreManager;
     private TextToSpeechConfiguration textToSpeechConfiguration;
@@ -137,8 +137,8 @@ public class TextToSpeechService {
     @NotNull
     private Map<String, String> populateNowServingMap(String goTo, TokenQueueEntity tokenQueue) {
         Map<String, String> valuesMap = new HashMap<>();
-        valuesMap.put("currentlyServing", String.valueOf(tokenQueue.getCurrentlyServing()));
-        valuesMap.put("displayName", tokenQueue.getDisplayName());
+        valuesMap.put("currentlyServingToken", String.valueOf(tokenQueue.getCurrentlyServing()));
+        valuesMap.put("queueServiceName", tokenQueue.getDisplayName());
         valuesMap.put("goTo", goTo);
         return valuesMap;
     }
