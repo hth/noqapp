@@ -18,8 +18,8 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QuestionnaireManager;
 import com.noqapp.repository.SurveyManager;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -50,7 +50,8 @@ public class SurveyService {
 
     private ExecutorService executorService;
 
-    private final Cache<String, String> cache = CacheBuilder.newBuilder()
+    /* Set cache parameters. */
+    private static final Cache<String, String> cache = Caffeine.newBuilder()
         .maximumSize(100)
         .expireAfterWrite(2, TimeUnit.HOURS)
         .build();

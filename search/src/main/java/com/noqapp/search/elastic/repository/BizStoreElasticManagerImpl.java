@@ -10,8 +10,8 @@ import com.noqapp.search.elastic.domain.BizStoreElastic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,8 +66,8 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
     private RestHighLevelClient restHighLevelClient;
 
-    //Set cache parameters
-    private static final Cache<BusinessTypeEnum, Map<String, String>> categoryCache = CacheBuilder.newBuilder()
+    /* Set cache parameters. */
+    private static final Cache<BusinessTypeEnum, Map<String, String>> categoryCache = Caffeine.newBuilder()
         .maximumSize(1000)
         .expireAfterWrite(2, TimeUnit.MINUTES)
         .build();
