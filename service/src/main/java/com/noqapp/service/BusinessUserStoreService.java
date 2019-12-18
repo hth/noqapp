@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -104,10 +105,12 @@ public class BusinessUserStoreService {
     }
 
     @Mobile
+    @Cacheable(value = "access-codeQR")
     public boolean hasAccess(String qid, String codeQR) {
         return businessUserStoreManager.hasAccess(qid, codeQR);
     }
 
+    @Cacheable(value = "access-store")
     public boolean hasAccessUsingStoreId(String qid, String bizStoreId) {
         return businessUserStoreManager.hasAccessUsingStoreId(qid, bizStoreId);
     }
