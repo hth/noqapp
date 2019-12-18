@@ -24,7 +24,6 @@ import com.google.protobuf.ByteString;
 import org.apache.commons.text.StringSubstitutor;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -143,7 +142,6 @@ public class TextToSpeechService {
         return valuesMap;
     }
 
-    @Cacheable(value = "supported-speech-language")
     public Set<String> supportedLanguages() {
         List<Voice> voices = listAllSupportedVoices();
 

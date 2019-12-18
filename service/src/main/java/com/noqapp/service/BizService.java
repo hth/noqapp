@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -333,16 +334,19 @@ public class BizService {
         return bizStoreManager.getAllBizStoresMatchingAddress(bizStoreAddress, bizNameId);
     }
 
+    @Cacheable(value = "bizStore-codeQR")
     public BizStoreEntity findByCodeQR(String codeQR) {
         return bizStoreManager.findByCodeQR(codeQR);
     }
 
     @Mobile
+    @Cacheable(value = "bizStore-valid-codeQR")
     public boolean isValidCodeQR(String codeQR) {
         return Validate.isValidObjectId(codeQR) && bizStoreManager.isValidCodeQR(codeQR);
     }
 
     @Mobile
+    @Cacheable(value = "bizName-valid-codeQR")
     public boolean isValidBizNameCodeQR(String codeQR) {
         return Validate.isValidObjectId(codeQR) && bizNameManager.isValidCodeQR(codeQR);
     }
