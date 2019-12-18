@@ -2,12 +2,8 @@ package com.noqapp.search.elastic.repository;
 
 import static com.noqapp.search.elastic.repository.BizStoreElasticManagerImpl.replaceCategoryIdWithCategoryName;
 
-import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
-
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +29,7 @@ import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.rest.RestStatus;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * User: hitender
@@ -53,12 +47,6 @@ public class BizStoreSpatialElasticManagerImpl implements BizStoreSpatialElastic
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticManagerImpl.class);
 
     private RestHighLevelClient restHighLevelClient;
-
-    //Set cache parameters
-    private final Cache<BusinessTypeEnum, Map<String, String>> categoryCache = CacheBuilder.newBuilder()
-        .maximumSize(1000)
-        .expireAfterWrite(2, TimeUnit.MINUTES)
-        .build();
 
     @Autowired
     public BizStoreSpatialElasticManagerImpl(RestHighLevelClient restHighLevelClient) {

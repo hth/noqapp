@@ -1,7 +1,7 @@
 package com.noqapp.view.cache;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import net.pieroxy.ua.detection.UserAgentDetectionResult;
 import net.pieroxy.ua.detection.UserAgentDetector;
@@ -15,20 +15,20 @@ import java.util.concurrent.TimeUnit;
  * User: hitender
  * Date: 11/19/16 7:09 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 public final class CachedUserAgentStringParser {
     private static final Logger LOG = LoggerFactory.getLogger(CachedUserAgentStringParser.class);
 
-    //Set cache parameters
-    private final Cache<String, UserAgentDetectionResult> cache = CacheBuilder.newBuilder()
-            .maximumSize(100)
-            .expireAfterWrite(2, TimeUnit.HOURS)
-            .build();
+    /* Set cache parameters. */
+    private final Cache<String, UserAgentDetectionResult> cache = Caffeine.newBuilder()
+        .maximumSize(100)
+        .expireAfterWrite(2, TimeUnit.HOURS)
+        .build();
 
     private CachedUserAgentStringParser() {
     }
