@@ -39,19 +39,19 @@ import java.util.stream.Stream;
  * Date: 3/1/17 12:27 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(RegisteredDeviceManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            RegisteredDeviceEntity.class,
-            Document.class,
-            "collection");
+        RegisteredDeviceEntity.class,
+        Document.class,
+        "collection");
 
     @Value("${device.lastAccessed.now}")
     private String deviceLastAccessedNow;
@@ -84,20 +84,32 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         } else {
             /* Apply condition only if field exist. Solved using orOperator. */
             query = query(
-                    where("DID").is(did)
-                            .orOperator(
-                                    where("QID").exists(false),
-                                    where("QID").is(qid)
-                            ));
+                where("DID").is(did)
+                    .orOperator(
+                        where("QID").exists(false),
+                        where("QID").is(qid)
+                    ));
         }
         return mongoTemplate.findOne(
-                query,
-                RegisteredDeviceEntity.class,
-                TABLE);
+            query,
+            RegisteredDeviceEntity.class,
+            TABLE);
     }
 
     @Override
-    public boolean updateDevice(String id, String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String model, String osVersion, boolean sinceBeginning) {
+    public boolean updateDevice(
+        String id,
+        String did,
+        String qid,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String model,
+        String osVersion,
+        double[] coordinate,
+        String ipAddress,
+        boolean sinceBeginning
+    ) {
         if (StringUtils.isBlank(qid)) {
             return mongoTemplate.updateFirst(
                 query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
@@ -106,6 +118,10 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                     .set("TK", token)
                     .set("MO", model)
                     .set("OS", osVersion)
+                    .set("COR", coordinate)
+                    .addToSet("CH", coordinate)
+                    .set("IP", ipAddress)
+                    .addToSet("IH", ipAddress)
                     .set("SB", sinceBeginning)),
                 RegisteredDeviceEntity.class,
                 TABLE
@@ -119,6 +135,10 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .set("TK", token)
                 .set("MO", model)
                 .set("OS", osVersion)
+                .set("COR", coordinate)
+                .addToSet("CH", coordinate)
+                .set("IP", ipAddress)
+                .addToSet("IH", ipAddress)
                 .set("SB", sinceBeginning)),
             RegisteredDeviceEntity.class,
             TABLE
@@ -133,20 +153,20 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         } else {
             /* Apply condition only if field exist. Solved using orOperator. */
             query = query(
-                    where("DID").is(did)
-                            .orOperator(
-                                    where("QID").exists(false),
-                                    where("QID").is(qid)
-                            ).andOperator(
-                                isActive(),
-                                isNotDeleted()
-                            )
-                    );
+                where("DID").is(did)
+                    .orOperator(
+                        where("QID").exists(false),
+                        where("QID").is(qid)
+                    ).andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            );
         }
         return mongoTemplate.find(
-                query,
-                RegisteredDeviceEntity.class,
-                TABLE);
+            query,
+            RegisteredDeviceEntity.class,
+            TABLE);
     }
 
     @Override
@@ -159,9 +179,9 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         }
 
         RegisteredDeviceEntity registeredDevice = mongoTemplate.findOne(
-                query,
-                RegisteredDeviceEntity.class,
-                TABLE
+            query,
+            RegisteredDeviceEntity.class,
+            TABLE
         );
 
         if (registeredDevice == null) {
@@ -175,14 +195,14 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public List<RegisteredDeviceEntity> findAll(String qid) {
         return mongoTemplate.find(
-                query(where("QID").is(qid)
-                    .andOperator(
-                        isActive(),
-                        isNotDeleted()
-                    )
-                ),
-                RegisteredDeviceEntity.class,
-                TABLE
+            query(where("QID").is(qid)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ),
+            RegisteredDeviceEntity.class,
+            TABLE
         );
     }
 
@@ -197,12 +217,12 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public RegisteredDeviceEntity lastAccessed(String qid, String did, String token, String model, String osVersion) {
         return lastAccessed(
-                qid,
-                did,
-                update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate())
-                    .set("TK", token)
-                    .set("MO", model)
-                    .set("OS", osVersion));
+            qid,
+            did,
+            update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate())
+                .set("TK", token)
+                .set("MO", model)
+                .set("OS", osVersion));
     }
 
     private RegisteredDeviceEntity lastAccessed(String qid, String did, Update update) {
@@ -212,66 +232,84 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         } else {
             /* Apply condition only if field exist. Solved using orOperator. */
             query = query(
-                    where("DID").is(did)
-                            .orOperator(
-                                    where("QID").exists(false),
-                                    where("QID").is(qid)
-                            ));
+                where("DID").is(did)
+                    .orOperator(
+                        where("QID").exists(false),
+                        where("QID").is(qid)
+                    ));
         }
 
         return mongoTemplate.findAndModify(
-                query,
-                update,
-                RegisteredDeviceEntity.class,
-                TABLE
+            query,
+            update,
+            RegisteredDeviceEntity.class,
+            TABLE
         );
     }
 
     @Override
-    public boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String model, String osVersion) {
+    public boolean resetRegisteredDeviceWithNewDetails(
+        String did,
+        String qid,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String model,
+        String osVersion,
+        double[] coordinate,
+        String ipAddress
+    ) {
         Update update;
         if (StringUtils.isBlank(qid)) {
             update = update("U", DateTime.now().minusYears(100).toDate())
-                    .unset("QID")
-                    .set("DT", deviceType)
-                    .set("TK", token)
-                    .set("MO", model)
-                    .set("OS", osVersion)
-                    .set("AF", appFlavor);
+                .unset("QID")
+                .set("DT", deviceType)
+                .set("TK", token)
+                .set("MO", model)
+                .set("OS", osVersion)
+                .set("AF", appFlavor)
+                .set("COR", coordinate)
+                .addToSet("CH", coordinate)
+                .set("IP", ipAddress)
+                .addToSet("IH", ipAddress);
         } else {
             update = update("U", DateTime.now().minusYears(100).toDate())
-                    .set("QID", qid)
-                    .set("DT", deviceType)
-                    .set("TK", token)
-                    .set("MO", model)
-                    .set("OS", osVersion)
-                    .set("AF", appFlavor);
+                .set("QID", qid)
+                .set("DT", deviceType)
+                .set("TK", token)
+                .set("MO", model)
+                .set("OS", osVersion)
+                .set("AF", appFlavor)
+                .set("COR", coordinate)
+                .addToSet("CH", coordinate)
+                .set("IP", ipAddress)
+                .addToSet("IH", ipAddress);
         }
 
         return mongoTemplate.updateFirst(
-                query(where("DID").is(did)),
-                update,
-                RegisteredDeviceEntity.class,
-                TABLE
+            query(where("DID").is(did)),
+            update,
+            RegisteredDeviceEntity.class,
+            TABLE
         ).getModifiedCount() > 0;
     }
 
     @Override
     public void markFetchedSinceBeginningForDevice(String id) {
         mongoTemplate.updateFirst(
-                query(where("id").is(id)),
-                entityUpdate(update("SB", false)),
-                RegisteredDeviceEntity.class,
-                TABLE);
+            query(where("id").is(id)),
+            entityUpdate(update("SB", false)),
+            RegisteredDeviceEntity.class,
+            TABLE);
     }
 
     @Override
     public void unsetQidForDevice(String id) {
         mongoTemplate.updateFirst(
-                query(where("id").is(id)),
-                entityUpdate(new Update().unset("QID")),
-                RegisteredDeviceEntity.class,
-                TABLE);
+            query(where("id").is(id)),
+            entityUpdate(new Update().unset("QID")),
+            RegisteredDeviceEntity.class,
+            TABLE);
     }
 
     @Override
@@ -284,9 +322,9 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         }
 
         return mongoTemplate.count(
-                query,
-                RegisteredDeviceEntity.class,
-                TABLE
+            query,
+            RegisteredDeviceEntity.class,
+            TABLE
         );
     }
 
@@ -300,18 +338,18 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         }
 
         return mongoTemplate.count(
-                query,
-                RegisteredDeviceEntity.class,
-                TABLE
+            query,
+            RegisteredDeviceEntity.class,
+            TABLE
         );
     }
 
     @Override
     public RegisteredDeviceEntity findRecentDevice(String qid) {
         return mongoTemplate.findOne(
-                query(where("QID").is(qid)).with(Sort.by(Sort.Direction.DESC, "U")),
-                RegisteredDeviceEntity.class,
-                TABLE
+            query(where("QID").is(qid)).with(Sort.by(Sort.Direction.DESC, "U")),
+            RegisteredDeviceEntity.class,
+            TABLE
         );
     }
 

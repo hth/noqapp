@@ -19,7 +19,18 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     RegisteredDeviceEntity find(String qid, String did);
 
     @Mobile
-    boolean updateDevice(String id, String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String model, String osVersion, boolean sinceBeginning);
+    boolean updateDevice(
+        String id,
+        String did,
+        String qid,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String model,
+        String osVersion,
+        double[] coordinate,
+        String ipAddress,
+        boolean sinceBeginning);
 
     @Mobile
     List<RegisteredDeviceEntity> findAll(String qid, String did);
@@ -45,7 +56,16 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      * logs in without deleting the app.
      */
     @Mobile
-    boolean resetRegisteredDeviceWithNewDetails(String did, String qid, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String model, String osVersion);
+    boolean resetRegisteredDeviceWithNewDetails(
+        String did,
+        String qid,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String model,
+        String osVersion,
+        double[] coordinate,
+        String ipAddress);
 
     /**
      * When data is fetched since beginning. This helps set to prevent fetching from beginning going forward.
