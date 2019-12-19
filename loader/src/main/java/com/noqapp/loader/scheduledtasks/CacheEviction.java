@@ -36,7 +36,7 @@ public class CacheEviction {
         evictAllCaches();
     }
 
-    public void evictAllCaches() {
+    private void evictAllCaches() {
         for (String cacheName : cacheManager.getCacheNames()) {
             LOG.info("Cache evicted cacheName={}", cacheName);
         }
