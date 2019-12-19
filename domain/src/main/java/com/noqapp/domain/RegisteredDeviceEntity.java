@@ -13,8 +13,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.File;
-
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -38,19 +38,15 @@ public class RegisteredDeviceEntity extends BaseEntity {
     private static final String TOPICS = "/topics";
     private static final String SEPARATOR = File.separator;
 
-    @NotNull
     @Field("QID")
     private String queueUserId;
 
-    @NotNull
     @Field("DID")
     private String deviceId;
 
-    @NotNull
     @Field("DT")
     private DeviceTypeEnum deviceType;
 
-    @NotNull
     @Field("AF")
     private AppFlavorEnum appFlavor;
 
@@ -70,12 +66,33 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field("SB")
     private boolean sinceBeginning = true;
 
+    /* Format Longitude and then Latitude. */
+    @Field("COR")
+    private double[] coordinate;
+
+    /* Format Longitude and then Latitude. */
+    @Field("CH")
+    private Set<double[]> coordinateHistorical = new HashSet<>();
+
+    @Field("IP")
+    private String ipAddress;
+
+    @Field("IH")
+    private Set<String> ipAddressHistorical = new HashSet<>();
+
     /** To keep bean happy. */
     public RegisteredDeviceEntity() {
         super();
     }
 
-    private RegisteredDeviceEntity(String queueUserId, String deviceId, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String appVersion) {
+    private RegisteredDeviceEntity(
+        String queueUserId,
+        String deviceId,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String appVersion
+    ) {
         super();
         this.queueUserId = queueUserId;
         this.deviceId = deviceId;
@@ -85,7 +102,13 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.appVersion = appVersion;
     }
 
-    private RegisteredDeviceEntity(String deviceId, DeviceTypeEnum deviceType, AppFlavorEnum appFlavor, String token, String appVersion) {
+    private RegisteredDeviceEntity(
+        String deviceId,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String appVersion
+    ) {
         super();
         this.deviceId = deviceId;
         this.deviceType = deviceType;
@@ -94,18 +117,60 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.appVersion = appVersion;
     }
 
+    private RegisteredDeviceEntity(
+        String queueUserId,
+        String deviceId,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String appVersion,
+        double[] coordinate,
+        String ipAddress
+    ) {
+        super();
+        this.queueUserId = queueUserId;
+        this.deviceId = deviceId;
+        this.deviceType = deviceType;
+        this.appFlavor = appFlavor;
+        this.token = token;
+        this.appVersion = appVersion;
+        this.coordinate = coordinate;
+        this.ipAddress = ipAddress;
+    }
+
+    private RegisteredDeviceEntity(
+        String deviceId,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String appVersion,
+        double[] coordinate,
+        String ipAddress
+    ) {
+        super();
+        this.deviceId = deviceId;
+        this.deviceType = deviceType;
+        this.appFlavor = appFlavor;
+        this.token = token;
+        this.appVersion = appVersion;
+        this.coordinate = coordinate;
+        this.ipAddress = ipAddress;
+    }
+
     public static RegisteredDeviceEntity newInstance(
         String queueUserId,
         String deviceId,
         DeviceTypeEnum deviceType,
         AppFlavorEnum appFlavor,
         String token,
-        String appVersion
+        String appVersion,
+        double[] coordinate,
+        String ipAddress
     ) {
         if (StringUtils.isBlank(queueUserId)) {
-            return new RegisteredDeviceEntity(deviceId, deviceType, appFlavor, token, appVersion);
+            return new RegisteredDeviceEntity(deviceId, deviceType, appFlavor, token, appVersion , coordinate, ipAddress);
         } else {
-            return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, appFlavor, token, appVersion);
+            return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, appFlavor, token, appVersion, coordinate, ipAddress);
         }
     }
 
@@ -180,6 +245,32 @@ public class RegisteredDeviceEntity extends BaseEntity {
     public RegisteredDeviceEntity setSinceBeginning(boolean sinceBeginning) {
         this.sinceBeginning = sinceBeginning;
         return this;
+    }
+
+    public double[] getCoordinate() {
+        return coordinate;
+    }
+
+    public RegisteredDeviceEntity setCoordinate(double[] coordinate) {
+        this.coordinate = coordinate;
+        return this;
+    }
+
+    public Set<double[]> getCoordinateHistorical() {
+        return coordinateHistorical;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public RegisteredDeviceEntity setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+        return this;
+    }
+
+    public Set<String> getIpAddressHistorical() {
+        return ipAddressHistorical;
     }
 
     @Transient

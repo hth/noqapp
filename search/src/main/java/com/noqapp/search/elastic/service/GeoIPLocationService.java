@@ -1,5 +1,6 @@
 package com.noqapp.search.elastic.service;
 
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.search.elastic.helper.GeoIP;
 
 import com.maxmind.geoip2.DatabaseReader;
@@ -30,18 +31,7 @@ public class GeoIPLocationService {
     }
 
     public GeoIP getLocation(String ip) {
-        LOG.debug("From ip={}", ip);
-
-        CityResponse response = null;
-        try {
-            InetAddress ipAddress = InetAddress.getByName(ip);
-            response = dbReader.city(ipAddress);
-        } catch (IOException e) {
-            LOG.warn("Failed parsing ip={} reason={}", ip, e.getLocalizedMessage());
-        } catch (GeoIp2Exception e) {
-            LOG.warn("Failed fetching geoIP for ip={} reason={}", ip, e.getLocalizedMessage());
-        }
-
+        CityResponse response = cityResponse(ip);
         if (null == response) {
             return new GeoIP();
         }
@@ -50,6 +40,33 @@ public class GeoIPLocationService {
         double latitude = response.getLocation().getLatitude();
         double longitude = response.getLocation().getLongitude();
         return new GeoIP(ip, cityName, latitude, longitude);
+    }
+
+    @Mobile
+    public double[] getLocationAsDouble(String ip) {
+        CityResponse response = cityResponse(ip);
+        if (null == response) {
+            return null;
+        }
+
+        double latitude = response.getLocation().getLatitude();
+        double longitude = response.getLocation().getLongitude();
+        return new double[] {longitude, latitude};
+    }
+
+    private CityResponse cityResponse(String ip) {
+        LOG.debug("From ip={}", ip);
+
+        try {
+            InetAddress ipAddress = InetAddress.getByName(ip);
+            return dbReader.city(ipAddress);
+        } catch (IOException e) {
+            LOG.warn("Failed parsing ip={} reason={}", ip, e.getLocalizedMessage());
+        } catch (GeoIp2Exception e) {
+            LOG.warn("Failed fetching geoIP for ip={} reason={}", ip, e.getLocalizedMessage());
+        }
+
+        return null;
     }
 
     public String getTimeZone(String ip) {
