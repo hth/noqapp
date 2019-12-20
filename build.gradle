@@ -353,6 +353,7 @@ subprojects {
         format = 'ALL'
         failBuildOnCVSS = 20
         suppressionFile = file("$rootProject.projectDir/config/dependencyCheck/dependency-check-known-issues.xml")
+        outdir = file("$rootProject.projectDir/build/owasp")
     }
 
     tasks.withType(SpotBugsTask) {
