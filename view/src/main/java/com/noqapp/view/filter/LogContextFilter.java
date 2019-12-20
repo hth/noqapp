@@ -115,7 +115,7 @@ public class LogContextFilter implements Filter {
 
         Map<String, String> map = new HashMap<>();
 
-        Enumeration headerNames = request.getHeaderNames();
+        Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String key = (String) headerNames.nextElement();
             String value = request.getHeader(key);
@@ -151,7 +151,7 @@ public class LogContextFilter implements Filter {
         return "HEAD".equals(request.getMethod());
     }
 
-    private class ForceGetRequestWrapper extends HttpServletRequestWrapper {
+    private static class ForceGetRequestWrapper extends HttpServletRequestWrapper {
         public ForceGetRequestWrapper(HttpServletRequest request) {
             super(request);
         }
