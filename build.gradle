@@ -69,7 +69,7 @@ buildscript {
     dependencies {
         classpath "com.eriwen:gradle-js-plugin:2.14.1"
         classpath "com.eriwen:gradle-css-plugin:2.14.0"
-        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:$spotbugsPluginGradle"
+        classpath "com.github.spotbugs:spotbugs-gradle-plugin:$spotbugsPluginGradle"
         classpath 'org.owasp:dependency-check-gradle:5.2.4'
         //classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1'
         classpath 'de.aaschmid:gradle-cpd-plugin:2.0'
