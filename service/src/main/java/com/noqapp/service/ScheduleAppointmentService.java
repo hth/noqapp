@@ -9,6 +9,7 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
+import com.noqapp.domain.ScheduledTaskEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserAccountEntity;
@@ -29,6 +30,7 @@ import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
+import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.UserAccountManager;
@@ -70,6 +72,7 @@ public class ScheduleAppointmentService {
     private UserAccountManager userAccountManager;
     private RegisteredDeviceManager registeredDeviceManager;
     private TokenQueueManager tokenQueueManager;
+    private ScheduledTaskManager scheduledTaskManager;
 
     private BizService bizService;
     private FirebaseMessageService firebaseMessageService;
@@ -93,6 +96,7 @@ public class ScheduleAppointmentService {
         UserAccountManager userAccountManager,
         RegisteredDeviceManager registeredDeviceManager,
         TokenQueueManager tokenQueueManager,
+        ScheduledTaskManager scheduledTaskManager,
 
         BizService bizService,
         FirebaseMessageService firebaseMessageService
@@ -107,6 +111,7 @@ public class ScheduleAppointmentService {
         this.userAccountManager = userAccountManager;
         this.registeredDeviceManager = registeredDeviceManager;
         this.tokenQueueManager = tokenQueueManager;
+        this.scheduledTaskManager = scheduledTaskManager;
 
         this.bizService = bizService;
         this.firebaseMessageService = firebaseMessageService;
@@ -129,16 +134,27 @@ public class ScheduleAppointmentService {
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed for the day");
         }
 
+        ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
+        Date from = DateUtil.convertToDate(scheduledTask.getFrom(), bizStore.getTimeZone());
+        Date until = DateUtil.convertToDate(scheduledTask.getUntil(), bizStore.getTimeZone());
+        Date expectedAppointmentDate = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
+        if (DateUtil.isThisDayBetween(expectedAppointmentDate, from, until)) {
+            LOG.warn("Scheduled closed cannot book {} {} {}", jsonSchedule.getScheduleDate(), from, until);
+            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed on that day");
+        }
+
         if (storeHour.getAppointmentStartHour() > jsonSchedule.getStartTime()) {
             LOG.warn("Supplied start time is beyond range {} {} {} {}",
                 jsonSchedule.getStartTime(), storeHour.getAppointmentStartHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
-            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " opens at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getStartHour()));
+            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName()
+                + " opens at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getStartHour()));
         }
 
         if (storeHour.getAppointmentEndHour() < jsonSchedule.getEndTime()) {
             LOG.warn("Supplied end time is beyond range {} {} {} {}",
                 jsonSchedule.getEndTime(), storeHour.getAppointmentEndHour(), jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
-            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " closes at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getEndHour()));
+            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName()
+                + " closes at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getEndHour()));
         }
 
         ScheduleAppointmentEntity scheduleAppointment = new ScheduleAppointmentEntity()

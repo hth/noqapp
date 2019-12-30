@@ -309,7 +309,7 @@ public final class DateUtil {
         }
     }
 
-    static boolean isThisDayBetween(Date thisDay, Date fromDay, Date untilDay) {
+    public static boolean isThisDayBetween(Date thisDay, Date fromDay, Date untilDay) {
         LOG.info("isThisDayBetween thisDay={} fromDay={} untilDay={}", thisDay, fromDay, untilDay);
         return !thisDay.before(fromDay) && !thisDay.after(untilDay);
     }
