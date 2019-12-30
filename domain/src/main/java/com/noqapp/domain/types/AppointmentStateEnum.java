@@ -9,11 +9,11 @@ import java.util.Map;
  */
 public enum AppointmentStateEnum {
     O("O", "Off", "No Appointment"),
-    A("A", "Traditional Appointment", "Appointment"),
-    S("S", "Walk-ins Appointment", "Slots"),
+    A("A", "Traditional Appointments", "Appointment"),
+    S("S", "Walk-in Appointments", "Slots"),
 
     /* Mixture of Walk-ins and traditional appointments. To be implemented. */
-    F("F", "Flex Appointment", "Flex");
+    F("F", "Flex Appointments", "Flex");
 
     private final String description;
     private final String name;

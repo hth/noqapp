@@ -10,7 +10,7 @@ public enum AppointmentStatusEnum {
     A("A", "Accept"),
     R("R", "Reject"),
     S("S", "Serviced"),
-    W("W", "Walkin Confirmed");
+    W("W", "Appointment Confirmed");
 
     private final String description;
     private final String name;
