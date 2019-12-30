@@ -30,7 +30,7 @@ class ApiHealthServiceTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
         apiHealthService = new ApiHealthService(
-                apiHealthNowManager
+            apiHealthNowManager
         );
 
         /* Mock final class. */
@@ -41,21 +41,21 @@ class ApiHealthServiceTest {
     void testInsert_long() {
         doNothing().when(apiHealthNowManager).save(any(ApiHealthNowEntity.class));
         apiHealthService.insert(
-                "/insertLong",
-                "insertLong",
-                ApiHealthServiceTest.class.getName(),
-                1L,
-                HealthStatusEnum.G);
+            "/insertLong",
+            "insertLong",
+            ApiHealthServiceTest.class.getName(),
+            1L,
+            HealthStatusEnum.G);
     }
 
     @Test
     void testInsert_duration() {
         doNothing().when(apiHealthNowManager).save(any(ApiHealthNowEntity.class));
         apiHealthService.insert(
-                "/insertDuration",
-                "insertDuration",
-                ApiHealthServiceTest.class.getName(),
-                duration,
-                HealthStatusEnum.G);
+            "/insertDuration",
+            "insertDuration",
+            ApiHealthServiceTest.class.getName(),
+            duration,
+            HealthStatusEnum.G);
     }
 }
