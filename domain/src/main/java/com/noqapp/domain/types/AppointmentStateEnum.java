@@ -10,7 +10,10 @@ import java.util.Map;
 public enum AppointmentStateEnum {
     O("O", "Off", "No Appointment"),
     A("A", "Traditional Appointment", "Appointment"),
-    S("S", "Walk-ins Appointment", "Slots");
+    S("S", "Walk-ins Appointment", "Slots"),
+
+    /* Mixture of Walk-ins and traditional appointments. To be implemented. */
+    F("F", "Flex Appointment", "Flex");
 
     private final String description;
     private final String name;
@@ -39,6 +42,7 @@ public enum AppointmentStateEnum {
             put(O.name, O.description);
             put(A.name, A.description);
             put(S.name, S.description);
+            put(F.name, F.description);
         }};
     }
 
