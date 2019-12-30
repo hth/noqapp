@@ -37,8 +37,8 @@ import java.util.List;
     "PMD.LongVariable"
 })
 @Component
-public class MoveScheduledAppointmentToWalkin {
-    private static final Logger LOG = LoggerFactory.getLogger(MoveScheduledAppointmentToWalkin.class);
+public class AppointmentTrackerForFlexAndWalkin {
+    private static final Logger LOG = LoggerFactory.getLogger(AppointmentTrackerForFlexAndWalkin.class);
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
     private BizStoreManager bizStoreManager;
@@ -52,8 +52,8 @@ public class MoveScheduledAppointmentToWalkin {
     private StatsCronEntity statsCron;
 
     @Autowired
-    public MoveScheduledAppointmentToWalkin(
-        @Value("${MoveScheduledAppointmentToWalkin.moveScheduledAppointmentToWalkin}")
+    public AppointmentTrackerForFlexAndWalkin(
+        @Value("${AppointmentTrackerForFlexAndWalkin.moveScheduledAppointmentToWalkin}")
         String moveScheduledAppointmentToWalkin,
 
         ScheduleAppointmentManager scheduleAppointmentManager,
@@ -75,10 +75,10 @@ public class MoveScheduledAppointmentToWalkin {
         this.archiveAndReset = archiveAndReset;
     }
 
-    @Scheduled(fixedDelayString = "${loader.MoveScheduledAppointmentToWalkin.scheduleToWalkin}")
+    @Scheduled(fixedDelayString = "${loader.AppointmentTrackerForFlexAndWalkin.scheduleToWalkin}")
     public void scheduleToWalkin() {
         statsCron = new StatsCronEntity(
-            MoveScheduledAppointmentToWalkin.class.getName(),
+            AppointmentTrackerForFlexAndWalkin.class.getName(),
             "scheduleToWalkin",
             moveScheduledAppointmentToWalkin);
 
@@ -135,7 +135,10 @@ public class MoveScheduledAppointmentToWalkin {
 
     private void moveFromAppointmentToWalkin(BizStoreEntity bizStore) {
         Date now = DateUtil.dateAtTimeZone(bizStore.getTimeZone());
-        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedWalkinAppointmentsForDay(bizStore.getCodeQR(), DateUtil.dateToString(now));
+        List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedWalkinAppointmentsForDay(
+            bizStore.getCodeQR(),
+            DateUtil.dateToString(now));
+
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             tokenQueueService.getNextToken(
                 bizStore.getCodeQR(),
@@ -150,5 +153,4 @@ public class MoveScheduledAppointmentToWalkin {
             scheduleAppointmentManager.save(scheduleAppointment);
         }
     }
-
 }
