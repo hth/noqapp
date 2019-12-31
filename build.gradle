@@ -179,7 +179,7 @@ subprojects {
         implementation "com.braintreepayments.gateway:braintree-java:$braintree"
 
         /** --- Specific to NoQueue Web Application ---- */
-        implementation "io.grpc:grpc-core:$grpcCore"
+        implementation "io.grpc:grpc-all:$grpcAll"
         implementation "com.amazonaws:aws-java-sdk-s3:$amazonaws"
         implementation "org.springframework.webflow:spring-webflow:$webflow"
         implementation "net.markenwerk:utils-mail-dkim:$dkim"
