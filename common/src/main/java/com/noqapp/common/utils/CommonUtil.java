@@ -13,6 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -249,5 +252,19 @@ public final class CommonUtil {
         return a.entrySet().stream()
             .sorted(Map.Entry.comparingByValue())
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+    }
+
+    public static String retrieveIPV4(String fromDevice, String fromRequest) {
+        try {
+            InetAddress address = InetAddress.getByName(fromDevice);
+            if (address instanceof Inet6Address) {
+                return fromRequest;
+            }
+            return fromDevice;
+        } catch (UnknownHostException e) {
+            LOG.error("Failed on unknown host fromDevice={} fromRequest={} reason={}", fromDevice, fromRequest, e.getLocalizedMessage());
+        }
+
+        return fromDevice;
     }
 }
