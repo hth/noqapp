@@ -255,6 +255,7 @@ public final class CommonUtil {
     }
 
     public static String retrieveIPV4(String fromDevice, String fromRequest) {
+        LOG.info("Send ips are {} {}", fromDevice, fromRequest);
         try {
             InetAddress address = InetAddress.getByName(fromDevice);
             if (address instanceof Inet6Address) {
