@@ -30,8 +30,8 @@ public class GeoIPLocationService {
         this.dbReader = dbReader;
     }
 
-    public GeoIP getLocation(String ip, String forwardedIp) {
-        CityResponse response = cityResponse(ip, forwardedIp);
+    public GeoIP getLocation(String ip) {
+        CityResponse response = cityResponse(ip);
         if (null == response) {
             return new GeoIP();
         }
@@ -43,8 +43,8 @@ public class GeoIPLocationService {
     }
 
     @Mobile
-    public double[] getLocationAsDouble(String ip, String forwardedIp) {
-        CityResponse response = cityResponse(ip, forwardedIp);
+    public double[] getLocationAsDouble(String ip) {
+        CityResponse response = cityResponse(ip);
         if (null == response) {
             return null;
         }
@@ -54,8 +54,8 @@ public class GeoIPLocationService {
         return new double[] {longitude, latitude};
     }
 
-    private CityResponse cityResponse(String ip, String forwardedIp) {
-        LOG.debug("From ip={} forwardedIp={}", ip, forwardedIp);
+    private CityResponse cityResponse(String ip) {
+        LOG.debug("From ip={}", ip);
 
         try {
             InetAddress ipAddress = InetAddress.getByName(ip);
@@ -69,8 +69,8 @@ public class GeoIPLocationService {
         return null;
     }
 
-    public String getTimeZone(String ip, String forwardedIp) {
-        LOG.debug("From ip={} forwardedIp={}", ip, forwardedIp);
+    public String getTimeZone(String ip) {
+        LOG.debug("From ip={}", ip);
 
         try {
             InetAddress ipAddress = InetAddress.getByName(ip);
