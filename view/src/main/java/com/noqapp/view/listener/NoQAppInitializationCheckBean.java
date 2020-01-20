@@ -4,7 +4,6 @@ import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
-import com.noqapp.search.elastic.service.BizStoreSpatialElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.SmsService;
@@ -65,7 +64,6 @@ public class NoQAppInitializationCheckBean {
     private RestHighLevelClient restHighLevelClient;
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreElasticService bizStoreElasticService;
-    private BizStoreSpatialElasticService bizStoreSpatialElasticService;
     private DatabaseReader databaseReader;
     private FtpService ftpService;
     private PaymentGatewayService paymentGatewayService;
@@ -83,7 +81,6 @@ public class NoQAppInitializationCheckBean {
         RestHighLevelClient restHighLevelClient,
         ElasticAdministrationService elasticAdministrationService,
         BizStoreElasticService bizStoreElasticService,
-        BizStoreSpatialElasticService bizStoreSpatialElasticService,
         DatabaseReader databaseReader,
         FtpService ftpService,
         PaymentGatewayService paymentGatewayService,
@@ -97,7 +94,6 @@ public class NoQAppInitializationCheckBean {
         this.firebaseConfig = firebaseConfig;
         this.restHighLevelClient = restHighLevelClient;
         this.elasticAdministrationService = elasticAdministrationService;
-        this.bizStoreSpatialElasticService = bizStoreSpatialElasticService;
         this.bizStoreElasticService = bizStoreElasticService;
         this.databaseReader = databaseReader;
         this.ftpService = ftpService;
