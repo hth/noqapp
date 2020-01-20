@@ -134,13 +134,15 @@ public class ScheduleAppointmentService {
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed for the day");
         }
 
-        ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
-        Date from = DateUtil.convertToDate(scheduledTask.getFrom(), bizStore.getTimeZone());
-        Date until = DateUtil.convertToDate(scheduledTask.getUntil(), bizStore.getTimeZone());
-        Date expectedAppointmentDate = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
-        if (DateUtil.isThisDayBetween(expectedAppointmentDate, from, until)) {
-            LOG.warn("Scheduled closed cannot book {} {} {}", jsonSchedule.getScheduleDate(), from, until);
-            throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed on that day");
+        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
+            ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
+            Date from = DateUtil.convertToDate(scheduledTask.getFrom(), bizStore.getTimeZone());
+            Date until = DateUtil.convertToDate(scheduledTask.getUntil(), bizStore.getTimeZone());
+            Date expectedAppointmentDate = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
+            if (DateUtil.isThisDayBetween(expectedAppointmentDate, from, until)) {
+                LOG.warn("Scheduled closed cannot book {} {} {}", jsonSchedule.getScheduleDate(), from, until);
+                throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed on that day");
+            }
         }
 
         if (storeHour.getAppointmentStartHour() > jsonSchedule.getStartTime()) {
