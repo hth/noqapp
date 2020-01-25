@@ -202,7 +202,7 @@ public class BizStoreElastic extends AbstractDomain {
     /** ED is populated when the BT is of type BusinessTypeEnum.DO. */
     @Transient
     @JsonProperty("ED")
-    private List<JsonNameDatePair> education;
+    private Set<JsonNameDatePair> education;
 
     /** This field is normally used in level-up condition, other times its anyway deleted/removed from elastic. */
     @Transient
@@ -578,11 +578,11 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
-    public List<JsonNameDatePair> getEducation() {
+    public Set<JsonNameDatePair> getEducation() {
         return education;
     }
 
-    public BizStoreElastic setEducation(List<JsonNameDatePair> education) {
+    public BizStoreElastic setEducation(Set<JsonNameDatePair> education) {
         this.education = education;
         return this;
     }
