@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * hitender
@@ -42,7 +43,7 @@ public class JsonQueueTV extends AbstractDomain {
     private String profileImage;
 
     @JsonProperty("ed")
-    private List<JsonNameDatePair> education;
+    private Set<JsonNameDatePair> education;
 
     @JsonProperty("qps")
     private List<JsonQueuedPersonTV> jsonQueuedPersonTVList = new ArrayList<>();
@@ -65,11 +66,11 @@ public class JsonQueueTV extends AbstractDomain {
         return this;
     }
 
-    public List<JsonNameDatePair> getEducation() {
+    public Set<JsonNameDatePair> getEducation() {
         return education;
     }
 
-    public JsonQueueTV setEducation(List<JsonNameDatePair> education) {
+    public JsonQueueTV setEducation(Set<JsonNameDatePair> education) {
         this.education = education;
         return this;
     }
