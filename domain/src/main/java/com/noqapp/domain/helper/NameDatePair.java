@@ -2,13 +2,14 @@ package com.noqapp.domain.helper;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * hitender
  * 5/30/18 11:19 AM
  */
-public class NameDatePair {
+public class NameDatePair implements Serializable {
 
     @Field("N")
     private String name;

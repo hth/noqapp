@@ -45,6 +45,7 @@ public final class MerchantRegistrationForm implements Serializable {
 
     /* After mail has been sent when user requested password recover. */
     private MailTypeEnum mailSendState;
+    private String phoneCountryCode;
 
     private MerchantRegistrationForm() {
     }
@@ -210,6 +211,14 @@ public final class MerchantRegistrationForm implements Serializable {
     public MerchantRegistrationForm setMailSendState(MailTypeEnum mailSendState) {
         this.mailSendState = mailSendState;
         return this;
+    }
+
+    public String getPhoneCountryCode() {
+        return phoneCountryCode;
+    }
+
+    public void setPhoneCountryCode(String phoneCountryCode) {
+        this.phoneCountryCode = phoneCountryCode;
     }
 
     @Transient

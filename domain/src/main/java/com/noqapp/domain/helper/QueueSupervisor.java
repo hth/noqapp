@@ -6,9 +6,9 @@ import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -31,8 +31,8 @@ public class QueueSupervisor {
     private Date created;
     private BusinessUserRegistrationStatusEnum businessUserRegistrationStatus;
     private BusinessTypeEnum businessType;
-    private List<NameDatePair> educations = new LinkedList<>();
-    private List<NameDatePair> licenses = new LinkedList<>();
+    private Set<NameDatePair> educations = new LinkedHashSet<>();
+    private Set<NameDatePair> licenses = new LinkedHashSet<>();
 
     public String getBusinessUserId() {
         return businessUserId;
@@ -169,20 +169,20 @@ public class QueueSupervisor {
         return this;
     }
 
-    public List<NameDatePair> getEducations() {
+    public Set<NameDatePair> getEducations() {
         return educations;
     }
 
-    public QueueSupervisor setEducations(List<NameDatePair> educations) {
+    public QueueSupervisor setEducations(Set<NameDatePair> educations) {
         this.educations = educations;
         return this;
     }
 
-    public List<NameDatePair> getLicenses() {
+    public Set<NameDatePair> getLicenses() {
         return licenses;
     }
 
-    public QueueSupervisor setLicenses(List<NameDatePair> licenses) {
+    public QueueSupervisor setLicenses(Set<NameDatePair> licenses) {
         this.licenses = licenses;
         return this;
     }

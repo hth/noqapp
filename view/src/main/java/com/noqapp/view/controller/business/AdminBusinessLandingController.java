@@ -82,6 +82,7 @@ public class AdminBusinessLandingController {
     private String storeActionFlow;
     private String addQueueSupervisorFlow;
     private String queueUserDetailFlow;
+    private String addDoctorFlow;
     private String addNewAgentFlow;
     private String editBusinessFlow;
 
@@ -119,6 +120,9 @@ public class AdminBusinessLandingController {
         @Value ("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor.htm}")
         String addQueueSupervisorFlow,
 
+        @Value ("${addDoctorFlow:redirect:/store/addDoctor.htm}")
+        String addDoctorFlow,
+
         @Value("${addNewAgentFlow:redirect:/store/addNewAgent.htm}")
         String addNewAgentFlow,
 
@@ -145,6 +149,7 @@ public class AdminBusinessLandingController {
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.storeActionFlow = storeActionFlow;
         this.addQueueSupervisorFlow = addQueueSupervisorFlow;
+        this.addDoctorFlow = addDoctorFlow;
         this.addNewAgentFlow = addNewAgentFlow;
         this.queueUserDetailFlow = queueUserDetailFlow;
         this.editBusinessFlow = editBusinessFlow;
@@ -344,11 +349,33 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Add queue manager to bizStoreId={} qid={} level={} {}", bizStoreId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        LOG.info("Add queue supervisor to bizStoreId={} qid={} level={} {}", bizStoreId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
         /* Above condition to make sure users with right roles and access gets access. */
 
         redirectAttributes.addFlashAttribute("bizStoreId", bizStoreId.getText());
         return addQueueSupervisorFlow;
+    }
+
+    @GetMapping (value = "/{bizStoreId}/addDoctor", produces = "text/html;charset=UTF-8")
+    public String addDoctor(
+        @PathVariable ("bizStoreId")
+        ScrubbedInput bizStoreId,
+
+        RedirectAttributes redirectAttributes,
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Add doctor to bizStoreId={} qid={} level={} {}", bizStoreId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        redirectAttributes.addFlashAttribute("bizStoreId", bizStoreId.getText());
+        return addDoctorFlow;
     }
 
     /** Authorized Users to New Store or Queue. */
