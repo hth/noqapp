@@ -29,6 +29,7 @@ import java.util.Set;
         "PMD.LongVariable"
 })
 public abstract class BaseEntity implements Serializable {
+    private static final long serialVersionUID = -7737822619230402199L;
     private static final Logger LOG = LoggerFactory.getLogger(BaseEntity.class);
 
     @Id
