@@ -5,8 +5,8 @@ import com.noqapp.domain.helper.NameDatePair;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * User: hitender
@@ -19,7 +19,7 @@ public class ProfessionalProfileEditForm implements Serializable {
     private String action;
     private String name;
     private String monthYear;
-    private Set<NameDatePair> nameDatePairs = new LinkedHashSet<>();
+    private List<NameDatePair> nameDatePairs = new LinkedList<>();
 
     public String getQid() {
         return qid;
@@ -66,16 +66,16 @@ public class ProfessionalProfileEditForm implements Serializable {
         return this;
     }
 
-    public Set<NameDatePair> getNameDatePairs() {
+    public List<NameDatePair> getNameDatePairs() {
         return nameDatePairs;
     }
 
-    public ProfessionalProfileEditForm setNameDatePairs(Set<NameDatePair> nameDatePairs) {
+    public ProfessionalProfileEditForm setNameDatePairs(List<NameDatePair> nameDatePairs) {
         this.nameDatePairs = nameDatePairs;
         return this;
     }
 
     public boolean isNotValid() {
-        return StringUtils.isNotBlank(name) && StringUtils.isNotBlank(monthYear);
+        return StringUtils.isBlank(name) && StringUtils.isBlank(monthYear);
     }
 }

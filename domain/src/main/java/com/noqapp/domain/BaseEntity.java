@@ -14,9 +14,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * User: hitender
@@ -29,7 +29,6 @@ import java.util.Set;
         "PMD.LongVariable"
 })
 public abstract class BaseEntity implements Serializable {
-    private static final long serialVersionUID = -7737822619230402199L;
     private static final Logger LOG = LoggerFactory.getLogger(BaseEntity.class);
 
     @Id
@@ -148,8 +147,8 @@ public abstract class BaseEntity implements Serializable {
     }
 
     @Transient
-    protected Set<JsonNameDatePair> getJsonNameDatePairs(Set<NameDatePair> nameDatePairs) {
-        Set<JsonNameDatePair> jsonNameDatePairs = new HashSet<>();
+    protected List<JsonNameDatePair> getJsonNameDatePairs(List<NameDatePair> nameDatePairs) {
+        List<JsonNameDatePair> jsonNameDatePairs = new ArrayList<>();
         if (null != nameDatePairs) {
             for (NameDatePair nameDatePair : nameDatePairs) {
                 jsonNameDatePairs.add(new JsonNameDatePair()

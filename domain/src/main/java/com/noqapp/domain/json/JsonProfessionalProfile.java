@@ -56,14 +56,14 @@ public class JsonProfessionalProfile extends AbstractDomain {
 
     /* Required to mark as a valid profile. */
     @JsonProperty("ed")
-    private Set<JsonNameDatePair> education;
+    private List<JsonNameDatePair> education;
 
     /* Required to mark as a valid profile. */
     @JsonProperty("li")
-    private Set<JsonNameDatePair> licenses;
+    private List<JsonNameDatePair> licenses;
 
     @JsonProperty("aw")
-    private Set<JsonNameDatePair> awards;
+    private List<JsonNameDatePair> awards;
 
     @JsonIgnoreProperties
     private Set<String> managerAtStoreCodeQRs = new HashSet<>();
@@ -117,29 +117,29 @@ public class JsonProfessionalProfile extends AbstractDomain {
         return this;
     }
 
-    public Set<JsonNameDatePair> getEducation() {
+    public List<JsonNameDatePair> getEducation() {
         return education;
     }
 
-    public JsonProfessionalProfile setEducation(Set<JsonNameDatePair> education) {
+    public JsonProfessionalProfile setEducation(List<JsonNameDatePair> education) {
         this.education = education;
         return this;
     }
 
-    public Set<JsonNameDatePair> getLicenses() {
+    public List<JsonNameDatePair> getLicenses() {
         return licenses;
     }
 
-    public JsonProfessionalProfile setLicenses(Set<JsonNameDatePair> licenses) {
+    public JsonProfessionalProfile setLicenses(List<JsonNameDatePair> licenses) {
         this.licenses = licenses;
         return this;
     }
 
-    public Set<JsonNameDatePair> getAwards() {
+    public List<JsonNameDatePair> getAwards() {
         return awards;
     }
 
-    public JsonProfessionalProfile setAwards(Set<JsonNameDatePair> awards) {
+    public JsonProfessionalProfile setAwards(List<JsonNameDatePair> awards) {
         this.awards = awards;
         return this;
     }

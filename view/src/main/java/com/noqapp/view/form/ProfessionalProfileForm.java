@@ -3,8 +3,8 @@ package com.noqapp.view.form;
 import com.noqapp.domain.helper.NameDatePair;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * hitender
@@ -16,9 +16,9 @@ public class ProfessionalProfileForm implements Serializable {
     private String practiceStart;
     private String aboutMe;
 
-    private Set<NameDatePair> awards = new HashSet<>();
-    private Set<NameDatePair> education = new HashSet<>();
-    private Set<NameDatePair> licenses = new HashSet<>();
+    private List<NameDatePair> awards = new ArrayList<>();
+    private List<NameDatePair> education = new ArrayList<>();
+    private List<NameDatePair> licenses = new ArrayList<>();
 
     public String getQid() {
         return qid;
@@ -56,29 +56,29 @@ public class ProfessionalProfileForm implements Serializable {
         return this;
     }
 
-    public Set<NameDatePair> getAwards() {
+    public List<NameDatePair> getAwards() {
         return awards;
     }
 
-    public ProfessionalProfileForm setAwards(Set<NameDatePair> awards) {
+    public ProfessionalProfileForm setAwards(List<NameDatePair> awards) {
         this.awards = awards;
         return this;
     }
 
-    public Set<NameDatePair> getEducation() {
+    public List<NameDatePair> getEducation() {
         return education;
     }
 
-    public ProfessionalProfileForm setEducation(Set<NameDatePair> education) {
+    public ProfessionalProfileForm setEducation(List<NameDatePair> education) {
         this.education = education;
         return this;
     }
 
-    public Set<NameDatePair> getLicenses() {
+    public List<NameDatePair> getLicenses() {
         return licenses;
     }
 
-    public ProfessionalProfileForm setLicenses(Set<NameDatePair> licenses) {
+    public ProfessionalProfileForm setLicenses(List<NameDatePair> licenses) {
         this.licenses = licenses;
         return this;
     }
