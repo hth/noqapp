@@ -4,6 +4,7 @@ import com.noqapp.domain.helper.NameDatePair;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * User: hitender
  * Date: 6/24/18 8:29 PM
  */
-public class ProfessionalProfileEditForm {
+public class ProfessionalProfileEditForm implements Serializable {
     private boolean professionalProfile;
 
     private String qid;
