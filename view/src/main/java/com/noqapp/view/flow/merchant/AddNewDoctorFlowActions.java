@@ -29,7 +29,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.webflow.context.ExternalContext;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 @Component
 public class AddNewDoctorFlowActions {
@@ -191,17 +191,17 @@ public class AddNewDoctorFlowActions {
     }
 
     public String resetAwards(ProfessionalProfileForm professionalProfile) {
-        professionalProfile.setAwards(new HashSet<>());
+        professionalProfile.setAwards(new ArrayList<>());
         return "success";
     }
 
     public String resetEducation(ProfessionalProfileForm professionalProfile) {
-        professionalProfile.setEducation(new HashSet<>());
+        professionalProfile.setEducation(new ArrayList<>());
         return "success";
     }
 
     public String resetLicenses(ProfessionalProfileForm professionalProfile) {
-        professionalProfile.setLicenses(new HashSet<>());
+        professionalProfile.setLicenses(new ArrayList<>());
         return "success";
     }
 }
