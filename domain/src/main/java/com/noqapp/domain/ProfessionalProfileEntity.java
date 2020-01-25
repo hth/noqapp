@@ -11,8 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.NotNull;
@@ -49,14 +47,14 @@ public class ProfessionalProfileEntity extends BaseEntity {
 
     /* Required to mark as a valid profile. */
     @Field("ED")
-    private List<NameDatePair> education = new LinkedList<>();
+    private Set<NameDatePair> education = new HashSet<>();
 
     /* Required to mark as a valid profile. */
     @Field("LI")
-    private List<NameDatePair> licenses = new LinkedList<>();
+    private Set<NameDatePair> licenses = new HashSet<>();
 
     @Field("AW")
-    private List<NameDatePair> awards = new LinkedList<>();
+    private Set<NameDatePair> awards = new HashSet<>();
 
     @Field ("MA")
     private Set<String> managerAtStoreCodeQRs = new HashSet<>();
@@ -103,29 +101,29 @@ public class ProfessionalProfileEntity extends BaseEntity {
         return this;
     }
 
-    public List<NameDatePair> getEducation() {
+    public Set<NameDatePair> getEducation() {
         return education;
     }
 
-    public ProfessionalProfileEntity setEducation(List<NameDatePair> education) {
+    public ProfessionalProfileEntity setEducation(Set<NameDatePair> education) {
         this.education = education;
         return this;
     }
 
-    public List<NameDatePair> getLicenses() {
+    public Set<NameDatePair> getLicenses() {
         return licenses;
     }
 
-    public ProfessionalProfileEntity setLicenses(List<NameDatePair> licenses) {
+    public ProfessionalProfileEntity setLicenses(Set<NameDatePair> licenses) {
         this.licenses = licenses;
         return this;
     }
 
-    public List<NameDatePair> getAwards() {
+    public Set<NameDatePair> getAwards() {
         return awards;
     }
 
-    public ProfessionalProfileEntity setAwards(List<NameDatePair> awards) {
+    public ProfessionalProfileEntity setAwards(Set<NameDatePair> awards) {
         this.awards = awards;
         return this;
     }
@@ -168,17 +166,17 @@ public class ProfessionalProfileEntity extends BaseEntity {
     }
 
     @Transient
-    public List<JsonNameDatePair> getEducationAsJson() {
+    public Set<JsonNameDatePair> getEducationAsJson() {
         return getJsonNameDatePairs(education);
     }
 
     @Transient
-    public List<JsonNameDatePair> getLicensesAsJson() {
+    public Set<JsonNameDatePair> getLicensesAsJson() {
         return getJsonNameDatePairs(licenses);
     }
 
     @Transient
-    public List<JsonNameDatePair> getAwardsAsJson() {
+    public Set<JsonNameDatePair> getAwardsAsJson() {
         return getJsonNameDatePairs(awards);
     }
 }

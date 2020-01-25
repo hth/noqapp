@@ -59,7 +59,10 @@
                         <div class="add-store">
                             <div class="addbtn-store">
                                 <a href="/business/${queueSupervisorForm.bizStoreId}/addNewAgent.htm" class="add-btn">Add New Agent</a>
-                                <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm" class="add-btn">Add new queue supervisor</a>
+                                <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm" class="add-btn">Add New Supervisor</a>
+                                <c:if test="${businessType eq BusinessType.DO}">
+                                <a href="/business/${queueSupervisorForm.bizStoreId}/addDoctor.htm" class="add-btn">Add New Doctor</a>
+                                </c:if>
                             </div>
                             <div class="store-table">
                                 <spring:hasBindErrors name="errorMessage">

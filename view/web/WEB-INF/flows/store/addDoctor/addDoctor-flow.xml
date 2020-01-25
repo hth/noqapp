@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+    <secured attributes="ROLE_M_ADMIN"/>
+
+    <on-start>
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizStoreId')"
+                  result="flowScope.bizStoreId"/>
+        <evaluate expression="addNewAgentFlowActions.createNewAgentUser()"
+                  result="flowScope.merchantRegistration"/>
+        <evaluate expression="addNewDoctorFlowActions.populateProfessionalProfileForm()"
+                  result="flowScope.professionalProfile"/>
+        <evaluate expression="addNewDoctorFlowActions.populateProfessionalProfileEditForm()"
+                  result="flowScope.professionalProfileEditForm"/>
+    </on-start>
+
+    <view-state id="searchExistingProfile" model="merchantRegistration">
+        <transition on="submit" to="validatePhone"/>
+    </view-state>
+
+    <action-state id="validatePhone">
+        <evaluate expression="doctorFlowValidator.validatePhoneNumber(merchantRegistration, messageContext)"/>
+        <transition on="success" to="searchProfile"/>
+        <transition on="failure" to="searchExistingProfile"/>
+    </action-state>
+
+    <action-state id="searchProfile">
+        <evaluate expression="addNewDoctorFlowActions.findProfile(merchantRegistration, messageContext)"/>
+        <transition on="success" to="addNewDoctor"/>
+        <transition on="failure" to="searchExistingProfile"/>
+    </action-state>
+
+    <view-state id="addNewDoctor" model="merchantRegistration">
+        <transition on="submit" to="validateUserDetails"/>
+        <transition on="recover" to="inviteDoctor"/>
+    </view-state>
+
+    <action-state id="validateUserDetails">
+        <evaluate expression="userRegistrationValidation.validateUserDetails(merchantRegistration, true, messageContext)"/>
+        <transition on="success" to="addNewDoctorVerify"/>
+        <transition on="failure" to="addNewDoctor"/>
+    </action-state>
+
+    <view-state id="addNewDoctorVerify" model="merchantRegistration">
+        <on-entry>
+            <evaluate expression="addNewAgentFlowActions.sendMailVerificationOTP(merchantRegistration)"
+                      result="flowScope.mailOTP"/>
+        </on-entry>
+        <transition on="verify" to="createAccountAndInvite" history="invalidate"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="createAccountAndInvite">
+        <evaluate expression="addNewAgentFlowActions.createAccountAndInvite(merchantRegistration, mailOTP, bizStoreId, externalContext)"/>
+        <transition on="success" to="migrateToDoctorProfile" />
+        <transition on="failure" to="addNewDoctorOTPFailure"/>
+    </action-state>
+
+    <view-state id="addNewDoctorOTPFailure">
+        <transition on="ok" to="home" history="invalidate"/>
+    </view-state>
+
+    <view-state id="migrateToDoctorProfile" model="professionalProfile">
+        <on-entry>
+            <evaluate expression="addNewDoctorFlowActions.beforeMigrationToDoctorProfile(merchantRegistration, bizStoreId, externalContext, messageContext)" />
+        </on-entry>
+        <transition on="updateProfessionalProfile" to="detailAwards" />
+    </view-state>
+
+    <view-state id="detailAwards" model="professionalProfileEditForm">
+        <transition on="updateProfile" to="detailEducation" />
+        <transition on="add" to="detailAwards" />
+        <transition on="reset" to="resetAwards" />
+        <on-exit>
+            <evaluate expression="addNewDoctorFlowActions.updateProfessionalProfile(professionalProfile, professionalProfileEditForm)" />
+        </on-exit>
+    </view-state>
+
+    <action-state id="resetAwards">
+        <evaluate expression="addNewDoctorFlowActions.resetAwards(professionalProfile)"/>
+        <transition on="success" to="detailAwards" />
+        <transition on="failure" to="detailAwards"/>
+    </action-state>
+
+    <view-state id="detailEducation" model="professionalProfileEditForm">
+        <transition on="updateProfile" to="detailLicenses" />
+        <transition on="add" to="detailEducation" />
+        <transition on="reset" to="resetEducation" />
+        <on-exit>
+            <evaluate expression="addNewDoctorFlowActions.updateProfessionalProfile(professionalProfile, professionalProfileEditForm)" />
+        </on-exit>
+    </view-state>
+
+    <action-state id="resetEducation">
+        <evaluate expression="addNewDoctorFlowActions.resetEducation(professionalProfile)"/>
+        <transition on="success" to="detailEducation" />
+        <transition on="failure" to="detailEducation"/>
+    </action-state>
+
+    <view-state id="detailLicenses" model="professionalProfileEditForm">
+        <transition on="updateProfile" to="validateProfessionalProfile" />
+        <transition on="add" to="detailLicenses" />
+        <transition on="reset" to="resetLicenses" />
+        <on-exit>
+            <evaluate expression="addNewDoctorFlowActions.updateProfessionalProfile(professionalProfile, professionalProfileEditForm)" />
+        </on-exit>
+    </view-state>
+
+    <action-state id="resetLicenses">
+        <evaluate expression="addNewDoctorFlowActions.resetLicenses(professionalProfile)"/>
+        <transition on="success" to="detailLicenses" />
+        <transition on="failure" to="detailLicenses"/>
+    </action-state>
+
+    <action-state id="validateProfessionalProfile">
+        <evaluate expression="doctorFlowValidator.validateProfessionalProfileForm(professionalProfile, messageContext)"/>
+        <transition on="success" to="successAddingDoctorProfile"/>
+        <transition on="failure" to="migrateToDoctorProfile"/>
+    </action-state>
+
+    <view-state id="successAddingDoctorProfile">
+        <on-entry>
+            <evaluate expression="addNewDoctorFlowActions.completeDoctorProfile(merchantRegistration, professionalProfile, externalContext, messageContext)" />
+        </on-entry>
+        <transition on="ok" to="home" />
+    </view-state>
+
+    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
+    <end-state id="home" view="externalRedirect:contextRelative:/business/#{bizStoreId}/listQueueSupervisor.htm"/>
+
+    <global-transitions>
+        <transition on="cancel" to="home"/>
+    </global-transitions>
+</flow>

@@ -2,21 +2,24 @@ package com.noqapp.view.form;
 
 import com.noqapp.domain.helper.NameDatePair;
 
-import java.util.LinkedList;
-import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.Serializable;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * User: hitender
  * Date: 6/24/18 8:29 PM
  */
-public class ProfessionalProfileEditForm {
+public class ProfessionalProfileEditForm implements Serializable {
     private boolean professionalProfile;
 
     private String qid;
     private String action;
     private String name;
     private String monthYear;
-    private List<NameDatePair> nameDatePairs = new LinkedList<>();
+    private Set<NameDatePair> nameDatePairs = new LinkedHashSet<>();
 
     public String getQid() {
         return qid;
@@ -63,12 +66,16 @@ public class ProfessionalProfileEditForm {
         return this;
     }
 
-    public List<NameDatePair> getNameDatePairs() {
+    public Set<NameDatePair> getNameDatePairs() {
         return nameDatePairs;
     }
 
-    public ProfessionalProfileEditForm setNameDatePairs(List<NameDatePair> nameDatePairs) {
+    public ProfessionalProfileEditForm setNameDatePairs(Set<NameDatePair> nameDatePairs) {
         this.nameDatePairs = nameDatePairs;
         return this;
+    }
+
+    public boolean isNotValid() {
+        return StringUtils.isNotBlank(name) && StringUtils.isNotBlank(monthYear);
     }
 }

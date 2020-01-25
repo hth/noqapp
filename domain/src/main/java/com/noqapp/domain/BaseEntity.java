@@ -14,9 +14,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -147,8 +147,8 @@ public abstract class BaseEntity implements Serializable {
     }
 
     @Transient
-    protected List<JsonNameDatePair> getJsonNameDatePairs(List<NameDatePair> nameDatePairs) {
-        List<JsonNameDatePair> jsonNameDatePairs = new ArrayList<>();
+    protected Set<JsonNameDatePair> getJsonNameDatePairs(Set<NameDatePair> nameDatePairs) {
+        Set<JsonNameDatePair> jsonNameDatePairs = new HashSet<>();
         if (null != nameDatePairs) {
             for (NameDatePair nameDatePair : nameDatePairs) {
                 jsonNameDatePairs.add(new JsonNameDatePair()

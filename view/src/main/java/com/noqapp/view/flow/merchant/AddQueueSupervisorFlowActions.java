@@ -294,7 +294,7 @@ public class AddQueueSupervisorFlowActions {
             throw new InviteSupervisorException("User already a Supervisor for this queue");
         }
 
-        if (Boolean.valueOf(inviteQueueSupervisor.getDoctor().getText())) {
+        if (Boolean.parseBoolean(inviteQueueSupervisor.getDoctor().getText())) {
             if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode().getText())) {
                 if ("ON".equalsIgnoreCase(quickDataEntryByPassSwitch)) {
                     /* Set MANAGER when its a by-pass. Make sure it matches previous condition. */

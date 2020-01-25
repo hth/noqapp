@@ -2,22 +2,23 @@ package com.noqapp.view.form;
 
 import com.noqapp.domain.helper.NameDatePair;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * hitender
  * 6/11/18 3:24 PM
  */
-public class ProfessionalProfileForm {
+public class ProfessionalProfileForm implements Serializable {
     private String qid;
     private boolean professionalProfile;
     private String practiceStart;
     private String aboutMe;
 
-    private List<NameDatePair> awards = new LinkedList<>();
-    private List<NameDatePair> education = new LinkedList<>();
-    private List<NameDatePair> licenses = new LinkedList<>();
+    private Set<NameDatePair> awards = new HashSet<>();
+    private Set<NameDatePair> education = new HashSet<>();
+    private Set<NameDatePair> licenses = new HashSet<>();
 
     public String getQid() {
         return qid;
@@ -55,29 +56,29 @@ public class ProfessionalProfileForm {
         return this;
     }
 
-    public List<NameDatePair> getAwards() {
+    public Set<NameDatePair> getAwards() {
         return awards;
     }
 
-    public ProfessionalProfileForm setAwards(List<NameDatePair> awards) {
+    public ProfessionalProfileForm setAwards(Set<NameDatePair> awards) {
         this.awards = awards;
         return this;
     }
 
-    public List<NameDatePair> getEducation() {
+    public Set<NameDatePair> getEducation() {
         return education;
     }
 
-    public ProfessionalProfileForm setEducation(List<NameDatePair> education) {
+    public ProfessionalProfileForm setEducation(Set<NameDatePair> education) {
         this.education = education;
         return this;
     }
 
-    public List<NameDatePair> getLicenses() {
+    public Set<NameDatePair> getLicenses() {
         return licenses;
     }
 
-    public ProfessionalProfileForm setLicenses(List<NameDatePair> licenses) {
+    public ProfessionalProfileForm setLicenses(Set<NameDatePair> licenses) {
         this.licenses = licenses;
         return this;
     }
