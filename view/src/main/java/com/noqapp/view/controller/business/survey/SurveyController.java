@@ -88,7 +88,7 @@ public class SurveyController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        LOG.info("Landed on survey page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on survey page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         List<QuestionnaireEntity> questionnaires = surveyService.findAll(businessUser.getBizName().getId());
@@ -100,7 +100,7 @@ public class SurveyController {
     @GetMapping(value = "/add", produces = "text/html;charset=UTF-8")
     public String addQuestionnaire(HttpServletResponse response) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Add survey by business {} qid={} level={}", addSurveyFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Add survey by business {} qid={} userLevel={}", addSurveyFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         return addSurveyFlow;
@@ -118,7 +118,7 @@ public class SurveyController {
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Edit survey by business {} qid={} level={}", addSurveyFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Edit survey by business {} qid={} userLevel={}", addSurveyFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         QuestionnaireEntity questionnaire = surveyService.findByQuestionnaireId(questionnaireId.getText());
@@ -161,7 +161,7 @@ public class SurveyController {
     public String liveRating() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        LOG.info("Live rating business {} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Live rating business {} qid={} userLevel={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         return surveyService.getRecentOverallRating(businessUser.getBizName().getId()).asJson();
@@ -176,7 +176,7 @@ public class SurveyController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        LOG.info("Live rating business {} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Live rating business {} qid={} userLevel={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         QuestionnaireEntity questionnaire = surveyService.findByQuestionnaireId(questionnaireId.getText());
@@ -189,7 +189,7 @@ public class SurveyController {
     public String dashboard(Model model) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        LOG.info("Live rating business {} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Live rating business {} qid={} userLevel={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         List<SurveyGroupedValue> surveyGroupedValues = surveyService.populateDashboard(businessUser.getBizName().getId());

@@ -109,7 +109,7 @@ public class CouponController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on active coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on active coupon page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         List<CouponEntity> coupons = couponService.findActiveCouponByBizNameId(businessUser.getBizName().getId(), CouponGroupEnum.C);
@@ -145,7 +145,7 @@ public class CouponController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on upcoming coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on upcoming coupon page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         List<CouponEntity> coupons = couponService.findUpcomingCouponByBizNameId(businessUser.getBizName().getId(), CouponGroupEnum.C);
@@ -181,7 +181,7 @@ public class CouponController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on active business coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on active business coupon page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         List<CouponEntity> coupons = couponService.findActiveCouponByBizNameId(businessUser.getBizName().getId(), CouponGroupEnum.M);
@@ -208,7 +208,7 @@ public class CouponController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on upcoming business coupon page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on upcoming business coupon page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         List<CouponEntity> coupons = couponService.findUpcomingCouponByBizNameId(businessUser.getBizName().getId(), CouponGroupEnum.M);

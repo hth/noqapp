@@ -100,7 +100,7 @@ public class StoreSupervisorLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on business page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         return nextPage(businessUser, businessLandingForm);
@@ -119,11 +119,11 @@ public class StoreSupervisorLandingController {
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
                 businessUserService.save(businessUser);
                 /* After setting status as incomplete, continue to call migrateBusinessProfileFlow. */
-                LOG.info("Migrate to business registration qid={} level={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
+                LOG.info("Migrate to business registration qid={} userLevel={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
                 return migrateBusinessProfileFlow;
             case C:
             case I:
-                LOG.info("Migrate to business registration qid={} level={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
+                LOG.info("Migrate to business registration qid={} userLevel={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
                 return migrateBusinessProfileFlow;
             default:
                 LOG.error("Reached unsupported condition={}", businessUser.getBusinessUserRegistrationStatus());

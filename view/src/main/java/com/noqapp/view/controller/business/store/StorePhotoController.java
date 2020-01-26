@@ -114,7 +114,7 @@ public class StorePhotoController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Landed on store image codeQR={} qid={} level={}", codeQR.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on store image codeQR={} qid={} userLevel={}", codeQR.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         /* Different binding for different form. */
@@ -150,7 +150,7 @@ public class StorePhotoController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Landed on store image codeQR={} qid={} level={}", codeQR.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on store image codeQR={} qid={} userLevel={}", codeQR.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         /* Different binding for different form. */
@@ -177,7 +177,7 @@ public class StorePhotoController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Delete store image codeQR={} qid={} level={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Delete store image codeQR={} qid={} userLevel={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         fileService.deleteImage(queueUser.getQueueUserId(), request.getParameter("storeServiceImage"), codeQR);
@@ -200,7 +200,7 @@ public class StorePhotoController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Delete store image codeQR={} qid={} level={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Delete store image codeQR={} qid={} userLevel={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         fileService.deleteImage(queueUser.getQueueUserId(), request.getParameter("storeInteriorImage"), codeQR);
@@ -233,7 +233,7 @@ public class StorePhotoController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Upload store image codeQR={} qid={} level={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Upload store image codeQR={} qid={} userLevel={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
@@ -291,7 +291,7 @@ public class StorePhotoController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Upload store image codeQR={} qid={} level={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Upload store image codeQR={} qid={} userLevel={}", codeQR, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);

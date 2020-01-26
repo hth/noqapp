@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.merchant;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
@@ -183,23 +184,26 @@ public class AddNewDoctorFlowActions {
         ExternalContext externalContext,
         MessageContext messageContext
     ) {
-        LOG.info("Update professional profile {}", merchantRegistration.getMail());
-        UserProfileEntity userProfile = accountService.checkUserExistsByPhone(merchantRegistration.getPhoneCountryCode() + merchantRegistration.getPhone());
-        professionalProfile.setQid(userProfile.getQueueUserId());
+        try {
+            LOG.info("Update professional profile {}", merchantRegistration.getMail());
+            UserProfileEntity userProfile = accountService.checkUserExistsByPhone(merchantRegistration.getPhoneCountryCode() + merchantRegistration.getPhone());
+            professionalProfile.setQid(userProfile.getQueueUserId());
 
-        professionalProfileService.createProfessionalProfile(userProfile.getQueueUserId());
-        ProfessionalProfileEntity professionalProfileEntity = professionalProfileService.findByQid(userProfile.getQueueUserId());
-        professionalProfileEntity
-            .setAboutMe(professionalProfile.getAboutMe())
-            .setPracticeStart(professionalProfile.getPracticeStart())
-            .setAwards(professionalProfile.getAwards())
-            .setLicenses(professionalProfile.getLicenses())
-            .setEducation(professionalProfile.getEducation());
-        professionalProfileService.save(professionalProfileEntity);
+            ProfessionalProfileEntity professionalProfileEntity = new ProfessionalProfileEntity(userProfile.getQueueUserId(), CommonUtil.generateHexFromObjectId())
+                .setAboutMe(professionalProfile.getAboutMe())
+                .setPracticeStart(professionalProfile.getPracticeStart())
+                .setAwards(professionalProfile.getAwards())
+                .setLicenses(professionalProfile.getLicenses())
+                .setEducation(professionalProfile.getEducation());
+            professionalProfileService.save(professionalProfileEntity);
 
-        userProfile.setLevel(UserLevelEnum.S_MANAGER);
-        accountService.save(userProfile);
-        accountService.changeAccountRolesToMatchUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
+            userProfile.setLevel(UserLevelEnum.S_MANAGER);
+            accountService.save(userProfile);
+            accountService.changeAccountRolesToMatchUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
+        } catch (Exception e) {
+            LOG.error("Failed creating doctor profile mail={} need rectification", merchantRegistration.getMail());
+            throw e; //TODO(hth) make this error better
+        }
     }
 
     public String resetAwards(ProfessionalProfileForm professionalProfile) {

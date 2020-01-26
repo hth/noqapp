@@ -80,7 +80,7 @@ public class DataVisibilityController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on data visibility page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on data visibility page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         BizNameEntity bizName = businessUser.getBizName();
@@ -106,7 +106,7 @@ public class DataVisibilityController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Update data visibility qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Update data visibility qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         BizNameEntity bizName = businessUser.getBizName();

@@ -140,7 +140,7 @@ public class AccountAccessController {
     @PostMapping(value = "/search", params = {"cancel_Search"})
     public String cancelAdd() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Cancel business category qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Cancel business category qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         return "redirect:/emp/landing.htm";
     }

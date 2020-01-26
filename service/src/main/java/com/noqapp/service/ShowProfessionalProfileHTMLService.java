@@ -118,7 +118,7 @@ public class ShowProfessionalProfileHTMLService {
 
                 /* Not store assigned. No profile created. */
                 if (bizStores.isEmpty()) {
-                    LOG.warn("No store assigned to Dr qid={} level={} profile={}",
+                    LOG.warn("No store assigned to Dr qid={} userLevel={} profile={}",
                         userProfile.getQueueUserId(), userProfile.getLevel(), userProfile.getName());
                     return showStoreBlank;
                 }

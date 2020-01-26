@@ -242,12 +242,12 @@ public class BusinessUserStoreService {
     public long changeUserLevel(String qid, UserLevelEnum changeToUserLevel, BusinessTypeEnum businessType) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
         if (userProfile.getLevel() == changeToUserLevel) {
-            LOG.warn("Changing to same level qid={} level={}", qid, changeToUserLevel);
+            LOG.warn("Changing to same level qid={} userLevel={}", qid, changeToUserLevel);
             return -1;
         }
 
         if (FAILURE == checkIfProfileIsOfAProfessional(qid, changeToUserLevel, businessType, userProfile.getLevel())) {
-            LOG.info("Failed changing level, exiting {} level={} businessType={}", qid, changeToUserLevel, businessType);
+            LOG.info("Failed changing level, exiting {} userLevel={} businessType={}", qid, changeToUserLevel, businessType);
             return 0;
         }
         userProfile.setLevel(changeToUserLevel);
