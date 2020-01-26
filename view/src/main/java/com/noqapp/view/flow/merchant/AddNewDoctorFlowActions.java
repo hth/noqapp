@@ -141,6 +141,10 @@ public class AddNewDoctorFlowActions {
                         new NameDatePair()
                             .setName(professionalProfileEditForm.getName())
                             .setMonthYear(professionalProfileEditForm.getMonthYear()));
+
+                    professionalProfileEditForm
+                        .setName(null)
+                        .setMonthYear(null);
                 }
                 break;
             case "education":
@@ -149,6 +153,10 @@ public class AddNewDoctorFlowActions {
                         new NameDatePair()
                             .setName(professionalProfileEditForm.getName())
                             .setMonthYear(professionalProfileEditForm.getMonthYear()));
+
+                    professionalProfileEditForm
+                        .setName(null)
+                        .setMonthYear(null);
                 }
                 break;
             case "licenses":
@@ -157,6 +165,10 @@ public class AddNewDoctorFlowActions {
                         new NameDatePair()
                             .setName(professionalProfileEditForm.getName())
                             .setMonthYear(professionalProfileEditForm.getMonthYear()));
+
+                    professionalProfileEditForm
+                        .setName(null)
+                        .setMonthYear(null);
                 }
                 break;
             default:
