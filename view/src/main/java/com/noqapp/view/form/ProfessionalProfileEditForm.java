@@ -76,6 +76,6 @@ public class ProfessionalProfileEditForm implements Serializable {
     }
 
     public boolean isNotValid() {
-        return StringUtils.isBlank(name) && StringUtils.isBlank(monthYear);
+        return StringUtils.isNotBlank(name) && StringUtils.isNotBlank(monthYear);
     }
 }
