@@ -1,6 +1,7 @@
 package com.noqapp.view.controller.access;
 
 import static com.noqapp.common.utils.FileUtil.getFileExtensionWithDot;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.ScrubbedInput;
@@ -53,6 +54,7 @@ import java.time.Instant;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * hitender
@@ -161,13 +163,19 @@ public class UserProfileController {
         @ModelAttribute("professionalProfileForm")
         ProfessionalProfileForm professionalProfileForm,
 
-        Model model
-    ) {
+        Model model,
+        HttpServletResponse response
+    ) throws IOException {
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String businessUserId = (String) model.asMap().get("businessUserId");
         LOG.info("Landed on profile page qid={} for businessUserId={}", queueUser.getQueueUserId(), businessUserId);
         BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
+        if (businessUser.getQueueUserId().equalsIgnoreCase(queueUser.getQueueUserId())) {
+            LOG.warn("Cannot access self profile from here qid={}", queueUser.getQueueUserId());
+            response.sendError(SC_UNAUTHORIZED, "Not authorized");
+            return null;
+        }
         populateProfile(userProfileForm, professionalProfileForm, businessUser.getQueueUserId(), model);
 
         apiHealthService.insert(

@@ -56,7 +56,7 @@
                         <form:form modelAttribute="merchantRegistration">
                             <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                             <h2>Success</h2>
-                            <span>Successfully added agent with ${merchantRegistration.mail}. Please approve agent to allow access.</span>
+                            <span>Successfully added Doctor with ${merchantRegistration.mail}. Please approve Doctor to allow access.</span>
                             <span><br></span>
                             <span><br></span>
                             <div class="button-btn">
