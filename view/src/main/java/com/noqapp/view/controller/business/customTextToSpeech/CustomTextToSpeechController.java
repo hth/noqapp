@@ -83,7 +83,7 @@ public class CustomTextToSpeechController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        LOG.info("Landed on survey page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on survey page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         //Gymnastic to show BindingResult errors if any
@@ -108,7 +108,7 @@ public class CustomTextToSpeechController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        LOG.info("Landed on survey page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on survey page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         CustomTextToSpeechEntity customTextToSpeech = customTextToSpeechService.findByBizNameId(businessUser.getBizName().getId());
@@ -172,7 +172,7 @@ public class CustomTextToSpeechController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        LOG.info("Landed on survey page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on survey page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         CustomTextToSpeechEntity customTextToSpeech = customTextToSpeechService.findByBizNameId(businessUser.getBizName().getId());

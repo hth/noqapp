@@ -181,7 +181,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on business page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on business page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         return nextPage(businessUser, businessLandingForm);
@@ -200,11 +200,11 @@ public class AdminBusinessLandingController {
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
                 businessUserService.save(businessUser);
                 /* After setting status as incomplete, continue to call migrateBusinessRegistrationFlow. */
-                LOG.info("Migrate to business registration qid={} level={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
+                LOG.info("Migrate to business registration qid={} userLevel={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
                 return migrateBusinessRegistrationFlow;
             case C:
             case I:
-                LOG.info("Migrate to business registration qid={} level={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
+                LOG.info("Migrate to business registration qid={} userLevel={}", businessUser.getQueueUserId(), businessUser.getUserLevel());
                 return migrateBusinessRegistrationFlow;
             default:
                 LOG.error("Reached unsupported condition={}", businessUser.getBusinessUserRegistrationStatus());
@@ -265,7 +265,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("List QueueSupervisors for storeId={} qid={} level={}", storeId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("List QueueSupervisors for storeId={} qid={} userLevel={}", storeId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
@@ -306,7 +306,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Add store to business {} qid={} level={}", storeActionFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Add store to business {} qid={} userLevel={}", storeActionFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         return storeActionFlow;
@@ -327,7 +327,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Edit business store id={} qid={} level={}", bizStoreId, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Edit business store id={} qid={} userLevel={}", bizStoreId, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         redirectAttrs.addFlashAttribute("bizStoreId", bizStoreId);
@@ -349,7 +349,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Add queue supervisor to bizStoreId={} qid={} level={} {}", bizStoreId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        LOG.info("Add queue supervisor to bizStoreId={} qid={} userLevel={} {}", bizStoreId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
         /* Above condition to make sure users with right roles and access gets access. */
 
         redirectAttributes.addFlashAttribute("bizStoreId", bizStoreId.getText());
@@ -371,7 +371,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Add doctor to bizStoreId={} qid={} level={} {}", bizStoreId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        LOG.info("Add doctor to bizStoreId={} qid={} userLevel={} {}", bizStoreId.getText(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
         /* Above condition to make sure users with right roles and access gets access. */
 
         redirectAttributes.addFlashAttribute("bizStoreId", bizStoreId.getText());
@@ -667,7 +667,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Add new agent to business {} qid={} level={}", addNewAgentFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Add new agent to business {} qid={} userLevel={}", addNewAgentFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         redirectAttributes.addFlashAttribute("bizStoreId", bizStoreId.getText());
@@ -696,7 +696,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" }", businessUserId.getText(), CommonStatusEnum.FAILURE.name());
         }
-        LOG.info("Change Level bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        LOG.info("Change Level bizId={} qid={} userLevel={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
         /* Above condition to make sure users with right roles and access gets access. */
 
         try {
@@ -708,18 +708,18 @@ public class AdminBusinessLandingController {
             String text;
             if (-1 == change) {
                 text = "Failed. User role is already set to " + UserLevelEnum.valueOf(userLevel.getText()).getDescription();
-                LOG.info("Failed changing to same userLevel for qid={} to level={}", businessUserOfId.getQueueUserId(), userLevel.getText());
+                LOG.info("Failed changing to same userLevel for qid={} to userLevel={}", businessUserOfId.getQueueUserId(), userLevel.getText());
                 return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" , \"text\" : \"%s\"}",
                     businessUserId.getText(), CommonStatusEnum.FAILURE.name(), text);
             } else if (2 <= change) {
                 text = "Successfully changed user role to " + UserLevelEnum.valueOf(userLevel.getText()).getDescription();
-                LOG.info("Changed userLevel successfully for qid={} to level={}",
+                LOG.info("Changed userLevel successfully for qid={} to userLevel={}",
                     businessUserOfId.getQueueUserId(), userLevel.getText());
                 return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" , \"text\" : \"%s\"}",
                     businessUserId.getText(), CommonStatusEnum.SUCCESS.name(), text);
             } else {
                 text = "Failed changing user role to " + UserLevelEnum.valueOf(userLevel.getText()).getDescription();
-                LOG.error("Failed changing userLevel for qid={} to level={}", businessUserOfId.getQueueUserId(), userLevel.getText());
+                LOG.error("Failed changing userLevel for qid={} to userLevel={}", businessUserOfId.getQueueUserId(), userLevel.getText());
                 return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" , \"text\" : \"%s\"}",
                     businessUserId.getText(), CommonStatusEnum.FAILURE.name(), text);
             }
@@ -744,7 +744,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Edit business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        LOG.info("Edit business bizId={} qid={} userLevel={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
         /* Above condition to make sure users with right roles and access gets access. */
 
         redirectAttrs.addFlashAttribute("bizNameId", businessUser.getBizName().getId());
@@ -768,7 +768,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Get preferred business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        LOG.info("Get preferred business bizId={} qid={} userLevel={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
         /* Above condition to make sure users with right roles and access gets access. */
 
         List<PreferredBusinessEntity> preferredBusinesses = preferredBusinessService.findAll(businessUser.getBizName().getId());
@@ -805,7 +805,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Add preferred business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        LOG.info("Add preferred business bizId={} qid={} userLevel={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
         /* Above condition to make sure users with right roles and access gets access. */
 
         BizNameEntity bizName = bizService.findAllBizWithMatchingName(preferredBusinessForm.getBusinessNameToAdd().getText());
@@ -842,7 +842,7 @@ public class AdminBusinessLandingController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Delete preferred business bizId={} qid={} level={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
+        LOG.info("Delete preferred business bizId={} qid={} userLevel={} {}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel(), addQueueSupervisorFlow);
         /* Above condition to make sure users with right roles and access gets access. */
 
         preferredBusinessService.deleteById(preferredBusinessForm.getRecordId());

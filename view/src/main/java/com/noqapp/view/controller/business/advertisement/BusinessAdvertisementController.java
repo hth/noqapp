@@ -115,7 +115,7 @@ public class BusinessAdvertisementController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on payout page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on payout page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         advertisementForm.setAdvertisements(advertisementService.findAllAdvertisements(businessUser.getBizName().getId()));

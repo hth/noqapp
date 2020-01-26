@@ -137,7 +137,7 @@ public class MedicalReportController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Landed on store category page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on store category page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         /* Different binding for different form. */

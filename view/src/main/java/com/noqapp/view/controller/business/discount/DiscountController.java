@@ -90,7 +90,7 @@ public class DiscountController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Landed on discount page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on discount page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         List<DiscountEntity> discounts = discountService.findAll(businessUser.getBizName().getId());
@@ -110,7 +110,7 @@ public class DiscountController {
         Model model
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on adding new discount qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on adding new discount qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         //Gymnastic to show BindingResult errors if any
@@ -137,7 +137,7 @@ public class DiscountController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Adding new discount qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Adding new discount qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         switch (discountForm.getActionType()) {

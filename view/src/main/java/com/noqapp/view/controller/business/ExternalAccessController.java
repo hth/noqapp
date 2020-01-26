@@ -71,7 +71,7 @@ public class ExternalAccessController {
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on external access page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on external access page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         BusinessUserEntity businessUser = businessUserService.findByQid(queueUser.getQueueUserId());
         if (null == businessUser) {

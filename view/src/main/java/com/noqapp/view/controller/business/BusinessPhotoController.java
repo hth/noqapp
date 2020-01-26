@@ -105,7 +105,7 @@ public class BusinessPhotoController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Get upload image business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Get upload image business bizId={} qid={} userLevel={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         /* Different binding for different form. */
@@ -131,7 +131,7 @@ public class BusinessPhotoController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Delete image business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Delete image business bizId={} qid={} userLevel={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         fileService.deleteImage(queueUser.getQueueUserId(), request.getParameter("businessServiceImage"), businessUser.getBizName().getCodeQR());
@@ -163,7 +163,7 @@ public class BusinessPhotoController {
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
         }
-        LOG.info("Upload image business bizId={} qid={} level={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Upload image business bizId={} qid={} userLevel={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);

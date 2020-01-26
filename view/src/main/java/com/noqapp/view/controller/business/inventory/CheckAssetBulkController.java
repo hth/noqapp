@@ -97,7 +97,7 @@ public class CheckAssetBulkController {
     ) {
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on bulk upload page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on bulk upload page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         /* Different binding for different form. */
         if (model.asMap().containsKey("resultImage")) {

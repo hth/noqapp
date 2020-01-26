@@ -99,7 +99,7 @@ public class StoreCategoryController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Landed on store category page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on store category page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         //Gymnastic to show BindingResult errors if any
@@ -196,7 +196,7 @@ public class StoreCategoryController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Adding store category qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Adding store category qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -227,7 +227,7 @@ public class StoreCategoryController {
     @PostMapping (value = "/add", params = {"cancel_Add"})
     public String cancelAdd() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Cancel adding store category qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Cancel adding store category qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         return "redirect:/business/store/landing.htm";
     }
@@ -253,7 +253,7 @@ public class StoreCategoryController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Landed on editing store category page storeCategoryId={} bizStoreId={} qid={} level={}",
+        LOG.info("Landed on editing store category page storeCategoryId={} bizStoreId={} qid={} userLevel={}",
                 storeCategoryId.getText(),
                 storeId.getText(),
                 queueUser.getQueueUserId(),
@@ -285,7 +285,7 @@ public class StoreCategoryController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Edit store category id={} bizStoreId={} qid={} level={}",
+        LOG.info("Edit store category id={} bizStoreId={} qid={} userLevel={}",
                 storeCategoryForm.getStoreCategoryId(),
                 storeCategoryForm.getBizStoreId(),
                 queueUser.getQueueUserId(),
@@ -315,7 +315,7 @@ public class StoreCategoryController {
             StoreCategoryForm storeCategoryForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Cancel editing store category qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Cancel editing store category qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         return "redirect:/business/store/landing.htm";
     }
@@ -334,7 +334,7 @@ public class StoreCategoryController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Delete store category id={} qid={} level={}",
+        LOG.info("Delete store category id={} qid={} userLevel={}",
                 storeCategoryForm.getStoreCategoryId().getText(),
                 queueUser.getQueueUserId(),
                 queueUser.getUserLevel());

@@ -135,7 +135,7 @@ public class StoreProductController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Landed on product page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on product page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         //Gymnastic to show BindingResult errors if any
@@ -260,7 +260,7 @@ public class StoreProductController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Adding business product qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Adding business product qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         storeProductValidator.validate(storeProductForm, result);
@@ -294,7 +294,7 @@ public class StoreProductController {
     @PostMapping(value = "/add", params = {"cancel_Add"})
     public String cancelAdd() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Cancel adding new product qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Cancel adding new product qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         return "redirect:/business/store/landing.htm";
     }
@@ -320,7 +320,7 @@ public class StoreProductController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Landed on editing product page storeProductId={} bizStoreId={} qid={} level={}",
+        LOG.info("Landed on editing product page storeProductId={} bizStoreId={} qid={} userLevel={}",
             storeProductForm.getStoreProductId(),
             storeProductForm.getBizStoreId(),
             queueUser.getQueueUserId(),
@@ -363,7 +363,7 @@ public class StoreProductController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Edit product storeProductId={} bizStoreId={} qid={} level={}",
+        LOG.info("Edit product storeProductId={} bizStoreId={} qid={} userLevel={}",
             storeProductForm.getStoreProductId(),
             storeProductForm.getBizStoreId(),
             queueUser.getQueueUserId(),
@@ -405,7 +405,7 @@ public class StoreProductController {
         StoreProductForm storeProductForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Cancel product edit qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Cancel product edit qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         return "redirect:/business/store/landing.htm";
     }
@@ -424,7 +424,7 @@ public class StoreProductController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Delete product id={} qid={} level={}",
+        LOG.info("Delete product id={} qid={} userLevel={}",
             storeProductForm.getStoreProductId().getText(),
             queueUser.getQueueUserId(),
             queueUser.getUserLevel());
@@ -449,7 +449,7 @@ public class StoreProductController {
             response.sendError(SC_UNAUTHORIZED, "Not authorized");
             return null;
         }
-        LOG.info("Forced refresh preferred product bizStoreId={} qid={} level={}",
+        LOG.info("Forced refresh preferred product bizStoreId={} qid={} userLevel={}",
             storeProductForm.getBizStoreId().getText(),
             queueUser.getQueueUserId(),
             queueUser.getUserLevel());
@@ -474,7 +474,7 @@ public class StoreProductController {
     ) {
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on bulk upload page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on bulk upload page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         /* Different binding for different form. */
         if (model.asMap().containsKey("resultImage")) {

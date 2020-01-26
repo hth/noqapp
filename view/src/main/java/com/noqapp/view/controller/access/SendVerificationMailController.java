@@ -69,7 +69,7 @@ public class SendVerificationMailController {
         ProfileForm profile
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on sendMailVerification page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on sendMailVerification page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
         if (userAccount.getUserId().endsWith(MAIL_NOQAPP_COM)) {
@@ -97,7 +97,7 @@ public class SendVerificationMailController {
         RedirectAttributes redirectAttrs
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Landed on sendMailVerification page qid={} level={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Landed on sendMailVerification page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
         mailService.sendValidationMailOnAccountCreation(
