@@ -9,6 +9,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -206,8 +207,14 @@ public class AddNewDoctorFlowActions {
             userProfile.setLevel(UserLevelEnum.S_MANAGER);
             accountService.save(userProfile);
 
-            UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
-            accountService.save(userAccount);
+            long change = businessUserStoreService.changeUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER, BusinessTypeEnum.DO);
+            if (-1 == change) {
+                LOG.info("Failed changing to same userLevel for qid={} to userLevel={}", userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
+            } else if (2 <= change) {
+                LOG.info("Changed userLevel successfully for qid={} to userLevel={}", userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
+            } else {
+                LOG.error("Failed changing userLevel for qid={} to userLevel={}", userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
+            }
         } catch (Exception e) {
             LOG.error("Failed creating doctor profile mail={} need rectification", merchantRegistration.getMail());
             throw e; //TODO(hth) make this error better
