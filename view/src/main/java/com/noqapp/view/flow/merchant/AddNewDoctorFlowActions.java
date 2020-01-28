@@ -127,6 +127,11 @@ public class AddNewDoctorFlowActions {
             .setFirstName(merchantRegistrationForm.getFirstName())
             .setLastName(merchantRegistrationForm.getLastName());
         accountService.updateUserProfile(registerUser, merchantRegistrationForm.getMail().getText());
+
+        /* Mark phone validated to change role in next step. */
+        userAccount = accountService.findByUserId(merchantRegistrationForm.getMail().getText());
+        userAccount.setPhoneValidated(true);
+        accountService.save(userAccount);
     }
 
     @SuppressWarnings("unused")
@@ -178,6 +183,7 @@ public class AddNewDoctorFlowActions {
         }
     }
 
+    @SuppressWarnings("unused")
     public void completeDoctorProfile(
         MerchantRegistrationForm merchantRegistration,
         ProfessionalProfileForm professionalProfile,
@@ -199,23 +205,28 @@ public class AddNewDoctorFlowActions {
 
             userProfile.setLevel(UserLevelEnum.S_MANAGER);
             accountService.save(userProfile);
-            accountService.changeAccountRolesToMatchUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
+
+            UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
+            accountService.save(userAccount);
         } catch (Exception e) {
             LOG.error("Failed creating doctor profile mail={} need rectification", merchantRegistration.getMail());
             throw e; //TODO(hth) make this error better
         }
     }
 
+    @SuppressWarnings("unused")
     public String resetAwards(ProfessionalProfileForm professionalProfile) {
         professionalProfile.setAwards(new ArrayList<>());
         return "success";
     }
 
+    @SuppressWarnings("unused")
     public String resetEducation(ProfessionalProfileForm professionalProfile) {
         professionalProfile.setEducation(new ArrayList<>());
         return "success";
     }
 
+    @SuppressWarnings("unused")
     public String resetLicenses(ProfessionalProfileForm professionalProfile) {
         professionalProfile.setLicenses(new ArrayList<>());
         return "success";
