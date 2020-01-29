@@ -194,8 +194,6 @@ public class AddNewDoctorFlowActions {
         try {
             LOG.info("Update professional profile {}", merchantRegistration.getMail());
             UserProfileEntity userProfile = accountService.checkUserExistsByPhone(merchantRegistration.getPhoneCountryCode() + merchantRegistration.getPhone());
-            professionalProfile.setQid(userProfile.getQueueUserId());
-
             ProfessionalProfileEntity professionalProfileEntity = new ProfessionalProfileEntity(userProfile.getQueueUserId(), CommonUtil.generateHexFromObjectId())
                 .setAboutMe(professionalProfile.getAboutMe())
                 .setPracticeStart(professionalProfile.getPracticeStart())
@@ -203,9 +201,6 @@ public class AddNewDoctorFlowActions {
                 .setLicenses(professionalProfile.getLicenses())
                 .setEducation(professionalProfile.getEducation());
             professionalProfileService.save(professionalProfileEntity);
-
-            userProfile.setLevel(UserLevelEnum.S_MANAGER);
-            accountService.save(userProfile);
 
             long change = businessUserStoreService.changeUserLevel(userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER, BusinessTypeEnum.DO);
             if (-1 == change) {
