@@ -73,6 +73,19 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
+                                            <form:label path="walkInState" cssErrorClass="lb_error">Walk-in</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:select path="walkInState" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                <form:option value="" label="--- Select ---"/>
+                                                <form:options items="${registerBusiness.walkinStates}" />
+                                            </form:select>
+                                            <span style="display:block; font-size:14px;">(Allow user to take walk-in appointments)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
                                             <form:label path="remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
                                         </div>
                                         <div class="col-fields">

@@ -134,6 +134,15 @@
       "PP": {
         "type": "integer"
       },
+      "WS" : {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 1
+          }
+        }
+      },
       "PS" : {
         "type": "text",
         "fields": {

@@ -468,8 +468,18 @@ public class BusinessFlowValidator {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
-                    .source(source + "limited token")
-                    .defaultText("Limited token is not valid")
+                    .source(source + "availableTokenCount")
+                    .defaultText("Limited token is not valid. Should be a positive number.")
+                    .build());
+            status = "failure";
+        }
+
+        if (registerBusiness.getWalkInState() == null) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source(source + "walkInState")
+                    .defaultText("Walk-in state cannot be empty")
                     .build());
             status = "failure";
         }
