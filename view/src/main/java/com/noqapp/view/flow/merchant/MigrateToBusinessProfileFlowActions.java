@@ -51,15 +51,15 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
 
     @Autowired
     public MigrateToBusinessProfileFlowActions(
-            Environment environment,
-            ExternalService externalService,
-            BizService bizService,
-            TokenQueueService tokenQueueService,
-            AccountService accountService,
-            BusinessUserService businessUserService,
-            MailService mailService,
-            EmailValidateService emailValidateService,
-            BizStoreElasticService bizStoreElasticService
+        Environment environment,
+        ExternalService externalService,
+        BizService bizService,
+        TokenQueueService tokenQueueService,
+        AccountService accountService,
+        BusinessUserService businessUserService,
+        MailService mailService,
+        EmailValidateService emailValidateService,
+        BizStoreElasticService bizStoreElasticService
     ) {
         super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
 
@@ -81,19 +81,19 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
 
         RegisterUser registerUser = new RegisterUser();
         registerUser.setQueueUserId(userAccount.getQueueUserId())
-                .setGender(userProfile.getGender())
-                .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
-                .setEmail(userProfile.getEmail().endsWith(MAIL_NOQAPP_COM) ? new ScrubbedInput("") : new ScrubbedInput(userProfile.getEmail()))
-                .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
-                .setLastName(new ScrubbedInput(userProfile.getLastName()))
-                .setAddress(new ScrubbedInput(userProfile.getAddress()))
-                .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
-                .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
-                .setEmailValidated(userAccount.isAccountValidated())
-                .setPhoneValidated(userAccount.isPhoneValidated())
-                /* Since user has already agreed to this agreement when they signed up. */
-                //TODO why no accept agreement when business profile is created
-                .setAcceptsAgreement(true);
+            .setGender(userProfile.getGender())
+            .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
+            .setEmail(userProfile.getEmail().endsWith(MAIL_NOQAPP_COM) ? new ScrubbedInput("") : new ScrubbedInput(userProfile.getEmail()))
+            .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
+            .setLastName(new ScrubbedInput(userProfile.getLastName()))
+            .setAddress(new ScrubbedInput(userProfile.getAddress()))
+            .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
+            .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
+            .setEmailValidated(userAccount.isAccountValidated())
+            .setPhoneValidated(userAccount.isPhoneValidated())
+            /* Since user has already agreed to this agreement when they signed up. */
+            //TODO why no accept agreement when business profile is created
+            .setAcceptsAgreement(true);
 
         LOG.info("Registered User={}", registerUser);
         return registerUser;
@@ -135,8 +135,8 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         }
 
         UserAuthenticationEntity userAuthentication = UserAuthenticationEntity.newInstance(
-                HashText.computeSCrypt(registerUser.getPassword()),
-                HashText.computeBCrypt(RandomString.newInstance().nextString())
+            HashText.computeSCrypt(registerUser.getPassword()),
+            HashText.computeBCrypt(RandomString.newInstance().nextString())
         );
 
         UserAuthenticationEntity userAuthenticationLoaded = accountService.findByQueueUserId(registerUser.getQueueUserId()).getUserAuthentication();
@@ -162,13 +162,13 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
 
         /* Since account is not validated, send account validation email. */
         EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(
-                userAccount.getQueueUserId(),
-                userAccount.getUserId());
+            userAccount.getQueueUserId(),
+            userAccount.getUserId());
 
         mailService.accountValidationMail(
-                registerUser.getEmail(),
-                userAccount.getName(),
-                accountValidate.getAuthenticationKey());
+            registerUser.getEmail(),
+            userAccount.getName(),
+            accountValidate.getAuthenticationKey());
     }
 
     private void sendOTP(RegisterUser registerUser) {
