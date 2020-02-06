@@ -13,9 +13,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
-import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
-import com.noqapp.service.MailService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.view.form.MerchantRegistrationForm;
 import com.noqapp.view.form.ProfessionalProfileEditForm;
@@ -38,8 +36,6 @@ public class AddNewDoctorFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(AddNewDoctorFlowActions.class);
 
     private AccountService accountService;
-    private MailService mailService;
-    private BusinessUserService businessUserService;
     private BusinessUserStoreService businessUserStoreService;
     private BizService bizService;
     private ProfessionalProfileService professionalProfileService;
@@ -47,24 +43,22 @@ public class AddNewDoctorFlowActions {
     @Autowired
     public AddNewDoctorFlowActions(
         AccountService accountService,
-        MailService mailService,
-        BusinessUserService businessUserService,
         BusinessUserStoreService businessUserStoreService,
         BizService bizService,
         ProfessionalProfileService professionalProfileService
     ) {
         this.accountService = accountService;
-        this.mailService = mailService;
-        this.businessUserService = businessUserService;
         this.businessUserStoreService = businessUserStoreService;
         this.bizService = bizService;
         this.professionalProfileService = professionalProfileService;
     }
 
+    @SuppressWarnings("unused")
     public ProfessionalProfileEditForm populateProfessionalProfileEditForm() {
         return new ProfessionalProfileEditForm();
     }
 
+    @SuppressWarnings("unused")
     public ProfessionalProfileForm populateProfessionalProfileForm() {
         return new ProfessionalProfileForm();
     }
@@ -211,7 +205,7 @@ public class AddNewDoctorFlowActions {
                 LOG.error("Failed changing userLevel for qid={} to userLevel={}", userProfile.getQueueUserId(), UserLevelEnum.S_MANAGER);
             }
         } catch (Exception e) {
-            LOG.error("Failed creating doctor profile mail={} need rectification", merchantRegistration.getMail());
+            LOG.error("Failed creating doctor profile mail={} need rectification reason={}", merchantRegistration.getMail(), e.getLocalizedMessage(), e);
             throw e; //TODO(hth) make this error better
         }
     }
