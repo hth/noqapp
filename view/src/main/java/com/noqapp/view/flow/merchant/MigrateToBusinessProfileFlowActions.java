@@ -71,32 +71,37 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         this.executorService = newCachedThreadPool();
     }
 
-    @SuppressWarnings("all")
+    @SuppressWarnings ("unused")
     public RegisterUser loadProfile() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String qid = queueUser.getQueueUserId();
+        try {
+            String qid = queueUser.getQueueUserId();
 
-        UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
-        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+            UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
+            UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
 
-        RegisterUser registerUser = new RegisterUser();
-        registerUser.setQueueUserId(userAccount.getQueueUserId())
-            .setGender(userProfile.getGender())
-            .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
-            .setEmail(userProfile.getEmail().endsWith(MAIL_NOQAPP_COM) ? new ScrubbedInput("") : new ScrubbedInput(userProfile.getEmail()))
-            .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
-            .setLastName(new ScrubbedInput(userProfile.getLastName()))
-            .setAddress(new ScrubbedInput(userProfile.getAddress()))
-            .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
-            .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
-            .setEmailValidated(userAccount.isAccountValidated())
-            .setPhoneValidated(userAccount.isPhoneValidated())
-            /* Since user has already agreed to this agreement when they signed up. */
-            //TODO why no accept agreement when business profile is created
-            .setAcceptsAgreement(true);
+            RegisterUser registerUser = new RegisterUser();
+            registerUser.setQueueUserId(userAccount.getQueueUserId())
+                .setGender(userProfile.getGender())
+                .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
+                .setEmail(userProfile.getEmail().endsWith(MAIL_NOQAPP_COM) ? new ScrubbedInput("") : new ScrubbedInput(userProfile.getEmail()))
+                .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
+                .setLastName(new ScrubbedInput(userProfile.getLastName()))
+                .setAddress(new ScrubbedInput(userProfile.getAddress()))
+                .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
+                .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
+                .setEmailValidated(userAccount.isAccountValidated())
+                .setPhoneValidated(userAccount.isPhoneValidated())
+                /* Since user has already agreed to this agreement when they signed up. */
+                //TODO why no accept agreement when business profile is created
+                .setAcceptsAgreement(true);
 
-        LOG.info("Registered User={}", registerUser);
-        return registerUser;
+            LOG.info("Registered User={}", registerUser);
+            return registerUser;
+        } catch (Exception e) {
+            LOG.error("Failed loading profile qid={} reason={}", queueUser.getQueueUserId(), e.getLocalizedMessage(), e);
+            throw e;
+        }
     }
 
     @SuppressWarnings ("unused")
