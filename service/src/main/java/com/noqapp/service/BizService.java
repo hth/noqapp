@@ -179,6 +179,7 @@ public class BizService {
             Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("changeInitiateReason", changeInitiateReason);
             rootMap.put("displayName", bizStore.getDisplayName());
+            rootMap.put("walkIn", bizStore.getWalkInState());
             rootMap.put("remoteJoin", bizStore.isRemoteJoin() ? "Yes" : "No");
             rootMap.put("allowLoggedInUser", bizStore.isAllowLoggedInUser() ? "Yes" : "No");
             rootMap.put("availableTokenCount", bizStore.getAvailableTokenCount() == 0 ? "Unlimited" : bizStore.getAvailableTokenCount() + " tokens");

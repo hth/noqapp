@@ -281,6 +281,7 @@ class RegistrationFlowActions {
             .setCodeQR(StringUtils.isBlank(bizStore.getCodeQR()) ? CommonUtil.generateCodeQR(environment.getProperty("build.env")) : bizStore.getCodeQR())
             .setAddressOrigin(registerBusiness.getAddressStoreOrigin())
             .setBizCategoryId(registerBusiness.getBizCategoryId())
+            .setWalkInState(registerBusiness.getWalkInState())
             .setRemoteJoin(registerBusiness.isRemoteJoin())
             .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
             .setAvailableTokenCount(registerBusiness.getAvailableTokenCount())

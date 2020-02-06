@@ -11,6 +11,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.json.JsonProfessionalProfile;
+import com.noqapp.domain.types.WalkInStateEnum;
 
 import com.google.zxing.WriterException;
 
@@ -186,6 +187,7 @@ public class ShowHTMLService {
         rootMap.put("reviewCount", String.valueOf(bizStore.getReviewCount()));
         rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
         rootMap.put("codeQR", bizStore.getCodeQRInBase64());
+        rootMap.put("walkIn", bizStore.getWalkInState() == null ? WalkInStateEnum.E.getName() : bizStore.getWalkInState().getName());
 
         int i = zonedDateTime.getDayOfWeek().getValue();
         StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
@@ -275,14 +277,12 @@ public class ShowHTMLService {
                 timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Open");
-
         } else if (storeHour.getEndHour() <= timeIn24HourFormat) {
             LOG.debug("computeQueueStatus getEndHour={} <= timeIn24HourFormat={}",
                 storeHour.getEndHour(),
                 timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Closed");
-
         } else if (storeHour.getTokenNotAvailableFrom() < timeIn24HourFormat && storeHour.getEndHour() > timeIn24HourFormat) {
             LOG.debug("computeQueueStatus getTokenNotAvailableFrom={} < timeIn24HourFormat={} & getEndHour={} > timeIn24HourFormat={}",
                 storeHour.getTokenNotAvailableFrom(),

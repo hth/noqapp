@@ -11,6 +11,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
+import com.noqapp.domain.types.WalkInStateEnum;
 
 import com.google.maps.model.LatLng;
 
@@ -203,6 +204,9 @@ public class BizStoreEntity extends BaseEntity {
     //***************************/
     //*  Queue Settings Starts. */
     //***************************/
+    @Field("WS")
+    private WalkInStateEnum walkInState = WalkInStateEnum.E;
+
     @Field("RJ")
     private boolean remoteJoin = false;
 
@@ -704,6 +708,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setFacilities(List<FacilityEnum> facilities) {
         this.facilities = facilities;
+        return this;
+    }
+
+    public WalkInStateEnum getWalkInState() {
+        return walkInState;
+    }
+
+    public BizStoreEntity setWalkInState(WalkInStateEnum walkInState) {
+        this.walkInState = walkInState;
         return this;
     }
 

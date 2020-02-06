@@ -12,6 +12,7 @@ import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.WalkInStateEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -116,6 +117,12 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     private Set<FacilityEnum> facilitiesAvailable = new LinkedHashSet<>();
+
+    @Transient
+    private WalkInStateEnum walkInState = WalkInStateEnum.E;
+
+    @Transient
+    private Map<String, String> walkinStates = WalkInStateEnum.asMapWithNameAsKey();
 
     @Transient
     private Map<String, String> appointmentStates = AppointmentStateEnum.asMapWithNameAsKey();
@@ -469,6 +476,22 @@ public class RegisterBusiness implements Serializable {
         this.businessHours = businessHours;
     }
 
+    public WalkInStateEnum getWalkInState() {
+        return walkInState;
+    }
+
+    public void setWalkInState(WalkInStateEnum walkInState) {
+        this.walkInState = walkInState;
+    }
+
+    public Map<String, String> getWalkinStates() {
+        return walkinStates;
+    }
+
+    public void setWalkinStates(Map<String, String> walkinStates) {
+        this.walkinStates = walkinStates;
+    }
+
     public AppointmentStateEnum getAppointmentState() {
         return appointmentState;
     }
@@ -610,6 +633,7 @@ public class RegisterBusiness implements Serializable {
         this.addressStoreOrigin = bizStore.getAddressOrigin();
         this.foundAddressStorePlaceId = bizStore.getPlaceId();
         this.bizCategoryId = bizStore.getBizCategoryId();
+        this.walkInState = bizStore.getWalkInState() == null ? WalkInStateEnum.D : bizStore.getWalkInState();
         this.remoteJoin = bizStore.isRemoteJoin();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
         this.availableTokenCount = bizStore.getAvailableTokenCount();

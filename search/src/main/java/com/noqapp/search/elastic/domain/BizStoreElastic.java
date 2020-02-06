@@ -11,6 +11,7 @@ import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.WalkInStateEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.helper.BusinessImageHolder;
 import com.noqapp.search.elastic.helper.DomainConversion;
@@ -164,6 +165,9 @@ public class BizStoreElastic extends AbstractDomain {
 
     @JsonProperty("PP")
     private int productPrice;
+
+    @JsonProperty("WS")
+    private WalkInStateEnum walkInStateEnum;
 
     @JsonProperty("PS")
     private AppointmentStateEnum appointmentState;
@@ -506,6 +510,15 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public WalkInStateEnum getWalkInStateEnum() {
+        return walkInStateEnum;
+    }
+
+    public BizStoreElastic setWalkInStateEnum(WalkInStateEnum walkInStateEnum) {
+        this.walkInStateEnum = walkInStateEnum;
+        return this;
+    }
+
     public AppointmentStateEnum getAppointmentState() {
         return appointmentState;
     }
@@ -588,7 +601,16 @@ public class BizStoreElastic extends AbstractDomain {
     }
 
     public boolean isActive() {
-        return active;
+        switch (businessType.getMessageOrigin()) {
+            case Q:
+                if (walkInStateEnum != WalkInStateEnum.E && appointmentState == AppointmentStateEnum.O) {
+                    active = false;
+                }
+                return active;
+            case O:
+            default:
+                return active;
+        }
     }
 
     public BizStoreElastic setActive(boolean active) {
@@ -632,6 +654,7 @@ public class BizStoreElastic extends AbstractDomain {
             .setDisplayName(bizStore.getDisplayName())
             .setEnabledPayment(bizStore.isEnabledPayment())
             .setProductPrice(bizStore.getProductPrice())
+            .setWalkInStateEnum(bizStore.getWalkInState())
             .setAppointmentState(bizStore.getAppointmentState())
             .setAppointmentDuration(bizStore.getAppointmentDuration())
             .setAppointmentOpenHowFar(bizStore.getAppointmentOpenHowFar())
