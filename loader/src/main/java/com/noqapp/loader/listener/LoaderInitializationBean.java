@@ -12,13 +12,15 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.index.IndexResolver;
 import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver;
-import org.springframework.data.mongodb.core.mapping.BasicMongoPersistentEntity;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.stereotype.Component;
 
+import org.reflections.Reflections;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -46,7 +48,7 @@ public class LoaderInitializationBean {
     @Autowired
     public LoaderInitializationBean(
         @Value("${ftp.location}")
-        String ftpLocation,
+            String ftpLocation,
 
         MongoTemplate mongoTemplate,
         MongoMappingContext mongoMappingContext,
@@ -92,9 +94,16 @@ public class LoaderInitializationBean {
     @PostConstruct
     public void initIndicesAfterStartup() {
         LOG.info("Mongo InitIndicesAfterStartup init");
+        int domainCount = ensureIndexForPackage("com.noqapp.domain");
+        int medicalCount = ensureIndexForPackage("com.noqapp.medical.domain");
+        LOG.info("Mongo InitIndicesAfterStartup initialization complete domainCount={} medicalCount={}", domainCount, medicalCount);
+    }
+
+    private int ensureIndexForPackage(String packageName) {
         int count = 0;
-        for (BasicMongoPersistentEntity<?> persistentEntity : mongoMappingContext.getPersistentEntities()) {
-            Class clazz = persistentEntity.getType();
+        Reflections reflections = new Reflections(packageName);
+        Set<Class<?>> allClasses = reflections.getTypesAnnotatedWith(Document.class);
+        for (Class clazz : allClasses) {
             if (clazz.isAnnotationPresent(Document.class)) {
                 count++;
                 IndexOperations indexOps = mongoTemplate.indexOps(clazz);
@@ -103,6 +112,6 @@ public class LoaderInitializationBean {
                 LOG.info("Index initialized for {}", clazz.getName());
             }
         }
-        LOG.info("Mongo InitIndicesAfterStartup initialization complete count={}", count);
+        return count;
     }
 }
