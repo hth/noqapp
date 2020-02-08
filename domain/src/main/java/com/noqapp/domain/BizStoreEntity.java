@@ -63,6 +63,7 @@ import javax.validation.constraints.NotNull;
         @CompoundIndex(name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}"),
 })
 public class BizStoreEntity extends BaseEntity {
+    private static final long serialVersionUID = 3871039459205791285L;
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreEntity.class);
 
     /** Field name */
