@@ -1,3 +1,7 @@
+### Change Feb 8 2020
+
+    db.getCollection('BIZ_STORE').update({}, {$set: {WS:"E"}}, {multi: true});
+
 ### Change July 20 2019
 
     db.getCollection('BIZ_STORE').update({}, {$unset: {PE:""}}, {multi: true});
