@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.stereotype.Component;
 
 import org.elasticsearch.client.RequestOptions;
@@ -69,6 +70,7 @@ public class NoQAppInitializationCheckBean {
     private PaymentGatewayService paymentGatewayService;
     private StanfordCoreNLP stanfordCoreNLP;
     private SmsService smsService;
+    private LettuceConnectionFactory lettuceConnectionFactory;
 
     private String buildEnvironment;
     private String thisIs;
@@ -85,7 +87,8 @@ public class NoQAppInitializationCheckBean {
         FtpService ftpService,
         PaymentGatewayService paymentGatewayService,
         StanfordCoreNLP stanfordCoreNLP,
-        SmsService smsService
+        SmsService smsService,
+        LettuceConnectionFactory lettuceConnectionFactory
     ) {
         this.buildEnvironment = environment.getProperty("build.env");
         this.thisIs = environment.getProperty("thisis");
@@ -100,6 +103,7 @@ public class NoQAppInitializationCheckBean {
         this.paymentGatewayService = paymentGatewayService;
         this.stanfordCoreNLP = stanfordCoreNLP;
         this.smsService = smsService;
+        this.lettuceConnectionFactory = lettuceConnectionFactory;
     }
 
     @PostConstruct
@@ -239,6 +243,12 @@ public class NoQAppInitializationCheckBean {
 
     @PreDestroy
     public void applicationDestroy() {
+        try {
+            lettuceConnectionFactory.getConnection().flushAll();
+            LOG.info("Flushed all db from redis");
+        } catch (Exception e) {
+            LOG.error("Failed flushing redis all database reason={}", e.getLocalizedMessage(), e);
+        }
         LOG.info("Stopping Server for environment={}", buildEnvironment);
         LOG.info("****************** STOPPED ******************");
     }
