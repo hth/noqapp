@@ -63,20 +63,25 @@ public class ShowStoreController {
     @GetMapping(value = "/{codeQR}/q", produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String showStoreByCodeQR(@PathVariable("codeQR") ScrubbedInput codeQR) {
-        if (Validate.isValidObjectId(codeQR.getText())) {
-            BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
-            if (null == bizStore) {
-                return showHTMLService.showStoreByWebLocation(null);
-            }
+        try {
+            if (Validate.isValidObjectId(codeQR.getText())) {
+                BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
+                if (null == bizStore) {
+                    return showHTMLService.showStoreByWebLocation(null);
+                }
 
-            switch (bizStore.getBusinessType()) {
-                case DO:
-                    return showProfessionalProfileHTMLService.showStoreByWebLocation(bizStore);
-                default:
-                    return showHTMLService.showStoreByWebLocation(bizStore);
+                switch (bizStore.getBusinessType()) {
+                    case DO:
+                        return showProfessionalProfileHTMLService.showStoreByWebLocation(bizStore);
+                    default:
+                        return showHTMLService.showStoreByWebLocation(bizStore);
+                }
             }
+            return showHTMLService.showStoreByWebLocation(null);
+        } catch (Exception e) {
+            LOG.error("Failed loading store codeQR={} reason={}", codeQR.getText(), e.getLocalizedMessage(), e);
+            throw e;
         }
-        return showHTMLService.showStoreByWebLocation(null);
     }
 
     /**
