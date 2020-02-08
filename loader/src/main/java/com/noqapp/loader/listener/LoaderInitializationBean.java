@@ -8,6 +8,13 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.index.IndexOperations;
+import org.springframework.data.mongodb.core.index.IndexResolver;
+import org.springframework.data.mongodb.core.index.MongoPersistentEntityIndexResolver;
+import org.springframework.data.mongodb.core.mapping.BasicMongoPersistentEntity;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -31,6 +38,8 @@ public class LoaderInitializationBean {
 
     private String ftpLocation;
 
+    private MongoTemplate mongoTemplate;
+    private MongoMappingContext mongoMappingContext;
     private FtpService ftpService;
     private MasterLabService masterLabService;
 
@@ -39,11 +48,15 @@ public class LoaderInitializationBean {
         @Value("${ftp.location}")
         String ftpLocation,
 
+        MongoTemplate mongoTemplate,
+        MongoMappingContext mongoMappingContext,
         FtpService ftpService,
         MasterLabService masterLabService
     ) {
         this.ftpLocation = ftpLocation;
 
+        this.mongoTemplate = mongoTemplate;
+        this.mongoMappingContext = mongoMappingContext;
         this.ftpService = ftpService;
         this.masterLabService = masterLabService;
     }
@@ -73,5 +86,23 @@ public class LoaderInitializationBean {
             LOG.error("Failed creating masterFiles reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed creating masterFiles");
         }
+    }
+
+    /** Turning on the index auto creation during launch. Auto creation of index is turned off by default. */
+    @PostConstruct
+    public void initIndicesAfterStartup() {
+        LOG.info("Mongo InitIndicesAfterStartup init");
+        int count = 0;
+        for (BasicMongoPersistentEntity<?> persistentEntity : mongoMappingContext.getPersistentEntities()) {
+            Class clazz = persistentEntity.getType();
+            if (clazz.isAnnotationPresent(Document.class)) {
+                count++;
+                IndexOperations indexOps = mongoTemplate.indexOps(clazz);
+                IndexResolver resolver = new MongoPersistentEntityIndexResolver(mongoMappingContext);
+                resolver.resolveIndexFor(clazz).forEach(indexOps::ensureIndex);
+                LOG.info("Index initialized for {}", clazz.getName());
+            }
+        }
+        LOG.info("Mongo InitIndicesAfterStartup initialization complete count={}", count);
     }
 }
