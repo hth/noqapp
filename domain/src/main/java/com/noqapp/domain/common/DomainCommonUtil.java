@@ -57,6 +57,9 @@ public class DomainCommonUtil {
             case OLA:
                 paymentMode = PaymentModeEnum.OLA;
                 break;
+            case OlaMoneyPostPaid:
+                paymentMode = PaymentModeEnum.OMP;
+                break;
             case JioMoney:
                 paymentMode = PaymentModeEnum.JIO;
                 break;
