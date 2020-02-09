@@ -183,6 +183,7 @@ subprojects {
         implementation "com.amazonaws:aws-java-sdk-s3:$amazonaws"
         implementation "org.springframework.webflow:spring-webflow:$webflow"
         implementation "net.markenwerk:utils-mail-dkim:$dkim"
+        implementation "org.reflections:reflections:$reflections"
         /** ------- */
 
         implementation "com.github.ben-manes.caffeine:caffeine:$caffeine"
