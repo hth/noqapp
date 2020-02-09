@@ -552,22 +552,31 @@ public class ScheduleAppointmentService {
         }
     }
 
-    /**
-     * Send email for booking, cancelling or change of appointment.
-     * @param bizStore
-     */
-    private void sendAppointmentMail(String appointmentState, UserProfileEntity userProfile, BizStoreEntity bizStore, ScheduleAppointmentEntity scheduleAppointment) {
+    /** Send email for booking, cancelling of appointment. */
+    private void sendAppointmentMail(
+        String appointmentState,
+        UserProfileEntity userProfile,
+        BizStoreEntity bizStore,
+        ScheduleAppointmentEntity scheduleAppointment
+    ) {
         Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("bizStore", bizStore.getDisplayName());
         rootMap.put("bizName", bizStore.getBizName().getBusinessName());
-        rootMap.put("bizStorePhone", StringUtils.isNotBlank(bizStore.getPhoneFormatted()) ? bizStore.getPhoneFormatted() : bizStore.getBizName().getPhoneFormatted());
+        rootMap.put("bizStorePhone", StringUtils.isNotBlank(bizStore.getPhoneFormatted())
+            ? bizStore.getPhoneFormatted()
+            : bizStore.getBizName().getPhoneFormatted());
         rootMap.put("user", userProfile.getName());
-        rootMap.put("userPhone", StringUtils.isNotBlank(userProfile.getPhone()) ? userProfile.getPhoneFormatted() : "N/A");
-        rootMap.put("userGuardianPhone", StringUtils.isNotBlank(userProfile.getGuardianPhone()) ? userProfile.getGuardianPhoneFormatted() : "N/A");
+        rootMap.put("userPhone", StringUtils.isNotBlank(userProfile.getPhone())
+            ? userProfile.getPhoneFormatted()
+            : "N/A");
+        rootMap.put("userGuardianPhone", StringUtils.isNotBlank(userProfile.getGuardianPhone())
+            ? userProfile.getGuardianPhoneFormatted()
+            : "N/A");
         rootMap.put("appointmentState", appointmentState);
         rootMap.put("appointmentDate", scheduleAppointment.getScheduleDate());
         rootMap.put("appointmentTime", Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime()));
 
+        LOG.info("Emailing appointment details email={} emailAddressName={}", doNotReplyEmail, emailAddressName);
         mailService.sendAnyMail(
             doNotReplyEmail,
             emailAddressName,
