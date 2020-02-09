@@ -49,6 +49,7 @@ class ScheduleAppointmentServiceTest {
 
     @Mock private BizService bizService;
     @Mock private FirebaseMessageService firebaseMessageService;
+    @Mock private MailService mailService;
 
     private ExecutorService executorService;
     private ScheduleAppointmentService scheduleAppointmentService;
@@ -64,6 +65,8 @@ class ScheduleAppointmentServiceTest {
             60,
             2,
             24,
+            "no-reply@noqapp.com",
+            "NoQueue",
             scheduleAppointmentManager,
             storeHourManager,
             userProfileManager,
@@ -72,7 +75,8 @@ class ScheduleAppointmentServiceTest {
             tokenQueueManager,
             scheduledTaskManager,
             bizService,
-            firebaseMessageService
+            firebaseMessageService,
+            mailService
         );
 
         jsonSchedule = new JsonSchedule()
