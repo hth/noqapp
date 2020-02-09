@@ -280,6 +280,14 @@ public class UserProfileEntity extends BaseEntity {
         return this;
     }
 
+    public String getGuardianPhoneFormatted() {
+        if (StringUtils.isNotBlank(guardianPhone)) {
+            return Formatter.phoneFormatter(guardianPhone, countryShortName);
+        } else {
+            return "";
+        }
+    }
+
     public List<String> getQidOfDependents() {
         return qidOfDependents;
     }

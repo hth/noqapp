@@ -560,9 +560,10 @@ public class ScheduleAppointmentService {
         Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("bizStore", bizStore.getDisplayName());
         rootMap.put("bizName", bizStore.getBizName().getBusinessName());
+        rootMap.put("bizStorePhone", StringUtils.isNotBlank(bizStore.getPhoneFormatted()) ? bizStore.getPhoneFormatted() : bizStore.getBizName().getPhoneFormatted());
         rootMap.put("user", userProfile.getName());
-        rootMap.put("phone", StringUtils.isNotBlank(userProfile.getPhone()) ? userProfile.getPhone() : "N/A");
-        rootMap.put("guardianPhone", StringUtils.isNotBlank(userProfile.getGuardianPhone()) ? userProfile.getGuardianPhone() : "N/A");
+        rootMap.put("userPhone", StringUtils.isNotBlank(userProfile.getPhone()) ? userProfile.getPhoneFormatted() : "N/A");
+        rootMap.put("userGuardianPhone", StringUtils.isNotBlank(userProfile.getGuardianPhone()) ? userProfile.getGuardianPhoneFormatted() : "N/A");
         rootMap.put("appointmentState", appointmentState);
         rootMap.put("appointmentDate", scheduleAppointment.getScheduleDate());
         rootMap.put("appointmentTime", Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime()));
@@ -572,7 +573,7 @@ public class ScheduleAppointmentService {
             emailAddressName,
             "Appointment " + appointmentState + ": for " + bizStore.getDisplayName() + " at " + bizStore.getBizName().getBusinessName(),
             rootMap,
-            "mail/appointment-request.ftl"
+            "mail/appointment-for-unclaimed-business.ftl"
         );
     }
 }
