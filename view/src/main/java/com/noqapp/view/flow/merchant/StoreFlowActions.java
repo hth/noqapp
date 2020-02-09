@@ -9,9 +9,11 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.domain.types.WalkInStateEnum;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -86,6 +88,13 @@ public class StoreFlowActions extends RegistrationFlowActions {
         registerBusiness.setBusinessType(businessUser.getBizName().getBusinessType());
         registerBusiness.setStoreBusinessType(businessUser.getBizName().getBusinessType());
         registerBusiness.setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS));
+        registerBusiness.setClaimed(businessUser.getBizName().isClaimed());
+        if (!businessUser.getBizName().isClaimed()) {
+            registerBusiness.setWalkInState(WalkInStateEnum.D);
+            registerBusiness.setAppointmentState(AppointmentStateEnum.A);
+            registerBusiness.setAppointmentDuration(30);
+            registerBusiness.setAppointmentOpenHowFar(1);
+        }
         return registerBusiness;
     }
 

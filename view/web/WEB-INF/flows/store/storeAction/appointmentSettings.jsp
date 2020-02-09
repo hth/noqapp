@@ -76,11 +76,12 @@
                                             <form:label path="appointmentState" cssErrorClass="lb_error">Allow Appointment</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:select path="appointmentState" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                            <form:select path="appointmentState" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false" disabled="${!registerBusiness.claimed}">
                                                 <form:option value="" label="--- Select ---"/>
                                                 <form:options items="${registerBusiness.appointmentStates}" />
                                             </form:select>
                                             <span style="display:block; font-size:14px;">(Allow user to take appointment)</span>
+                                            <c:if test="${!registerBusiness.claimed}"><span style="font-size:14px; color: #9f1313">Since business is not claimed. Appointment selection is disabled.</span></c:if>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
