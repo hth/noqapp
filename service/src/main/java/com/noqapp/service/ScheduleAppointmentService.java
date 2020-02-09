@@ -552,7 +552,7 @@ public class ScheduleAppointmentService {
         }
     }
 
-    /** Send email for booking, cancelling of appointment. */
+    /** Send email for booking, cancelling of appointment. This normally happens when business is un-claimed. */
     private void sendAppointmentMail(
         String appointmentState,
         UserProfileEntity userProfile,
