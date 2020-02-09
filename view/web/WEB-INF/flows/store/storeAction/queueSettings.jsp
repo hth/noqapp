@@ -76,11 +76,12 @@
                                             <form:label path="walkInState" cssErrorClass="lb_error">Walk-in</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:select path="walkInState" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                            <form:select path="walkInState" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false" disabled="${!registerBusiness.claimed}">
                                                 <form:option value="" label="--- Select ---"/>
                                                 <form:options items="${registerBusiness.walkinStates}" />
                                             </form:select>
                                             <span style="display:block; font-size:14px;">(Allow user to take walk-in appointments)</span>
+                                            <c:if test="${!registerBusiness.claimed}"><span style="font-size:14px; color: #9f1313">Since business is not claimed. Walk-in is disabled.</span></c:if>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
