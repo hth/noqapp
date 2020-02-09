@@ -56,7 +56,7 @@
             <!-- login-box -->
             <div class="login-box">
                 <div class="form-style">
-                    <h2>Register New Agent</h2>
+                    <h2>Register New Doctor</h2>
                     <form:form modelAttribute="merchantRegistration">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <input type="hidden" id="gender" name="gender" value="M"/>
