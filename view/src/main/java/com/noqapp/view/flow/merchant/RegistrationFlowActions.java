@@ -184,7 +184,8 @@ class RegistrationFlowActions {
             .setAddressOrigin(registerBusiness.getAddressOrigin())
             .setAmenities(registerBusiness.getAmenities())
             .setFacilities(registerBusiness.getFacilities())
-            .setDayClosed(registerBusiness.isDayClosed());
+            .setDayClosed(registerBusiness.isDayClosed())
+            .setClaimed(registerBusiness.isClaimed());
         validateAddress(bizName);
 
         try {

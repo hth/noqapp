@@ -41,6 +41,7 @@ public class MigrateToBusinessRegistration extends Register implements Serializa
             getRegisterBusiness().setFacilities(bizName.getFacilities());
             getRegisterBusiness().setAmenities(bizName.getAmenities());
             getRegisterBusiness().setDayClosed(bizName.isDayClosed());
+            getRegisterBusiness().setClaimed(bizName.isClaimed());
         }
 
         if (null != bizStore) {

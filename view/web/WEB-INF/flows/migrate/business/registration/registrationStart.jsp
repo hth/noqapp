@@ -189,6 +189,16 @@
                                         <div class="clearFix"></div>
                                     </li>
                                     </c:if>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="claimed" cssErrorClass="lb_error" style="color: #9f1313;">Business Claimed</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:checkbox path="claimed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" />
+                                            <span style="display:block; font-size:14px; color: #9f1313;">(Check if business is claimed)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
                                     <c:if test="${empty register.registerBusiness.businessUser.validateByQid}">
                                     <li>
                                         <div class="col-lable3">
