@@ -128,7 +128,7 @@
                             </c:choose>
                         </div>
                         <p style="margin: 5px 0"><strong>Time now: </strong>${webJoinQueue.rootMap.get("requesterTime")}</p>
-                        We are on mobile too. Please download NoQApp from Google Play.
+                        We are on mobile too. Please download NoQueue from Google Play.
                     </form>
 
                     <div class="otp">
@@ -168,7 +168,7 @@
                     </div>
 
                     <div class="download-app-icon">
-                        <p>Get NoQApp</p>
+                        <p>Get NoQueue</p>
                         <div>
                             <%--<a href="https://itunes.apple.com/us/app/noqapp/id1237327532?ls=1&mt=8">--%>
                             <%--<img src="${parentHost}/static2/internal/img/apple-store.png"/>--%>

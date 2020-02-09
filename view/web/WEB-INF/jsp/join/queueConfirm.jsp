@@ -74,9 +74,9 @@
                                         <h4>Failed to generate token. You are not a registered user. </h4>
                                         <h4>${webJoinQueue.rootMap.get("displayName")} only accepts registered users. <a href="/open/register.htm" style="font-size: large;">Click here to register</a></h4>
                                         <br/>
-                                        We are on mobile too. Please download NoQApp from Google Play.
+                                        We are on mobile too. Please download NoQueue from Google Play.
                                         <div class="download-app-icon">
-                                            <p>Get NoQApp</p>
+                                            <p>Get NoQueue</p>
                                             <div>
                                                     <%--<a href="https://itunes.apple.com/us/app/noqapp/id1237327532?ls=1&mt=8">--%>
                                                     <%--<img src="${parentHost}/static2/internal/img/apple-store.png"/>--%>

@@ -103,7 +103,7 @@ public class SmsService {
     }
 
     /**
-     * You are registered on NoQueue. For future Doctor appointments from home download NoQApp
+     * You are registered on NoQueue. For future Doctor appointments from home download NoQueue
      * https://play.google.com/store/apps/details?id=com.noqapp.android.client
      */
     public String sendPromotionalSMS(String phoneWithCountryCode, String messageToSend) {
