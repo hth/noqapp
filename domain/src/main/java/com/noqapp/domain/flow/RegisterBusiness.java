@@ -256,8 +256,9 @@ public class RegisterBusiness implements Serializable {
         return claimed;
     }
 
-    public void setClaimed(boolean claimed) {
+    public RegisterBusiness setClaimed(boolean claimed) {
         this.claimed = claimed;
+        return this;
     }
 
     public String getInviteeCode() {
