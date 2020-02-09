@@ -48,7 +48,7 @@ public class LoaderInitializationBean {
     @Autowired
     public LoaderInitializationBean(
         @Value("${ftp.location}")
-            String ftpLocation,
+        String ftpLocation,
 
         MongoTemplate mongoTemplate,
         MongoMappingContext mongoMappingContext,
