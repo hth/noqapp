@@ -1,6 +1,7 @@
 package com.noqapp.view.flow.merchant;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
@@ -14,6 +15,7 @@ import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.GenerateUserIdService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.view.form.MerchantRegistrationForm;
 import com.noqapp.view.form.ProfessionalProfileEditForm;
@@ -39,18 +41,21 @@ public class AddNewDoctorFlowActions {
     private BusinessUserStoreService businessUserStoreService;
     private BizService bizService;
     private ProfessionalProfileService professionalProfileService;
+    private GenerateUserIdService generateUserIdService;
 
     @Autowired
     public AddNewDoctorFlowActions(
         AccountService accountService,
         BusinessUserStoreService businessUserStoreService,
         BizService bizService,
-        ProfessionalProfileService professionalProfileService
+        ProfessionalProfileService professionalProfileService,
+        GenerateUserIdService generateUserIdService
     ) {
         this.accountService = accountService;
         this.businessUserStoreService = businessUserStoreService;
         this.bizService = bizService;
         this.professionalProfileService = professionalProfileService;
+        this.generateUserIdService = generateUserIdService;
     }
 
     @SuppressWarnings("unused")
@@ -109,9 +114,16 @@ public class AddNewDoctorFlowActions {
             userProfile.getTimeZone());
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
 
+        /* Compute email based on claimed business. */
+        ScrubbedInput computedEmail = emailSelectionWhenClaimedUnclaimedBusiness(
+            merchantRegistrationForm.getFirstName(),
+            merchantRegistrationForm.getLastName(),
+            merchantRegistrationForm.getMail(),
+            bizStore);
+
         /* For updating address. */
         RegisterUser registerUser = new RegisterUser()
-            .setEmail(merchantRegistrationForm.getMail())
+            .setEmail(computedEmail)
             .setGender(userProfile.getGender())
             .setAddress(new ScrubbedInput(bizStore.getAddress()))
             .setCountryShortName(new ScrubbedInput(bizStore.getCountryShortName()))
@@ -226,5 +238,14 @@ public class AddNewDoctorFlowActions {
     public String resetLicenses(ProfessionalProfileForm professionalProfile) {
         professionalProfile.setLicenses(new ArrayList<>());
         return "success";
+    }
+
+    private ScrubbedInput emailSelectionWhenClaimedUnclaimedBusiness(ScrubbedInput firstName, ScrubbedInput lastName, ScrubbedInput email, BizStoreEntity bizStore) {
+        if (bizStore.getBizName().isClaimed()) {
+            return email;
+        } else {
+            /* Plus 1 for expected next id for new registration. */
+            return new ScrubbedInput(RandomString.generateEmailAddressWithDomain(firstName, lastName, String.valueOf(generateUserIdService.getLastGenerateUserId() + 1)));
+        }
     }
 }
