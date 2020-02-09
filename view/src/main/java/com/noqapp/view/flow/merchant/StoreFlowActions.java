@@ -88,14 +88,23 @@ public class StoreFlowActions extends RegistrationFlowActions {
         registerBusiness.setBusinessType(businessUser.getBizName().getBusinessType());
         registerBusiness.setStoreBusinessType(businessUser.getBizName().getBusinessType());
         registerBusiness.setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS));
+
+        /* Business when not claimed. */
+        processForUnclaimedBusiness(businessUser, registerBusiness);
+        return registerBusiness;
+    }
+
+    private void processForUnclaimedBusiness(BusinessUserEntity businessUser, RegisterBusiness registerBusiness) {
         registerBusiness.setClaimed(businessUser.getBizName().isClaimed());
         if (!businessUser.getBizName().isClaimed()) {
             registerBusiness.setWalkInState(WalkInStateEnum.D);
             registerBusiness.setAppointmentState(AppointmentStateEnum.A);
+
+            /* 30 minutes appointment. */
             registerBusiness.setAppointmentDuration(30);
+            /* 1 week ahead. */
             registerBusiness.setAppointmentOpenHowFar(1);
         }
-        return registerBusiness;
     }
 
     @SuppressWarnings ("unused")
