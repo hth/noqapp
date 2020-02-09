@@ -162,8 +162,11 @@ public class BizNameEntity extends BaseEntity {
     }};
 
     /* When business is closed for national holiday. This automatically respond with all store as closed. */
-    @Field ("DC")
+    @Field("DC")
     private boolean dayClosed = false;
+
+    @Field("CL")
+    private boolean claimed;
 
     @SuppressWarnings("unused")
     public BizNameEntity() {
@@ -525,6 +528,14 @@ public class BizNameEntity extends BaseEntity {
     public BizNameEntity setDayClosed(boolean dayClosed) {
         this.dayClosed = dayClosed;
         return this;
+    }
+
+    public boolean isClaimed() {
+        return claimed;
+    }
+
+    public void setClaimed(boolean claimed) {
+        this.claimed = claimed;
     }
 
     @Transient

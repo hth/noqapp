@@ -51,7 +51,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -65,6 +67,8 @@ public class ScheduleAppointmentService {
     private int untilDaysInPast;
     private int untilDaysInFuture;
     private int appointmentCancelLimitedToHours;
+    private String doNotReplyEmail;
+    private String emailAddressName;
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
     private StoreHourManager storeHourManager;
@@ -76,6 +80,7 @@ public class ScheduleAppointmentService {
 
     private BizService bizService;
     private FirebaseMessageService firebaseMessageService;
+    private MailService mailService;
 
     private ExecutorService executorService;
 
@@ -90,6 +95,12 @@ public class ScheduleAppointmentService {
         @Value("${appointmentCancelLimitedToHours:24}")
         int appointmentCancelLimitedToHours,
 
+        @Value("${do.not.reply.email}")
+        String doNotReplyEmail,
+
+        @Value ("${email.address.name}")
+        String emailAddressName,
+
         ScheduleAppointmentManager scheduleAppointmentManager,
         StoreHourManager storeHourManager,
         UserProfileManager userProfileManager,
@@ -99,11 +110,14 @@ public class ScheduleAppointmentService {
         ScheduledTaskManager scheduledTaskManager,
 
         BizService bizService,
-        FirebaseMessageService firebaseMessageService
+        FirebaseMessageService firebaseMessageService,
+        MailService mailService
     ) {
         this.untilDaysInPast = untilDaysInPast;
         this.untilDaysInFuture = untilDaysInFuture;
         this.appointmentCancelLimitedToHours = appointmentCancelLimitedToHours;
+        this.doNotReplyEmail = doNotReplyEmail;
+        this.emailAddressName = emailAddressName;
 
         this.scheduleAppointmentManager = scheduleAppointmentManager;
         this.storeHourManager = storeHourManager;
@@ -115,6 +129,7 @@ public class ScheduleAppointmentService {
 
         this.bizService = bizService;
         this.firebaseMessageService = firebaseMessageService;
+        this.mailService = mailService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -191,6 +206,10 @@ public class ScheduleAppointmentService {
             "Appointment Booked",
             "Your appointment has been booked. Awaiting confirmation from " + bizStore.getDisplayName());
 
+        if (!bizStore.getBizName().isClaimed()) {
+            sendAppointmentMail("booked", userProfile, bizStore, scheduleAppointment);
+        }
+
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile, JsonQueueDisplay.populate(bizStore, storeHour));
     }
 
@@ -256,6 +275,11 @@ public class ScheduleAppointmentService {
             "Appointment cancelled for " + bizStore.getDisplayName() + " by " + userProfile.getName() + ".\n\n"
                 + "Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime()) + ". "
                 + additionalInfo);
+
+        if (!bizStore.getBizName().isClaimed()) {
+            sendAppointmentMail("cancelled", userProfile, bizStore, scheduleAppointment);
+        }
+
         return status;
     }
 
@@ -526,5 +550,29 @@ public class ScheduleAppointmentService {
         } else {
             LOG.debug("Sent Personal message={}", jsonMessage.asJson());
         }
+    }
+
+    /**
+     * Send email for booking, cancelling or change of appointment.
+     * @param bizStore
+     */
+    private void sendAppointmentMail(String appointmentState, UserProfileEntity userProfile, BizStoreEntity bizStore, ScheduleAppointmentEntity scheduleAppointment) {
+        Map<String, Object> rootMap = new HashMap<>();
+        rootMap.put("bizStore", bizStore.getDisplayName());
+        rootMap.put("bizName", bizStore.getBizName().getBusinessName());
+        rootMap.put("user", userProfile.getName());
+        rootMap.put("phone", userProfile.getPhone());
+        rootMap.put("guardianPhone", userProfile.getGuardianPhone());
+        rootMap.put("appointmentState", appointmentState);
+        rootMap.put("appointmentDate", scheduleAppointment.getScheduleDate());
+        rootMap.put("appointmentTime", Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime()));
+
+        mailService.sendAnyMail(
+            doNotReplyEmail,
+            emailAddressName,
+            "Appointment " + appointmentState + ": for " + bizStore.getDisplayName() + " at " + bizStore.getBizName().getBusinessName(),
+            rootMap,
+            "mail/appointment-request.ftl"
+        );
     }
 }
