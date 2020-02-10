@@ -116,20 +116,21 @@ public class AddNewAgentFlowActions {
     @SuppressWarnings("unused")
     public String createAccountAndInvite(MerchantRegistrationForm merchantRegistration, String mailOTP, String bizStoreId, ExternalContext externalContext) {
         LOG.info("MailOTP={}", mailOTP);
-        if (merchantRegistration.getCode().equals(mailOTP) && StringUtils.isNotBlank(bizStoreId)) {
-            QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            UserAccountEntity userAccount = accountService.createNewAgentAccount(
-                queueUser.getQueueUserId(),
-                merchantRegistration.getFirstName().getText(),
-                merchantRegistration.getLastName().getText(),
-                merchantRegistration.getMail().getText(),
-                merchantRegistration.getBirthday().getText(),
-                GenderEnum.valueOf(merchantRegistration.getGender().getText()),
-                merchantRegistration.getPassword().getText()
-            );
-            return addedToStore(bizStoreId, queueUser, userAccount);
+        BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
+        if ((!merchantRegistration.getCode().equals(mailOTP) || !StringUtils.isNotBlank(bizStoreId)) && ((null == bizStore) || bizStore.getBizName().isClaimed())) {
+            return "failure";
         }
-        return "failure";
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserAccountEntity userAccount = accountService.createNewAgentAccount(
+            queueUser.getQueueUserId(),
+            merchantRegistration.getFirstName().getText(),
+            merchantRegistration.getLastName().getText(),
+            merchantRegistration.getMail().getText(),
+            merchantRegistration.getBirthday().getText(),
+            GenderEnum.valueOf(merchantRegistration.getGender().getText()),
+            merchantRegistration.getPassword().getText()
+        );
+        return addedToStore(bizStoreId, queueUser, userAccount);
     }
 
     public String completeInvite(MerchantRegistrationForm merchantRegistration, String mailOTP, String bizStoreId, ExternalContext externalContext) {
