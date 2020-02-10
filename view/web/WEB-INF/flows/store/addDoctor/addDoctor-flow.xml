@@ -22,7 +22,7 @@
     </view-state>
 
     <action-state id="validatePhone">
-        <evaluate expression="doctorFlowValidator.validatePhoneNumber(merchantRegistration, messageContext)"/>
+        <evaluate expression="doctorFlowValidator.validatePhoneNumber(merchantRegistration, bizStoreId, messageContext)"/>
         <transition on="success" to="searchProfile"/>
         <transition on="failure" to="searchExistingProfile"/>
     </action-state>
