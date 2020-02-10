@@ -565,8 +565,9 @@ public class ScheduleAppointmentService {
         rootMap.put("bizStorePhone", StringUtils.isNotBlank(bizStore.getPhoneFormatted())
             ? bizStore.getPhoneFormatted()
             : bizStore.getBizName().getPhoneFormatted());
+        rootMap.put("bizCountryShortName", bizStore.getCountryShortName());
         rootMap.put("user", userProfile.getName());
-        rootMap.put("userPhone", StringUtils.isNotBlank(userProfile.getPhone())
+        rootMap.put("userPhone", StringUtils.isBlank(userProfile.getGuardianPhone())
             ? userProfile.getPhoneFormatted()
             : "N/A");
         rootMap.put("userGuardianPhone", StringUtils.isNotBlank(userProfile.getGuardianPhone())
