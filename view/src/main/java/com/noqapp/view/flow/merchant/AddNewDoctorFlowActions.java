@@ -69,7 +69,10 @@ public class AddNewDoctorFlowActions {
     }
 
     @SuppressWarnings("unused")
-    public String findProfile(MerchantRegistrationForm merchantRegistration, MessageContext messageContext) {
+    public String findProfile(MerchantRegistrationForm merchantRegistration, String bizStoreId, MessageContext messageContext) {
+        /* Compute email when unclaimed business. */
+        whenBusinessIsNotClaimed(merchantRegistration, bizStoreId);
+
         UserAccountEntity userAccount = accountService.findByUserId(merchantRegistration.getMail().getText());
         if (userAccount == null) {
             UserProfileEntity userProfile = accountService.checkUserExistsByPhone(merchantRegistration.getPhoneCountryCode() + merchantRegistration.getPhone());
@@ -114,16 +117,9 @@ public class AddNewDoctorFlowActions {
             userProfile.getTimeZone());
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
 
-        /* Compute email based on claimed business. */
-        ScrubbedInput computedEmail = emailSelectionWhenClaimedUnclaimedBusiness(
-            merchantRegistrationForm.getFirstName(),
-            merchantRegistrationForm.getLastName(),
-            merchantRegistrationForm.getMail(),
-            bizStore);
-
         /* For updating address. */
         RegisterUser registerUser = new RegisterUser()
-            .setEmail(computedEmail)
+            .setEmail(merchantRegistrationForm.getMail())
             .setGender(userProfile.getGender())
             .setAddress(new ScrubbedInput(bizStore.getAddress()))
             .setCountryShortName(new ScrubbedInput(bizStore.getCountryShortName()))
@@ -199,7 +195,7 @@ public class AddNewDoctorFlowActions {
     ) {
         try {
             LOG.info("Update professional profile {}", merchantRegistration.getMail());
-            UserProfileEntity userProfile = accountService.checkUserExistsByPhone(merchantRegistration.getPhoneCountryCode() + merchantRegistration.getPhone());
+            UserProfileEntity userProfile = accountService.doesUserExists(merchantRegistration.getMail().getText());
             ProfessionalProfileEntity professionalProfileEntity = new ProfessionalProfileEntity(userProfile.getQueueUserId(), CommonUtil.generateHexFromObjectId())
                 .setAboutMe(professionalProfile.getAboutMe())
                 .setPracticeStart(professionalProfile.getPracticeStart())
@@ -218,7 +214,7 @@ public class AddNewDoctorFlowActions {
             }
         } catch (Exception e) {
             LOG.error("Failed creating doctor profile mail={} need rectification reason={}", merchantRegistration.getMail(), e.getLocalizedMessage(), e);
-            throw e; //TODO(hth) make this error better
+            throw e;
         }
     }
 
@@ -240,12 +236,14 @@ public class AddNewDoctorFlowActions {
         return "success";
     }
 
-    private ScrubbedInput emailSelectionWhenClaimedUnclaimedBusiness(ScrubbedInput firstName, ScrubbedInput lastName, ScrubbedInput email, BizStoreEntity bizStore) {
-        if (bizStore.getBizName().isClaimed()) {
-            return email;
-        } else {
-            /* Plus 1 for expected next id for new registration. */
-            return new ScrubbedInput(RandomString.generateEmailAddressWithDomain(firstName, lastName, String.valueOf(generateUserIdService.getLastGenerateUserId() + 1)));
+    private void whenBusinessIsNotClaimed(MerchantRegistrationForm merchantRegistration, String bizStoreId) {
+        BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
+        if (!bizStore.getBizName().isClaimed()) {
+            String expectedQid = String.valueOf(generateUserIdService.getLastGenerateUserId() + 1);
+            String computedMail = RandomString.generateEmailAddressWithDomain(new ScrubbedInput(""), new ScrubbedInput(""), expectedQid);
+            LOG.info("Business is not claimed hence setting email={} and phone={}", computedMail, expectedQid);
+            merchantRegistration.setMail(new ScrubbedInput(computedMail));
+            merchantRegistration.setPhone(expectedQid);
         }
     }
 }

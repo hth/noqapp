@@ -28,7 +28,7 @@
     </action-state>
 
     <action-state id="searchProfile">
-        <evaluate expression="addNewDoctorFlowActions.findProfile(merchantRegistration, messageContext)"/>
+        <evaluate expression="addNewDoctorFlowActions.findProfile(merchantRegistration, bizStoreId, messageContext)"/>
         <transition on="success" to="addNewDoctor"/>
         <transition on="failure" to="searchExistingProfile"/>
     </action-state>
