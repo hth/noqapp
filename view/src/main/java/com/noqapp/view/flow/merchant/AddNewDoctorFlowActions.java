@@ -238,7 +238,7 @@ public class AddNewDoctorFlowActions {
 
     private void whenBusinessIsNotClaimed(MerchantRegistrationForm merchantRegistration, String bizStoreId) {
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
-        if (!bizStore.getBizName().isClaimed()) {
+        if (bizStore.getBizName().isNotClaimed()) {
             String expectedQid = String.valueOf(generateUserIdService.getLastGenerateUserId() + 1);
             String computedMail = RandomString.generateEmailAddressWithDomain(new ScrubbedInput(""), new ScrubbedInput(""), expectedQid);
             LOG.info("Business is not claimed hence setting email={} and phone={}", computedMail, expectedQid);

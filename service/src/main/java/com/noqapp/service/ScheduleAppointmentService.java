@@ -206,7 +206,7 @@ public class ScheduleAppointmentService {
             "Appointment Booked",
             "Your appointment has been booked. Awaiting confirmation from " + bizStore.getDisplayName());
 
-        if (!bizStore.getBizName().isClaimed()) {
+        if (bizStore.getBizName().isNotClaimed()) {
             sendAppointmentMail("booked", userProfile, bizStore, scheduleAppointment);
         }
 
@@ -276,7 +276,7 @@ public class ScheduleAppointmentService {
                 + "Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime()) + ". "
                 + additionalInfo);
 
-        if (!bizStore.getBizName().isClaimed()) {
+        if (bizStore.getBizName().isNotClaimed()) {
             sendAppointmentMail("cancelled", userProfile, bizStore, scheduleAppointment);
         }
 

@@ -539,6 +539,11 @@ public class BizNameEntity extends BaseEntity {
     }
 
     @Transient
+    public boolean isNotClaimed() {
+        return !claimed;
+    }
+
+    @Transient
     private GeoPointOfQ getGeoPointOfQ() {
         /* Latitude and then Longitude. */
         return new GeoPointOfQ(coordinate[1], coordinate[0]);
