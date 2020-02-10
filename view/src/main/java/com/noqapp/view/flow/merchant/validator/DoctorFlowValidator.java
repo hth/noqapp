@@ -43,8 +43,8 @@ public class DoctorFlowValidator {
         }
 
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
-        if (null != bizStore && !bizStore.getBizName().isClaimed()) {
-            LOG.info("Business is claimed bizName={} id={}", bizStore.getBizName().getBusinessName(), bizStore.getBizName().getId());
+        if (null != bizStore && bizStore.getBizName().isNotClaimed()) {
+            LOG.info("Business is not claimed bizName={} id={}", bizStore.getBizName().getBusinessName(), bizStore.getBizName().getId());
         } else {
             if (StringUtils.isBlank(merchantRegistration.getPhone()) && StringUtils.isBlank(merchantRegistration.getMail().getText())) {
                 messageContext.addMessage(

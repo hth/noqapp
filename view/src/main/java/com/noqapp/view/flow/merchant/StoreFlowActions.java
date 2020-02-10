@@ -96,7 +96,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
 
     private void processForUnclaimedBusiness(BusinessUserEntity businessUser, RegisterBusiness registerBusiness) {
         registerBusiness.setClaimed(businessUser.getBizName().isClaimed());
-        if (!businessUser.getBizName().isClaimed()) {
+        if (businessUser.getBizName().isNotClaimed()) {
             registerBusiness.setWalkInState(WalkInStateEnum.D);
             registerBusiness.setAppointmentState(AppointmentStateEnum.A);
 
