@@ -129,6 +129,9 @@
         <intercept-url pattern="/business/coupon/**"
                        access="hasRole('ROLE_Q_SUPERVISOR')" />
 
+        <intercept-url pattern="/business/documentation/**"
+                       access="hasRole('ROLE_Q_SUPERVISOR')" />
+
         <intercept-url pattern="/business/store/**"
                        access="hasRole('ROLE_S_MANAGER')" />
 

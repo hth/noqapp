@@ -130,7 +130,7 @@ public class BusinessUserStoreService {
         int size = businessUserStores.size();
         LOG.info("Found user associated to business count={} qid={}", size, qid);
 
-        String[] codes = new String[queueLimit <= size ? queueLimit : size];
+        String[] codes = new String[Math.min(queueLimit, size)];
         Map<String, JsonDataVisibility> dataVisibilityHashMap = new HashMap<>();
         Map<String, JsonPaymentPermission> paymentPermissionHashMap = new HashMap<>();
         int i = 0;

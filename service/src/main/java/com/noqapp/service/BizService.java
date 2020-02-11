@@ -45,6 +45,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.DayOfWeek;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,6 +55,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * User: hitender
@@ -659,5 +661,15 @@ public class BizService {
 
     public long deleteAllManagingStore(String bizStoreId) {
         return businessUserStoreManager.deleteAllManagingStore(bizStoreId);
+    }
+
+    //TODO instead send all the hours of the store and let App figure out which one to show.
+    public StoreHourEntity getStoreHours(String codeQR, BizStoreEntity bizStore) {
+        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
+        LOG.debug("codeQR={} dayOfWeek={}", codeQR, dayOfWeek);
+
+        StoreHourEntity storeHour = findStoreHour(bizStore.getId(), dayOfWeek);
+        LOG.debug("StoreHour={}", storeHour);
+        return storeHour;
     }
 }
