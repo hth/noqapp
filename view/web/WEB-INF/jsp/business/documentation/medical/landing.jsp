@@ -1,5 +1,5 @@
-<%@ page import="com.noqapp.domain.types.BusinessTypeEnum,com.noqapp.domain.types.QueueStatusEnum" %>
-<%@ include file="../include.jsp" %>
+<%@ page import="com.noqapp.common.utils.DateFormatter" %>
+<%@ include file="../../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -58,68 +58,44 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Business: <span>${businessLandingForm.bizName}</span></h3>
+                        <h3>Business: <span>${medicalDocumentUploadListForm.businessName}</span></h3>
 
                         <div class="add-store">
                             <div class="details-box" style="padding: 10px 0 10px 0;">
-                                Monitoring Queue(s): <span>${businessLandingForm.jsonTopics.size()}</span>
+                                Monitoring Queue(s): <span>${medicalDocumentUploadListForm.medicalDocumentUploadForms.size()}</span>
                             </div>
                             <div class="store-table">
                                 <c:choose>
-                                <c:when test="${!empty businessLandingForm.jsonTopics}">
-                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <th>&nbsp;</th>
-                                        <th nowrap>Queue Name</th>
-                                        <th nowrap>Queue Status</th>
-                                        <th>Stats</th>
-                                        <th nowrap>In Queue</th>
-                                        <th>Serving</th>
-                                    </tr>
-                                    <c:forEach items="${businessLandingForm.jsonTopics}" var="jsonTopic" varStatus="status">
-                                    <tr>
-                                        <td>${status.count}&nbsp;</td>
-                                        <td nowrap>
-                                            <a href="/business/store/sup/current/${jsonTopic.codeQR}.htm">${jsonTopic.displayName}</a>
-                                            <span style="display:block; font-size:13px;">${jsonTopic.businessType.description}</span>
-                                        </td>
-                                        <td nowrap>
-                                            <span style="display:block; font-size:13px;">Queue Status: ${jsonTopic.queueStatus.description}</span>
-                                            <span style="display:block; font-size:13px;">Total: ${jsonTopic.servingNumber}</span>
-                                        </td>
-                                        <td>
-                                            <span style="display:block; font-size:13px;">New: ${businessLandingForm.queueDetails.get(jsonTopic.codeQR).previouslyVisitedClientCount}</span>
-                                            <span style="display:block; font-size:13px;">Re-Visit: ${businessLandingForm.queueDetails.get(jsonTopic.codeQR).newVisitClientCount}</span>
-                                        </td>
-                                        <td nowrap>
-                                        <c:choose>
-                                        <c:when test="${jsonTopic.queueStatus == QueueStatusEnum.D}">
-                                            0
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${jsonTopic.token - jsonTopic.servingNumber}
-                                        </c:otherwise>
-                                        </c:choose>
-                                        </td>
-                                        <td nowrap>
-                                        <c:choose>
-                                        <c:when test="${jsonTopic.queueStatus == QueueStatusEnum.D}">
-                                            0
-                                        </c:when>
-                                        <c:otherwise>
-                                            ${jsonTopic.servingNumber}
-                                        </c:otherwise>
-                                        </c:choose>
-                                        </td>
-                                    </tr>
-                                    </c:forEach>
-                                </table>
-                                </c:when>
-                                <c:otherwise>
-                                <div class="alert-info">
-                                    <p>Could not find any queue assigned to you.</p>
-                                </div>
-                                </c:otherwise>
+                                    <c:when test="${!empty medicalDocumentUploadListForm.medicalDocumentUploadForms}">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <th nowrap>Queue Name</th>
+                                            <th nowrap>Queued Person</th>
+                                        </tr>
+                                        <c:forEach items="${medicalDocumentUploadListForm.medicalDocumentUploadForms}" var="medicalDocumentUploadForm" varStatus="status">
+                                        <tr>
+                                            <td>${status.count}&nbsp;</td>
+                                            <td>
+                                                ${medicalDocumentUploadForm.bizStore.displayName} <br/>
+                                                <c:forEach items="${medicalDocumentUploadForm.bizStore.storeHours}" var="storeHour" varStatus="status">
+                                                <span style="display:block; font-size:13px;">${DateFormatter.convertMilitaryTo12HourFormat(storeHour.startHour)} - ${DateFormatter.convertMilitaryTo12HourFormat(storeHour.endHour)}</span>
+                                                </c:forEach>
+                                            </td>
+                                            <td>
+                                                <c:forEach items="${medicalDocumentUploadForm.jsonQueuePersonList.queuedPeople}" var="jsonQueuedPerson" varStatus="status">
+                                                ${jsonQueuedPerson.customerName} (${jsonQueuedPerson.phoneFormatted})
+                                                </c:forEach>
+                                            </td>
+                                        </tr>
+                                        </c:forEach>
+                                    </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                    <div class="alert-info">
+                                        <p>Could not find any queue assigned to you.</p>
+                                    </div>
+                                    </c:otherwise>
                                 </c:choose>
                             </div>
                         </div>
