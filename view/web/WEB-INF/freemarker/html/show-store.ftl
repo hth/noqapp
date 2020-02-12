@@ -59,7 +59,6 @@
                         <p><strong>Queue Status: </strong>${queueStatus}</p>
                         <p><strong>Currently Serving: </strong>${currentlyServing}</p>
                         <p><strong>People in Queue: </strong>${peopleInQueue}</p>
-                        <p><strong>People in Queue: </strong>${peopleInQueue}</p>
 
                         <div class="button-btn" style="margin-bottom: 100px;">
                             <form action="${https}://${domain}/open/join/queue/${codeQR}.htm">

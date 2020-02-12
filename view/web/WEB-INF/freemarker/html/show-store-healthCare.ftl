@@ -89,7 +89,9 @@
 
                                 <div class="button-btn" style="margin-bottom: 50px;">
                                     <form action="${page.https}://${page.domain}/open/join/queue/${value.codeQR}.htm">
-                                        <#if value.storeClosed == "Yes">
+                                        <#if value.claimed == "No">
+                                            <p style="padding: 20px 20px 20px 0; color: #9f1313">Not accepting Walk-ins</p>
+                                        <#elseif value.storeClosed == "Yes">
                                             <button class="ladda-button next-btn" style="width:48%; float: left; background: grey; border: grey;">Closed Queue</button>
                                         <#else>
                                             <button class="ladda-button next-btn" style="width:48%; float: left;">Join Queue</button>
