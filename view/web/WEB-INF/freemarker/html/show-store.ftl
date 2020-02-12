@@ -50,7 +50,7 @@
                         <#if categoryName??><p><strong>${categoryName}</strong></p></#if>
                         <p>${rating} &nbsp; <span id="store_rating"></span>&nbsp;&nbsp;${reviewCount} Reviews &nbsp;</p>
                         <#if storeClosed == "Yes">
-                            <p><strong>Closed Today</p>
+                            <p><strong>Closed Today</strong></p>
                         <#else>
                             <p><strong>${dayOfWeek} Hours: </strong> ${startHour} - ${endHour}</p>
                         </#if>
@@ -59,10 +59,13 @@
                         <p><strong>Queue Status: </strong>${queueStatus}</p>
                         <p><strong>Currently Serving: </strong>${currentlyServing}</p>
                         <p><strong>People in Queue: </strong>${peopleInQueue}</p>
+                        <p><strong>People in Queue: </strong>${peopleInQueue}</p>
 
                         <div class="button-btn" style="margin-bottom: 100px;">
                             <form action="${https}://${domain}/open/join/queue/${codeQR}.htm">
-                                <#if storeClosed == "Yes">
+                                <#if claimed == "No">
+                                    <p style="padding: 20px 20px 20px 0; color: #9f1313">Not accepting Walk-ins</p>
+                                <#elseif storeClosed == "Yes">
                                     <button class="ladda-button next-btn" style="width:48%; float: left; background: grey; border: grey;">Closed Queue</button>
                                 <#else>
                                     <button class="ladda-button next-btn" style="width:48%; float: left;">Join Queue</button>

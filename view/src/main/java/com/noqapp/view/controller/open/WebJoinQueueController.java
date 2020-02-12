@@ -190,6 +190,9 @@ public class WebJoinQueueController {
                 }
             }
 
+            if (bizStore.getBizName().isNotClaimed()) {
+                rootMap.put("claimed", bizStore.getBizName().isClaimed() ? "Yes" : "No");
+            }
             webJoinQueue.setRootMap(rootMap).setCodeQR(new ScrubbedInput(((String) rootMap.get("codeQR"))));
 
             model.addAttribute("firebaseApiKey", firebaseApiKey);
@@ -250,6 +253,9 @@ public class WebJoinQueueController {
                     rootMap.put("expectedServiceTime", expectedServiceTime);
                     rootMap.put("storeAddress", bizStore.getAddress());
 
+                    if (bizStore.getBizName().isNotClaimed()) {
+                        rootMap.put("claimed", bizStore.getBizName().isClaimed() ? "Yes" : "No");
+                    }
                     webJoinQueue.setRootMap(rootMap).setCodeQR(new ScrubbedInput(bizStore.getCodeQR()));
                     return joinQueueConfirmPage;
                 }
