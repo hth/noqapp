@@ -396,7 +396,7 @@ public class MedicalRecordService {
             medicalRecord
                 .setBusinessType(bizStore.getBusinessType())
                 .setFollowUpDay(StringUtils.isNotBlank(jsonRecord.getFollowUpInDays())
-                    ? DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate()
+                    ? DateUtil.now().plusDays(Integer.parseInt(jsonRecord.getFollowUpInDays())).toDate()
                     : null)
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizNameId(bizStore.getBizName().getId())
