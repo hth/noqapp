@@ -192,9 +192,7 @@ public class ShowHTMLService {
         int i = zonedDateTime.getDayOfWeek().getValue();
         StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
 
-        if (bizStore.getBizName().isNotClaimed()) {
-            rootMap.put("claimed", bizStore.getBizName().isClaimed() ? "Yes" : "No");
-        }
+        rootMap.put("claimed", bizStore.getBizName().isClaimed() ? "Yes" : "No");
 
         if (storeHour.isDayClosed() || storeHour.isTempDayClosed() || bizStore.getBizName().isDayClosed()) {
             rootMap.put("storeClosed", "Yes");
