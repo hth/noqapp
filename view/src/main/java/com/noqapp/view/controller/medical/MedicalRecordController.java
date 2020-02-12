@@ -115,7 +115,7 @@ public class MedicalRecordController {
             String identifier = new String(Base64.getDecoder().decode(recordReferenceId.getText()), StandardCharsets.ISO_8859_1);
             String[] recordReference = identifier.split("#");
 
-            int token = Integer.valueOf(recordReference[0]);
+            int token = Integer.parseInt(recordReference[0]);
             String qid = recordReference[1];
             String recordOwner = recordReference[2];
 

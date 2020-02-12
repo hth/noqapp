@@ -162,7 +162,7 @@ public class MedicalRecordService {
             .setDiagnosis(StringUtils.capitalize(medicalRecordForm.getDiagnosis().trim()))
             .setPlanToPatient(medicalRecord.getPlanToPatient())
             .setFollowUpDay(StringUtils.isNotBlank(medicalRecordForm.getFollowUpInDays())
-                ? DateUtil.now().plusDays(Integer.valueOf(medicalRecordForm.getFollowUpInDays())).toDate()
+                ? DateUtil.now().plusDays(Integer.parseInt(medicalRecordForm.getFollowUpInDays())).toDate()
                 : null)
             .setNoteForPatient(medicalRecordForm.getNoteForPatient())
             .setNoteToDiagnoser(medicalRecordForm.getNoteToDiagnoser())

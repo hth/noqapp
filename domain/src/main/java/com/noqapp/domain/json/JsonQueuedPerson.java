@@ -237,6 +237,7 @@ public class JsonQueuedPerson extends AbstractDomain {
         return Formatter.phoneNationalFormat(customerPhone, Formatter.getCountryShortNameFromInternationalPhone(customerPhone));
     }
 
+    /** Used for Web. */
     @Transient
     public String getRecordReferenceId() {
         return Base64.getEncoder().encodeToString((token + "#" + queueUserId + "#" + queueUserId).getBytes());
