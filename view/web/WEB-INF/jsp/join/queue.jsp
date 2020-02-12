@@ -113,6 +113,9 @@
                         <%--<input name="" id="sign-in-button" type="button" class="form-btn" value="NEXT" onClick="onSignInSubmit()"/>--%>
                         <div class="button-btn">
                             <c:choose>
+                            <c:when test="${webJoinQueue.rootMap.get('claimed') eq 'No'}">
+                            <p style="padding: 20px 20px 20px 0; color: #9f1313">Not accepting Walk-ins</p>
+                            </c:when>
                             <c:when test="${webJoinQueue.rootMap.get('storeClosed') eq 'Yes'}">
                             <button class="form-btn" style="width:100%; background: grey;" disabled>Closed</button>
                             </c:when>
