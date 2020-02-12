@@ -162,7 +162,7 @@ public class MedicalRecordService {
             .setDiagnosis(StringUtils.capitalize(medicalRecordForm.getDiagnosis().trim()))
             .setPlanToPatient(medicalRecord.getPlanToPatient())
             .setFollowUpDay(StringUtils.isNotBlank(medicalRecordForm.getFollowUpInDays())
-                ? DateUtil.now().plusDays(Integer.valueOf(medicalRecordForm.getFollowUpInDays())).toDate()
+                ? DateUtil.now().plusDays(Integer.parseInt(medicalRecordForm.getFollowUpInDays())).toDate()
                 : null)
             .setNoteForPatient(medicalRecordForm.getNoteForPatient())
             .setNoteToDiagnoser(medicalRecordForm.getNoteToDiagnoser())
@@ -396,7 +396,7 @@ public class MedicalRecordService {
             medicalRecord
                 .setBusinessType(bizStore.getBusinessType())
                 .setFollowUpDay(StringUtils.isNotBlank(jsonRecord.getFollowUpInDays())
-                    ? DateUtil.now().plusDays(Integer.valueOf(jsonRecord.getFollowUpInDays())).toDate()
+                    ? DateUtil.now().plusDays(Integer.parseInt(jsonRecord.getFollowUpInDays())).toDate()
                     : null)
                 .setBusinessName(bizStore.getBizName().getBusinessName())
                 .setBizNameId(bizStore.getBizName().getId())

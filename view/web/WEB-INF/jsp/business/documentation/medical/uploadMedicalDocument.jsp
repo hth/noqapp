@@ -18,8 +18,8 @@
 
     <style type="text/css">
         .card {
-            height: 70px;
-            width: 200px;
+            height: 100%;
+            width: 100%;
             background-color: whitesmoke;
             margin-left: 5px;
             margin-right: 5px;
@@ -77,53 +77,11 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Business: <span>${medicalDocumentUploadListForm.businessName}</span></h3>
-
-                        <div class="add-store">
-                            <div class="details-box" style="padding: 10px 0 10px 0;">
-                                Monitoring Queue(s): <span>${medicalDocumentUploadListForm.medicalDocumentUploadForms.size()}</span>
-                            </div>
-                            <div class="store-table">
-                                <c:choose>
-                                    <c:when test="${!empty medicalDocumentUploadListForm.medicalDocumentUploadForms}">
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <th>&nbsp;</th>
-                                            <th nowrap>Queue Name</th>
-                                            <th nowrap>Queued Person</th>
-                                        </tr>
-                                        <c:forEach items="${medicalDocumentUploadListForm.medicalDocumentUploadForms}" var="medicalDocumentUploadForm" varStatus="status">
-                                        <tr>
-                                            <td>${status.count}&nbsp;</td>
-                                            <td>
-                                                ${medicalDocumentUploadForm.bizStore.displayName} <br/>
-                                                <c:forEach items="${medicalDocumentUploadForm.bizStore.storeHours}" var="storeHour" varStatus="status">
-                                                    <span style="display:block; font-size:13px;">${DateFormatter.convertMilitaryTo12HourFormat(storeHour.startHour)} - ${DateFormatter.convertMilitaryTo12HourFormat(storeHour.endHour)}</span>
-                                                </c:forEach>
-                                            </td>
-                                            <td>
-                                                <c:forEach items="${medicalDocumentUploadForm.jsonQueuePersonList.queuedPeople}" var="jsonQueuedPerson" varStatus="status">
-                                                    <div class="card-container">
-                                                        <div class="card">
-                                                            ${jsonQueuedPerson.customerName} <br/>
-                                                            <span style="display:block; font-size:13px;">${jsonQueuedPerson.phoneFormatted}</span>
-                                                            <span style="display:block; font-size:13px; text-align: right;">
-                                                                <a href="/business/documentation/medical/${jsonQueuedPerson.recordReferenceId}/upload/${medicalDocumentUploadForm.bizStore.codeQR}.htm" target="_blank">Upload</a>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </c:forEach>
-                                            </td>
-                                        </tr>
-                                        </c:forEach>
-                                    </table>
-                                    </c:when>
-                                    <c:otherwise>
-                                    <div class="alert-info">
-                                        <p>Could not find any queue assigned to you.</p>
-                                    </div>
-                                    </c:otherwise>
-                                </c:choose>
+                        <div class="card-container">
+                            <div class="card">
+                                ${queue.customerName}, ${jsonQueuedPerson.phoneFormatted}<br/>
+                                <span style="display:block; font-size:13px;">${queue.displayName}</span>
+                                <div id="drag-drop-area"></div>
                             </div>
                         </div>
                     </div>
@@ -160,5 +118,19 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+<script type="text/javascript" src="//transloadit.edgly.net/releases/uppy/v1.9.0/uppy.min.js"></script>
+<script type="text/javascript" >
+    var uppy = Uppy.Core()
+        .use(Uppy.Dashboard, {
+            inline: true,
+            target: '#drag-drop-area',
+            width: '100%',
+            height: '100%',
+        })
+        .use(Uppy.Tus, {endpoint: 'https://master.tus.io/files/'})
 
+    uppy.on('complete', (result) => {
+        console.log('Upload complete! We’ve uploaded these files:', result.successful)
+    })
+</script>
 </html>
