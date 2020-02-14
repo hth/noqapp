@@ -1,6 +1,6 @@
 package com.noqapp.view.controller.business.documentation;
 
-import static java.util.concurrent.Executors.newSingleThreadScheduledExecutor;
+import static com.noqapp.view.controller.access.LandingController.SUCCESS;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.ScrubbedInput;
@@ -29,6 +29,8 @@ import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.form.business.MedicalDocumentUploadForm;
 import com.noqapp.view.form.business.MedicalDocumentUploadListForm;
 
+import com.google.gson.JsonObject;
+
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import org.slf4j.Logger;
@@ -47,7 +49,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
@@ -57,7 +58,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -90,8 +90,6 @@ public class MedicalDocumentationController {
     private ProfessionalProfileService professionalProfileService;
     private ApiHealthService apiHealthService;
 
-    private ScheduledExecutorService scheduledExecutorService;
-
     @Autowired
     public MedicalDocumentationController(
         @Value("${nextPage:/business/documentation/medical/landing}")
@@ -122,8 +120,6 @@ public class MedicalDocumentationController {
         this.medicalFileService = medicalFileService;
         this.professionalProfileService = professionalProfileService;
         this.apiHealthService = apiHealthService;
-
-        scheduledExecutorService = newSingleThreadScheduledExecutor();
     }
 
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
@@ -221,13 +217,15 @@ public class MedicalDocumentationController {
         @PathVariable("codeQR")
         ScrubbedInput codeQR,
 
-        RedirectAttributes redirectAttrs,
         HttpServletRequest httpServletRequest
     ) {
         Instant start = Instant.now();
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("uploading image qid={}", queueUser.getQueueUserId());
+        LOG.info("Uploading image qid={} codeQR={}", queueUser.getQueueUserId(), codeQR.getText());
         /* Above condition to make sure users with right roles and access gets access. */
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty(SUCCESS, false);
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
         if (isMultipart) {
@@ -241,7 +239,7 @@ public class MedicalDocumentationController {
                     String filename = medicalFileService.processMedicalImageWithoutWritingToRecord(recordReferenceId.getText(), multipartFile);
                     LOG.info("Added image to medical record {} {}", recordReferenceId.getText(), filename);
                     medicalRecordService.addImage(recordReferenceId.getText(), filename);
-                    return "{\"success\":true}";
+                    jsonObject.addProperty(SUCCESS, true);
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -254,6 +252,6 @@ public class MedicalDocumentationController {
             }
         }
 
-        return "{\"success\": false}";
+        return jsonObject.toString();
     }
 }

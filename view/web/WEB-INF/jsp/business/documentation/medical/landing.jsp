@@ -98,20 +98,20 @@
                                             <td>
                                                 ${medicalDocumentUploadForm.bizStore.displayName} <br/>
                                                 <c:forEach items="${medicalDocumentUploadForm.bizStore.storeHours}" var="storeHour" varStatus="status">
-                                                    <span style="display:block; font-size:13px;">${DateFormatter.convertMilitaryTo12HourFormat(storeHour.startHour)} - ${DateFormatter.convertMilitaryTo12HourFormat(storeHour.endHour)}</span>
+                                                <span style="display:block; font-size:13px;">${DateFormatter.convertMilitaryTo12HourFormat(storeHour.startHour)} - ${DateFormatter.convertMilitaryTo12HourFormat(storeHour.endHour)}</span>
                                                 </c:forEach>
                                             </td>
                                             <td>
                                                 <c:forEach items="${medicalDocumentUploadForm.jsonQueuePersonList.queuedPeople}" var="jsonQueuedPerson" varStatus="status">
-                                                    <div class="card-container">
-                                                        <div class="card">
-                                                            ${jsonQueuedPerson.customerName} <br/>
-                                                            <span style="display:block; font-size:13px;">${jsonQueuedPerson.phoneFormatted}</span>
-                                                            <span style="display:block; font-size:13px; text-align: right;">
-                                                                <a href="/business/documentation/medical/${jsonQueuedPerson.recordReferenceId}/upload/${medicalDocumentUploadForm.bizStore.codeQR}.htm" target="_blank">Upload</a>
-                                                            </span>
-                                                        </div>
+                                                <div class="card-container">
+                                                    <div class="card">
+                                                        ${jsonQueuedPerson.customerName} <br/>
+                                                        <span style="display:block; font-size:13px;">${jsonQueuedPerson.phoneFormatted}</span>
+                                                        <span style="display:block; font-size:13px; text-align: right;">
+                                                            <a href="/business/documentation/medical/${jsonQueuedPerson.recordReferenceId}/upload/${medicalDocumentUploadForm.bizStore.codeQR}.htm" target="_blank">Upload</a>
+                                                        </span>
                                                     </div>
+                                                </div>
                                                 </c:forEach>
                                             </td>
                                         </tr>
