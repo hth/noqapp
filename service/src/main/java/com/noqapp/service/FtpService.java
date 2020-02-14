@@ -52,7 +52,12 @@ public class FtpService {
 
     /** TODO(hth) Medical stores all medical record related images. */
     public static String MEDICAL = FileUtil.getFileSeparator() + MEDICAL_AWS;
-    public static String[] directories = new String[]{FtpService.PROFILE, FtpService.SERVICE, FtpService.MEDICAL, FtpService.ARTICLE, FtpService.VIGYAPAN};
+    public static String[] directories = new String[]{
+        FtpService.PROFILE,
+        FtpService.SERVICE,
+        FtpService.MEDICAL,
+        FtpService.ARTICLE,
+        FtpService.VIGYAPAN};
 
     public static String PREFERRED_STORE = FileUtil.getFileSeparator() + "preferredStore";
     public static String MASTER_MEDICAL = FileUtil.getFileSeparator() + "masterMedical";
