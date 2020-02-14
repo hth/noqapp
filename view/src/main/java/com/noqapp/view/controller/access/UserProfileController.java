@@ -531,7 +531,11 @@ public class UserProfileController {
     }
 
     public static List<MultipartFile> getMultipartFiles(MultipartHttpServletRequest multipartHttpRequest) {
-        final List<MultipartFile> files = multipartHttpRequest.getFiles("file");
+        return getMultipartFiles(multipartHttpRequest, "file");
+    }
+
+    public static List<MultipartFile> getMultipartFiles(MultipartHttpServletRequest multipartHttpRequest, String fileListedUnderName) {
+        final List<MultipartFile> files = multipartHttpRequest.getFiles(fileListedUnderName);
 
         if (files.isEmpty()) {
             LOG.error("Empty or no image uploaded");

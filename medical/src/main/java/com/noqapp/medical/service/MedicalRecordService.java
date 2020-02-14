@@ -1206,4 +1206,8 @@ public class MedicalRecordService {
             }
         }
     }
+
+    public void addImage(String recordReferenceId, String filename) {
+        medicalRecordManager.addImage(recordReferenceId, filename);
+    }
 }
