@@ -174,8 +174,15 @@
                         <div class="card-container">
                             <div class="card">
                                 ${queue.customerName}, ${jsonQueuedPerson.phoneFormatted}<br/>
+                                <c:choose>
+                                    <c:when test="${empty jsonMedicalRecord.images}">
+                                        <span style="display:block; font-size:13px; color: #9f1313">No file exists</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span style="display:block; font-size:13px; color: #9f1313">Existing files ${jsonMedicalRecord.images.size()}</span>
+                                    </c:otherwise>
+                                </c:choose>
                                 <span style="display:block; font-size:13px;">${queue.displayName}</span>
-
                                 <div id="fine-uploader-manual-trigger"></div>
                             </div>
                         </div>
