@@ -214,11 +214,20 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script>
-    var manualUploader = new qq.FineUploader({
+    let manualUploader = new qq.FineUploader({
         element: document.getElementById('fine-uploader-manual-trigger'),
         template: 'qq-template-manual-trigger',
+        callbacks: {
+            onError: function(id, name, errorReason, xhrOrXdr) {
+                alert(qq.format("Error on file number {} - {}.  Reason: {}", id, name, errorReason));
+            },
+        },
         request: {
-            endpoint: '/server/uploads'
+            endpoint: '${pageContext.request.contextPath}/business/documentation/medical/${queue.recordReferenceId}/upload/${queue.codeQR}.htm',
+            customHeaders: {
+                Accept: 'multipart/form-data',
+                'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+            }
         },
         thumbnails: {
             placeholders: {
@@ -226,8 +235,12 @@
                 notAvailablePath: '../../../../../static2/external/fine-uploader/placeholders/not_available-generic.png'
             }
         },
+        validation: {
+            allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+            sizeLimit: 5120000 // 5 mb = 5000 * 1024 bytes
+        },
         autoUpload: false,
-        debug: true
+        debug: false
     });
 
     qq(document.getElementById("trigger-upload")).attach("click", function() {

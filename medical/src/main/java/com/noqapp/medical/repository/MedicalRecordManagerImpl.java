@@ -193,4 +193,14 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
                 TABLE
         );
     }
+
+    @Override
+    public void addImage(String recordReferenceId, String filename) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(recordReferenceId)),
+            new Update().addToSet("IM", filename),
+            MedicalRecordEntity.class,
+            TABLE
+        );
+    }
 }

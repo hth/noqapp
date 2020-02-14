@@ -161,7 +161,17 @@ public class MedicalFileService {
     public void addMedicalImage(String recordReferenceId, String filename, BufferedImage bufferedImage) {
         LOG.debug("Adding medical image {} {}", recordReferenceId, filename);
         MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
+        if (null == medicalRecord) {
+            LOG.error("No medical record found {}", recordReferenceId);
+            throw new RuntimeException("No medical record found for " + recordReferenceId);
+        }
 
+        ftpMedicalImage(recordReferenceId, filename, bufferedImage);
+        medicalRecord.addImage(filename);
+        medicalRecordManager.save(medicalRecord);
+    }
+
+    public void ftpMedicalImage(String recordReferenceId, String filename, BufferedImage bufferedImage) {
         File toFile = null;
         File tempFile = null;
         try {
@@ -172,9 +182,6 @@ public class MedicalFileService {
             tempFile = new File(toFileAbsolutePath);
             fileService.writeToFile(tempFile, ImageIO.read(toFile));
             ftpService.upload(filename, recordReferenceId, FtpService.MEDICAL);
-
-            medicalRecord.addImage(filename);
-            medicalRecordManager.save(medicalRecord);
         } catch (IOException e) {
             LOG.error("Failed adding medical {} image={} reason={}", recordReferenceId, filename, e.getLocalizedMessage(), e);
         } finally {
@@ -355,6 +362,20 @@ public class MedicalFileService {
         if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
             String filename = FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType);
             executorService.submit(() -> addMedicalImage(recordReferenceId, filename, bufferedImage));
+            return filename;
+        } else {
+            LOG.error("Failed mime mismatch found={} sentMime={}", mimeType, multipartFile.getContentType());
+            throw new RuntimeException("Mime type mismatch");
+        }
+    }
+
+    /** This is image is of case history scanned image. */
+    public String processMedicalImageWithoutWritingToRecord(String recordReferenceId, MultipartFile multipartFile) throws IOException {
+        BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
+        String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
+        if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
+            String filename = FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType);
+            executorService.submit(() -> ftpMedicalImage(recordReferenceId, filename, bufferedImage));
             return filename;
         } else {
             LOG.error("Failed mime mismatch found={} sentMime={}", mimeType, multipartFile.getContentType());

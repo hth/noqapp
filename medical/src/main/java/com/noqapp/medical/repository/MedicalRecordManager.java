@@ -38,4 +38,6 @@ public interface MedicalRecordManager extends RepositoryManager<MedicalRecordEnt
 
     void addMedicalRadiologiesId(String recordReferenceId, String medicalRadiologyId);
     void unsetMedicalRadiology(String recordReferenceId);
+
+    void addImage(String recordReferenceId, String filename);
 }
