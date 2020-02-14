@@ -181,6 +181,7 @@ public class MedicalFileService {
             String toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
             tempFile = new File(toFileAbsolutePath);
             fileService.writeToFile(tempFile, ImageIO.read(toFile));
+            LOG.info("File recordReferenceId={} filename={} size={}", recordReferenceId, filename, tempFile.length());
             ftpService.upload(filename, recordReferenceId, FtpService.MEDICAL);
         } catch (IOException e) {
             LOG.error("Failed adding medical {} image={} reason={}", recordReferenceId, filename, e.getLocalizedMessage(), e);
