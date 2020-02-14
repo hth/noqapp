@@ -129,7 +129,7 @@ public class FileOperationOnS3 {
          * fail safe to prevent uploading to dev bucket when connected to test database.
          */
         if ("OFF".equalsIgnoreCase(profileUploadSwitch)) {
-            LOG.debug("feature is {}", profileUploadSwitch);
+            LOG.debug("Feature is {}", profileUploadSwitch);
             return;
         }
 
