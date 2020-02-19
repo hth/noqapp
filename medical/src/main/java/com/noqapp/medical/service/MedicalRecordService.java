@@ -190,7 +190,7 @@ public class MedicalRecordService {
     @Mobile
     public void changePatient(JsonMedicalRecord jsonRecord, String diagnosedById) {
         UserProfileEntity diagnoserUserProfile = userProfileManager.findByQueueUserId(diagnosedById);
-        MedicalRecordEntity medicalRecord = medicalRecordManager.findById(jsonRecord.getRecordReferenceId());
+        MedicalRecordEntity medicalRecord = findByMedicalRecordId(jsonRecord.getRecordReferenceId());
 
         /* Check if record can be updated. */
         checkIfMedicalRecordCanBeUpdated(medicalRecord);
@@ -241,7 +241,7 @@ public class MedicalRecordService {
             /* Check if business type is of Hospital or Doctor to allow adding record. */
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(jsonRecord.getCodeQR());
 
-            MedicalRecordEntity medicalRecord = medicalRecordManager.findById(jsonRecord.getRecordReferenceId());
+            MedicalRecordEntity medicalRecord = findByMedicalRecordId(jsonRecord.getRecordReferenceId());
             if (null == medicalRecord) {
                 medicalRecord = new MedicalRecordEntity(jsonRecord.getQueueUserId());
                 /* Setting its own ObjectId when not set. */
@@ -319,7 +319,7 @@ public class MedicalRecordService {
                 return;
             }
 
-            MedicalRecordEntity medicalRecord = medicalRecordManager.findById(jsonRecord.getRecordReferenceId());
+            MedicalRecordEntity medicalRecord = findByMedicalRecordId(jsonRecord.getRecordReferenceId());
             if (null == medicalRecord) {
                 medicalRecord = new MedicalRecordEntity(jsonRecord.getQueueUserId());
                 /* Setting its own ObjectId when not set. */
@@ -521,7 +521,7 @@ public class MedicalRecordService {
         }
 
         JsonMedicalRecord jsonMedicalRecord;
-        MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
+        MedicalRecordEntity medicalRecord = findByMedicalRecordId(recordReferenceId);
         if (null == medicalRecord) {
             jsonMedicalRecord = new JsonMedicalRecord()
                 .setJsonUserMedicalProfile(userMedicalProfileService.findOneAsJson(queue.getQueueUserId()))
@@ -560,12 +560,17 @@ public class MedicalRecordService {
     @Mobile
     public JsonMedicalRecord findMedicalRecord(String codeQR, String recordReferenceId) {
         QueueEntity queue = queueManager.findOneByRecordReferenceId(codeQR, recordReferenceId);
+        return findMedicalRecord(codeQR, recordReferenceId, queue);
+    }
+
+    @Mobile
+    public JsonMedicalRecord findMedicalRecord(String codeQR, String recordReferenceId, QueueEntity queue) {
         if (null == queue) {
             LOG.error("Not valid request for medical record codeQR={} recordReferenceId={}", codeQR, recordReferenceId);
             return null;
         }
 
-        MedicalRecordEntity medicalRecord = medicalRecordManager.findById(recordReferenceId);
+        MedicalRecordEntity medicalRecord = findByMedicalRecordId(recordReferenceId);
         if (null == medicalRecord) {
             return null;
         } else {
@@ -922,6 +927,10 @@ public class MedicalRecordService {
         return medicalMedicineManager.findByMedicationRefId(referenceId);
     }
 
+    public MedicalRecordEntity findByMedicalRecordId(String id) {
+        return medicalRecordManager.findById(id);
+    }
+
     /** Populate data for client case histories. */
     @Mobile
     public JsonMedicalRecordList populateMedicalHistory(String qid) {
@@ -1177,7 +1186,7 @@ public class MedicalRecordService {
         Assert.hasLength(transactionId, "Transaction Id cannot be null");
         PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionId(transactionId);
         try {
-            MedicalRecordEntity medicalRecord = medicalRecordManager.findById(purchaseOrder.getId());
+            MedicalRecordEntity medicalRecord = findByMedicalRecordId(purchaseOrder.getId());
             /* Delete Existing. */
             if (StringUtils.isNotBlank(medicalRecord.getMedicalLaboratoryId())) {
                 medicalPathologyTestManager.deleteByPathologyReferenceId(medicalRecord.getMedicalLaboratoryId());
@@ -1209,5 +1218,10 @@ public class MedicalRecordService {
 
     public void addImage(String recordReferenceId, String filename) {
         medicalRecordManager.addImage(recordReferenceId, filename);
+    }
+
+    /** When medical record was not created during visit. This method updates the create date with queue service end time. */
+    public void updateCreateDate(String id, Date created) {
+        medicalRecordManager.updateCreateDate(id, created);
     }
 }

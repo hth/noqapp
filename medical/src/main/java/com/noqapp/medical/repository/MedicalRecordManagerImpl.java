@@ -203,4 +203,14 @@ public class MedicalRecordManagerImpl implements MedicalRecordManager {
             TABLE
         );
     }
+
+    @Override
+    public void updateCreateDate(String id, Date created) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            update("C", created),
+            MedicalRecordEntity.class,
+            TABLE
+        );
+    }
 }

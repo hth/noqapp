@@ -98,13 +98,13 @@ public class MedicalRecordController {
         this.apiHealthService = apiHealthService;
     }
 
-    @GetMapping(value = "/{codeQR}/{recordReferenceId}")
+    @GetMapping(value = "/{codeQR}/{encryptedId}")
     public ModelAndView createRecord(
             @PathVariable("codeQR")
             ScrubbedInput codeQR,
 
-            @PathVariable("recordReferenceId")
-            ScrubbedInput recordReferenceId,
+            @PathVariable("encryptedId")
+            ScrubbedInput encryptedId,
 
             HttpServletResponse response
     ) {
@@ -112,7 +112,7 @@ public class MedicalRecordController {
         Instant start = Instant.now();
         ModelAndView modelAndView = new ModelAndView(nextPage);
         try {
-            String identifier = new String(Base64.getDecoder().decode(recordReferenceId.getText()), StandardCharsets.ISO_8859_1);
+            String identifier = new String(Base64.getDecoder().decode(encryptedId.getText()), StandardCharsets.ISO_8859_1);
             String[] recordReference = identifier.split("#");
 
             int token = Integer.parseInt(recordReference[0]);

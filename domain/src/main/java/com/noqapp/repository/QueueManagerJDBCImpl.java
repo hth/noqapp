@@ -41,14 +41,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(QueueManagerJDBCImpl.class);
 
     private static final String insert =
-        "INSERT INTO QUEUE (ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D)" +
+        "INSERT INTO QUEUE (ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D)" +
             " VALUES " +
-            "(:id,:qr,:did,:ts,:qid,:tn,:dn,:bt,:qs,:ti,:ns,:ra,:hr,:rv,:sn,:sb,:se,:bn,:st,:v,:u,:c,:a,:d)";
+            "(:id,:qr,:did,:ts,:qid,:tn,:dn,:bt,:qs,:ti,:ns,:ra,:hr,:rv,:sn,:sb,:se,:bn,:rr,:st,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
     private static final String findByQid_Simple =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? " +
             "ORDER BY C DESC";
@@ -56,7 +56,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     /* Inner condition removed. */
     @Deprecated
     private static final String findByQid =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? " +
             "AND " +
@@ -68,7 +68,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     /* Inner condition removed. */
     @Deprecated
     private static final String findByQidAndByLastUpdated =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? AND U >= ? " +
             "AND " +
@@ -78,7 +78,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findHistoricalRecordByCodeQRDateRange =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
             "AND " +
@@ -88,7 +88,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findByCodeQR =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
             "AND " +
@@ -114,7 +114,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findByDid =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE DID = ? " +
             "AND " +
@@ -124,7 +124,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByDidAndByLastUpdated =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE DID = ? AND U >= ? " +
             "AND " +
@@ -143,11 +143,16 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE BN = ? AND QID = ? LIMIT 1)";
 
     private static final String findByCodeQR_Qid_Token =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? AND QR = ? AND TN = ? AND TI IS NOT NULL";
 
     private static final String findAfterCreateDate = "SELECT * FROM QUEUE WHERE C >= ? ORDER BY C DESC";
+
+    private static final String findByCodeQR_RecordReferenceId =
+        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE QR = ? AND RR = ?";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
@@ -188,6 +193,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                 namedParameters.addValue("sb", queue.getServiceBeginTime());
                 namedParameters.addValue("se", queue.getServiceEndTime());
                 namedParameters.addValue("bn", queue.getBizNameId());
+                namedParameters.addValue("rr", queue.getRecordReferenceId());
                 namedParameters.addValue("st", null == queue.getSentimentType() ? null : queue.getSentimentType().getName());
 
                 namedParameters.addValue("v", queue.getVersion());
@@ -379,5 +385,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             findAfterCreateDate,
             new Object[]{since},
             new QueueRowMapper());
+    }
+
+    @Override
+    public QueueEntity findOneHistoricalByRecordReferenceId(String codeQR, String recordReferenceId) {
+        return jdbcTemplate.queryForObject(
+            findByCodeQR_RecordReferenceId,
+            new Object[]{codeQR, recordReferenceId},
+            new QueueRowMapper()
+        );
     }
 }

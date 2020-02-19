@@ -173,17 +173,26 @@
                     <div class="store">
                         <div class="card-container">
                             <div class="card">
-                                ${queue.customerName}, ${jsonQueuedPerson.phoneFormatted}<br/>
                                 <c:choose>
-                                    <c:when test="${empty jsonMedicalRecord.images}">
-                                        <span style="display:block; font-size:13px; color: #9f1313">No file exists</span>
+                                    <c:when test="${empty queue}">
+                                        Cannot upload document to existing medical record.
                                     </c:when>
                                     <c:otherwise>
-                                        <span style="display:block; font-size:13px; color: #9f1313">Existing files ${jsonMedicalRecord.images.size()}</span>
+                                        ${queue.customerName}, ${jsonQueuedPerson.phoneFormatted}<br/>
+                                        <c:choose>
+                                            <c:when test="${empty jsonMedicalRecord.images}">
+                                                <span style="display:block; font-size:13px; color: #9f1313">No file exists</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span style="display:block; font-size:13px; color: #9f1313">Existing files ${jsonMedicalRecord.images.size()}</span>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <span style="display:block; font-size:13px;">${queue.displayName}</span>
+                                        <div id="fine-uploader-manual-trigger"></div>
+                                        <fmt:parseDate value="${jsonMedicalRecord.createDate}" var="parsedCurrentDate" pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ" />
+                                        <span style="display:block; font-size:13px;">Medical Record Date: <fmt:formatDate type="both" value="${parsedCurrentDate}"/></span>
                                     </c:otherwise>
                                 </c:choose>
-                                <span style="display:block; font-size:13px;">${queue.displayName}</span>
-                                <div id="fine-uploader-manual-trigger"></div>
                             </div>
                         </div>
                     </div>

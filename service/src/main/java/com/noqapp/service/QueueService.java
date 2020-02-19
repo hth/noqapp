@@ -260,6 +260,10 @@ public class QueueService {
         return queueManager.findOneByRecordReferenceId(codeQR, recordReferenceId);
     }
 
+    public QueueEntity findOneHistoricalByRecordReferenceId(String codeQR, String recordReferenceId) {
+        return queueManagerJDBC.findOneHistoricalByRecordReferenceId(codeQR, recordReferenceId);
+    }
+
     /** Finds clients who are yet to be serviced. */
     public JsonQueuePersonList findAllClientQueuedOrAborted(String codeQR) {
         List<JsonQueuedPerson> queuedPeople = new ArrayList<>();
@@ -341,7 +345,8 @@ public class QueueService {
                 .setClientVisitedThisBusiness(queue.hasClientVisitedThisBusiness())
                 .setRecordReferenceId(queue.getRecordReferenceId())
                 .setCreated(queue.getCreated())
-                .setTransactionId(queue.getTransactionId());
+                .setTransactionId(queue.getTransactionId())
+                .setRecordReferenceId(queue.getRecordReferenceId());
 
             if (StringUtils.isNotBlank(queue.getTransactionId())) {
                 JsonPurchaseOrder jsonPurchaseOrder;
