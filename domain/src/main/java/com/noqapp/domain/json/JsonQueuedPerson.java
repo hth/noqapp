@@ -205,6 +205,10 @@ public class JsonQueuedPerson extends AbstractDomain {
         return this;
     }
 
+    public String getRecordReferenceId() {
+        return recordReferenceId;
+    }
+
     public JsonQueuedPerson setRecordReferenceId(String recordReferenceId) {
         this.recordReferenceId = recordReferenceId;
         return this;
@@ -239,7 +243,7 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     /** Used for Web. */
     @Transient
-    public String getRecordReferenceId() {
+    public String getEncryptedId() {
         return Base64.getEncoder().encodeToString((token + "#" + queueUserId + "#" + queueUserId).getBytes());
     }
 

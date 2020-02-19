@@ -81,50 +81,51 @@
 
                         <div class="add-store">
                             <div class="details-box" style="padding: 10px 0 10px 0;">
-                                Monitoring Queue(s): <span>${medicalDocumentUploadListForm.medicalDocumentUploadForms.size()}</span>
+                                Queue Name: <span>${medicalDocumentUploadListForm.medicalDocumentUploadForms.get(0).bizStore.displayName}</span>
                             </div>
                             <div class="store-table">
                                 <c:choose>
-                                    <c:when test="${!empty medicalDocumentUploadListForm.medicalDocumentUploadForms}">
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <th>&nbsp;</th>
-                                            <th nowrap>Queue Name</th>
-                                            <th nowrap>Queued Person</th>
-                                        </tr>
-                                        <c:forEach items="${medicalDocumentUploadListForm.medicalDocumentUploadForms}" var="medicalDocumentUploadForm" varStatus="status">
-                                        <tr>
-                                            <td>${status.count}&nbsp;</td>
-                                            <td>
-                                                ${medicalDocumentUploadForm.bizStore.displayName} <br/>
-                                                <c:forEach items="${medicalDocumentUploadForm.bizStore.storeHours}" var="storeHour" varStatus="status">
-                                                <span style="display:block; font-size:13px;">${DateFormatter.convertMilitaryTo12HourFormat(storeHour.startHour)} - ${DateFormatter.convertMilitaryTo12HourFormat(storeHour.endHour)}</span>
-                                                </c:forEach>
-                                                <span style="display:block; font-size:13px;">
-                                                    <a href="/business/documentation/medical/historicalLanding/${medicalDocumentUploadForm.bizStore.codeQR}.htm" target="_blank" style="color: #0f74a8">Historical</a>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <c:forEach items="${medicalDocumentUploadForm.jsonQueuePersonList.queuedPeople}" var="jsonQueuedPerson" varStatus="status">
-                                                <div class="card-container">
-                                                    <div class="card">
-                                                        ${jsonQueuedPerson.customerName} <br/>
-                                                        <span style="display:block; font-size:13px;">${jsonQueuedPerson.phoneFormatted}</span>
-                                                        <span style="display:block; font-size:13px; text-align: right;">
-                                                            <a href="/business/documentation/medical/${jsonQueuedPerson.encryptedId}/upload/${medicalDocumentUploadForm.bizStore.codeQR}.htm" target="_blank" style="color: #0f74a8">Upload</a>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                </c:forEach>
-                                            </td>
-                                        </tr>
-                                        </c:forEach>
-                                    </table>
+                                    <c:when test="${!empty medicalDocumentUploadListForm.jsonQueuedPersonMap}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th nowrap>Date</th>
+                                                <th nowrap>Queued Person</th>
+                                            </tr>
+                                            <c:forEach items="${medicalDocumentUploadListForm.jsonQueuedPersonMap}" var="jsonQueuedPersonMap" varStatus="status">
+                                                <tr>
+                                                    <td>${status.count}&nbsp;</td>
+                                                    <td>
+                                                        ${jsonQueuedPersonMap.key}
+                                                    </td>
+                                                    <td>
+                                                        <c:forEach items="${jsonQueuedPersonMap.value}" var="jsonQueuedPerson" varStatus="status">
+                                                        <div class="card-container">
+                                                            <div class="card">
+                                                                ${jsonQueuedPerson.customerName} <br/>
+                                                                <span style="display:block; font-size:13px;">${jsonQueuedPerson.phoneFormatted}</span>
+                                                                <span style="display:block; font-size:13px; text-align: right;">
+                                                                    <c:choose>
+                                                                        <c:when test="${empty jsonQueuedPerson.recordReferenceId}">
+                                                                            N/A
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <a href="/business/documentation/medical/${jsonQueuedPerson.recordReferenceId}/uploadHistorical/${medicalDocumentUploadListForm.medicalDocumentUploadForms.get(0).bizStore.codeQR}.htm" target="_blank">Upload</a>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        </c:forEach>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
                                     </c:when>
                                     <c:otherwise>
-                                    <div class="alert-info">
-                                        <p>No patient found.</p>
-                                    </div>
+                                        <div class="alert-info">
+                                            <p>No patient found.</p>
+                                        </div>
                                     </c:otherwise>
                                 </c:choose>
                             </div>

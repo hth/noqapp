@@ -81,7 +81,7 @@
                                             <c:when test="${inQueueForm.businessType == BusinessTypeEnum.DO}">
                                             <c:choose>
                                             <c:when test="${!empty jsonQueuedPerson.queueUserId}">
-                                            <a href="/medical/record/${inQueueForm.codeQR}/${jsonQueuedPerson.recordReferenceId}.htm" target="_blank">${jsonQueuedPerson.customerName}</a>
+                                            <a href="/medical/record/${inQueueForm.codeQR}/${jsonQueuedPerson.encryptedId}.htm" target="_blank">${jsonQueuedPerson.customerName}</a>
                                             </c:when>
                                             <c:otherwise>
                                             ${jsonQueuedPerson.customerName}
@@ -90,7 +90,7 @@
 
                                             <c:if test="${!empty jsonQueuedPerson.minors}">
                                             <c:forEach items="${jsonQueuedPerson.minors}" var="minor">
-                                            <span style="display:block; font-size:13px;">&nbsp;&nbsp;&nbsp;<a href="/medical/record/${inQueueForm.codeQR}/${minor.recordReferenceId}.htm" target="_blank">${minor.customerName} ${minor.gender} ${minor.age} yrs</a></span>
+                                            <span style="display:block; font-size:13px;">&nbsp;&nbsp;&nbsp;<a href="/medical/record/${inQueueForm.codeQR}/${minor.encryptedId}.htm" target="_blank">${minor.customerName} ${minor.gender} ${minor.age} yrs</a></span>
                                             </c:forEach>
                                             </c:if>
                                             </c:when>

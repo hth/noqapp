@@ -37,13 +37,14 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
     private static final int SB = 16;
     private static final int SE = 17;
     private static final int BN = 18;
-    private static final int ST = 19;
+    private static final int RR = 19;
+    private static final int ST = 20;
 
-    private static final int V = 20;
-    private static final int U = 21;
-    private static final int C = 22;
-    private static final int A = 23;
-    private static final int D = 24;
+    private static final int V = 21;
+    private static final int U = 22;
+    private static final int C = 23;
+    private static final int A = 24;
+    private static final int D = 25;
 
     @Override
     public QueueEntity extractData(@NotNull ResultSet rs) throws SQLException {
@@ -67,6 +68,7 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
         queue.setServiceBeginTime(rs.getTimestamp(SB));
         queue.setServiceEndTime(rs.getTimestamp(SE));
         queue.setBizNameId(rs.getString(BN));
+        queue.setRecordReferenceId(rs.getString(RR));
         queue.setSentimentType(null == rs.getString(ST) ? null : SentimentTypeEnum.valueOf(rs.getString(ST)));
         queue.setVersion(rs.getInt(V));
         queue.setCreateAndUpdate(rs.getTimestamp(U));

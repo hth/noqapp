@@ -1,3 +1,8 @@
+### Change Feb 18 2020
+
+    ALTER TABLE `noqapp_test`.`QUEUE` 
+    ADD COLUMN `RR` VARCHAR(24) AFTER `BN`;
+        
 ### Change Feb 8 2020
 
     db.getCollection('BIZ_STORE').update({}, {$set: {WS:"E"}}, {multi: true});

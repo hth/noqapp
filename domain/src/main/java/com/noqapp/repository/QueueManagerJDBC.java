@@ -72,4 +72,6 @@ public interface QueueManagerJDBC {
     boolean isDBAlive();
 
     List<QueueEntity> findAfterCreateDate(Date since);
+
+    QueueEntity findOneHistoricalByRecordReferenceId(String codeQR, String recordReferenceId);
 }
