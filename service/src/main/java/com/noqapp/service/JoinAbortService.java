@@ -8,6 +8,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
+import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.common.ComposeMessagesForFCM;
 import com.noqapp.domain.json.JsonPurchaseOrder;
@@ -160,9 +161,9 @@ public class JoinAbortService {
             if (StringUtils.isNotBlank(queue.getTransactionId())) {
                 BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
                 ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
-                int startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
+                StoreHourEntity storeHour = bizService.findStoreHour(bizStore.getId(), zonedDateTime.getDayOfWeek());
                 LocalTime localTime = DateFormatter.addHours(DateFormatter.getLocalTime(requesterTime), preventPaidAbortBeforeHours);
-                if (DateFormatter.getTimeIn24HourFormat(localTime) > startHour) {
+                if (DateFormatter.getTimeIn24HourFormat(localTime) > storeHour.getStartHour()) {
                     LOG.warn("Failed to abort paid as within {} hrs duration", preventPaidAbortBeforeHours);
                     throw new QueueAbortPaidPastDurationException("Cannot cancel as its within " + preventPaidAbortBeforeHours + " hrs");
                 } else {
@@ -174,6 +175,7 @@ public class JoinAbortService {
             abort(queue.getId(), codeQR);
             return new JsonResponse(true);
         } catch (PurchaseOrderRefundPartialException | PurchaseOrderRefundExternalException | PurchaseOrderCancelException e) {
+            LOG.error("Failed to abort reason={}", e.getLocalizedMessage(), e);
             throw e;
         } catch (Exception e) {
             LOG.error("Abort failed reason={}", e.getLocalizedMessage(), e);
