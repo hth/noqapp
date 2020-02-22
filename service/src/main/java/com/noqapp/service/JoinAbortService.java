@@ -164,7 +164,7 @@ public class JoinAbortService {
                 StoreHourEntity storeHour = bizService.findStoreHour(bizStore.getId(), zonedDateTime.getDayOfWeek());
                 LocalTime localTime = DateFormatter.addHours(DateFormatter.getLocalTime(requesterTime), preventPaidAbortBeforeHours);
                 if (DateFormatter.getTimeIn24HourFormat(localTime) > storeHour.getStartHour()) {
-                    LOG.warn("Failed to abort paid as within {} hrs duration", preventPaidAbortBeforeHours);
+                    LOG.warn("Failed as aborting paid transaction within {} hrs duration", preventPaidAbortBeforeHours);
                     throw new QueueAbortPaidPastDurationException("Cannot cancel as its within " + preventPaidAbortBeforeHours + " hrs");
                 } else {
                     LOG.info("Cancelled and refund initiated by {} {} {}", queue.getQueueUserId(), qid, queue.getTransactionId());
@@ -174,7 +174,7 @@ public class JoinAbortService {
             }
             abort(queue.getId(), codeQR);
             return new JsonResponse(true);
-        } catch (PurchaseOrderRefundPartialException | PurchaseOrderRefundExternalException | PurchaseOrderCancelException e) {
+        } catch (PurchaseOrderRefundPartialException | PurchaseOrderRefundExternalException | PurchaseOrderCancelException | QueueAbortPaidPastDurationException e) {
             LOG.error("Failed to abort reason={}", e.getLocalizedMessage(), e);
             throw e;
         } catch (Exception e) {
