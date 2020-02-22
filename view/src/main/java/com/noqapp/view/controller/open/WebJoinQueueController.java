@@ -4,7 +4,6 @@ import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
 import com.noqapp.common.utils.DateFormatter;
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
@@ -47,7 +46,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -159,15 +157,8 @@ public class WebJoinQueueController {
                 return null;
             }
 
-            String ipAddress = HttpRequestResponseParser.getClientIpAddress(request);
-            String requestOriginatorTimeZone = geoIPLocationService.getTimeZone(ipAddress);
-            LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
-            int requesterTime = DateFormatter.getTimeIn24HourFormat(localTime);
-            LOG.info("Web requester originator time is {} ip={} codeQRDecoded={} requestOriginatorTimeZone={}",
-                requesterTime,
-                ipAddress,
-                codeQRDecoded,
-                requestOriginatorTimeZone);
+            int requesterTime = geoIPLocationService.requestOriginatorTime(HttpRequestResponseParser.getClientIpAddress(request));
+            LOG.info("Web requester originator time is {} codeQRDecoded={}", requesterTime, codeQRDecoded);
 
             BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
             Map<String, Object> rootMap = new HashMap<>();
