@@ -1,5 +1,7 @@
 package com.noqapp.search.elastic.service;
 
+import com.noqapp.common.utils.DateFormatter;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.search.elastic.helper.GeoIP;
 
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.time.LocalTime;
 
 /**
  * hitender
@@ -83,5 +86,15 @@ public class GeoIPLocationService {
         }
 
         return null;
+    }
+
+    public int requestOriginatorTime(String ipAddress) {
+        String requestOriginatorTimeZone = getTimeZone(ipAddress);
+        LocalTime localTime = DateUtil.getTimeAtTimeZone(requestOriginatorTimeZone);
+        LOG.info("Web requester originator time ip={} requestOriginatorTimeZone={} localTime={}",
+            ipAddress,
+            requestOriginatorTimeZone,
+            localTime);
+        return DateFormatter.getTimeIn24HourFormat(localTime);
     }
 }

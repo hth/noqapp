@@ -3,6 +3,7 @@ package com.noqapp.service;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
@@ -23,6 +24,7 @@ import com.noqapp.repository.QueueManager;
 import com.noqapp.service.exceptions.PurchaseOrderCancelException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
+import com.noqapp.service.exceptions.QueueAbortPaidPastDurationException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,9 +33,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -43,6 +49,8 @@ import java.util.concurrent.ExecutorService;
 @Service
 public class JoinAbortService {
     private static final Logger LOG = LoggerFactory.getLogger(JoinAbortService.class);
+
+    private int preventPaidAbortBeforeHours;
 
     private DeviceService deviceService;
     private TokenQueueService tokenQueueService;
@@ -56,6 +64,9 @@ public class JoinAbortService {
 
     @Autowired
     public JoinAbortService(
+        @Value("${preventPaidAbortBeforeHours:2}")
+        int preventPaidAbortBeforeHours,
+
         DeviceService deviceService,
         TokenQueueService tokenQueueService,
         PurchaseOrderService purchaseOrderService,
@@ -64,6 +75,8 @@ public class JoinAbortService {
         BizService bizService,
         FirebaseMessageService firebaseMessageService
     ) {
+        this.preventPaidAbortBeforeHours = preventPaidAbortBeforeHours;
+
         this.deviceService = deviceService;
         this.tokenQueueService = tokenQueueService;
         this.purchaseOrderService = purchaseOrderService;
@@ -135,7 +148,7 @@ public class JoinAbortService {
     }
 
     @Mobile
-    public JsonResponse abortQueue(String codeQR, String did, String qid) {
+    public JsonResponse abortQueue(String codeQR, String did, String qid, int requesterTime) {
         LOG.info("abortQueue codeQR={} did={} qid={}", codeQR, did, qid);
         QueueEntity queue = queueManager.findToAbort(codeQR, qid);
         if (queue == null) {
@@ -145,9 +158,18 @@ public class JoinAbortService {
 
         try {
             if (StringUtils.isNotBlank(queue.getTransactionId())) {
-                LOG.info("Cancelled and refund initiated by {} {} {}", queue.getQueueUserId(), qid, queue.getTransactionId());
-                JsonPurchaseOrder jsonPurchaseOrder = purchaseOrderService.cancelOrderByClient(queue.getQueueUserId(), queue.getTransactionId());
-                sendMessageToSelf(jsonPurchaseOrder);
+                BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+                ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+                int startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
+                LocalTime localTime = DateFormatter.addHours(DateFormatter.getLocalTime(requesterTime), preventPaidAbortBeforeHours);
+                if (DateFormatter.getTimeIn24HourFormat(localTime) > startHour) {
+                    LOG.warn("Failed to abort paid as within {} hrs duration", preventPaidAbortBeforeHours);
+                    throw new QueueAbortPaidPastDurationException("Cannot cancel as its within " + preventPaidAbortBeforeHours + " hrs");
+                } else {
+                    LOG.info("Cancelled and refund initiated by {} {} {}", queue.getQueueUserId(), qid, queue.getTransactionId());
+                    JsonPurchaseOrder jsonPurchaseOrder = purchaseOrderService.cancelOrderByClient(queue.getQueueUserId(), queue.getTransactionId());
+                    sendMessageToSelf(jsonPurchaseOrder);
+                }
             }
             abort(queue.getId(), codeQR);
             return new JsonResponse(true);
