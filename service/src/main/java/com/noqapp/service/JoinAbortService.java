@@ -174,8 +174,12 @@ public class JoinAbortService {
             }
             abort(queue.getId(), codeQR);
             return new JsonResponse(true);
-        } catch (PurchaseOrderRefundPartialException | PurchaseOrderRefundExternalException | PurchaseOrderCancelException | QueueAbortPaidPastDurationException e) {
-            LOG.error("Failed to abort reason={}", e.getLocalizedMessage(), e);
+        } catch (PurchaseOrderRefundPartialException |
+            PurchaseOrderRefundExternalException |
+            PurchaseOrderCancelException |
+            QueueAbortPaidPastDurationException e
+        ) {
+            LOG.warn("Failed to abort reason={}", e.getLocalizedMessage(), e);
             throw e;
         } catch (Exception e) {
             LOG.error("Abort failed reason={}", e.getLocalizedMessage(), e);
