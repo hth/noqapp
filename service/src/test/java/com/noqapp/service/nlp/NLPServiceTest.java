@@ -1,6 +1,6 @@
-package com.noqapp.service;
+package com.noqapp.service.nlp;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.noqapp.domain.types.SentimentTypeEnum;
 

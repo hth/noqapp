@@ -69,6 +69,7 @@ import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.StoreInActiveException;
 import com.noqapp.service.exceptions.StorePreventJoiningException;
 import com.noqapp.service.exceptions.StoreTempDayClosedException;
+import com.noqapp.service.nlp.NLPService;
 import com.noqapp.service.payment.CashfreeService;
 import com.noqapp.service.transaction.TransactionService;
 

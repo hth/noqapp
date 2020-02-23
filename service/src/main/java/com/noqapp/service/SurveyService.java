@@ -17,6 +17,7 @@ import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QuestionnaireManager;
 import com.noqapp.repository.SurveyManager;
+import com.noqapp.service.nlp.NLPService;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;

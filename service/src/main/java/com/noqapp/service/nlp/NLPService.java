@@ -1,4 +1,4 @@
-package com.noqapp.service;
+package com.noqapp.service.nlp;
 
 import com.noqapp.domain.types.SentimentTypeEnum;
 

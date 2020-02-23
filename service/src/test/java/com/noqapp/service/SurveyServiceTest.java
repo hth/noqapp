@@ -11,6 +11,7 @@ import com.noqapp.domain.types.QuestionTypeEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QuestionnaireManager;
 import com.noqapp.repository.SurveyManager;
+import com.noqapp.service.nlp.NLPService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
