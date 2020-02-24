@@ -234,7 +234,7 @@ subprojects {
         implementation "commons-codec:commons-codec:1.13"
         implementation "commons-logging:commons-logging:1.2"
 
-        implementation "javax.mail:javax.mail-api:$javaxMail"
+        implementation "com.sun.mail:jakarta.mail:$jakartaMail"
         implementation "javax.validation:validation-api:$javaxValidation"
         implementation "javax.inject:javax.inject:1"
 
@@ -834,7 +834,7 @@ task prepWar(dependsOn: [
 
                 println "Development environment, getting local firebase file $firebaseFileLocal.canonicalPath"
                 if (firebaseFileLocal.exists()) {
-                    from 'view/resources/conf/noq-app-inc-firebase-adminsdk.json'
+                    from 'view/resources/conf/noqueue-sandbox-firebase-adminsdk.json'
                 } else {
                     throw new Exception("Required firebase file does not exists: $firebaseFileLocal.canonicalPath")
                 }
