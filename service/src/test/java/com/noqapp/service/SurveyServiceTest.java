@@ -47,7 +47,7 @@ class SurveyServiceTest {
 
         Properties props = new Properties();
         props.setProperty("annotators", "tokenize, ssplit, pos, lemma, parse, sentiment");
-        nlpService = new NLPService(new StanfordCoreNLP(props), new MaxentTagger("stanford/nlp/models/english-bidirectional-distsim.tagger"));
+        nlpService = new NLPService(new StanfordCoreNLP(props), new MaxentTagger("nlp/stanford/models/english-bidirectional-distsim.tagger"));
 
         surveyService = new SurveyService(
             surveyManager,
