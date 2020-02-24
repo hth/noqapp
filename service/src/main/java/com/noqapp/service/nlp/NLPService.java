@@ -11,11 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.ling.tokensregex.TokenSequenceMatcher;
+import edu.stanford.nlp.ling.tokensregex.TokenSequencePattern;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import edu.stanford.nlp.util.CoreMap;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +34,12 @@ public class NLPService {
     private static final Logger LOG = LoggerFactory.getLogger(NLPService.class);
 
     private StanfordCoreNLP stanfordCoreNLP;
+    private MaxentTagger maxentTagger;
 
     @Autowired
-    public NLPService(StanfordCoreNLP stanfordCoreNLP) {
+    public NLPService(StanfordCoreNLP stanfordCoreNLP, MaxentTagger maxentTagger) {
         this.stanfordCoreNLP = stanfordCoreNLP;
+        this.maxentTagger = maxentTagger;
     }
 
     /**
@@ -77,5 +84,37 @@ public class NLPService {
         }
 
         return null;
+    }
+
+    public void sentenceTag(String text) {
+        String tag = maxentTagger.tagString(text);
+        String[] eachTags = tag.split("\\s+");
+        for (String eachTag : eachTags) {
+            LOG.info("tag={}", eachTag);
+        }
+    }
+
+    /**
+     * 12. NN   Noun, singular or mass
+     * 13. NNS  Noun, plural
+     * 14. NNP  Proper noun, singular
+     * 15. NNPS Proper noun, plural
+     * @param text
+     * @return
+     */
+    public List<String> lookupNoun(String text) {
+        Annotation annotation = stanfordCoreNLP.process(text);
+        List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
+        List<String> output = new ArrayList<>();
+        String regex = "([{pos:/NN|NNS|NNP|NNPS/}])";
+        for (CoreMap sentence : sentences) {
+            List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+            TokenSequencePattern pattern = TokenSequencePattern.compile(regex);
+            TokenSequenceMatcher matcher = pattern.getMatcher(tokens);
+            while (matcher.find()) {
+                output.add(matcher.group());
+            }
+        }
+        return output;
     }
 }

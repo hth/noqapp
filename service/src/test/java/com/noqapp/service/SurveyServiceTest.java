@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +47,7 @@ class SurveyServiceTest {
 
         Properties props = new Properties();
         props.setProperty("annotators", "tokenize, ssplit, pos, lemma, parse, sentiment");
-        nlpService = new NLPService(new StanfordCoreNLP(props));
+        nlpService = new NLPService(new StanfordCoreNLP(props), new MaxentTagger("stanford/nlp/models/english-bidirectional-distsim.tagger"));
 
         surveyService = new SurveyService(
             surveyManager,

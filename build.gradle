@@ -16,6 +16,7 @@ ext {
     cert = file("$javaClasses/cert")
     conf = file("$javaClasses/conf")
     dkim = file("$javaClasses/dkim")
+    nlp = file("$javaClasses/nlp")
     xslfo = file("$javaClasses/xslfo")
     elastic_mapping = file("$javaClasses/elastic_mapping")
     geo_db = file("$javaClasses/geo_db")
@@ -27,6 +28,7 @@ ext {
     warCertDir = file("$warDir$cert")
     warConfDir = file("$warDir$conf")
     warDkimDir = file("$warDir$dkim")
+    warNLPDir = file("$warDir$nlp")
     warXslfoDir = file("$warDir$xslfo")
     warMappingDir = file("$warDir$elastic_mapping")
     warGeoDBDir = file("$warDir$geo_db")
@@ -205,6 +207,7 @@ subprojects {
 
         implementation "edu.stanford.nlp:stanford-corenlp:$corenlp"
         implementation "edu.stanford.nlp:stanford-corenlp:$corenlp:models"
+        implementation "edu.stanford.nlp:stanford-parser:$corenlp"
 
         implementation "com.google.cloud:google-cloud-texttospeech:$googleCloudTextToSpeech"
         implementation "com.google.code.gson:gson:$gson"
@@ -752,6 +755,7 @@ task prepWar(dependsOn: [
         warClassesDir.mkdirs()
         warConfDir.mkdirs()
         warDkimDir.mkdirs()
+        warNLPDir.mkdirs()
         warMappingDir.mkdirs()
         warGeoDBDir.mkdirs()
         warXslfoDir.mkdirs()
@@ -902,6 +906,14 @@ task prepWar(dependsOn: [
                 include "**/*.json"
             }
             into warMappingDir
+        }
+
+        copy {
+            from("common/src/main/resources/nlp") {
+                include "*/**"
+                exclude "**/*.txt"
+            }
+            into warNLPDir
         }
 
         copy {
