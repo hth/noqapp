@@ -25,7 +25,7 @@ class NLPServiceTest {
     void setUp() {
         Properties props = new Properties();
         props.setProperty("annotators", "tokenize, ssplit, pos, lemma, parse, sentiment");
-        nlpService = new NLPService(new StanfordCoreNLP(props), new MaxentTagger("stanford/nlp/models/english-left3words-distsim.tagger"));
+        nlpService = new NLPService(new StanfordCoreNLP(props), new MaxentTagger("nlp/stanford/models/english-left3words-distsim.tagger"));
     }
 
     @Test
