@@ -47,7 +47,7 @@ ext {
     passFileTest = file(passwordTestFileLocation)
     passFileProd = file(passwordProdFileLocation)
 
-    firebaseFileLocal = file('view/resources/conf/noq-app-inc-firebase-adminsdk.json')
+    firebaseFileLocal = file('view/resources/conf/noqueue-sandbox-firebase-adminsdk.json')
     firebaseFileTest = file(firebaseAdminTestFileLocation)
     firebaseFileProd = file(firebaseAdminProdFileLocation)
 
