@@ -1,7 +1,7 @@
 package com.noqapp.view.validator;
 
 import com.noqapp.domain.types.SentimentTypeEnum;
-import com.noqapp.service.NLPService;
+import com.noqapp.service.nlp.NLPService;
 import com.noqapp.view.form.admin.SendNotificationForm;
 
 import org.slf4j.Logger;

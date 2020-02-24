@@ -16,6 +16,7 @@ ext {
     cert = file("$javaClasses/cert")
     conf = file("$javaClasses/conf")
     dkim = file("$javaClasses/dkim")
+    nlp = file("$javaClasses/nlp")
     xslfo = file("$javaClasses/xslfo")
     elastic_mapping = file("$javaClasses/elastic_mapping")
     geo_db = file("$javaClasses/geo_db")
@@ -27,6 +28,7 @@ ext {
     warCertDir = file("$warDir$cert")
     warConfDir = file("$warDir$conf")
     warDkimDir = file("$warDir$dkim")
+    warNLPDir = file("$warDir$nlp")
     warXslfoDir = file("$warDir$xslfo")
     warMappingDir = file("$warDir$elastic_mapping")
     warGeoDBDir = file("$warDir$geo_db")
@@ -45,7 +47,7 @@ ext {
     passFileTest = file(passwordTestFileLocation)
     passFileProd = file(passwordProdFileLocation)
 
-    firebaseFileLocal = file('view/resources/conf/noq-app-inc-firebase-adminsdk.json')
+    firebaseFileLocal = file('view/resources/conf/noqueue-sandbox-firebase-adminsdk.json')
     firebaseFileTest = file(firebaseAdminTestFileLocation)
     firebaseFileProd = file(firebaseAdminProdFileLocation)
 
@@ -205,6 +207,7 @@ subprojects {
 
         implementation "edu.stanford.nlp:stanford-corenlp:$corenlp"
         implementation "edu.stanford.nlp:stanford-corenlp:$corenlp:models"
+        implementation "edu.stanford.nlp:stanford-parser:$corenlp"
 
         implementation "com.google.cloud:google-cloud-texttospeech:$googleCloudTextToSpeech"
         implementation "com.google.code.gson:gson:$gson"
@@ -231,7 +234,7 @@ subprojects {
         implementation "commons-codec:commons-codec:1.13"
         implementation "commons-logging:commons-logging:1.2"
 
-        implementation "javax.mail:javax.mail-api:$javaxMail"
+        implementation "com.sun.mail:jakarta.mail:$jakartaMail"
         implementation "javax.validation:validation-api:$javaxValidation"
         implementation "javax.inject:javax.inject:1"
 
@@ -752,6 +755,7 @@ task prepWar(dependsOn: [
         warClassesDir.mkdirs()
         warConfDir.mkdirs()
         warDkimDir.mkdirs()
+        warNLPDir.mkdirs()
         warMappingDir.mkdirs()
         warGeoDBDir.mkdirs()
         warXslfoDir.mkdirs()
@@ -830,7 +834,7 @@ task prepWar(dependsOn: [
 
                 println "Development environment, getting local firebase file $firebaseFileLocal.canonicalPath"
                 if (firebaseFileLocal.exists()) {
-                    from 'view/resources/conf/noq-app-inc-firebase-adminsdk.json'
+                    from 'view/resources/conf/noqueue-sandbox-firebase-adminsdk.json'
                 } else {
                     throw new Exception("Required firebase file does not exists: $firebaseFileLocal.canonicalPath")
                 }
@@ -902,6 +906,14 @@ task prepWar(dependsOn: [
                 include "**/*.json"
             }
             into warMappingDir
+        }
+
+        copy {
+            from("common/src/main/resources/nlp") {
+                include "*/**"
+                exclude "**/*.txt"
+            }
+            into warNLPDir
         }
 
         copy {
