@@ -40,8 +40,10 @@ import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
@@ -187,6 +189,47 @@ public class BizStoreSearchElasticService {
 
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
                 LOG.info("Search query={} geoHash={} searchSourceBuilder={}", query, geoHash, searchSourceBuilder);
+            }
+
+            bizStoreElastics.setScrollId(searchResponse.getScrollId());
+            populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
+            return bizStoreElastics;
+        } catch (IOException e) {
+            LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
+            return bizStoreElastics;
+        }
+    }
+
+    @Mobile
+    public BizStoreElasticList kioskSearchUsingRestClient(
+        String query,
+        String bizNameId,
+        String scrollId
+    ) {
+        BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
+        try {
+            SearchResponse searchResponse;
+            if (StringUtils.isNotBlank(scrollId)) {
+                SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+                scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+            } else {
+                SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
+                SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+                searchSourceBuilder.fetchSource(includeFields, excludeFields);
+
+                /* Search just DO Query. */
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                boolQueryBuilder.must(QueryBuilders.matchQuery("BID", bizNameId));
+                boolQueryBuilder.filter(QueryBuilders.multiMatchQuery(query, "N", "DN", "BC"));
+                searchSourceBuilder.query(boolQueryBuilder);
+                searchSourceBuilder.sort(new FieldSortBuilder("DN").order(SortOrder.ASC));
+                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
+                searchRequest.source(searchSourceBuilder);
+                searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+                LOG.info("Search query={} searchSourceBuilder={}", query, searchSourceBuilder);
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());

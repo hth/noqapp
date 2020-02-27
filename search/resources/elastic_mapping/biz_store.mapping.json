@@ -31,6 +31,7 @@
       },
       "BC": {
         "type": "text",
+        "fielddata": true,
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -70,6 +71,7 @@
       },
       "DN": {
         "type": "text",
+        "fielddata": true,
         "fields": {
           "keyword": {
             "type": "keyword",
@@ -97,6 +99,7 @@
       },
       "N": {
         "type": "text",
+        "fielddata": true,
         "fields": {
           "keyword": {
             "type": "keyword",
