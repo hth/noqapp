@@ -838,7 +838,7 @@ public class PurchaseOrderService {
         if (StringUtils.isNotBlank(purchaseOrder.getCouponId())) {
             CouponEntity coupon = couponService.findById(purchaseOrder.getCouponId());
             if (coupon == null) {
-                /* 
+                /*
                  * Added condition when there are two cancel request comes in milli-seconds apart.
                  * Though should be managed by Client, Server needs to manage this error if it occurs.
                  */

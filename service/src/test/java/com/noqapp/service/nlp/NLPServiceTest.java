@@ -2,6 +2,7 @@ package com.noqapp.service.nlp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.noqapp.domain.common.ChatContentClassifier;
 import com.noqapp.domain.types.SentimentTypeEnum;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +25,16 @@ class NLPServiceTest {
     @BeforeEach
     void setUp() {
         Properties props = new Properties();
-        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, parse, sentiment");
-        nlpService = new NLPService(new StanfordCoreNLP(props), new MaxentTagger("nlp/stanford/models/english-left3words-distsim.tagger"));
+        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref, sentiment");
+        props.setProperty("ner.model",
+            "edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz," +
+                "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz," +
+                "edu/stanford/nlp/models/ner/english.conll.4class.distsim.crf.ser.gz," +
+                "nlp/noqueue/ner/medical-symptoms-ner-model.ser.gz");
+        props.setProperty("parse.maxlen", "100");
+        nlpService = new NLPService(
+            new StanfordCoreNLP(props),
+            new MaxentTagger("nlp/stanford/models/english-left3words-distsim.tagger"));
     }
 
     @Test
@@ -59,25 +68,63 @@ class NLPServiceTest {
 
     @Test
     void communicationNoun() {
-        List<String> output = nlpService.lookupNoun("I have fever");
+        String text = "I have fever";
+        List<String> output = nlpService.lookupNoun(text);
         assertEquals("[fever]", output.toString());
 
-        output = nlpService.lookupNoun("For last 4 days");
+        ChatContentClassifier chatContentClassifier = nlpService.lookup(text);
+        assertEquals("[fever]", chatContentClassifier.getNouns().toString());
+
+        text = "For last 4 days";
+        output = nlpService.lookupNoun(text);
         assertEquals("[days]", output.toString());
 
-        output = nlpService.lookupNoun("Which doctor should I see");
+        chatContentClassifier = nlpService.lookup(text);
+        assertEquals("[days]", chatContentClassifier.getNouns().toString());
+
+        text = "Which doctor should I see";
+        output = nlpService.lookupNoun(text);
         assertEquals("[doctor]", output.toString());
 
-        output = nlpService.lookupNoun("Possible health benefits");
+        chatContentClassifier = nlpService.lookup(text);
+        assertEquals("[doctor]", chatContentClassifier.getNouns().toString());
+
+        text = "Possible health benefits";
+        output = nlpService.lookupNoun(text);
         assertEquals("[health, benefits]", output.toString());
 
-        output = nlpService.lookupNoun("Dig boy dig");
+        chatContentClassifier = nlpService.lookup(text);
+        assertEquals("[health, benefits]", chatContentClassifier.getNouns().toString());
+
+        text = "Dig boy dig";
+        output = nlpService.lookupNoun(text);
         assertEquals("[boy, dig]", output.toString());
 
-        output = nlpService.lookupNoun("I would like to fly to san francisco");
+        chatContentClassifier = nlpService.lookup(text);
+        assertEquals("[boy, dig]", chatContentClassifier.getNouns().toString());
+
+        text = "I would like to fly to san francisco";
+        output = nlpService.lookupNoun(text);
         assertEquals("[francisco]", output.toString());
 
-        output = nlpService.lookupNoun("May be Wednesday or Thursday");
+        chatContentClassifier = nlpService.lookup(text);
+        assertEquals("[francisco]", chatContentClassifier.getNouns().toString());
+
+        text = "I would like to fly to San Francisco or San Jose or Mumbai";
+        output = nlpService.lookupNoun(text);
+        assertEquals("[San, Francisco, San, Jose, Mumbai]", output.toString());
+
+        chatContentClassifier = nlpService.lookup(text);
+        assertEquals("[San, Francisco, San, Jose, Mumbai]", chatContentClassifier.getNouns().toString());
+
+        text = "May be Wednesday or Thursday";
+        output = nlpService.lookupNoun(text);
         assertEquals("[Wednesday, Thursday]", output.toString());
+
+        chatContentClassifier = nlpService.lookup(text);
+        assertEquals("[Wednesday, Thursday]", chatContentClassifier.getNouns().toString());
+
+        chatContentClassifier = nlpService.lookup("Pain for last five days");
+        assertEquals("[Pain, days]", chatContentClassifier.getNouns().toString());
     }
 }
