@@ -23,6 +23,8 @@ public class CoreNLPConfiguration {
                 "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz," +
                 "edu/stanford/nlp/models/ner/english.conll.4class.distsim.crf.ser.gz," +
                 "nlp/noqueue/ner/medical-symptoms-ner-model.ser.gz");
+        props.setProperty("ignorecase", "true");
+        props.setProperty("validpospattern", "^(NN|JJ).*");
         props.setProperty("parse.maxlen", "100");
         return new StanfordCoreNLP(props);
     }
