@@ -1,6 +1,8 @@
 package com.noqapp.service.nlp;
 
+import com.noqapp.domain.common.ChatContentClassifier;
 import com.noqapp.domain.types.SentimentTypeEnum;
+import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -103,9 +105,10 @@ public class NLPService {
      * @return
      */
     public List<String> lookupNoun(String text) {
+        List<String> output = new ArrayList<>();
+
         Annotation annotation = stanfordCoreNLP.process(text);
         List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
-        List<String> output = new ArrayList<>();
         String regex = "([{pos:/NN|NNS|NNP|NNPS/}])";
         for (CoreMap sentence : sentences) {
             List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
@@ -116,5 +119,54 @@ public class NLPService {
             }
         }
         return output;
+    }
+
+    public ChatContentClassifier lookup(String text) {
+        ChatContentClassifier chatContentClassifier = new ChatContentClassifier();
+
+        Annotation annotation = stanfordCoreNLP.process(text);
+        List<CoreMap> sentences = annotation.get(CoreAnnotations.SentencesAnnotation.class);
+        for (CoreMap sentence : sentences) {
+            List<CoreLabel> tokens = sentence.get(CoreAnnotations.TokensAnnotation.class);
+            for (CoreLabel token : tokens) {
+                String word = token.get(CoreAnnotations.TextAnnotation.class);
+                String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
+                String ne = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
+
+                switch (pos) {
+                    case "NN":
+                    case "NNS":
+                    case "NNP":
+                    case "NNPS":
+                        chatContentClassifier.addNoun(word);
+                }
+
+                MedicalDepartmentEnum medicalDepartment = null;
+                try {
+                    medicalDepartment = MedicalDepartmentEnum.valueOf(ne);
+                } catch (Exception e) {
+                    LOG.info("Could not find ne={}", ne);
+                }
+
+                if (null != medicalDepartment) {
+                    chatContentClassifier.addSymptoms(word);
+                } else {
+                    switch (ne) {
+                        case "CAUSE_OF_DEATH":
+                            chatContentClassifier.addSymptoms(word);
+                            break;
+                        case "CITY":
+                            chatContentClassifier.addLocation(word);
+                            break;
+                        case "DATE":
+                            chatContentClassifier.addDuration(word);
+                        default:
+                            LOG.info("Unknown {} {} {}", word, pos, ne);
+                    }
+                }
+            }
+        }
+        LOG.info("{}", chatContentClassifier);
+        return chatContentClassifier;
     }
 }

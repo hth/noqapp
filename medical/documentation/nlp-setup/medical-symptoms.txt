@@ -1,0 +1,452 @@
+DISCHARGE FROM VAGINA
+Pv Discharge
+ITCHING AT VAGINA
+Itching At Vagina
+DYSPAREUNIA (PAINFUL INTERCOURSE)
+Dyspareunia (painful Intercourse)
+PAIN IN LOWER ABDOMEN
+Pain In Lower Abdomen
+PER VAGINAL BLEEDING
+Pv Bleed
+MENORRHAGIA
+Menorrhagia
+MENOMETRORRHAGIA
+Menometrorrhagia
+POLYMENORRHOEA
+Polymenorrhoea
+FEVER
+Fever
+PAIN IN BREAST (MASTALGIA)
+Pain In Breast (mastalgia)
+AMENORRHOEA
+Amenorrhoea
+PALLOR
+Pallor
+LOOSE MOTIONS
+Loose Motions
+PAIN AT VAGINAL REGION
+Pain At Vaginal Region
+WEIGHT GAIN
+Weight Gain
+WHITE DISCHARGE PER VAGINAL (LEUCORRHOEA)
+White Discharge Per Vaginal (leucorrhoea)
+BURNING MICTURATION
+Burning Micturation
+DELAYED & IRREGULAR CYCLES
+Delayed & Irregular Cycles
+PAIN AT ILIAC REGION
+Pain At Iliac Region
+POST MENOPAUSAL SYMPTOMS
+Post Menopausal Symptoms
+HEAVINESS IN LOWER ABDOMEN
+Heaviness In Lower Abdomen
+OGY
+
+
+
+
+
+
+PAIN IN ABDOMEN
+Pain In Abdomen
+PER VAGINAL BLEEDING
+Pv Bleed
+PER VAGINAL LEAKING
+Pv Leak
+PAIN AT ILIAC REGION
+Pain At Iliac Region
+DIFFICULTY IN BREATHING
+Difficulty In Breathing
+SWELLING OVER FEETS
+Swelling Over Feets
+CONVULSION IN PREGANANCY
+Convulsion In Preganancy
+CONSTIPATION
+Constipation
+HYPERTENSION IN PREGNANCY
+Hypertension In Pregnancy
+GESTATIONAL DIABETES
+Gestational Diabetes
+OGY
+
+
+
+
+
+
+FEVER
+Fever
+COUGH
+Cough
+HEADACHE
+Headache
+COLD
+Cold
+THROAT PAIN
+Throat Pain
+DECREASED APPETITE
+Decreased Appetite
+RASHES ALL OVER BODY
+Rashes All Over Body
+NOCTURIA
+Nocturia
+PAINFUL MICTURATION
+Painful Micturation
+BURNING MICTURATION
+Burning Micturation
+ABDOMINAL PAIN
+Abdominal Pain
+LOOSE MOTION
+Loose Motion
+VOMITING
+Vomiting
+BOILS ON BODY PART
+Boils On Body Part
+ICTERUS
+Icterus
+BLUISH DISCOLOURATION OF SCLERA
+Bluish Discolouration Of Sclera
+DROWSYNESS
+Drowsyness
+CONVUSION
+Convusion
+FROATHING FROM MOUTH
+Froathing From Mouth
+IRRITABILITY
+Irritability
+DEHYDRATION
+Dehydration
+CONSTIPATION
+Constipation
+EARACHE
+Earache
+REDNESS OF EYES
+Redness Of Eyes
+WATERING FROM BOTH EYES
+Watering From Both Eyes
+BODYACHE
+Bodyache
+ALL JOINT PAIN
+All Joint Pain
+NAUSEA
+Nausea
+SHORTNESS OF BREATH
+Shortness Of Breath
+ITCHING ALL OVER BODY
+Itching All Over Body
+ABDOMINAL DISTENTION
+Abdominal Distention
+CLUBBING
+Clubbing
+REDNESS IN MOUTH
+Redness In Mouth
+MUSCLE CRAMPS
+Muscle Cramps
+DISCHARGE FROM EAR
+Discharge From Ear
+DIFFICULTY IN SWALLOWING
+Difficulty In Swallowing
+PAE
+
+
+
+
+
+
+PAIN IN ABDOMEN
+Pain In Abdomen
+NAUSEA
+Nausea
+VOMITING
+Vomiting
+FEVER
+Fever
+PAIN IN ABDOMEN LOIN TO GROIN REGION
+Pain In Abdomen Loin To Groin Region
+BURNING MICTURATION
+Burning Micturation
+INCREASED FREQUENCY OF URINATION
+Increased Frequency Of Urination
+DRIBBLING OF MICTURATION
+Dribbling Of Micturation
+PAIN AT ANAL REGION WHILE PASSING MOTION
+Pain At Anal Region While Passing Motion
+BLEEDING FROM ANAL REGION WHILE PASSING MOTION
+Bleeding From Anal Region While Passing Motion
+REDNESS AT ANAL REGION
+Redness At Anal Region
+WOUND OVER BODY
+Wound Over Body
+DISCHARGE FROM WOUND
+Discharge From Wound
+SWELLING OVER LOWER LIMB
+Swelling Over Lower Limb
+SWELLING OVER UPPER LIMB
+Swelling Over Upper Limb
+REDNESS +
+Redness +
+CARBUNCLE +
+Carbuncle +
+ERUCTATIONS
+Eructations
+CONSTIPATIONS
+Constipations
+AVULSION OF NAIL PAIN
+Avulsion Of Nail Pain
+LOOSE STOOLS
+Loose Stools
+BLEEDING IN VOMITING
+Bleeding In Vomiting
+BLEEDING IN SPUTUM
+Bleeding In Sputum
+BURNING AT EPIGASTRIC REGION
+Burning At Epigastric Region
+INGESTION OF FOREIGN BODY
+Ingestion Of Foreign Body
+CLW
+Clw
+SWELLING AT INGUINAL REGION WHILE COUGHING
+Swelling At Inguinal Region While Coughing
+SWELLING AT UMBILICAL REGION
+Swelling At Umbilical Region
+HEAVINESS IN ABDOMEN
+Heaviness In Abdomen
+GASES DISTENTION
+Gases Distention
+PENILE INJURY
+Penile Injury
+PAIN IN PENIS
+Pain In Penis
+PAIN AT EPIGASTRIC REGION RADIATED TOWARDS BACK
+Pain At Epigastric Region Radiated Towards Back
+PAIN AT SPLEENIC REGION
+Pain At Spleenic Region
+PAIN AT TESTIS
+Pain At Testis
+SWELLING AT SCROTUM
+Swelling At Scrotum
+ACCIDENTAL BURN INJURY
+Accidental Burn Injury
+PUS DISCHARGE
+Pus Discharge
+GSR
+
+
+
+
+
+
+PAIN AT RIGHT SHOULDER JOINT
+Pain At Right Shoulder Joint
+PAIN AT LEFT SHOULDER JOINT
+Pain At Left Shoulder Joint
+PAIN AT RIGHT ELBOW JOINT
+Pain At Right Elbow Joint
+PAIN AT LEFT ELBOW JOINT
+Pain At Left Elbow Joint
+PAIN AT RIGHT WRIST JOINT
+Pain At Right Wrist Joint
+PAIN AT LEFT WRIST JOINT
+Pain At Left Wrist Joint
+PAIN AT RIGHT HAND
+Pain At Right Hand
+PAIN AT LEFT HAND
+Pain At Left Hand
+PAIN AT RIGHT HIP JOINT
+Pain At Right Hip Joint
+PAIN AT LEFT HIP JOINT
+Pain At Left Hip Joint
+PAIN AT RIGHT KNEE JOINT
+Pain At Right Knee Joint
+PAIN AT LEFT KNEE JOINT
+Pain At Left Knee Joint
+PAIN AT RIGHT ANKLE JOINT
+Pain At Right Ankle Joint
+PAIN AT LEFT ANKLE JOINT
+Pain At Left Ankle Joint
+PAIN AT RIGHT FOOT
+Pain At Right Foot
+PAIN AT LEFT FOOT
+Pain At Left Foot
+SWELLING
+Swelling
+MOVEMENT RESTRICTION
+Movement Restriction
+LUMBAR PAIN
+Lumbar Pain
+SCAPULAR PAIN
+Scapular Pain
+CERVICAL PAIN
+Cervical Pain
+PAIN ALL OVER JOINTS (MULTIPLE)
+Pain All Over Joints (multiple)
+DIFFICULTY IN WALKING
+Difficulty In Walking
+DIFFICULTY IN SITTING
+Difficulty In Sitting
+DIFFICULTY IN LYING DOWN
+Difficulty In Lying Down
+BLUNT INJURY
+Blunt Injury
+CLW
+Clw
+PULSATIONS +
+Pulsations +
+PAIN OVER RIGHT CLAVICLE REGION
+Pain Over Right Clavicle Region
+PAIN OVER LEFT CLAVICLE REGION
+Pain Over Left Clavicle Region
+ORT
+
+
+
+
+
+
+TOOTHACHE
+Toothache
+CAVITIES
+Cavities
+BLEEDING, PAINFUL GUMS OR TEETH
+Bleeding, Painful Gums Or Teeth
+NEED FOR SCALING AND CLEANING
+Need For Scaling And Cleaning
+NEED REPAIR OF APPLIANCE OR RESTORATION
+Need Repair Of Appliance Or Restoration
+EXTRACTION
+Extraction
+DIAGNOSTICS SERVICE / ROUTINE CHECKUP
+Diagnostics Service / Routine Checkup
+FULL DENTURE / PARTIAL DENTURE
+Full Denture / Partial Denture
+CROWNS / VENEERS
+Crowns / Veneers
+ROOT CANAL THERAPY
+Root Canal Therapy
+COSMETIC TREATMENT
+Cosmetic Treatment
+IMPLANTS
+Implants
+DNT
+
+
+
+
+
+
+COLD
+Cold
+COUGH WITH EXPECTORATION
+Cough With Expectoration
+DIFFICULTY IN BREATHING (DYSPONEA)
+Difficulty In Breathing (dysponea)
+CHEST PAIN
+Chest Pain
+CHEST PAIN RADIATING TO SHOULDER JOINT
+Chest Pain Radiating To Shoulder Joint
+UNEASINESS
+Uneasiness
+VOMITING
+Vomiting
+NAUSEA
+Nausea
+LOOSE STOOL
+Loose Stool
+PAIN IN ABDOMEN
+Pain In Abdomen
+BURNING MICTURATION
+Burning Micturation
+FREQUENCY OF MICTURATION INCREASED
+Frequency Of Micturation Increased
+HAEMAPTOSIS  (BLOOD IN SPUTUM)
+Haemaptosis  (blood In Sputum)
+HAEMATURIA (BLOOD IN URINE)
+Haematuria (blood In Urine)
+HAEMATEMESIS (BLOOD IN VOMIT)
+Haematemesis (blood In Vomit)
+SLURRED SPEECH
+Slurred Speech
+TINGLING SENSATION & WEAKNESS IN RIGHT UPPER & LOWER LIMB
+Tingling Sensation & Weakness In Right Upper & Lower Limb
+TINGLING SENSATION & WEAKNESS IN LEFT UPPER & LOWER LIMB
+Tingling Sensation & Weakness In Left Upper & Lower Limb
+DEVIATION OF ANGLE OF MOUTH
+Deviation Of Angle Of Mouth
+GENERALISED WEAKNESS
+Generalised Weakness
+WEAKNESS IN ALL FOUR LIMB (QUADRIPLEGIA)
+Weakness In All Four Limb (quadriplegia)
+PAIN IN ABDOMEN LEFT LOIN TO GROIN REGION
+Pain In Abdomen Left Loin To Groin Region
+PAIN IN ABDOMEN RIGHT LOIN TO GROIN REGION
+Pain In Abdomen Right Loin To Groin Region
+REDNESS IN MOUTH
+Redness In Mouth
+BLISTER IN MOUTH
+Blister In Mouth
+PAIN AT ANAL REGION
+Pain At Anal Region
+BLEEDING FROM ANAL REGION WHILE PASSING MOTION
+Bleeding From Anal Region While Passing Motion
+PAIN IN EPIGASTRIC REGION
+Pain In Epigastric Region
+BURNING SENSATION IN EPIGASTRIC REGION
+Burning Sensation In Epigastric Region
+SWELLING ALL OVER BODY (GENERALISED ANASARCA)
+Swelling All Over Body (generalised Anasarca)
+SWELLING OVER BOTH LOVER LIMB (PEDAL ODEMA)
+Swelling Over Both Lover Limb (pedal Odema)
+FEVER WITH CHILLS
+Fever With Chills
+ITCHING ALL OVER BODY
+Itching All Over Body
+REDNESS ALL OVER BODY
+Redness All Over Body
+NOCTURIA (BED WETTING AT NIGHT)
+Nocturia (bed Wetting At Night)
+HEADACHE
+Headache
+BODYACHE (MYALGIA)
+Bodyache (myalgia)
+DRY COUGH
+Dry Cough
+DROWSY
+Drowsy
+UNCONSCIOUS
+Unconscious
+ARROUSABLE
+Arrousable
+DISORIENTED
+Disoriented
+ALTERED SENSORIUM
+Altered Sensorium
+CONVULSION
+Convulsion
+JOINT PAIN
+Joint Pain
+SWELLING OF JOINTS
+Swelling Of Joints
+THROAT PAIN
+Throat Pain
+DIFFICULTY IN SWALLOWING
+Difficulty In Swallowing
+PALPITATION
+Palpitation
+GIDDINESS
+Giddiness
+LOSS OF APPETITE
+Loss Of Appetite
+WEIGHT LOSS
+Weight Loss
+WEIGHT GAIN
+Weight Gain
+YELLOWISH DISCOLOURATION OF SKIN & SCLERA (HYPERBILIRUBINEMIA)
+Yellowish Discolouration Of Skin & Sclera (hyperbilirubinemia)
+PALLOR
+Pallor
+SORE THROAT
+Sore Throat
+GPY
+
+
+

@@ -719,12 +719,12 @@ public class PurchaseOrderService {
                     purchaseOrder.setStoreDiscount(coupon.getDiscountAmount());
                     break;
                 case P:
-                    int discountToApply = Integer.valueOf(purchaseOrder.getOrderPrice()) * coupon.getDiscountAmount() / 100;
+                    int discountToApply = Integer.parseInt(purchaseOrder.getOrderPrice()) * coupon.getDiscountAmount() / 100;
                     purchaseOrder.setStoreDiscount(discountToApply);
                     break;
             }
 
-            int afterDiscount = Integer.valueOf(purchaseOrder.getOrderPrice()) - purchaseOrder.getStoreDiscount();
+            int afterDiscount = Integer.parseInt(purchaseOrder.getOrderPrice()) - purchaseOrder.getStoreDiscount();
             purchaseOrder
                 .setOrderPrice(String.valueOf(afterDiscount))
                 .setCouponId(couponId);
@@ -763,12 +763,12 @@ public class PurchaseOrderService {
                 purchaseOrder.setStoreDiscount(coupon.getDiscountAmount());
                 break;
             case P:
-                int discountToApply = Integer.valueOf(purchaseOrder.getOrderPrice()) * coupon.getDiscountAmount() / 100;
+                int discountToApply = Integer.parseInt(purchaseOrder.getOrderPrice()) * coupon.getDiscountAmount() / 100;
                 purchaseOrder.setStoreDiscount(discountToApply);
                 break;
         }
 
-        int afterDiscount = Integer.valueOf(purchaseOrder.getOrderPrice()) - purchaseOrder.getStoreDiscount();
+        int afterDiscount = Integer.parseInt(purchaseOrder.getOrderPrice()) - purchaseOrder.getStoreDiscount();
         purchaseOrder
             .setOrderPrice(String.valueOf(afterDiscount))
             .setCouponId(couponId)
@@ -798,7 +798,7 @@ public class PurchaseOrderService {
 
         if (purchaseOrder.getQueueUserId().equalsIgnoreCase(qid) && StringUtils.isNotBlank(purchaseOrder.getCouponId())) {
             purchaseOrder
-                .setOrderPrice(String.valueOf(Integer.valueOf(purchaseOrder.getOrderPrice()) + purchaseOrder.getStoreDiscount()))
+                .setOrderPrice(String.valueOf(Integer.parseInt(purchaseOrder.getOrderPrice()) + purchaseOrder.getStoreDiscount()))
                 .setCouponId(null)
                 .setCouponAddedByQid(null)
                 .setStoreDiscount(0);
@@ -837,7 +837,13 @@ public class PurchaseOrderService {
     private void revertAppliedCouponIfAny(PurchaseOrderEntity purchaseOrder) {
         if (StringUtils.isNotBlank(purchaseOrder.getCouponId())) {
             CouponEntity coupon = couponService.findById(purchaseOrder.getCouponId());
-            if (!coupon.isMultiUse() && !coupon.isActive() && purchaseOrder.getQueueUserId().equalsIgnoreCase(coupon.getQid())) {
+            if (coupon == null) {
+                /*
+                 * Added condition when there are two cancel request comes in milli-seconds apart.
+                 * Though should be managed by Client, Server needs to manage this error if it occurs.
+                 */
+                LOG.warn("No coupon exists couponId={} purchaseOrder={}", purchaseOrder.getCouponId(), purchaseOrder.getId());
+            } else if (!coupon.isMultiUse() && !coupon.isActive() && purchaseOrder.getQueueUserId().equalsIgnoreCase(coupon.getQid())) {
                 coupon.active();
                 couponService.save(coupon);
             }
