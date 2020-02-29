@@ -49,7 +49,7 @@ class MedicalMedicineManagerImplTest {
 
     @Test
     void findByIds() {
-        List<String> ids = new ArrayList<>(){{
+        List<String> ids = new ArrayList<String>(){{
             add(CommonUtil.generateHexFromObjectId());
             add(CommonUtil.generateHexFromObjectId());
         }};
