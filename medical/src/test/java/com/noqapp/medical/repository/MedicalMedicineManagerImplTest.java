@@ -18,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -50,12 +49,17 @@ class MedicalMedicineManagerImplTest {
 
     @Test
     void findByIds() {
-        List<String> ids = new ArrayList<String>(){{
+        List<String> ids = new ArrayList<>(){{
             add(CommonUtil.generateHexFromObjectId());
             add(CommonUtil.generateHexFromObjectId());
         }};
 
-        when(medicalMedicineManager.findByIds(ids)).thenReturn(Arrays.asList(medicalMedicine1, medicalMedicine2));
+        for(String id : ids) {
+            MedicalMedicineEntity medicalMedicine = new MedicalMedicineEntity();
+            medicalMedicine.setId(id);
+            medicalMedicineManager.save(medicalMedicine);
+        }
+
         List<MedicalMedicineEntity> found = medicalMedicineManager.findByIds(ids);
         Assertions.assertEquals(2, found.size());
     }
