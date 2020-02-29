@@ -7,8 +7,6 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.medical.domain.MedicalMedicineEntity;
 
-import org.bson.types.ObjectId;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -89,7 +87,7 @@ public class MedicalMedicineManagerImpl implements MedicalMedicineManager {
     public List<MedicalMedicineEntity> findByIds(List<String> ids) {
         List<MedicalMedicineEntity> medicalMedicines = new LinkedList<>();
         for (String id : ids) {
-            medicalMedicines.add(mongoTemplate.findOne(query(where("id").is(new ObjectId(id))), MedicalMedicineEntity.class, TABLE));
+            medicalMedicines.add(mongoTemplate.findById(id, MedicalMedicineEntity.class, TABLE));
         }
         return medicalMedicines;
     }
