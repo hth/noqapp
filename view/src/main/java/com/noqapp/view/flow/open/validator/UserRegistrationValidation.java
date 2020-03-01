@@ -223,7 +223,7 @@ public class UserRegistrationValidation {
 
     @SuppressWarnings("unused")
     public String passwordRecover(MerchantRegistrationForm merchantRegistration, MessageContext messageContext) {
-        LOG.info("New user signUp validation mail={}", merchantRegistration.getMail());
+        LOG.info("Password recovery validation mail={}", merchantRegistration.getMail());
         String status = LandingController.SUCCESS;
         status = validateMail(merchantRegistration, messageContext, status);
 
