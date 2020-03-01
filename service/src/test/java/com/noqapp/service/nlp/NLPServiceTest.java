@@ -6,6 +6,7 @@ import com.noqapp.domain.common.ChatContentClassifier;
 import com.noqapp.domain.types.SentimentTypeEnum;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -39,7 +40,7 @@ class NLPServiceTest {
             new MaxentTagger("nlp/stanford/models/english-left3words-distsim.tagger"));
     }
 
-    @Test
+    @Test @Disabled
     void computeSentiment() {
         SentimentTypeEnum sentimentType = nlpService.computeSentiment("This is a good review");
         assertEquals(SentimentTypeEnum.P, sentimentType);
@@ -57,18 +58,18 @@ class NLPServiceTest {
         assertEquals(SentimentTypeEnum.N, sentimentType);
     }
 
-    @Test
+    @Test @Disabled
     void sentenceTag() {
         nlpService.sentenceTag("Hello World this is great place to be");
     }
 
-    @Test
+    @Test @Disabled
     void lookupNoun() {
         List<String> output = nlpService.lookupNoun("Hello World this is great place to be");
         assertEquals("[World, place]", output.toString());
     }
 
-    @Test
+    @Test @Disabled
     void communicationNoun() {
         String text = "I have fever";
         List<String> output = nlpService.lookupNoun(text);
