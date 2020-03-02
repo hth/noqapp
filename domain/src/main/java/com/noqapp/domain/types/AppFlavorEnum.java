@@ -14,7 +14,8 @@ public enum AppFlavorEnum {
     NQMS("NQMS", "NoQueue Merchant Store"),
     NQMH("NQMH", "NoQueue Merchant HealthCare"),
     NQMT("NQMT", "NoQueue Merchant TV"),
-    NQMI("NQMI", "NoQueue Merchant Inventory");
+    NQMI("NQMI", "NoQueue Merchant Inventory"),
+    NQIH("NQIH", "NoQueue Instant Health");
 
     private String name;
     private String description;

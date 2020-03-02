@@ -8,7 +8,7 @@ import java.util.EnumSet;
  */
 public enum AdvertisementViewerTypeEnum {
     WTC("WTC", "With Terms And Conditions"),
-    JBA("JBA", "Just Banner");
+    JBA("JBA", "Just Banner"); //Allways need Image check add
 
     private final String description;
     private final String name;
