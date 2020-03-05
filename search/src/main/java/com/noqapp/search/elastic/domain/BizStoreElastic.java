@@ -167,7 +167,7 @@ public class BizStoreElastic extends AbstractDomain {
     private int productPrice;
 
     @JsonProperty("WS")
-    private WalkInStateEnum walkInStateEnum;
+    private WalkInStateEnum walkInState;
 
     @JsonProperty("PS")
     private AppointmentStateEnum appointmentState;
@@ -510,12 +510,12 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
-    public WalkInStateEnum getWalkInStateEnum() {
-        return walkInStateEnum;
+    public WalkInStateEnum getWalkInState() {
+        return walkInState;
     }
 
-    public BizStoreElastic setWalkInStateEnum(WalkInStateEnum walkInStateEnum) {
-        this.walkInStateEnum = walkInStateEnum;
+    public BizStoreElastic setWalkInState(WalkInStateEnum walkInState) {
+        this.walkInState = walkInState;
         return this;
     }
 
@@ -603,7 +603,7 @@ public class BizStoreElastic extends AbstractDomain {
     public boolean isActive() {
         switch (businessType.getMessageOrigin()) {
             case Q:
-                if (walkInStateEnum != WalkInStateEnum.E && appointmentState == AppointmentStateEnum.O) {
+                if (walkInState != WalkInStateEnum.E && appointmentState == AppointmentStateEnum.O) {
                     active = false;
                 }
                 return active;
@@ -654,7 +654,7 @@ public class BizStoreElastic extends AbstractDomain {
             .setDisplayName(bizStore.getDisplayName())
             .setEnabledPayment(bizStore.isEnabledPayment())
             .setProductPrice(bizStore.getProductPrice())
-            .setWalkInStateEnum(bizStore.getWalkInState())
+            .setWalkInState(bizStore.getWalkInState())
             .setAppointmentState(bizStore.getAppointmentState())
             .setAppointmentDuration(bizStore.getAppointmentDuration())
             .setAppointmentOpenHowFar(bizStore.getAppointmentOpenHowFar())
