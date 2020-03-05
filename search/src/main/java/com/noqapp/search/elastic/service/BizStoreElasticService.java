@@ -1,8 +1,10 @@
 package com.noqapp.search.elastic.service;
 
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PaginationEnum;
+import com.noqapp.domain.types.WalkInStateEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizStoreManager;
@@ -199,6 +201,8 @@ public class BizStoreElasticService {
                     .setBizNameId(map.containsKey("BID") ? map.get("BID").toString() : "")
                     .setDisplayName(map.containsKey("DN") ? map.get("DN").toString() : "")
                     .setProductPrice(map.containsKey("PP") ? Integer.parseInt(map.get("PP").toString()) : 0)
+                    .setWalkInState(map.containsKey("WS") ? WalkInStateEnum.valueOf(map.get("WS").toString()) : WalkInStateEnum.D)
+                    .setAppointmentState(map.containsKey("PS") ? AppointmentStateEnum.valueOf(map.get("PS").toString()) : AppointmentStateEnum.O)
                     .setCodeQR(map.containsKey("QR") ? map.get("QR").toString() : "")
                     .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
                     .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
