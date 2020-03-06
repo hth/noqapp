@@ -47,6 +47,7 @@
             <element id="directory" name="nlp">
               <element id="dir-copy" path="$PROJECT_DIR$/common/src/main/resources/nlp" />
             </element>
+            <element id="module-output" name="inventory.main" />
           </element>
           <element id="directory" name="lib">
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
