@@ -6,13 +6,6 @@
       <root id="root">
         <element id="directory" name="WEB-INF">
           <element id="directory" name="classes">
-            <element id="module-output" name="common_main" />
-            <element id="module-output" name="domain_main" />
-            <element id="module-output" name="loader_main" />
-            <element id="module-output" name="security_main" />
-            <element id="module-output" name="service_main" />
-            <element id="module-output" name="social_main" />
-            <element id="module-output" name="view_main" />
             <element id="directory" name="cert">
               <element id="file-copy" path="$PROJECT_DIR$/view/resources/cert/aps_sandbox_credentials.p12" />
             </element>
@@ -32,8 +25,6 @@
             <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/build-info.properties" />
             <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/messages.properties" />
             <element id="file-copy" path="$PROJECT_DIR$/view/environment/dev/logback.xml" />
-            <element id="module-output" name="health_main" />
-            <element id="module-output" name="search_main" />
             <element id="directory" name="elastic_mapping">
               <element id="dir-copy" path="$PROJECT_DIR$/search/resources/elastic_mapping" />
             </element>
@@ -43,7 +34,16 @@
             <element id="directory" name="geo_db">
               <element id="dir-copy" path="$PROJECT_DIR$/view/resources/geo_db" />
             </element>
-            <element id="module-output" name="medical_main" />
+            <element id="module-output" name="common.main" />
+            <element id="module-output" name="domain.main" />
+            <element id="module-output" name="health.main" />
+            <element id="module-output" name="loader.main" />
+            <element id="module-output" name="medical.main" />
+            <element id="module-output" name="search.main" />
+            <element id="module-output" name="security.main" />
+            <element id="module-output" name="service.main" />
+            <element id="module-output" name="social.main" />
+            <element id="module-output" name="view.main" />
           </element>
           <element id="directory" name="lib">
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
