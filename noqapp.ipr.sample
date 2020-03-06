@@ -14,8 +14,8 @@
               <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/application-messages.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/config.properties" />
               <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/pass.properties" />
-              <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/noq-app-inc-firebase-adminsdk.json" />
               <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/300x300_overlay_code_qr.png" />
+              <element id="file-copy" path="$PROJECT_DIR$/view/resources/conf/noqueue-sandbox-firebase-adminsdk.json" />
             </element>
             <element id="directory" name="dkim">
               <element id="file-copy" path="$PROJECT_DIR$/view/resources/dkim/dkim.der" />
@@ -44,6 +44,9 @@
             <element id="module-output" name="service.main" />
             <element id="module-output" name="social.main" />
             <element id="module-output" name="view.main" />
+            <element id="directory" name="nlp">
+              <element id="dir-copy" path="$PROJECT_DIR$/common/src/main/resources/nlp" />
+            </element>
           </element>
           <element id="directory" name="lib">
             <element id="file-copy" path="$PROJECT_DIR$/lib/user-agent-detector.jar" />
