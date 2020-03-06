@@ -26,27 +26,28 @@ class NLPServiceTest {
     @BeforeEach
     void setUp() {
         Properties props = new Properties();
-        props.setProperty("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref, sentiment");
-        props.setProperty("ner.model",
-            "edu/stanford/nlp/models/ner/english.all.3class.distsim.crf.ser.gz," +
-                "edu/stanford/nlp/models/ner/english.muc.7class.distsim.crf.ser.gz," +
-                "edu/stanford/nlp/models/ner/english.conll.4class.distsim.crf.ser.gz," +
-                "nlp/noqueue/ner/medical-symptoms-ner-model.ser.gz");
-        props.setProperty("ignorecase", "true");
-        props.setProperty("validpospattern", "^(NN|JJ).*");
-        props.setProperty("parse.maxlen", "100");
+        props.setProperty("annotators", "tokenize, ssplit, parse, sentiment, pos, lemma");
         nlpService = new NLPService(
             new StanfordCoreNLP(props),
             new MaxentTagger("nlp/stanford/models/english-left3words-distsim.tagger"));
     }
 
-    @Test @Disabled
+    @Test
     void computeSentiment() {
         SentimentTypeEnum sentimentType = nlpService.computeSentiment("This is a good review");
         assertEquals(SentimentTypeEnum.P, sentimentType);
 
         sentimentType = nlpService.computeSentiment("This is a bad review");
         assertEquals(SentimentTypeEnum.N, sentimentType);
+
+        sentimentType = nlpService.computeSentiment("very bad solution");
+        assertEquals(SentimentTypeEnum.P, sentimentType);
+
+        sentimentType = nlpService.computeSentiment("Cannot believe it is a very bad solution. never again");
+        assertEquals(SentimentTypeEnum.N, sentimentType);
+
+        sentimentType = nlpService.computeSentiment("very bad solution. never again");
+        assertEquals(SentimentTypeEnum.P, sentimentType);
 
         sentimentType = nlpService.computeSentiment("This is a review");
         assertEquals(SentimentTypeEnum.P, sentimentType);
@@ -58,18 +59,18 @@ class NLPServiceTest {
         assertEquals(SentimentTypeEnum.N, sentimentType);
     }
 
-    @Test @Disabled
+    @Test
     void sentenceTag() {
         nlpService.sentenceTag("Hello World this is great place to be");
     }
 
-    @Test @Disabled
+    @Test
     void lookupNoun() {
         List<String> output = nlpService.lookupNoun("Hello World this is great place to be");
         assertEquals("[World, place]", output.toString());
     }
 
-    @Test @Disabled
+    @Disabled
     void communicationNoun() {
         String text = "I have fever";
         List<String> output = nlpService.lookupNoun(text);
