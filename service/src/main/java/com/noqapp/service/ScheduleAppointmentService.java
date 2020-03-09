@@ -149,16 +149,8 @@ public class ScheduleAppointmentService {
             throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed for the day");
         }
 
-        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
-            ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
-            Date from = DateUtil.convertToDate(scheduledTask.getFrom(), bizStore.getTimeZone());
-            Date until = DateUtil.convertToDate(scheduledTask.getUntil(), bizStore.getTimeZone());
-            Date expectedAppointmentDate = DateUtil.convertToDate(jsonSchedule.getScheduleDate(), bizStore.getTimeZone());
-            if (DateUtil.isThisDayBetween(expectedAppointmentDate, from, until)) {
-                LOG.warn("Scheduled closed cannot book {} {} {}", jsonSchedule.getScheduleDate(), from, until);
-                throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed on that day");
-            }
-        }
+        /* Back up check when everything else has failed on client side. */
+        checkIfAcceptingAppointment(jsonSchedule.getScheduleDate(), bizStore);
 
         if (storeHour.getAppointmentStartHour() > jsonSchedule.getStartTime()) {
             LOG.warn("Supplied start time is beyond range {} {} {} {}",
@@ -294,28 +286,43 @@ public class ScheduleAppointmentService {
     /** Safe to use for client only. */
     @Mobile
     public JsonScheduleList findBookedAppointmentsForDayAsJson(String codeQR, String scheduleDate) {
-        List<ScheduleAppointmentEntity> scheduleAppointments = findBookedAppointmentsForDay(codeQR, scheduleDate);
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-            jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, null));
-        }
+        try {
+            BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+            checkIfAcceptingAppointment(scheduleDate, bizStore);
 
-        return jsonScheduleList;
+            List<ScheduleAppointmentEntity> scheduleAppointments = findBookedAppointmentsForDay(codeQR, scheduleDate);
+            for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
+                jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, null));
+            }
+
+            return jsonScheduleList;
+        } catch (AppointmentBookingException e) {
+            return jsonScheduleList.setAppointmentState(AppointmentStateEnum.O);
+        }
     }
 
     /** Contains profile information. To be used by merchant only. */
     @Mobile
     public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
-        List<ScheduleAppointmentEntity> scheduleAppointments = findScheduleForDay(codeQR, scheduleDate);
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
-        for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-            UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-            JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
-            jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile));
-        }
 
-        return jsonScheduleList;
+        try {
+            BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+            checkIfAcceptingAppointment(scheduleDate, bizStore);
+
+            List<ScheduleAppointmentEntity> scheduleAppointments = findScheduleForDay(codeQR, scheduleDate);
+            for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
+                UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
+                UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
+                JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+                jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile));
+            }
+
+            return jsonScheduleList;
+        } catch (AppointmentBookingException e) {
+            return jsonScheduleList.setAppointmentState(AppointmentStateEnum.O);
+        }
     }
 
     @Mobile
@@ -585,5 +592,19 @@ public class ScheduleAppointmentService {
             rootMap,
             "mail/appointment-for-unclaimed-business.ftl"
         );
+    }
+
+    /** Checks if the schedule date is between existing scheduled off. */
+    private void checkIfAcceptingAppointment(String scheduleDate, BizStoreEntity bizStore) {
+        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
+            ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
+            Date from = DateUtil.convertToDate(scheduledTask.getFrom(), bizStore.getTimeZone());
+            Date until = DateUtil.convertToDate(scheduledTask.getUntil(), bizStore.getTimeZone());
+            Date expectedAppointmentDate = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
+            if (DateUtil.isThisDayBetween(expectedAppointmentDate, from, until)) {
+                LOG.warn("Scheduled closed cannot book {} {} {}", scheduleDate, from, until);
+                throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed on that day");
+            }
+        }
     }
 }

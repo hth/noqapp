@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -337,19 +338,19 @@ public class BizService {
         return bizStoreManager.getAllBizStoresMatchingAddress(bizStoreAddress, bizNameId);
     }
 
-    @Cacheable(value = "bizStore-codeQR")
+    @Cacheable(value = "bizStore-codeQR", key = "#codeQR")
     public BizStoreEntity findByCodeQR(String codeQR) {
         return bizStoreManager.findByCodeQR(codeQR);
     }
 
     @Mobile
-    @Cacheable(value = "bizStore-valid-codeQR")
+    @Cacheable(value = "bizStore-valid-codeQR", key = "#codeQR")
     public boolean isValidCodeQR(String codeQR) {
         return Validate.isValidObjectId(codeQR) && bizStoreManager.isValidCodeQR(codeQR);
     }
 
     @Mobile
-    @Cacheable(value = "bizName-valid-codeQR")
+    @Cacheable(value = "bizName-valid-codeQR", key = "#codeQR")
     public boolean isValidBizNameCodeQR(String codeQR) {
         return Validate.isValidObjectId(codeQR) && bizNameManager.isValidCodeQR(codeQR);
     }
@@ -600,6 +601,7 @@ public class BizService {
     }
 
     @Mobile
+    @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
     public void setScheduleTaskId(String codeQR, String id) {
         Assert.hasText(id, "Should not be blank");
         bizStoreManager.setScheduleTaskId(codeQR, id);
@@ -614,7 +616,8 @@ public class BizService {
             bizStore.getQueueAppointment());
     }
 
-    public BizStoreEntity unsetScheduledTask(String bizStoreId) {
+    @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
+    public BizStoreEntity unsetScheduledTask(String bizStoreId, String codeQR) {
         return bizStoreManager.unsetScheduledTask(bizStoreId);
     }
 
