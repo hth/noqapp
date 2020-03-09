@@ -456,7 +456,7 @@ public class ArchiveAndReset {
             if (today.after(until)) {
                 /* Remove schedule only when today is after set until schedule. */
                 LOG.info("Removing schedule displayName={} today={} until={}", bizStore.getDisplayName(), today, until);
-                bizService.unsetScheduledTask(bizStore.getId());
+                bizService.unsetScheduledTask(bizStore.getId(), bizStore.getCodeQR());
                 scheduledTaskManager.inActive(bizStore.getScheduledTaskId());
             }
         }
