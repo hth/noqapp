@@ -73,7 +73,7 @@
         TM and Copyright &copy; 2020 NoQueue Inc. Sunnyvale, CA 94089, USA.<br/>
         All Rights Reserved &nbsp; | &nbsp; <a href="${parentHost}/#/pages/privacy"
                 style="color:#222; text-decoration:none">Privacy Policy</a> &nbsp; |
-        &nbsp; <a href="${parentHost}/terms.html" style="color:#222; text-decoration:none">Terms</a><br/>
+        &nbsp; <a href="${parentHost}/#/pages/terms" style="color:#222; text-decoration:none">Terms</a><br/>
         S:${ftlDateTime?iso("PST")}
     </div>
 </div>
