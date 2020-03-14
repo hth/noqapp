@@ -91,7 +91,7 @@
                             <span class="left-remember">
                                 By signing up, user allows NoQueue&trade; or its representatives to connect with user via email, phone, or SMS for
                                 feedback, for improvements and or for marketing purposes. User's have read and understand the relevant
-                                <a href="https://noqapp.com/privacy.html" style="color:#8339ff">Privacy Statement</a>.
+                                <a href="https://noqapp.com/#/pages/privacy" style="color:#8339ff">Privacy Statement</a>.
                             </span>
                             <span class="left-remember"><form:checkbox path="acceptsAgreement" value="" />
                                 Agree to <a href="https://noqapp.com/terms.html" style="color:#8339ff">NoQueue Terms</a>
@@ -137,7 +137,7 @@
             <div class="footer4">
                 <div class="warp-inner">
                     <div class="f-left">
-                        &copy; 2020 NoQueue Inc. | <a href="https://noqapp.com/privacy.html">Privacy</a> | <a href="https://noqapp.com/terms.html">Terms</a><br/>
+                        &copy; 2020 NoQueue Inc. | <a href="https://noqapp.com/#/pages/privacy">Privacy</a> | <a href="https://noqapp.com/terms.html">Terms</a><br/>
                         All other trademarks and logos belong to their respective owners. (<spring:eval expression="@environmentProperty.getProperty('build.version')" />.<spring:eval expression="@environmentProperty.getProperty('server')" />)
                     </div>
 
