@@ -50,22 +50,19 @@
             <!-- Add New Supervisor -->
             <div class="admin-main">
                 <div class="admin-content">
-                    <div class="store">
-                        <div class="add-store">
-                            <div class="store-table">
-                                User Control: <a href="/admin/user/landing.htm">Active / In-Active User</a>
+                    <form:form method="POST" action="${pageContext.request.contextPath}/admin/invokeCronTask/generateStoreQueueHTML.htm">
+                        <div class="col-fields">
+                            <div class="left-btn">
+                                <input type="submit" value="Generate Store HTML" class="next-btn">
                             </div>
-                            <div class="store-table">
-                                Global Notification: <a href="/admin/notification/landing.htm">Sends Notifications To All</a>
-                            </div>
-                            <div class="store-table">
-                                Run Cron Task Manually: <a href="/admin/invokeCronTask.htm">Cron Task</a>
-                            </div>
-                            <div class="store-table">
-                                Elastic Re-Create: <a href="/admin/elastic.htm">Re-Create Elastic</a>
-                            </div>
+                            <div class="clearFix"></div>
                         </div>
-                    </div>
+
+                        <div class="alert-info">
+                            <p>Generate Store HTML. These are static sites.</p>
+                        </div>
+                        <div class="clearFix"></div>
+                    </form:form>
                 </div>
             </div>
             <!-- Add New Supervisor -->

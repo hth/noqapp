@@ -51,7 +51,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="add-new">
-                        <form:form method="POST" action="./landing.htm" modelAttribute="sendNotificationForm">
+                        <form:form method="POST" action="${pageContext.request.contextPath}/admin/notification/landing.htm" modelAttribute="sendNotificationForm">
                             <spring:hasBindErrors name="sendNotificationForm">
                                 <div class="error-box">
                                     <div class="error-txt">
