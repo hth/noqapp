@@ -52,7 +52,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="add-new">
-                        <form:form method="POST" action="./landing.htm" modelAttribute="searchUserForm">
+                        <form:form method="POST" action="${pageContext.request.contextPath}/admin/user/landing.htm" modelAttribute="searchUserForm">
                             <ul class="list-form">
                                 <li>
                                     <div class="alert-info">
@@ -101,7 +101,7 @@
                                     <th width="16%"></th>
                                 </tr>
                                 <tr>
-                                    <form:form method="POST" action="./action.htm" modelAttribute="searchUserForm">
+                                    <form:form method="POST" action="${pageContext.request.contextPath}/admin/user/action.htm" modelAttribute="searchUserForm">
                                         <form:hidden path="qid" />
                                         <td style="font-size:13px;">${status.count}&nbsp;</td>
                                         <td style="font-size:13px;">
