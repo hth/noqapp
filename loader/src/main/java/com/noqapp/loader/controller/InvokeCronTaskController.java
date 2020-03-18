@@ -1,4 +1,4 @@
-package com.noqapp.view.controller.admin;
+package com.noqapp.loader.controller;
 
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.loader.scheduledtasks.GenerateStoreQueueHTML;
