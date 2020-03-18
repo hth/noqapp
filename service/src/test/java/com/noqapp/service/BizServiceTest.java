@@ -55,7 +55,7 @@ class BizServiceTest {
     }
 
     @Test
-    void buildWebLocationForStore() {
+    void buildWebLocationForStore_WithOutBizNameLocation() {
         String wl = bizService.buildWebLocationForStore(
             "Jankpuri",
             "New Delhi",
@@ -63,6 +63,7 @@ class BizServiceTest {
             "IN",
             "Dimmer Lime",
             "Dr. Mich J. Douse",
+            null,
             null);
         Assertions.assertEquals("/in/dimmer-lime/jankpuri-new-delhi-mh/dr-mich-j-douse", wl);
 
@@ -73,6 +74,7 @@ class BizServiceTest {
             "IN",
             "Dimmer Lime",
             "Dr. Mich J. Douse (evening)",
+            null,
             null);
         Assertions.assertEquals("/in/dimmer-lime/jankpuri-new-delhi-mh/dr-mich-j-douse-evening", wl);
 
@@ -83,6 +85,7 @@ class BizServiceTest {
             "IN",
             "Dimmer Lime",
             "Dr. Mich J. Douse",
+            null,
             null);
         Assertions.assertEquals("/in/dimmer-lime/new-delhi-mh/dr-mich-j-douse", wl);
 
@@ -93,6 +96,7 @@ class BizServiceTest {
             "IN",
             "Dimmer Lime",
             "Dr. Mich J. Douse (evening)",
+            null,
             null);
         Assertions.assertEquals("/in/dimmer-lime/new-delhi-mh/dr-mich-j-douse-evening", wl);
 
@@ -103,6 +107,7 @@ class BizServiceTest {
             "IN",
             "Dimmer Lime",
             "Dr. Mich J. Douse",
+            null,
             null);
         Assertions.assertEquals("/in/dimmer-lime/mh/dr-mich-j-douse", wl);
 
@@ -113,8 +118,78 @@ class BizServiceTest {
             "IN",
             "Dimmer Lime",
             "Dr. Mich J. Douse",
+            null,
             null);
         Assertions.assertEquals("/in/dimmer-lime/dr-mich-j-douse", wl);
+    }
+
+    @Test
+    void buildWebLocationForStore_WithBizNameLocation() {
+        String wl = bizService.buildWebLocationForStore(
+            "Jankpuri",
+            "New Delhi",
+            "MH",
+            "IN",
+            "Dimmer Lime",
+            "Dr. Mich J. Douse",
+            null,
+            "/in/navi-mumbai-mh/ssd-hospital");
+        Assertions.assertEquals("/in/navi-mumbai-mh/ssd-hospital/dr-mich-j-douse", wl);
+
+        wl = bizService.buildWebLocationForStore(
+            "Jankpuri",
+            "New Delhi",
+            "MH",
+            "IN",
+            "Dimmer Lime",
+            "Dr. Mich J. Douse (evening)",
+            null,
+            "/in/navi-mumbai-mh/ssd-hospital");
+        Assertions.assertEquals("/in/navi-mumbai-mh/ssd-hospital/dr-mich-j-douse-evening", wl);
+
+        wl = bizService.buildWebLocationForStore(
+            "",
+            "New Delhi",
+            "MH",
+            "IN",
+            "Dimmer Lime",
+            "Dr. Mich J. Douse",
+            null,
+            "/in/navi-mumbai-mh/ssd-hospital");
+        Assertions.assertEquals("/in/navi-mumbai-mh/ssd-hospital/dr-mich-j-douse", wl);
+
+        wl = bizService.buildWebLocationForStore(
+            "",
+            "New Delhi",
+            "MH",
+            "IN",
+            "Dimmer Lime",
+            "Dr. Mich J. Douse (evening)",
+            null,
+            "/in/navi-mumbai-mh/ssd-hospital");
+        Assertions.assertEquals("/in/navi-mumbai-mh/ssd-hospital/dr-mich-j-douse-evening", wl);
+
+        wl = bizService.buildWebLocationForStore(
+            "",
+            "",
+            "MH",
+            "IN",
+            "Dimmer Lime",
+            "Dr. Mich J. Douse",
+            null,
+            "/in/navi-mumbai-mh/ssd-hospital");
+        Assertions.assertEquals("/in/navi-mumbai-mh/ssd-hospital/dr-mich-j-douse", wl);
+
+        wl = bizService.buildWebLocationForStore(
+            "",
+            "",
+            "",
+            "IN",
+            "Dimmer Lime",
+            "Dr. Mich J. Douse",
+            null,
+            "/in/navi-mumbai-mh/ssd-hospital");
+        Assertions.assertEquals("/in/navi-mumbai-mh/ssd-hospital/dr-mich-j-douse", wl);
     }
 
     @Test

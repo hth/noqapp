@@ -318,7 +318,8 @@ class RegistrationFlowActions {
                 registerBusiness.getCountryShortNameStore(),
                 registerBusiness.getName(),
                 registerBusiness.getDisplayName(),
-                bizStore.getId());
+                bizStore.getId(),
+                bizName.getWebLocation());
 
             bizStore
                 .setWebLocation(webLocation)

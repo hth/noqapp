@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -433,6 +434,10 @@ public class BizService {
         return bizStoreManager.doesWebLocationExists(webLocation, storeId);
     }
 
+    public Stream<BizStoreEntity> findAllWithStream() {
+        return bizStoreManager.findAllWithStream();
+    }
+
     public String buildWebLocationForStore(
             String area,
             String town,
@@ -440,15 +445,18 @@ public class BizService {
             String countryShortNameStore,
             String name,
             String displayName,
-            String storeId
+            String storeId,
+            String bizNameWebLocation
     ) {
+
         String webLocation = computeWebLocationForStore(
                 area,
                 town,
                 stateShortName,
                 countryShortNameStore,
                 name,
-                displayName);
+                displayName,
+                bizNameWebLocation);
 
         while (doesStoreWebLocationExists(webLocation, storeId)) {
             webLocation = CommonUtil.replaceLast(webLocation, "/", "/" + RandomString.newInstance(3).nextString() + "/");
@@ -483,18 +491,25 @@ public class BizService {
             String stateShortName,
             String countryShortNameStore,
             String name,
-            String displayName
+            String displayName,
+            String bizNameWebLocation
     ) {
         try {
-            String areaString = StringUtils.isNotBlank(area) ? area.trim().toLowerCase().replace(" ", "-") : "-";
-            String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
-            String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
+            String webLocation;
+            if (StringUtils.isNotBlank(bizNameWebLocation)) {
+                webLocation = bizNameWebLocation
+                    + "/"
+                    + displayName.replaceAll("[^a-zA-Z]+", "-").toLowerCase().trim();
+            } else {
+                String areaString = cleanForWebLocationFormat(area);
+                String townString = cleanForWebLocationFormat(town);
+                String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
 
-            /*
-             * Note: Same Display Name at same location will generate same webLocation.
-             * You might need to redo this with some randomness in URL.
-             */
-            String webLocation = "/"
+                /*
+                 * Note: Same Display Name at same location will generate same webLocation.
+                 * You might need to redo this with some randomness in URL.
+                 */
+                webLocation = "/"
                     + countryShortNameStore.toLowerCase()
                     + "/"
                     + name.replaceAll("[^a-zA-Z]+", "-").toLowerCase().trim()
@@ -506,12 +521,17 @@ public class BizService {
                     + stateShortNameString
                     + "/"
                     + displayName.replaceAll("[^a-zA-Z]+", "-").toLowerCase().trim();
+            }
 
             return webLocationSanitize(webLocation);
         } catch (Exception e) {
             LOG.error("Failed creating Web Location for store at town={} stateShortName={}", town, stateShortName);
             throw e;
         }
+    }
+
+    private String cleanForWebLocationFormat(String txt) {
+        return StringUtils.isNotBlank(txt) ? txt.trim().toLowerCase().replace(" ", "-") : "-";
     }
 
     private String computeWebLocationForBiz(
@@ -521,7 +541,7 @@ public class BizService {
             String name
     ) {
         try {
-            String townString = StringUtils.isNotBlank(town) ? town.trim().toLowerCase().replace(" ", "-") : "-";
+            String townString = cleanForWebLocationFormat(town);
             String stateShortNameString = StringUtils.isNotBlank(stateShortName) ? stateShortName.trim().toLowerCase() : "-";
 
             /*
