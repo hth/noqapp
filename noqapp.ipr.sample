@@ -1294,6 +1294,9 @@
             <element id="module-output" name="noqapp.service.main" />
             <element id="module-output" name="noqapp.social.main" />
             <element id="module-output" name="noqapp.view.main" />
+            <element id="directory" name="nlp">
+              <element id="dir-copy" path="$PROJECT_DIR$/common/src/main/resources/nlp" />
+            </element>
           </element>
           <element id="directory" name="flow">
             <element id="dir-copy" path="$PROJECT_DIR$/view/web/WEB-INF/flow" />
@@ -1729,6 +1732,7 @@
     </bytecodeTargetLevel>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
