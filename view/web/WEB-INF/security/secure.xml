@@ -136,7 +136,7 @@
                        access="hasRole('ROLE_S_MANAGER')" />
 
         <intercept-url pattern="/portal/**"
-                       access="hasRole('ROLE_S_MANAGER', 'ROLE_Q_SUPERVISOR', 'ROLE_SUPERVISOR')" />
+                       access="hasAnyRole('ROLE_S_MANAGER', 'ROLE_Q_SUPERVISOR', 'ROLE_SUPERVISOR')" />
 
         <intercept-url pattern="/business/survey/**"
                        access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_SUPERVISOR')" />
