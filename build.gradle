@@ -513,7 +513,8 @@ project(':portal') {
         compile project(':common'),
                 project(':domain'),
                 project(':health'),
-                project(':service')
+                project(':service'),
+                project(':social')
     }
 }
 
@@ -1162,6 +1163,28 @@ publishing {
                 license.appendNode('name', 'Private. Copyright 2016-2020. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
                 license.appendNode('distribution', 'NoQueue private repository')
+
+                def developer = root.appendNode('developers').appendNode('developer')
+                developer.appendNode('id', 'NoQueue')
+                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('email', 'contact@noqapp.com')
+            }
+        }
+
+        portal(MavenPublication) {
+            artifactId 'portal'
+            artifact "portal/build/libs/$archiveName" + '-portal-' + version + '.jar'
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('name', 'NoQueue Web')
+                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('inceptionYear', '2016')
+
+                def license = root.appendNode('licenses').appendNode('license')
+                license.appendNode('name', 'Private. Copyright 2016-2020. All rights reserved.')
+                license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
+                license.appendNode('distribution', 'NoQApp private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
