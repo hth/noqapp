@@ -16,6 +16,7 @@ import com.noqapp.portal.body.Login;
 import com.noqapp.portal.service.AccountPortalService;
 import com.noqapp.portal.service.DeviceRegistrationService;
 import com.noqapp.service.AccountService;
+import com.noqapp.service.FirebaseService;
 import com.noqapp.social.exception.AccountNotActiveException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -54,12 +55,19 @@ public class LoginPortalController {
     private AccountService accountService;
     private DeviceRegistrationService deviceRegistrationService;
     private AccountPortalService accountPortalService;
+    private FirebaseService firebaseService;
 
     @Autowired
-    public LoginPortalController(AccountService accountService, DeviceRegistrationService deviceRegistrationService, AccountPortalService accountPortalService) {
+    public LoginPortalController(
+        AccountService accountService,
+        DeviceRegistrationService deviceRegistrationService,
+        AccountPortalService accountPortalService,
+        FirebaseService firebaseService
+    ) {
         this.accountService = accountService;
         this.deviceRegistrationService = deviceRegistrationService;
         this.accountPortalService = accountPortalService;
+        this.firebaseService = firebaseService;
     }
 
     @PostMapping(
@@ -87,15 +95,15 @@ public class LoginPortalController {
 
         Map<String, String> errors;
         try {
+            if (!firebaseService.isFirebaseUserExists(loginJson.getPhone().getText(), loginJson.getFirebaseUid().getText())) {
+                LOG.error("Failed successful login");
+                return askUserToRegister(phone);
+            }
+
             UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
             if (null == userProfile) {
                 LOG.info("Failed user login as no user found with phone={} cs={}", phone, countryShortName);
-                errors = new HashMap<>();
-                errors.put(ErrorEncounteredJson.REASON, "No user found. Would you like to register?");
-                errors.put("PH", phone);
-                errors.put(ErrorEncounteredJson.SYSTEM_ERROR, USER_NOT_FOUND.name());
-                errors.put(ErrorEncounteredJson.SYSTEM_ERROR_CODE, USER_NOT_FOUND.getCode());
-                return ErrorEncounteredJson.toJson(errors);
+                return askUserToRegister(phone);
             }
 
             UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
@@ -136,6 +144,16 @@ public class LoginPortalController {
             errors.put(ErrorEncounteredJson.SYSTEM_ERROR_CODE, SEVERE.getCode());
             return ErrorEncounteredJson.toJson(errors);
         }
+    }
+
+    private String askUserToRegister(String phone) {
+        Map<String, String> errors;
+        errors = new HashMap<>();
+        errors.put(ErrorEncounteredJson.REASON, "No user found. Would you like to register?");
+        errors.put("PH", phone);
+        errors.put(ErrorEncounteredJson.SYSTEM_ERROR, USER_NOT_FOUND.name());
+        errors.put(ErrorEncounteredJson.SYSTEM_ERROR_CODE, USER_NOT_FOUND.getCode());
+        return ErrorEncounteredJson.toJson(errors);
     }
 
     public static String getErrorReason(String reason, MobileSystemErrorCodeEnum mobileSystemErrorCode) {
