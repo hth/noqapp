@@ -6,7 +6,8 @@ package com.noqapp.domain.types;
  */
 public enum DeviceTypeEnum {
     I("I", "IPhone"),
-    A("A", "Android");
+    A("A", "Android"),
+    W("W", "Web");
 
     private String name;
     private String description;

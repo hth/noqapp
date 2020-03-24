@@ -38,8 +38,8 @@ import java.util.concurrent.TimeUnit;
 })
 @Controller
 @RequestMapping(value = "/open/health/portal")
-public class HealthCheckupController {
-    private static final Logger LOG = LoggerFactory.getLogger(HealthCheckupController.class);
+public class PortalHealthController {
+    private static final Logger LOG = LoggerFactory.getLogger(PortalHealthController.class);
 
     /* Set cache parameters. */
     private final Cache<String, JsonSiteHealth> cache = Caffeine.newBuilder()
@@ -51,7 +51,7 @@ public class HealthCheckupController {
     private ApiHealthService apiHealthService;
 
     @Autowired
-    public HealthCheckupController(SiteHealthService siteHealthService, ApiHealthService apiHealthService) {
+    public PortalHealthController(SiteHealthService siteHealthService, ApiHealthService apiHealthService) {
         this.siteHealthService = siteHealthService;
         this.apiHealthService = apiHealthService;
     }
@@ -68,7 +68,7 @@ public class HealthCheckupController {
     )
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String healthCheck() {
+    public String status() {
         Instant start = Instant.now();
         LOG.info("Health check invoked");
         JsonSiteHealth jsonSiteHealth = cache.getIfPresent("siteHealth");
@@ -84,9 +84,9 @@ public class HealthCheckupController {
         }
 
         apiHealthService.insert(
-            "/healthCheck",
-            "healthCheck",
-            HealthCheckupController.class.getName(),
+            "/status",
+            "status",
+            PortalHealthController.class.getName(),
             Duration.between(start, Instant.now()),
             HealthStatusEnum.G);
 
