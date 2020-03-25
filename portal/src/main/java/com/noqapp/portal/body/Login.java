@@ -33,6 +33,9 @@ public class Login {
     @JsonProperty("CS")
     private ScrubbedInput countryShortName;
 
+    @JsonProperty("FI")
+    private ScrubbedInput firebaseUid;
+
     public ScrubbedInput getPhone() {
         return phone;
     }
@@ -48,6 +51,15 @@ public class Login {
 
     public Login setCountryShortName(ScrubbedInput countryShortName) {
         this.countryShortName = countryShortName;
+        return this;
+    }
+
+    public ScrubbedInput getFirebaseUid() {
+        return firebaseUid;
+    }
+
+    public Login setFirebaseUid(ScrubbedInput firebaseUid) {
+        this.firebaseUid = firebaseUid;
         return this;
     }
 }

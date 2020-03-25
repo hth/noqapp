@@ -5,6 +5,7 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.UserProfileEntity;
 
 import com.google.api.core.ApiFuture;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.TopicManagementResponse;
@@ -79,5 +80,18 @@ public class FirebaseService {
         } catch (FirebaseMessagingException e) {
             LOG.error("Failed subscribing reason={}", e.getLocalizedMessage(), e);
         }
+    }
+
+    public boolean isFirebaseUserExists(String phone, String uid) {
+        try {
+            UserRecord userRecord = firebaseConfig.getFirebaseAuth().getUser(uid);
+            if (userRecord != null && userRecord.getPhoneNumber().contains(phone)) {
+                return true;
+            }
+        } catch (FirebaseAuthException e) {
+            LOG.error("Failed finding firebase user phone={} uid={}", phone, uid);
+        }
+
+        return false;
     }
 }
