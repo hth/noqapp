@@ -271,22 +271,26 @@ public class StoreProductController {
             return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId() + ".htm";
         }
 
-        StoreProductEntity storeProduct = new StoreProductEntity()
-            .setBizStoreId(storeProductForm.getBizStoreId().getText())
-            .setProductName(storeProductForm.getProductName().getText())
-            .setProductPrice(StringUtils.isBlank(storeProductForm.getProductPrice().getText())
-                ? 0 : new BigDecimal(storeProductForm.getProductPrice().getText()).multiply(new BigDecimal(100)).intValue())
-            .setProductDiscount(StringUtils.isBlank(storeProductForm.getProductDiscount().getText())
-                ? 0 : new BigDecimal(storeProductForm.getProductDiscount().getText()).multiply(new BigDecimal(100)).intValue())
-            .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
-            .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
-            .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
-            .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
-            .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
-            .setInventoryCurrent(StringUtils.isBlank(storeProductForm.getInventoryCurrent().getText()) ? 0 : new BigDecimal(storeProductForm.getInventoryCurrent().getText()).intValue())
-            .setInventoryLimit(new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
-            .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
-        storeProductService.save(storeProduct);
+        try {
+            StoreProductEntity storeProduct = new StoreProductEntity()
+                .setBizStoreId(storeProductForm.getBizStoreId().getText())
+                .setProductName(storeProductForm.getProductName().getText())
+                .setProductPrice(StringUtils.isBlank(storeProductForm.getProductPrice().getText())
+                    ? 0 : new BigDecimal(storeProductForm.getProductPrice().getText()).multiply(new BigDecimal(100)).intValue())
+                .setProductDiscount(StringUtils.isBlank(storeProductForm.getProductDiscount().getText())
+                    ? 0 : new BigDecimal(storeProductForm.getProductDiscount().getText()).multiply(new BigDecimal(100)).intValue())
+                .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
+                .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
+                .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
+                .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
+                .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
+                .setInventoryLimit(new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
+                .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
+            storeProductService.save(storeProduct);
+        } catch (Exception e) {
+            LOG.error("Failed adding product reason={}", e.getLocalizedMessage(), e);
+        }
+
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId() + ".htm";
     }
 
