@@ -650,11 +650,13 @@ public class BizService {
     }
 
     @Mobile
+    @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
     public BizStoreEntity disableServiceCost(String codeQR) {
         return bizStoreManager.disableServiceCost(codeQR);
     }
 
     @Mobile
+    @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
     public BizStoreEntity updateServiceCost(
         String codeQR,
         int productPrice,
@@ -673,11 +675,13 @@ public class BizService {
     }
 
     @Mobile
+    @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
     public BizStoreEntity disableAppointment(String codeQR) {
         return bizStoreManager.disableAppointment(codeQR);
     }
 
     @Mobile
+    @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
     public BizStoreEntity updateAppointment(String codeQR, AppointmentStateEnum appointmentState, int appointmentDuration, int appointmentOpenHowFar) {
         return bizStoreManager.updateAppointment(codeQR, appointmentState, appointmentDuration, appointmentOpenHowFar);
     }

@@ -26,6 +26,12 @@ import java.util.List;
  * hitender
  * 3/23/20 5:02 PM
  */
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
+})
 @Service
 public class AccountPortalService {
     private static final Logger LOG = LoggerFactory.getLogger(AccountPortalService.class);
