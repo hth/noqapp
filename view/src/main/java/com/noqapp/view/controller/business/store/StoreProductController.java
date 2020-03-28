@@ -283,7 +283,7 @@ public class StoreProductController {
             .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
             .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
             .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
-            .setInventoryCurrent(new BigDecimal(storeProductForm.getInventoryCurrent().getText()).intValue())
+            .setInventoryCurrent(StringUtils.isBlank(storeProductForm.getInventoryCurrent().getText()) ? 0 : new BigDecimal(storeProductForm.getInventoryCurrent().getText()).intValue())
             .setInventoryLimit(new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
             .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
         storeProductService.save(storeProduct);
