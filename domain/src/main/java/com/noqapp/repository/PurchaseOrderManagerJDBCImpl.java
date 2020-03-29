@@ -10,6 +10,8 @@ import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -146,7 +148,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("pm", null == purchaseOrder.getPaymentMode() ? null : purchaseOrder.getPaymentMode().name());
                 namedParameters.addValue("py", null == purchaseOrder.getPaymentStatus() ? PaymentStatusEnum.PP.name() : purchaseOrder.getPaymentStatus().name());
                 namedParameters.addValue("ps", purchaseOrder.getPresentOrderState().name());
-                namedParameters.addValue("da", purchaseOrder.getDeliveryAddress());
+                namedParameters.addValue("da", StringUtils.isBlank(purchaseOrder.getDeliveryAddress()) ? null : purchaseOrder.getDeliveryAddress().substring(0, Math.min(128, purchaseOrder.getDeliveryAddress().length())));
                 namedParameters.addValue("ra", purchaseOrder.getRatingCount());
                 namedParameters.addValue("rv", purchaseOrder.getReview());
                 namedParameters.addValue("st", null == purchaseOrder.getSentimentType() ? null : purchaseOrder.getSentimentType().name());
