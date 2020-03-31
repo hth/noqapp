@@ -6,6 +6,7 @@ import com.noqapp.domain.types.UserLevelEnum;
 import java.util.List;
 
 /**
+ * These are single entry for each user associated to each business. No duplicates here.
  * User: hitender
  * Date: 11/23/16 5:10 PM
  */
@@ -22,7 +23,7 @@ public interface BusinessUserManager extends RepositoryManager<BusinessUserEntit
      * Gets self.
      * //TODO this will return a list of self. So better to add BusinessNameId in user session/context.
      *
-     * @deprecated  As of release 1.4.0, replaced by {@link #findBusinessUser(String, String)}
+     * @deprecated As of release 1.4.0, replaced by {@link #findBusinessUser(String, String)}
      * Implement multiple account support.
      */
     @Deprecated

@@ -237,4 +237,13 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
         LOG.info("Updated record for qid={} userLevel={} count={}", qid, userLevel, updateResult.getModifiedCount());
         return updateResult.getModifiedCount();
     }
+
+    @Override
+    public long countNumberOfActiveStoreUsers(String bizNameId) {
+        return mongoTemplate.count(
+            query(where("BN").is(bizNameId).and("A").is(true).and("D").is(false)),
+            BusinessUserStoreEntity.class,
+            TABLE
+        );
+    }
 }
