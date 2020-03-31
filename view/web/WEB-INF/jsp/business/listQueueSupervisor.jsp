@@ -174,7 +174,11 @@
                                                 </div>
                                                 </c:when>
                                                 <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'I'}">
-                                                    In progress
+                                                    <p style="white-space: normal; display:block; font-size:13px;">
+                                                        In progress. Ask user
+                                                        to complete registration
+                                                        on web site.
+                                                    </p>
                                                 </c:when>
                                                 <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
                                                     <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
