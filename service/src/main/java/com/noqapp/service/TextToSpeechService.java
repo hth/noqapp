@@ -23,6 +23,9 @@ import com.google.protobuf.ByteString;
 
 import org.apache.commons.text.StringSubstitutor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,7 @@ import javax.validation.constraints.NotNull;
  */
 @Service
 public class TextToSpeechService {
+    private static final Logger LOG = LoggerFactory.getLogger(TextToSpeechService.class);
 
     private String nowServingEnglish = "No Queue token संख्या ${currentlyServingToken} कृप्या ${queueServiceName} ${goTo} पर जाएं";
     private String nowServingHindi = "No Queue token number ${currentlyServingToken}, please visit ${queueServiceName}, in ${goTo}";
@@ -124,10 +128,26 @@ public class TextToSpeechService {
                         break;
                 }
                 break;
-            case HS:
+            case RS:
             case FT:
+            case BA:
+            case ST:
+            case SM:
+            case MT:
+            case SC:
+            case GS:
+            case CF:
+            case HS:
+            case PH:
+            case PW:
+            case MU:
+            case TA:
+            case NC:
+            case BK:
+            case PA:
                 break;
             default:
+                LOG.error("Reached unreachable condition. Add more business type.");
                 throw new UnsupportedOperationException("Reached unreachable condition");
         }
         return jsonTextToSpeeches;
