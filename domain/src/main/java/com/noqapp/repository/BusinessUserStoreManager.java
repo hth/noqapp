@@ -7,13 +7,16 @@ import com.noqapp.domain.types.UserLevelEnum;
 import java.util.List;
 
 /**
+ * These are business user associated to each store. Same user can be in multiple store of the same business.
  * User: hitender
  * Date: 12/13/16 10:30 AM
  */
 public interface BusinessUserStoreManager extends RepositoryManager<BusinessUserStoreEntity> {
 
     boolean hasAccess(String qid, String codeQR);
+
     boolean hasAccessWithUserLevel(String qid, String codeQR, UserLevelEnum userLevel);
+
     boolean hasAccessUsingStoreId(String qid, String bizStoreId);
 
     List<BusinessUserStoreEntity> getQueues(String qid, int limit);
@@ -42,4 +45,6 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
     BusinessUserStoreEntity findOneByQidAndCodeQR(String qid, String codeQR);
 
     long updateUserLevel(String qid, UserLevelEnum userLevel);
+
+    long countNumberOfActiveStoreUsers(String bizNameId);
 }

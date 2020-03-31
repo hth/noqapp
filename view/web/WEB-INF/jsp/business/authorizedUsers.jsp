@@ -184,7 +184,7 @@
                                                 <td nowrap>
                                                     <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
                                                 </td>
-                                                <td class="Tleft" width="90px" nowrap>
+                                                <td class="Tleft" width="180px" nowrap>
                                                 <c:choose>
                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq BusinessUserRegistrationStatusEnum.V && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
                                                         <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
@@ -194,8 +194,10 @@
                                                         </form:form>
                                                     </c:when>
                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq BusinessUserRegistrationStatusEnum.C}">
-                                                        Approve / Reject <br/>
-                                                        (Pending)
+                                                        <p style="white-space: normal; display:block; font-size:13px;">
+                                                            Approve / Reject (Pending) <br/>
+                                                            <a href="/business/landing.htm">Click here</a> & then click on pending column to approve
+                                                        </p>
                                                     </c:when>
                                                     <c:otherwise>
                                                         --

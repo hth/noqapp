@@ -15,6 +15,7 @@ import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.CommonStatusEnum;
 import com.noqapp.domain.types.InvocationByEnum;
@@ -474,6 +475,7 @@ public class AdminBusinessLandingController {
                     /* Update UserProfile Business Type when profile is approved. */
                     userProfile.setBusinessType(bizStore.getBusinessType());
                     accountService.save(userProfile);
+                    changeToStoreManageWhenThisIsTheFirstBusinessUser(businessUser, bizStore);
                     break;
                 case "ADD":
                     int queueSupervisingCount = businessUserStoreService.findAllStoreQueueAssociated(businessUser.getQueueUserId()).size();
@@ -619,6 +621,20 @@ public class AdminBusinessLandingController {
                     goToPage = "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
             }
             return goToPage;
+        }
+    }
+
+    /**
+     * If only one users in the store. Then this user become store manager when business is not
+     * {@link com.noqapp.domain.types.BusinessTypeEnum#DO}
+     */
+    private void changeToStoreManageWhenThisIsTheFirstBusinessUser(BusinessUserEntity businessUser, BizStoreEntity bizStore) {
+        if (bizStore.getBusinessType() != BusinessTypeEnum.DO) {
+            long countNumberOfUserInThisStore = businessUserStoreService.countNumberOfUserInThisStore(bizStore.getBizName().getId());
+            LOG.info("Number of existing user are greater {}", countNumberOfUserInThisStore);
+            if (countNumberOfUserInThisStore <= 1) {
+                businessUserStoreService.changeUserLevel(businessUser.getQueueUserId(), UserLevelEnum.S_MANAGER, businessUser.getBizName().getBusinessType());
+            }
         }
     }
 

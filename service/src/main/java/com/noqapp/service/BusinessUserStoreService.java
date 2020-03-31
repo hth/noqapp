@@ -410,4 +410,8 @@ public class BusinessUserStoreService {
     public BusinessUserStoreEntity findUserManagingStoreWithUserLevel(String qid, UserLevelEnum userLevel) {
         return businessUserStoreManager.findUserManagingStoreWithUserLevel(qid, userLevel);
     }
+
+    public long countNumberOfUserInThisStore(String bizNameId) {
+        return businessUserStoreManager.countNumberOfActiveStoreUsers(bizNameId);
+    }
 }
