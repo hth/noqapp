@@ -14,7 +14,7 @@ public class CustomTextToSpeechForm {
 
     private TextToSpeechTypeEnum textToSpeechType;
     private String languageTag = "en-US";
-    private String template = "No Queue token number ${currentlyServing}, please visit ${displayName}, in ${goTo}";
+    private String template = "No Queue token number ${currentlyServingToken}, please visit ${queueServiceName}, in ${goTo}";
     private ActionTypeEnum actionType;
 
     private CustomTextToSpeechEntity customTextToSpeech;
