@@ -585,6 +585,17 @@ public class BusinessFlowValidator {
         }
 
         LOG.info("Validate business qid={} status={}", registerBusiness.getBusinessUser().getQueueUserId(), status);
+        if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
+            switch (registerBusiness.getBusinessType().getMessageOrigin()) {
+                case O:
+                case Q:
+                    status = registerBusiness.getBusinessType().getMessageOrigin() + status;
+                    break;
+                default:
+                    LOG.error("Reached unreachable condition");
+                    throw new UnsupportedOperationException("Reached Unsupported Condition");
+            }
+        }
         return status;
     }
 

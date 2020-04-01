@@ -134,6 +134,7 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        <c:if test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.Q}">
                                         <li>
                                             <div class="col-lable3">
                                                 <form:label path="walkInState" cssErrorClass="lb_error">Walk-in</form:label>
@@ -157,6 +158,7 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        </c:if>
                                         <li>
                                             <div class="col-lable3">
                                                 <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
@@ -167,6 +169,7 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        <c:if test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.Q}">
                                         <li>
                                             <div class="col-lable3">
                                                 <form:label path="availableTokenCount" cssErrorClass="lb_error">Issue Limited Tokens</form:label>
@@ -177,6 +180,7 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        </c:if>
                                     </ul>
                                 </div>
 
@@ -268,6 +272,7 @@
                                     </ul>
                                 </div>
 
+                                <c:if test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.Q}">
                                 <div class="full">
                                     <div class="admin-title pT30">
                                         <h2>Appointment Settings</h2>
@@ -357,6 +362,7 @@
                                         <div class="clearFix"></div>
                                     </ul>
                                 </div>
+                                </c:if>
                                 </c:if>
 
                                 <div>
