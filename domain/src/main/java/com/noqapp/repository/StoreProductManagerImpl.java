@@ -62,7 +62,7 @@ public class StoreProductManagerImpl implements StoreProductManager {
 
     @Override
     public void removeById(String id) {
-        mongoTemplate.remove(where("id").is(id), TABLE);
+        mongoTemplate.remove(query(where("id").is(id)), StoreProductEntity.class, TABLE);
     }
 
     @Override
