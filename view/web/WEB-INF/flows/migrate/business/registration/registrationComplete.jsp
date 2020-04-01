@@ -59,7 +59,14 @@
                             <c:choose>
                                 <c:when test="${register.registerBusiness.businessUser.businessUserRegistrationStatus eq 'C'}">
                                     <h3>Registration Complete</h3>
-                                    <p>Your details are being verified. Would notify you once verification is complete.</p>
+                                    <c:choose>
+                                        <c:when test="${register.autoApproveBusinessTurnedOn eq 'ON'}">
+                                            <p>Your merchant account has been approved. Please logout and login to see the changes.</p>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p>Your details are being verified. Would notify you once verification is complete.</p>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:when>
                                 <c:otherwise>
                                     <h3>Registration not complete</h3>
