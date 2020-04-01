@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface StoreProductManager extends RepositoryManager<StoreProductEntity> {
 
+    void removeById(String id);
+
     List<StoreProductEntity> findAll(String storeId);
 
     long countOfProduct(String storeId);

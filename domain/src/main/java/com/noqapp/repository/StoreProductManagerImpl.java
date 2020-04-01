@@ -61,6 +61,11 @@ public class StoreProductManagerImpl implements StoreProductManager {
     }
 
     @Override
+    public void removeById(String id) {
+        mongoTemplate.remove(query(where("id").is(id)), StoreProductEntity.class, TABLE);
+    }
+
+    @Override
     public List<StoreProductEntity> findAll(String storeId) {
         return mongoTemplate.find(
             query(where("BS").is(storeId)).with(Sort.by(ASC, "PN")),
