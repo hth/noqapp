@@ -40,10 +40,10 @@ public class JsonUserPreference extends AbstractDomain {
     private CommunicationModeEnum firebaseNotification;
 
     @JsonProperty("dm")
-    private DeliveryModeEnum deliveryMode;
+    private DeliveryModeEnum deliveryMode = DeliveryModeEnum.TO;
 
     @JsonProperty("pm")
-    private PaymentMethodEnum paymentMethod;
+    private PaymentMethodEnum paymentMethod = PaymentMethodEnum.CA;
 
     @JsonProperty("uai")
     private String userAddressId;
