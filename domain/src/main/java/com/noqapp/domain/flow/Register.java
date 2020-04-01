@@ -10,6 +10,7 @@ public class Register implements Serializable {
 
     private RegisterUser registerUser = new RegisterUser();
     private RegisterBusiness registerBusiness = new RegisterBusiness();
+    private String autoApproveBusinessTurnedOn = "OFF";
 
     public RegisterUser getRegisterUser() {
         return registerUser;
@@ -17,6 +18,15 @@ public class Register implements Serializable {
 
     public RegisterBusiness getRegisterBusiness() {
         return registerBusiness;
+    }
+
+    public String getAutoApproveBusinessTurnedOn() {
+        return autoApproveBusinessTurnedOn;
+    }
+
+    public Register setAutoApproveBusinessTurnedOn(String autoApproveBusinessTurnedOn) {
+        this.autoApproveBusinessTurnedOn = autoApproveBusinessTurnedOn;
+        return this;
     }
 
     @Override

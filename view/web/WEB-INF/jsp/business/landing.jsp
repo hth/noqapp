@@ -167,7 +167,10 @@
                                 </table>
                             </c:when>
                             <c:otherwise>
-                                There are no stores associated with business.
+                                <p style="display:block; font-size:15px;">
+                                    You business is all set and you are administrator of this business.
+                                    Add stores so that your customers can make purchases.
+                                </p>
                             </c:otherwise>
                             </c:choose>
                             </div>

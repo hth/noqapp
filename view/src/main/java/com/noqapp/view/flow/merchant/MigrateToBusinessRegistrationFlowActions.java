@@ -266,6 +266,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 if (autoApproveBusinessTurnedOn.equalsIgnoreCase("ON")) {
                     LOG.info("Approving business as default {}", autoApproveBusinessTurnedOn);
                     empLandingService.approveBusiness(businessUser.getId(), queueUser.getQueueUserId());
+                    register.setAutoApproveBusinessTurnedOn(autoApproveBusinessTurnedOn);
                 }
                 return register;
             } catch (Exception e) {
