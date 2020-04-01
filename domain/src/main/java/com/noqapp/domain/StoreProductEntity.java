@@ -48,7 +48,7 @@ public class StoreProductEntity extends BaseEntity {
     private String productInfo;
 
     @Field("IM")
-    private String productImage = "https://cdn.shopify.com/s/files/1/1006/4028/products/640_640_gel.png?v=1558213076";
+    private String productImage = "https://noqapp.com/missing_product.png";
 
     @Field("SC")
     private String storeCategoryId;
