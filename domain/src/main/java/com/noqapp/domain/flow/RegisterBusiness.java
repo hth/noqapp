@@ -11,6 +11,7 @@ import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.WalkInStateEnum;
 
@@ -81,6 +82,9 @@ public class RegisterBusiness implements Serializable {
     private AppointmentStateEnum appointmentState;
     private int appointmentDuration;
     private int appointmentOpenHowFar;
+
+    /* Business User Registration Status. This help if editing un-approved business for approval again. */
+    private BusinessUserRegistrationStatusEnum businessUserRegistrationStatus = BusinessUserRegistrationStatusEnum.I;
 
     private HashMap<String, DecodedAddress> foundAddresses = new LinkedHashMap<>();
     private String foundAddressPlaceId;
@@ -544,6 +548,15 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setAppointmentOpenHowFar(int appointmentOpenHowFar) {
         this.appointmentOpenHowFar = appointmentOpenHowFar;
+        return this;
+    }
+
+    public BusinessUserRegistrationStatusEnum getBusinessUserRegistrationStatus() {
+        return businessUserRegistrationStatus;
+    }
+
+    public RegisterBusiness setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum businessUserRegistrationStatus) {
+        this.businessUserRegistrationStatus = businessUserRegistrationStatus;
         return this;
     }
 

@@ -138,14 +138,9 @@ public class EmpLandingController {
         BusinessAwaitingApprovalForm businessAwaitingApprovalForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Approved Business user={} loaded by qid={}",
-            businessAwaitingApprovalForm.getBusinessUser().getId(),
-            queueUser.getQueueUserId());
+        LOG.info("Approved Business user={} loaded by qid={}", businessAwaitingApprovalForm.getBusinessUser().getId(), queueUser.getQueueUserId());
 
-        empLandingService.approveBusiness(
-            businessAwaitingApprovalForm.getBusinessUser().getId(),
-            queueUser.getQueueUserId());
-
+        empLandingService.approveBusiness(businessAwaitingApprovalForm.getBusinessUser().getId(), queueUser.getQueueUserId());
         return "redirect:" + "/emp/landing.htm";
     }
 
@@ -155,14 +150,9 @@ public class EmpLandingController {
         BusinessAwaitingApprovalForm businessAwaitingApprovalForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Decline Business user={} loaded by qid={}",
-            businessAwaitingApprovalForm.getBusinessUser().getId(),
-            queueUser.getQueueUserId());
+        LOG.info("Decline Business user={} loaded by qid={}", businessAwaitingApprovalForm.getBusinessUser().getId(), queueUser.getQueueUserId());
 
-        empLandingService.declineBusiness(
-            businessAwaitingApprovalForm.getBusinessUser().getId(),
-            queueUser.getQueueUserId());
-
+        empLandingService.declineBusiness(businessAwaitingApprovalForm.getBusinessUser().getId(), queueUser.getQueueUserId());
         return "redirect:" + "/emp/landing.htm";
     }
 

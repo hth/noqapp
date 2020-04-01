@@ -23,6 +23,7 @@ import com.noqapp.service.ExternalService;
 import com.noqapp.service.FetcherService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.service.emp.EmpLandingService;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -46,13 +48,19 @@ import java.util.Set;
 public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(MigrateToBusinessRegistrationFlowActions.class);
 
+    private String autoApproveBusinessTurnedOn;
+
     private FetcherService fetcherService;
     private AccountService accountService;
     private BusinessUserService businessUserService;
+    private EmpLandingService empLandingService;
 
     @SuppressWarnings("all")
     @Autowired
     public MigrateToBusinessRegistrationFlowActions(
+        @Value("${BusinessRegister.autoApprove.turnedOn:ON}")
+        String autoApproveBusinessTurnedOn,
+
         Environment environment,
         FetcherService fetcherService,
         AccountService accountService,
@@ -61,9 +69,13 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         ExternalService externalService,
         TokenQueueService tokenQueueService,
         BizStoreElasticService bizStoreElasticService,
-        MailService mailService
+        MailService mailService,
+        EmpLandingService empLandingService
     ) {
         super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
+        this.autoApproveBusinessTurnedOn = autoApproveBusinessTurnedOn;
+
+        this.empLandingService = empLandingService;
         this.fetcherService = fetcherService;
         this.accountService = accountService;
         this.businessUserService = businessUserService;
@@ -250,6 +262,11 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
 
                 businessUserService.save(businessUser);
                 register.getRegisterBusiness().setBusinessUser(businessUser);
+
+                if (autoApproveBusinessTurnedOn.equalsIgnoreCase("ON")) {
+                    LOG.info("Approving business as default {}", autoApproveBusinessTurnedOn);
+                    empLandingService.approveBusiness(businessUser.getId(), queueUser.getQueueUserId());
+                }
                 return register;
             } catch (Exception e) {
                 LOG.error("Error adding business qid={} reason={}",
