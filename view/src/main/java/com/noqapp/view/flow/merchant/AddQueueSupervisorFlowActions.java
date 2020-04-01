@@ -67,20 +67,20 @@ public class AddQueueSupervisorFlowActions {
 
     @Autowired
     public AddQueueSupervisorFlowActions(
-            @Value ("${BusinessUserStoreService.queue.limit}")
-            int queueLimit,
+        @Value ("${BusinessUserStoreService.queue.limit}")
+        int queueLimit,
 
-            @Value("${QuickDataEntryByPassSwitch}")
-            String quickDataEntryByPassSwitch,
+        @Value("${QuickDataEntryByPassSwitch}")
+        String quickDataEntryByPassSwitch,
 
-            WebFlowUtils webFlowUtils,
-            BizService bizService,
-            AccountService accountService,
-            BusinessUserService businessUserService,
-            BusinessUserStoreService businessUserStoreService,
-            TokenQueueService tokenQueueService,
-            MailService mailService,
-            ProfessionalProfileService professionalProfileService
+        WebFlowUtils webFlowUtils,
+        BizService bizService,
+        AccountService accountService,
+        BusinessUserService businessUserService,
+        BusinessUserStoreService businessUserStoreService,
+        TokenQueueService tokenQueueService,
+        MailService mailService,
+        ProfessionalProfileService professionalProfileService
     ) {
         this.queueLimit = queueLimit;
         this.quickDataEntryByPassSwitch = quickDataEntryByPassSwitch;

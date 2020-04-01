@@ -26,7 +26,8 @@
         <div class="top-menu-right2">
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn">
-                    <sec:authentication property="principal.userShortName"/></button>
+                    <sec:authentication property="principal.userShortName"/>
+                </button>
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
@@ -97,9 +98,10 @@
                                         <div class="clearFix"></div>
                                     </li>
 
-                                    <c:if test="${businessType eq BusinessType.DO}">
+                                    <c:if test="${inviteQueueSupervisor.businessType eq BusinessType.DO}">
                                         <div class="col-lable3">
-                                            <form:label path="inviteeCode" cssErrorClass="lb_error">Person is</form:label></div>
+                                            <form:label path="inviteeCode" cssErrorClass="lb_error">Person is</form:label>
+                                        </div>
                                         <div class="col-fields">
                                             <div class="register-switch form-field-left" style="width: 50%;">
                                                 <input type="radio" name="doctor" value="true" id="notDoctor" class="register-switch-input" onclick="selectClick('true')">
