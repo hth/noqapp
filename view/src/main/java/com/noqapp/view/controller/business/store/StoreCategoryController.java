@@ -8,6 +8,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreCategoryEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.catgeory.GroceryEnum;
 import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
 import com.noqapp.domain.types.medical.LabCategoryEnum;
@@ -43,11 +44,11 @@ import javax.servlet.http.HttpServletResponse;
  * hitender
  * 3/22/18 2:34 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
 @RequestMapping(value = "/business/store/category")
@@ -63,14 +64,14 @@ public class StoreCategoryController {
 
     @Autowired
     public StoreCategoryController(
-            @Value("${nextPage:/business/storeCategory}")
-            String nextPage,
+        @Value("${nextPage:/business/storeCategory}")
+        String nextPage,
 
-            BizService bizService,
-            BusinessUserService businessUserService,
-            StoreCategoryService storeCategoryService,
-            StoreCategoryValidator storeCategoryValidator,
-            BusinessUserStoreService businessUserStoreService
+        BizService bizService,
+        BusinessUserService businessUserService,
+        StoreCategoryService storeCategoryService,
+        StoreCategoryValidator storeCategoryValidator,
+        BusinessUserStoreService businessUserStoreService
     ) {
         this.nextPage = nextPage;
 
@@ -83,15 +84,15 @@ public class StoreCategoryController {
 
     @GetMapping(value = "/{storeId}", produces = "text/html;charset=UTF-8")
     public String landing(
-            @PathVariable("storeId")
-            ScrubbedInput storeId,
+        @PathVariable("storeId")
+        ScrubbedInput storeId,
 
-            @ModelAttribute("storeCategoryForm")
-            StoreCategoryForm storeCategoryForm,
+        @ModelAttribute("storeCategoryForm")
+        StoreCategoryForm storeCategoryForm,
 
-            Model model,
-            RedirectAttributes redirectAttrs,
-            HttpServletResponse response
+        Model model,
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeId.getText())) {
@@ -182,13 +183,13 @@ public class StoreCategoryController {
     /** Add new category. */
     @PostMapping(value = "/add", params = {"add"})
     public String add(
-            @ModelAttribute ("storeCategoryForm")
-            StoreCategoryForm storeCategoryForm,
+        @ModelAttribute("storeCategoryForm")
+        StoreCategoryForm storeCategoryForm,
 
-            BindingResult result,
-            RedirectAttributes redirectAttrs,
+        BindingResult result,
+        RedirectAttributes redirectAttrs,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeCategoryForm.getBizStoreId().getText())) {
@@ -216,15 +217,15 @@ public class StoreCategoryController {
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeCategoryForm.getBizStoreId().getText());
         StoreCategoryEntity storeCategory = new StoreCategoryEntity()
-                .setBizNameId(bizStore.getBizName().getId())
-                .setBizStoreId(storeCategoryForm.getBizStoreId().getText())
-                .setCategoryName(storeCategoryForm.getCategoryName().getText());
+            .setBizNameId(bizStore.getBizName().getId())
+            .setBizStoreId(storeCategoryForm.getBizStoreId().getText())
+            .setCategoryName(storeCategoryForm.getCategoryName().getText());
         storeCategoryService.save(storeCategory);
         return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId() + ".htm";
     }
 
     /** On cancelling addition of new product. */
-    @PostMapping (value = "/add", params = {"cancel_Add"})
+    @PostMapping(value = "/add", params = {"cancel_Add"})
     public String cancelAdd() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel adding store category qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
@@ -233,19 +234,19 @@ public class StoreCategoryController {
     }
 
     /** Edit landing category name. */
-    @GetMapping (value = "/{storeId}/{storeCategoryId}/edit")
+    @GetMapping(value = "/{storeId}/{storeCategoryId}/edit")
     public String editLanding(
-            @PathVariable("storeId")
-            ScrubbedInput storeId,
+        @PathVariable("storeId")
+        ScrubbedInput storeId,
 
-            @PathVariable("storeCategoryId")
-            ScrubbedInput storeCategoryId,
+        @PathVariable("storeCategoryId")
+        ScrubbedInput storeCategoryId,
 
-            @ModelAttribute ("storeCategoryForm")
-            StoreCategoryForm storeCategoryForm,
+        @ModelAttribute("storeCategoryForm")
+        StoreCategoryForm storeCategoryForm,
 
-            RedirectAttributes redirectAttrs,
-            HttpServletResponse response
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeId.getText())) {
@@ -254,16 +255,16 @@ public class StoreCategoryController {
             return null;
         }
         LOG.info("Landed on editing store category page storeCategoryId={} bizStoreId={} qid={} userLevel={}",
-                storeCategoryId.getText(),
-                storeId.getText(),
-                queueUser.getQueueUserId(),
-                queueUser.getUserLevel());
+            storeCategoryId.getText(),
+            storeId.getText(),
+            queueUser.getQueueUserId(),
+            queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         StoreCategoryEntity storeCategory = storeCategoryService.findOne(storeCategoryId.getText());
         storeCategoryForm
-                .setStoreCategoryId(new ScrubbedInput(storeCategory.getId()))
-                .setCategoryName(new ScrubbedInput(storeCategory.getCategoryName()));
+            .setStoreCategoryId(new ScrubbedInput(storeCategory.getId()))
+            .setCategoryName(new ScrubbedInput(storeCategory.getCategoryName()));
 
         redirectAttrs.addFlashAttribute("storeCategoryForm", storeCategoryForm);
         return "redirect:" + "/business/store/category/" + storeId.getText() + ".htm";
@@ -272,12 +273,12 @@ public class StoreCategoryController {
     /** Edit landing category name. */
     @PostMapping(value = "/edit")
     public String edit(
-            @ModelAttribute ("storeCategoryForm")
-            StoreCategoryForm storeCategoryForm,
+        @ModelAttribute("storeCategoryForm")
+        StoreCategoryForm storeCategoryForm,
 
-            BindingResult result,
-            RedirectAttributes redirectAttrs,
-            HttpServletResponse response
+        BindingResult result,
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeCategoryForm.getBizStoreId().getText())) {
@@ -286,10 +287,10 @@ public class StoreCategoryController {
             return null;
         }
         LOG.info("Edit store category id={} bizStoreId={} qid={} userLevel={}",
-                storeCategoryForm.getStoreCategoryId(),
-                storeCategoryForm.getBizStoreId(),
-                queueUser.getQueueUserId(),
-                queueUser.getUserLevel());
+            storeCategoryForm.getStoreCategoryId(),
+            storeCategoryForm.getBizStoreId(),
+            queueUser.getQueueUserId(),
+            queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         storeCategoryValidator.validate(storeCategoryForm, result);
@@ -303,16 +304,16 @@ public class StoreCategoryController {
 
         StoreCategoryEntity storeCategory = storeCategoryService.findOne(storeCategoryForm.getStoreCategoryId().getText());
         storeCategory
-                .setCategoryName(storeCategoryForm.getCategoryName().getText());
+            .setCategoryName(storeCategoryForm.getCategoryName().getText());
         storeCategoryService.save(storeCategory);
         return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId().getText() + ".htm";
     }
 
     /** On cancelling edit of product. */
-    @PostMapping (value = "/edit", params = {"cancel_Edit"})
+    @PostMapping(value = "/edit", params = {"cancel_Edit"})
     public String cancelEdit(
-            @ModelAttribute ("storeCategoryForm")
-            StoreCategoryForm storeCategoryForm
+        @ModelAttribute("storeCategoryForm")
+        StoreCategoryForm storeCategoryForm
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel editing store category qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
@@ -323,10 +324,10 @@ public class StoreCategoryController {
     /** Delete store category. */
     @PostMapping(value = "/delete")
     public String delete(
-            @ModelAttribute ("storeCategoryForm")
-            StoreCategoryForm storeCategoryForm,
+        @ModelAttribute("storeCategoryForm")
+        StoreCategoryForm storeCategoryForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!businessUserStoreService.hasAccessUsingStoreId(queueUser.getQueueUserId(), storeCategoryForm.getBizStoreId().getText())) {
@@ -335,9 +336,9 @@ public class StoreCategoryController {
             return null;
         }
         LOG.info("Delete store category id={} qid={} userLevel={}",
-                storeCategoryForm.getStoreCategoryId().getText(),
-                queueUser.getQueueUserId(),
-                queueUser.getUserLevel());
+            storeCategoryForm.getStoreCategoryId().getText(),
+            queueUser.getQueueUserId(),
+            queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         StoreCategoryEntity storeCategory = storeCategoryService.findOne(storeCategoryForm.getStoreCategoryId().getText());
