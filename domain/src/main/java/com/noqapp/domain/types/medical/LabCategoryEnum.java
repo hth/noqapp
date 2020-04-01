@@ -41,8 +41,8 @@ public enum LabCategoryEnum {
 
     public static List<String> asListOfDescription() {
         List<String> a = new LinkedList<>();
-        for (LabCategoryEnum radiologyCategory : LabCategoryEnum.values()) {
-            a.add(radiologyCategory.description);
+        for (LabCategoryEnum category : LabCategoryEnum.values()) {
+            a.add(category.description);
         }
 
         return a;

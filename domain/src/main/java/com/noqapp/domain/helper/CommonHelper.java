@@ -6,6 +6,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
+import com.noqapp.domain.types.catgeory.GroceryEnum;
 import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
@@ -65,6 +66,14 @@ public class CommonHelper {
                 return InvocationByEnum.BUSINESS == invocationBy
                     ? null
                     : PharmacyCategoryEnum.asMapWithNameAsKey(); /* For Store show default categories. */
+            case GS:
+                List<GroceryEnum> groceryEnums = Stream.of(GroceryEnum.values())
+                    .sorted(Comparator.comparing(GroceryEnum::getDescription))
+                    .collect(Collectors.toList());
+
+                /* https://javarevisited.blogspot.com/2017/07/how-to-sort-map-by-keys-in-java-8.html */
+                return groceryEnums.stream()
+                    .collect(toMap(GroceryEnum::getName, GroceryEnum::getDescription, (e1, e2) -> e2, LinkedHashMap::new));
             case RS:
             case FT:
             case BA:
@@ -72,7 +81,6 @@ public class CommonHelper {
             case SM:
             case MT:
             case SC:
-            case GS:
             case CF:
             case PW:
             case MU:
