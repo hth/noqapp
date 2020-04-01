@@ -57,7 +57,13 @@
 
     <action-state id="validateBusinessHours">
         <evaluate expression="businessFlowValidator.validateBusinessHours(registerBusiness, '', messageContext)"/>
-        <transition on="success" to="appointmentSettings">
+        <!-- When its for queue -->
+        <transition on="Qsuccess" to="appointmentSettings">
+            <evaluate expression="migrateToBusinessRegistrationFlowActions.fillWithBusinessHour(registerBusiness)"/>
+        </transition>
+
+        <!-- When its for order -->
+        <transition on="Osuccess" to="registrationReview">
             <evaluate expression="migrateToBusinessRegistrationFlowActions.fillWithBusinessHour(registerBusiness)"/>
         </transition>
         <transition on="failure" to="businessHours"/>

@@ -81,7 +81,9 @@
                                                 <form:options items="${registerBusiness.appointmentStates}" />
                                             </form:select>
                                             <span style="display:block; font-size:14px;">(Allow user to take appointment)</span>
-                                            <c:if test="${!registerBusiness.claimed}"><span style="font-size:14px; color: #9f1313">Since business is not claimed. Appointment selection is disabled.</span></c:if>
+                                            <c:if test="${!registerBusiness.claimed}">
+                                                <span style="font-size:14px; color: #9f1313">Since business is not claimed. Appointment selection is disabled.</span>
+                                            </c:if>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

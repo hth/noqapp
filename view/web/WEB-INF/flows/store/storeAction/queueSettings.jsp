@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum, com.noqapp.domain.types.MessageOriginEnum" %>
 <%@ include file="../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -71,6 +72,7 @@
                         <div class="admin-content">
                             <div class="add-new">
                                 <ul class="list-form">
+                                    <c:if test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.Q}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="walkInState" cssErrorClass="lb_error">Walk-in</form:label>
@@ -95,6 +97,7 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    </c:if>
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>
@@ -105,6 +108,7 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <c:if test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.Q}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="availableTokenCount" cssErrorClass="lb_error">Issue Limited Tokens</form:label>
@@ -115,6 +119,7 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    </c:if>
                                 </ul>
 
                                 <div class="col-lable3"></div>
