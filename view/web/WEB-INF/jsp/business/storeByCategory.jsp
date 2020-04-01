@@ -85,12 +85,12 @@
                                                     </td>
                                                     <td>
                                                         <a href="/business/${store.id}/listQueueSupervisor.htm">
-                                                                ${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}
+                                                            ${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}
                                                         </a>
                                                     </td>
                                                     <td>
                                                         <a href="/business/${store.id}/listQueueSupervisor.htm">
-                                                                ${businessLandingForm.queueDetails.get(store.id).assignedToQueue}
+                                                            ${businessLandingForm.queueDetails.get(store.id).assignedToQueue}
                                                         </a>
                                                     </td>
                                                     <td>

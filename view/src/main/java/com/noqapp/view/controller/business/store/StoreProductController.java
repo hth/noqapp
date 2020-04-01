@@ -9,6 +9,7 @@ import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
+import com.noqapp.domain.types.catgeory.GroceryEnum;
 import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
 import com.noqapp.domain.types.medical.LabCategoryEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
@@ -223,7 +224,8 @@ public class StoreProductController {
                     .setPackageSize(new ScrubbedInput(1));
                 break;
             case GS:
-                categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
+                categories = GroceryEnum.asMapWithNameAsKey();
+                categories.putAll(storeCategoryService.getStoreCategoriesAsMap(storeId.getText()));
                 unitOfMeasurements = UnitOfMeasurementEnum.GROCERY_VALUES;
                 productTypes = ProductTypeEnum.GROCERY_VALUES;
                 break;

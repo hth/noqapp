@@ -168,6 +168,16 @@ public class StoreCategoryController {
                     .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
                     .setBusinessType(bizStore.getBusinessType());
                 break;
+            case GS:
+                categories = GroceryEnum.asMapWithNameAsKey();
+                categories.putAll(storeCategoryService.getStoreCategoriesAsMap(storeId.getText()));
+                storeCategoryForm
+                    .setBizStoreId(storeId)
+                    .setCategories(categories)
+                    .setDisplayName(new ScrubbedInput(bizStore.getDisplayName()))
+                    .setCategoryCounts(storeCategoryService.countCategoryUse(categories.keySet(), storeId.getText()))
+                    .setBusinessType(bizStore.getBusinessType());
+                break;
             default:
                 categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
                 storeCategoryForm
