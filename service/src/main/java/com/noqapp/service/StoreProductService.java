@@ -2,6 +2,7 @@ package com.noqapp.service;
 
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreProductEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreProductManager;
 import com.noqapp.service.exceptions.CSVParsingException;
@@ -67,6 +68,11 @@ public class StoreProductService {
 
     public void delete(StoreProductEntity storeProduct) {
         storeProductManager.deleteHard(storeProduct);
+    }
+
+    @Mobile
+    public void removeById(String id) {
+        storeProductManager.removeById(id);
     }
 
     public int bulkUpdateStoreProduct(InputStream in, String codeQR, String qid) {
