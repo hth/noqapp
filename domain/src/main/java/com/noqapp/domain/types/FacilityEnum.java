@@ -26,12 +26,13 @@ public enum FacilityEnum {
 
     /* For Grocery Stores */
     DEL("DEL", "Delivery"),
+    PIK("PIK", "Pick Up"),
 
     /* For Restaurant Stores */
     FRS("FRS", "Fresh Food");
 
     public static EnumSet<FacilityEnum> DOCTOR_HOSPITAL = EnumSet.of(EM, IC, IU, NI, RA, MP, IF, LS, GS, CS, PY, SX, GY, DE, AH, SO);
-    public static EnumSet<FacilityEnum> GROCERY = EnumSet.of(DEL);
+    public static EnumSet<FacilityEnum> GROCERY = EnumSet.of(DEL, PIK);
     public static EnumSet<FacilityEnum> RESTAURANT = EnumSet.of(DEL, FRS);
 
     private final String description;

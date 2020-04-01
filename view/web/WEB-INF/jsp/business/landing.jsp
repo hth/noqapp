@@ -168,8 +168,10 @@
                             </c:when>
                             <c:otherwise>
                                 <p style="display:block; font-size:15px;">
-                                    You business is all set and you are administrator of this business.
-                                    Add stores so that your customers can make purchases.
+                                    You are the administrator. You business is all set.
+                                </p>
+                                <p style="display:block; font-size:15px;">
+                                    <b>Next Step:</b> Please add stores/queue so that your customers can make interact with your business.
                                 </p>
                             </c:otherwise>
                             </c:choose>
