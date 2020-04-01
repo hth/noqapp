@@ -60,7 +60,7 @@
                             <div class="addbtn-store">
                                 <a href="/business/${queueSupervisorForm.bizStoreId}/addNewAgent.htm" class="add-btn">Add New Agent</a>
                                 <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm" class="add-btn">Add New Supervisor</a>
-                                <c:if test="${businessType eq BusinessType.DO}">
+                                <c:if test="${queueSupervisorForm.businessType eq BusinessType.DO}">
                                 <a href="/business/${queueSupervisorForm.bizStoreId}/addDoctor.htm" class="add-btn">Add New Doctor</a>
                                 </c:if>
                             </div>

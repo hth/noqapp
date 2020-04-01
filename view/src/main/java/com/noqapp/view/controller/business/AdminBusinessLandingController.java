@@ -272,6 +272,7 @@ public class AdminBusinessLandingController {
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
         queueSupervisorForm.setBizStoreId(bizStore.getId());
         queueSupervisorForm.setQueueName(bizStore.getDisplayName());
+        queueSupervisorForm.setBusinessType(bizStore.getBusinessType());
 
         List<QueueSupervisor> queueSupervisors = businessUserStoreService.getAllManagingStore(storeId.getText());
         queueSupervisorForm.setQueueSupervisors(queueSupervisors);

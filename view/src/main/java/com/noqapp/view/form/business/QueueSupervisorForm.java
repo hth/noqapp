@@ -1,6 +1,7 @@
 package com.noqapp.view.form.business;
 
 import com.noqapp.domain.helper.QueueSupervisor;
+import com.noqapp.domain.types.BusinessTypeEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 public class QueueSupervisorForm {
     private String bizStoreId;
     private String queueName;
+    private BusinessTypeEnum businessType;
     private List<QueueSupervisor> queueSupervisors = new ArrayList<>();
     private List<QueueSupervisor> availableQueueSupervisor = new ArrayList<>();
 
@@ -29,6 +31,15 @@ public class QueueSupervisorForm {
 
     public void setQueueName(String queueName) {
         this.queueName = queueName;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public QueueSupervisorForm setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
     }
 
     public List<QueueSupervisor> getQueueSupervisors() {
