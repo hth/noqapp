@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.BusinessUserRegistrationStatusEnum" %>
 <%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -160,6 +161,18 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
+                                <c:if test="${register.registerBusiness.businessUserRegistrationStatus == BusinessUserRegistrationStatusEnum.V}">
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="registerBusiness.dayClosed" cssErrorClass="lb_error" style="color: #9f1313;">Business Closed</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:checkbox path="registerBusiness.dayClosed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true"/>
+                                        <span style="display:block; font-size:14px; color: #9f1313;">(Example: Closed for national holiday. This will remain closed unless unchecked. No Queues are open.)</span>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                </c:if>
                                 <li>
                                     <div class="col-lable3">
                                         <form:label path="registerBusiness.claimed" cssErrorClass="lb_error" style="color: #9f1313;">Business Claimed</form:label>

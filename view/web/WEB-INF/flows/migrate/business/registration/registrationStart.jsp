@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.BusinessUserRegistrationStatusEnum" %>
 <%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -177,7 +178,7 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
-                                    <c:if test="${!empty register.registerBusiness.businessUser.validateByQid}">
+                                    <c:if test="${register.registerBusiness.businessUserRegistrationStatus == BusinessUserRegistrationStatusEnum.V}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="dayClosed" cssErrorClass="lb_error" style="color: #9f1313;">Business Closed</form:label>
