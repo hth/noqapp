@@ -106,6 +106,16 @@
                                     </div>
                                     </spring:hasBindErrors>
 
+                                    <c:if test="${!empty storeProductForm.message}">
+                                    <div class="error-box">
+                                        <div class="alert-info" style="text-align: left;">
+                                            <p>
+                                            <c:out value="${storeProductForm.message}" />
+                                            </p>
+                                        </div>
+                                    </div>
+                                    </c:if>
+
                                     <div class="admin-content">
                                         <div class="add-new">
                                             <ul class="list-form">
@@ -321,6 +331,16 @@
                                     </div>
                                     </spring:hasBindErrors>
 
+                                    <c:if test="${!empty storeProductForm.message}">
+                                    <div class="error-box">
+                                        <div class="alert-info" style="text-align: left;">
+                                            <p>
+                                            <c:out value="${storeProductForm.message}" />
+                                            </p>
+                                        </div>
+                                    </div>
+                                    </c:if>
+
                                     <div class="admin-content">
                                         <div class="add-new">
                                             <ul class="list-form">
@@ -387,7 +407,7 @@
                                                     </div>
                                                     <div class="col-fields">
                                                         <form:input path="unitValue" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                placeholder="Number"/>
+                                                                placeholder="Number (Example: 500gm or 1kg or 2lt or 2dz)"/>
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -559,7 +579,7 @@
                                             <span style="display:block; font-size:13px;">${storeProduct.productType.description}</span>
                                         </td>
                                         <td nowrap>
-                                            <span style="display:block; font-size:13px;">${storeProduct.unitValue}${storeProduct.unitOfMeasurement.name.toLowerCase()}</span>
+                                            <span style="display:block; font-size:13px;">${storeProduct.unitValue_Formatted}${storeProduct.unitOfMeasurement.name.toLowerCase()}</span>
                                             <span style="display:block; font-size:13px;">Package: ${storeProduct.packageSize}</span>
                                         </td>
                                         <td>

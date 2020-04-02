@@ -76,6 +76,7 @@ public enum GroceryEnum {
     JAG("JAG", "Jaggery"),
     MUK("MUK", "Mukhwas"),
     PAP("PAP", "Papad"),
+    POL("POL", "Poultry"),
     TAM("TAM", "Tamarind"),
     VER("VER", "Vermicelli"),
     INS("INS", "Instant Food"),

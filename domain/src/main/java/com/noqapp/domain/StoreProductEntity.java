@@ -258,6 +258,23 @@ public class StoreProductEntity extends BaseEntity {
             .setVersion(found.getVersion());
     }
 
+    /** Used by web for well formatted price as string. */
+    @Transient
+    @SuppressWarnings("unused")
+    public String getUnitValue_Formatted() {
+        return new BigDecimal(this.unitValue).divide(BigDecimal.valueOf(100), MathContext.DECIMAL64).toString();
+    }
+
+    @Transient
+    private String getProductPrice_Formatted() {
+        return new BigDecimal(this.productPrice).divide(BigDecimal.valueOf(100), MathContext.DECIMAL64).toString();
+    }
+
+    @Transient
+    public String successMessage() {
+        return this.productName + ", priced @ " + getProductPrice_Formatted() + ", for " + getUnitValue_Formatted() + "/" + this.unitOfMeasurement + " (per " + this.packageSize + " package size)  [Inventory Size: " + this.inventoryLimit + "]";
+    }
+
     @Override
     public String toString() {
         return "StoreProductEntity{" +
