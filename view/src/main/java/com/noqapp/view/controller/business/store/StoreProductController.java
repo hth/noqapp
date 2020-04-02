@@ -286,7 +286,7 @@ public class StoreProductController {
                 .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
                 .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
                 .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
-                .setInventoryLimit(new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
+                .setInventoryLimit(StringUtils.isBlank(storeProductForm.getInventoryLimit().getText()) ? 0 : new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
                 .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
             storeProductService.save(storeProduct);
         } catch (Exception e) {
@@ -398,7 +398,7 @@ public class StoreProductController {
                 .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
                 .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
                 .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
-                .setInventoryLimit(new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
+                .setInventoryLimit(StringUtils.isBlank(storeProductForm.getInventoryLimit().getText()) ? 0 : new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
                 .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
             storeProductService.save(storeProduct);
         } catch (Exception e) {
