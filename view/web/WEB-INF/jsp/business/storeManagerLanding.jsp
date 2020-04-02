@@ -51,6 +51,7 @@
     <!-- content -->
     <div class="content">
         <div class="warp-inner">
+            <sec:authorize access="hasRole('ROLE_M_ADMIN')" var="isMerchantAdmin" />
             <sec:authorize access="hasAnyRole('ROLE_S_MANAGER', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')">
             <!-- Add New Supervisor -->
             <div class="admin-main">
@@ -68,8 +69,10 @@
                                         <a href="/business/store/publishArticle/landing.htm" class="add-btn">Publish Article</a>
                                     </c:when>
                                     <c:otherwise>
-                                        <!-- Currently Managers are not supported to add new store. -->
-                                        <a href="/business/addStore.htm" class="add-btn">Add new store</a>
+                                        <sec:authorize access="hasAnyRole('ROLE_M_ADMIN')">
+                                            <!-- Currently Managers are not supported to add new store. -->
+                                            <a href="/business/addStore.htm" class="add-btn">Add new store</a>
+                                        </sec:authorize>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
@@ -89,9 +92,16 @@
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
                                         <td>
-                                            <a href="/business/detail/store/${store.id}.htm">
-                                                <span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span>
-                                            </a>
+                                            <c:choose>
+                                                <c:when test="${isMerchantAdmin}">
+                                                    <a href="/business/detail/store/${store.id}.htm" style="color: #0000FF;">
+                                                        <span style="display:block; font-size:13px; ">${store.addressWrappedFunky}</span>
+                                                    </a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span style="display:block; font-size:13px; ">${store.addressWrappedFunky}</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                             <br/>
                                             <c:choose>
                                                 <c:when test="${BusinessTypeEnum.RS eq store.businessType
@@ -102,13 +112,13 @@
                                                 || BusinessTypeEnum.CF eq store.businessType
                                                 || BusinessTypeEnum.PH eq store.businessType
                                                 || BusinessTypeEnum.HS eq store.businessType}">
-                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm" style="color: #1c1c1c;">Product List</a>
+                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm" style="color: #0000FF;">Product List</a>
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
-                                                        <a href="/business/store/category/${store.id}.htm" style="color: #1c1c1c;">Store Category</a>
+                                                        <a href="/business/store/category/${store.id}.htm" style="color: #0000FF;">Store Category</a>
                                                     </span>
-                                                    <span style="display:block; font-size:13px;"><a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm" style="color: #1c1c1c;">Menu Image</a>
+                                                    <span style="display:block; font-size:13px;"><a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm" style="color: #0000FF;">Menu Image</a>
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
-                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #1c1c1c;">Interior or Exterior Image</a>
+                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Interior or Exterior Image</a>
                                                     </span>
                                                     <span style="display:block; font-size:13px;">
                                                         <a href="/business/store/product/bulk/${store.codeQR}.htm" class="add-btn">Bulk Product Change</a>
@@ -116,7 +126,7 @@
                                                 </c:when>
                                                 <c:when test="${BusinessTypeEnum.BK eq store.businessType || BusinessTypeEnum.HS eq store.businessType}">
                                                     <span style="display:block; font-size:13px;">
-                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #1c1c1c;">Interior or Exterior Image</a>
+                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Interior or Exterior Image</a>
                                                     </span>
                                                 </c:when>
                                                 <c:otherwise>
@@ -125,7 +135,7 @@
                                             </c:choose>
                                         </td>
                                         <td nowrap>
-                                            <a href="/${store.codeQR}/q.htm" target="_blank">
+                                            <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">
                                                 <span style="display:block; font-size:13px;">${store.displayName}</span>
                                             </a>
                                             <br/>

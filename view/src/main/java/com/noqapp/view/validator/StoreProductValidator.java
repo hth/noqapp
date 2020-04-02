@@ -3,6 +3,8 @@ package com.noqapp.view.validator;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.view.form.StoreProductForm;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +66,9 @@ public class StoreProductValidator implements Validator {
             }
 
             if (!errors.hasErrors()) {
-                if (storeProductService.existProductName(form.getBizStoreId().getText(), form.getProductName().getText())) {
+                if (null != form.getStoreProductId()
+                    && StringUtils.isBlank(form.getStoreProductId().getText())
+                    && storeProductService.existProductName(form.getBizStoreId().getText(), form.getProductName().getText())) {
                     errors.rejectValue("productName",
                             "productName.exists",
                             new Object[]{form.getProductName()},

@@ -6,6 +6,8 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
+import org.apache.commons.text.WordUtils;
+
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +37,9 @@ public class StoreProductForm {
     private ProductTypeEnum[] productTypes;
     private UnitOfMeasurementEnum[] unitOfMeasurements;
     private BusinessTypeEnum businessType;
+
+    /* Form success or failure message. */
+    private String message;
 
     public ScrubbedInput getDisplayName() {
         return displayName;
@@ -205,5 +210,24 @@ public class StoreProductForm {
     public StoreProductForm setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
         return this;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public StoreProductForm setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    public String getProductName_Capitalized() {
+        return WordUtils.capitalizeFully(productName.getText());
+    }
+
+    public StoreProductForm sanitize(String message) {
+        StoreProductForm storeProductForm = new StoreProductForm();
+        storeProductForm.setMessage(message);
+        return storeProductForm;
     }
 }

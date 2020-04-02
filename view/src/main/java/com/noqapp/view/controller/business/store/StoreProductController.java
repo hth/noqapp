@@ -142,9 +142,6 @@ public class StoreProductController {
         //Gymnastic to show BindingResult errors if any
         if (model.asMap().containsKey("result")) {
             model.addAttribute("org.springframework.validation.BindingResult.storeProductForm", model.asMap().get("result"));
-            storeProductForm
-                .setStoreProductId((ScrubbedInput) model.asMap().get("storeProductId"))
-                .setStoreCategoryId((ScrubbedInput) model.asMap().get("storeCategoryId"));
         } else {
             redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
         }
@@ -267,8 +264,10 @@ public class StoreProductController {
 
         storeProductValidator.validate(storeProductForm, result);
         if (result.hasErrors()) {
+            LOG.warn("Failed validation on adding product");
             redirectAttrs.addFlashAttribute("result", result);
-            LOG.warn("Failed validation");
+            redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
+
             //Re-direct to prevent resubmit
             return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId() + ".htm";
         }
@@ -276,7 +275,7 @@ public class StoreProductController {
         try {
             StoreProductEntity storeProduct = new StoreProductEntity()
                 .setBizStoreId(storeProductForm.getBizStoreId().getText())
-                .setProductName(storeProductForm.getProductName().getText())
+                .setProductName(storeProductForm.getProductName_Capitalized())
                 .setProductPrice(StringUtils.isBlank(storeProductForm.getProductPrice().getText())
                     ? 0 : new BigDecimal(storeProductForm.getProductPrice().getText()).multiply(new BigDecimal(100)).intValue())
                 .setProductDiscount(StringUtils.isBlank(storeProductForm.getProductDiscount().getText())
@@ -287,8 +286,9 @@ public class StoreProductController {
                 .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
                 .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
                 .setInventoryLimit(StringUtils.isBlank(storeProductForm.getInventoryLimit().getText()) ? 0 : new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
-                .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
+                .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).multiply(new BigDecimal(100)).intValue());
             storeProductService.save(storeProduct);
+            redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm.sanitize("Added successfully: " + storeProduct.successMessage()));
         } catch (Exception e) {
             LOG.error("Failed adding product reason={}", e.getLocalizedMessage(), e);
         }
@@ -347,7 +347,7 @@ public class StoreProductController {
             .setPackageSize(new ScrubbedInput(storeProduct.getPackageSize()))
             .setInventoryCurrent(new ScrubbedInput(storeProduct.getInventoryCurrent()))
             .setInventoryLimit(new ScrubbedInput(storeProduct.getInventoryLimit()))
-            .setUnitValue(new ScrubbedInput(storeProduct.getUnitValue()));
+            .setUnitValue(new ScrubbedInput(new BigDecimal(storeProduct.getUnitValue()).divide(new BigDecimal(100), MathContext.DECIMAL64).toString()));
 
         redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
         return "redirect:" + "/business/store/product/" + storeId.getText() + ".htm";
@@ -378,10 +378,10 @@ public class StoreProductController {
 
         storeProductValidator.validate(storeProductForm, result);
         if (result.hasErrors()) {
-            redirectAttrs.addFlashAttribute("storeProductId", storeProductForm.getStoreProductId());
-            redirectAttrs.addFlashAttribute("storeCategoryId", storeProductForm.getStoreCategoryId());
+            LOG.warn("Failed validation on editing product");
             redirectAttrs.addFlashAttribute("result", result);
-            LOG.warn("Failed validation");
+            redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
+
             //Re-direct to prevent resubmit
             return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
         }
@@ -390,7 +390,7 @@ public class StoreProductController {
             StoreProductEntity storeProduct = storeProductService.findOne(storeProductForm.getStoreProductId().getText());
             storeProduct
                 .setBizStoreId(storeProductForm.getBizStoreId().getText())
-                .setProductName(storeProductForm.getProductName().getText())
+                .setProductName(storeProductForm.getProductName_Capitalized())
                 .setProductPrice(null == storeProductForm.getProductPrice() ? 0 : new BigDecimal(storeProductForm.getProductPrice().getText()).multiply(new BigDecimal(100)).intValue())
                 .setProductDiscount(null == storeProductForm.getProductDiscount() ? 0 : new BigDecimal(storeProductForm.getProductDiscount().getText()).multiply(new BigDecimal(100)).intValue())
                 .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
@@ -399,8 +399,9 @@ public class StoreProductController {
                 .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
                 .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
                 .setInventoryLimit(StringUtils.isBlank(storeProductForm.getInventoryLimit().getText()) ? 0 : new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
-                .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).intValue());
+                .setUnitValue(new BigDecimal(storeProductForm.getUnitValue().getText()).multiply(new BigDecimal(100)).intValue());
             storeProductService.save(storeProduct);
+            redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm.sanitize("Edited successfully: " + storeProduct.successMessage()));
         } catch (Exception e) {
             LOG.error("Failed updating product storeProductId={} reason={}", storeProductForm.getStoreProductId(), e.getLocalizedMessage(), e);
         }
