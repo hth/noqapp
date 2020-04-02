@@ -110,6 +110,7 @@
                                         <div class="add-new">
                                             <ul class="list-form">
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="storeCategoryId" cssErrorClass="lb_error">Category</form:label>
                                                     </div>
@@ -132,6 +133,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productName" cssErrorClass="lb_error">Name</form:label>
                                                     </div>
@@ -142,6 +144,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productPrice" cssErrorClass="lb_error">Price of Product</form:label>
                                                     </div>
@@ -172,6 +175,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="unitValue" cssErrorClass="lb_error">Unit</form:label>
                                                     </div>
@@ -182,6 +186,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="unitOfMeasurement" cssErrorClass="lb_error">Measurement</form:label>
                                                     </div>
@@ -204,6 +209,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="packageSize" cssErrorClass="lb_error">Package Size</form:label>
                                                     </div>
@@ -214,6 +220,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productType" cssErrorClass="lb_error">Product Categorization</form:label>
                                                     </div>
@@ -241,6 +248,14 @@
                                                     <div class="col-fields">
                                                         <form:input path="inventoryLimit" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        Required fields are marked with <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -310,6 +325,7 @@
                                         <div class="add-new">
                                             <ul class="list-form">
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="storeCategoryId" cssErrorClass="lb_error">Category</form:label>
                                                     </div>
@@ -323,6 +339,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productName" cssErrorClass="lb_error">Name</form:label>
                                                     </div>
@@ -333,6 +350,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productPrice" cssErrorClass="lb_error">Price of Product</form:label>
                                                     </div>
@@ -363,6 +381,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="unitValue" cssErrorClass="lb_error">Unit</form:label>
                                                     </div>
@@ -373,6 +392,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="unitOfMeasurement" cssErrorClass="lb_error">Measurement</form:label>
                                                     </div>
@@ -397,6 +417,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="packageSize" cssErrorClass="lb_error">Package Size</form:label>
                                                     </div>
@@ -407,6 +428,7 @@
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productType" cssErrorClass="lb_error">Product Categorization</form:label>
                                                     </div>
@@ -437,6 +459,14 @@
                                                     <div class="col-fields">
                                                         <form:input path="inventoryLimit" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        Required fields are marked with <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
