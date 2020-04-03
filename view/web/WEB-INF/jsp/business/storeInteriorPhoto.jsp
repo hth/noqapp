@@ -103,9 +103,9 @@
                                 <div class="left-btn">
                                     <input name="upload" class="next-btn" value="UPLOAD STORE IMAGE" type="submit">
                                 </div>
-                                    <%--<div class="right-btn">--%>
-                                    <%--<input name="cancel_Upload" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                    <%--</div>--%>
+                                <div class="right-btn">
+                                    <input name="cancel_Upload" class="cancel-btn" value="CANCEL" type="submit">
+                                </div>
                                 <div class="clearFix"></div>
                             </div>
                             <div class="clearFix"></div>

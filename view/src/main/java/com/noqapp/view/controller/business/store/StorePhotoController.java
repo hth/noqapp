@@ -294,6 +294,12 @@ public class StorePhotoController {
         return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
     }
 
+    @PostMapping(value = "/uploadServicePhoto", params = "cancel_Upload")
+    public String cancelUploadServicePhoto() {
+        LOG.info("Cancel fileupload for store service");
+        return "redirect:/business/store/landing.htm";
+    }
+
     /** For uploading service image. */
     @PostMapping (value = "/uploadInteriorPhoto")
     public String uploadInteriorPhoto(
@@ -351,6 +357,12 @@ public class StorePhotoController {
             }
         }
         return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+    }
+
+    @PostMapping(value = "/uploadInteriorPhoto", params = "cancel_Upload")
+    public String cancelUploadInteriorPhoto() {
+        LOG.info("Cancel fileupload for store");
+        return "redirect:/business/store/landing.htm";
     }
 
     private void processServiceImage(String qid, String codeQR, MultipartFile multipartFile, boolean service) throws IOException {
