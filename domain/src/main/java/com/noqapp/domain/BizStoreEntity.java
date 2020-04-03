@@ -183,9 +183,11 @@ public class BizStoreEntity extends BaseEntity {
     @Field("DR")
     private int deliveryRange = 5;
 
+    /* Menu Image or Images of service offered in the store. */
     @Field("SI")
     private Set<String> storeServiceImages = new LinkedHashSet<>();
 
+    /* Store Exterior and Interior Images. */
     @Field("II")
     private Set<String> storeInteriorImages = new LinkedHashSet<>();
 

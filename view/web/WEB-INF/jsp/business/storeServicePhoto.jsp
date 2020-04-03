@@ -57,7 +57,7 @@
                 <form:form action="${pageContext.request.contextPath}/business/store/photo/uploadServicePhoto.htm" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="codeQR" value="${codeQR}"/>
                     <div class="admin-title">
-                        <h2>Add Store Photo</h2>
+                        <h2>Add Store Service Image</h2>
                     </div>
 
                     <spring:hasBindErrors name="fileUploadForm">
@@ -65,19 +65,31 @@
                         <div class="error-txt">
                             <ul>
                                 <c:if test="${errors.hasFieldErrors('file')}">
-                                    <li><form:errors path="file"/></li>
+                                <li><form:errors path="file"/></li>
                                 </c:if>
                             </ul>
                         </div>
                     </div>
                     </spring:hasBindErrors>
 
+                    <c:if test="${!empty fileUploadForm.message}">
+                    <div class="error-box">
+                        <div class="alert-info" style="text-align: left;">
+                            <p>
+                                <span style="display:block; font-size:13px; text-align: center;">
+                                    <c:out value="${fileUploadForm.message}" />
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    </c:if>
+
                     <div class="admin-content">
                         <div class="add-new">
                             <ul class="list-form">
                                 <li>
                                     <div class="col-lable3" style="padding-top: 30px;">
-                                        <form:label path="file" cssErrorClass="lb_error">Select Store Image</form:label>
+                                        <form:label path="file" cssErrorClass="lb_error">Select Menu Image</form:label>
                                     </div>
                                     <div class="col-fields">
                                         <form:input class="next-btn" type="file" path="file" id="file"/>
@@ -89,11 +101,11 @@
                             <div class="col-lable3"></div>
                             <div class="col-fields">
                                 <div class="left-btn">
-                                    <input name="upload" class="next-btn" value="UPLOAD STORE IMAGE" type="submit">
+                                    <input name="upload" class="next-btn" value="UPLOAD SERVICE IMAGE" type="submit">
                                 </div>
-                                    <%--<div class="right-btn">--%>
-                                    <%--<input name="cancel_Upload" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                    <%--</div>--%>
+                                <div class="right-btn">
+                                    <input name="cancel_Upload" class="cancel-btn" value="CANCEL" type="submit">
+                                </div>
                                 <div class="clearFix"></div>
                             </div>
                             <div class="clearFix"></div>
@@ -102,7 +114,7 @@
                 </form:form>
 
                 <div class="admin-title">
-                    <h2>Store Photos</h2>
+                    <h2>Store Service Images</h2>
                 </div>
                 <div class="admin-content">
                     <div class="add-new">
@@ -113,7 +125,7 @@
                                 <li>
                                     <div class="col-fields">
                                         <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/service/${codeQR}/${image}"
-                                                onerror="this.src='/static2/internal/img/profile-image-192x192.png'"
+                                                onerror="this.src='/static2/internal/img/image-processing.png'"
                                                 class="img-profile-circle" />
                                     </div>
                                     <div class="col-lable3">
@@ -133,7 +145,7 @@
                         </c:when>
                         <c:otherwise>
                             <div class="alert-info">
-                                <div class="no-approve">Please upload store related photographs.</div>
+                                <div class="no-approve">Please upload store service images.</div>
                             </div>
                         </c:otherwise>
                         </c:choose>

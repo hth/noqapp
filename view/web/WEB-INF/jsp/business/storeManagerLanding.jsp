@@ -112,21 +112,31 @@
                                                 || BusinessTypeEnum.CF eq store.businessType
                                                 || BusinessTypeEnum.PH eq store.businessType
                                                 || BusinessTypeEnum.HS eq store.businessType}">
-                                                    <span style="display:block; font-size:13px;"><a href="/business/store/product/${store.id}.htm" style="color: #0000FF;">Product List</a>
+                                                    <span style="display:block; font-size:13px;">
+                                                        <a href="/business/store/product/${store.id}.htm" style="color: #0000FF;">Product List</a>
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
                                                         <a href="/business/store/category/${store.id}.htm" style="color: #0000FF;">Store Category</a>
                                                     </span>
-                                                    <span style="display:block; font-size:13px;"><a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm" style="color: #0000FF;">Menu Image</a>
-                                                        &nbsp; <span style="font-size:18px;">|</span> &nbsp;
-                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Interior or Exterior Image</a>
+                                                    <span style="display:block; font-size:13px;">
+                                                        <c:choose>
+                                                            <c:when test="${BusinessTypeEnum.RS eq store.businessType
+                                                            || BusinessTypeEnum.GS eq store.businessType}">
+                                                                <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Store Image</a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm" style="color: #0000FF;">Menu Image</a>
+                                                                &nbsp; <span style="font-size:18px;">|</span> &nbsp;
+                                                                <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Store Image</a>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </span>
                                                     <span style="display:block; font-size:13px;">
                                                         <a href="/business/store/product/bulk/${store.codeQR}.htm" class="add-btn">Bulk Product Change</a>
                                                     </span>
                                                 </c:when>
-                                                <c:when test="${BusinessTypeEnum.BK eq store.businessType || BusinessTypeEnum.HS eq store.businessType}">
+                                                <c:when test="${BusinessTypeEnum.BK eq store.businessType}">
                                                     <span style="display:block; font-size:13px;">
-                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Interior or Exterior Image</a>
+                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Store Image</a>
                                                     </span>
                                                 </c:when>
                                                 <c:otherwise>

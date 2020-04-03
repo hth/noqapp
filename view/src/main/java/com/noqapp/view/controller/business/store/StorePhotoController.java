@@ -105,9 +105,10 @@ public class StorePhotoController {
         FileUploadForm fileUploadForm,
 
         Model model,
+        RedirectAttributes redirectAttrs,
         HttpServletResponse response
     ) throws IOException {
-        LOG.info("Landing page to load store images");
+        LOG.info("Landing page to load service or menu images");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!businessUserStoreService.hasAccess(queueUser.getQueueUserId(), codeQR.getText())) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
@@ -122,6 +123,8 @@ public class StorePhotoController {
             model.addAttribute(
                 "org.springframework.validation.BindingResult.fileUploadForm",
                 model.asMap().get("resultImage"));
+        } else {
+            redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm);
         }
 
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
@@ -141,9 +144,10 @@ public class StorePhotoController {
         FileUploadForm fileUploadForm,
 
         Model model,
+        RedirectAttributes redirectAttrs,
         HttpServletResponse response
     ) throws IOException {
-        LOG.info("Landing page to load store interior images");
+        LOG.info("Landing page to load store interior exterior images");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (!businessUserStoreService.hasAccess(queueUser.getQueueUserId(), codeQR.getText())) {
             LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
@@ -158,6 +162,8 @@ public class StorePhotoController {
             model.addAttribute(
                 "org.springframework.validation.BindingResult.fileUploadForm",
                 model.asMap().get("resultImage"));
+        } else {
+            redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm);
         }
 
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
@@ -168,7 +174,14 @@ public class StorePhotoController {
     }
 
     @PostMapping(value = "/deleteServicePhoto")
-    public String deleteServicePhoto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String deleteServicePhoto(
+        @ModelAttribute("fileUploadForm")
+        FileUploadForm fileUploadForm,
+
+        RedirectAttributes redirectAttrs,
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws IOException {
         LOG.info("Delete store service image");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String codeQR = request.getParameter("codeQR");
@@ -187,11 +200,19 @@ public class StorePhotoController {
         images.remove(request.getParameter("storeServiceImage"));
         bizService.saveStore(bizStore, "Deleted Store Menu/Service Image");
         bizStoreElasticManager.save(DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId())));
+        redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Store service image deleted successfully"));
         return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
     }
 
     @PostMapping(value = "/deleteInteriorPhoto")
-    public String deleteInteriorPhoto(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String deleteInteriorPhoto(
+        @ModelAttribute("fileUploadForm")
+        FileUploadForm fileUploadForm,
+
+        RedirectAttributes redirectAttrs,
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws IOException {
         LOG.info("Delete store interior image");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String codeQR = request.getParameter("codeQR");
@@ -210,6 +231,7 @@ public class StorePhotoController {
         images.remove(request.getParameter("storeInteriorImage"));
         bizService.saveStore(bizStore, "Delete Store Interior Image");
         bizStoreElasticManager.save(DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId())));
+        redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Store image deleted successfully"));
         return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
     }
 
@@ -254,6 +276,7 @@ public class StorePhotoController {
 
                 try {
                     processServiceImage(queueUser.getQueueUserId(), codeQR, multipartFile, true);
+                    redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Store service image uploaded successfully"));
                     return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
@@ -269,6 +292,12 @@ public class StorePhotoController {
             }
         }
         return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
+    }
+
+    @PostMapping(value = "/uploadServicePhoto", params = "cancel_Upload")
+    public String cancelUploadServicePhoto() {
+        LOG.info("Cancel fileupload for store service");
+        return "redirect:/business/store/landing.htm";
     }
 
     /** For uploading service image. */
@@ -312,6 +341,7 @@ public class StorePhotoController {
 
                 try {
                     processServiceImage(queueUser.getQueueUserId(), codeQR, multipartFile, false);
+                    redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Store image uploaded successfully"));
                     return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
@@ -327,6 +357,12 @@ public class StorePhotoController {
             }
         }
         return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+    }
+
+    @PostMapping(value = "/uploadInteriorPhoto", params = "cancel_Upload")
+    public String cancelUploadInteriorPhoto() {
+        LOG.info("Cancel fileupload for store");
+        return "redirect:/business/store/landing.htm";
     }
 
     private void processServiceImage(String qid, String codeQR, MultipartFile multipartFile, boolean service) throws IOException {
