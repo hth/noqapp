@@ -65,7 +65,7 @@
                         <div class="error-txt">
                             <ul>
                                 <c:if test="${errors.hasFieldErrors('file')}">
-                                    <li><form:errors path="file"/></li>
+                                <li><form:errors path="file"/></li>
                                 </c:if>
                             </ul>
                         </div>

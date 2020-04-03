@@ -161,6 +161,7 @@ public class BizService {
         }
     }
 
+    @CacheEvict(value = "bizStore-codeQR", key = "#bizStore.codeQR")
     public void saveStore(BizStoreEntity bizStore, String changeInitiateReason) {
         bizStoreManager.save(bizStore);
         try {
