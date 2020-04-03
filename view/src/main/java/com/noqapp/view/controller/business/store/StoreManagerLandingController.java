@@ -82,10 +82,10 @@ public class StoreManagerLandingController {
 
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
     public String landing(
-            @ModelAttribute("storeManagerForm")
-            StoreManagerForm storeManagerForm,
+        @ModelAttribute("storeManagerForm")
+        StoreManagerForm storeManagerForm,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -106,10 +106,10 @@ public class StoreManagerLandingController {
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
 
             storeManagerForm
-                    //TODO(hth) added biz name multiple times
-                    .setBizName(bizStore.getBizName().getBusinessName())
-                    .addBizStore(bizStore)
-                    .addTokenQueue(codeQR, tokenQueue);
+                //TODO(hth) added biz name multiple times
+                .setBizName(bizStore.getBizName().getBusinessName())
+                .addBizStore(bizStore)
+                .addTokenQueue(codeQR, tokenQueue);
             //TODO(hth) can add current average time by calculating serviced clients in queue.
         }
 
