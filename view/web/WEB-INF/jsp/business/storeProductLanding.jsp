@@ -110,7 +110,9 @@
                                     <div class="error-box">
                                         <div class="alert-info" style="text-align: left;">
                                             <p>
-                                            <c:out value="${storeProductForm.message}" />
+                                                <span style="display:block; font-size:13px; text-align: center;">
+                                                    <c:out value="${storeProductForm.message}" /> -- <a href="#products">(product list of #${storeProductForm.storeProducts.size()})</a>
+                                                </span>
                                             </p>
                                         </div>
                                     </div>
@@ -335,7 +337,9 @@
                                     <div class="error-box">
                                         <div class="alert-info" style="text-align: left;">
                                             <p>
-                                            <c:out value="${storeProductForm.message}" />
+                                                <span style="display:block; font-size:13px; text-align: center;">
+                                                    <c:out value="${storeProductForm.message}" /> -- <a href="#products">(product list of #${storeProductForm.storeProducts.size()})</a>
+                                                </span>
                                             </p>
                                         </div>
                                     </div>
@@ -536,9 +540,9 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
-                                    <h2>
+                                    <h2 id>
                                         <span style="display:block; font-size:13px;">
-                                            Total Products: <span>${storeProductForm.storeProducts.size()}</span>
+                                            Total Products: <span id="products">${storeProductForm.storeProducts.size()}</span>
                                         </span>
                                     </h2>
 
