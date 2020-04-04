@@ -540,7 +540,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
-                                    <h2 id>
+                                    <h2>
                                         <span style="display:block; font-size:13px;">
                                             Total Products: <span id="products">${storeProductForm.storeProducts.size()}</span>
                                         </span>
