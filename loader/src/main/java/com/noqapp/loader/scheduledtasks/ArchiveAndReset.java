@@ -14,6 +14,7 @@ import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.types.AppointmentStateEnum;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
@@ -43,8 +44,6 @@ import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.Instant;
@@ -364,7 +363,7 @@ public class ArchiveAndReset {
         }
 
         if (bizStore.getStoreInteriorImages().size() == 0) {
-            addSystemDefaultImage(bizStore);
+            systemAddedStoreBannerImage(bizStore.getCodeQR(), bizStore.getBusinessType());
         }
     }
 
@@ -676,8 +675,8 @@ public class ArchiveAndReset {
     }
 
     /** Add default image for store. */
-    public void addSystemDefaultImage(BizStoreEntity bizStore) {
-        String filename = RandomBannerImage.pickRandomImage(bizStore.getBusinessType());
+    public void systemAddedStoreBannerImage(String codeQR, BusinessTypeEnum businessType) {
+        String filename = RandomBannerImage.pickRandomImage(businessType);
         if (null != filename) {
             try {
                 File storeImage = new File(filename);
@@ -686,12 +685,12 @@ public class ArchiveAndReset {
                 BufferedImage bufferedImage = ImageIO.read(storeImage);
                 fileService.addStoreImage(
                     null,
-                    bizStore.getCodeQR(),
+                    codeQR,
                     FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(filename, mimeType),
                     bufferedImage,
                     false);
             } catch (IOException e) {
-                LOG.error("Failed finding image codeQR={} filename={} reason={}", bizStore.getCodeQR(), filename, e.getLocalizedMessage(), e);
+                LOG.error("Failed finding image codeQR={} filename={} reason={}", codeQR, filename, e.getLocalizedMessage(), e);
             }
         }
     }
