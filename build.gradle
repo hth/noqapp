@@ -13,6 +13,7 @@ ext {
     freemarker = file("$webInf/freemarker")
     lib = file("$webInf/lib")
     javaClasses = file("$webInf/classes")
+    banner_images = file("$javaClasses/banner_images")
     cert = file("$javaClasses/cert")
     conf = file("$javaClasses/conf")
     dkim = file("$javaClasses/dkim")
@@ -25,6 +26,7 @@ ext {
     warWebInfDir = file("$warDir$webInf")
     warLibDir = file("$warDir$lib")
     warClassesDir = file("$warDir$javaClasses")
+    warBannerImageDir = file("$warDir$banner_images")
     warCertDir = file("$warDir$cert")
     warConfDir = file("$warDir$conf")
     warDkimDir = file("$warDir$dkim")
@@ -766,6 +768,7 @@ task prepWar(dependsOn: [
 ]) {
     doLast {
         warClassesDir.mkdirs()
+        warBannerImageDir.mkdirs()
         warConfDir.mkdirs()
         warDkimDir.mkdirs()
         warNLPDir.mkdirs()
@@ -919,6 +922,13 @@ task prepWar(dependsOn: [
                 include "**/*.json"
             }
             into warMappingDir
+        }
+
+        copy {
+            from("view/resources/banner_images") {
+                include "**/*.*"
+            }
+            into warBannerImageDir;
         }
 
         copy {
