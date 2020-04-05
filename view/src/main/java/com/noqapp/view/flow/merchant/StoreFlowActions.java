@@ -118,12 +118,10 @@ public class StoreFlowActions extends RegistrationFlowActions {
 
     private RegisterBusiness editStoreRegistration(String bizStoreId) {
         RegisterBusiness registerBusiness = createStoreRegistration();
-        if (null != registerBusiness) {
-            BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
-            registerBusiness.populateWithBizStore(bizStore);
-            List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStoreId);
-            registerBusiness.convertToBusinessHours(storeHours);
-        }
+        BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
+        registerBusiness.populateWithBizStore(bizStore);
+        List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStoreId);
+        registerBusiness.convertToBusinessHours(storeHours);
         return registerBusiness;
     }
 
