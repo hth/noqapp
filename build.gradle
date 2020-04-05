@@ -925,7 +925,7 @@ task prepWar(dependsOn: [
         }
 
         copy {
-            from("view/resources/banner_images") {
+            from("service/resources/banner_images") {
                 include "**/*.*"
             }
             into warBannerImageDir;

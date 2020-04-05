@@ -452,7 +452,7 @@ public class FileService {
             ftpService.upload(filename, bizStore.getCodeQR(), FtpService.SERVICE);
 
             images.add(filename);
-            bizService.saveStore(bizStore, "Added Store Image");
+            bizService.saveStore(bizStore, null == qid ? "Added System Default Store Image" : "Added Store Image");
 
             LOG.debug("Uploaded store service file={}", toFileAbsolutePath);
             return bizStore;
