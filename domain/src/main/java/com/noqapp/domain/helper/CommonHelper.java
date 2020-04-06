@@ -30,7 +30,10 @@ import java.util.stream.Stream;
 public class CommonHelper {
     private static final Logger LOG = LoggerFactory.getLogger(CommonHelper.class);
 
-    /** Specify who is calling it, as different categories are sent for different business types. */
+    /**
+     * Specify who is calling it, as different categories are sent for different invocation.
+     * Admin sees different than store manager at times.
+     */
     public static Map<String, String> getCategories(BusinessTypeEnum businessType, InvocationByEnum invocationBy) {
         switch (businessType) {
             case DO:
