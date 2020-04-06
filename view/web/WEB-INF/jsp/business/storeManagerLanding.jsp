@@ -177,7 +177,9 @@
                                 </table>
                             </c:when>
                             <c:otherwise>
-                                Found no stores.
+                                <div class="alert-info">
+                                    <p>There are no stores assigned to you. Please contact your administrator.</p>
+                                </div>
                             </c:otherwise>
                             </c:choose>
                             </div>

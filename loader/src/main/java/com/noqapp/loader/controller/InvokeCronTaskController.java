@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
+ * Invoked from Admin screen to refresh store html pages.
  * hitender
  * 3/17/20 10:13 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
     "PMD.LocalVariableCouldBeFinal",
     "PMD.MethodArgumentCouldBeFinal",

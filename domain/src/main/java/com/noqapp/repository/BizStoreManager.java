@@ -118,5 +118,9 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     BizStoreEntity disableAppointment(String codeQR);
     BizStoreEntity updateAppointment(String codeQR, AppointmentStateEnum appointmentState, int appointmentDuration, int appointmentOpenHowFar);
+
+    Stream<BizStoreEntity> findAllPendingElasticUpdateStream();
+
+    void removePendingElastic(String id);
 }
 

@@ -1,5 +1,7 @@
 package com.noqapp.search.elastic.utils;
 
+import static com.noqapp.common.utils.Constants.FILE_SEPARATOR;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +22,7 @@ import java.util.stream.Stream;
 public class LoadMappingFiles {
     private static final Logger LOG = LoggerFactory.getLogger(LoadMappingFiles.class);
 
-    private static final String MAPPING_LOCATION = "elastic_mapping" + File.separator;
+    private static final String MAPPING_LOCATION = "elastic_mapping" + FILE_SEPARATOR;
 
     private LoadMappingFiles() {
     }

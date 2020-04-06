@@ -264,6 +264,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field("TA")
     private String scheduledTaskId;
 
+    @Field("ES")
+    private String elasticUpdatePending;
+
     @Transient
     private List<StoreHourEntity> storeHours;
 
@@ -836,6 +839,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setScheduledTaskId(String scheduledTaskId) {
         this.scheduledTaskId = scheduledTaskId;
+        return this;
+    }
+
+    public String getElasticUpdatePending() {
+        return elasticUpdatePending;
+    }
+
+    public BizStoreEntity setElasticUpdatePending(String elasticUpdatePending) {
+        this.elasticUpdatePending = elasticUpdatePending;
         return this;
     }
 

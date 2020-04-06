@@ -4,6 +4,7 @@ import static com.noqapp.common.utils.DateUtil.DAY.TOMORROW;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
@@ -13,6 +14,7 @@ import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.types.AppointmentStateEnum;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
@@ -25,7 +27,9 @@ import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
+import com.noqapp.service.FileService;
 import com.noqapp.service.StatsCronService;
+import com.noqapp.service.utils.RandomBannerImage;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -38,6 +42,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -48,6 +55,8 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
+
+import javax.imageio.ImageIO;
 
 /**
  * User: hitender
@@ -78,6 +87,7 @@ public class ArchiveAndReset {
     private PurchaseOrderProductManager purchaseOrderProductManager;
     private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
+    private FileService fileService;
 
     private StatsCronEntity statsCron;
 
@@ -100,7 +110,8 @@ public class ArchiveAndReset {
         PurchaseOrderManager purchaseOrderManager,
         PurchaseOrderProductManager purchaseOrderProductManager,
         PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
-        PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC
+        PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC,
+        FileService fileService
     ) {
         this.moveToRDBS = moveToRDBS;
         this.timeDelayInMinutes = timeDelayInMinutes;
@@ -117,6 +128,7 @@ public class ArchiveAndReset {
         this.purchaseOrderProductManager = purchaseOrderProductManager;
         this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
         this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
+        this.fileService = fileService;
     }
 
     @Scheduled(fixedDelayString = "${loader.ArchiveAndReset.queuePastData}")
@@ -348,6 +360,10 @@ public class ArchiveAndReset {
             default:
                 LOG.error("Failed as messageOrigin={} not defined", bizStore.getBusinessType().getMessageOrigin());
                 throw new UnsupportedOperationException("Un-supported condition reached");
+        }
+
+        if (bizStore.getStoreInteriorImages().size() == 0) {
+            systemAddedStoreBannerImage(bizStore.getCodeQR(), bizStore.getBusinessType());
         }
     }
 
@@ -656,5 +672,26 @@ public class ArchiveAndReset {
             .setTotalCustomerRated(totalCustomerRated)
             .setTotalHoursSaved(totalHoursSaved);
         return statsBizStoreDaily;
+    }
+
+    /** Add default image for store. */
+    public void systemAddedStoreBannerImage(String codeQR, BusinessTypeEnum businessType) {
+        String filename = RandomBannerImage.pickRandomImage(businessType);
+        if (null != filename) {
+            try {
+                File storeImage = new File(filename);
+                LOG.info("System adding default store image {}", filename);
+                String mimeType = FileUtil.detectMimeType(storeImage);
+                BufferedImage bufferedImage = ImageIO.read(storeImage);
+                fileService.addStoreImage(
+                    null,
+                    codeQR,
+                    FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(filename, mimeType),
+                    bufferedImage,
+                    false);
+            } catch (IOException e) {
+                LOG.error("Failed finding image codeQR={} filename={} reason={}", codeQR, filename, e.getLocalizedMessage(), e);
+            }
+        }
     }
 }

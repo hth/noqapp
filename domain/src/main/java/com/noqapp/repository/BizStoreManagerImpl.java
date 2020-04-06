@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -50,7 +51,7 @@ import java.util.stream.Stream;
     "PMD.LongVariable"
 })
 @Repository
-public final class BizStoreManagerImpl implements BizStoreManager {
+public class BizStoreManagerImpl implements BizStoreManager {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
         BizStoreEntity.class,
@@ -65,15 +66,16 @@ public final class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public void save(BizStoreEntity object) {
-        if (null != object.getBizName() && null != object.getBizName().getId()) {
-            if (object.getId() != null) {
-                object.setUpdated();
+    @CacheEvict(value = "bizStore-codeQR", key = "#bizStore.codeQR")
+    public void save(BizStoreEntity bizStore) {
+        if (null != bizStore.getBizName() && null != bizStore.getBizName().getId()) {
+            if (bizStore.getId() != null) {
+                bizStore.setUpdated();
             }
-            mongoTemplate.save(object, TABLE);
+            mongoTemplate.save(bizStore, TABLE);
         } else {
             LOG.error("Cannot save bizStore without bizName");
-            throw new RuntimeException("Missing BizName for BizStore " + object.getAddress());
+            throw new RuntimeException("Missing BizName for BizStore " + bizStore.getAddress());
         }
     }
 
@@ -546,6 +548,25 @@ public final class BizStoreManagerImpl implements BizStoreManager {
                 .set("PD", appointmentDuration)
                 .set("PF", appointmentOpenHowFar)),
             FindAndModifyOptions.options().returnNew(true),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public Stream<BizStoreEntity> findAllPendingElasticUpdateStream() {
+        return mongoTemplate.find(
+            query(where("ES").exists(true)),
+            BizStoreEntity.class,
+            TABLE
+        ).stream();
+    }
+
+    @Override
+    public void removePendingElastic(String id) {
+        mongoTemplate.findAndModify(
+            query(where("id").is(id).and("ES").exists(true)),
+            entityUpdate(new Update().unset("ES")),
             BizStoreEntity.class,
             TABLE
         );
