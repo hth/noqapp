@@ -22,6 +22,7 @@ import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
+import com.noqapp.service.FileService;
 import com.noqapp.service.StatsCronService;
 
 import org.joda.time.DateTime;
@@ -59,6 +60,7 @@ class ArchiveAndResetTest {
     @Mock private PurchaseOrderProductManager purchaseOrderProductManager;
     @Mock private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     @Mock private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
+    @Mock private FileService fileService;
 
     private String codeQR = CommonUtil.generateHexFromObjectId();
     private String bizStoreId = CommonUtil.generateHexFromObjectId();
@@ -84,7 +86,8 @@ class ArchiveAndResetTest {
             purchaseOrderManager,
             purchaseOrderProductManager,
             purchaseOrderManagerJDBC,
-            purchaseOrderProductManagerJDBC
+            purchaseOrderProductManagerJDBC,
+            fileService
         );
 
         QueueEntity a = new QueueEntity();
