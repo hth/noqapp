@@ -16,8 +16,16 @@ public class IntRandomNumberGenerator {
      * @param min - the min value (inclusive)
      * @param max - the max value (inclusive)
      */
-    public IntRandomNumberGenerator(int min, int max) {
-        randomIterator = new Random().ints(min, max + 1).iterator();
+    private IntRandomNumberGenerator(int min, int max) {
+        randomIterator = new Random().ints(min, max).iterator();
+    }
+
+    public static IntRandomNumberGenerator newInstanceExclusiveOfMaxRange(int min, int max) {
+        return new IntRandomNumberGenerator(min, max);
+    }
+
+    public static IntRandomNumberGenerator newInstanceInclusiveOfMaxRange(int min, int max) {
+        return new IntRandomNumberGenerator(min, max + 1);
     }
 
     /**

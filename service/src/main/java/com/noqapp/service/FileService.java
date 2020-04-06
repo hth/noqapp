@@ -455,7 +455,8 @@ public class FileService {
             if (StringUtils.isNotBlank(qid)) {
                 bizService.saveStore(bizStore, "Added Store Image");
             } else {
-                LOG.info("Store auto-modified by system codeQR={}", bizStore.getCodeQR());
+                LOG.info("Store auto-modified by system codeQR={} displayName={}", bizStore.getCodeQR(), bizStore.getDisplayName());
+                bizStore.setElasticUpdatePending("Y");
                 bizStoreManager.save(bizStore);
             }
 

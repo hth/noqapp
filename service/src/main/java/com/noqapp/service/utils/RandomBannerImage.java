@@ -2,6 +2,7 @@ package com.noqapp.service.utils;
 
 import static com.noqapp.common.utils.Constants.FILE_SEPARATOR;
 
+import com.noqapp.common.utils.IntRandomNumberGenerator;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.slf4j.Logger;
@@ -15,7 +16,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * hitender
@@ -34,7 +34,8 @@ public class RandomBannerImage {
                 List<String> files = new ArrayList<>();
                 Files.find(path, 2, (p, bfa) -> bfa.isRegularFile()).forEach(x -> files.add(x.toAbsolutePath().toString()));
                 if (0 < files.size()) {
-                    return files.get(new Random().nextInt(files.size()));
+                    IntRandomNumberGenerator intRandomNumberGenerator = IntRandomNumberGenerator.newInstanceExclusiveOfMaxRange(0, files.size());
+                    return files.get(intRandomNumberGenerator.nextInt());
                 }
             }
         } catch (IOException | URISyntaxException e) {
