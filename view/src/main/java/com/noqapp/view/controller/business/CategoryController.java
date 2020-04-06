@@ -98,7 +98,7 @@ public class CategoryController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         String bizNameId = businessUser.getBizName().getId();
-        Map<String, String> categories = CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS);
+        Map<String, String> categories = CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.STORE);
         categoryLanding
             .setBizNameId(new ScrubbedInput(bizNameId))
             .setCategories(null == categories ? new HashMap<>() : categories)
