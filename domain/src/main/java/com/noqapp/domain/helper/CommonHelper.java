@@ -67,13 +67,23 @@ public class CommonHelper {
                     ? null
                     : PharmacyCategoryEnum.asMapWithNameAsKey(); /* For Store show default categories. */
             case GS:
-                List<GroceryEnum> groceryEnums = Stream.of(GroceryEnum.values())
-                    .sorted(Comparator.comparing(GroceryEnum::getDescription))
-                    .collect(Collectors.toList());
+                /* Store does not have category at business level, but at store level. */
+                switch (invocationBy) {
+                    case BUSINESS:
+                        return null;
+                    case STORE:
+                        List<GroceryEnum> groceryEnums = Stream.of(GroceryEnum.values())
+                            .sorted(Comparator.comparing(GroceryEnum::getDescription))
+                            .collect(Collectors.toList());
 
-                /* https://javarevisited.blogspot.com/2017/07/how-to-sort-map-by-keys-in-java-8.html */
-                return groceryEnums.stream()
-                    .collect(toMap(GroceryEnum::getName, GroceryEnum::getDescription, (e1, e2) -> e2, LinkedHashMap::new));
+                        /* https://javarevisited.blogspot.com/2017/07/how-to-sort-map-by-keys-in-java-8.html */
+                        return groceryEnums.stream()
+                            .collect(toMap(GroceryEnum::getName, GroceryEnum::getDescription, (e1, e2) -> e2, LinkedHashMap::new));
+                    default:
+                        LOG.error("Un-supported businessType={}", businessType);
+                        throw new UnsupportedOperationException("Reached un-supported condition");
+                }
+
             case RS:
             case FT:
             case BA:
