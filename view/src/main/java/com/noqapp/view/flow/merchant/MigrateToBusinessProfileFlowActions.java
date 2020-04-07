@@ -20,6 +20,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.EmailValidateService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessProfileException;
 
@@ -47,6 +48,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
     private BusinessUserService businessUserService;
     private MailService mailService;
     private EmailValidateService emailValidateService;
+
     private ExecutorService executorService;
 
     @Autowired
@@ -59,9 +61,10 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         BusinessUserService businessUserService,
         MailService mailService,
         EmailValidateService emailValidateService,
-        BizStoreElasticService bizStoreElasticService
+        BizStoreElasticService bizStoreElasticService,
+        StoreProductService storeProductService
     ) {
-        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
+        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService, storeProductService);
 
         this.accountService = accountService;
         this.businessUserService = businessUserService;
