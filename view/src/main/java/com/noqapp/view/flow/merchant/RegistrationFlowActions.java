@@ -14,6 +14,7 @@ import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
@@ -147,6 +148,19 @@ class RegistrationFlowActions {
             BizNameEntity bizName = registerBusiness.getBusinessUser().getBizName();
             BizStoreEntity bizStore = registerStore(registerBusiness, bizName);
             tokenQueueService.createUpdate(bizStore);
+            populateStoreWithDefaultProduct(bizStore);
+        } catch (Exception e) {
+            LOG.error("Failed registering new bizNameId={} bizName={} reason={}",
+                registerBusiness.getBusinessUser().getBizName().getId(),
+                registerBusiness.getBusinessUser().getBizName().getBusinessName(),
+                e.getLocalizedMessage(), e);
+        }
+        return registerBusiness;
+    }
+
+    private void populateStoreWithDefaultProduct(BizStoreEntity bizStore) {
+        if (bizStore.getBusinessType() == BusinessTypeEnum.GS) {
+            /* Each grocery store gets one product added for free. */
             if (storeProductService.countOfProduct(bizStore.getId()) == 0) {
                 StoreProductEntity storeProduct = new StoreProductEntity();
                 storeProduct.setBizStoreId(bizStore.getId())
@@ -163,13 +177,7 @@ class RegistrationFlowActions {
                     .setInventoryLimit(100);
                 storeProductService.save(storeProduct);
             }
-        } catch (Exception e) {
-            LOG.error("Failed registering new bizNameId={} bizName={} reason={}",
-                registerBusiness.getBusinessUser().getBizName().getId(),
-                registerBusiness.getBusinessUser().getBizName().getBusinessName(),
-                e.getLocalizedMessage(), e);
         }
-        return registerBusiness;
     }
 
     /**
