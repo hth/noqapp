@@ -126,6 +126,7 @@
                                     <div class="col-fields">
                                         <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/service/${codeQR}/${image}"
                                                 onerror="this.src='/static2/internal/img/image-processing.png'"
+                                                alt="Image being processed"
                                                 class="img-profile-circle" />
                                     </div>
                                     <div class="col-lable3">
