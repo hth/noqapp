@@ -85,8 +85,8 @@
                                         <th>Store Location</th>
                                         <th>Queue Name</th>
                                         <th>Rating & AHT</th>
-                                        <th nowrap>Create Date</th>
-                                        <th></th>
+                                        <th nowrap>Serving</th>
+                                        <th nowrap>In Queue</th>
                                     </tr>
                                     <c:forEach items="${storeManagerForm.bizStores}" var="store" varStatus="status">
                                     <tr>
@@ -148,9 +148,6 @@
                                             <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">
                                                 <span style="display:block; font-size:13px;">${store.displayName}</span>
                                             </a>
-                                            <br/>
-                                            <span style="display:block; font-size:13px;">Serving: ${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
-                                            <span style="display:block; font-size:13px;">In Queue: ${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">Rating: ${store.ratingFormatted} (Count: ${store.reviewCount})</span>
@@ -158,19 +155,10 @@
                                             <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
                                         </td>
                                         <td nowrap>
-                                            <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMM dd, yyyy" value="${store.created}"/></span>
+                                            <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                         </td>
                                         <td>
-                                            <c:choose>
-                                                <c:when test="${store.active}">
-                                                    <button id="storeOnlineOrOffline_${store.id}" class="add-btn" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.INACTIVE}')">Go Offline</button>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <button id="storeOnlineOrOffline_${store.id}" class="add-btn" style="background: black" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.ACTIVE}')">Go Online</button>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <br/><br/>
-                                            <span style="display:block; font-size:13px;">Offline store is not visible</span>
+                                            <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                         </td>
                                     </tr>
                                     </c:forEach>

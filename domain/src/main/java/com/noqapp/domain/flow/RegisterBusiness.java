@@ -91,6 +91,21 @@ public class RegisterBusiness implements Serializable {
 
     private HashMap<String, DecodedAddress> foundAddressStores = new LinkedHashMap<>();
     private String foundAddressStorePlaceId;
+
+    public RegisterBusiness(BusinessTypeEnum businessType) {
+        for (int i = 1; i <= 7; i++) {
+            BusinessHour businessHour = new BusinessHour(DayOfWeek.of(i));
+            if (BusinessTypeEnum.GS == businessType) {
+                businessHour
+                    .setTokenAvailableFrom(530)
+                    .setStartHourStore(600)
+                    .setTokenNotAvailableFrom(2000)
+                    .setEndHourStore(2030);
+            }
+            businessHours.add(businessHour);
+        }
+    }
+
     public RegisterBusiness() {
         for (int i = 1; i <= 7; i++) {
             BusinessHour businessHour = new BusinessHour(DayOfWeek.of(i));
@@ -670,7 +685,7 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     public static RegisterBusiness populateWithBizName(BizNameEntity bizName) {
-        RegisterBusiness registerBusiness = new RegisterBusiness();
+        RegisterBusiness registerBusiness = new RegisterBusiness(bizName.getBusinessType());
         registerBusiness.setBizId(bizName.getId());
         registerBusiness.setName(new ScrubbedInput(bizName.getBusinessName()));
         registerBusiness.setAddress(new ScrubbedInput(bizName.getAddress()));

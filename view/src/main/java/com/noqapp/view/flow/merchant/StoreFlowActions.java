@@ -6,6 +6,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
@@ -88,6 +89,15 @@ public class StoreFlowActions extends RegistrationFlowActions {
         registerBusiness.setBusinessType(businessUser.getBizName().getBusinessType());
         registerBusiness.setStoreBusinessType(businessUser.getBizName().getBusinessType());
         registerBusiness.setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS));
+
+        registerBusiness.setAddressStore(new ScrubbedInput(businessUser.getBizName().getAddress()));
+        registerBusiness.setAddressStoreOrigin(businessUser.getBizName().getAddressOrigin());
+        registerBusiness.setTownStore(new ScrubbedInput(businessUser.getBizName().getTown()));
+        registerBusiness.setAreaStore(new ScrubbedInput(businessUser.getBizName().getArea()));
+        registerBusiness.setPhoneStore(new ScrubbedInput(businessUser.getBizName().getPhone()));
+        registerBusiness.setFoundAddressStorePlaceId(businessUser.getBizName().getPlaceId());
+        registerBusiness.setSelectFoundAddressStore(false);
+        registerBusiness.setBusinessAddressAsStore(true);
 
         /* Business when not claimed. */
         processForUnclaimedBusiness(businessUser, registerBusiness);
