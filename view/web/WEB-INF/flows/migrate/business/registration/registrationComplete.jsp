@@ -6,6 +6,10 @@
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
+    <c:if test="${register.autoApproveBusinessTurnedOn eq 'ON'}">
+    <meta http-equiv="Refresh" content="5;url=/">
+    </c:if>
+
     <title>NoQueue</title>
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
@@ -26,8 +30,7 @@
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">
-                    <sec:authentication property="principal.userShortName"/></button>
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
@@ -61,7 +64,7 @@
                                     <h3>Registration Complete</h3>
                                     <c:choose>
                                         <c:when test="${register.autoApproveBusinessTurnedOn eq 'ON'}">
-                                            <p>Your merchant account has been approved. Please logout and login to see the changes.</p>
+                                            <p>Your merchant account has been approved. Refreshing in next 5 seconds</p>
                                         </c:when>
                                         <c:otherwise>
                                             <p>Your details are being verified. Would notify you once verification is complete.</p>
