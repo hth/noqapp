@@ -82,6 +82,10 @@
                                                 <li><form:errors path="productName"/></li>
                                                 </c:if>
 
+                                                <c:if test="${errors.hasFieldErrors('productPrice')}">
+                                                    <li><form:errors path="productPrice"/></li>
+                                                </c:if>
+
                                                 <c:if test="${errors.hasFieldErrors('unitValue')}">
                                                 <li><form:errors path="unitValue"/></li>
                                                 </c:if>
@@ -90,16 +94,12 @@
                                                 <li><form:errors path="unitOfMeasurement"/></li>
                                                 </c:if>
 
-                                                <c:if test="${errors.hasFieldErrors('productType')}">
-                                                <li><form:errors path="productType"/></li>
-                                                </c:if>
-
-                                                <c:if test="${errors.hasFieldErrors('productPrice')}">
-                                                <li><form:errors path="productPrice"/></li>
-                                                </c:if>
-
                                                 <c:if test="${errors.hasFieldErrors('packageSize')}">
                                                 <li><form:errors path="packageSize"/></li>
+                                                </c:if>
+
+                                                <c:if test="${errors.hasFieldErrors('productType')}">
+                                                <li><form:errors path="productType"/></li>
                                                 </c:if>
                                             </ul>
                                         </div>
@@ -163,26 +163,6 @@
                                                     <div class="col-fields">
                                                         <form:input path="productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                     placeholder="Price of the product"/>
-                                                    </div>
-                                                    <div class="clearFix"></div>
-                                                </li>
-                                                <li>
-                                                    <div class="col-lable3">
-                                                        <form:label path="productDiscount" cssErrorClass="lb_error">Product Discount</form:label>
-                                                    </div>
-                                                    <div class="col-fields">
-                                                        <form:input path="productDiscount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                    placeholder="Any specific discount on product"/>
-                                                    </div>
-                                                    <div class="clearFix"></div>
-                                                </li>
-                                                <li>
-                                                    <div class="col-lable3">
-                                                        <form:label path="productInfo" cssErrorClass="lb_error">Description</form:label>
-                                                    </div>
-                                                    <div class="col-fields">
-                                                        <form:input path="productInfo" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                    placeholder="Describe the product"/>
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -265,6 +245,26 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
+                                                        <form:label path="productDiscount" cssErrorClass="lb_error">Product Discount</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="productDiscount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Any specific discount on product"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="productInfo" cssErrorClass="lb_error">Description</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="productInfo" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Describe the product"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
                                                     </div>
                                                     <div class="col-fields">
                                                         Required fields are marked with <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -309,6 +309,10 @@
                                                 <li><form:errors path="productName"/></li>
                                                 </c:if>
 
+                                                <c:if test="${errors.hasFieldErrors('productPrice')}">
+                                                <li><form:errors path="productPrice"/></li>
+                                                </c:if>
+
                                                 <c:if test="${errors.hasFieldErrors('unitValue')}">
                                                 <li><form:errors path="unitValue"/></li>
                                                 </c:if>
@@ -317,16 +321,12 @@
                                                 <li><form:errors path="unitOfMeasurement"/></li>
                                                 </c:if>
 
-                                                <c:if test="${errors.hasFieldErrors('productType')}">
-                                                <li><form:errors path="productType"/></li>
-                                                </c:if>
-
-                                                <c:if test="${errors.hasFieldErrors('productPrice')}">
-                                                <li><form:errors path="productPrice"/></li>
-                                                </c:if>
-
                                                 <c:if test="${errors.hasFieldErrors('packageSize')}">
                                                 <li><form:errors path="packageSize"/></li>
+                                                </c:if>
+
+                                                <c:if test="${errors.hasFieldErrors('productType')}">
+                                                <li><form:errors path="productType"/></li>
                                                 </c:if>
                                             </ul>
                                         </div>
@@ -381,26 +381,6 @@
                                                     <div class="col-fields">
                                                         <form:input path="productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                     placeholder="Price of the product"/>
-                                                    </div>
-                                                    <div class="clearFix"></div>
-                                                </li>
-                                                <li>
-                                                    <div class="col-lable3">
-                                                        <form:label path="productDiscount" cssErrorClass="lb_error">Product Discount</form:label>
-                                                    </div>
-                                                    <div class="col-fields">
-                                                        <form:input path="productDiscount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                    placeholder="Any specific discount on product"/>
-                                                    </div>
-                                                    <div class="clearFix"></div>
-                                                </li>
-                                                <li>
-                                                    <div class="col-lable3">
-                                                        <form:label path="productInfo" cssErrorClass="lb_error">Description</form:label>
-                                                    </div>
-                                                    <div class="col-fields">
-                                                        <form:input path="productInfo" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
-                                                                    placeholder="Describe the product"/>
                                                     </div>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -488,6 +468,26 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
+                                                        <form:label path="productDiscount" cssErrorClass="lb_error">Product Discount</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="productDiscount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Any specific discount on product"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="productInfo" cssErrorClass="lb_error">Description</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="productInfo" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Describe the product"/>
+                                                    </div>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
                                                     </div>
                                                     <div class="col-fields">
                                                         Required fields are marked with <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -498,8 +498,9 @@
                                             <div class="col-lable3"></div>
                                             <div class="col-fields">
                                                 <div class="button-btn">
-                                                    <button name="add" class="ladda-button next-btn" style="width:48%; float: left">Add</button>
-                                                    <button name="cancel_Add" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                                    <button name="add" class="ladda-button next-btn" style="width:32%; float: left">Add</button>
+                                                    <button name="reset" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%" type="reset">Reset</button>
+                                                    <button name="cancel_Add" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
                                                 </div>
                                                 <div class="clearFix"></div>
                                             </div>
@@ -654,6 +655,7 @@
 <script type="text/javascript">
     // Bind normal buttons
     Ladda.bind('.button-btn button', {timeout: 6000});
+    Ladda.bind('.button-btn button[name=reset]', {timeout: 10});
 
     // Bind progress buttons and simulate loading progress
     Ladda.bind('.progress-demo button', {

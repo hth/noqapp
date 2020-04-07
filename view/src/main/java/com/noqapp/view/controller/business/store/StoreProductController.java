@@ -225,6 +225,10 @@ public class StoreProductController {
                 categories.putAll(storeCategoryService.getStoreCategoriesAsMap(storeId.getText()));
                 unitOfMeasurements = UnitOfMeasurementEnum.GROCERY_VALUES;
                 productTypes = ProductTypeEnum.GROCERY_VALUES;
+                storeProductForm
+                    .setProductDiscount(new ScrubbedInput(0))
+                    .setPackageSize(new ScrubbedInput(1))
+                    .setProductType(new ScrubbedInput(ProductTypeEnum.GE.name()));
                 break;
             default:
                 categories = storeCategoryService.getStoreCategoriesAsMap(storeId.getText());
