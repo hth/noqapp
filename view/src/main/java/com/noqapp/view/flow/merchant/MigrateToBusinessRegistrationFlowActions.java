@@ -14,6 +14,7 @@ import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.AccountService;
@@ -35,9 +36,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -269,6 +275,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                     LOG.info("Approving business as default {}", autoApproveBusinessTurnedOn);
                     empLandingService.approveBusiness(businessUser.getId(), queueUser.getQueueUserId());
                     register.setAutoApproveBusinessTurnedOn(autoApproveBusinessTurnedOn);
+                    updateSessionRoleOnBusinessApproved();
                 }
                 return register;
             } catch (Exception e) {
@@ -280,6 +287,24 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             LOG.error("Error updating business user profile qid={} reason={}",
                 register.getRegisterUser().getQueueUserId(), e.getLocalizedMessage(), e);
             throw new MigrateToBusinessRegistrationException("Error updating profile", e);
+        }
+    }
+
+    /** Upgrade ROLE without logging out. */
+    private void updateSessionRoleOnBusinessApproved() {
+        if (autoApproveBusinessTurnedOn.equalsIgnoreCase("ON")) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+            List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+            updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_CLIENT.name()));
+            updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_Q_SUPERVISOR.name()));
+            updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_S_MANAGER.name()));
+            updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_M_ACCOUNTANT.name()));
+            updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_M_ADMIN.name()));
+
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
         }
     }
 
