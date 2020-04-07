@@ -23,6 +23,7 @@ import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.ProfessionalProfileService;
+import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 
@@ -64,9 +65,10 @@ public class StoreFlowActions extends RegistrationFlowActions {
         BusinessUserStoreService businessUserStoreService,
         ProfessionalProfileService professionalProfileService,
         AccountService accountService,
-        MailService mailService
+        MailService mailService,
+        StoreProductService storeProductService
     ) {
-        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
+        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService, storeProductService);
         this.businessUserService = businessUserService;
         this.bizService = bizService;
         this.bizStoreElasticService = bizStoreElasticService;

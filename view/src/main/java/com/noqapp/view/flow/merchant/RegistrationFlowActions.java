@@ -8,12 +8,16 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.UnitOfMeasurementEnum;
+import com.noqapp.domain.types.catgeory.GroceryEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
@@ -21,6 +25,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -51,6 +56,7 @@ class RegistrationFlowActions {
     private BizStoreElasticService bizStoreElasticService;
     private MailService mailService;
     private AccountService accountService;
+    private StoreProductService storeProductService;
 
     /** When in same thread use Executor and not @Async. */
     private ExecutorService executorService;
@@ -62,7 +68,8 @@ class RegistrationFlowActions {
         TokenQueueService tokenQueueService,
         BizStoreElasticService bizStoreElasticService,
         AccountService accountService,
-        MailService mailService
+        MailService mailService,
+        StoreProductService storeProductService
     ) {
         this.environment = environment;
         this.externalService = externalService;
@@ -71,6 +78,7 @@ class RegistrationFlowActions {
         this.bizStoreElasticService = bizStoreElasticService;
         this.accountService = accountService;
         this.mailService = mailService;
+        this.storeProductService = storeProductService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -139,6 +147,22 @@ class RegistrationFlowActions {
             BizNameEntity bizName = registerBusiness.getBusinessUser().getBizName();
             BizStoreEntity bizStore = registerStore(registerBusiness, bizName);
             tokenQueueService.createUpdate(bizStore);
+            if (storeProductService.countOfProduct(bizStore.getId()) == 0) {
+                StoreProductEntity storeProduct = new StoreProductEntity();
+                storeProduct.setBizStoreId(bizStore.getId())
+                    .setProductName("Special Bread")
+                    .setProductPrice(4000)
+                    .setProductDiscount(0)
+                    .setProductInfo("Fresh, Whole Wheat")
+                    .setStoreCategoryId(GroceryEnum.BRD.name())
+                    .setProductType(ProductTypeEnum.VE)
+                    .setUnitValue(100)
+                    .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
+                    .setPackageSize(1)
+                    .setInventoryCurrent(0)
+                    .setInventoryLimit(100);
+                storeProductService.save(storeProduct);
+            }
         } catch (Exception e) {
             LOG.error("Failed registering new bizNameId={} bizName={} reason={}",
                 registerBusiness.getBusinessUser().getBizName().getId(),

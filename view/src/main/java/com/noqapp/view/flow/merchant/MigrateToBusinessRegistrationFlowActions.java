@@ -22,6 +22,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.FetcherService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.emp.EmpLandingService;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException;
@@ -70,9 +71,10 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         TokenQueueService tokenQueueService,
         BizStoreElasticService bizStoreElasticService,
         MailService mailService,
-        EmpLandingService empLandingService
+        EmpLandingService empLandingService,
+        StoreProductService storeProductService
     ) {
-        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService);
+        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService, storeProductService);
         this.autoApproveBusinessTurnedOn = autoApproveBusinessTurnedOn;
 
         this.empLandingService = empLandingService;
