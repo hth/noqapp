@@ -168,7 +168,7 @@
                             </c:when>
                             <c:otherwise>
                                 <p style="display:block; font-size:15px;">
-                                    You are the administrator. You business is all set.
+                                    You are the administrator. Your business is now registered.
                                 </p>
                                 <p style="display:block; font-size:15px;">
                                     <b>Next Step:</b> Please add stores/queue so that your customers can make interact with your business.
