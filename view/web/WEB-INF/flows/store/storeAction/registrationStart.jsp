@@ -26,8 +26,7 @@
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">
-                    <sec:authentication property="principal.userShortName"/></button>
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
@@ -296,8 +295,8 @@
     // Bind progress buttons and simulate loading progress
     Ladda.bind('.progress-demo button', {
         callback: function (instance) {
-            var progress = 0;
-            var interval = setInterval(function () {
+            let progress = 0;
+            let interval = setInterval(function () {
                 progress = Math.min(progress + Math.random() * 0.1, 1);
                 instance.setProgress(progress);
 
