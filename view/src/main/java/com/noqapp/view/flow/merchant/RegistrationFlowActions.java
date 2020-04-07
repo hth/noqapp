@@ -158,6 +158,7 @@ class RegistrationFlowActions {
         return registerBusiness;
     }
 
+    /** This is for simplification as not to have empty grocery store. */
     private void populateStoreWithDefaultProduct(BizStoreEntity bizStore) {
         if (bizStore.getBusinessType() == BusinessTypeEnum.GS) {
             /* Each grocery store gets one product added for free. */
