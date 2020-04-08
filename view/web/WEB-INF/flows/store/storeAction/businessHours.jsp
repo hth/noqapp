@@ -55,7 +55,7 @@
                     <form:form modelAttribute="registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Add ${registerBusiness.correctLabelBasedOnBusinessType} Hours For Each Day</h2>
+                            <h2>Add ${registerBusiness.businessType.classifierTitle} Hours For Each Day</h2>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
@@ -104,7 +104,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].startHourStore" cssErrorClass="lb_error">${registerBusiness.correctLabelBasedOnBusinessType} Start Time</form:label>
+                                                        <form:label path="businessHours[${status.index}].startHourStore" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Start Time</form:label>
                                                     </td>
                                                     <td>
                                                         <form:input path="businessHours[${status.index}].startHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
@@ -122,7 +122,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].endHourStore" cssErrorClass="lb_error">${registerBusiness.correctLabelBasedOnBusinessType} Close Time</form:label>
+                                                        <form:label path="businessHours[${status.index}].endHourStore" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Close Time</form:label>
                                                     </td>
                                                     <td>
                                                         <form:input path="businessHours[${status.index}].endHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
@@ -131,7 +131,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="lable-td pT0">
-                                                        <form:label path="businessHours[${status.index}].dayClosed" cssErrorClass="lb_error">${registerBusiness.correctLabelBasedOnBusinessType} Closed</form:label>
+                                                        <form:label path="businessHours[${status.index}].dayClosed" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Closed</form:label>
                                                     </td>
                                                     <td>
                                                         <form:checkbox path="businessHours[${status.index}].dayClosed" cssErrorClass="error-field"/>

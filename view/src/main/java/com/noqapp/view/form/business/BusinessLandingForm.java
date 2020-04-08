@@ -89,15 +89,4 @@ public class BusinessLandingForm {
         this.categories = categories;
         return this;
     }
-
-    @Transient
-    public String getCorrectLabelBasedOnBusinessType() {
-        switch (businessType.getMessageOrigin()) {
-            case O:
-                return "Store";
-            case Q:
-            default:
-                return "Queue";
-        }
-    }
 }

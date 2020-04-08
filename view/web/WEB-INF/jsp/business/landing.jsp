@@ -76,7 +76,7 @@
                                         <c:if test="${businessLandingForm.bizStores.size() != 0}">
                                             <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
                                             <a href="/business/category.htm" class="add-btn">Show Business Category</a>
-                                            <a href="/business/addStore.htm" class="add-btn">Setup Online ${businessLandingForm.correctLabelBasedOnBusinessType}</a>
+                                            <a href="/business/addStore.htm" class="add-btn">Setup Online ${businessLandingForm.businessType.classifierTitle }</a>
                                         </c:if>
                                     </c:when>
                                     <c:otherwise>
@@ -89,7 +89,7 @@
                                                 <a href="/business/category.htm" class="add-btn">Show Business Category</a>
                                             </c:otherwise>
                                         </c:choose>
-                                        <a href="/business/addStore.htm" class="add-btn">Setup Online ${businessLandingForm.correctLabelBasedOnBusinessType}</a>
+                                        <a href="/business/addStore.htm" class="add-btn">Setup Online ${businessLandingForm.businessType.classifierTitle }</a>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
@@ -99,9 +99,9 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
-                                        <th>${businessLandingForm.correctLabelBasedOnBusinessType} Location</th>
+                                        <th>${businessLandingForm.businessType.classifierTitle } Location</th>
                                         <th nowrap>
-                                            ${businessLandingForm.correctLabelBasedOnBusinessType} Name
+                                            ${businessLandingForm.businessType.classifierTitle } Name
                                             &nbsp;
                                             <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                                  alt="Sort" height="16px;"/>
@@ -171,7 +171,7 @@
                                                 </c:otherwise>
                                             </c:choose>
                                             <br/><br/>
-                                            <span style="display:block; font-size:13px;">Offline ${businessLandingForm.correctLabelBasedOnBusinessType.toLowerCase()} is not visible</span>
+                                            <span style="display:block; font-size:13px;">Offline ${businessLandingForm.businessType.classifierTitle .toLowerCase()} is not visible</span>
                                         </td>
                                     </tr>
                                     </c:forEach>
@@ -179,7 +179,7 @@
                             </c:when>
                             <c:otherwise>
                                 <p style="display:block; font-size:18px; padding-bottom: 30px;">
-                                    Let's now setup online ${businessLandingForm.correctLabelBasedOnBusinessType}. Select left side if you have one store or right side for franchise model.
+                                    Let's now setup online ${businessLandingForm.businessType.classifierTitle }. Select left side if you have one store or right side for franchise model.
                                 </p>
 
                                 <div class="addbtn-store">
