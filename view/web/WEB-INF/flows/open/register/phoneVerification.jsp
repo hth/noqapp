@@ -106,12 +106,12 @@
                             <span>One time password has been sent to phone number above. Please enter here.</span>
                             <span><br></span>
                             <ul class="enter-code-box" id="verification-code">
-                                <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1"/></li>
-                                <li><input id="code2" name="2" type="text" class="enter-f" maxlength="1"/></li>
-                                <li><input id="code3" name="3" type="text" class="enter-f" maxlength="1"/></li>
-                                <li><input id="code4" name="4" type="text" class="enter-f" maxlength="1"/></li>
-                                <li><input id="code5" name="5" type="text" class="enter-f" maxlength="1"/></li>
-                                <li><input id="code6" name="6" type="text" class="enter-f" maxlength="1"/></li>
+                                <li><input id="code1" name="1" type="text" class="enter-f" maxlength="1" style="text-transform: capitalize;"/></li>
+                                <li><input id="code2" name="2" type="text" class="enter-f" maxlength="1" style="text-transform: capitalize;"/></li>
+                                <li><input id="code3" name="3" type="text" class="enter-f" maxlength="1" style="text-transform: capitalize;"/></li>
+                                <li><input id="code4" name="4" type="text" class="enter-f" maxlength="1" style="text-transform: capitalize;"/></li>
+                                <li><input id="code5" name="5" type="text" class="enter-f" maxlength="1" style="text-transform: capitalize;"/></li>
+                                <li><input id="code6" name="6" type="text" class="enter-f" maxlength="1" style="text-transform: capitalize;"/></li>
                                 <div class="clearFix"></div>
                             </ul>
                             <div id="mdl-textfield" class="error-box" style="margin-top: 5px; display: none;">
