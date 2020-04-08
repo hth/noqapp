@@ -11,9 +11,26 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.css" type='text/css'>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+
+    <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/brands.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/solid.css" rel="stylesheet">
+
+    <!-- custom styling for all icons -->
+    i.fas,
+    i.fab {
+        border: 1px solid red;
+    }
+
+    <!-- custom styling for specific icons -->
+    .fa-fish {
+        color: salmon;
+    }
 </head>
 
 <body>
@@ -346,7 +363,6 @@
                                         <div class="add-new">
                                             <ul class="list-form">
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="storeCategoryId" cssErrorClass="lb_error">Category</form:label>
                                                     </div>
@@ -357,10 +373,11 @@
                                                             <form:options items="${storeProductForm.categories}" />
                                                         </form:select>
                                                     </div>
+                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productName" cssErrorClass="lb_error">Name</form:label>
                                                     </div>
@@ -368,10 +385,11 @@
                                                         <form:input path="productName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                     placeholder="Name of the product"/>
                                                     </div>
+                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productPrice" cssErrorClass="lb_error">Price of Product</form:label>
                                                     </div>
@@ -379,10 +397,11 @@
                                                         <form:input path="productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                     placeholder="Price of the product"/>
                                                     </div>
+                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="unitValue" cssErrorClass="lb_error">Unit</form:label>
                                                     </div>
@@ -390,10 +409,11 @@
                                                         <form:input path="unitValue" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number (Example: 500gm or 1kg or 2lt or 2dz)"/>
                                                     </div>
+                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="unitOfMeasurement" cssErrorClass="lb_error">Measurement</form:label>
                                                     </div>
@@ -415,10 +435,11 @@
                                                             </c:forEach>
                                                         </form:select>
                                                     </div>
+                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="packageSize" cssErrorClass="lb_error">Package Size</form:label>
                                                     </div>
@@ -426,10 +447,11 @@
                                                         <form:input path="packageSize" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number"/>
                                                     </div>
+                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productType" cssErrorClass="lb_error">Product Categorization</form:label>
                                                     </div>
@@ -451,6 +473,8 @@
                                                             </c:forEach>
                                                         </form:select>
                                                     </div>
+                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
@@ -461,6 +485,8 @@
                                                         <form:input path="inventoryLimit" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number"/>
                                                     </div>
+                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
@@ -471,6 +497,8 @@
                                                         <form:input path="productDiscount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Any specific discount on product"/>
                                                     </div>
+                                                    <span class="tooltip" title="Discount on product available. Defaults to no discount."><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
@@ -481,6 +509,8 @@
                                                         <form:input path="productInfo" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Describe the product"/>
                                                     </div>
+                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
@@ -646,6 +676,7 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
@@ -679,6 +710,17 @@
     // l.toggle();
     // l.isLoading();
     // l.setProgress( 0-1 );
+</script>
+<script>
+    new jBox('Tooltip', {
+        attach: '.tooltip',
+        adjustDistance : {
+            top : 105,
+            bottom : 150,
+            left : 15,
+            right : 50
+        }
+    });
 </script>
 
 </html>
