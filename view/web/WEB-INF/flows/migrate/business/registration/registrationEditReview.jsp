@@ -139,7 +139,7 @@
                                             <form:label path="registerBusiness.claimed" cssErrorClass="lb_error" style="color: #9f1313;">Business Claimed</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="registerBusiness.claimed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" />
+                                            <form:checkbox path="registerBusiness.claimed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true" />
                                             <span style="display:block; font-size:14px; color: #9f1313;">(Check if business is claimed)</span>
                                         </div>
                                         <div class="clearFix"></div>
