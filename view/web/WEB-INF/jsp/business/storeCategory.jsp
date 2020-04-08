@@ -174,35 +174,35 @@
                                     <th nowrap>Delete</th>
                                 </tr>
                                 <c:forEach items="${storeCategoryForm.categories}" var="category" varStatus="status">
-                                    <tr>
-                                        <td>${status.count}&nbsp;</td>
-                                        <td nowrap>${category.value}</td>
-                                        <td nowrap>${storeCategoryForm.categoryCounts.get(category.key)}</td>
-                                        <td nowrap>
-                                            <c:choose>
-                                                <c:when test="${BusinessTypeEnum.PH eq store.businessType}">
-                                                    N/A
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <a href="/business/store/category/${storeCategoryForm.bizStoreId}/${category.key}/edit.htm" class="add-btn">Edit</a>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                        <td nowrap>
-                                            <c:choose>
-                                                <c:when test="${BusinessTypeEnum.PH eq store.businessType}">
-                                                    N/A
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/delete.htm" modelAttribute="storeCategoryForm">
-                                                        <form:hidden path="bizStoreId" value="${storeCategoryForm.bizStoreId}" />
-                                                        <form:hidden path="storeCategoryId" value="${category.key}" />
-                                                        <button name="delete" class="add-btn">Delete</button>
-                                                    </form:form>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>${status.count}&nbsp;</td>
+                                    <td nowrap>${category.value}</td>
+                                    <td nowrap>${storeCategoryForm.categoryCounts.get(category.key)}</td>
+                                    <td nowrap>
+                                        <c:choose>
+                                            <c:when test="${BusinessTypeEnum.PH eq store.businessType}">
+                                                N/A
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="/business/store/category/${storeCategoryForm.bizStoreId}/${category.key}/edit.htm" class="add-btn" style="color: #0000FF;">Edit</a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td nowrap>
+                                        <c:choose>
+                                            <c:when test="${BusinessTypeEnum.PH eq store.businessType}">
+                                                N/A
+                                            </c:when>
+                                            <c:otherwise>
+                                                <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/delete.htm" modelAttribute="storeCategoryForm">
+                                                    <form:hidden path="bizStoreId" value="${storeCategoryForm.bizStoreId}" />
+                                                    <form:hidden path="storeCategoryId" value="${category.key}" />
+                                                    <button name="delete" class="add-btn">Delete</button>
+                                                </form:form>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                </tr>
                                 </c:forEach>
                             </table>
                         </c:when>

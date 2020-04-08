@@ -101,7 +101,7 @@
                                         </table>
                                     </c:when>
                                     <c:otherwise>
-                                        There are no stores associated with category.
+                                        There are no stores associated with this category.
                                     </c:otherwise>
                                 </c:choose>
                             </div>

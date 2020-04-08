@@ -71,16 +71,27 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
                                 <c:choose>
-                                    <c:when test="${BusinessTypeEnum.PH eq businessLandingForm.businessType}">
-
+                                    <c:when test="${businessLandingForm.businessType eq BusinessTypeEnum.GS || businessLandingForm.businessType eq BusinessTypeEnum.RS}">
+                                        <c:if test="${businessLandingForm.bizStores.size() != 0}">
+                                            <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
+                                            <a href="/business/category.htm" class="add-btn">Show Business Category</a>
+                                            <a href="/business/addStore.htm" class="add-btn">Setup Online ${businessLandingForm.correctLabelBasedOnBusinessType}</a>
+                                        </c:if>
                                     </c:when>
                                     <c:otherwise>
-                                        <a href="/business/category.htm" class="add-btn">Show Business Category</a>
+                                        <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
+                                        <c:choose>
+                                            <c:when test="${BusinessTypeEnum.PH eq businessLandingForm.businessType}">
+
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="/business/category.htm" class="add-btn">Show Business Category</a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <a href="/business/addStore.htm" class="add-btn">Setup Online ${businessLandingForm.correctLabelBasedOnBusinessType}</a>
                                     </c:otherwise>
                                 </c:choose>
-                                <a href="/business/addStore.htm" class="add-btn">Setup Online Store</a>
                             </div>
                             <div class="store-table">
                             <c:choose>
@@ -88,25 +99,25 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
-                                        <th>Store Location</th>
+                                        <th>${businessLandingForm.correctLabelBasedOnBusinessType} Location</th>
                                         <th nowrap>
-                                            Queue Name
+                                            ${businessLandingForm.correctLabelBasedOnBusinessType} Name
                                             &nbsp;
                                             <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                                  alt="Sort" height="16px;"/>
                                         </th>
-                                        <th>Pending</th>
-                                        <th>Assigned</th>
+                                        <th>Users Pending</th>
+                                        <th>Authorized Users</th>
                                         <th>&nbsp;</th>
                                     </tr>
                                     <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
                                         <td>
-                                            <a href="/business/detail/store/${store.id}.htm" target="_blank" style="display:block; font-size:13px;">${store.addressWrappedFunky}</a>
+                                            <a href="/business/detail/store/${store.id}.htm" target="_blank" style="display:block; font-size:13px; color: #0000FF;">${store.addressWrappedFunky}</a>
                                         </td>
                                         <td nowrap>
-                                            <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                            <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">${store.displayName}</a>
                                             <span style="display:block; font-size:13px;">Business Type: ${store.businessType.description}</span>
                                             <span style="display:block; font-size:13px;">Category:
                                                 <c:choose>
@@ -139,15 +150,15 @@
                                                 <c:otherwise>
                                                 <span style="display:block; font-size:13px;"><a
                                                         href="https://noqapp.com/b/s${store.webLocation}.html"
-                                                        target="_blank">Web Appointment Link</a></span>
+                                                        target="_blank" style="color: #0000FF;">Web Appointment Link</a></span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
                                         <td>
-                                            <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
+                                            <a href="/business/${store.id}/listQueueSupervisor.htm" style="color: #0000FF;">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
                                         </td>
                                         <td>
-                                            <a href="/business/${store.id}/listQueueSupervisor.htm">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
+                                            <a href="/business/${store.id}/listQueueSupervisor.htm" style="color: #0000FF;">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
                                         </td>
                                         <td>
                                             <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>
@@ -160,30 +171,27 @@
                                                 </c:otherwise>
                                             </c:choose>
                                             <br/><br/>
-                                            <span style="display:block; font-size:13px;">Offline store is not visible</span>
+                                            <span style="display:block; font-size:13px;">Offline ${businessLandingForm.correctLabelBasedOnBusinessType.toLowerCase()} is not visible</span>
                                         </td>
                                     </tr>
                                     </c:forEach>
                                 </table>
                             </c:when>
                             <c:otherwise>
-                                <p style="display:block; font-size:15px;">
-                                    You are the administrator. Your business is now registered.
+                                <p style="display:block; font-size:18px; padding-bottom: 30px;">
+                                    Let's now setup online ${businessLandingForm.correctLabelBasedOnBusinessType}. Select left side if you have one store or right side for franchise model.
                                 </p>
-                                <p style="display:block; font-size:15px;">
-                                    <b>Next Step:</b> Please add stores/queue so that your customers can interact with your business.
-                                </p>
+
+                                <div class="addbtn-store">
+                                    <p align="center">
+                                        <a href="/business/addStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">&nbsp;&nbsp;One location store&nbsp;&nbsp;&nbsp;</a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a href="/business/addStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">Multiple location stores</a>
+                                    </p>
+                                </div>
                             </c:otherwise>
                             </c:choose>
                             </div>
-                        </div>
-
-                        <div class="alert-info">
-                            <p>
-                                To add supervisor to a queue, click on "Pending" value for that queue. Please,
-                                notify the pending supervisor to complete their profile after login in at web site.
-                            </p>
-                            <p>Once supervisor completes their profile, you need to Approve their profile to be accepted as a supervisor.</p>
                         </div>
                     </div>
                 </div>

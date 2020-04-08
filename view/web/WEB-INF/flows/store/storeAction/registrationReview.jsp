@@ -57,18 +57,18 @@
                     <form:form modelAttribute="registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Confirm your store details</h2>
+                            <h2>Confirm your ${registerBusiness.correctLabelBasedOnBusinessType.toLowerCase()} details</h2>
                         </div>
                         <div class="admin-content">
                             <div class="add-new">
                                 <div id="storeDetail">
                                     <div class="admin-title pT30">
-                                        <h2>Store profile</h2>
+                                        <h2>${registerBusiness.correctLabelBasedOnBusinessType} profile</h2>
                                     </div>
                                     <ul class="list-form">
                                         <li>
                                             <div class="col-lable3">
-                                                <form:label path="displayName" cssErrorClass="lb_error">Online Store Name</form:label>
+                                                <form:label path="displayName" cssErrorClass="lb_error">Online ${registerBusiness.correctLabelBasedOnBusinessType} Name</form:label>
                                             </div>
                                             <div class="col-fields">
                                                 <form:input path="displayName" cssClass="form-field-admin" readonly="true"/>
@@ -186,7 +186,7 @@
 
                                 <div class="full">
                                     <div class="admin-title pT30">
-                                        <h2>Store Amenities</h2>
+                                        <h2>${registerBusiness.correctLabelBasedOnBusinessType} Amenities</h2>
                                     </div>
                                     <ul class="col3-grid">
                                         <c:choose>
@@ -197,7 +197,7 @@
                                             <c:otherwise>
                                                 <div class="alert-info">
                                                     <p>
-                                                        No store amenity has been selected
+                                                        No ${registerBusiness.correctLabelBasedOnBusinessType.toLowerCase()} amenity has been selected
                                                     </p>
                                                 </div>
                                             </c:otherwise>
@@ -205,7 +205,7 @@
                                     </ul>
 
                                     <div class="admin-title pT30">
-                                        <h2>Store Facilities</h2>
+                                        <h2>${registerBusiness.correctLabelBasedOnBusinessType} Facilities</h2>
                                     </div>
                                     <ul class="col3-grid">
                                         <c:choose>
@@ -216,7 +216,7 @@
                                             <c:otherwise>
                                                 <div class="alert-info">
                                                     <p>
-                                                        No store facility has been selected
+                                                        No ${registerBusiness.correctLabelBasedOnBusinessType.toLowerCase()} facility has been selected
                                                     </p>
                                                 </div>
                                             </c:otherwise>
@@ -226,7 +226,7 @@
 
                                 <div>
                                     <div class="admin-title pT30">
-                                        <h2>Store Hours</h2>
+                                        <h2>${registerBusiness.correctLabelBasedOnBusinessType} Hours</h2>
                                     </div>
                                     <ul class="col2-grid">
                                         <c:forEach items="${registerBusiness.businessHours}" var="businessHour" varStatus="status">
@@ -247,7 +247,7 @@
                                                             <td><c:out value="${businessHour.tokenAvailableFromAsString}"/></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Store Start Time</td>
+                                                            <td>${registerBusiness.correctLabelBasedOnBusinessType} Start Time</td>
                                                             <td><c:out value="${businessHour.startHourStoreAsString}"/></td>
                                                         </tr>
                                                         <tr>
@@ -259,7 +259,7 @@
                                                             <td><c:out value="${businessHour.tokenNotAvailableFromAsString}"/></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Store Close Time</td>
+                                                            <td>${registerBusiness.correctLabelBasedOnBusinessType} Close Time</td>
                                                             <td><c:out value="${businessHour.endHourStoreAsString}"/></td>
                                                         </tr>
                                                     </table>
@@ -334,7 +334,7 @@
                                                 <c:otherwise>
                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                     <tr>
-                                                        <td>Store Start Time</td>
+                                                        <td>${registerBusiness.correctLabelBasedOnBusinessType} Start Time</td>
                                                         <td><c:out value="${businessHour.startHourStoreAsString}"/></td>
                                                     </tr>
                                                     <tr>
@@ -346,7 +346,7 @@
                                                         <td>&nbsp;</td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Store Close Time</td>
+                                                        <td>${registerBusiness.correctLabelBasedOnBusinessType} Close Time</td>
                                                         <td><c:out value="${businessHour.endHourStoreAsString}"/></td>
                                                     </tr>
                                                     <tr>

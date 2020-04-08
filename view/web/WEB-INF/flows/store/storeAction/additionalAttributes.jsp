@@ -28,8 +28,7 @@
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <div class="menu-top-arrow">
-                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
@@ -58,21 +57,21 @@
                         <div class="admin-title">
                             <c:choose>
                             <c:when test="${!empty registerBusiness.bizStoreId}">
-                                <h2>Edit Store Amenities & Facilities</h2>
+                                <h2>Edit ${registerBusiness.correctLabelBasedOnBusinessType} Amenities & Facilities</h2>
                             </c:when>
                             <c:otherwise>
-                                <h2>Store Amenities & Facilities</h2>
+                                <h2>${registerBusiness.correctLabelBasedOnBusinessType} Amenities & Facilities</h2>
                             </c:otherwise>
                             </c:choose>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                    <ul>
-                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
-                                        </c:forEach>
-                                    </ul>
+                                <ul>
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <li>${message.text}</li>
+                                    </c:forEach>
+                                </ul>
                                 </c:if>
                             </div>
                         </div>
