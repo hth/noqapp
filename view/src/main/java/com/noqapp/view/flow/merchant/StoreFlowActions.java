@@ -92,6 +92,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         registerBusiness.setStoreBusinessType(businessUser.getBizName().getBusinessType());
         registerBusiness.setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS));
 
+        registerBusiness.setDisplayName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
         registerBusiness.setAddressStore(new ScrubbedInput(businessUser.getBizName().getAddress()));
         registerBusiness.setAddressStoreOrigin(businessUser.getBizName().getAddressOrigin());
         registerBusiness.setTownStore(new ScrubbedInput(businessUser.getBizName().getTown()));
