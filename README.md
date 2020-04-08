@@ -1,7 +1,7 @@
-NoQApp
+NoQueue
 =======
 
-NoQApp Web Application
+NoQueue Web Application
 
 Code Style
 ==========
