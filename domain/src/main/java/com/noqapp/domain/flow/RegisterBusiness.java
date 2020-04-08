@@ -658,6 +658,17 @@ public class RegisterBusiness implements Serializable {
     }
 
     @Transient
+    public String getCorrectLabelBasedOnBusinessType() {
+        switch (businessType.getMessageOrigin()) {
+            case O:
+                return "Store";
+            case Q:
+            default:
+                return "Queue";
+        }
+    }
+
+    @Transient
     public void populateWithBizStore(BizStoreEntity bizStore) {
         this.bizStoreId = bizStore.getId();
         this.displayName = bizStore.getDisplayName();

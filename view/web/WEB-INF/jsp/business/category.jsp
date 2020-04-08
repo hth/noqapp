@@ -82,7 +82,7 @@
                                 <td>${status.count}&nbsp;</td>
                                 <td nowrap>${category.value}</td>
                                 <td nowrap>
-                                    <a href="/business/category/${category.key}/storeByCategory.htm">${categoryLanding.categoryCounts.get(category.key)}</a>
+                                    <a href="/business/category/${category.key}/storeByCategory.htm" style="color: #0000FF;">${categoryLanding.categoryCounts.get(category.key)}</a>
                                 </td>
                             </tr>
                             </c:forEach>

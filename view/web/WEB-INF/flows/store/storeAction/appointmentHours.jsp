@@ -95,7 +95,7 @@
                                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                 <tr>
                                                     <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].startHourStore" cssErrorClass="lb_error">Store Start Time</form:label>
+                                                        <form:label path="businessHours[${status.index}].startHourStore" cssErrorClass="lb_error">${registerBusiness.correctLabelBasedOnBusinessType} Start Time</form:label>
                                                     </td>
                                                     <td>
                                                         <form:input path="businessHours[${status.index}].startHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field" disabled="true"/>
@@ -123,7 +123,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].endHourStore" cssErrorClass="lb_error">Store Close Time</form:label>
+                                                        <form:label path="businessHours[${status.index}].endHourStore" cssErrorClass="lb_error">${registerBusiness.correctLabelBasedOnBusinessType} Close Time</form:label>
                                                     </td>
                                                     <td>
                                                         <form:input path="businessHours[${status.index}].endHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field" disabled="true"/>
@@ -151,7 +151,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="lable-td pT0">
-                                                        <form:label path="businessHours[${status.index}].dayClosed" cssErrorClass="lb_error">Store Closed</form:label>
+                                                        <form:label path="businessHours[${status.index}].dayClosed" cssErrorClass="lb_error">${registerBusiness.correctLabelBasedOnBusinessType} Closed</form:label>
                                                     </td>
                                                     <td>
                                                         <form:checkbox path="businessHours[${status.index}].dayClosed" cssErrorClass="error-field"/>

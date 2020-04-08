@@ -5,6 +5,8 @@ import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.json.JsonTopic;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
+import org.springframework.data.annotation.Transient;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,5 +88,16 @@ public class BusinessLandingForm {
     public BusinessLandingForm setCategories(Map<String, String> categories) {
         this.categories = categories;
         return this;
+    }
+
+    @Transient
+    public String getCorrectLabelBasedOnBusinessType() {
+        switch (businessType.getMessageOrigin()) {
+            case O:
+                return "Store";
+            case Q:
+            default:
+                return "Queue";
+        }
     }
 }

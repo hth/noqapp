@@ -107,14 +107,12 @@
                                     </spring:hasBindErrors>
 
                                     <c:if test="${!empty storeProductForm.message}">
-                                    <div class="error-box">
-                                        <div class="alert-info" style="text-align: left;">
-                                            <p>
-                                                <span style="display:block; font-size:13px; text-align: center;">
-                                                    <c:out value="${storeProductForm.message}" /> -- <a href="#products">(product list of #${storeProductForm.storeProducts.size()})</a>
-                                                </span>
-                                            </p>
-                                        </div>
+                                    <div class="alert-info" style="text-align: left;">
+                                        <p>
+                                            <span style="display:block; font-size:13px; text-align: center;">
+                                                <c:out value="${storeProductForm.message}" /> -- <a href="#products">(product list of #${storeProductForm.storeProducts.size()})</a>
+                                            </span>
+                                        </p>
                                     </div>
                                     </c:if>
 
@@ -333,15 +331,14 @@
                                     </div>
                                     </spring:hasBindErrors>
 
+
                                     <c:if test="${!empty storeProductForm.message}">
-                                    <div class="error-box">
-                                        <div class="alert-info" style="text-align: left;">
-                                            <p>
-                                                <span style="display:block; font-size:13px; text-align: center;">
-                                                    <c:out value="${storeProductForm.message}" /> -- <a href="#products">(product list of #${storeProductForm.storeProducts.size()})</a>
-                                                </span>
-                                            </p>
-                                        </div>
+                                    <div class="alert-info" style="text-align: left;">
+                                        <p>
+                                            <span style="display:block; font-size:13px; text-align: center;">
+                                                <c:out value="${storeProductForm.message}" /> -- <a href="#products">(product list of #${storeProductForm.storeProducts.size()})</a>
+                                            </span>
+                                        </p>
                                     </div>
                                     </c:if>
 

@@ -99,7 +99,7 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${queueSupervisor.businessUserRegistrationStatus eq BusinessUserRegistrationStatusEnum.V && queueSupervisor.userLevel ne UserLevelEnum.M_ADMIN}">
-                                                            <span style="display:block; font-size:13px;"><a href="/business/queueUserDetail/${queueSupervisor.businessUserId}.htm">${queueSupervisor.name}</a></span>
+                                                            <span style="display:block; font-size:13px;"><a href="/business/queueUserDetail/${queueSupervisor.businessUserId}.htm" style="color: #0000FF;">${queueSupervisor.name}</a></span>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <span style="display:block; font-size:13px;">${queueSupervisor.name}</span>
@@ -155,12 +155,12 @@
                                                     <c:choose>
                                                         <c:when test="${fn:endsWith(queueSupervisor.email, '@mail.noqapp.com')}">
                                                             <span style="display:block; font-size:13px;">
-                                                                <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm" target="_blank">--</a>
+                                                                <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm" style="color: #0000FF;" target="_blank">--</a>
                                                             </span>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <span style="display:block; font-size:13px;">
-                                                                Profile: <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm" target="_blank">${queueSupervisor.email}</a>
+                                                                Profile: <a href="/business/queueUserProfile/${queueSupervisor.businessUserId}.htm" style="color: #0000FF;" target="_blank">${queueSupervisor.email}</a>
                                                             </span>
                                                         </c:otherwise>
                                                     </c:choose>
@@ -196,7 +196,7 @@
                                                     <c:when test="${queueSupervisor.businessUserRegistrationStatus eq BusinessUserRegistrationStatusEnum.C}">
                                                         <p style="white-space: normal; display:block; font-size:13px;">
                                                             Approve / Reject (Pending) <br/>
-                                                            <a href="/business/landing.htm">Click here</a> & then click on pending column to approve
+                                                            <a href="/business/landing.htm" style="color: #0000FF;">Click here</a> & then click on pending column to approve
                                                         </p>
                                                     </c:when>
                                                     <c:otherwise>

@@ -216,7 +216,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 break;
             case GS:
             case RS:
-                registerBusiness.setAmenitiesAvailable(AmenityEnum.ALL);
+                registerBusiness.setAmenitiesAvailable(AmenityEnum.GROCERY);
                 break;
             case FT:
                 //registerBusiness.setAmenitiesAvailable(null);

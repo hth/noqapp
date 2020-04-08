@@ -117,7 +117,7 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
-                                                <th>Queue Name</th>
+                                                <th>Name</th>
                                                 <th>Status</th>
                                                 <th>Token Number</th>
                                             </tr>
@@ -153,7 +153,7 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
-                                                <th>Queue Name</th>
+                                                <th>Name</th>
                                                 <th>Date Serviced</th>
                                                 <th>Hour Saved</th>
                                                 <th>Rating</th>

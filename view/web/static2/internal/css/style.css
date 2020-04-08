@@ -392,9 +392,9 @@ input.form-btn:hover{ background:#fc0a6d url(../img/arrow.png) 98% 10px no-repea
 button.form-btn{ width:100%; border:1px solid #ff217c; background:#ff217c url(../img/arrow.png) 98% 10px no-repeat ; text-transform: uppercase;  margin:15px 0 5px 0; padding:10px  3%; font-size: 16px; color:#fff; text-align:left; cursor: pointer; font-weight: 500; border-radius:4px;}
 button.form-btn:hover{ background:#fc0a6d url(../img/arrow.png) 98% 10px no-repeat}
 input,select{ border-radius:4px;  font-family: 'Roboto', sans-serif; font-weight:300;}
-.form-field{font-family: 'Roboto', sans-serif; font-weight:300; width:96%; padding:10px 2%; font-size:16px; margin:0px 0 15px 0; border:1px solid #CCC}
-.form-field-left{ width:44%; float:left; font-family: 'Roboto', sans-serif; font-weight:300;   padding:10px 2%; font-size:16px; margin:0px 0 15px 0; border:1px solid #CCC}
-.form-field-right{ width:44%; float:right; font-family: 'Roboto', sans-serif; font-weight:300;   padding:10px 2%; font-size:16px; margin:0px 0 15px 0; border:1px solid #CCC}
+.form-field{font-family: 'Roboto', sans-serif; font-weight:300; width:96%; padding:10px 2%; font-size:16px; margin:0px 0 15px 0; border:1px solid #CCC;}
+.form-field-left{ width:44%; float:left; font-family: 'Roboto', sans-serif; font-weight:300;   padding:10px 2%; font-size:16px; margin:0px 0 15px 0; border:1px solid #CCC; text-transform: capitalize;}
+.form-field-right{ width:44%; float:right; font-family: 'Roboto', sans-serif; font-weight:300;   padding:10px 2%; font-size:16px; margin:0px 0 15px 0; border:1px solid #CCC; text-transform: capitalize;}
 .or{ font-size:25px; margin:25px 0}
 
 input:disabled {background: #ccc;}
@@ -502,7 +502,7 @@ td.lable-td{ padding-top:8px}
 
 .form-field-select{resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:100%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC}
 .form-field-select.single-dropdown{height: 40px;}
-.form-field-admin{ resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:96%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC}
+.form-field-admin{ resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:96%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC; text-transform: capitalize;}
 span.info-txt{ font-size:14px; display:block; text-align:right; line-height:16px;}
 
 .form-check-box{ resize: none; font-family: 'Roboto', sans-serif; font-weight:300;   padding:0px 0%; font-size:16px; margin:15px 0 5px 0; vertical-align: middle; position: relative; bottom: 1px;}
