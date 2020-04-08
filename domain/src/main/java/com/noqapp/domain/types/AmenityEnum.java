@@ -1,8 +1,11 @@
 package com.noqapp.domain.types;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -35,8 +38,9 @@ public enum AmenityEnum {
     }
 
     public static List<AmenityEnum> asList() {
-        AmenityEnum[] all = AmenityEnum.values();
-        return Arrays.asList(all);
+        return Stream.of(AmenityEnum.values())
+            .sorted(Comparator.comparing(AmenityEnum::getDescription))
+            .collect(Collectors.toList());
     }
 
     @Override

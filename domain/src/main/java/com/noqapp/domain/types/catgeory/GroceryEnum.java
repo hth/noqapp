@@ -2,6 +2,8 @@ package com.noqapp.domain.types.catgeory;
 
 import static java.util.stream.Collectors.toMap;
 
+import com.noqapp.domain.types.BusinessTypeEnum;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -118,8 +120,9 @@ public enum GroceryEnum {
     }
 
     public static List<GroceryEnum> asList() {
-        GroceryEnum[] all = GroceryEnum.values();
-        return Arrays.asList(all);
+        return Stream.of(GroceryEnum.values())
+            .sorted(Comparator.comparing(GroceryEnum::getDescription))
+            .collect(Collectors.toList());
     }
 
     public static List<String> asListOfDescription() {
