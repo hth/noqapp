@@ -2,12 +2,20 @@ package com.noqapp.domain.types;
 
 import static com.noqapp.domain.types.MessageOriginEnum.O;
 import static com.noqapp.domain.types.MessageOriginEnum.Q;
+import static java.util.stream.Collectors.toMap;
+
+import com.noqapp.domain.types.catgeory.GroceryEnum;
 
 import org.springframework.data.annotation.Transient;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -69,8 +77,9 @@ public enum BusinessTypeEnum {
     }
 
     public static List<BusinessTypeEnum> asList() {
-        BusinessTypeEnum[] all = BusinessTypeEnum.values();
-        return Arrays.asList(all);
+        return Stream.of(BusinessTypeEnum.values())
+            .sorted(Comparator.comparing(BusinessTypeEnum::getDescription))
+            .collect(Collectors.toList());
     }
 
     /** For dynamically creating list of business type based on message origin. */

@@ -52,7 +52,7 @@ public class RegisterBusiness implements Serializable {
     private List<AmenityEnum> amenities = new ArrayList<>();
     private List<FacilityEnum> facilities = new ArrayList<>();
     private boolean dayClosed = false;
-    private boolean claimed = false;
+    private boolean claimed = true;
     /* Reference to person who has recommended business. */
     private String inviteeCode;
     private AddressOriginEnum addressOrigin;
@@ -115,7 +115,7 @@ public class RegisterBusiness implements Serializable {
 
     /* Business types are initialized in flow. Why? Show off. */
     @Transient
-    private BusinessTypeEnum businessType;
+    private BusinessTypeEnum businessType = BusinessTypeEnum.GS;
 
     @Transient
     private boolean selectFoundAddress;

@@ -194,7 +194,7 @@
                                             <form:label path="claimed" cssErrorClass="lb_error" style="color: #9f1313;">Business Claimed</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="claimed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" />
+                                            <form:checkbox path="claimed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true" />
                                             <span style="display:block; font-size:14px; color: #9f1313;">(Check if business is claimed)</span>
                                         </div>
                                         <div class="clearFix"></div>
@@ -223,7 +223,7 @@
                                     <li>
                                         <div class="alert-info">
                                             <p>
-                                                To approve your business, we may ask you to provide valid
+                                                To validate your business, we may ask you to provide valid
                                                 documentation for your registered business. Please keep business
                                                 information and point of contact up to date.
                                             </p>
