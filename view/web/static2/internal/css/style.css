@@ -502,7 +502,7 @@ td.lable-td{ padding-top:8px}
 
 .form-field-select{resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:100%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC}
 .form-field-select.single-dropdown{height: 40px;}
-.form-field-admin{ resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:96%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC}
+.form-field-admin{ resize: none; font-family: 'Roboto', sans-serif; font-weight:300; width:96%; padding:10px 2%; font-size:16px; margin:0px 0 5px 0; border:1px solid #CCC; text-transform: capitalize;}
 span.info-txt{ font-size:14px; display:block; text-align:right; line-height:16px;}
 
 .form-check-box{ resize: none; font-family: 'Roboto', sans-serif; font-weight:300;   padding:0px 0%; font-size:16px; margin:15px 0 5px 0; vertical-align: middle; position: relative; bottom: 1px;}
