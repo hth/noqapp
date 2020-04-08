@@ -16,6 +16,7 @@ public enum AmenityEnum {
     ME("ME", "Meeting Room");
 
     public static EnumSet<AmenityEnum> ALL = EnumSet.of(AC, FW, FP, WA, ME);
+    public static EnumSet<AmenityEnum> GROCERY = EnumSet.of(AC, FW, FP, WA);
 
     private final String description;
     private final String name;
