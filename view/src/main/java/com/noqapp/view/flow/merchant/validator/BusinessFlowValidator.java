@@ -241,6 +241,17 @@ public class BusinessFlowValidator {
             }
         }
 
+        if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
+            switch (register.getRegisterBusiness().getBusinessType()) {
+                case DO:
+                    register.getRegisterBusiness().setPopulateAmenitiesAndFacilities(true);
+                    break;
+                case GS:
+                case RS:
+                    status = status + ".SKIP_AMENITIES_FACILITIES";
+            }
+        }
+
         LOG.info("Validate business qid={} status={}", register.getRegisterUser().getQueueUserId(), status);
         return status;
     }

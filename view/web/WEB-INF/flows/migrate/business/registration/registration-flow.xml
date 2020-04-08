@@ -47,12 +47,14 @@
     <action-state id="validateBusinessDetails">
         <evaluate expression="businessFlowValidator.validateBusinessDetails(register, 'create', messageContext)"/>
         <transition on="success" to="additionalAttributes"/>
+        <transition on="success.SKIP_AMENITIES_FACILITIES" to="registrationReview"/>
         <transition on="failure" to="registrationStart"/>
     </action-state>
 
     <action-state id="editValidateBusinessDetails">
         <evaluate expression="businessFlowValidator.validateBusinessDetails(register, 'edit', messageContext)"/>
         <transition on="success" to="additionalEditAttributes"/>
+        <transition on="success.SKIP_AMENITIES_FACILITIES" to="registrationReview"/>
         <transition on="failure" to="registrationStart"/>
     </action-state>
 
@@ -114,7 +116,7 @@
 
     <view-state id="registrationEditComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
     <view-state id="registrationComplete"/>
-    <end-state id="logout"/>
+    <end-state id="logout" view="externalRedirect:contextRelative:/access/landing.htm"/>
 
     <global-transitions>
         <transition on="cancel" to="logout"/>
