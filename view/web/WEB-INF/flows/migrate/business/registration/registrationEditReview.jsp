@@ -60,7 +60,7 @@
                         <h2>Edit business details</h2>
                     </div>
                     <div class="admin-content">
-                        <div class="add-new">
+                        <c:if class="add-new">
                             <div id="storeDetail">
                                 <div class="admin-title pT30">
                                     <h2>Review Business details</h2>
@@ -147,6 +147,7 @@
                                 </ul>
                             </div>
 
+                            <c:if test="${register.getRegisterBusiness.populateAmenitiesAndFacilities}">
                             <div class="full">
                                 <div class="admin-title pT30">
                                     <h2>Business Amenities</h2>
@@ -186,6 +187,7 @@
                                     </c:choose>
                                 </ul>
                             </div>
+                            </c:if>
 
                             <div class="btn-hours">
                                 <div class="button-btn">

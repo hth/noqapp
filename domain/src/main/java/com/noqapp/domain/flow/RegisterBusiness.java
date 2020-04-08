@@ -51,6 +51,7 @@ public class RegisterBusiness implements Serializable {
     private String timeZone;
     private List<AmenityEnum> amenities = new ArrayList<>();
     private List<FacilityEnum> facilities = new ArrayList<>();
+    private boolean populateAmenitiesAndFacilities = false;
     private boolean dayClosed = false;
     private boolean claimed = true;
     /* Reference to person who has recommended business. */
@@ -259,6 +260,15 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setFacilities(List<FacilityEnum> facilities) {
         this.facilities = facilities;
+        return this;
+    }
+
+    public boolean isPopulateAmenitiesAndFacilities() {
+        return populateAmenitiesAndFacilities;
+    }
+
+    public RegisterBusiness setPopulateAmenitiesAndFacilities(boolean populateAmenitiesAndFacilities) {
+        this.populateAmenitiesAndFacilities = populateAmenitiesAndFacilities;
         return this;
     }
 

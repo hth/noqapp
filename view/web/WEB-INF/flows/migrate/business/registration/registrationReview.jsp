@@ -196,6 +196,7 @@
                             </ul>
                             </div>
 
+                            <c:if test="${register.registerBusiness.populateAmenitiesAndFacilities}">
                             <div class="full">
                                 <div class="admin-title pT30">
                                     <h2>Business Amenities</h2>
@@ -235,6 +236,7 @@
                                     </c:choose>
                                 </ul>
                             </div>
+                            </c:if>
 
                             <div class="btn-hours">
                                 <c:choose>
