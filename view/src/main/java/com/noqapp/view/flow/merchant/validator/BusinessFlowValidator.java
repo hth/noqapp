@@ -376,8 +376,8 @@ public class BusinessFlowValidator {
                 new MessageBuilder()
                     .error()
                     .source(source + "displayName")
-                    .defaultText("Queue Name cannot be empty. " +
-                        "Queue Names can be like: Pharmacy, Driving License, Dinner Reservation")
+                    .defaultText("Online " + registerBusiness.getBusinessType().getClassifierTitle() + " Name cannot be empty. " +
+                        registerBusiness.getBusinessType().getClassifierTitle() + " Names can be like: Pharmacy, Driving License, Dinner Reservation")
                     .build());
             status = "failure";
         }

@@ -57,10 +57,10 @@
                         <div class="admin-title">
                             <c:choose>
                             <c:when test="${!empty registerBusiness.bizStoreId}">
-                                <h2>Edit ${registerBusiness.correctLabelBasedOnBusinessType} Amenities & Facilities</h2>
+                                <h2>Edit ${registerBusiness.businessType.classifierTitle} Amenities & Facilities</h2>
                             </c:when>
                             <c:otherwise>
-                                <h2>${registerBusiness.correctLabelBasedOnBusinessType} Amenities & Facilities</h2>
+                                <h2>${registerBusiness.businessType.classifierTitle} Amenities & Facilities</h2>
                             </c:otherwise>
                             </c:choose>
                         </div>
