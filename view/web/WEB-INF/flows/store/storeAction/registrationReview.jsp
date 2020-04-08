@@ -63,12 +63,12 @@
                             <div class="add-new">
                                 <div id="storeDetail">
                                     <div class="admin-title pT30">
-                                        <h2>Store details</h2>
+                                        <h2>Store profile</h2>
                                     </div>
                                     <ul class="list-form">
                                         <li>
                                             <div class="col-lable3">
-                                                <form:label path="displayName" cssErrorClass="lb_error">Queue Name</form:label>
+                                                <form:label path="displayName" cssErrorClass="lb_error">Online Store Name</form:label>
                                             </div>
                                             <div class="col-fields">
                                                 <form:input path="displayName" cssClass="form-field-admin" readonly="true"/>

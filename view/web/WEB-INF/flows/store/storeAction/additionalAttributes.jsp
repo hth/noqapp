@@ -61,7 +61,7 @@
                                 <h2>Edit Store Amenities & Facilities</h2>
                             </c:when>
                             <c:otherwise>
-                                <h2>Add Store Amenities & Facilities</h2>
+                                <h2>Store Amenities & Facilities</h2>
                             </c:otherwise>
                             </c:choose>
                         </div>

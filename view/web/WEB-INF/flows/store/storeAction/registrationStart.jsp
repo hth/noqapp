@@ -61,7 +61,7 @@
                                     <h2>Edit Store details</h2>
                                 </c:when>
                                 <c:otherwise>
-                                    <h2>Add Store details</h2>
+                                    <h2>Online Store Details</h2>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -82,7 +82,7 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="displayName" cssErrorClass="lb_error">Queue Name</form:label>
+                                            <form:label path="displayName" cssErrorClass="lb_error">Online Store Name</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="displayName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>

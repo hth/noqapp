@@ -70,8 +70,8 @@
                                     </c:when>
                                     <c:otherwise>
                                         <sec:authorize access="hasAnyRole('ROLE_M_ADMIN')">
-                                            <!-- Currently Managers are not supported to add new store. -->
-                                            <a href="/business/addStore.htm" class="add-btn">Add new store</a>
+                                            <!-- Currently Managers are not supported to Setup Online Store. -->
+                                            <a href="/business/addStore.htm" class="add-btn">Setup Online Store</a>
                                         </sec:authorize>
                                     </c:otherwise>
                                 </c:choose>

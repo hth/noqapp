@@ -80,7 +80,7 @@
                                         <a href="/business/category.htm" class="add-btn">Show Business Category</a>
                                     </c:otherwise>
                                 </c:choose>
-                                <a href="/business/addStore.htm" class="add-btn">Add New Store</a>
+                                <a href="/business/addStore.htm" class="add-btn">Setup Online Store</a>
                             </div>
                             <div class="store-table">
                             <c:choose>

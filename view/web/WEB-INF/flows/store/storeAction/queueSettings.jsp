@@ -104,7 +104,7 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true"/>
-                                            <span style="display:block; font-size:14px;">(Default: Only registered users can join)</span>
+                                            <span style="display:block; font-size:14px;">NoQueue Registered Users</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
