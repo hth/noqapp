@@ -1,6 +1,7 @@
 package com.noqapp.domain.flow;
 
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.springframework.data.annotation.Transient;
 
@@ -20,6 +21,7 @@ public class AuthorizedQueueUser implements Serializable {
     private int queueLimit;
     private String qid;
     private String name;
+    private BusinessTypeEnum businessType;
     private List<BizStoreEntity> enrolledInStores = new LinkedList<>();
     private List<BizStoreEntity> bizStores = new ArrayList<>();
     private Map<String, String> categories = new HashMap<>();
@@ -51,6 +53,15 @@ public class AuthorizedQueueUser implements Serializable {
 
     public AuthorizedQueueUser setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public AuthorizedQueueUser setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 

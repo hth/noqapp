@@ -111,6 +111,7 @@ public class AuthorizedQueueUserDetailFlowActions {
             .setQueueLimit(queueLimit)
             .setQid(userProfile.getQueueUserId())
             .setName(userProfile.getName())
+            .setBusinessType(businessUser.getBizName().getBusinessType())
             .setEnrolledInStores(enrolledInStores)
             .setBizStores(bizStores)
             .setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS));

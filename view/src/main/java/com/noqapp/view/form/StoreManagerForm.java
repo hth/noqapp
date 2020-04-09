@@ -12,6 +12,7 @@ import java.util.Map;
 public class StoreManagerForm {
 
     private String bizName;
+    private BusinessTypeEnum businessType;
     private Map<BusinessTypeEnum, BusinessTypeEnum> businessTypeMap = new HashMap<>();
     private List<BizStoreEntity> bizStores = new ArrayList<>();
     private Map<String, TokenQueueEntity> tokenQueues = new HashMap<>();
@@ -22,6 +23,15 @@ public class StoreManagerForm {
 
     public StoreManagerForm setBizName(String bizName) {
         this.bizName = bizName;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public StoreManagerForm setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 
