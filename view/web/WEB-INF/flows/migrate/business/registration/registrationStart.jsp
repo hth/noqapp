@@ -11,9 +11,21 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.css" type='text/css'>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+
+    <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/brands.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/solid.css" rel="stylesheet">
+
+    <!-- custom styling for all icons -->
+    i.fas,
+    i.fab {
+        border: 1px solid red;
+    }
 </head>
 
 <body>
@@ -87,6 +99,8 @@
                                         <div class="col-fields">
                                             <form:input path="name" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
+                                        <span class="tooltip" title="Registered legal business name. This name may be different from store name." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
@@ -107,6 +121,8 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
+                                        <span class="tooltip" title="Primary business type. This <b>cannot</b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
@@ -116,6 +132,8 @@
                                         <div class="col-fields">
                                             <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
+                                        <span class="tooltip" title="Legal business address. This address may be different from store address. This address is never made public." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
 
@@ -129,6 +147,8 @@
                                         <div class="col-fields">
                                             <form:input path="area" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Santacruz" />
                                         </div>
+                                        <span class="tooltip" title="Business located in town" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
@@ -138,6 +158,8 @@
                                         <div class="col-fields">
                                             <form:input path="town" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" placeholder="Mumbai" />
                                         </div>
+                                        <span class="tooltip" title="Business located in city" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
                                     <c:set var="displayedTownAndArea" value="true"/>
@@ -175,6 +197,8 @@
                                         <div class="col-fields">
                                             <form:input path="phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
+                                        <span class="tooltip" title="Phone number for NoQueue to contact. <b>This phone number is never made public.<b>" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
                                     <c:if test="${register.registerBusiness.businessUserRegistrationStatus == BusinessUserRegistrationStatusEnum.V}">
@@ -194,7 +218,7 @@
                                             <form:label path="claimed" cssErrorClass="lb_error" style="color: #9f1313;">Business Claimed</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="claimed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true" />
+                                            <form:checkbox path="claimed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="${register.registerBusiness.claimed}" />
                                             <span style="display:block; font-size:14px; color: #9f1313;">(Check if business is claimed)</span>
                                         </div>
                                         <div class="clearFix"></div>
@@ -307,6 +331,7 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/services.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
@@ -340,5 +365,16 @@
     // l.toggle();
     // l.isLoading();
     // l.setProgress( 0-1 );
+</script>
+<script>
+    new jBox('Tooltip', {
+        attach: '.tooltip',
+        adjustDistance : {
+            top : 105,
+            bottom : 150,
+            left : 15,
+            right : 50
+        }
+    });
 </script>
 </html>

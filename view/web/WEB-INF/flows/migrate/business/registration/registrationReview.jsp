@@ -254,17 +254,6 @@
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
-                                <%--<c:if test="${register.registerUser.emailValidated}">--%>
-                                    <%--<div class="first-btn">--%>
-                                        <%--<input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">--%>
-                                    <%--</div>--%>
-                                <%--</c:if>--%>
-                                <%--<div class="center-btn">--%>
-                                    <%--<input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">--%>
-                                <%--</div>--%>
-                                <%--<div class="last-btn">--%>
-                                    <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                <%--</div>--%>
                                 <div class="clearFix"></div>
                             </div>
                         </div>

@@ -26,11 +26,6 @@
     i.fab {
         border: 1px solid red;
     }
-
-    <!-- custom styling for specific icons -->
-    .fa-fish {
-        color: salmon;
-    }
 </head>
 
 <body>
@@ -100,7 +95,7 @@
                                                 </c:if>
 
                                                 <c:if test="${errors.hasFieldErrors('productPrice')}">
-                                                    <li><form:errors path="productPrice"/></li>
+                                                <li><form:errors path="productPrice"/></li>
                                                 </c:if>
 
                                                 <c:if test="${errors.hasFieldErrors('unitValue')}">

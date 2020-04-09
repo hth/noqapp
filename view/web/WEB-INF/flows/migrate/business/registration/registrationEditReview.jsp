@@ -60,7 +60,7 @@
                         <h2>Edit business details</h2>
                     </div>
                     <div class="admin-content">
-                        <c:if class="add-new">
+                        <div class="add-new">
                             <div id="storeDetail">
                                 <div class="admin-title pT30">
                                     <h2>Review Business details</h2>
@@ -139,7 +139,7 @@
                                             <form:label path="registerBusiness.claimed" cssErrorClass="lb_error" style="color: #9f1313;">Business Claimed</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:checkbox path="registerBusiness.claimed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true" />
+                                            <form:checkbox path="registerBusiness.claimed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="${!registerBusiness.claimed}" />
                                             <span style="display:block; font-size:14px; color: #9f1313;">(Check if business is claimed)</span>
                                         </div>
                                         <div class="clearFix"></div>
@@ -147,7 +147,7 @@
                                 </ul>
                             </div>
 
-                            <c:if test="${register.getRegisterBusiness.populateAmenitiesAndFacilities}">
+                            <c:if test="${register.registerBusiness.populateAmenitiesAndFacilities}">
                             <div class="full">
                                 <div class="admin-title pT30">
                                     <h2>Business Amenities</h2>
@@ -195,17 +195,6 @@
                                     <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>
                                     <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:32%; float: right">Cancel</button>
                                 </div>
-                                <%--<c:if test="${register.registerUser.emailValidated}">--%>
-                                <%--<div class="first-btn">--%>
-                                <%--<input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">--%>
-                                <%--</div>--%>
-                                <%--</c:if>--%>
-                                <%--<div class="center-btn">--%>
-                                <%--<input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">--%>
-                                <%--</div>--%>
-                                <%--<div class="last-btn">--%>
-                                <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                <%--</div>--%>
                                 <div class="clearFix"></div>
                             </div>
                         </div>
