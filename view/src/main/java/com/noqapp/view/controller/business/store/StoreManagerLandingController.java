@@ -108,6 +108,7 @@ public class StoreManagerLandingController {
             storeManagerForm
                 //TODO(hth) added biz name multiple times
                 .setBizName(bizStore.getBizName().getBusinessName())
+                .setBusinessType(bizStore.getBizName().getBusinessType())
                 .addBizStore(bizStore)
                 .addTokenQueue(codeQR, tokenQueue);
             //TODO(hth) can add current average time by calculating serviced clients in queue.

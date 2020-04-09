@@ -82,8 +82,8 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
-                                        <th>Store Location</th>
-                                        <th>Queue Name</th>
+                                        <th>${storeManagerForm.businessType.classifierTitle} Location</th>
+                                        <th>${storeManagerForm.businessType.classifierTitle} Name</th>
                                         <th>Rating & AHT</th>
                                         <th nowrap>Serving</th>
                                         <th nowrap>In Queue</th>

@@ -50,7 +50,7 @@
             <!-- Add New Supervisor -->
             <div class="admin-main">
                 <div class="admin-title">
-                    <h2>Add User to Stores</h2>
+                    <h2>Add User to ${authorizedQueueUser.businessType.classifierTitle}s</h2>
                 </div>
 
                 <div class="admin-content">
@@ -59,45 +59,38 @@
 
                         <div class="add-store">
                             <div class="store-table">
-                                <span style="float: left;">${authorizedQueueUser.name} is authorized to manage <strong>${authorizedQueueUser.enrolledInStores.size()}</strong> stores out of ${authorizedQueueUser.enrolledInStores.size() + authorizedQueueUser.bizStores.size()} stores</span>
-                                <span style="float: right;"><strong>Max managing allowed: </strong>${authorizedQueueUser.queueLimit} stores</span>
+                                <span style="float: left;">${authorizedQueueUser.name} is authorized to manage <strong>${authorizedQueueUser.enrolledInStores.size()}</strong> ${authorizedQueueUser.businessType.classifierTitle.toLowerCase()}s out of ${authorizedQueueUser.enrolledInStores.size() + authorizedQueueUser.bizStores.size()} ${authorizedQueueUser.businessType.classifierTitle.toLowerCase()}s</span>
+                                <span style="float: right;"><strong>Max managing allowed: </strong>${authorizedQueueUser.queueLimit} ${authorizedQueueUser.businessType.classifierTitle.toLowerCase()}s</span>
                                 <div style="clear:both;"></div>
                                 <br/>
 
-                                <h2>Stores available to manage</h2>
+                                <h2>${authorizedQueueUser.businessType.classifierTitle}s available to manage</h2>
                                 <c:choose>
                                 <c:when test="${!empty authorizedQueueUser.bizStores}">
                                 <form:form modelAttribute="authorizedQueueUser">
                                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                                     <div class="alert-info">
-                                        <p>Add stores to authorize ${authorizedQueueUser.name} to manage it.</p>
+                                        <p>Add ${authorizedQueueUser.businessType.classifierTitle.toLowerCase()}s to authorize ${authorizedQueueUser.name} to manage it.</p>
                                     </div>
 
                                     <div class="error-box">
                                         <div class="error-txt">
                                             <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                                <ul>
-                                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                                    <li>${message.text}</li>
-                                                    </c:forEach>
-                                                </ul>
+                                            <ul>
+                                                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                                <li>${message.text}</li>
+                                                </c:forEach>
+                                            </ul>
                                             </c:if>
                                         </div>
                                     </div>
 
                                     <div class="add-new">
                                         <div class="col-fields">
-                                            <%--<div class="left-btn">--%>
-                                                <%--<input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">--%>
-                                            <%--</div>--%>
                                             <div class="button-btn">
                                                 <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
                                                 <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                             </div>
-                                            <%--<div class="right-btn">--%>
-                                                <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                            <%--</div>--%>
-
                                             <div class="clearFix"></div>
                                         </div>
                                     </div>
@@ -110,9 +103,9 @@
                                         <tr>
                                             <th>&nbsp;</th>
                                             <th>&nbsp;</th>
-                                            <th>Store Location</th>
+                                            <th>${authorizedQueueUser.businessType.classifierTitle} Location</th>
                                             <th nowrap>
-                                                Queue Name
+                                                ${authorizedQueueUser.businessType.classifierTitle} Name
                                                 &nbsp;
                                                 <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                                      alt="Sort" height="16px;"/>
@@ -147,48 +140,48 @@
                                 </c:when>
                                 <c:otherwise>
                                     <div class="alert-info">
-                                        <p>${authorizedQueueUser.name} has no more stores left to manage.</p>
+                                        <p>${authorizedQueueUser.name} has no more ${authorizedQueueUser.businessType.classifierTitle.toLowerCase()}s left to manage.</p>
                                     </div>
                                 </c:otherwise>
                                 </c:choose>
                             </div>
 
                             <div class="store-table">
-                                <h2>Enrolled in stores</h2>
+                                <h2>Enrolled in ${authorizedQueueUser.businessType.classifierTitle.toLowerCase()}s</h2>
                                 <c:choose>
                                 <c:when test="${!empty authorizedQueueUser.enrolledInStores}">
                                     <div class="alert-info">
-                                        <p>${authorizedQueueUser.name} is authorized to manage stores listed below.</p>
+                                        <p>${authorizedQueueUser.name} is authorized to manage ${authorizedQueueUser.businessType.classifierTitle.toLowerCase()}s listed below.</p>
                                     </div>
 
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <th>&nbsp;</th>
-                                            <th>Store Location</th>
+                                            <th>${authorizedQueueUser.businessType.classifierTitle} Location</th>
                                             <th nowrap>
-                                                Queue Name
+                                                ${authorizedQueueUser.businessType.classifierTitle} Name
                                                 &nbsp;
                                                 <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                                      alt="Sort" height="16px;"/>
                                             </th>
                                         </tr>
                                         <c:forEach items="${authorizedQueueUser.enrolledInStores}" var="store" varStatus="status">
-                                            <tr>
-                                                <td>${status.count}&nbsp;</td>
-                                                <td>
-                                                    <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;">${store.addressWrappedFunky}</a>
-                                                </td>
-                                                <td nowrap>
-                                                    <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">${store.displayName}</a>
-                                                    <span style="display:block; font-size:13px;">${authorizedQueueUser.categories.get(store.bizCategoryId)}</span>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>${status.count}&nbsp;</td>
+                                            <td>
+                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;">${store.addressWrappedFunky}</a>
+                                            </td>
+                                            <td nowrap>
+                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">${store.displayName}</a>
+                                                <span style="display:block; font-size:13px;">${authorizedQueueUser.categories.get(store.bizCategoryId)}</span>
+                                            </td>
+                                        </tr>
                                         </c:forEach>
                                     </table>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="alert-info">
-                                        <p>${authorizedQueueUser.name} is not authorized to manage any store queues.</p>
+                                        <p>${authorizedQueueUser.name} is not authorized to manage any ${authorizedQueueUser.businessType.classifierTitle.toLowerCase()}s.</p>
                                     </div>
                                 </c:otherwise>
                                 </c:choose>
@@ -231,7 +224,7 @@
 <script type="text/javascript">
     function selectAllClicked(source) {
         var checkboxes = document.getElementsByName('interests');
-        for (var i = 0, n = checkboxes.length; i < n; i++) {
+        for (let i = 0, n = checkboxes.length; i < n; i++) {
             checkboxes[i].checked = source.checked;
         }
     }

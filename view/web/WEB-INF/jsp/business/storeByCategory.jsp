@@ -62,9 +62,9 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
-                                                <th>Store Location</th>
+                                                <th>${businessLandingForm.businessType.classifierTitle} Location</th>
                                                 <th nowrap>
-                                                    Queue Name
+                                                    ${businessLandingForm.businessType.classifierTitle} Name
                                                     &nbsp;
                                                     <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
                                                          alt="Sort" height="16px;"/>
