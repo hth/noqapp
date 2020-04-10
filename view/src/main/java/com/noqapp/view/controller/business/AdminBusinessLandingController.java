@@ -27,6 +27,7 @@ import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.analytic.BizDimensionService;
+import com.noqapp.view.flow.merchant.StoreFlowActions;
 import com.noqapp.view.form.QueueSupervisorActionForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
 import com.noqapp.view.form.business.PreferredBusinessForm;
@@ -300,7 +301,7 @@ public class AdminBusinessLandingController {
      * Still not supported till this date.
      */
     @GetMapping (value = "/addStore", produces = "text/html;charset=UTF-8")
-    public String addStore(HttpServletResponse response) throws IOException {
+    public String addStore(RedirectAttributes redirectAttrs, HttpServletResponse response) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null == businessUser) {
@@ -311,6 +312,29 @@ public class AdminBusinessLandingController {
         LOG.info("Add store to business {} qid={} userLevel={}", storeActionFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
+        redirectAttrs.addFlashAttribute("franchise", StoreFlowActions.StoreFranchise.OFF);
+        return storeActionFlow;
+    }
+
+    /**
+     * Only admin can add store as of now. Plan is to add support for S_MANAGER to allow adding stores. S_MANAGER with
+     * Business Type of DO, will not have this option either.
+     *
+     * Still not supported till this date.
+     */
+    @GetMapping (value = "/addFranchiseStore", produces = "text/html;charset=UTF-8")
+    public String addFranchiseStore(RedirectAttributes redirectAttrs, HttpServletResponse response) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Add franchise store to business {} qid={} userLevel={}", storeActionFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        redirectAttrs.addFlashAttribute("franchise", StoreFlowActions.StoreFranchise.ON);
         return storeActionFlow;
     }
 

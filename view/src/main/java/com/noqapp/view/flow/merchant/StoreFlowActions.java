@@ -47,6 +47,8 @@ import java.util.List;
 public class StoreFlowActions extends RegistrationFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(StoreFlowActions.class);
 
+    public enum StoreFranchise {ON, OFF};
+
     private BusinessUserService businessUserService;
     private BizService bizService;
     private BizStoreElasticService bizStoreElasticService;
@@ -76,7 +78,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         this.professionalProfileService = professionalProfileService;
     }
 
-    private RegisterBusiness createStoreRegistration() {
+    private RegisterBusiness createStoreRegistration(StoreFranchise storeFranchise) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
         if (null == businessUser) {
@@ -92,15 +94,17 @@ public class StoreFlowActions extends RegistrationFlowActions {
         registerBusiness.setStoreBusinessType(businessUser.getBizName().getBusinessType());
         registerBusiness.setCategories(CommonHelper.getCategories(businessUser.getBizName().getBusinessType(), InvocationByEnum.BUSINESS));
 
-        registerBusiness.setDisplayName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
-        registerBusiness.setAddressStore(new ScrubbedInput(businessUser.getBizName().getAddress()));
-        registerBusiness.setAddressStoreOrigin(businessUser.getBizName().getAddressOrigin());
-        registerBusiness.setTownStore(new ScrubbedInput(businessUser.getBizName().getTown()));
-        registerBusiness.setAreaStore(new ScrubbedInput(businessUser.getBizName().getArea()));
-        registerBusiness.setPhoneStore(new ScrubbedInput(businessUser.getBizName().getPhone()));
-        registerBusiness.setFoundAddressStorePlaceId(businessUser.getBizName().getPlaceId());
-        registerBusiness.setSelectFoundAddressStore(false);
-        registerBusiness.setBusinessAddressAsStore(true);
+        if (StoreFranchise.OFF == storeFranchise) {
+            registerBusiness.setDisplayName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
+            registerBusiness.setAddressStore(new ScrubbedInput(businessUser.getBizName().getAddress()));
+            registerBusiness.setAddressStoreOrigin(businessUser.getBizName().getAddressOrigin());
+            registerBusiness.setTownStore(new ScrubbedInput(businessUser.getBizName().getTown()));
+            registerBusiness.setAreaStore(new ScrubbedInput(businessUser.getBizName().getArea()));
+            registerBusiness.setPhoneStore(new ScrubbedInput(businessUser.getBizName().getPhone()));
+            registerBusiness.setFoundAddressStorePlaceId(businessUser.getBizName().getPlaceId());
+            registerBusiness.setSelectFoundAddressStore(false);
+            registerBusiness.setBusinessAddressAsStore(true);
+        }
 
         /* Business when not claimed. */
         processForUnclaimedBusiness(businessUser, registerBusiness);
@@ -121,16 +125,16 @@ public class StoreFlowActions extends RegistrationFlowActions {
     }
 
     @SuppressWarnings ("unused")
-    public RegisterBusiness populateStore(String bizStoreId) {
+    public RegisterBusiness populateStore(String bizStoreId, StoreFranchise storeFranchise) {
         if (StringUtils.isBlank(bizStoreId)) {
-            return createStoreRegistration();
+            return createStoreRegistration(storeFranchise);
         } else {
             return editStoreRegistration(bizStoreId);
         }
     }
 
     private RegisterBusiness editStoreRegistration(String bizStoreId) {
-        RegisterBusiness registerBusiness = createStoreRegistration();
+        RegisterBusiness registerBusiness = createStoreRegistration(StoreFranchise.OFF);
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
         registerBusiness.populateWithBizStore(bizStore);
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStoreId);

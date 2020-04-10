@@ -186,7 +186,7 @@
                                     <p align="center">
                                         <a href="/business/addStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">&nbsp;&nbsp;One location store&nbsp;&nbsp;&nbsp;</a>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a href="/business/addStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">Multiple location stores</a>
+                                        <a href="/business/addFranchiseStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">Multiple location stores</a>
                                     </p>
                                 </div>
                             </c:otherwise>
