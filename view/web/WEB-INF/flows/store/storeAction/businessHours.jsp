@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.MessageOriginEnum" %>
 <%@ include file="../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -10,9 +11,21 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.css" type='text/css'>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+
+    <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/brands.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/solid.css" rel="stylesheet">
+
+    <!-- custom styling for all icons -->
+    i.fas,
+    i.fab {
+        border: 1px solid red;
+    }
 </head>
 
 <body>
@@ -94,12 +107,23 @@
                                             <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
                                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                 <tr>
-                                                    <td width="49%" class="lable-td">
+                                                    <td width="45%" class="lable-td">
                                                         <form:label path="businessHours[${status.index}].tokenAvailableFrom" cssErrorClass="lb_error">Token Available Time</form:label>
                                                     </td>
-                                                    <td width="51%">
+                                                    <td width="45%">
                                                         <form:input path="businessHours[${status.index}].tokenAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
                                                         <span>(As 1800 for 6:00 PM)</span>
+                                                    </td>
+                                                    <td>
+                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                        <c:choose>
+                                                           <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                               <span class="tooltip" title="Time when customers can place the order." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                           </c:when>
+                                                            <c:otherwise>
+                                                                <span class="tooltip" title="Time when customers can join the queue." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -110,6 +134,17 @@
                                                         <form:input path="businessHours[${status.index}].startHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
                                                         <span>(As 1000 for 10:00 AM)</span>
                                                     </td>
+                                                    <td>
+                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                        <c:choose>
+                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                                <span class="tooltip" title="Time when store opens up" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="tooltip" title="Time when queue opens up" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="lable-td">
@@ -118,6 +153,17 @@
                                                     <td>
                                                         <form:input path="businessHours[${status.index}].tokenNotAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
                                                         <span>(As 1800 for 6:00 PM)</span>
+                                                    </td>
+                                                    <td>
+                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                        <c:choose>
+                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                                <span class="tooltip" title="Time when store stops accepting order for the day" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="tooltip" title="Time when queue stops accepting new requests" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -128,6 +174,17 @@
                                                         <form:input path="businessHours[${status.index}].endHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
                                                         <span>(As 1800 for 6:00 PM)</span>
                                                     </td>
+                                                    <td>
+                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                        <c:choose>
+                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                                <span class="tooltip" title="Time when store closes for the day" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="tooltip" title="Time when queue closes for the day" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="lable-td pT0">
@@ -135,6 +192,16 @@
                                                     </td>
                                                     <td>
                                                         <form:checkbox path="businessHours[${status.index}].dayClosed" cssErrorClass="error-field"/>
+                                                    </td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                                <span class="tooltip" title="Day when store is closed" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="tooltip" title="Day when queue is closed" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -192,6 +259,7 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript">
     $('[name="copyData"]').click(function () {
@@ -257,5 +325,16 @@
     // l.toggle();
     // l.isLoading();
     // l.setProgress( 0-1 );
+</script>
+<script>
+    new jBox('Tooltip', {
+        attach: '.tooltip',
+        adjustDistance : {
+            top : 105,
+            bottom : 150,
+            left : 15,
+            right : 50
+        }
+    });
 </script>
 </html>
