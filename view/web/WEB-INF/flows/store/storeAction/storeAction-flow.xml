@@ -9,10 +9,10 @@
     <on-start>
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizStoreId')"
                   result="conversationScope.bizStoreId"/>
-        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'franchise')"
-                  result="conversationScope.franchise"/>
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'storeFranchise')"
+                  result="conversationScope.storeFranchise"/>
 
-        <evaluate expression="storeFlowActions.populateStore(bizStoreId, franchise)"
+        <evaluate expression="storeFlowActions.populateStore(bizStoreId, storeFranchise)"
                   result="flowScope.registerBusiness"/>
     </on-start>
 

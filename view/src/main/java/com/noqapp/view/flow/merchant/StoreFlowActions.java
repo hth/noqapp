@@ -1,12 +1,14 @@
 package com.noqapp.view.flow.merchant;
 
+import static com.noqapp.domain.flow.RegisterBusiness.StoreFranchise;
+import static com.noqapp.domain.flow.RegisterBusiness.populateWithBizName;
+
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.StoreHourEntity;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
@@ -46,8 +48,6 @@ import java.util.List;
 @Component
 public class StoreFlowActions extends RegistrationFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(StoreFlowActions.class);
-
-    public enum StoreFranchise {ON, OFF};
 
     private BusinessUserService businessUserService;
     private BizService bizService;
@@ -96,7 +96,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         }
         /* Above condition to make sure users with right roles and access gets access. */
 
-        RegisterBusiness registerBusiness = RegisterBusiness.populateWithBizName(businessUser.getBizName());
+        RegisterBusiness registerBusiness = populateWithBizName(businessUser.getBizName(), storeFranchise);
         registerBusiness.setBusinessUser(businessUser);
         registerBusiness.setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
         registerBusiness.setBusinessType(businessUser.getBizName().getBusinessType());

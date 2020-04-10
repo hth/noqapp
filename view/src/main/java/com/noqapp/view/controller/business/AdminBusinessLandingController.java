@@ -11,6 +11,7 @@ import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.analytic.BizDimensionEntity;
+import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.helper.QueueSupervisor;
@@ -312,7 +313,7 @@ public class AdminBusinessLandingController {
         LOG.info("Add store to business {} qid={} userLevel={}", storeActionFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        redirectAttrs.addFlashAttribute("franchise", StoreFlowActions.StoreFranchise.OFF);
+        redirectAttrs.addFlashAttribute("storeFranchise", RegisterBusiness.StoreFranchise.OFF);
         return storeActionFlow;
     }
 
@@ -334,7 +335,7 @@ public class AdminBusinessLandingController {
         LOG.info("Add franchise store to business {} qid={} userLevel={}", storeActionFlow, queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        redirectAttrs.addFlashAttribute("franchise", StoreFlowActions.StoreFranchise.ON);
+        redirectAttrs.addFlashAttribute("storeFranchise", RegisterBusiness.StoreFranchise.ON);
         return storeActionFlow;
     }
 
