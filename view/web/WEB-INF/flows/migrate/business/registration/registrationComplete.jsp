@@ -1,5 +1,5 @@
 <%@ include file="../../../../jsp/include.jsp" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -64,7 +64,7 @@
                                     <h3>Registration Complete</h3>
                                     <c:choose>
                                         <c:when test="${register.autoApproveBusinessTurnedOn eq 'ON'}">
-                                            <p>Your merchant account has been approved. Refreshing in next 5 seconds</p>
+                                            <p>Your merchant account has been approved. Refreshing in next <span id="countdown">5</span> seconds</p>
                                         </c:when>
                                         <c:otherwise>
                                             <p>Your details are being verified. Would notify you once verification is complete.</p>
@@ -110,5 +110,16 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
+<script type="text/javascript" >
+    let el = document.getElementById("countdown");
+    let i = 5;
 
+    function counter() {
+        el.innerHTML = i--;
+        if (i <= 5 && i >= 0) {
+            setTimeout(counter, 1000);
+        }
+    }
+    counter();
+</script>
 </html>

@@ -170,8 +170,7 @@ public class NoQAppInitializationCheckBean {
         LOG.info("Running on {}", thisIs);
         if (Objects.requireNonNull(thisIs).equalsIgnoreCase("loader")) {
             /* Delete older indices. */
-//            elasticAdministrationService.deleteAllPreviousIndices();
-            elasticAdministrationService.deleteAllIndices();
+            elasticAdministrationService.deleteAllPreviousIndices();
         }
 
         if (!elasticAdministrationService.doesIndexExists(BizStoreElastic.INDEX)) {

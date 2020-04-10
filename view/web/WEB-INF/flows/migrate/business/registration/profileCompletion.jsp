@@ -10,9 +10,21 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.css" type='text/css'>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+
+    <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/brands.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/solid.css" rel="stylesheet">
+
+    <!-- custom styling for all icons -->
+    i.fas,
+    i.fab {
+        border: 1px solid red;
+    }
 </head>
 
 <body>
@@ -26,8 +38,7 @@
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">
-                    <sec:authentication property="principal.userShortName"/></button>
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow">
                         <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
@@ -80,6 +91,8 @@
                                         <div class="col-fields">
                                             <form:input path="firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
+                                        <span class="tooltip" title="Your first name." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
@@ -89,6 +102,8 @@
                                         <div class="col-fields">
                                             <form:input path="lastName" cssClass="form-field-admin" cssErorrClass="form-field-admin error-field"/>
                                         </div>
+                                        <span class="tooltip" title="Your last name." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
@@ -99,6 +114,8 @@
                                             <form:input path="birthday" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                         placeholder="Date of Birth YYYY-MM-DD"/>
                                         </div>
+                                        <span class="tooltip" title="Your birthday. <b>Your birthday is <u>never</u> made public.</b>" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
@@ -109,6 +126,8 @@
                                             <form:radiobutton path="gender" value="M" label="Male"/> &nbsp; &nbsp;
                                             <form:radiobutton path="gender" value="F" label="Female"/>
                                         </div>
+                                        <span class="tooltip" title="Your gender" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
@@ -118,6 +137,8 @@
                                         <div class="col-fields">
                                             <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
+                                        <span class="tooltip" title="Your personal address. <b>Your address is <u>never</u> made public.</b>" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
                                     <c:if test="${!empty register.registerUser.foundAddresses}">
@@ -151,6 +172,8 @@
                                         <div class="col-fields">
                                             <form:input path="phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="${register.registerUser.phoneValidated}"/>
                                         </div>
+                                        <span class="tooltip" title="Your phone number. <b>Your phone number is <u>never</u> made public.</b> NoQueue will call this number to confirm your business." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
 
@@ -222,6 +245,7 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/services.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
@@ -255,5 +279,16 @@
     // l.toggle();
     // l.isLoading();
     // l.setProgress( 0-1 );
+</script>
+<script>
+    new jBox('Tooltip', {
+        attach: '.tooltip',
+        adjustDistance : {
+            top : 105,
+            bottom : 150,
+            left : 15,
+            right : 50
+        }
+    });
 </script>
 </html>

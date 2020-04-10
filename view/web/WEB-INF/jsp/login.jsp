@@ -224,7 +224,6 @@
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/firebaseAuthenticate.js"></script>
 <script type="text/javascript">
-
     $(document).ready(function() {
         $(".enter-f").keyup(function () {
             if (this.value.length >= this.maxLength) {
