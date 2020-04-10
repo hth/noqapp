@@ -1,12 +1,14 @@
 package com.noqapp.view.flow.merchant;
 
+import static com.noqapp.domain.flow.RegisterBusiness.StoreFranchise;
+import static com.noqapp.domain.flow.RegisterBusiness.populateWithBizName;
+
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.StoreHourEntity;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
@@ -47,8 +49,6 @@ import java.util.List;
 public class StoreFlowActions extends RegistrationFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(StoreFlowActions.class);
 
-    public enum StoreFranchise {ON, OFF};
-
     private BusinessUserService businessUserService;
     private BizService bizService;
     private BizStoreElasticService bizStoreElasticService;
@@ -78,6 +78,15 @@ public class StoreFlowActions extends RegistrationFlowActions {
         this.professionalProfileService = professionalProfileService;
     }
 
+    @SuppressWarnings ("unused")
+    public RegisterBusiness populateStore(String bizStoreId, StoreFranchise storeFranchise) {
+        if (StringUtils.isBlank(bizStoreId)) {
+            return createStoreRegistration(storeFranchise);
+        } else {
+            return editStoreRegistration(bizStoreId);
+        }
+    }
+
     private RegisterBusiness createStoreRegistration(StoreFranchise storeFranchise) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -87,7 +96,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         }
         /* Above condition to make sure users with right roles and access gets access. */
 
-        RegisterBusiness registerBusiness = RegisterBusiness.populateWithBizName(businessUser.getBizName());
+        RegisterBusiness registerBusiness = populateWithBizName(businessUser.getBizName(), storeFranchise);
         registerBusiness.setBusinessUser(businessUser);
         registerBusiness.setName(new ScrubbedInput(businessUser.getBizName().getBusinessName()));
         registerBusiness.setBusinessType(businessUser.getBizName().getBusinessType());
@@ -121,15 +130,6 @@ public class StoreFlowActions extends RegistrationFlowActions {
             registerBusiness.setAppointmentDuration(30);
             /* 1 week ahead. */
             registerBusiness.setAppointmentOpenHowFar(1);
-        }
-    }
-
-    @SuppressWarnings ("unused")
-    public RegisterBusiness populateStore(String bizStoreId, StoreFranchise storeFranchise) {
-        if (StringUtils.isBlank(bizStoreId)) {
-            return createStoreRegistration(storeFranchise);
-        } else {
-            return editStoreRegistration(bizStoreId);
         }
     }
 

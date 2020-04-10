@@ -280,12 +280,16 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 return register;
             } catch (Exception e) {
                 LOG.error("Error adding business qid={} reason={}",
-                    register.getRegisterUser().getQueueUserId(), e.getLocalizedMessage(), e);
+                    register.getRegisterUser().getQueueUserId(),
+                    e.getLocalizedMessage(),
+                    e);
                 throw new MigrateToBusinessRegistrationException("Error adding business", e);
             }
         } catch (Exception e) {
             LOG.error("Error updating business user profile qid={} reason={}",
-                register.getRegisterUser().getQueueUserId(), e.getLocalizedMessage(), e);
+                register.getRegisterUser().getQueueUserId(),
+                e.getLocalizedMessage(),
+                e);
             throw new MigrateToBusinessRegistrationException("Error updating profile", e);
         }
     }

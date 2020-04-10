@@ -41,6 +41,8 @@ import java.util.Set;
 public class RegisterBusiness implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(RegisterBusiness.class);
 
+    public enum StoreFranchise {ON, OFF};
+
     private String bizId;
     private String name;
     private String address;
@@ -93,15 +95,22 @@ public class RegisterBusiness implements Serializable {
     private HashMap<String, DecodedAddress> foundAddressStores = new LinkedHashMap<>();
     private String foundAddressStorePlaceId;
 
-    public RegisterBusiness(BusinessTypeEnum businessType) {
+    private StoreFranchise storeFranchise = StoreFranchise.OFF;
+
+    public RegisterBusiness(BusinessTypeEnum businessType, StoreFranchise storeFranchise) {
+        this.businessType = businessType;
+        this.storeFranchise = storeFranchise;
+
         for (int i = 1; i <= 7; i++) {
             BusinessHour businessHour = new BusinessHour(DayOfWeek.of(i));
-            if (BusinessTypeEnum.GS == businessType) {
-                businessHour
-                    .setTokenAvailableFrom(530)
-                    .setStartHourStore(600)
-                    .setTokenNotAvailableFrom(2000)
-                    .setEndHourStore(2030);
+            if (StoreFranchise.OFF == storeFranchise) {
+                if (BusinessTypeEnum.GS == businessType) {
+                    businessHour
+                        .setTokenAvailableFrom(530)
+                        .setStartHourStore(600)
+                        .setTokenNotAvailableFrom(2000)
+                        .setEndHourStore(2030);
+                }
             }
             businessHours.add(businessHour);
         }
@@ -630,6 +639,15 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
+    public StoreFranchise getStoreFranchise() {
+        return storeFranchise;
+    }
+
+    public RegisterBusiness setStoreFranchise(StoreFranchise storeFranchise) {
+        this.storeFranchise = storeFranchise;
+        return this;
+    }
+
     public boolean isSelectFoundAddressStore() {
         return selectFoundAddressStore;
     }
@@ -694,8 +712,8 @@ public class RegisterBusiness implements Serializable {
     }
 
     @Transient
-    public static RegisterBusiness populateWithBizName(BizNameEntity bizName) {
-        RegisterBusiness registerBusiness = new RegisterBusiness(bizName.getBusinessType());
+    public static RegisterBusiness populateWithBizName(BizNameEntity bizName, StoreFranchise storeFranchise) {
+        RegisterBusiness registerBusiness = new RegisterBusiness(bizName.getBusinessType(), storeFranchise);
         registerBusiness.setBizId(bizName.getId());
         registerBusiness.setName(new ScrubbedInput(bizName.getBusinessName()));
         registerBusiness.setAddress(new ScrubbedInput(bizName.getAddress()));
@@ -705,7 +723,6 @@ public class RegisterBusiness implements Serializable {
         registerBusiness.setInviteeCode(bizName.getInviteeCode());
         registerBusiness.setAddressOrigin(bizName.getAddressOrigin());
         registerBusiness.setFoundAddressPlaceId(bizName.getPlaceId());
-        registerBusiness.setBusinessType(bizName.getBusinessType());
         return registerBusiness;
     }
 
