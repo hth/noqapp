@@ -56,7 +56,7 @@
                     <form:form modelAttribute="registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Queue Setup</h2>
+                            <h2>${registerBusiness.businessType.classifierTitle} Setup</h2>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">

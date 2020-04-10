@@ -99,7 +99,7 @@
                                         <div class="col-fields">
                                             <form:input path="displayName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
-                                        <span class="tooltip" title="Your business will be listed publicly by this name" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Your ${registerBusiness.businessType.classifierTitle.toLowerCase()} will be listed publicly by this name" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -130,7 +130,7 @@
                                             <form:textarea path="addressStore" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                             <span style="display:block; font-size:14px;">(Google address preferred. Reason: Helps find on Google Map)</span>
                                         </div>
-                                        <span class="tooltip" title="Location where your business is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Location of your ${registerBusiness.businessType.classifierTitle.toLowerCase()}. This is the location where service is rendered." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -191,7 +191,7 @@
                                         <div class="col-fields">
                                             <form:input path="phoneStore" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
-                                        <span class="tooltip" title="<b>Phone number is public.</b> Customers will be able to connect with you on phone." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="<b>Phone number is public.</b> Customers will be able to connect with you on this phone number." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
