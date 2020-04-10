@@ -173,6 +173,7 @@
                                     <div class="clearFix"></div>
                                 </li>
                                 </c:if>
+                                <c:if test="${!register.registerBusiness.claimed}">
                                 <li>
                                     <div class="col-lable3">
                                         <form:label path="registerBusiness.claimed" cssErrorClass="lb_error" style="color: #9f1313;">Business Claimed</form:label>
@@ -183,16 +184,18 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
+                                </c:if>
+                                <c:if test="${!empty registerBusiness.inviteeCode}">
                                 <li>
                                     <div class="col-lable3">
                                         <form:label path="registerBusiness.inviteeCode" cssErrorClass="lb_error">Have Invitee Code?</form:label>
                                     </div>
                                     <div class="col-fields">
                                         <form:input path="registerBusiness.inviteeCode" cssClass="form-field-admin" readonly="true"/>
-                                        <span style="display:block; font-size:14px;">Optional. Enter if you have been provided with one.</span>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
+                                </c:if>
                             </ul>
                             </div>
 

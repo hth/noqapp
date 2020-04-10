@@ -121,7 +121,7 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
-                                        <span class="tooltip" title="Primary business type. This <b>cannot</b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -132,7 +132,7 @@
                                         <div class="col-fields">
                                             <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
-                                        <span class="tooltip" title="Legal business address. This address may be different from store address. This address is never made public." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Legal business address. This address may be different from store address. <b>This address is <u>never</u> made public.</b>" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -197,7 +197,7 @@
                                         <div class="col-fields">
                                             <form:input path="phone" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
-                                        <span class="tooltip" title="Phone number for NoQueue to contact. <b>This phone number is never made public.<b>" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Phone number for NoQueue to contact. <b>This phone number is <u>never</u> made public.<b>" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -208,11 +208,12 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:checkbox path="dayClosed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" />
-                                            <span style="display:block; font-size:14px; color: #9f1313;">(Example: Closed for national holiday. This will remain closed unless unchecked. No Queues are open.)</span>
+                                            <span style="display:block; font-size:14px; color: #9f1313;">(Example: Closed for national holiday. This will remain closed unless unchecked. Closed business for holiday does not get orders or appointments)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
                                     </c:if>
+                                    <c:if test="${!register.registerBusiness.claimed}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="claimed" cssErrorClass="lb_error" style="color: #9f1313;">Business Claimed</form:label>
@@ -223,6 +224,7 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    </c:if>
                                     <c:if test="${empty register.registerBusiness.businessUser.validateByQid}">
                                     <li>
                                         <div class="col-lable3">
@@ -285,15 +287,6 @@
                                             </div>
                                         </c:otherwise>
                                     </c:choose>
-
-                                    <%--<c:if test="${register.registerUser.emailValidated}">--%>
-                                        <%--<div class="left-btn">--%>
-                                            <%--<input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">--%>
-                                        <%--</div>--%>
-                                    <%--</c:if>--%>
-                                    <%--<div class="right-btn">--%>
-                                        <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                    <%--</div>--%>
                                     <div class="clearFix"></div>
                                 </div>
                                 <div class="clearFix"></div>
