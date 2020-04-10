@@ -639,8 +639,10 @@ public class PurchaseOrderService {
                 .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
                 .setTransactionId(purchaseOrder.getTransactionId())
                 .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
-                .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")));
-
+                .setCreated(DateFormatUtils.format(purchaseOrder.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+                .setBizStoreId(bizStore.getId())
+                .setBusinessType(bizStore.getBusinessType())
+                .setPaymentStatus(purchaseOrder.getPaymentStatus());
             LOG.debug("JsonPurchaseOrder={}", jsonPurchaseOrder);
         } catch (FailedTransactionException e) {
             LOG.error("Failed transaction on creating order reason={}", e.getLocalizedMessage(), e);
