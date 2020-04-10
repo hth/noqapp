@@ -111,6 +111,12 @@
                                     <div class="clearFix"></div>
                                 </ul>
 
+                                <div class="alert-info">
+                                    <p>
+                                        Select all amenities and facilities provided at your location. Please let us know if we have missed any at contact@noqapp.com
+                                    </p>
+                                </div>
+
                                 <div class="btn-hours">
                                     <c:choose>
                                     <c:when test="${!empty registerBusiness.bizStoreId}">
