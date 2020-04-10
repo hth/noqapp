@@ -78,6 +78,15 @@ public class StoreFlowActions extends RegistrationFlowActions {
         this.professionalProfileService = professionalProfileService;
     }
 
+    @SuppressWarnings ("unused")
+    public RegisterBusiness populateStore(String bizStoreId, StoreFranchise storeFranchise) {
+        if (StringUtils.isBlank(bizStoreId)) {
+            return createStoreRegistration(storeFranchise);
+        } else {
+            return editStoreRegistration(bizStoreId);
+        }
+    }
+
     private RegisterBusiness createStoreRegistration(StoreFranchise storeFranchise) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -121,15 +130,6 @@ public class StoreFlowActions extends RegistrationFlowActions {
             registerBusiness.setAppointmentDuration(30);
             /* 1 week ahead. */
             registerBusiness.setAppointmentOpenHowFar(1);
-        }
-    }
-
-    @SuppressWarnings ("unused")
-    public RegisterBusiness populateStore(String bizStoreId, StoreFranchise storeFranchise) {
-        if (StringUtils.isBlank(bizStoreId)) {
-            return createStoreRegistration(storeFranchise);
-        } else {
-            return editStoreRegistration(bizStoreId);
         }
     }
 
