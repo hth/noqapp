@@ -145,7 +145,7 @@
                                                 || BusinessTypeEnum.ST eq store.businessType
                                                 || BusinessTypeEnum.GS eq store.businessType
                                                 || BusinessTypeEnum.CF eq store.businessType}">
-                                                    <span style="display:block; font-size:13px;"><del>Web Appointment</del></span>
+                                                    <span style="display:block; font-size:13px;">&nbsp;</span>
                                                 </c:when>
                                                 <c:otherwise>
                                                 <span style="display:block; font-size:13px;"><a
