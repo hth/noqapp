@@ -411,7 +411,8 @@ public class BusinessUserStoreService {
         return businessUserStoreManager.findUserManagingStoreWithUserLevel(qid, userLevel);
     }
 
-    public long countNumberOfUserInThisStore(String bizNameId) {
-        return businessUserStoreManager.countNumberOfActiveStoreUsers(bizNameId);
+    /** Count all store users ever existed. */
+    public long countNumberOfStoreUsers(String bizNameId) {
+        return businessUserStoreManager.countNumberOfStoreUsers(bizNameId);
     }
 }

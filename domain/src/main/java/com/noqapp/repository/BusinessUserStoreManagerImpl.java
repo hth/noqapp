@@ -239,9 +239,9 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
-    public long countNumberOfActiveStoreUsers(String bizNameId) {
+    public long countNumberOfStoreUsers(String bizNameId) {
         return mongoTemplate.count(
-            query(where("BN").is(bizNameId).and("A").is(true).and("D").is(false)),
+            query(where("BN").is(bizNameId)),
             BusinessUserStoreEntity.class,
             TABLE
         );

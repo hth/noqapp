@@ -28,7 +28,6 @@ import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.analytic.BizDimensionService;
-import com.noqapp.view.flow.merchant.StoreFlowActions;
 import com.noqapp.view.form.QueueSupervisorActionForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
 import com.noqapp.view.form.business.PreferredBusinessForm;
@@ -656,9 +655,9 @@ public class AdminBusinessLandingController {
      */
     private void changeToStoreManageWhenThisIsTheFirstBusinessUser(BusinessUserEntity businessUser, BizStoreEntity bizStore) {
         if (bizStore.getBusinessType() != BusinessTypeEnum.DO) {
-            long countNumberOfUserInThisStore = businessUserStoreService.countNumberOfUserInThisStore(bizStore.getBizName().getId());
-            LOG.info("Number of existing user are greater {}", countNumberOfUserInThisStore);
-            if (countNumberOfUserInThisStore <= 1) {
+            long countNumberOfStoreUsers = businessUserStoreService.countNumberOfStoreUsers(bizStore.getBizName().getId());
+            LOG.info("Number of existing user are greater {}", countNumberOfStoreUsers);
+            if (countNumberOfStoreUsers <= 1) {
                 businessUserStoreService.changeUserLevel(businessUser.getQueueUserId(), UserLevelEnum.S_MANAGER, businessUser.getBizName().getBusinessType());
             }
         }
