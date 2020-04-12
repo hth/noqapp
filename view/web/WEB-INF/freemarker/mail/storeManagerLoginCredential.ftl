@@ -54,10 +54,10 @@
             is the only time you would receive this email with login credential.
         </p>
         <p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-            Use this credential for login inNoQueue Merchant login or Website <a href="https://q.noqapp.com" style="padding:8px 15px; background:#ff1c79; color:#fff; text-decoration: none">Login Here</a>
+            Use this credential for login in NoQueue Merchant or Website <a href="https://q.noqapp.com" style="padding:8px 15px; background:#ff1c79; color:#fff; text-decoration: none">Web Login Here</a>
         </p>
         <p style="padding-bottom:10px; font-family: 'Roboto', sans-serif;">
-            Your store is live. Thanks for sign in up.
+            Thanks for registering your store. Your store is live. Update your product list so that customers can make purchases.
         </p>
         <p style="font-family: 'Roboto', sans-serif;">
             Regards, <br/>
