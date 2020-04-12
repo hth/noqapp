@@ -223,8 +223,7 @@ public class MailService {
     }
 
     /**
-     * Send recover email to user of provided email id.
-     * http://bharatonjava.wordpress.com/2012/08/27/sending-email-using-java-mail-api/
+     * Send recover email of system created store manager to admin of that business.
      *
      * @param userId
      */
