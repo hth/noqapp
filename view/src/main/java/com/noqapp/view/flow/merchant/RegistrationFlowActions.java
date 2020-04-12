@@ -200,7 +200,17 @@ class RegistrationFlowActions {
                         BusinessUserEntity businessUserRegistered = businessUserService.findBusinessUser(userProfile.getQueueUserId(), bizName.getId());
                         businessUserStoreService.approve(bizStore.getId(), userProfileOfAdmin.getQueueUserId(), businessUserRegistered);
 
-                        /* Step 3: Change account and show store as manager role. */
+                        /* Step 3: Send email with credential to admin. */
+                        Map<String, Object> rootMap = new HashMap<>();
+                        rootMap.put("login", email);
+                        rootMap.put("password", password);
+                        mailService.sendAnyMail(
+                            userProfileOfAdmin.getEmail(),
+                            userProfileOfAdmin.getName(),
+                            "NoQueue: Account credential for Manager login",
+                            rootMap, "mail/storeManagerLoginCredential.ftl");
+
+                        /* Step 4: Change account to to new agent and set store manager role. */
                         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
                         List<GrantedAuthority> updatedAuthorities = new ArrayList<>();
