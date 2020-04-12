@@ -83,6 +83,10 @@ public final class RandomString {
         return generateEmailAddress(firstName, lastName, qid) + MAIL_NOQAPP_COM;
     }
 
+    public static String generateManagerEmailAddressWithDomain(ScrubbedInput firstName, ScrubbedInput lastName, String qid) {
+        return generateEmailAddress(firstName, lastName, qid) + MANAGER_NOQAPP_COM;
+    }
+
     public static String generateInviteCode(String firstName, String lastName, String qid) {
         String fName = firstName.replaceAll("\\s+", "");
         if (StringUtils.isBlank(lastName)) {

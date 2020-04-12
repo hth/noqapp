@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.merchant;
 
+import static com.noqapp.common.utils.RandomString.MANAGER_NOQAPP_COM;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;
@@ -48,6 +49,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -180,29 +182,39 @@ class RegistrationFlowActions {
                         UserProfileEntity userProfileOfAdmin = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
 
                         /* Step 1: Registered agent and add user to store. */
-                        String password = RandomString.newInstance(6).nextString();
-                        String email = userProfileOfAdmin.getEmail().split("@")[0] + "@m.noqapp.com";
+                        String storeManagerRandomPassword = RandomString.newInstance(6).nextString();
+                        String storeManagerMailAddress = userProfileOfAdmin.getEmail().split("@")[0] + MANAGER_NOQAPP_COM;
+                        while (null != accountService.doesUserExists(storeManagerMailAddress)) {
+                            storeManagerMailAddress = RandomString.generateManagerEmailAddressWithDomain(
+                                new ScrubbedInput(userProfileOfAdmin.getFirstName()),
+                                new ScrubbedInput(userProfileOfAdmin.getLastName()),
+                                userProfileOfAdmin.getQueueUserId());
+
+                            Assert.state(storeManagerMailAddress.contains(MANAGER_NOQAPP_COM), "Email created should contain " + MANAGER_NOQAPP_COM);
+                        }
+
                         MerchantRegistrationForm merchantRegistrationForm = MerchantRegistrationForm.newInstance()
                             .setBirthday(new ScrubbedInput(userProfileOfAdmin.getBirthday()))
                             .setGender(new ScrubbedInput(userProfileOfAdmin.getGender().name()))
                             .setFirstName(new ScrubbedInput(userProfileOfAdmin.getFirstName()))
                             .setLastName(new ScrubbedInput(userProfileOfAdmin.getLastName()))
-                            .setMail(new ScrubbedInput(email))
-                            .setPassword(new ScrubbedInput(password))
+                            .setMail(new ScrubbedInput(storeManagerMailAddress))
+                            .setPassword(new ScrubbedInput(storeManagerRandomPassword))
                             .setCode1("S").setCode2("2").setCode3("K").setCode4("X").setCode5("0").setCode6("Z");
                         addNewAgentFlowActions.createAccountAndInvite(merchantRegistrationForm, "S2KX0Z", bizStore.getId(), null);
 
-                        LOG.info("Send email to admin={} to use email={} and password={} for login to manager account", userProfileOfAdmin.getEmail(), email, password);
+                        LOG.info("Send email to admin={} to use email={} and password={} for login to manager account",
+                            userProfileOfAdmin.getEmail(), storeManagerMailAddress, storeManagerRandomPassword);
 
                         /* Step 2: Auto approve the added user. */
-                        UserProfileEntity userProfile = accountService.doesUserExists(email);
+                        UserProfileEntity userProfile = accountService.doesUserExists(storeManagerMailAddress);
                         BusinessUserEntity businessUserRegistered = businessUserService.findBusinessUser(userProfile.getQueueUserId(), bizName.getId());
                         businessUserStoreService.approve(bizStore.getId(), userProfileOfAdmin.getQueueUserId(), businessUserRegistered);
 
                         /* Step 3: Send email with credential to admin. */
                         Map<String, Object> rootMap = new HashMap<>();
-                        rootMap.put("login", email);
-                        rootMap.put("password", password);
+                        rootMap.put("login", storeManagerMailAddress);
+                        rootMap.put("password", storeManagerRandomPassword);
                         mailService.sendAnyMail(
                             userProfileOfAdmin.getEmail(),
                             userProfileOfAdmin.getName(),
@@ -217,9 +229,9 @@ class RegistrationFlowActions {
                         updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_Q_SUPERVISOR.name()));
                         updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_S_MANAGER.name()));
 
-                        UserAccountEntity userAccount = accountService.findByUserId(email);
+                        UserAccountEntity userAccount = accountService.findByUserId(storeManagerMailAddress);
                         QueueUser queueUser = new QueueUser(
-                            email,
+                            storeManagerMailAddress,
                             userAccount.getUserAuthentication().getPassword(),
                             updatedAuthorities,
                             userAccount.getQueueUserId(),
