@@ -17,6 +17,7 @@ import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.EmailValidateService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
@@ -62,9 +63,21 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         MailService mailService,
         EmailValidateService emailValidateService,
         BizStoreElasticService bizStoreElasticService,
-        StoreProductService storeProductService
+        StoreProductService storeProductService,
+        BusinessUserStoreService businessUserStoreService,
+        AddNewAgentFlowActions addNewAgentFlowActions
     ) {
-        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService, storeProductService);
+        super(environment,
+            externalService,
+            bizService,
+            tokenQueueService,
+            bizStoreElasticService,
+            accountService,
+            mailService,
+            storeProductService,
+            businessUserService,
+            businessUserStoreService,
+            addNewAgentFlowActions);
 
         this.accountService = accountService;
         this.businessUserService = businessUserService;

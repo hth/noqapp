@@ -20,6 +20,7 @@ import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.FetcherService;
 import com.noqapp.service.MailService;
@@ -78,9 +79,23 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         BizStoreElasticService bizStoreElasticService,
         MailService mailService,
         EmpLandingService empLandingService,
-        StoreProductService storeProductService
+        StoreProductService storeProductService,
+        BusinessUserStoreService businessUserStoreService,
+        AddNewAgentFlowActions addNewAgentFlowActions
     ) {
-        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService, storeProductService);
+        super(
+            environment,
+            externalService,
+            bizService,
+            tokenQueueService,
+            bizStoreElasticService,
+            accountService,
+            mailService,
+            storeProductService,
+            businessUserService,
+            businessUserStoreService,
+            addNewAgentFlowActions);
+
         this.autoApproveBusinessTurnedOn = autoApproveBusinessTurnedOn;
 
         this.empLandingService = empLandingService;
@@ -299,15 +314,28 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         if (autoApproveBusinessTurnedOn.equalsIgnoreCase("ON")) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-            List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+            List<GrantedAuthority> updatedAuthorities = new ArrayList<>();
             updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_CLIENT.name()));
             updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_Q_SUPERVISOR.name()));
             updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_S_MANAGER.name()));
             updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_M_ACCOUNTANT.name()));
             updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_M_ADMIN.name()));
 
-            Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+            QueueUser queueUser = (QueueUser) auth.getPrincipal();
+            UserAccountEntity userAccount = accountService.findByQueueUserId(queueUser.getQueueUserId());
+            QueueUser updateQueueUser = new QueueUser(
+                queueUser.getUsername(),
+                userAccount.getUserAuthentication().getPassword(),
+                updatedAuthorities,
+                userAccount.getQueueUserId(),
+                UserLevelEnum.M_ADMIN,
+                userAccount.isActive(),
+                userAccount.isAccountValidated(),
+                queueUser.getCountryShortName(),
+                userAccount.getDisplayName()
+            );
 
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(updateQueueUser, auth.getCredentials(), updatedAuthorities);
             SecurityContextHolder.getContext().setAuthentication(newAuth);
         }
     }

@@ -117,6 +117,10 @@ public class BusinessUserService {
         return businessUserManager.getAllNonAdminForBusiness(bizNameId);
     }
 
+    public List<BusinessUserEntity> getAllForBusiness(String bizNameId, UserLevelEnum userLevel) {
+        return businessUserManager.getAllForBusiness(bizNameId, userLevel);
+    }
+
     public List<BusinessUserEntity> getAllForBusiness(String bizNameId) {
         return businessUserManager.getAllForBusiness(bizNameId);
     }

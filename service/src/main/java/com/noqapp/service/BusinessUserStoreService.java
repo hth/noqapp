@@ -20,6 +20,7 @@ import com.noqapp.domain.json.JsonDataVisibility;
 import com.noqapp.domain.json.JsonHour;
 import com.noqapp.domain.json.JsonPaymentPermission;
 import com.noqapp.domain.json.JsonTopic;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.CommonStatusEnum;
@@ -414,5 +415,44 @@ public class BusinessUserStoreService {
     /** Count all store users ever existed. */
     public long countNumberOfStoreUsers(String bizNameId) {
         return businessUserStoreManager.countNumberOfStoreUsers(bizNameId);
+    }
+
+    /** Approval of business user */
+    public void approve(String bizStoreId, String validatorsQid, BusinessUserEntity businessUser) {
+        businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
+        businessUser.active();
+        businessUser.setValidateByQid(validatorsQid);
+        businessUserService.save(businessUser);
+        activateAccount(businessUser.getQueueUserId(), businessUser.getBizName().getId());
+
+        if (UserLevelEnum.S_MANAGER == accountService.findProfileByQueueUserId(businessUser.getQueueUserId()).getLevel()) {
+            ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQidAndRemoveAnySoftDelete(businessUser.getQueueUserId());
+            if (null != professionalProfile) {
+                BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
+                professionalProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
+                professionalProfileService.save(professionalProfile);
+            }
+        }
+
+        BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
+        /* Update UserProfile Business Type when profile is approved. */
+        userProfile.setBusinessType(bizStore.getBusinessType());
+        accountService.save(userProfile);
+        changeToStoreManageWhenThisIsTheFirstBusinessUser(businessUser, bizStore);
+    }
+
+    /**
+     * If only one users in the store. Then this user become store manager when business is not
+     * {@link com.noqapp.domain.types.BusinessTypeEnum#DO}
+     */
+    private void changeToStoreManageWhenThisIsTheFirstBusinessUser(BusinessUserEntity businessUser, BizStoreEntity bizStore) {
+        if (bizStore.getBusinessType() != BusinessTypeEnum.DO) {
+            long countNumberOfStoreUsers = countNumberOfStoreUsers(bizStore.getBizName().getId());
+            LOG.info("Number of existing user are greater {}", countNumberOfStoreUsers);
+            if (countNumberOfStoreUsers <= 1) {
+                changeUserLevel(businessUser.getQueueUserId(), UserLevelEnum.S_MANAGER, businessUser.getBizName().getBusinessType());
+            }
+        }
     }
 }

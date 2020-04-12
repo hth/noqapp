@@ -113,10 +113,15 @@
         <transition on-exception="com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException"
                     to="validateStoreDetails"/>
 
-        <transition to="registrationComplete"/>
+        <transition to="decideOnRegistrationComplete"/>
     </action-state>
 
+    <decision-state id="decideOnRegistrationComplete">
+        <if test="registerBusiness.appointmentState ne registerBusiness.appointmentIsOff" then="registrationComplete" else="registrationCompleteAsManager"/>
+    </decision-state>
+
     <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
+    <view-state id="registrationCompleteAsManager" view="externalRedirect:contextRelative:/business/store/landing.htm"/>
     <end-state id="logout" view="externalRedirect:contextRelative:/business/landing.htm"/>
 
     <global-transitions>
