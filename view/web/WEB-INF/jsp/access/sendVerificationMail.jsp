@@ -80,7 +80,7 @@
                                                 <form:label path="mail" cssErrorClass="lb_error">Send Mail To</form:label>
                                             </div>
                                             <div class="col-fields">
-                                                <form:input path="mail" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                                <form:input path="mail" cssClass="form-field-admin" cssStyle="text-transform : lowercase;" cssErrorClass="form-field-admin error-field" readonly="true" />
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
