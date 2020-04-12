@@ -115,9 +115,9 @@ public class AddNewAgentFlowActions {
 
     @SuppressWarnings("unused")
     public String createAccountAndInvite(MerchantRegistrationForm merchantRegistration, String mailOTP, String bizStoreId, ExternalContext externalContext) {
-        LOG.info("MailOTP={}", mailOTP);
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
-        if ((!merchantRegistration.getCode().equals(mailOTP) || !StringUtils.isNotBlank(bizStoreId)) && ((null == bizStore) || bizStore.getBizName().isClaimed())) {
+        if ((!merchantRegistration.getCode().equals(mailOTP) || StringUtils.isBlank(mailOTP) || !StringUtils.isNotBlank(bizStoreId)) && ((null == bizStore) || bizStore.getBizName().isClaimed())) {
+            LOG.warn("Failed mail OTP validation for {} mailOTP={}", merchantRegistration.getMail(), mailOTP);
             return "failure";
         }
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

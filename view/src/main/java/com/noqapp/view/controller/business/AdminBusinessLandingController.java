@@ -28,7 +28,6 @@ import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.analytic.BizDimensionService;
-import com.noqapp.view.flow.merchant.StoreFlowActions;
 import com.noqapp.view.form.QueueSupervisorActionForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
 import com.noqapp.view.form.business.PreferredBusinessForm;
@@ -480,28 +479,7 @@ public class AdminBusinessLandingController {
             String qid;
             switch (queueSupervisorActionForm.getAction().getText()) {
                 case "APPROVE":
-                    businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
-                    businessUser.active();
-
-                    businessUser.setValidateByQid(queueUser.getQueueUserId());
-                    businessUserService.save(businessUser);
-                    businessUserStoreService.activateAccount(businessUser.getQueueUserId(), businessUser.getBizName().getId());
-
-                    if (UserLevelEnum.S_MANAGER == accountService.findProfileByQueueUserId(businessUser.getQueueUserId()).getLevel()) {
-                        ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQidAndRemoveAnySoftDelete(businessUser.getQueueUserId());
-                        if (null != professionalProfile) {
-                            bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
-                            professionalProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
-                            professionalProfileService.save(professionalProfile);
-                        }
-                    }
-
-                    bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
-                    userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
-                    /* Update UserProfile Business Type when profile is approved. */
-                    userProfile.setBusinessType(bizStore.getBusinessType());
-                    accountService.save(userProfile);
-                    changeToStoreManageWhenThisIsTheFirstBusinessUser(businessUser, bizStore);
+                    businessUserStoreService.approve(queueSupervisorActionForm.getBizStoreId().getText(), queueUser.getQueueUserId(), businessUser);
                     break;
                 case "ADD":
                     int queueSupervisingCount = businessUserStoreService.findAllStoreQueueAssociated(businessUser.getQueueUserId()).size();
@@ -647,20 +625,6 @@ public class AdminBusinessLandingController {
                     goToPage = "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
             }
             return goToPage;
-        }
-    }
-
-    /**
-     * If only one users in the store. Then this user become store manager when business is not
-     * {@link com.noqapp.domain.types.BusinessTypeEnum#DO}
-     */
-    private void changeToStoreManageWhenThisIsTheFirstBusinessUser(BusinessUserEntity businessUser, BizStoreEntity bizStore) {
-        if (bizStore.getBusinessType() != BusinessTypeEnum.DO) {
-            long countNumberOfUserInThisStore = businessUserStoreService.countNumberOfUserInThisStore(bizStore.getBizName().getId());
-            LOG.info("Number of existing user are greater {}", countNumberOfUserInThisStore);
-            if (countNumberOfUserInThisStore <= 1) {
-                businessUserStoreService.changeUserLevel(businessUser.getQueueUserId(), UserLevelEnum.S_MANAGER, businessUser.getBizName().getBusinessType());
-            }
         }
     }
 

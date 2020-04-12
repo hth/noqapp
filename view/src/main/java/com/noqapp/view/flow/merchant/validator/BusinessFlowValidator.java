@@ -599,6 +599,11 @@ public class BusinessFlowValidator {
         if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
             switch (registerBusiness.getBusinessType().getMessageOrigin()) {
                 case O:
+                    status = registerBusiness.getBusinessType().getMessageOrigin() + status;
+
+                    /* There are no appointments for orders. */
+                    registerBusiness.setAppointmentState(AppointmentStateEnum.O);
+                    break;
                 case Q:
                     status = registerBusiness.getBusinessType().getMessageOrigin() + status;
                     break;

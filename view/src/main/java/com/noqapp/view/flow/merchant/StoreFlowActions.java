@@ -68,9 +68,22 @@ public class StoreFlowActions extends RegistrationFlowActions {
         ProfessionalProfileService professionalProfileService,
         AccountService accountService,
         MailService mailService,
-        StoreProductService storeProductService
+        StoreProductService storeProductService,
+        AddNewAgentFlowActions addNewAgentFlowActions
     ) {
-        super(environment, externalService, bizService, tokenQueueService, bizStoreElasticService, accountService, mailService, storeProductService);
+        super(
+            environment,
+            externalService,
+            bizService,
+            tokenQueueService,
+            bizStoreElasticService,
+            accountService,
+            mailService,
+            storeProductService,
+            businessUserService,
+            businessUserStoreService,
+            addNewAgentFlowActions);
+
         this.businessUserService = businessUserService;
         this.bizService = bizService;
         this.bizStoreElasticService = bizStoreElasticService;

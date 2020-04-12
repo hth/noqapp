@@ -9,6 +9,7 @@ import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ActionTypeEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
@@ -117,7 +118,10 @@ public class StoreManagerLandingController {
         return nextPage;
     }
 
-    /** Store Active(Online) and InActive(Offline). */
+    /**
+     * Manager should not have the permission as it removes all users managing the store. Best to let admin manage the offline and online
+     * of the store. Store Active(Online) and InActive(Offline).
+     */
     @PostMapping(
         value = "/onlineOrOffline",
         headers = "Accept=application/json",
@@ -128,9 +132,27 @@ public class StoreManagerLandingController {
         ScrubbedInput storeId,
 
         @RequestParam ("action")
-        ScrubbedInput action
+        ScrubbedInput action,
+
+        HttpServletResponse response
     ) {
         try {
+            QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+            if (null == businessUser) {
+                LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+                response.sendError(SC_NOT_FOUND, "Could not find");
+                return null;
+            }
+            LOG.info("Landed on business page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+            /* Above condition to make sure users with right roles and access gets access. */
+
+            if (queueUser.getUserLevel() != UserLevelEnum.M_ADMIN) {
+                LOG.warn("Permission denied for qid={} having access as business user", queueUser.getQueueUserId());
+                response.sendError(SC_NOT_FOUND, "Could not find");
+                return null;
+            }
+
             ActionTypeEnum actionType = ActionTypeEnum.valueOf(action.getText());
             BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
 

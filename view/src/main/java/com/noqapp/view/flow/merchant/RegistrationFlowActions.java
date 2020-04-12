@@ -4,11 +4,14 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.StoreProductEntity;
+import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
@@ -17,17 +20,22 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.GroceryEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
+import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.view.form.MerchantRegistrationForm;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,8 +43,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,6 +72,9 @@ class RegistrationFlowActions {
     private MailService mailService;
     private AccountService accountService;
     private StoreProductService storeProductService;
+    private BusinessUserService businessUserService;
+    private BusinessUserStoreService businessUserStoreService;
+    private AddNewAgentFlowActions addNewAgentFlowActions;
 
     /** When in same thread use Executor and not @Async. */
     private ExecutorService executorService;
@@ -70,7 +87,10 @@ class RegistrationFlowActions {
         BizStoreElasticService bizStoreElasticService,
         AccountService accountService,
         MailService mailService,
-        StoreProductService storeProductService
+        StoreProductService storeProductService,
+        BusinessUserService businessUserService,
+        BusinessUserStoreService businessUserStoreService,
+        AddNewAgentFlowActions addNewAgentFlowActions
     ) {
         this.environment = environment;
         this.externalService = externalService;
@@ -80,6 +100,9 @@ class RegistrationFlowActions {
         this.accountService = accountService;
         this.mailService = mailService;
         this.storeProductService = storeProductService;
+        this.businessUserService = businessUserService;
+        this.businessUserStoreService = businessUserStoreService;
+        this.addNewAgentFlowActions = addNewAgentFlowActions;
 
         this.executorService = newCachedThreadPool();
     }
@@ -149,8 +172,62 @@ class RegistrationFlowActions {
             BizStoreEntity bizStore = registerStore(registerBusiness, bizName);
             tokenQueueService.createUpdate(bizStore);
             populateStoreWithDefaultProduct(bizStore);
+
+            if (RegisterBusiness.StoreFranchise.OFF == registerBusiness.getStoreFranchise()) {
+                if (BusinessTypeEnum.GS == registerBusiness.getBusinessType()) {
+                    if (businessUserStoreService.countNumberOfStoreUsers(bizName.getId()) == 0) {
+                        List<BusinessUserEntity> businessUsers = businessUserService.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
+                        BusinessUserEntity businessUser = businessUsers.iterator().next();
+                        UserProfileEntity userProfileOfAdmin = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
+
+                        /* Step 1: Registered agent and add user to store. */
+                        String password = RandomString.newInstance(6).nextString();
+                        String email = userProfileOfAdmin.getEmail().split("@")[0] + "@m.noqapp.com";
+                        MerchantRegistrationForm merchantRegistrationForm = MerchantRegistrationForm.newInstance()
+                            .setBirthday(new ScrubbedInput(userProfileOfAdmin.getBirthday()))
+                            .setGender(new ScrubbedInput(userProfileOfAdmin.getGender().name()))
+                            .setFirstName(new ScrubbedInput(userProfileOfAdmin.getFirstName()))
+                            .setLastName(new ScrubbedInput(userProfileOfAdmin.getLastName()))
+                            .setMail(new ScrubbedInput(email))
+                            .setPassword(new ScrubbedInput(password))
+                            .setCode1("S").setCode2("2").setCode3("K").setCode4("X").setCode5("0").setCode6("Z");
+                        addNewAgentFlowActions.createAccountAndInvite(merchantRegistrationForm, "S2KX0Z", bizStore.getId(), null);
+
+                        LOG.info("Send email to admin={} to use email={} and password={} for login to manager account", userProfileOfAdmin.getEmail(), email, password);
+
+                        /* Step 2: Auto approve the added user. */
+                        UserProfileEntity userProfile = accountService.doesUserExists(email);
+                        BusinessUserEntity businessUserRegistered = businessUserService.findBusinessUser(userProfile.getQueueUserId(), bizName.getId());
+                        businessUserStoreService.approve(bizStore.getId(), userProfileOfAdmin.getQueueUserId(), businessUserRegistered);
+
+                        /* Step 3: Change account and show store as manager role. */
+                        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+                        List<GrantedAuthority> updatedAuthorities = new ArrayList<>();
+                        updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_CLIENT.name()));
+                        updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_Q_SUPERVISOR.name()));
+                        updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_S_MANAGER.name()));
+
+                        UserAccountEntity userAccount = accountService.findByUserId(email);
+                        QueueUser queueUser = new QueueUser(
+                            email,
+                            userAccount.getUserAuthentication().getPassword(),
+                            updatedAuthorities,
+                            userAccount.getQueueUserId(),
+                            UserLevelEnum.S_MANAGER,
+                            userAccount.isActive(),
+                            userAccount.isAccountValidated(),
+                            userProfile.getCountryShortName(),
+                            userAccount.getDisplayName()
+                        );
+
+                        Authentication newAuth = new UsernamePasswordAuthenticationToken(queueUser, auth.getCredentials(), updatedAuthorities);
+                        SecurityContextHolder.getContext().setAuthentication(newAuth);
+                    }
+                }
+            }
         } catch (Exception e) {
-            LOG.error("Failed registering new bizNameId={} bizName={} reason={}",
+            LOG.error("Failed registering new store bizNameId={} bizName={} reason={}",
                 registerBusiness.getBusinessUser().getBizName().getId(),
                 registerBusiness.getBusinessUser().getBizName().getBusinessName(),
                 e.getLocalizedMessage(), e);
