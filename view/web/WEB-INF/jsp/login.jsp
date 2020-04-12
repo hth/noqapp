@@ -100,7 +100,7 @@
                         <c:if test="${!empty param.loginFailure and param.loginFailure eq 'i--'}">
                         <div class="error-box">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                You have been blocked. Please contact support through NoQApp mobile application.
+                                You have been blocked. Please contact support through NoQueue Mobile Application or thorugh email
                             </div>
                         </div>
                         </c:if>

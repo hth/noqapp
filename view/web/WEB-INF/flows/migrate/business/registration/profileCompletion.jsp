@@ -194,7 +194,7 @@
                                     <c:if test="${!register.registerUser.phoneValidated}">
                                     <li>
                                         <div class="alert-info">
-                                            <p>Your phone number has not been validated. Login through NoQApp to validate phone using OTP.</p>
+                                            <p>Your phone number has not been validated. For phone validation, login using phone number.</p>
                                         </div>
                                     </li>
                                     </c:if>
