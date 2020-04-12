@@ -222,6 +222,44 @@ public class MailService {
         }
     }
 
+    /**
+     * Send recover email to user of provided email id.
+     * http://bharatonjava.wordpress.com/2012/08/27/sending-email-using-java-mail-api/
+     *
+     * @param userId
+     */
+    public MailTypeEnum mailRecoverLinkToAdmin(String userId, String adminQid) {
+        UserAccountEntity userAccountOfAdmin = accountService.findByQueueUserId(adminQid);
+        UserAccountEntity userAccount = accountService.findByUserId(userId);
+        if (null == userAccount) {
+            LOG.warn("Could not recover user={}", userId);
+            return MailTypeEnum.ACCOUNT_NOT_FOUND;
+        }
+
+        ForgotRecoverEntity forgotRecoverEntity = accountService.initiateAccountRecovery(userAccount.getQueueUserId());
+        Map<String, Object> rootMap = new HashMap<>();
+        rootMap.put("to", userAccountOfAdmin.getName());
+        rootMap.put("link", forgotRecoverEntity.getAuthenticationKey());
+        rootMap.put("domain", domain);
+        rootMap.put("https", https);
+        rootMap.put("parentHost", parentHost);
+
+        try {
+            MailEntity mail = new MailEntity()
+                .setToMail(userAccountOfAdmin.getUserId())
+                .setToName(userAccountOfAdmin.getName())
+                .setSubject("NoQueue: Password request for account " + userId)
+                .setMessage(freemarkerService.freemarkerToString("mail/account-recover.ftl", rootMap))
+                .setMailStatus(MailStatusEnum.N);
+            mailManager.save(mail);
+
+            return MailTypeEnum.SUCCESS_SENT_TO_ADMIN;
+        } catch (IOException | TemplateException exception) {
+            LOG.error("Recovery email={}", exception.getLocalizedMessage(), exception);
+            return MailTypeEnum.FAILURE;
+        }
+    }
+
     public MailTypeEnum sendQueueSupervisorInvite(
         String userId,
         String profileName,
