@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.BusinessTypeEnum,com.noqapp.domain.types.ActionTypeEnum" %>
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum,com.noqapp.domain.types.MessageOriginEnum,com.noqapp.domain.types.ActionTypeEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -93,104 +93,110 @@
                                     </c:otherwise>
                                 </c:choose>
                             </div>
+
                             <div class="store-table">
-                            <c:choose>
-                            <c:when test="${!empty businessLandingForm.bizStores}">
-                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                        <th>&nbsp;</th>
-                                        <th>${businessLandingForm.businessType.classifierTitle} Location</th>
-                                        <th nowrap>
-                                            ${businessLandingForm.businessType.classifierTitle} Name
-                                            &nbsp;
-                                            <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                                 alt="Sort" height="16px;"/>
-                                        </th>
-                                        <th>Users Pending</th>
-                                        <th>Authorized Users</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
-                                    <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
-                                    <tr>
-                                        <td>${status.count}&nbsp;</td>
-                                        <td>
-                                            <a href="/business/detail/store/${store.id}.htm" target="_blank" style="display:block; font-size:13px; color: #0000FF;">${store.addressWrappedFunky}</a>
-                                        </td>
-                                        <td nowrap>
-                                            <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">${store.displayName}</a>
-                                            <span style="display:block; font-size:13px;">Business Type: ${store.businessType.description}</span>
-                                            <span style="display:block; font-size:13px;">Category:
-                                                <c:choose>
-                                                    <c:when test="${!empty businessLandingForm.categories.get(store.bizCategoryId)}">
-                                                        ${businessLandingForm.categories.get(store.bizCategoryId)}
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        N/A
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </span>
-                                            <c:choose>
-                                                <c:when test="${store.averageServiceTime > 0}">
-                                                    <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted} per client</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
-                                                </c:otherwise>
-                                            </c:choose>
+                                <c:choose>
+                                    <c:when test="${!empty businessLandingForm.bizStores}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>${businessLandingForm.businessType.classifierTitle} Location</th>
+                                                <th nowrap>
+                                                    ${businessLandingForm.businessType.classifierTitle} Name
+                                                    &nbsp;
+                                                    <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
+                                                         alt="Sort" height="16px;"/>
+                                                </th>
+                                                <th>Users Pending</th>
+                                                <th>Authorized Users</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                            <c:forEach items="${businessLandingForm.bizStores}" var="store" varStatus="status">
+                                            <tr>
+                                                <td>${status.count}&nbsp;</td>
+                                                <td>
+                                                    <a href="/business/detail/store/${store.id}.htm" target="_blank" style="display:block; font-size:13px; color: #0000FF;">${store.addressWrappedFunky}</a>
+                                                </td>
+                                                <td nowrap>
+                                                    <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">${store.displayName}</a>
+                                                    <span style="display:block; font-size:13px;">Business Type: ${store.businessType.description}</span>
+                                                    <span style="display:block; font-size:13px;">Category:
+                                                        <c:choose>
+                                                            <c:when test="${!empty businessLandingForm.categories.get(store.bizCategoryId)}">
+                                                                ${businessLandingForm.categories.get(store.bizCategoryId)}
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                N/A
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </span>
+                                                    <c:choose>
+                                                        <c:when test="${store.averageServiceTime > 0}">
+                                                            <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted} per client</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
 
-                                            <c:choose>
-                                                <c:when test="${BusinessTypeEnum.RS eq store.businessType
-                                                || BusinessTypeEnum.FT eq store.businessType
-                                                || BusinessTypeEnum.BA eq store.businessType
-                                                || BusinessTypeEnum.ST eq store.businessType
-                                                || BusinessTypeEnum.GS eq store.businessType
-                                                || BusinessTypeEnum.CF eq store.businessType}">
-                                                    <span style="display:block; font-size:13px;">&nbsp;</span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                <span style="display:block; font-size:13px;"><a
-                                                        href="https://noqapp.com/b/s${store.webLocation}.html"
-                                                        target="_blank" style="color: #0000FF;">Web Appointment Link</a></span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                        <td>
-                                            <a href="/business/${store.id}/listQueueSupervisor.htm" style="color: #0000FF;">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
-                                        </td>
-                                        <td>
-                                            <a href="/business/${store.id}/listQueueSupervisor.htm" style="color: #0000FF;">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
-                                        </td>
-                                        <td>
-                                            <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>
-                                            <c:choose>
-                                                <c:when test="${store.active}">
-                                                    <button id="storeOnlineOrOffline_${store.id}" class="add-btn" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.INACTIVE}')">Go Offline</button>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <button id="storeOnlineOrOffline_${store.id}" class="add-btn" style="background: black" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.ACTIVE}')">Go Online</button>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <br/><br/>
-                                            <span style="display:block; font-size:13px;">Offline ${businessLandingForm.businessType.classifierTitle .toLowerCase()} is not visible</span>
-                                        </td>
-                                    </tr>
-                                    </c:forEach>
-                                </table>
-                            </c:when>
-                            <c:otherwise>
-                                <p style="display:block; font-size:18px; padding-bottom: 30px;">
-                                    Let's now setup online ${businessLandingForm.businessType.classifierTitle}. Select left side if you have one store or right side for franchise model.
-                                </p>
+                                                    <c:choose>
+                                                        <c:when test="${BusinessTypeEnum.RS eq store.businessType
+                                                        || BusinessTypeEnum.FT eq store.businessType
+                                                        || BusinessTypeEnum.BA eq store.businessType
+                                                        || BusinessTypeEnum.ST eq store.businessType
+                                                        || BusinessTypeEnum.GS eq store.businessType
+                                                        || BusinessTypeEnum.CF eq store.businessType}">
+                                                            <span style="display:block; font-size:13px;">&nbsp;</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                        <span style="display:block; font-size:13px;"><a
+                                                                href="https://noqapp.com/b/s${store.webLocation}.html"
+                                                                target="_blank" style="color: #0000FF;">Web Appointment Link</a></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <a href="/business/${store.id}/listQueueSupervisor.htm" style="color: #0000FF;">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
+                                                </td>
+                                                <td>
+                                                    <a href="/business/${store.id}/listQueueSupervisor.htm" style="color: #0000FF;">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
+                                                </td>
+                                                <td>
+                                                    <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>
+                                                    <c:choose>
+                                                        <c:when test="${store.active}">
+                                                            <button id="storeOnlineOrOffline_${store.id}" class="add-btn" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.INACTIVE}')">Go Offline</button>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <button id="storeOnlineOrOffline_${store.id}" class="add-btn" style="background: black" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.ACTIVE}')">Go Online</button>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <br/><br/>
+                                                    <span style="display:block; font-size:13px;">Offline ${businessLandingForm.businessType.classifierTitle .toLowerCase()} is not visible</span>
+                                                </td>
+                                            </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:when test="${businessLandingForm.businessType.messageOrigin eq MessageOriginEnum.O}">
+                                        <p style="display:block; font-size:18px; padding-bottom: 30px;">
+                                            Let's now setup online ${businessLandingForm.businessType.classifierTitle}. Select left if you have one store or right side for franchise model.
+                                        </p>
 
-                                <div class="addbtn-store">
-                                    <p align="center">
-                                        <a href="/business/addStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">&nbsp;&nbsp;One location store&nbsp;&nbsp;&nbsp;</a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a href="/business/addFranchiseStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">Multiple location stores</a>
-                                    </p>
-                                </div>
-                            </c:otherwise>
-                            </c:choose>
+                                        <div class="addbtn-store">
+                                            <p align="center">
+                                                <a href="/business/addStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">&nbsp;&nbsp;One location store&nbsp;&nbsp;&nbsp;</a>
+                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <a href="/business/addFranchiseStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">Multiple location stores</a>
+                                            </p>
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${businessLandingForm.businessType.messageOrigin eq MessageOriginEnum.Q}">
+                                        <p style="display:block; font-size:18px; padding-bottom: 30px;">
+                                            Let's now setup online ${businessLandingForm.businessType.classifierTitle}. Click on - Setup Online Queue - to begin.
+                                        </p>
+                                    </c:when>
+                                </c:choose>
                             </div>
                         </div>
                     </div>
