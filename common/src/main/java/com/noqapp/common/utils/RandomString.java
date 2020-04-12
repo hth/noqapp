@@ -22,6 +22,7 @@ public final class RandomString {
     private static final String QID_SHORTEN = "^10+(?!$)";
     private static final String LAST_THREE_DIGITS = "(\\d+)(?=\\d{3}(?:,|$))";
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
+    public static final String MANAGER_NOQAPP_COM = "@m.noqapp.com";
 
     static {
         for (int idx = 0; idx < 33; ++idx) {

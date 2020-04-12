@@ -1,15 +1,20 @@
 package com.noqapp.view.controller.open;
 
 import static com.noqapp.common.utils.RandomString.MAIL_NOQAPP_COM;
+import static com.noqapp.common.utils.RandomString.MANAGER_NOQAPP_COM;
 
 import com.noqapp.common.utils.HashText;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
+import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.MailTypeEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
+import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.MailService;
 import com.noqapp.view.form.ForgotAuthenticateForm;
 import com.noqapp.view.form.ForgotRecoverForm;
@@ -35,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,6 +62,7 @@ public class ForgotController {
 
     /** Used in RedirectAttributes */
     private static final String SUCCESS_EMAIL = "success_email";
+    private static final String SUCCESS_EMAIL_ADMIN = "success_email_admin";
 
     /** Used in JSP page /forgot/authenticateConfirm */
     private static final String SUCCESS = "success";
@@ -84,18 +91,21 @@ public class ForgotController {
     private ForgotRecoverValidator forgotRecoverValidator;
     private ForgotAuthenticateValidator forgotAuthenticateValidator;
     private MailService mailService;
+    private BusinessUserService businessUserService;
 
     @Autowired
     public ForgotController(
         AccountService accountService,
         ForgotRecoverValidator forgotRecoverValidator,
         ForgotAuthenticateValidator forgotAuthenticateValidator,
-        MailService mailService
+        MailService mailService,
+        BusinessUserService businessUserService
     ) {
         this.accountService = accountService;
         this.forgotRecoverValidator = forgotRecoverValidator;
         this.forgotAuthenticateValidator = forgotAuthenticateValidator;
         this.mailService = mailService;
+        this.businessUserService = businessUserService;
     }
 
     @GetMapping(value = "password")
@@ -133,9 +143,23 @@ public class ForgotController {
             return recoverConfirm;
         }
 
-        MailTypeEnum mailType = mailService.mailRecoverLink(forgotRecoverForm.getMail().getText().toLowerCase());
-        if (MailTypeEnum.FAILURE == mailType) {
-            LOG.error("Failed to send recovery email for user={}", forgotRecoverForm.getMail());
+        MailTypeEnum mailType = MailTypeEnum.FAILURE;
+        if (forgotRecoverForm.getMail().getText().endsWith(MANAGER_NOQAPP_COM)) {
+            UserAccountEntity userAccount = accountService.findByUserId(forgotRecoverForm.getMail().getText());
+            if (null != userAccount) {
+                BusinessUserEntity businessUser = businessUserService.findByQid(userAccount.getQueueUserId());
+                List<BusinessUserEntity> businessUsers = businessUserService.getAllForBusiness(businessUser.getBizName().getId(), UserLevelEnum.M_ADMIN);
+                for (BusinessUserEntity businessUserAdmin : businessUsers) {
+                    mailType = mailService.mailRecoverLinkToAdmin(forgotRecoverForm.getMail().getText().toLowerCase(), businessUserAdmin.getQueueUserId());
+                }
+            } else {
+                LOG.info("Email recovery did not find mail={}", forgotRecoverForm.getMail().getText());
+            }
+        } else {
+            mailType = mailService.mailRecoverLink(forgotRecoverForm.getMail().getText().toLowerCase());
+            if (MailTypeEnum.FAILURE == mailType) {
+                LOG.error("Failed to send recovery email for user={}", forgotRecoverForm.getMail());
+            }
         }
 
         /* But we show success to user on failure. Not sure if we should show a failure message when mail fails. */
@@ -147,6 +171,9 @@ public class ForgotController {
                 redirectAttrs.addFlashAttribute(
                     SUCCESS_EMAIL,
                     mailType == MailTypeEnum.ACCOUNT_NOT_VALIDATED ? mailType : MailTypeEnum.SUCCESS);
+                break;
+            case SUCCESS_SENT_TO_ADMIN:
+                redirectAttrs.addFlashAttribute(SUCCESS_EMAIL_ADMIN, MailTypeEnum.SUCCESS_SENT_TO_ADMIN);
                 break;
             default:
                 LOG.error("Reached unreachable condition, user={}", forgotRecoverForm.getMail().getText().toLowerCase());
@@ -163,12 +190,15 @@ public class ForgotController {
         @ModelAttribute(SUCCESS_EMAIL)
         String success,
 
+        @ModelAttribute(SUCCESS_EMAIL_ADMIN)
+        String successAdmin,
+
         HttpServletRequest httpServletRequest,
         HttpServletResponse httpServletResponse
     ) throws IOException {
 
         //TODO(hth) strengthen the check here as this can be hacked to get a dummy confirmation page
-        if (StringUtils.isNotBlank(success)) {
+        if (StringUtils.isNotBlank(success) || StringUtils.isNotBlank(successAdmin)) {
             return recoverConfirmPage;
         }
         LOG.warn(
