@@ -215,7 +215,15 @@
                                     <form:label path="phone" cssErrorClass="lb_error">Your Phone</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="phone" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                    <c:choose>
+                                        <c:when test="${phoneValidated}">
+                                            <form:input path="phone" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span style="display:block; font-size:15px; padding-top: 10px;">N/A</span>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </div>
                                 <div class="clearFix"></div>
                             </li>
@@ -226,10 +234,10 @@
                                 <div class="col-fields">
                                     <c:choose>
                                         <c:when test="${fn:endsWith(userProfileForm.email, '@mail.noqapp.com')}">
-                                            --
+                                            <span style="display:block; font-size:15px; padding-top: 10px;">--</span>
                                         </c:when>
                                         <c:otherwise>
-                                            <form:input path="email" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
+                                            <form:input path="email" cssClass="form-field-admin" cssStyle="background-color: lightgrey; text-transform : lowercase;" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
