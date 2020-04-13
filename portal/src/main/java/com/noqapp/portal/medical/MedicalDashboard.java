@@ -10,10 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * hitender
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
     "PMD.MethodArgumentCouldBeFinal",
     "PMD.LongVariable"
 })
-@Controller
+@RestController
 @RequestMapping(value = "/portal/medical/dashboard")
 public class MedicalDashboard {
     private static final Logger LOG = LoggerFactory.getLogger(MedicalDashboard.class);
@@ -46,7 +46,7 @@ public class MedicalDashboard {
     }
 
     @GetMapping(
-        produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8"
+        produces = MediaType.APPLICATION_JSON_VALUE
     )
     public String populateDashBoard(
         @RequestHeader("X-R-DID")
@@ -62,6 +62,6 @@ public class MedicalDashboard {
         ScrubbedInput auth
     ) {
         LOG.info("Populate Dashboard");
-        return "";
+        return "{\"amount\" : \"2123\", \"currency\" : \"INR\"}";
     }
 }
