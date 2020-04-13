@@ -90,7 +90,7 @@
                                         <div class="col-lable3">
                                             <form:label path="mail" cssErrorClass="lb_error">Email Address</form:label></div>
                                         <div class="col-fields">
-                                            <form:input path="mail" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            <form:input path="mail" cssClass="form-field-admin" cssStyle="text-transform : lowercase;" cssErrorClass="form-field-admin error-field"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
