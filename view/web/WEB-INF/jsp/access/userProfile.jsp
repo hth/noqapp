@@ -182,7 +182,7 @@
                                 </div>
                                 <div class="col-fields">
                                     <form:textarea path="address" cols="" rows="3" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
-                                    <span style="display:block; font-size:14px;">(Address modification not supported currently. Please change address via <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client&hl=en" target="_blank">NoQApp</a>)</span>
+                                    <span style="display:block; font-size:14px;">(Address change supported via <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client&hl=en" target="_blank" style="color: #0000FF;">NoQueue App</a>)</span>
                                 </div>
                                 <div class="clearFix"></div>
                             </li>
