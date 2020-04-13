@@ -100,36 +100,13 @@
                        'ROLE_SUPERVISOR',
                        'ROLE_ANALYSIS')" />
 
-        <intercept-url pattern="/access/userPreference/**"
-                       access="hasAnyRole(
-                       'ROLE_CLIENT',
-                       'ROLE_Q_SUPERVISOR',
-                       'ROLE_S_MANAGER',
-                       'ROLE_M_ACCOUNTANT',
-                       'ROLE_M_ADMIN',
-                       'ROLE_ADMIN',
-                       'ROLE_TECHNICIAN',
-                       'ROLE_MEDICAL_TECHNICIAN',
-                       'ROLE_SUPERVISOR')" />
-
-        <intercept-url pattern="/access/userProfile/**"
-                       access="hasAnyRole(
-                       'ROLE_CLIENT',
-                       'ROLE_Q_SUPERVISOR',
-                       'ROLE_S_MANAGER',
-                       'ROLE_M_ACCOUNTANT',
-                       'ROLE_M_ADMIN',
-                       'ROLE_ADMIN',
-                       'ROLE_TECHNICIAN',
-                       'ROLE_MEDICAL_TECHNICIAN',
-                       'ROLE_SUPERVISOR')" />
-
         <intercept-url pattern="/access/**"
                        access="hasAnyRole(
                        'ROLE_CLIENT',
                        'ROLE_Q_SUPERVISOR',
                        'ROLE_S_MANAGER',
                        'ROLE_M_ACCOUNTANT',
+                       'ROLE_M_ADMIN',
                        'ROLE_ADMIN',
                        'ROLE_TECHNICIAN',
                        'ROLE_MEDICAL_TECHNICIAN',
