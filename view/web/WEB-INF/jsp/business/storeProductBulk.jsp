@@ -185,4 +185,13 @@
         });
     });
 </script>
+<script>
+    (function(w, u, d){var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};var l = function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://code.upscope.io/F3TE6jAMct.js';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(typeof u!=="function"){w.Upscope=i;l();}})(window, window.Upscope, document);
+    Upscope('init');
+    Upscope('updateConnection', {
+        uniqueId: '<sec:authentication property="principal.queueUserId"/>',
+        identities: ['<sec:authentication property="principal.emailWithoutDomain"/>']
+    });
+</script>
+
 </html>
