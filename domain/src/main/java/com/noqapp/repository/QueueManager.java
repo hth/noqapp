@@ -8,6 +8,7 @@ import com.noqapp.domain.types.TokenServiceEnum;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -158,4 +159,10 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity findOneByRecordReferenceId(String codeQR, String recordReferenceId);
 
     void updateWithTransactionId(String codeQR, String qid, int tokenNumber, String transactionId);
+
+    List<QueueEntity> findByBizNameId(String bizNameId);
+
+    Set<String> filterByDistinctCodeQR(String bizNameId);
+
+    long countByBizNameId(String bizNameId);
 }
