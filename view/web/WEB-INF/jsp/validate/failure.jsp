@@ -40,8 +40,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
     <!-- content end -->
@@ -61,10 +59,8 @@
                 </div>
             </div>
         </div>
-
     </div>
     <!-- Footer End -->
-
 </div>
 
 

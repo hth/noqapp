@@ -44,18 +44,18 @@
                         <form:hidden path="mail"/>
                         <form:hidden path="origin" value="recover"/>
                         <spring:hasBindErrors name="forgotRecoverForm">
-                            <div class="error-box">
-                                <div class="error-txt">
-                                    <ul>
-                                        <c:if test="${errors.hasFieldErrors('mail')}">
-                                        <li><form:errors path="mail"/></li>
-                                        </c:if>
-                                        <c:if test="${errors.hasFieldErrors('captcha')}">
-                                        <li><form:errors path="captcha"/></li>
-                                        </c:if>
-                                    </ul>
-                                </div>
+                        <div class="error-box">
+                            <div class="error-txt">
+                                <ul>
+                                    <c:if test="${errors.hasFieldErrors('mail')}">
+                                    <li><form:errors path="mail"/></li>
+                                    </c:if>
+                                    <c:if test="${errors.hasFieldErrors('captcha')}">
+                                    <li><form:errors path="captcha"/></li>
+                                    </c:if>
+                                </ul>
                             </div>
+                        </div>
                         </spring:hasBindErrors>
 
                         <div class="admin-content" style="background:white;">
@@ -135,4 +135,5 @@
     // l.isLoading();
     // l.setProgress( 0-1 );
 </script>
+
 </html>
