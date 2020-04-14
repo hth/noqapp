@@ -28,6 +28,7 @@ public final class QueueUser extends User {
     private boolean accountValidated;
     private String countryShortName;
     private String userShortName;
+    private String emailWithoutDomain;
 
     public QueueUser(
             String username,
@@ -54,6 +55,7 @@ public final class QueueUser extends User {
         this.accountValidated = accountValidated;
         this.countryShortName = countryShortName;
         this.userShortName = WordUtils.initials(userShortName);
+        this.emailWithoutDomain = username.split("@")[0];
     }
 
     public QueueUser(
@@ -106,6 +108,10 @@ public final class QueueUser extends User {
 
     public String getUserShortName() {
         return userShortName;
+    }
+
+    public String getEmailWithoutDomain() {
+        return emailWithoutDomain;
     }
 
     @Override
