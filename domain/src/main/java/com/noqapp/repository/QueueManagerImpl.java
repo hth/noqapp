@@ -15,6 +15,8 @@ import com.noqapp.domain.types.TokenServiceEnum;
 
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
+import com.mongodb.client.DistinctIterable;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
 
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +36,9 @@ import org.springframework.stereotype.Repository;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -693,5 +697,38 @@ public class QueueManagerImpl implements QueueManager {
         );
 
         LOG.debug("update result={}", updateResult.getModifiedCount());
+    }
+
+    @Override
+    public List<QueueEntity> findByBizNameId(String bizNameId) {
+        return mongoTemplate.find(
+            query(where("BN").is(bizNameId)),
+            QueueEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public Set<String> filterByDistinctCodeQR(String bizNameId) {
+        DistinctIterable<String> distinctIterable = mongoTemplate.getCollection(TABLE).distinct(
+            "QR",
+            Filters.regex("BN", "^" + bizNameId),
+            String.class);
+
+        Set<String> uniqueCodeQR = new HashSet<>();
+        for (String found : distinctIterable) {
+            uniqueCodeQR.add(found);
+        }
+
+        return uniqueCodeQR;
+    }
+
+    @Override
+    public long countByBizNameId(String bizNameId) {
+        return mongoTemplate.count(
+            query(where("BN").is(bizNameId)),
+            QueueEntity.class,
+            TABLE
+        );
     }
 }
