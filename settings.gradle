@@ -8,6 +8,5 @@ include "common",
         "inventory",
         "social",
         "view",
-        "loader",
-        "portal"
+        "loader"
 rootProject.name = 'noqapp'
