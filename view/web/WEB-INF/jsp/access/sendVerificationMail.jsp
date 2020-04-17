@@ -89,10 +89,10 @@
                                     <div class="col-lable3"></div>
                                     <div class="col-fields">
                                         <div class="left-btn">
-                                            <input name="send" class="next-btn" value="SEND" type="submit">
+                                            <input class="next-btn" value="SEND" type="submit" name="send_VerificationMail" >
                                         </div>
                                         <div class="right-btn">
-                                            <input name="cancel_Send" class="cancel-btn" value="CANCEL" type="submit">
+                                            <input class="cancel-btn" value="CANCEL" type="submit" name="cancel_VerificationMail" >
                                         </div>
                                         <div class="clearFix"></div>
                                     </div>

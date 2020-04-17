@@ -89,7 +89,7 @@ public class SendVerificationMailController {
         return nextPage;
     }
 
-    @PostMapping
+    @PostMapping(params = {"send_VerificationMail"})
     public String sendVerificationMailController(
         @ModelAttribute("profile")
         ProfileForm profile,
@@ -109,5 +109,14 @@ public class SendVerificationMailController {
         profile.setSubmitState(true);
         redirectAttrs.addFlashAttribute("profile", profile);
         return "redirect:" + nextPage + ".htm";
+    }
+
+    /** On cancelling addition of re-sending verification mail. */
+    @PostMapping(params = {"cancel_VerificationMail"})
+    public String cancelSendVerificationMailController() {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Cancel sending verification mail qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+
+        return "redirect:/access/landing.htm";
     }
 }
