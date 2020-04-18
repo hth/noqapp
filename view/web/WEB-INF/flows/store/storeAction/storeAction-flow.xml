@@ -117,7 +117,7 @@
     </action-state>
 
     <decision-state id="decideOnRegistrationComplete">
-        <if test="registerBusiness.appointmentState ne registerBusiness.appointmentIsOff" then="registrationComplete" else="registrationCompleteAsManager"/>
+        <if test="registerBusiness.decidePathTraversalOnRegistrationComplete()" then="registrationComplete" else="registrationCompleteAsManager"/>
     </decision-state>
 
     <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>

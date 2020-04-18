@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.AppointmentStateEnum, com.noqapp.domain.types.MessageOriginEnum" %>
+<%@ page import="com.noqapp.domain.types.AppointmentStateEnum, com.noqapp.domain.types.MessageOriginEnum, com.noqapp.domain.types.BusinessSupportEnum" %>
 <%@ include file="../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -134,7 +134,7 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
-                                        <c:if test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.Q}">
+                                        <c:if test="${MessageOriginEnum.Q == registerBusiness.businessType.messageOrigin}">
                                         <li>
                                             <div class="col-lable3">
                                                 <form:label path="walkInState" cssErrorClass="lb_error">Walk-in</form:label>
@@ -169,7 +169,7 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
-                                        <c:if test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.Q}">
+                                        <c:if test="${MessageOriginEnum.Q == registerBusiness.businessType.messageOrigin}">
                                         <li>
                                             <div class="col-lable3">
                                                 <form:label path="availableTokenCount" cssErrorClass="lb_error">Issue Limited Tokens</form:label>
@@ -272,7 +272,7 @@
                                     </ul>
                                 </div>
 
-                                <c:if test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.Q}">
+                                <c:if test="${BusinessSupportEnum.QQ eq registerBusiness.businessType.businessSupport}">
                                 <div class="full">
                                     <div class="admin-title pT30">
                                         <h2>Appointment Settings</h2>
@@ -367,15 +367,6 @@
 
                                 <div>
                                     <div class="btn-hours">
-                                        <%--<div class="first-btn">--%>
-                                        <%--<input name="_eventId_confirm" class="next-btn" value="CONFIRM" type="submit">--%>
-                                        <%--</div>--%>
-                                        <%--<div class="center-btn">--%>
-                                        <%--<input name="_eventId_revise" class="cancel-btn" value="REVISE" type="submit">--%>
-                                        <%--</div>--%>
-                                        <%--<div class="last-btn">--%>
-                                        <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                        <%--</div>--%>
                                         <div class="button-btn">
                                             <button name="_eventId_confirm" class="ladda-button next-btn" style="width:32%; float: left">Confirm</button>
                                             <button name="_eventId_revise" class="ladda-button cancel-btn" style="width:32%; float: left; margin-left:2%">Revise</button>

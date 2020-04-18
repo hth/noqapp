@@ -104,14 +104,16 @@
                                             </c:choose>
                                             <br/>
                                             <c:choose>
-                                                <c:when test="${BusinessTypeEnum.RS eq store.businessType
+                                                <c:when test="${
+                                                BusinessTypeEnum.RS eq store.businessType
                                                 || BusinessTypeEnum.FT eq store.businessType
                                                 || BusinessTypeEnum.BA eq store.businessType
                                                 || BusinessTypeEnum.ST eq store.businessType
                                                 || BusinessTypeEnum.GS eq store.businessType
                                                 || BusinessTypeEnum.CF eq store.businessType
                                                 || BusinessTypeEnum.PH eq store.businessType
-                                                || BusinessTypeEnum.HS eq store.businessType}">
+                                                || BusinessTypeEnum.HS eq store.businessType
+                                                }">
                                                     <span style="display:block; font-size:13px;">
                                                         <a href="/business/store/product/${store.id}.htm" style="color: #0000FF;">Product List</a>
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
@@ -119,8 +121,14 @@
                                                     </span>
                                                     <span style="display:block; font-size:13px;">
                                                         <c:choose>
-                                                            <c:when test="${BusinessTypeEnum.RS eq store.businessType
-                                                            || BusinessTypeEnum.GS eq store.businessType}">
+                                                            <c:when test="${
+                                                            BusinessTypeEnum.RS eq store.businessType
+                                                            || BusinessTypeEnum.FT eq store.businessType
+                                                            || BusinessTypeEnum.BA eq store.businessType
+                                                            || BusinessTypeEnum.ST eq store.businessType
+                                                            || BusinessTypeEnum.GS eq store.businessType
+                                                            || BusinessTypeEnum.CF eq store.businessType
+                                                            }">
                                                                 <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Store Image</a>
                                                             </c:when>
                                                             <c:otherwise>
@@ -133,6 +141,16 @@
                                                     <span style="display:block; font-size:13px;">
                                                         <a href="/business/store/product/bulk/${store.codeQR}.htm" class="add-btn">Bulk Product Change</a>
                                                     </span>
+                                                </c:when>
+                                                <c:when test="${
+                                                BusinessTypeEnum.RSQ eq store.businessType
+                                                || BusinessTypeEnum.FTQ eq store.businessType
+                                                || BusinessTypeEnum.BAQ eq store.businessType
+                                                || BusinessTypeEnum.STQ eq store.businessType
+                                                || BusinessTypeEnum.GSQ eq store.businessType
+                                                || BusinessTypeEnum.CFQ eq store.businessType
+                                                }">
+                                                    <span style="display:block; font-size:13px;"><a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Store Image</a></span>
                                                 </c:when>
                                                 <c:when test="${BusinessTypeEnum.BK eq store.businessType}">
                                                     <span style="display:block; font-size:13px;">

@@ -72,7 +72,20 @@
                         <div class="add-store">
                             <div class="addbtn-store">
                                 <c:choose>
-                                    <c:when test="${businessLandingForm.businessType eq BusinessTypeEnum.GS || businessLandingForm.businessType eq BusinessTypeEnum.RS}">
+                                    <c:when test="${
+                                    BusinessTypeEnum.RS eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.RSQ eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.FT eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.FTQ eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.BA eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.BAQ eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.ST eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.STQ eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.GS eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.GSQ eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.CF eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.CFQ eq businessLandingForm.businessType
+                                    }">
                                         <c:if test="${businessLandingForm.bizStores.size() != 0}">
                                             <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
                                             <a href="/business/category.htm" class="add-btn">Show Business Category</a>
@@ -140,12 +153,20 @@
                                                     </c:choose>
 
                                                     <c:choose>
-                                                        <c:when test="${BusinessTypeEnum.RS eq store.businessType
+                                                        <c:when test="${
+                                                        BusinessTypeEnum.RS eq store.businessType
+                                                        || BusinessTypeEnum.RSQ eq store.businessType
                                                         || BusinessTypeEnum.FT eq store.businessType
+                                                        || BusinessTypeEnum.FTQ eq store.businessType
                                                         || BusinessTypeEnum.BA eq store.businessType
+                                                        || BusinessTypeEnum.BAQ eq store.businessType
                                                         || BusinessTypeEnum.ST eq store.businessType
+                                                        || BusinessTypeEnum.STQ eq store.businessType
                                                         || BusinessTypeEnum.GS eq store.businessType
-                                                        || BusinessTypeEnum.CF eq store.businessType}">
+                                                        || BusinessTypeEnum.GSQ eq store.businessType
+                                                        || BusinessTypeEnum.CF eq store.businessType
+                                                        || BusinessTypeEnum.CFQ eq store.businessType
+                                                        }">
                                                             <span style="display:block; font-size:13px;">&nbsp;</span>
                                                         </c:when>
                                                         <c:otherwise>
@@ -178,24 +199,19 @@
                                             </c:forEach>
                                         </table>
                                     </c:when>
-                                    <c:when test="${businessLandingForm.businessType.messageOrigin eq MessageOriginEnum.O}">
+                                    <c:otherwise>
                                         <p style="display:block; font-size:18px; padding-bottom: 30px;">
                                             Let's now setup online ${businessLandingForm.businessType.classifierTitle}. Select left if you have one store or right side for franchise model.
                                         </p>
 
                                         <div class="addbtn-store">
                                             <p align="center">
-                                                <a href="/business/addStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">&nbsp;&nbsp;One location store&nbsp;&nbsp;&nbsp;</a>
+                                                <a href="/business/addStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">&nbsp;&nbsp;One location &nbsp;&nbsp;&nbsp;</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <a href="/business/addFranchiseStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">Multiple location stores</a>
+                                                <a href="/business/addFranchiseStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">Multiple locations</a>
                                             </p>
                                         </div>
-                                    </c:when>
-                                    <c:when test="${businessLandingForm.businessType.messageOrigin eq MessageOriginEnum.Q}">
-                                        <p style="display:block; font-size:18px; padding-bottom: 30px;">
-                                            Let's now setup online ${businessLandingForm.businessType.classifierTitle}. Click on - Setup Online Queue - to begin.
-                                        </p>
-                                    </c:when>
+                                    </c:otherwise>
                                 </c:choose>
                             </div>
                         </div>

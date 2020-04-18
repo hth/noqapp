@@ -12,6 +12,7 @@ import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.AppointmentStateEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.view.controller.access.LandingController;
@@ -246,8 +247,19 @@ public class BusinessFlowValidator {
                 case DO:
                     register.getRegisterBusiness().setPopulateAmenitiesAndFacilities(true);
                     break;
-                case GS:
                 case RS:
+                case RSQ:
+                case FT:
+                case FTQ:
+                case BA:
+                case BAQ:
+                case ST:
+                case STQ:
+                case GS:
+                case GSQ:
+                case CF:
+                case CFQ:
+                    LOG.info("Skipped amenities and facilities for businessType={}", register.getRegisterBusiness().getBusinessType());
                     status = status + ".SKIP_AMENITIES_FACILITIES";
             }
         }
@@ -597,15 +609,20 @@ public class BusinessFlowValidator {
 
         LOG.info("Validate business qid={} status={}", registerBusiness.getBusinessUser().getQueueUserId(), status);
         if (status.equalsIgnoreCase(LandingController.SUCCESS)) {
-            switch (registerBusiness.getBusinessType().getMessageOrigin()) {
-                case O:
+            switch (registerBusiness.getBusinessType().getBusinessSupport()) {
+                case OD:
                     status = registerBusiness.getBusinessType().getMessageOrigin() + status;
 
                     /* There are no appointments for orders. */
                     registerBusiness.setAppointmentState(AppointmentStateEnum.O);
                     break;
-                case Q:
+                case QQ:
                     status = registerBusiness.getBusinessType().getMessageOrigin() + status;
+                    break;
+                case OQ:
+                    /* There are no appointments for these queues. */
+                    status = MessageOriginEnum.O + status;
+                    registerBusiness.setAppointmentState(AppointmentStateEnum.O);
                     break;
                 default:
                     LOG.error("Reached unreachable condition");

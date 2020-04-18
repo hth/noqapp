@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
+    <c:if test="${profile.submitState && !profile.accountValidated}">
+    <meta http-equiv="Refresh" content="5;url=/">
+    </c:if>
 
     <title>NoQueue</title>
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
@@ -26,11 +29,9 @@
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">
-                    <sec:authentication property="principal.userShortName"/></button>
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <div class="menu-top-arrow">
-                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
                         <a href="${pageContext.request.contextPath}/access/rewards.htm">Rewards</a>
@@ -64,7 +65,8 @@
                     <c:when test="${profile.accountValidated}">
                         <div class="admin-content">
                             <div class="register-c">
-                                <p>Your account has already been validated. If you see this message, please contact your
+                                <p>
+                                    Account has already been validated. If you see this message, please contact your
                                     administrator. Or contact at contact@noqapp.com and describe the issue in detail.
                                 </p>
                             </div>
@@ -89,10 +91,10 @@
                                     <div class="col-lable3"></div>
                                     <div class="col-fields">
                                         <div class="left-btn">
-                                            <input name="send" class="next-btn" value="SEND" type="submit">
+                                            <input class="next-btn" value="SEND" type="submit" name="send_VerificationMail" >
                                         </div>
                                         <div class="right-btn">
-                                            <input name="cancel_Send" class="cancel-btn" value="CANCEL" type="submit">
+                                            <input class="cancel-btn" value="CANCEL" type="submit" name="cancel_VerificationMail" >
                                         </div>
                                         <div class="clearFix"></div>
                                     </div>
@@ -104,7 +106,7 @@
                     <c:otherwise>
                         <div class="admin-content">
                             <div class="register-c">
-                                <p>You should receive an email in few minutes.</p>
+                                <p>You should receive an email in few minutes. Refreshing in next <span id="countdown">5</span> seconds</p>
                             </div>
                         </div>
                     </c:otherwise>
@@ -156,6 +158,18 @@
         uniqueId: '<sec:authentication property="principal.queueUserId"/>',
         identities: ['<sec:authentication property="principal.emailWithoutDomain"/>']
     });
+</script>
+<script type="text/javascript" >
+    let el = document.getElementById("countdown");
+    let i = 5;
+
+    function counter() {
+        el.innerHTML = i--;
+        if (i <= 5 && i >= 0) {
+            setTimeout(counter, 1000);
+        }
+    }
+    counter();
 </script>
 
 </html>

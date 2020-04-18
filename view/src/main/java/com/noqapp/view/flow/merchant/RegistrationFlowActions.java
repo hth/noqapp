@@ -18,7 +18,6 @@ import com.noqapp.domain.flow.BusinessHour;
 import com.noqapp.domain.flow.Register;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.site.QueueUser;
-import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.RoleEnum;
@@ -175,76 +174,91 @@ class RegistrationFlowActions {
             populateStoreWithDefaultProduct(bizStore);
 
             if (RegisterBusiness.StoreFranchise.OFF == registerBusiness.getStoreFranchise()) {
-                if (BusinessTypeEnum.GS == registerBusiness.getBusinessType()) {
-                    if (businessUserStoreService.countNumberOfStoreUsers(bizName.getId()) == 0) {
-                        List<BusinessUserEntity> businessUsers = businessUserService.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
-                        BusinessUserEntity businessUser = businessUsers.iterator().next();
-                        UserProfileEntity userProfileOfAdmin = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
+                switch (registerBusiness.getBusinessType()) {
+                    case RS:
+                    case RSQ:
+                    case FT:
+                    case FTQ:
+                    case BA:
+                    case BAQ:
+                    case ST:
+                    case STQ:
+                    case GS:
+                    case GSQ:
+                    case CF:
+                    case CFQ:
+                        if (businessUserStoreService.countNumberOfStoreUsers(bizName.getId()) == 0) {
+                            List<BusinessUserEntity> businessUsers = businessUserService.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
+                            BusinessUserEntity businessUser = businessUsers.iterator().next();
+                            UserProfileEntity userProfileOfAdmin = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
 
-                        /* Step 1: Registered agent and add user to store. */
-                        String storeManagerRandomPassword = RandomString.newInstance(6).nextString();
-                        String storeManagerMailAddress = userProfileOfAdmin.getEmail().split("@")[0] + MANAGER_NOQAPP_COM;
-                        while (null != accountService.doesUserExists(storeManagerMailAddress)) {
-                            storeManagerMailAddress = RandomString.generateManagerEmailAddressWithDomain(
-                                new ScrubbedInput(userProfileOfAdmin.getFirstName()),
-                                new ScrubbedInput(userProfileOfAdmin.getLastName()),
-                                userProfileOfAdmin.getQueueUserId());
+                            /* Step 1: Registered agent and add user to store. */
+                            String storeManagerRandomPassword = RandomString.newInstance(6).nextString();
+                            String storeManagerMailAddress = userProfileOfAdmin.getEmail().split("@")[0] + MANAGER_NOQAPP_COM;
+                            while (null != accountService.doesUserExists(storeManagerMailAddress)) {
+                                storeManagerMailAddress = RandomString.generateManagerEmailAddressWithDomain(
+                                    new ScrubbedInput(userProfileOfAdmin.getFirstName()),
+                                    new ScrubbedInput(userProfileOfAdmin.getLastName()),
+                                    userProfileOfAdmin.getQueueUserId());
 
-                            Assert.state(storeManagerMailAddress.contains(MANAGER_NOQAPP_COM), "Email created should contain " + MANAGER_NOQAPP_COM);
+                                Assert.state(storeManagerMailAddress.contains(MANAGER_NOQAPP_COM), "Email created should contain " + MANAGER_NOQAPP_COM);
+                            }
+
+                            MerchantRegistrationForm merchantRegistrationForm = MerchantRegistrationForm.newInstance()
+                                .setBirthday(new ScrubbedInput(userProfileOfAdmin.getBirthday()))
+                                .setGender(new ScrubbedInput(userProfileOfAdmin.getGender().name()))
+                                .setFirstName(new ScrubbedInput(userProfileOfAdmin.getFirstName()))
+                                .setLastName(new ScrubbedInput(userProfileOfAdmin.getLastName()))
+                                .setMail(new ScrubbedInput(storeManagerMailAddress))
+                                .setPassword(new ScrubbedInput(storeManagerRandomPassword))
+                                .setCode1("S").setCode2("2").setCode3("K").setCode4("X").setCode5("0").setCode6("Z");
+                            addNewAgentFlowActions.createAccountAndInvite(merchantRegistrationForm, "S2KX0Z", bizStore.getId(), null);
+
+                            LOG.info("Send email to admin={} to use email={} and password={} for login to manager account",
+                                userProfileOfAdmin.getEmail(), storeManagerMailAddress, storeManagerRandomPassword);
+
+                            /* Step 2: Auto approve the added user. */
+                            UserProfileEntity userProfile = accountService.doesUserExists(storeManagerMailAddress);
+                            BusinessUserEntity businessUserRegistered = businessUserService.findBusinessUser(userProfile.getQueueUserId(), bizName.getId());
+                            businessUserStoreService.approve(bizStore.getId(), userProfileOfAdmin.getQueueUserId(), businessUserRegistered);
+
+                            /* Step 3: Send email with credential to admin. */
+                            Map<String, Object> rootMap = new HashMap<>();
+                            rootMap.put("login", storeManagerMailAddress);
+                            rootMap.put("password", storeManagerRandomPassword);
+                            mailService.sendAnyMail(
+                                userProfileOfAdmin.getEmail(),
+                                userProfileOfAdmin.getName(),
+                                "NoQueue: Account credential for Manager login",
+                                rootMap, "mail/storeManagerLoginCredential.ftl");
+
+                            /* Step 4: Change account to to new agent and set store manager role. */
+                            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+                            List<GrantedAuthority> updatedAuthorities = new ArrayList<>();
+                            updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_CLIENT.name()));
+                            updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_Q_SUPERVISOR.name()));
+                            updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_S_MANAGER.name()));
+
+                            UserAccountEntity userAccount = accountService.findByUserId(storeManagerMailAddress);
+                            QueueUser queueUser = new QueueUser(
+                                storeManagerMailAddress,
+                                userAccount.getUserAuthentication().getPassword(),
+                                updatedAuthorities,
+                                userAccount.getQueueUserId(),
+                                UserLevelEnum.S_MANAGER,
+                                userAccount.isActive(),
+                                userAccount.isAccountValidated(),
+                                userProfile.getCountryShortName(),
+                                userAccount.getDisplayName()
+                            );
+
+                            Authentication newAuth = new UsernamePasswordAuthenticationToken(queueUser, auth.getCredentials(), updatedAuthorities);
+                            SecurityContextHolder.getContext().setAuthentication(newAuth);
                         }
-
-                        MerchantRegistrationForm merchantRegistrationForm = MerchantRegistrationForm.newInstance()
-                            .setBirthday(new ScrubbedInput(userProfileOfAdmin.getBirthday()))
-                            .setGender(new ScrubbedInput(userProfileOfAdmin.getGender().name()))
-                            .setFirstName(new ScrubbedInput(userProfileOfAdmin.getFirstName()))
-                            .setLastName(new ScrubbedInput(userProfileOfAdmin.getLastName()))
-                            .setMail(new ScrubbedInput(storeManagerMailAddress))
-                            .setPassword(new ScrubbedInput(storeManagerRandomPassword))
-                            .setCode1("S").setCode2("2").setCode3("K").setCode4("X").setCode5("0").setCode6("Z");
-                        addNewAgentFlowActions.createAccountAndInvite(merchantRegistrationForm, "S2KX0Z", bizStore.getId(), null);
-
-                        LOG.info("Send email to admin={} to use email={} and password={} for login to manager account",
-                            userProfileOfAdmin.getEmail(), storeManagerMailAddress, storeManagerRandomPassword);
-
-                        /* Step 2: Auto approve the added user. */
-                        UserProfileEntity userProfile = accountService.doesUserExists(storeManagerMailAddress);
-                        BusinessUserEntity businessUserRegistered = businessUserService.findBusinessUser(userProfile.getQueueUserId(), bizName.getId());
-                        businessUserStoreService.approve(bizStore.getId(), userProfileOfAdmin.getQueueUserId(), businessUserRegistered);
-
-                        /* Step 3: Send email with credential to admin. */
-                        Map<String, Object> rootMap = new HashMap<>();
-                        rootMap.put("login", storeManagerMailAddress);
-                        rootMap.put("password", storeManagerRandomPassword);
-                        mailService.sendAnyMail(
-                            userProfileOfAdmin.getEmail(),
-                            userProfileOfAdmin.getName(),
-                            "NoQueue: Account credential for Manager login",
-                            rootMap, "mail/storeManagerLoginCredential.ftl");
-
-                        /* Step 4: Change account to to new agent and set store manager role. */
-                        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-                        List<GrantedAuthority> updatedAuthorities = new ArrayList<>();
-                        updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_CLIENT.name()));
-                        updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_Q_SUPERVISOR.name()));
-                        updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_S_MANAGER.name()));
-
-                        UserAccountEntity userAccount = accountService.findByUserId(storeManagerMailAddress);
-                        QueueUser queueUser = new QueueUser(
-                            storeManagerMailAddress,
-                            userAccount.getUserAuthentication().getPassword(),
-                            updatedAuthorities,
-                            userAccount.getQueueUserId(),
-                            UserLevelEnum.S_MANAGER,
-                            userAccount.isActive(),
-                            userAccount.isAccountValidated(),
-                            userProfile.getCountryShortName(),
-                            userAccount.getDisplayName()
-                        );
-
-                        Authentication newAuth = new UsernamePasswordAuthenticationToken(queueUser, auth.getCredentials(), updatedAuthorities);
-                        SecurityContextHolder.getContext().setAuthentication(newAuth);
-                    }
+                        break;
+                    default:
+                        //Do nothing
                 }
             }
         } catch (Exception e) {
@@ -258,24 +272,37 @@ class RegistrationFlowActions {
 
     /** This is for simplification as not to have empty grocery store. */
     private void populateStoreWithDefaultProduct(BizStoreEntity bizStore) {
-        if (bizStore.getBusinessType() == BusinessTypeEnum.GS) {
-            /* Each grocery store gets one product added for free. */
-            if (storeProductService.countOfProduct(bizStore.getId()) == 0) {
-                StoreProductEntity storeProduct = new StoreProductEntity();
-                storeProduct.setBizStoreId(bizStore.getId())
-                    .setProductName("Special Bread")
-                    .setProductPrice(4000)
-                    .setProductDiscount(0)
-                    .setProductInfo("Fresh, Whole Wheat")
-                    .setStoreCategoryId(GroceryEnum.BRD.name())
-                    .setProductType(ProductTypeEnum.VE)
-                    .setUnitValue(100)
-                    .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
-                    .setPackageSize(1)
-                    .setInventoryCurrent(0)
-                    .setInventoryLimit(100);
-                storeProductService.save(storeProduct);
-            }
+        switch (bizStore.getBusinessType()) {
+            case RS:
+                break;
+            case FT:
+                break;
+            case BA:
+                break;
+            case ST:
+                break;
+            case GS:
+                /* Each grocery store gets one product added for free. */
+                if (storeProductService.countOfProduct(bizStore.getId()) == 0) {
+                    StoreProductEntity storeProduct = new StoreProductEntity();
+                    storeProduct.setBizStoreId(bizStore.getId())
+                        .setProductName("Special Bread")
+                        .setProductPrice(4000)
+                        .setProductDiscount(0)
+                        .setProductInfo("Fresh, Whole Wheat")
+                        .setStoreCategoryId(GroceryEnum.BRD.name())
+                        .setProductType(ProductTypeEnum.VE)
+                        .setUnitValue(100)
+                        .setUnitOfMeasurement(UnitOfMeasurementEnum.CN)
+                        .setPackageSize(1)
+                        .setInventoryCurrent(0)
+                        .setInventoryLimit(100);
+                    storeProductService.save(storeProduct);
+                }
+            case CF:
+                break;
+            default:
+                //Do nothing
         }
     }
 
