@@ -11,9 +11,21 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.css" type='text/css'>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+
+    <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/brands.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/solid.css" rel="stylesheet">
+
+    <!-- custom styling for all icons -->
+    i.fas,
+    i.fab {
+        border: 1px solid red;
+    }
 </head>
 
 <body>
@@ -72,7 +84,7 @@
                         <div class="admin-content">
                             <div class="add-new">
                                 <ul class="list-form">
-                                    <c:if test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.Q}">
+                                    <c:if test="${MessageOriginEnum.Q == registerBusiness.businessType.messageOrigin}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="walkInState" cssErrorClass="lb_error">Walk-in</form:label>
@@ -85,6 +97,7 @@
                                             <span style="display:block; font-size:14px;">(Allow user to take walk-in appointments)</span>
                                             <c:if test="${!registerBusiness.claimed}"><span style="font-size:14px; color: #9f1313">Since business is not claimed. Walk-in is disabled.</span></c:if>
                                         </div>
+                                        <span class="tooltip" title="Allows customers to take walk-in appointments, join queue." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
@@ -95,6 +108,7 @@
                                             <form:checkbox path="remoteJoin" cssClass="form-check-box" cssErrorClass="form-check-box error-field"/>
                                             <span style="display:block; font-size:14px;">(Allow user to join queue from Home, or far of places)</span>
                                         </div>
+                                        <span class="tooltip" title="Remote join allows customers to join queue from home." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <div class="clearFix"></div>
                                     </li>
                                     </c:if>
@@ -106,9 +120,10 @@
                                             <form:checkbox path="allowLoggedInUser" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true"/>
                                             <span style="display:block; font-size:14px;">NoQueue Registered Users</span>
                                         </div>
+                                        <span class="tooltip" title="Limits to registered users." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <div class="clearFix"></div>
                                     </li>
-                                    <c:if test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.Q}">
+                                    <c:if test="${MessageOriginEnum.Q == registerBusiness.businessType.messageOrigin}">
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="availableTokenCount" cssErrorClass="lb_error">Issue Limited Tokens</form:label>
@@ -117,6 +132,7 @@
                                             <form:input path="availableTokenCount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                             <span style="display:block; font-size:14px;">(Customers in the queue will be limited to allowed number. 0 is Unlimited Token. Greater than 0 is limited token)</span>
                                         </div>
+                                        <span class="tooltip" title="Limits the number of tokens that can be issued everyday. Default set to limitless." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <div class="clearFix"></div>
                                     </li>
                                     </c:if>
@@ -124,13 +140,6 @@
 
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
-                                    <%--<div class="left-btn">--%>
-                                        <%--<input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">--%>
-                                    <%--</div>--%>
-                                    <%--<div class="right-btn">--%>
-                                        <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                    <%--</div>--%>
-
                                     <div class="button-btn">
                                         <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
                                         <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
@@ -172,6 +181,7 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/services.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
@@ -205,6 +215,17 @@
     // l.toggle();
     // l.isLoading();
     // l.setProgress( 0-1 );
+</script>
+<script>
+    new jBox('Tooltip', {
+        attach: '.tooltip',
+        adjustDistance : {
+            top : 105,
+            bottom : 150,
+            left : 15,
+            right : 50
+        }
+    });
 </script>
 <script>
     (function(w, u, d){var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};var l = function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://code.upscope.io/F3TE6jAMct.js';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(typeof u!=="function"){w.Upscope=i;l();}})(window, window.Upscope, document);

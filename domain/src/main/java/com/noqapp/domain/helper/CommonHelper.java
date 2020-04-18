@@ -91,6 +91,12 @@ public class CommonHelper {
             case FT:
             case BA:
             case ST:
+            case STQ:
+            case GSQ:
+            case BAQ:
+            case CFQ:
+            case RSQ:
+            case FTQ:
             case SM:
             case MT:
             case SC:

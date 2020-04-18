@@ -7,12 +7,14 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.WalkInStateEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.annotation.Transient;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
@@ -104,12 +108,45 @@ public class RegisterBusiness implements Serializable {
         for (int i = 1; i <= 7; i++) {
             BusinessHour businessHour = new BusinessHour(DayOfWeek.of(i));
             if (StoreFranchise.OFF == storeFranchise) {
-                if (BusinessTypeEnum.GS == businessType) {
-                    businessHour
-                        .setTokenAvailableFrom(530)
-                        .setStartHourStore(600)
-                        .setTokenNotAvailableFrom(2000)
-                        .setEndHourStore(2030);
+                switch (businessType) {
+                    case RS:
+                    case RSQ:
+                    case FT:
+                    case FTQ:
+                        businessHour
+                            .setTokenAvailableFrom(1000)
+                            .setStartHourStore(1030)
+                            .setTokenNotAvailableFrom(2000)
+                            .setEndHourStore(2030);
+                        break;
+                    case BA:
+                    case BAQ:
+                        businessHour
+                            .setTokenAvailableFrom(1100)
+                            .setStartHourStore(1130)
+                            .setTokenNotAvailableFrom(2000)
+                            .setEndHourStore(2030);
+                        break;
+                    case ST:
+                    case STQ:
+                    case GS:
+                    case GSQ:
+                        businessHour
+                            .setTokenAvailableFrom(530)
+                            .setStartHourStore(600)
+                            .setTokenNotAvailableFrom(2000)
+                            .setEndHourStore(2030);
+                        break;
+                    case CF:
+                    case CFQ:
+                        businessHour
+                            .setTokenAvailableFrom(800)
+                            .setStartHourStore(800)
+                            .setTokenNotAvailableFrom(1700)
+                            .setEndHourStore(1800);
+                        break;
+                    default:
+                        //Do Nothing for other business types. Default hours are 0.
                 }
             }
             businessHours.add(businessHour);
@@ -749,6 +786,13 @@ public class RegisterBusiness implements Serializable {
         }
 
         this.businessHours = businessHours;
+    }
+
+    @SuppressWarnings("unused")
+    @Transient
+    public boolean decidePathTraversalOnRegistrationComplete() {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return queueUser.getUserLevel() == UserLevelEnum.M_ADMIN;
     }
 
     @Override
