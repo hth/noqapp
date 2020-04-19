@@ -1,9 +1,5 @@
 package com.noqapp.service;
 
-import static com.google.cloud.texttospeech.v1.SsmlVoiceGender.FEMALE;
-import static com.google.cloud.texttospeech.v1.SsmlVoiceGender.MALE;
-import static com.noqapp.common.utils.TextToSpeechForCountry.foreignLanguageCode;
-import static com.noqapp.common.utils.TextToSpeechForCountry.nationalLanguageCode;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -18,7 +14,6 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.common.PopulateTextToSpeech;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
@@ -60,7 +55,6 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
