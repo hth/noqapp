@@ -26,7 +26,7 @@ as a value, then it gets endless connections.
         QID VARCHAR(13),
         TN INT              NOT NULL,
         DN VARCHAR(100)     NOT NULL,
-        BT CHAR(2)          NOT NULL,
+        BT CHAR(3)          NOT NULL,
         QS VARCHAR(1)       NOT NULL,
         TI VARCHAR(100),
         NS TINYINT,
@@ -66,7 +66,7 @@ as a value, then it gets endless connections.
         SD INT,
         PP VARCHAR(10),
         OP VARCHAR(10),
-        BT CHAR(2)          NOT NULL, 
+        BT CHAR(3)          NOT NULL, 
         PQ VARCHAR(13),
         FQ VARCHAR(13),
         CQ VARCHAR(13),
@@ -104,7 +104,7 @@ as a value, then it gets endless connections.
         BS VARCHAR(24)      NOT NULL,
         BN VARCHAR(24)      NOT NULL,
         QR VARCHAR(30)      NOT NULL,
-        BT CHAR(2)          NOT NULL,
+        BT CHAR(3)          NOT NULL,
         V INT,
         U DATETIME,
         C DATETIME,
@@ -153,4 +153,3 @@ as a value, then it gets endless connections.
     WHERE 
     	QID = "XX" and DID = "XXX";
     SET SQL_SAFE_UPDATES = 1;    
-    

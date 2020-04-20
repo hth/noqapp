@@ -1,3 +1,9 @@
+### Change April 20 2020
+
+    ALTER TABLE `noqapp_test`.`QUEUE` MODIFY BT VARCHAR(3);
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` MODIFY BT VARCHAR(3);
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT` MODIFY BT VARCHAR(3);
+
 ### Change Feb 18 2020
 
     ALTER TABLE `noqapp_test`.`QUEUE` 
