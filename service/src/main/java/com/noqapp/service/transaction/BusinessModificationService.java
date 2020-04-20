@@ -97,13 +97,13 @@ public class BusinessModificationService {
             );
             List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizNameId);
             for (BizStoreEntity bizStore : bizStores) {
-                mongoOperations.withSession(session).updateMulti(
+                mongoOperations.withSession(session).updateFirst(
                     query(where("id").is(bizStore.getCodeQR()).and("BT").is(existingBusinessType)),
                     entityUpdate(update("BT", migrateToBusinessType)),
                     TokenQueueEntity.class
                 );
             }
-            mongoOperations.withSession(session).updateFirst(
+            mongoOperations.withSession(session).updateMulti(
                 query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BT").is(existingBusinessType)),
                 update("BT", migrateToBusinessType),
                 BizStoreEntity.class
