@@ -97,7 +97,7 @@ public class BusinessModificationService {
             );
             List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizNameId);
             for (BizStoreEntity bizStore : bizStores) {
-                mongoOperations.withSession(session).updateFirst(
+                mongoOperations.withSession(session).updateMulti(
                     query(where("id").is(bizStore.getCodeQR()).and("BT").is(existingBusinessType)),
                     entityUpdate(update("BT", migrateToBusinessType)),
                     TokenQueueEntity.class
