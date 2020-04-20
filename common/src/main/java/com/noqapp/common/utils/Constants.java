@@ -20,6 +20,7 @@ public class Constants {
     public static final Pattern WORD_PATTERN = Pattern.compile("^[A-Za-z .-]+");
     public static final String WORD_PATTERN_TEXT = " words 'A-to-Z', spaces ' ' and/or dots/dash '.', '-";
     public static final int PRIME_73 = 73;
+    public static final String DIRTY = "Y";
 
     private Constants() {
     }

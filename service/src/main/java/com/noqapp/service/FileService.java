@@ -10,6 +10,7 @@ import static com.noqapp.common.utils.FileUtil.getTmpDir;
 import static com.noqapp.service.FtpService.PREFERRED_STORE;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.Validate;
@@ -456,7 +457,7 @@ public class FileService {
                 bizService.saveStore(bizStore, "Added Store Image");
             } else {
                 LOG.info("Store auto-modified by system codeQR={} displayName={}", bizStore.getCodeQR(), bizStore.getDisplayName());
-                bizStore.setElasticUpdatePending("Y");
+                bizStore.setElasticUpdatePending(Constants.DIRTY);
                 bizStoreManager.save(bizStore);
             }
 

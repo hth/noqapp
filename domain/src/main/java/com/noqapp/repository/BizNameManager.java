@@ -76,5 +76,7 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     void updateDataVisibility(Map<String, DataVisibilityEnum> dataVisibilities, String id);
 
     void updatePaymentPermission(Map<String, PaymentPermissionEnum> paymentPermissions, String id);
+
+    void changeBizNameBusinessType(String id, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType);
 }
 

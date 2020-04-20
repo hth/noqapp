@@ -208,4 +208,14 @@ public final class BizNameManagerImpl implements BizNameManager {
             TABLE
         );
     }
+
+    @Override
+    public void changeBizNameBusinessType(String id, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(new ObjectId(id)).and("BT").is(existingBusinessType)),
+            update("BT", migrateToBusinessType),
+            BizNameEntity.class,
+            TABLE
+        );
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 /**
@@ -47,14 +48,20 @@ public class UpdateBizStoreElastic {
     }
 
     /** Update store elastic when pending request due. */
-    @Scheduled(fixedDelayString = "${elastic.updateStoreElastic}")
-    public void businessStatusMail() {
+    @Scheduled(fixedDelayString = "${elastic.updatePendingBizStoreElastic}")
+    public void updatePendingBizStoreElastic() {
+        AtomicInteger count = new AtomicInteger();
         try (Stream<BizStoreEntity> stream = bizStoreManager.findAllPendingElasticUpdateStream()) {
             stream.iterator().forEachRemaining(bizStore -> {
                 List<StoreHourEntity> storeHours = storeHourManager.findAll(bizStore.getId());
                 bizStoreElasticManager.save(DomainConversion.getAsBizStoreElastic(bizStore, storeHours));
                 bizStoreManager.removePendingElastic(bizStore.getId());
+                count.getAndIncrement();
             });
+        }
+
+        if (count.intValue() > 0) {
+            LOG.info("Updated elastic count={}", count.intValue());
         }
     }
 }

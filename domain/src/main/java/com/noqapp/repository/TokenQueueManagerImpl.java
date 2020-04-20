@@ -161,4 +161,13 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
 
         return updateResult.getModifiedCount() == 1;
     }
+
+    @Override
+    public void changeStoreBusinessType(String codeQR, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(codeQR).and("BT").is(existingBusinessType)),
+            entityUpdate(update("BT", migrateToBusinessType)),
+            TokenQueueEntity.class,
+            TABLE);
+    }
 }

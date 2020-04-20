@@ -33,7 +33,7 @@ public class NoQAppServletContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent arg0) {
-        LOG.info("NoQApp context initialized");
+        LOG.info("NoQueue context initialized");
     }
 
     /**

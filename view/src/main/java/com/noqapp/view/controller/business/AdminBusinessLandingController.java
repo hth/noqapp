@@ -28,8 +28,10 @@ import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.analytic.BizDimensionService;
+import com.noqapp.service.transaction.BusinessModificationService;
 import com.noqapp.view.form.QueueSupervisorActionForm;
 import com.noqapp.view.form.business.BusinessLandingForm;
+import com.noqapp.view.form.business.MigrateBusinessTypeForm;
 import com.noqapp.view.form.business.PreferredBusinessForm;
 import com.noqapp.view.form.business.QueueSupervisorForm;
 
@@ -87,6 +89,7 @@ public class AdminBusinessLandingController {
     private String addDoctorFlow;
     private String addNewAgentFlow;
     private String editBusinessFlow;
+    private String migrateBusinessTypePage;
 
     private BusinessUserService businessUserService;
     private BizDimensionService bizDimensionService;
@@ -95,6 +98,7 @@ public class AdminBusinessLandingController {
     private AccountService accountService;
     private ProfessionalProfileService professionalProfileService;
     private PreferredBusinessService preferredBusinessService;
+    private BusinessModificationService businessModificationService;
 
     @Autowired
     public AdminBusinessLandingController(
@@ -134,19 +138,24 @@ public class AdminBusinessLandingController {
         @Value ("${editBusinessFlow:redirect:/migrate/business/registration.htm}")
         String editBusinessFlow,
 
+        @Value ("${migrateBusinessTypePage:/business/migrateBusinessType}")
+        String migrateBusinessTypePage,
+
         BusinessUserService businessUserService,
         BizDimensionService bizDimensionService,
         BizService bizService,
         BusinessUserStoreService businessUserStoreService,
         AccountService accountService,
         ProfessionalProfileService professionalProfileService,
-        PreferredBusinessService preferredBusinessService
+        PreferredBusinessService preferredBusinessService,
+        BusinessModificationService businessModificationService
     ) {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
         this.listQueueSupervisorPage = listQueueSupervisorPage;
         this.preferredBusinessPage = preferredBusinessPage;
         this.authorizedUsersPage = authorizedUsersPage;
+        this.migrateBusinessTypePage = migrateBusinessTypePage;
 
         this.migrateBusinessRegistrationFlow = migrateBusinessRegistrationFlow;
         this.storeActionFlow = storeActionFlow;
@@ -163,6 +172,7 @@ public class AdminBusinessLandingController {
         this.accountService = accountService;
         this.professionalProfileService = professionalProfileService;
         this.preferredBusinessService = preferredBusinessService;
+        this.businessModificationService = businessModificationService;
     }
 
     /**
@@ -853,5 +863,99 @@ public class AdminBusinessLandingController {
 
         preferredBusinessService.deleteById(preferredBusinessForm.getRecordId());
         return "redirect:" + preferredBusinessPage + ".htm";
+    }
+
+    @GetMapping(value = "/migrateBusinessType")
+    public String migrateBusinessType(
+        @ModelAttribute("migrateBusinessTypeForm")
+        MigrateBusinessTypeForm migrateBusinessTypeForm,
+
+        Model model,
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Migrate business type bizId={} qid={} userLevel={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        migrateBusinessTypeForm
+            .setExistingBusinessType(businessUser.getBizName().getBusinessType())
+            .setAllowedMigrationBusinessType(supportedMigration(businessUser.getBizName().getBusinessType()));
+
+        return migrateBusinessTypePage;
+    }
+
+    @PostMapping(value = "/migrateBusinessType", params = {"migrate"})
+    public String initiateMigrationToBusinessType(
+        @ModelAttribute("migrateBusinessTypeForm")
+        MigrateBusinessTypeForm migrateBusinessTypeForm,
+
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
+        if (null == businessUser) {
+            LOG.warn("Could not find qid={} having access as business user", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
+        }
+        LOG.info("Migrate business type bizId={} qid={} userLevel={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
+        /* Above condition to make sure users with right roles and access gets access. */
+
+        if (migrateBusinessTypeForm.isMigrate()) {
+            businessModificationService.changeBizNameBusinessType(
+                businessUser.getBizName().getId(),
+                migrateBusinessTypeForm.getExistingBusinessType(),
+                migrateBusinessTypeForm.getAllowedMigrationBusinessType());
+
+            migrateBusinessTypeForm.setMigrationSuccess(true);
+            migrateBusinessTypeForm.setExistingBusinessType(migrateBusinessTypeForm.getAllowedMigrationBusinessType());
+        }
+
+        redirectAttrs.addFlashAttribute("migrateBusinessTypeForm", migrateBusinessTypeForm);
+        return "redirect:/business/migrateBusinessType.htm";
+    }
+
+    @PostMapping(value = "/migrateBusinessType", params = {"cancel_Migrate"})
+    public String initiateMigrationToBusinessType() {
+        LOG.info("Loading business landing after user business migration cancelled");
+        return "redirect:/business/landing.htm";
+    }
+
+    private static BusinessTypeEnum supportedMigration(BusinessTypeEnum businessType) {
+        switch (businessType) {
+            case RS:
+                return BusinessTypeEnum.RSQ;
+            case RSQ:
+                return BusinessTypeEnum.RS;
+            case FT:
+                return BusinessTypeEnum.FTQ;
+            case FTQ:
+                return BusinessTypeEnum.FT;
+            case BA:
+                return BusinessTypeEnum.BAQ;
+            case BAQ:
+                return BusinessTypeEnum.BA;
+            case ST:
+                return BusinessTypeEnum.STQ;
+            case STQ:
+                return BusinessTypeEnum.ST;
+            case GS:
+                return BusinessTypeEnum.GSQ;
+            case GSQ:
+                return BusinessTypeEnum.GS;
+            case CF:
+                return BusinessTypeEnum.CFQ;
+            case CFQ:
+                return BusinessTypeEnum.CF;
+            default:
+                return null;
+        }
     }
 }
