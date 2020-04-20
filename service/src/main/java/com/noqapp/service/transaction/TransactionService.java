@@ -106,7 +106,7 @@ public class TransactionService {
         ClientSession session = Objects.requireNonNull(mongoTransactionManager.getDbFactory()).getSession(sessionOptions);
         session.startTransaction();
         try {
-            LOG.info("purchase order {} {}", purchaseOrder, purchaseOrderProducts);
+            LOG.info("Purchase order {} {}", purchaseOrder, purchaseOrderProducts);
             mongoOperations.withSession(session).insert(purchaseOrder);
             for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
                 mongoOperations.withSession(session).insert(purchaseOrderProduct);

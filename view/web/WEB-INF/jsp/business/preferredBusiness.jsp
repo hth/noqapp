@@ -88,12 +88,6 @@
 
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
-                                        <%--<div class="left-btn">--%>
-                                        <%--<input name="add" class="next-btn" value="ADD" type="submit">--%>
-                                        <%--</div>--%>
-                                        <%--<div class="right-btn">--%>
-                                        <%--<input name="cancel_Add" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                        <%--</div>--%>
                                     <div class="button-btn">
                                         <button name="add" class="ladda-button next-btn" style="width:48%; float: left">Add</button>
                                         <button name="cancel_Add" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>

@@ -35,6 +35,7 @@
                         <a href="${pageContext.request.contextPath}/business/uploadServicePhoto.htm">Business Photo</a>
                         <a href="${pageContext.request.contextPath}/business/preferredBusiness.htm">Preferred Business</a>
                         <a href="${pageContext.request.contextPath}/business/external/access.htm">Permissions</a>
+                        <a href="${pageContext.request.contextPath}/business/migrateBusinessType.htm">Migrate Business Type</a>
                         <a href="${pageContext.request.contextPath}/business/dataVisibility/landing.htm">Data Visibility</a>
                         <a href="${pageContext.request.contextPath}/business/customTextToSpeech/landing.htm">Customize Announcement</a>
                         <a href="${pageContext.request.contextPath}/business/survey/landing.htm">Survey</a>

@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.AppointmentStateEnum;
+import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.springframework.data.geo.Point;
 
@@ -122,5 +123,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     Stream<BizStoreEntity> findAllPendingElasticUpdateStream();
 
     void removePendingElastic(String id);
+
+    void changeStoreBusinessType(String bizNameId, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType);
 }
 

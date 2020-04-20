@@ -8,6 +8,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
@@ -567,6 +568,16 @@ public class BizStoreManagerImpl implements BizStoreManager {
         mongoTemplate.findAndModify(
             query(where("id").is(id).and("ES").exists(true)),
             entityUpdate(new Update().unset("ES")),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void changeStoreBusinessType(String bizNameId, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType) {
+        mongoTemplate.updateMulti(
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BT").is(existingBusinessType)),
+            update("BT", migrateToBusinessType).set("ES", Constants.DIRTY),
             BizStoreEntity.class,
             TABLE
         );
