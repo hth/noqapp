@@ -4,8 +4,10 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreHourManager;
+import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.repository.BizStoreElasticManager;
+import com.noqapp.search.elastic.repository.BizStoreSpatialElasticManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,16 +37,19 @@ public class UpdateBizStoreElastic {
     private BizStoreManager bizStoreManager;
     private StoreHourManager storeHourManager;
     private BizStoreElasticManager bizStoreElasticManager;
+    private BizStoreSpatialElasticManager bizStoreSpatialElasticManager;
 
     @Autowired
     public UpdateBizStoreElastic(
         BizStoreManager bizStoreManager,
         StoreHourManager storeHourManager,
-        BizStoreElasticManager bizStoreElasticManager
+        BizStoreElasticManager bizStoreElasticManager,
+        BizStoreSpatialElasticManager bizStoreSpatialElasticManager
     ) {
         this.bizStoreManager = bizStoreManager;
         this.storeHourManager = storeHourManager;
         this.bizStoreElasticManager = bizStoreElasticManager;
+        this.bizStoreSpatialElasticManager = bizStoreSpatialElasticManager;
     }
 
     /** Update store elastic when pending request due. */
@@ -54,7 +59,9 @@ public class UpdateBizStoreElastic {
         try (Stream<BizStoreEntity> stream = bizStoreManager.findAllPendingElasticUpdateStream()) {
             stream.iterator().forEachRemaining(bizStore -> {
                 List<StoreHourEntity> storeHours = storeHourManager.findAll(bizStore.getId());
-                bizStoreElasticManager.save(DomainConversion.getAsBizStoreElastic(bizStore, storeHours));
+                BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, storeHours);
+                bizStoreElasticManager.save(bizStoreElastic);
+                bizStoreSpatialElasticManager.save(bizStoreElastic);
                 bizStoreManager.removePendingElastic(bizStore.getId());
                 count.getAndIncrement();
             });
