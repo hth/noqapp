@@ -26,6 +26,7 @@ import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.ClearScrollRequest;
@@ -43,6 +44,7 @@ import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -272,5 +274,19 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         }
 
         return results;
+    }
+
+    @Override
+    public boolean exists(String id) {
+        GetRequest request = new GetRequest(BizStoreElastic.INDEX).id(id);
+        request.fetchSourceContext(new FetchSourceContext(false));
+        request.storedFields("_none_");
+
+        try {
+            return restHighLevelClient.exists(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            LOG.error("Failed finding record={} reason={}", id, e.getLocalizedMessage(), e);
+            throw new RuntimeException("Failed find record");
+        }
     }
 }
