@@ -28,4 +28,6 @@ public interface BizStoreElasticManager<BizStoreElastic> {
      */
     List<BizStoreElastic> searchByBusinessName(String businessName, int limitRecords);
     List<BizStoreElastic> searchByScrollId(String scrollId);
+
+    boolean exists(String id);
 }

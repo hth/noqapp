@@ -21,4 +21,6 @@ public interface BizStoreSpatialElasticManager<BizStoreElastic> {
      * Delete by id.
      */
     void delete(String id);
+
+    boolean exists(String id);
 }
