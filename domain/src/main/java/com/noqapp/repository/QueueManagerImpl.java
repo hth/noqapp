@@ -172,12 +172,11 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public boolean onPaymentChangeToQueue(String id, int tokenNumber, Date expectedServiceBegin) {
-        UpdateResult updateResult = mongoTemplate.updateFirst(
-            query(where("id").is(id)),
-            entityUpdate(update("TN", tokenNumber).set("EB", expectedServiceBegin).set("QS", QueueUserStateEnum.Q)),
-            QueueEntity.class,
-            TABLE
-        );
+        Update update = entityUpdate(update("TN", tokenNumber).set("QS", QueueUserStateEnum.Q));
+        if (null != expectedServiceBegin) {
+            update.set("EB", expectedServiceBegin);
+        }
+        UpdateResult updateResult = mongoTemplate.updateFirst(query(where("id").is(id)), update, QueueEntity.class, TABLE);
 
         return updateResult.getModifiedCount() > 0;
     }
