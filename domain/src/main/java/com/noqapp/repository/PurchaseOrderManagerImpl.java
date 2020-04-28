@@ -17,6 +17,7 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
@@ -582,12 +583,11 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
 
     @Override
     public void updatePurchaseOrderWithToken(int token, Date expectedServiceBegin, String transactionId) {
-        mongoTemplate.updateFirst(
-            query(where("TI").is(transactionId).and("DM").is(DeliveryModeEnum.QS)),
-            entityUpdate(update("TN", token).set("EB", expectedServiceBegin)),
-            PurchaseOrderEntity.class,
-            TABLE
-        );
+        Update update = entityUpdate(update("TN", token));
+        if (null != expectedServiceBegin) {
+            update.set("EB", expectedServiceBegin);
+        }
+        mongoTemplate.updateFirst(query(where("TI").is(transactionId).and("DM").is(DeliveryModeEnum.QS)), update, PurchaseOrderEntity.class, TABLE);
     }
 
     @Override

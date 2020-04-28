@@ -94,6 +94,12 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     @JsonProperty("c")
     private String created;
+    
+    @JsonProperty("qr")
+    private String codeQR;
+
+    @JsonProperty("d")
+    private String displayName;
 
     public int getToken() {
         return token;
@@ -253,6 +259,24 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     public JsonQueuedPerson setCreated(Date created) {
         this.created = DateFormatUtils.format(created, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public JsonQueuedPerson setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
+        return this;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public JsonQueuedPerson setDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 }

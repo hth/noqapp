@@ -346,7 +346,9 @@ public class QueueService {
                 .setRecordReferenceId(queue.getRecordReferenceId())
                 .setCreated(queue.getCreated())
                 .setTransactionId(queue.getTransactionId())
-                .setRecordReferenceId(queue.getRecordReferenceId());
+                .setRecordReferenceId(queue.getRecordReferenceId())
+                .setCodeQR(queue.getCodeQR())
+                .setDisplayName(queue.getDisplayName());
 
             if (StringUtils.isNotBlank(queue.getTransactionId())) {
                 JsonPurchaseOrder jsonPurchaseOrder;
