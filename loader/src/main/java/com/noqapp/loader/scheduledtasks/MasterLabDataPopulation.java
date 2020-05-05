@@ -68,7 +68,7 @@ public class MasterLabDataPopulation {
             add(new MasterLabEntity().setProductName("Brain With CV Junction").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Brain With IAM").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Brain With Venogram").setHealthCareService(MRI));
-            add(new MasterLabEntity().setProductName("Brain – Pitutary P+C").setHealthCareService(MRI));
+            add(new MasterLabEntity().setProductName("Brain - Pitutary P+C").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Brain + DTI").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Brain + Spectro").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Breast Mammography").setHealthCareService(MRI));
