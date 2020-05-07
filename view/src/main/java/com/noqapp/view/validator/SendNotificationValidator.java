@@ -1,8 +1,13 @@
 package com.noqapp.view.validator;
 
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.SentimentTypeEnum;
+import com.noqapp.service.AccountService;
 import com.noqapp.service.nlp.NLPService;
 import com.noqapp.view.form.admin.SendNotificationForm;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,15 +33,17 @@ import java.util.Map;
 @Component
 public class SendNotificationValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(StoreCategoryValidator.class);
-    private static final int MAX_BODY_SIZE = 256;
-    private static final int MIN_TEXT_SIZE = 3;
-    private static final int MAX_TITLE_SIZE = 32;
+    private static final int MAX_BODY_TEXT_LIMIT = 256;
+    private static final int MIN_TITLE_TEXT_LIMIT = 3;
+    private static final int MAX_TITLE_TEXT_LIMIT = 32;
 
     private NLPService nlpService;
+    private AccountService accountService;
 
     @Autowired
-    public SendNotificationValidator(NLPService nlpService) {
+    public SendNotificationValidator(NLPService nlpService, AccountService accountService) {
         this.nlpService = nlpService;
+        this.accountService = accountService;
     }
 
     @Override
@@ -53,20 +60,31 @@ public class SendNotificationValidator implements Validator {
             SendNotificationForm form = (SendNotificationForm) target;
 
             if (!errors.hasErrors()) {
-                if (form.getTitle().getText().length() < MIN_TEXT_SIZE || form.getTitle().getText().length() > MAX_TITLE_SIZE) {
+                if (form.getTitle().getText().length() < MIN_TITLE_TEXT_LIMIT || form.getTitle().getText().length() > MAX_TITLE_TEXT_LIMIT) {
                     LOG.warn("Title length is {}", form.getTitle().getText().length());
                     errors.rejectValue("title",
                         "field.length.min.max",
-                        new Object[]{"Title", MIN_TEXT_SIZE, MAX_TITLE_SIZE},
-                        "Title minimum length is should be greater than " + MIN_TEXT_SIZE + " and less than " + MAX_TITLE_SIZE + " characters");
+                        new Object[]{"Title", MIN_TITLE_TEXT_LIMIT, MAX_TITLE_TEXT_LIMIT},
+                        "Title minimum length is should be greater than " + MIN_TITLE_TEXT_LIMIT + " and less than " + MAX_TITLE_TEXT_LIMIT + " characters");
                 }
 
-                if (form.getBody().getText().length() < MIN_TEXT_SIZE || form.getBody().getText().length() > MAX_BODY_SIZE) {
+                if (form.getBody().getText().length() < MIN_TITLE_TEXT_LIMIT || form.getBody().getText().length() > MAX_BODY_TEXT_LIMIT) {
                     LOG.warn("Body length is {}", form.getBody().getText().length());
                     errors.rejectValue("body",
                         "field.length.min.max",
-                        new Object[]{"Body", MIN_TEXT_SIZE, MAX_BODY_SIZE},
-                        "Body minimum length is should be greater than " + MIN_TEXT_SIZE + " and less than " + MAX_BODY_SIZE + " characters");
+                        new Object[]{"Body", MIN_TITLE_TEXT_LIMIT, MAX_BODY_TEXT_LIMIT},
+                        "Body minimum length is should be greater than " + MIN_TITLE_TEXT_LIMIT + " and less than " + MAX_BODY_TEXT_LIMIT + " characters");
+                }
+
+                if (StringUtils.isNotBlank(form.getQid().getText())) {
+                    UserAccountEntity userAccount = accountService.findByQueueUserId(form.getQid().getText());
+                    if (userAccount == null) {
+                        LOG.warn("QID not found {}", form.getQid().getText());
+                        errors.rejectValue("qid",
+                            "field.qid.notFound",
+                            new Object[]{form.getQid().getText()},
+                            "No match or invalid QID " + form.getQid().getText());
+                    }
                 }
 
                 if (!form.isIgnoreSentiments()) {
