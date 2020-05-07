@@ -101,6 +101,16 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
+                                        <form:label path="qid" cssErrorClass="lb_error">QID</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="qid" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                        <span style="display:block; font-size:14px;">(Message is sent to QID entered. Blank QID sends to all.)</span>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
                                         <form:label path="ignoreSentiments" cssErrorClass="lb_error">Ignore Negative Sentiments</form:label>
                                     </div>
                                     <div id="addressStoreCheckBox" class="col-fields">

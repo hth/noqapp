@@ -10,6 +10,8 @@ import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.form.admin.SendNotificationForm;
 import com.noqapp.view.validator.SendNotificationValidator;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,57 +105,84 @@ public class NotificationController {
 
         try {
             AtomicInteger sentCount = new AtomicInteger();
-            try (Stream<UserProfileEntity> stream = userProfileManager.findAllPhoneOwners()) {
-                stream.iterator().forEachRemaining(userProfile -> {
-                    if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
-                        tokenQueueService.sendMessageToSpecificUser(
-                            sendNotificationForm.getTitle().getText(),
-                            sendNotificationForm.getBody().getText(),
-                            sendNotificationForm.getImageURL().getText(),
-                            userProfile.getQueueUserId(),
-                            MessageOriginEnum.D);
+            if (StringUtils.isNotBlank(sendNotificationForm.getQid().getText())) {
+                UserProfileEntity userProfile = userProfileManager.findByQueueUserId(sendNotificationForm.getQid().getText());
+                sendMessageToUser(userProfile, sentCount, sendNotificationForm);
 
-                        sentCount.getAndIncrement();
-                    } else {
-                        if (userProfile.getQueueUserId().equalsIgnoreCase("100000000095")) {
+                sendNotificationForm
+                    .setSentCount(sentCount.get())
+                    .setSuccess(true)
+                    .setIgnoreSentiments(false);
+                redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
+                LOG.info("Sent notification to {} {} {} {}",
+                    userProfile.getQueueUserId(),
+                    sentCount.get(),
+                    sendNotificationForm.getTitle(),
+                    sendNotificationForm.getBody());
+            } else {
+                try (Stream<UserProfileEntity> stream = userProfileManager.findAllPhoneOwners()) {
+                    stream.iterator().forEachRemaining(userProfile -> {
+                        sendMessageToUser(userProfile, sentCount, sendNotificationForm);
+                    });
+                }
+
+                try (Stream<RegisteredDeviceEntity> stream = registeredDeviceManager.findAllTokenWithoutQID(null)) {
+                    stream.iterator().forEachRemaining(registeredDevice -> {
+                        if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
                             tokenQueueService.sendMessageToSpecificUser(
                                 sendNotificationForm.getTitle().getText(),
                                 sendNotificationForm.getBody().getText(),
                                 sendNotificationForm.getImageURL().getText(),
-                                userProfile.getQueueUserId(),
+                                registeredDevice,
                                 MessageOriginEnum.D);
 
                             sentCount.getAndIncrement();
                         }
-                    }
-                });
+                    });
+                }
+
+                sendNotificationForm
+                    .setSentCount(sentCount.get())
+                    .setSuccess(true)
+                    .setIgnoreSentiments(false);
+                redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
+                LOG.info("Sent global notification {} {} {}",
+                    sentCount.get(),
+                    sendNotificationForm.getTitle(),
+                    sendNotificationForm.getBody());
             }
-
-            try (Stream<RegisteredDeviceEntity> stream = registeredDeviceManager.findAllTokenWithoutQID(null)) {
-                stream.iterator().forEachRemaining(registeredDevice -> {
-                    if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
-                        tokenQueueService.sendMessageToSpecificUser(
-                            sendNotificationForm.getTitle().getText(),
-                            sendNotificationForm.getBody().getText(),
-                            sendNotificationForm.getImageURL().getText(),
-                            registeredDevice,
-                            MessageOriginEnum.D);
-
-                        sentCount.getAndIncrement();
-                    }
-                });
-            }
-
-            sendNotificationForm
-                .setSentCount(sentCount.get())
-                .setSuccess(true)
-                .setIgnoreSentiments(false);
-            redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
-            LOG.info("Sent global notification {} {} {}", sentCount.get(), sendNotificationForm.getTitle(), sendNotificationForm.getBody());
         } catch (Exception e) {
             LOG.error("Failed sending message reason={}", e.getLocalizedMessage(), e);
         }
         return "redirect:" + "/admin/notification/landing" + ".htm";
+    }
+
+    private void sendMessageToUser(
+        UserProfileEntity userProfile,
+        AtomicInteger sentCount,
+        SendNotificationForm sendNotificationForm
+    ) {
+        if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
+            tokenQueueService.sendMessageToSpecificUser(
+                sendNotificationForm.getTitle().getText(),
+                sendNotificationForm.getBody().getText(),
+                sendNotificationForm.getImageURL().getText(),
+                userProfile.getQueueUserId(),
+                MessageOriginEnum.D);
+
+            sentCount.getAndIncrement();
+        } else {
+            if (userProfile.getQueueUserId().equalsIgnoreCase("100000000095")) {
+                tokenQueueService.sendMessageToSpecificUser(
+                    sendNotificationForm.getTitle().getText(),
+                    sendNotificationForm.getBody().getText(),
+                    sendNotificationForm.getImageURL().getText(),
+                    userProfile.getQueueUserId(),
+                    MessageOriginEnum.D);
+
+                sentCount.getAndIncrement();
+            }
+        }
     }
 
     @PostMapping(value = "/landing", params = {"cancel-send-notification"})

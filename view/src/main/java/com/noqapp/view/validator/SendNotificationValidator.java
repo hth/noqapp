@@ -1,8 +1,13 @@
 package com.noqapp.view.validator;
 
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.SentimentTypeEnum;
+import com.noqapp.service.AccountService;
 import com.noqapp.service.nlp.NLPService;
 import com.noqapp.view.form.admin.SendNotificationForm;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,10 +38,12 @@ public class SendNotificationValidator implements Validator {
     private static final int MAX_TITLE_TEXT_LIMIT = 32;
 
     private NLPService nlpService;
+    private AccountService accountService;
 
     @Autowired
-    public SendNotificationValidator(NLPService nlpService) {
+    public SendNotificationValidator(NLPService nlpService, AccountService accountService) {
         this.nlpService = nlpService;
+        this.accountService = accountService;
     }
 
     @Override
@@ -67,6 +74,17 @@ public class SendNotificationValidator implements Validator {
                         "field.length.min.max",
                         new Object[]{"Body", MIN_TITLE_TEXT_LIMIT, MAX_BODY_TEXT_LIMIT},
                         "Body minimum length is should be greater than " + MIN_TITLE_TEXT_LIMIT + " and less than " + MAX_BODY_TEXT_LIMIT + " characters");
+                }
+
+                if (StringUtils.isNotBlank(form.getQid().getText())) {
+                    UserAccountEntity userAccount = accountService.findByQueueUserId(form.getQid().getText());
+                    if (userAccount == null) {
+                        LOG.warn("QID not found {}", form.getQid().getText());
+                        errors.rejectValue("qid",
+                            "field.qid.notFound",
+                            new Object[]{form.getQid().getText()},
+                            "No match or invalid QID " + form.getQid().getText());
+                    }
                 }
 
                 if (!form.isIgnoreSentiments()) {

@@ -14,6 +14,7 @@ public class SendNotificationForm {
     private boolean ignoreSentiments;
     private int sentCount;
     private boolean success;
+    private ScrubbedInput qid;
 
     public ScrubbedInput getTitle() {
         return title;
@@ -66,6 +67,15 @@ public class SendNotificationForm {
 
     public SendNotificationForm setSuccess(boolean success) {
         this.success = success;
+        return this;
+    }
+
+    public ScrubbedInput getQid() {
+        return qid;
+    }
+
+    public SendNotificationForm setQid(ScrubbedInput qid) {
+        this.qid = qid;
         return this;
     }
 }
