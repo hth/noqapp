@@ -9,6 +9,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.UserLevelEnum;
 
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -294,7 +295,17 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     public void updateName(String firstName, String lastName, String qid) {
         mongoTemplate.updateFirst(
             query(where("QID").is(qid)),
-            entityUpdate(update("FN", firstName).set("LN", lastName)),
+            update("FN", firstName).set("LN", lastName),
+            UserProfileEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void changeUserLevel(String qid, UserLevelEnum userLevel) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            update("UL", userLevel),
             UserProfileEntity.class,
             TABLE
         );

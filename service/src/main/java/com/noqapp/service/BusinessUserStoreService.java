@@ -251,8 +251,7 @@ public class BusinessUserStoreService {
             LOG.info("Failed changing level, exiting {} userLevel={} businessType={}", qid, changeToUserLevel, businessType);
             return 0;
         }
-        userProfile.setLevel(changeToUserLevel);
-        accountService.save(userProfile);
+        accountService.changeUserLevel(userProfile.getQueueUserId(), changeToUserLevel);
 
         long change = businessUserStoreManager.updateUserLevel(qid, changeToUserLevel);
         change = change + businessUserService.updateUserLevel(qid, changeToUserLevel);
