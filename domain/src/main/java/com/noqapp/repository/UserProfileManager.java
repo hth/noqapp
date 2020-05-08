@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.UserLevelEnum;
 
 import java.util.Date;
 import java.util.List;
@@ -70,4 +71,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     boolean dependentExists(String qid, String guardianPhone);
 
     void updateName(String firstName, String lastName, String qid);
+
+    void changeUserLevel(String qid, UserLevelEnum userLevel);
 }

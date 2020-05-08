@@ -530,9 +530,12 @@ public class AccountService {
         userAccountManager.updateAccountToValidated(id, accountInactiveReason);
     }
 
-    /**
-     * Change user role to match user level.
-     */
+    /** Change profile user level. */
+    public void changeUserLevel(String qid, UserLevelEnum userLevel) {
+        userProfileManager.changeUserLevel(qid, userLevel);
+    }
+
+    /** Change user role to match user level. */
     public UserAccountEntity changeAccountRolesToMatchUserLevel(String qid, UserLevelEnum userLevel) {
         UserAccountEntity userAccount = findByQueueUserId(qid);
         Set<RoleEnum> roles = new LinkedHashSet<>();
