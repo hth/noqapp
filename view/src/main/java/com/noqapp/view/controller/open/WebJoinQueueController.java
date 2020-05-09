@@ -23,6 +23,8 @@ import com.noqapp.service.FirebaseService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.service.exceptions.AuthorizedUserCanJoinQueueException;
+import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.view.form.WebJoinQueueForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 
@@ -56,6 +58,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import javax.mail.StoreClosedException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -317,6 +320,10 @@ public class WebJoinQueueController {
                     TokenServiceEnum.W
                 );
 
+                if (QueueStatusEnum.C == jsonToken.getQueueStatus()) {
+                    throw new StoreDayClosedException("Store is closed today codeQR " + codeQRDecoded);
+                }
+
                 if (null != userProfile) {
                     queue = queueService.findQueuedOne(codeQRDecoded, did, userProfile.getQueueUserId());
                     tokenQueueService.updateQueueWithUserDetail(codeQRDecoded, userProfile.getQueueUserId(), queue);
@@ -347,6 +354,12 @@ public class WebJoinQueueController {
         } catch (IOException | ParseException e) {
             LOG.error("Failed Joining Web Queue reason={}", e.getLocalizedMessage(), e);
             throw e;
+        } catch (AuthorizedUserCanJoinQueueException e) {
+            LOG.error("Authorization required to join Web Queue reason={}", e.getLocalizedMessage(), e);
+            return String.format("{ \"c\" : \"%s\" }", "auth");
+        } catch (StoreDayClosedException e) {
+            LOG.error("Store is closed cannot join Web Queue reason={}", e.getLocalizedMessage(), e);
+            return String.format("{ \"c\" : \"%s\" }", "closed");
         }
     }
 

@@ -33,5 +33,8 @@ Registered Device Clean Up
     
 Find within range
 
-    db.USER_PROFILE.find( { QID: { $gt: "100000000009", $lt : "100000000019" } } );        
-    
+    db.USER_PROFILE.find( { QID: { $gt: "100000000009", $lt : "100000000019" } } ); 
+
+Remove Old Mail
+
+    db.getCollection('MAIL').remove({"C" : {$lte : ISODate("2020-04-30 06:40:06.454Z")}})           

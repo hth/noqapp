@@ -260,6 +260,9 @@ public class BizStoreEntity extends BaseEntity {
     //*  Queue Appointment Setting Ends.       */
     //******************************************/
 
+    @Field("AU")
+    private boolean authorizedUser = false;
+
     /* Contains Id if a task is assigned. */
     @Field("TA")
     private String scheduledTaskId;
@@ -830,6 +833,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setAppointmentOpenHowFar(int appointmentOpenHowFar) {
         this.appointmentOpenHowFar = appointmentOpenHowFar;
+        return this;
+    }
+
+    public boolean isAuthorizedUser() {
+        return authorizedUser;
+    }
+
+    public BizStoreEntity setAuthorizedUser(boolean authorizedUser) {
+        this.authorizedUser = authorizedUser;
         return this;
     }
 

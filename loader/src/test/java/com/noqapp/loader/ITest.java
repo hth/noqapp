@@ -247,7 +247,9 @@ public class ITest extends RealMongoForITest {
             generateUserIdService,
             emailValidateService,
             inviteService,
-            forgotRecoverManager
+            forgotRecoverManager,
+            bizNameManager,
+            businessCustomerManager
         );
 
         customTextToSpeechService = new CustomTextToSpeechService(customTextToSpeechManager);
