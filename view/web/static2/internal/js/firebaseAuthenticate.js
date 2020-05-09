@@ -25,7 +25,13 @@ var noQAuthentication = {
             data: $("#webJoinQueue").serialize(),
             success: function (data) {
                 var json = $.parseJSON(data);
-                window.location = '/open/join/' + json['c'] + '/queueConfirm.htm';
+                if(json['c'] === 'auth') {
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=a--#";
+                } else if(json['c'] === 'closed') {
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=c--#";
+                } else {
+                    window.location = '/open/join/' + json['c'] + '/queueConfirm.htm';
+                }
             },
             error: function (data, request) {
                 window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=p--#";

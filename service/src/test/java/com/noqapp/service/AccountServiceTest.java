@@ -7,6 +7,8 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.repository.BizNameManager;
+import com.noqapp.repository.BusinessCustomerManager;
 import com.noqapp.repository.ForgotRecoverManager;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAuthenticationManager;
@@ -34,6 +36,8 @@ class AccountServiceTest {
     @Mock private EmailValidateService emailValidateService;
     @Mock private InviteService inviteService;
     @Mock private ForgotRecoverManager forgotRecoverManager;
+    @Mock private BizNameManager bizNameManager;
+    @Mock private BusinessCustomerManager businessCustomerManager;
 
     private AccountService accountService;
 
@@ -43,15 +47,18 @@ class AccountServiceTest {
     void setup() {
         MockitoAnnotations.initMocks(this);
         accountService = new AccountService(
-                5,
-                userAccountManager,
-                userAuthenticationManager,
-                userPreferenceManager,
-                userProfileManager,
-                generateUserIdService,
-                emailValidateService,
-                inviteService,
-                forgotRecoverManager);
+            5,
+            userAccountManager,
+            userAuthenticationManager,
+            userPreferenceManager,
+            userProfileManager,
+            generateUserIdService,
+            emailValidateService,
+            inviteService,
+            forgotRecoverManager,
+            bizNameManager,
+            businessCustomerManager
+        );
     }
 
     @Test

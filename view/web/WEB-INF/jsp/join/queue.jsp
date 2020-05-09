@@ -100,6 +100,24 @@
                         <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'a--'}">
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Approval required to access store. Please contact store.
+                            </div>
+                        </div>
+                        <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'c--'}">
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Store is closed.
+                            </div>
+                        </div>
+                        <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
                         <c:if test="${errorFound}">
                         <br/>
                         </c:if>

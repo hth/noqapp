@@ -1,3 +1,7 @@
+### Change May 8 2020
+
+    db.getCollection('BIZ_STORE').update({}, {$set: {AU:false}}, {multi: true});
+
 ### Change April 20 2020
 
     ALTER TABLE `noqapp_test`.`QUEUE` MODIFY BT VARCHAR(3);
