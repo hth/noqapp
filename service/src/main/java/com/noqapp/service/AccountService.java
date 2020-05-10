@@ -283,7 +283,7 @@ public class AccountService {
         }
     }
 
-    private void createAuthorizedUsers(String inviteCode, String qid) {
+    public void createAuthorizedUsers(String inviteCode, String qid) {
         if (StringUtils.isNotBlank(inviteCode)) {
             switch (inviteCode.toUpperCase()) {
                 case "CSD_GURUGRAM_2020":
