@@ -291,7 +291,7 @@ public class AccountService {
                     if (null != bizName) {
                         BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(qid, bizName.getId(), qid);
                         businessCustomerManager.save(businessCustomer);
-                        LOG.info("Authorized user created successfully qid={} bizNameId={}", qid, bizName.getId());
+                        LOG.info("Authorized user created successfully qid={} bizName={} bizNameId={}", qid, bizName.getBusinessName(), bizName.getId());
                     }
                     return true;
                 default:
