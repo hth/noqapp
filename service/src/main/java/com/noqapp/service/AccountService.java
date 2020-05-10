@@ -283,7 +283,7 @@ public class AccountService {
         }
     }
 
-    public void createAuthorizedUsers(String inviteCode, String qid) {
+    public boolean addAuthorizedUserForDoingBusiness(String inviteCode, String qid) {
         if (StringUtils.isNotBlank(inviteCode)) {
             switch (inviteCode.toUpperCase()) {
                 case "CSD_GURUGRAM_2020":
@@ -291,12 +291,15 @@ public class AccountService {
                     if (null != bizName) {
                         BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(qid, bizName.getId(), qid);
                         businessCustomerManager.save(businessCustomer);
+                        LOG.info("Authorized user created successfully qid={} bizNameId={}", qid, bizName.getId());
                     }
-                    return;
+                    return true;
                 default:
-                    //Do Nothing
+                    return false;
             }
         }
+
+        return false;
     }
 
     private String getNextQID() {
