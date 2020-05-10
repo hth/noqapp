@@ -271,7 +271,7 @@ public class AccountService {
                     inviteService.save(invite);
                 }
 
-                createAuthorizedUsers(inviteCode, qid);
+                addAuthorizedUserForDoingBusiness(inviteCode, qid);
             } else {
                 InviteEntity invite = new InviteEntity(qid, null, null, freeRemoteJoins);
                 inviteService.save(invite);
