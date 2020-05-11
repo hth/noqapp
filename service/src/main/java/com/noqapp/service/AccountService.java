@@ -286,7 +286,7 @@ public class AccountService {
     public boolean addAuthorizedUserForDoingBusiness(String inviteCode, String qid) {
         if (StringUtils.isNotBlank(inviteCode)) {
             switch (inviteCode.toUpperCase()) {
-                case "CSD_GURUGRAM_2020":
+                case "CSD@GURUGRAM":
                     BizNameEntity bizName = bizNameManager.getById("5eb3b9c0017c222cd473dded");
                     if (null != bizName) {
                         BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(qid, bizName.getId(), qid);
