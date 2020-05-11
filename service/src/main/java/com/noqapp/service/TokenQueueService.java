@@ -716,10 +716,10 @@ public class TokenQueueService {
         TokenQueueEntity tokenQueue,
         String goTo
     ) {
-        LOG.debug("Sending message codeQR={} goTo={} tokenQueue={} firebaseMessageType={}", codeQR, goTo, tokenQueue, FirebaseMessageTypeEnum.P);
+        LOG.info("Sending message codeQR={} goTo={} tokenQueue={} firebaseMessageType={}", codeQR, goTo, tokenQueue, FirebaseMessageTypeEnum.P);
         int timeout = 2;
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-            LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
+            LOG.info("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonData jsonData = new JsonTopicData(tokenQueue.getBusinessType().getMessageOrigin(), tokenQueue.getFirebaseMessageType()).getJsonTopicQueueData()
                 .setLastNumber(tokenQueue.getLastNumber())
@@ -786,7 +786,7 @@ public class TokenQueueService {
             if (!fcmMessageBroadcast) {
                 LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
             } else {
-                LOG.debug("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
+                LOG.info("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
             }
         }
     }
