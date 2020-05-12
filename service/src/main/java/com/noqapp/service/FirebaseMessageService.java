@@ -69,14 +69,14 @@ public class FirebaseMessageService {
             }
         }
 
-        LOG.info("FCM success HTTP={} topic/token={} headers={} message={} body={}",
-            response.code(),
-            jsonMessage.getTo(),
-            response.headers(),
-            response.message(),
-            response.body());
+//        LOG.debug("FCM success HTTP={} topic/token={} headers={} message={} body={}",
+//            response.code(),
+//            jsonMessage.getTo(),
+//            response.headers(),
+//            response.message(),
+//            response.body());
 
-//        LOG.info("FCM success HTTP={} topic/token={}", response.code(), jsonMessage.getTo());
+        LOG.debug("FCM success HTTP={} topic/token={}", response.code(), jsonMessage.getTo());
         return response.isSuccessful();
     }
 }
