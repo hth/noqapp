@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.common.utils.ScrubbedInput;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,37 +29,37 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class JsonBusinessCustomerLookup extends AbstractDomain {
 
     @JsonProperty ("p")
-    private String customerPhone;
+    private ScrubbedInput customerPhone;
 
     @JsonProperty("bc")
-    private String businessCustomerId;
+    private ScrubbedInput businessCustomerId;
 
     @JsonProperty("qr")
-    private String codeQR;
+    private ScrubbedInput codeQR;
 
-    public String getCustomerPhone() {
+    public ScrubbedInput getCustomerPhone() {
         return customerPhone;
     }
 
-    public JsonBusinessCustomerLookup setCustomerPhone(String customerPhone) {
+    public JsonBusinessCustomerLookup setCustomerPhone(ScrubbedInput customerPhone) {
         this.customerPhone = customerPhone;
         return this;
     }
 
-    public String getBusinessCustomerId() {
+    public ScrubbedInput getBusinessCustomerId() {
         return businessCustomerId;
     }
 
-    public JsonBusinessCustomerLookup setBusinessCustomerId(String businessCustomerId) {
+    public JsonBusinessCustomerLookup setBusinessCustomerId(ScrubbedInput businessCustomerId) {
         this.businessCustomerId = businessCustomerId;
         return this;
     }
 
-    public String getCodeQR() {
+    public ScrubbedInput getCodeQR() {
         return codeQR;
     }
 
-    public JsonBusinessCustomerLookup setCodeQR(String codeQR) {
+    public JsonBusinessCustomerLookup setCodeQR(ScrubbedInput codeQR) {
         this.codeQR = codeQR;
         return this;
     }
