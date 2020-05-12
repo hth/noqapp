@@ -129,14 +129,20 @@ public class TextToSpeechService {
                 }
                 break;
             case RS:
+            case RSQ:
             case FT:
+            case FTQ:
             case BA:
+            case BAQ:
             case ST:
+            case STQ:
             case SM:
             case MT:
             case SC:
             case GS:
+            case GSQ:
             case CF:
+            case CFQ:
             case HS:
             case PH:
             case PW:
