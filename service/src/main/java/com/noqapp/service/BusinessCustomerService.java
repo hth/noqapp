@@ -1,12 +1,19 @@
 package com.noqapp.service;
 
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BusinessCustomerManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.UserProfileManager;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,20 +24,24 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class BusinessCustomerService {
+    private static final Logger LOG = LoggerFactory.getLogger(BusinessCustomerService.class);
 
     private BusinessCustomerManager businessCustomerManager;
     private UserProfileManager userProfileManager;
     private QueueManager queueManager;
+    private BizNameManager bizNameManager;
 
     @Autowired
     public BusinessCustomerService(
         BusinessCustomerManager businessCustomerManager,
         UserProfileManager userProfileManager,
-        QueueManager queueManager
+        QueueManager queueManager,
+        BizNameManager bizNameManager
     ) {
         this.businessCustomerManager = businessCustomerManager;
         this.userProfileManager = userProfileManager;
         this.queueManager = queueManager;
+        this.bizNameManager = bizNameManager;
     }
 
     /**
@@ -81,5 +92,25 @@ public class BusinessCustomerService {
     @Mobile
     public BusinessCustomerEntity findOneByCustomerId(String businessCustomerId, String bizNameId) {
         return businessCustomerManager.findOneByCustomerId(businessCustomerId, bizNameId);
+    }
+
+    @Mobile
+    public boolean addAuthorizedUserForDoingBusiness(String inviteCode, String qid) {
+        if (StringUtils.isNotBlank(inviteCode)) {
+            switch (inviteCode.toUpperCase()) {
+                case "CSD@GURUGRAM":
+                    BizNameEntity bizName = bizNameManager.getById("5eb3b9c0017c222cd473dded");
+                    if (null != bizName) {
+                        BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(qid, bizName.getId(), qid);
+                        businessCustomerManager.save(businessCustomer);
+                        LOG.info("Authorized user created successfully qid={} bizName={} bizNameId={}", qid, bizName.getBusinessName(), bizName.getId());
+                    }
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        return false;
     }
 }

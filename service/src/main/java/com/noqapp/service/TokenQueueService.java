@@ -1,10 +1,8 @@
 package com.noqapp.service;
 
-import static com.noqapp.common.errors.MobileSystemErrorCodeEnum.QUEUE_AUTHORIZED_ONLY;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
-import com.noqapp.common.errors.ErrorEncounteredJson;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
@@ -36,7 +34,6 @@ import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
-import com.noqapp.service.exceptions.AuthorizedUserCanJoinQueueException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -197,13 +194,6 @@ public class TokenQueueService {
                 DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
                 StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
 
-                if (bizStore.isAuthorizedUser()) {
-                    UserProfileEntity userProfile = businessCustomerService.findByBusinessCustomerIdAndBizNameId(qid, bizStore.getBizName().getId());
-                    if (null == userProfile) {
-                        throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
-                    }
-                }
-
                 if (!bizStore.isActive() || storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
                     LOG.warn("When queue closed or prevent joining, attempting to create new token");
                     return new JsonToken(codeQR, bizStore.getBusinessType())
@@ -256,9 +246,6 @@ public class TokenQueueService {
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus())
                     .setExpectedServiceBegin(queue.getExpectedServiceBegin());
-        } catch (AuthorizedUserCanJoinQueueException e) {
-            LOG.warn("Only authorized users allowed qid={}, reason={}", qid, e.getLocalizedMessage());
-            throw e;
         } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
