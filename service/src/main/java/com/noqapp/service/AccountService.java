@@ -6,8 +6,6 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.HashText;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.domain.BizNameEntity;
-import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.GenerateUserIds;
@@ -23,8 +21,6 @@ import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
-import com.noqapp.repository.BizNameManager;
-import com.noqapp.repository.BusinessCustomerManager;
 import com.noqapp.repository.ForgotRecoverManager;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAuthenticationManager;
@@ -75,8 +71,6 @@ public class AccountService {
     private EmailValidateService emailValidateService;
     private InviteService inviteService;
     private ForgotRecoverManager forgotRecoverManager;
-    private BizNameManager bizNameManager;
-    private BusinessCustomerManager businessCustomerManager;
 
     private ExecutorService executorService;
 
@@ -92,9 +86,7 @@ public class AccountService {
         GenerateUserIdService generateUserIdService,
         EmailValidateService emailValidateService,
         InviteService inviteService,
-        ForgotRecoverManager forgotRecoverManager,
-        BizNameManager bizNameManager,
-        BusinessCustomerManager businessCustomerManager
+        ForgotRecoverManager forgotRecoverManager
     ) {
         this.freeRemoteJoins = freeRemoteJoins;
 
@@ -106,8 +98,6 @@ public class AccountService {
         this.emailValidateService = emailValidateService;
         this.inviteService = inviteService;
         this.forgotRecoverManager = forgotRecoverManager;
-        this.bizNameManager = bizNameManager;
-        this.businessCustomerManager = businessCustomerManager;
 
         this.executorService = newCachedThreadPool();
     }
@@ -270,8 +260,6 @@ public class AccountService {
                     InviteEntity invite = new InviteEntity(qid, null, null, freeRemoteJoins);
                     inviteService.save(invite);
                 }
-
-                addAuthorizedUserForDoingBusiness(inviteCode, qid);
             } else {
                 InviteEntity invite = new InviteEntity(qid, null, null, freeRemoteJoins);
                 inviteService.save(invite);
@@ -281,25 +269,6 @@ public class AccountService {
             LOG.error("Account creation failed as it already exists for phone={} mail={}", phoneWithCountryCode, mail);
             throw new DuplicateAccountException("Account with credential already exists");
         }
-    }
-
-    public boolean addAuthorizedUserForDoingBusiness(String inviteCode, String qid) {
-        if (StringUtils.isNotBlank(inviteCode)) {
-            switch (inviteCode.toUpperCase()) {
-                case "CSD@GURUGRAM":
-                    BizNameEntity bizName = bizNameManager.getById("5eb3b9c0017c222cd473dded");
-                    if (null != bizName) {
-                        BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(qid, bizName.getId(), qid);
-                        businessCustomerManager.save(businessCustomer);
-                        LOG.info("Authorized user created successfully qid={} bizName={} bizNameId={}", qid, bizName.getBusinessName(), bizName.getId());
-                    }
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
-        return false;
     }
 
     private String getNextQID() {

@@ -19,6 +19,7 @@ import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.search.elastic.service.GeoIPLocationService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
+import com.noqapp.service.BusinessCustomerService;
 import com.noqapp.service.FirebaseService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.ShowHTMLService;
@@ -114,6 +115,7 @@ public class WebJoinQueueController {
     private GeoIPLocationService geoIPLocationService;
     private RegisteredDeviceManager registeredDeviceManager;
     private FirebaseService firebaseService;
+    private BusinessCustomerService businessCustomerService;
 
     @Autowired
     public WebJoinQueueController(
@@ -124,7 +126,8 @@ public class WebJoinQueueController {
         AccountService accountService,
         GeoIPLocationService geoIPLocationService,
         RegisteredDeviceManager registeredDeviceManager,
-        FirebaseService firebaseService
+        FirebaseService firebaseService,
+        BusinessCustomerService businessCustomerService
     ) {
         this.bizService = bizService;
         this.showHTMLService = showHTMLService;
@@ -134,6 +137,7 @@ public class WebJoinQueueController {
         this.geoIPLocationService = geoIPLocationService;
         this.registeredDeviceManager = registeredDeviceManager;
         this.firebaseService = firebaseService;
+        this.businessCustomerService = businessCustomerService;
     }
 
     /**
@@ -301,6 +305,16 @@ public class WebJoinQueueController {
                     /* Encoding of data. */
                     String combined = codeQRDecoded + "#" + "#";
                     return String.format("{ \"c\" : \"%s\" }", Base64.getEncoder().encodeToString(combined.getBytes()));
+                }
+
+                if (bizStore.isAuthorizedUser()) {
+                    if (userProfile != null) {
+                        if (null == businessCustomerService.findByBusinessCustomerIdAndBizNameId(userProfile.getQueueUserId(), bizStore.getBizName().getId())) {
+                            throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
+                        }
+                    } else {
+                        throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
+                    }
                 }
 
                 String did = UUID.randomUUID().toString();
