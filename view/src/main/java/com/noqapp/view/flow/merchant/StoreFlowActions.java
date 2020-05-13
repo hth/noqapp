@@ -148,6 +148,8 @@ public class StoreFlowActions extends RegistrationFlowActions {
 
     private RegisterBusiness editStoreRegistration(String bizStoreId) {
         RegisterBusiness registerBusiness = createStoreRegistration(StoreFranchise.OFF);
+        /* Mark field false when editing store. */
+        registerBusiness.setBusinessAddressAsStore(false);
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
         registerBusiness.populateWithBizStore(bizStore);
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStoreId);
