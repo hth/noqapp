@@ -129,7 +129,7 @@ public class QueueEntity extends BaseEntity {
     @Field("ST")
     private SentimentTypeEnum sentimentType;
 
-    @Field ("TI")
+    @Field("TI")
     private String transactionId;
 
     @SuppressWarnings("unused")
