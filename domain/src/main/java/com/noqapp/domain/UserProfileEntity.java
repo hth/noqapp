@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -355,7 +356,8 @@ public class UserProfileEntity extends BaseEntity {
     @Transient
     public String getAgeAsString() {
         try {
-            Date dob = DateUtil.SDF_YYYY_MM_DD.parse(birthday);
+            SimpleDateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+            Date dob = YYYY_MM_DD.parse(birthday);
             Date now = new Date();
             int years = DateUtil.getYearsBetween(dob, now);
             String age;
