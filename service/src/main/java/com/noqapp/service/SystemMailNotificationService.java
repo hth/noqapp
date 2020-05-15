@@ -39,7 +39,7 @@ public class SystemMailNotificationService {
             MailEntity mail = new MailEntity()
                 .setFromName("NoQueue System")
                 .setFromMail("corp@noqapp.com")
-                .setToName("NoQueue Inc")
+                .setToName("NoQueue")
                 .setToMail("corp@noqapp.com")
                 .setSubject(subject)
                 .setMessage(message)
