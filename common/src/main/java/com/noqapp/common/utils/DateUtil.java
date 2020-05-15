@@ -206,6 +206,11 @@ public final class DateUtil {
         return dateToString_UTC(date, DTF_YYYY_MM_DD);
     }
 
+    public static Date convertDateStringOf_YYYY_MM_DD_ToDate(String date) {
+        LocalDate localDate = LocalDate.from(DTF_YYYY_MM_DD.parse(date));
+        return DateUtil.asDate(localDate);
+    }
+
 
     public static String dateToISO_8601(Date date) {
         return DateFormatUtils.format(date, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
