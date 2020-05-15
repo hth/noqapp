@@ -1,5 +1,7 @@
 package com.noqapp.domain;
 
+import static com.noqapp.common.utils.DateUtil.DTF_YYYY_MM_DD;
+
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.types.AddressOriginEnum;
@@ -19,7 +21,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -356,8 +358,9 @@ public class UserProfileEntity extends BaseEntity {
     @Transient
     public String getAgeAsString() {
         try {
-            SimpleDateFormat YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-            Date dob = YYYY_MM_DD.parse(birthday);
+            LocalDate localDate = LocalDate.from(DTF_YYYY_MM_DD.parse(birthday));
+            Date dob = DateUtil.asDate(localDate);
+
             Date now = new Date();
             int years = DateUtil.getYearsBetween(dob, now);
             String age;
