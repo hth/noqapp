@@ -348,7 +348,7 @@ public class MailService {
             LOG.info("Daily Registration Status Mail sent to={}", doNotReplyEmail);
             MailEntity mail = new MailEntity()
                 .setToMail(doNotReplyEmail)
-                .setToName("NoQueue Inc")
+                .setToName("NoQueue")
                 .setSubject("Daily Registration Status")
                 .setMessage(freemarkerService.freemarkerToString("mail/registration-status.ftl", rootMap))
                 .setMailStatus(MailStatusEnum.N);

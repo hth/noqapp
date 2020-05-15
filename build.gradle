@@ -118,11 +118,11 @@ subprojects {
     jar {
         manifest {
             attributes(
-                    'Implementation-Vendor': 'NoQueue Inc',
+                    'Implementation-Vendor': 'NoQueue',
                     'Implementation-Title': rootProject.name,
                     'Implementation-Version': allprojects.version + " $env",
                     'Build-Time': "${new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")}",
-                    'Copyright': '2016-2020, NoQueue Inc'
+                    'Copyright': '2016-2020, NoQueue'
             )
         }
     }
@@ -716,7 +716,7 @@ task createBuildInfoFile {
         buildDir.mkdirs()
         def buildInfoFile = new File("$buildDir/build-info.properties")
         Properties props = new Properties()
-        props.setProperty('owner', 'NoQueue Inc')
+        props.setProperty('owner', 'NoQueue')
         props.setProperty('copyright', 'All rights reserved')
         props.setProperty('build.version', project.version.toString())
         props.setProperty('build.env', "$env")
@@ -731,7 +731,7 @@ task createLoaderBuildInfoFile {
         buildDir.mkdirs()
         def buildInfoFile = new File("$buildDir/build-info.properties")
         Properties props = new Properties()
-        props.setProperty('owner', 'NoQueue Inc')
+        props.setProperty('owner', 'NoQueue')
         props.setProperty('copyright', 'All rights reserved')
         props.setProperty('build.version', project.version.toString())
         props.setProperty('build.env', "$env")
@@ -999,7 +999,7 @@ publishing {
             pom.withXml {
                 def root = asNode()
                 root.appendNode('name', 'NoQueue Web')
-                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('description', 'NoQueue applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
@@ -1009,7 +1009,7 @@ publishing {
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
-                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('name', 'NoQueue')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
@@ -1021,7 +1021,7 @@ publishing {
             pom.withXml {
                 def root = asNode()
                 root.appendNode('name', 'NoQueue Web')
-                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('description', 'NoQueue applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
@@ -1031,7 +1031,7 @@ publishing {
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
-                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('name', 'NoQueue')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
@@ -1043,7 +1043,7 @@ publishing {
             pom.withXml {
                 def root = asNode()
                 root.appendNode('name', 'NoQueue Web')
-                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('description', 'NoQueue applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
@@ -1053,7 +1053,7 @@ publishing {
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
-                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('name', 'NoQueue')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
@@ -1065,7 +1065,7 @@ publishing {
             pom.withXml {
                 def root = asNode()
                 root.appendNode('name', 'NoQueue Web')
-                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('description', 'NoQueue applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
@@ -1075,7 +1075,7 @@ publishing {
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
-                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('name', 'NoQueue')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
@@ -1087,7 +1087,7 @@ publishing {
             pom.withXml {
                 def root = asNode()
                 root.appendNode('name', 'NoQueue Web')
-                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('description', 'NoQueue applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
@@ -1097,7 +1097,7 @@ publishing {
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
-                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('name', 'NoQueue')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
@@ -1109,7 +1109,7 @@ publishing {
             pom.withXml {
                 def root = asNode()
                 root.appendNode('name', 'NoQueue Web')
-                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('description', 'NoQueue applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
@@ -1119,7 +1119,7 @@ publishing {
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
-                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('name', 'NoQueue')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
@@ -1131,7 +1131,7 @@ publishing {
             pom.withXml {
                 def root = asNode()
                 root.appendNode('name', 'NoQueue Web')
-                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('description', 'NoQueue applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
@@ -1141,7 +1141,7 @@ publishing {
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
-                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('name', 'NoQueue')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }
@@ -1153,7 +1153,7 @@ publishing {
             pom.withXml {
                 def root = asNode()
                 root.appendNode('name', 'NoQueue Web')
-                root.appendNode('description', 'NoQueue Inc applications jar')
+                root.appendNode('description', 'NoQueue applications jar')
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
@@ -1163,7 +1163,7 @@ publishing {
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
-                developer.appendNode('name', 'NoQueue Inc')
+                developer.appendNode('name', 'NoQueue')
                 developer.appendNode('email', 'contact@noqapp.com')
             }
         }

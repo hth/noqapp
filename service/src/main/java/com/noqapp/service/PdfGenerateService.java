@@ -75,9 +75,9 @@ public class PdfGenerateService {
                 this.fopFactory = FopFactory.newInstance(new File(".").toURI());
             }
             userAgent = fopFactory.newFOUserAgent();
-            userAgent.setProducer("NoQueue Inc");
-            userAgent.setCreator("NoQApp, NoQueue Inc");
-            userAgent.setAuthor("NoQueue Inc");
+            userAgent.setProducer("NoQueue");
+            userAgent.setCreator("NoQueue");
+            userAgent.setAuthor("NoQueue");
         } catch (IOException e) {
             LOG.error("Failed loading fopConfig={} reason={}", fopConfig.getFilename(), e.getLocalizedMessage(), e);
             throw e;
