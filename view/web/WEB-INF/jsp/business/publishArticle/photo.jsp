@@ -23,7 +23,7 @@
 <div class="header">
     <div class="warp-inner">
         <div class="logo-left">
-            <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue Inc"/></a>
+            <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue"/></a>
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
@@ -153,7 +153,7 @@
         <div class="footer-dark">
             <div class="footer4">
                 <div class="warp-inner">
-                    <div class="f-left">&copy; 2020 NoQueue Inc. | <a href="https://noqapp.com/#/pages/privacy">Privacy</a> | <a href="https://noqapp.com/#/pages/terms">Terms</a></div>
+                    <div class="f-left">&copy; 2020 NoQueue. | <a href="https://noqapp.com/#/pages/privacy">Privacy</a> | <a href="https://noqapp.com/#/pages/terms">Terms</a></div>
 
                     <div class="clearFix"></div>
                 </div>
