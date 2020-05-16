@@ -9,6 +9,7 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.TokenQueueManager;
@@ -62,6 +63,18 @@ public class BusinessModificationService {
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
         this.tokenQueueManager = tokenQueueManager;
+    }
+
+    public boolean isQueueStatusAtStart(String bizNameId) {
+        List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizNameId);
+        for (BizStoreEntity bizStore : bizStores) {
+            TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(bizStore.getCodeQR());
+            if (tokenQueue.getQueueStatus() != QueueStatusEnum.S) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void changeBizNameBusinessType(String bizNameId, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType) {
