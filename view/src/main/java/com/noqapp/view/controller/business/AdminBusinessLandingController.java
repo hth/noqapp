@@ -20,6 +20,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.CommonStatusEnum;
 import com.noqapp.domain.types.InvocationByEnum;
+import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
@@ -907,6 +908,14 @@ public class AdminBusinessLandingController {
         }
         LOG.info("Migrate business type bizId={} qid={} userLevel={}", businessUser.getBizName().getId(), queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
+
+        if (!businessModificationService.isQueueStatusAtStart(businessUser.getBizName().getId())) {
+            LOG.warn("Cannot migrate when business is still running. Should be set to {}", QueueStatusEnum.S);
+
+            migrateBusinessTypeForm.setMigrationSuccess(false);
+            redirectAttrs.addFlashAttribute("migrateBusinessTypeForm", migrateBusinessTypeForm);
+            return "redirect:/business/migrateBusinessType.htm";
+        }
 
         if (migrateBusinessTypeForm.isMigrate()) {
             businessModificationService.changeBizNameBusinessType(
