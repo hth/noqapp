@@ -121,9 +121,7 @@
                                     <c:if test="${!empty storeProductForm.message}">
                                     <div class="alert-info" style="text-align: left;">
                                         <p>
-                                            <span style="display:block; font-size:13px; text-align: center;">
-                                                <c:out value="${storeProductForm.message}" /> -- <a href="#products">(product list of #${storeProductForm.storeProducts.size()})</a>
-                                            </span>
+                                            <span style="display:block; font-size:13px; text-align: center;"><c:out value="${storeProductForm.message}" /> -- <a href="#products">(product list of #${storeProductForm.storeProducts.size()})</a></span>
                                         </p>
                                     </div>
                                     </c:if>
@@ -347,9 +345,7 @@
                                     <c:if test="${!empty storeProductForm.message}">
                                     <div class="alert-info" style="text-align: left;">
                                         <p>
-                                            <span style="display:block; font-size:13px; text-align: center;">
-                                                <c:out value="${storeProductForm.message}" /> -- <a href="#products">(product list of #${storeProductForm.storeProducts.size()})</a>
-                                            </span>
+                                            <span style="display:block; font-size:13px; text-align: center;"><c:out value="${storeProductForm.message}" /> -- <a href="#products">(product list of #${storeProductForm.storeProducts.size()})</a></span>
                                         </p>
                                     </div>
                                     </c:if>
@@ -539,11 +535,7 @@
                                     <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/preferredRefresh.htm" modelAttribute="storeProductForm">
                                         <form:hidden path="bizStoreId" value="${storeProductForm.bizStoreId}" />
                                         <button name="refresh" class="add-btn">Refresh</button>
-                                        <span style="display:block; font-size:13px;">
-                                            Only 3 forced refresh allowed in a month *. Use this
-                                            when you have made lots of changes to product list
-                                            & would like to push out an update at the earliest
-                                        </span>
+                                        <span style="display:block; font-size:13px;">Only 3 forced refresh allowed in a month *. Use this when you have made lots of changes to product list & would like to push out an update at the earliest</span>
                                     </form:form>
                                 </c:if>
 
@@ -552,21 +544,15 @@
                                 <div class="alert-info">
                                     <c:choose>
                                         <c:when test="${BusinessTypeEnum.PH eq storeProductForm.businessType}">
-                                            <span style="display:block; font-size:13px;">
-                                                Preferred business partner such as doctors can prescribe these medicines.
-                                            </span>
+                                            <span style="display:block; font-size:13px;">Preferred business partner such as doctors can prescribe these medicines.</span>
                                         </c:when>
                                         <c:otherwise>
-                                            <span style="display:block; font-size:13px;">
-                                                Users can directly purchase product from '${storeProductForm.displayName}' when listed here.
-                                            </span>
+                                            <span style="display:block; font-size:13px;">Users can directly purchase product from '${storeProductForm.displayName}' when listed here.</span>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
                                     <h2>
-                                        <span style="display:block; font-size:13px;">
-                                            Total Products: <span id="products">${storeProductForm.storeProducts.size()}</span>
-                                        </span>
+                                        <span style="display:block; font-size:13px;">Total Products: <span id="products">${storeProductForm.storeProducts.size()}</span></span>
                                     </h2>
 
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">

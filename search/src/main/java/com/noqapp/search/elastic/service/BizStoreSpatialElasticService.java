@@ -50,7 +50,7 @@ import java.util.Set;
 @Service
 public class BizStoreSpatialElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreSpatialElasticService.class);
-    private static final long MINUTES = 10L;
+    private static final long SECONDS = 10L;
 
     private BizStoreSpatialElasticManager<BizStoreElastic> bizStoreSpatialElasticManager;
     private ElasticsearchClientConfiguration elasticsearchClientConfiguration;
@@ -112,7 +112,7 @@ public class BizStoreSpatialElasticService {
             SearchResponse searchResponse;
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
-                scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+                scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreSpatialElastic.INDEX);
@@ -132,7 +132,7 @@ public class BizStoreSpatialElasticService {
 
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
-                searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+                searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
 
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
             }
@@ -158,7 +158,7 @@ public class BizStoreSpatialElasticService {
             SearchResponse searchResponse;
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
-                scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+                scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreSpatialElastic.INDEX);
@@ -178,7 +178,7 @@ public class BizStoreSpatialElasticService {
 
                 searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
                 searchRequest.source(searchSourceBuilder);
-                searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
+                searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
 
                 searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
             }
