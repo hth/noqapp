@@ -233,7 +233,7 @@
                                         <div class="col-fields">
                                             <c:choose>
                                                 <c:when test="${empty register.registerBusiness.inviteeCode}">
-                                                    <form:input path="inviteeCode" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                                    <form:input path="inviteeCode" cssClass="form-field-admin" cssStyle="text-transform: lowercase;" cssErrorClass="form-field-admin error-field"/>
                                                 </c:when>
                                                 <c:otherwise>
                                                     <form:input path="inviteeCode" cssClass="form-field-admin" readonly="true"/>

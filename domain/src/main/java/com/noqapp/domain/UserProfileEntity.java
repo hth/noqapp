@@ -358,9 +358,7 @@ public class UserProfileEntity extends BaseEntity {
     @Transient
     public String getAgeAsString() {
         try {
-            LocalDate localDate = LocalDate.from(DTF_YYYY_MM_DD.parse(birthday));
-            Date dob = DateUtil.asDate(localDate);
-
+            Date dob = DateUtil.convertDateStringOf_YYYY_MM_DD_ToDate(birthday);
             Date now = new Date();
             int years = DateUtil.getYearsBetween(dob, now);
             String age;
