@@ -11,7 +11,10 @@ public enum QueueStatusEnum {
     /* Pause is a status for Server/Merchant, Pause applies to just Server/Merchant. Queue never pauses. */
     P("P", "Pause"),
     D("D", "Done"),
-    C("C", "Closed");
+    C("C", "Closed"),
+
+    /* B is when user joins with a different time on mobile. */
+    B("B", "Before Opening Time");
 
     private final String name;
     private final String description;
