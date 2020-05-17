@@ -165,6 +165,9 @@ public class BizNameEntity extends BaseEntity {
     @Field("DC")
     private boolean dayClosed = false;
 
+    @Field("LS")
+    private int limitServiceByDays = 0;
+
     @Field("CL")
     private boolean claimed;
 
@@ -527,6 +530,15 @@ public class BizNameEntity extends BaseEntity {
 
     public BizNameEntity setDayClosed(boolean dayClosed) {
         this.dayClosed = dayClosed;
+        return this;
+    }
+
+    public int getLimitServiceByDays() {
+        return limitServiceByDays;
+    }
+
+    public BizNameEntity setLimitServiceByDays(int limitServiceByDays) {
+        this.limitServiceByDays = limitServiceByDays;
         return this;
     }
 

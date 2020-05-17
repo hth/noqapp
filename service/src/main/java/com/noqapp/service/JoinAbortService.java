@@ -18,7 +18,6 @@ import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.domain.types.DeliveryModeEnum;
-import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 import com.noqapp.repository.QueueManager;
@@ -27,6 +26,7 @@ import com.noqapp.service.exceptions.PurchaseOrderCancelException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
 import com.noqapp.service.exceptions.QueueAbortPaidPastDurationException;
+import com.noqapp.service.exceptions.LimitedPeriodException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -106,6 +106,8 @@ public class JoinAbortService {
                 throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
             case B:
                 throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
+            case X:
+                throw new LimitedPeriodException("Please wait until set number of days before using this service");
             default:
         }
 
