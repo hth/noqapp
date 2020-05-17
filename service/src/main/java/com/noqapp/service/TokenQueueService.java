@@ -4,6 +4,7 @@ import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
@@ -204,6 +205,17 @@ public class TokenQueueService {
                             .setExpectedServiceBegin(new Date());
                 }
 
+                int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
+                int tokenFrom = storeHour.getTokenAvailableFrom();
+                if (requesterTime < tokenFrom) {
+                    return new JsonToken(codeQR, bizStore.getBusinessType())
+                        .setToken(0)
+                        .setServingNumber(0)
+                        .setDisplayName(bizStore.getDisplayName())
+                        .setQueueStatus(QueueStatusEnum.B)
+                        .setExpectedServiceBegin(new Date());
+                }
+
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
                 TokenQueueEntity tokenQueue = getNextToken(codeQR);
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
@@ -282,6 +294,17 @@ public class TokenQueueService {
                         .setServingNumber(0)
                         .setDisplayName(bizStore.getDisplayName())
                         .setQueueStatus(QueueStatusEnum.C)
+                        .setExpectedServiceBegin(new Date());
+                }
+
+                int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
+                int tokenFrom = storeHour.getTokenAvailableFrom();
+                if (requesterTime < tokenFrom) {
+                    return new JsonToken(codeQR, bizStore.getBusinessType())
+                        .setToken(0)
+                        .setServingNumber(0)
+                        .setDisplayName(bizStore.getDisplayName())
+                        .setQueueStatus(QueueStatusEnum.B)
                         .setExpectedServiceBegin(new Date());
                 }
 

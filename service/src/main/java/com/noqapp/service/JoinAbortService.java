@@ -22,6 +22,7 @@ import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 import com.noqapp.repository.QueueManager;
+import com.noqapp.service.exceptions.BeforeStartOfStoreException;
 import com.noqapp.service.exceptions.PurchaseOrderCancelException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
@@ -100,8 +101,12 @@ public class JoinAbortService {
         LOG.info("joinQueue codeQR={} did={} qid={} guardianQid={}", codeQR, did, qid, guardianQid);
         JsonToken jsonToken = tokenQueueService.getNextToken(codeQR, did, qid, guardianQid, averageServiceTime, tokenService);
 
-        if (QueueStatusEnum.C == jsonToken.getQueueStatus()) {
-            throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
+        switch (jsonToken.getQueueStatus()) {
+            case C:
+                throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
+            case B:
+                throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
+            default:
         }
 
         return jsonToken;
@@ -112,8 +117,12 @@ public class JoinAbortService {
     public JsonToken payBeforeJoinQueue(String codeQR, String did, String qid, String guardianQid, BizStoreEntity bizStore, TokenServiceEnum tokenService) {
         JsonToken jsonToken = tokenQueueService.getPaidNextToken(codeQR, did, qid, guardianQid, bizStore.getAverageServiceTime(), tokenService);
 
-        if (QueueStatusEnum.C == jsonToken.getQueueStatus()) {
-            throw new StoreDayClosedException("Store is closed today bizStoreId " + bizStore.getId());
+        switch (jsonToken.getQueueStatus()) {
+            case C:
+                throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
+            case B:
+                throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
+            default:
         }
 
         JsonPurchaseOrder jsonPurchaseOrder;
