@@ -14,7 +14,8 @@ public enum QueueStatusEnum {
     C("C", "Closed"),
 
     /* B is when user joins with a different time on mobile. */
-    B("B", "Before Opening Time");
+    B("B", "Before Opening Time"),
+    X("X", "Business limitation imposed");
 
     private final String name;
     private final String description;

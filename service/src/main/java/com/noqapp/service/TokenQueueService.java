@@ -191,6 +191,17 @@ public class TokenQueueService {
                  * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
                  */
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+                /* This condition exists only for non paid system. */
+                if (0 != bizStore.getBizName().getLimitServiceByDays()
+                    && queueManagerJDBC.hasServicedOrCancelledInPastXDays(codeQR, qid, bizStore.getBizName().getLimitServiceByDays())) {
+                    return new JsonToken(codeQR, bizStore.getBusinessType())
+                        .setToken(0)
+                        .setServingNumber(0)
+                        .setDisplayName(bizStore.getDisplayName())
+                        .setQueueStatus(QueueStatusEnum.X)
+                        .setExpectedServiceBegin(new Date());
+                }
+
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
                 DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
                 StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);

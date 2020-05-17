@@ -74,4 +74,6 @@ public interface QueueManagerJDBC {
     List<QueueEntity> findAfterCreateDate(Date since);
 
     QueueEntity findOneHistoricalByRecordReferenceId(String codeQR, String recordReferenceId);
+
+    boolean hasServicedOrCancelledInPastXDays(String codeQR, String qid, int days);
 }
