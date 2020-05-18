@@ -2,6 +2,7 @@ package com.noqapp.common.errors;
 
 import static com.noqapp.common.errors.ErrorTypeEnum.ERROR;
 import static com.noqapp.common.errors.ErrorTypeEnum.ALERT;
+import static com.noqapp.common.errors.ErrorTypeEnum.INFO;
 
 /**
  * Error code to share between APP and Mobile API.
@@ -45,6 +46,7 @@ public enum MobileSystemErrorCodeEnum {
     USER_MAX_DEPENDENT("4050", ALERT),
     CHANGE_USER_IN_QUEUE("4060", ALERT),
     FAILED_FINDING_ADDRESS("4070", ALERT),
+    DEVICE_TIMEZONE_OFF("4071", INFO),
 
     /** Medical. */
     MEDICAL_RECORD_ENTRY_DENIED("4101", ERROR),
@@ -76,6 +78,7 @@ public enum MobileSystemErrorCodeEnum {
     QUEUE_JOIN_PAYMENT_FAILED("4305", ERROR),
     QUEUE_NO_SERVICE_NO_PAY("4306", ERROR),
     QUEUE_ORDER_ABORT_EXPIRED_LIMITED_TIME("4307", ALERT),
+    QUEUE_SERVICE_LIMIT("4308", ALERT),
 
     /** Survey. */
     SURVEY_NOT_FOUND("4404", ALERT),
