@@ -155,7 +155,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "QUEUE WHERE QR = ? AND RR = ?";
 
     private static final String servicedOrCancelledInPastXDays =
-        "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? AND QS like 'S' OR QS like 'A' AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() LIMIT 1)";
+        "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? AND QS IN ('S', 'A') AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() LIMIT 1)";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;

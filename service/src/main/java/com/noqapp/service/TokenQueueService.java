@@ -192,7 +192,7 @@ public class TokenQueueService {
                  */
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
                 /* This condition exists only for non paid system. */
-                if (0 != bizStore.getBizName().getLimitServiceByDays()
+                if (0 < bizStore.getBizName().getLimitServiceByDays()
                     && queueManagerJDBC.hasServicedOrCancelledInPastXDays(codeQR, qid, bizStore.getBizName().getLimitServiceByDays())) {
                     return new JsonToken(codeQR, bizStore.getBusinessType())
                         .setToken(0)

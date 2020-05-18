@@ -77,7 +77,7 @@
                                         <form:label path="title" cssErrorClass="lb_error">Title</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="title" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                        <form:input path="title" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" cssStyle="text-transform: none;" readonly="false" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
@@ -86,7 +86,7 @@
                                         <form:label path="body" cssErrorClass="lb_error">Body</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:textarea path="body" rows ="7" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                        <form:textarea path="body" rows ="7" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" cssStyle="text-transform: none;" readonly="false" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
@@ -95,7 +95,7 @@
                                         <form:label path="imageURL" cssErrorClass="lb_error">URL of Image</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="imageURL" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                        <form:input path="imageURL" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" cssStyle="text-transform: none;" readonly="false" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
@@ -104,7 +104,7 @@
                                         <form:label path="qid" cssErrorClass="lb_error">QID</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="qid" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="false" />
+                                        <form:input path="qid" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" cssStyle="text-transform: none;" readonly="false" />
                                         <span style="display:block; font-size:14px;">(Message is sent to QID entered. Blank QID sends to all.)</span>
                                     </div>
                                     <div class="clearFix"></div>
