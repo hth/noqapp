@@ -1,3 +1,7 @@
+### Change May 17 2020
+
+    db.getCollection('BIZ_NAME').update({}, {$set: {"LS":NumberInt(0)}}, {multi: true});
+
 ### Change May 8 2020
 
     db.getCollection('BIZ_STORE').update({}, {$set: {AU:false}}, {multi: true});
