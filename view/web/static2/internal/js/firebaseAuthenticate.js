@@ -24,7 +24,7 @@ var noQAuthentication = {
             url: '/open/join/queue.htm',
             data: $("#webJoinQueue").serialize(),
             success: function (data) {
-                var json = $.parseJSON(data);
+                let json = $.parseJSON(data);
                 if(json['c'] === 'auth') {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=a--#";
                 } else if(json['c'] === 'closed') {
