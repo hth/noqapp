@@ -25,9 +25,9 @@ var noQAuthentication = {
             data: $("#webJoinQueue").serialize(),
             success: function (data) {
                 let json = $.parseJSON(data);
-                if(json['c'] === 'auth') {
+                if (json['c'] === 'auth') {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=a--#";
-                } else if(json['c'] === 'closed') {
+                } else if (json['c'] === 'closed') {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=c--#";
                 } else {
                     window.location = '/open/join/' + json['c'] + '/queueConfirm.htm';
