@@ -118,6 +118,33 @@
                         <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'b--'}">
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Store is not opened yet.
+                            </div>
+                        </div>
+                        <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'x--'}">
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Limited service. Please try after few days. Contact store for more details.
+                            </div>
+                        </div>
+                        <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'l--'}">
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Token limit reached.
+                            </div>
+                        </div>
+                        <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
                         <c:if test="${errorFound}">
                         <br/>
                         </c:if>

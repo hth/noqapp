@@ -14,7 +14,7 @@ public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
 
     TokenQueueEntity findByCodeQR(String codeQR);
 
-    TokenQueueEntity getNextToken(String codeQR);
+    TokenQueueEntity getNextToken(String codeQR, int availableTokenCount);
 
     TokenQueueEntity updateServing(String codeQR, int serving, QueueStatusEnum queueStatus);
 

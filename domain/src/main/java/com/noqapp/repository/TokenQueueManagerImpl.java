@@ -79,13 +79,22 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     }
 
     @Override
-    public TokenQueueEntity getNextToken(String codeQR) {
-        return mongoTemplate.findAndModify(
-            query(where("id").is(codeQR)),
-            new Update().inc("LN", 1),
-            FindAndModifyOptions.options().returnNew(true),
-            TokenQueueEntity.class,
-            TABLE);
+    public TokenQueueEntity getNextToken(String codeQR, int availableTokenCount) {
+        if (availableTokenCount > 0) {
+            return mongoTemplate.findAndModify(
+                query(where("id").is(codeQR).and("LN").lt(availableTokenCount)),
+                new Update().inc("LN", 1),
+                FindAndModifyOptions.options().returnNew(true),
+                TokenQueueEntity.class,
+                TABLE);
+        } else {
+            return mongoTemplate.findAndModify(
+                query(where("id").is(codeQR)),
+                new Update().inc("LN", 1),
+                FindAndModifyOptions.options().returnNew(true),
+                TokenQueueEntity.class,
+                TABLE);
+        }
     }
 
     @Override

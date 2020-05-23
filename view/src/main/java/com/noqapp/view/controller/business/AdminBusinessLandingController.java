@@ -912,7 +912,9 @@ public class AdminBusinessLandingController {
         if (!businessModificationService.isQueueStatusAtStart(businessUser.getBizName().getId())) {
             LOG.warn("Cannot migrate when business is still running. Should be set to {}", QueueStatusEnum.S);
 
-            migrateBusinessTypeForm.setMigrationSuccess(false);
+            migrateBusinessTypeForm
+                .setMigrationSuccess(false)
+                .setMigrationMessage("Cannot migrate during business hour. Best to migrate before start of the day.");
             redirectAttrs.addFlashAttribute("migrateBusinessTypeForm", migrateBusinessTypeForm);
             return "redirect:/business/migrateBusinessType.htm";
         }
@@ -923,7 +925,9 @@ public class AdminBusinessLandingController {
                 migrateBusinessTypeForm.getExistingBusinessType(),
                 migrateBusinessTypeForm.getAllowedMigrationBusinessType());
 
-            migrateBusinessTypeForm.setMigrationSuccess(true);
+            migrateBusinessTypeForm
+                .setMigrationSuccess(true)
+                .setMigrationMessage("Migration successful.");
             migrateBusinessTypeForm.setExistingBusinessType(migrateBusinessTypeForm.getAllowedMigrationBusinessType());
         }
 
@@ -932,7 +936,7 @@ public class AdminBusinessLandingController {
     }
 
     @PostMapping(value = "/migrateBusinessType", params = {"cancel_Migrate"})
-    public String initiateMigrationToBusinessType() {
+    public String cancelMigrationToBusinessType() {
         LOG.info("Loading business landing after user business migration cancelled");
         return "redirect:/business/landing.htm";
     }

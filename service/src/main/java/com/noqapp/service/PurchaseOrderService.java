@@ -225,7 +225,15 @@ public class PurchaseOrderService {
         }
 
         try {
-            TokenQueueEntity tokenQueue = tokenQueueService.getNextToken(codeQR);
+            TokenQueueEntity tokenQueue = tokenQueueService.getNextToken(codeQR, bizStore.getAvailableTokenCount());
+            if (tokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
+                return new JsonToken(codeQR, bizStore.getBusinessType())
+                    .setToken(0)
+                    .setServingNumber(0)
+                    .setDisplayName(bizStore.getDisplayName())
+                    .setQueueStatus(QueueStatusEnum.L)
+                    .setExpectedServiceBegin(new Date());
+            }
             LOG.info("Assigned order number with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
             Date expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
 
