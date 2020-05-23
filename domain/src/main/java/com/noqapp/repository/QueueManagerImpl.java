@@ -730,14 +730,4 @@ public class QueueManagerImpl implements QueueManager {
             TABLE
         );
     }
-
-    @Override
-    public void updateUnregisteredUserWithNameAndPhone(String codeQR, int tokenNumber, String customerName, String customerPhone) {
-        mongoTemplate.updateFirst(
-            query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
-            entityUpdate(update("CN", customerName).set("PH", customerPhone)),
-            QueueEntity.class,
-            TABLE
-        );
-    }
 }
