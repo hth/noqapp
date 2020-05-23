@@ -17,6 +17,7 @@ public class MigrateBusinessTypeForm {
 
     private boolean migrate;
     private boolean migrationSuccess;
+    private String migrationMessage;
 
     public BusinessTypeEnum getExistingBusinessType() {
         return existingBusinessType;
@@ -51,6 +52,15 @@ public class MigrateBusinessTypeForm {
 
     public MigrateBusinessTypeForm setMigrationSuccess(boolean migrationSuccess) {
         this.migrationSuccess = migrationSuccess;
+        return this;
+    }
+
+    public String getMigrationMessage() {
+        return migrationMessage;
+    }
+
+    public MigrateBusinessTypeForm setMigrationMessage(String migrationMessage) {
+        this.migrationMessage = migrationMessage;
         return this;
     }
 }
