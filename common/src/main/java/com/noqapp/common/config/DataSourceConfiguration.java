@@ -50,6 +50,7 @@ public class DataSourceConfiguration {
         ds.addDataSourceProperty("useSSL", false);
         ds.addDataSourceProperty("serverTimezone", "UTC");
         /* End of changes since new driver class. */
+        ds.setConnectionInitSql("SET NAMES utf8mb4");
         ds.setMaximumPoolSize(10);
         ds.setMinimumIdle(2);
         /* 30 seconds. */
