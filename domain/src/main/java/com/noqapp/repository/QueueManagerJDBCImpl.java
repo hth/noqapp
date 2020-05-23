@@ -154,8 +154,8 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             " FROM " +
             "QUEUE WHERE QR = ? AND RR = ?";
 
-    private static final String servicedOrCancelledInPastXDays =
-        "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? AND QS IN ('S', 'A') AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() LIMIT 1)";
+    private static final String servicedInPastXDays =
+        "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? AND QS = " + QueueUserStateEnum.S.name() + " AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() LIMIT 1)";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
@@ -400,9 +400,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     }
 
     @Override
-    public boolean hasServicedOrCancelledInPastXDays(String codeQR, String qid, int days) {
+    public boolean hasServicedInPastXDays(String codeQR, String qid, int days) {
         return jdbcTemplate.queryForObject(
-            servicedOrCancelledInPastXDays,
+            servicedInPastXDays,
             new Object[]{codeQR, qid, days},
             Boolean.class
         );

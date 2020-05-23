@@ -75,5 +75,5 @@ public interface QueueManagerJDBC {
 
     QueueEntity findOneHistoricalByRecordReferenceId(String codeQR, String recordReferenceId);
 
-    boolean hasServicedOrCancelledInPastXDays(String codeQR, String qid, int days);
+    boolean hasServicedInPastXDays(String codeQR, String qid, int days);
 }
