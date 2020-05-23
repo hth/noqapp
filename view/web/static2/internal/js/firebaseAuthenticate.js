@@ -29,6 +29,12 @@ var noQAuthentication = {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=a--#";
                 } else if (json['c'] === 'closed') {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=c--#";
+                } else if (json['c'] === 'before') {
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=b--#";
+                } else if (json['c'] === 'wait') {
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=x--#";
+                } else if (json['c'] === 'limit') {
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=l--#";
                 } else {
                     window.location = '/open/join/' + json['c'] + '/queueConfirm.htm';
                 }

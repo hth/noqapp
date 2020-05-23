@@ -160,8 +160,8 @@ public class TokenQueueService {
         return tokenQueueManager.findByCodeQR(codeQR);
     }
 
-    public TokenQueueEntity getNextToken(String codeQR) {
-        return tokenQueueManager.getNextToken(codeQR);
+    public TokenQueueEntity getNextToken(String codeQR, int availableTokenCount) {
+        return tokenQueueManager.getNextToken(codeQR, availableTokenCount);
     }
 
     public void deleteHard(TokenQueueEntity tokenQueue) {
@@ -193,7 +193,8 @@ public class TokenQueueService {
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
                 /* This condition exists only for non paid system. */
                 if (0 < bizStore.getBizName().getLimitServiceByDays()
-                    && queueManagerJDBC.hasServicedOrCancelledInPastXDays(codeQR, qid, bizStore.getBizName().getLimitServiceByDays())) {
+                    && StringUtils.isNotBlank(qid) //Remove this condition when un-registered user is removed
+                    && queueManagerJDBC.hasServicedInPastXDays(codeQR, qid, bizStore.getBizName().getLimitServiceByDays())) {
                     return new JsonToken(codeQR, bizStore.getBusinessType())
                         .setToken(0)
                         .setServingNumber(0)
@@ -228,7 +229,15 @@ public class TokenQueueService {
                 }
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
-                TokenQueueEntity tokenQueue = getNextToken(codeQR);
+                TokenQueueEntity tokenQueue = getNextToken(codeQR, bizStore.getAvailableTokenCount());
+                if (tokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
+                    return new JsonToken(codeQR, bizStore.getBusinessType())
+                        .setToken(0)
+                        .setServingNumber(0)
+                        .setDisplayName(bizStore.getDisplayName())
+                        .setQueueStatus(QueueStatusEnum.L)
+                        .setExpectedServiceBegin(new Date());
+                }
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
                 doActionBasedOnQueueStatus(codeQR, tokenQueue);
@@ -294,6 +303,18 @@ public class TokenQueueService {
                  * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
                  */
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+                /* This condition exists only for non paid system. */
+                if (0 < bizStore.getBizName().getLimitServiceByDays()
+                    && StringUtils.isNotBlank(qid) //Remove this condition when un-registered user is removed
+                    && queueManagerJDBC.hasServicedInPastXDays(codeQR, qid, bizStore.getBizName().getLimitServiceByDays())) {
+                    return new JsonToken(codeQR, bizStore.getBusinessType())
+                        .setToken(0)
+                        .setServingNumber(0)
+                        .setDisplayName(bizStore.getDisplayName())
+                        .setQueueStatus(QueueStatusEnum.X)
+                        .setExpectedServiceBegin(new Date());
+                }
+
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
                 DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
                 StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
@@ -321,6 +342,15 @@ public class TokenQueueService {
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
                 TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
+                if (tokenQueue.getLastNumber() >= bizStore.getAvailableTokenCount() && bizStore.getAvailableTokenCount() > 0) {
+                    return new JsonToken(codeQR, bizStore.getBusinessType())
+                        .setToken(0)
+                        .setServingNumber(0)
+                        .setDisplayName(bizStore.getDisplayName())
+                        .setQueueStatus(QueueStatusEnum.L)
+                        .setExpectedServiceBegin(new Date());
+                }
+                /* Since its a dummy number set before purchase there is a possibility of having more numbers than limit set. */
                 tokenQueue.setLastNumber(Integer.parseInt(LocalDateTime.now().format(DateUtil.DTF_HH_MM_SS_SSS)));
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
@@ -373,11 +403,21 @@ public class TokenQueueService {
         LOG.info("Updated Queue on Payment for codeQR={} transactionId={}", codeQR, transactionId);
         TokenQueueEntity existingStateOfTokenQueue = findByCodeQR(codeQR);
         QueueEntity queue = queueManager.findByTransactionId(codeQR, transactionId);
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
 
         TokenQueueEntity tokenQueue;
         if (queue.getTokenNumber() > existingStateOfTokenQueue.getLastNumber()) {
             //This means payment is being made when getting a new token.
-            TokenQueueEntity newTokenQueue = getNextToken(codeQR);
+            TokenQueueEntity newTokenQueue = getNextToken(codeQR, bizStore.getAvailableTokenCount());
+            if (newTokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
+                return new JsonToken(codeQR, bizStore.getBusinessType())
+                    .setToken(0)
+                    .setServingNumber(0)
+                    .setDisplayName(bizStore.getDisplayName())
+                    .setQueueStatus(QueueStatusEnum.L)
+                    .setExpectedServiceBegin(new Date());
+            }
+
             doActionBasedOnQueueStatus(codeQR, newTokenQueue);
             tokenQueue = newTokenQueue;
         } else {
@@ -390,7 +430,6 @@ public class TokenQueueService {
          * Find storeHour early, helps prevent issuing token when queue is closed or due to some obstruction.
          * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
          */
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
         DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);

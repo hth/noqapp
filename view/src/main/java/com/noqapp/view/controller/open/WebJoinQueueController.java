@@ -26,7 +26,9 @@ import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.exceptions.AuthorizedUserCanJoinQueueException;
 import com.noqapp.service.exceptions.BeforeStartOfStoreException;
+import com.noqapp.service.exceptions.LimitedPeriodException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
+import com.noqapp.service.exceptions.TokenAvailableLimitReachedException;
 import com.noqapp.view.form.WebJoinQueueForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 
@@ -60,7 +62,6 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import javax.mail.StoreClosedException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -308,14 +309,19 @@ public class WebJoinQueueController {
                     return String.format("{ \"c\" : \"%s\" }", Base64.getEncoder().encodeToString(combined.getBytes()));
                 }
 
-                if (bizStore.isAuthorizedUser()) {
-                    if (userProfile != null) {
-                        if (null == businessCustomerService.findByBusinessCustomerIdAndBizNameId(userProfile.getQueueUserId(), bizStore.getBizName().getId())) {
+                try {
+                    if (bizStore.isAuthorizedUser()) {
+                        if (userProfile != null) {
+                            if (null == businessCustomerService.findByBusinessCustomerIdAndBizNameId(userProfile.getQueueUserId(), bizStore.getBizName().getId())) {
+                                throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
+                            }
+                        } else {
                             throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
                         }
-                    } else {
-                        throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
                     }
+                } catch (AuthorizedUserCanJoinQueueException e) {
+                    LOG.error("Authorization required to join Web Queue reason={}", e.getLocalizedMessage(), e);
+                    return String.format("{ \"c\" : \"%s\" }", "auth");
                 }
 
                 String did = UUID.randomUUID().toString();
@@ -335,12 +341,30 @@ public class WebJoinQueueController {
                     TokenServiceEnum.W
                 );
 
-                switch (jsonToken.getQueueStatus()) {
-                    case C:
-                        throw new StoreDayClosedException("Store is closed today codeQR " + codeQRDecoded);
-                    case B:
-                        throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQRDecoded);
-                    default:
+                try {
+                    switch (jsonToken.getQueueStatus()) {
+                        case C:
+                            throw new StoreDayClosedException("Store is closed today codeQR " + codeQRDecoded);
+                        case B:
+                            throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQRDecoded);
+                        case X:
+                            throw new LimitedPeriodException("Please wait until set number of days before using this service");
+                        case L:
+                            throw new TokenAvailableLimitReachedException("Token limit reached");
+                        default:
+                    }
+                } catch (StoreDayClosedException e) {
+                    LOG.error("Failed joining queue store closed Web Queue reason={}", e.getLocalizedMessage(), e);
+                    return String.format("{ \"c\" : \"%s\" }", "closed");
+                } catch (BeforeStartOfStoreException e) {
+                    LOG.error("Failed joining queue as trying to join before store opens Web Queue reason={}", e.getLocalizedMessage(), e);
+                    return String.format("{ \"c\" : \"%s\" }", "before");
+                } catch (LimitedPeriodException e) {
+                    LOG.warn("Failed joining queue as limited join allowed qid={}, reason={}", userProfile.getQueueUserId(), e.getLocalizedMessage());
+                    return String.format("{ \"c\" : \"%s\" }", "wait");
+                } catch (TokenAvailableLimitReachedException e) {
+                    LOG.warn("Failed joining queue as token limit reached qid={}, reason={}", userProfile.getQueueUserId(), e.getLocalizedMessage());
+                    return String.format("{ \"c\" : \"%s\" }", "limit");
                 }
 
                 if (null != userProfile) {
@@ -373,12 +397,6 @@ public class WebJoinQueueController {
         } catch (IOException | ParseException e) {
             LOG.error("Failed Joining Web Queue reason={}", e.getLocalizedMessage(), e);
             throw e;
-        } catch (AuthorizedUserCanJoinQueueException e) {
-            LOG.error("Authorization required to join Web Queue reason={}", e.getLocalizedMessage(), e);
-            return String.format("{ \"c\" : \"%s\" }", "auth");
-        } catch (StoreDayClosedException | BeforeStartOfStoreException e) {
-            LOG.error("Store is closed cannot join Web Queue reason={}", e.getLocalizedMessage(), e);
-            return String.format("{ \"c\" : \"%s\" }", "closed");
         }
     }
 

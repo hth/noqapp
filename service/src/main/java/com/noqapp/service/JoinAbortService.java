@@ -28,6 +28,7 @@ import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
 import com.noqapp.service.exceptions.QueueAbortPaidPastDurationException;
 import com.noqapp.service.exceptions.LimitedPeriodException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
+import com.noqapp.service.exceptions.TokenAvailableLimitReachedException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -92,6 +93,7 @@ public class JoinAbortService {
     }
 
     @Mobile
+    @Deprecated
     public JsonToken joinQueue(String codeQR, String did, long averageServiceTime, TokenServiceEnum tokenService) {
         return joinQueue(codeQR, did, null, null, averageServiceTime, tokenService);
     }
@@ -108,7 +110,10 @@ public class JoinAbortService {
                 throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
             case X:
                 throw new LimitedPeriodException("Please wait until set number of days before using this service");
+            case L:
+                throw new TokenAvailableLimitReachedException("Token limit reached");
             default:
+                //Do nothing
         }
 
         return jsonToken;
@@ -124,7 +129,12 @@ public class JoinAbortService {
                 throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
             case B:
                 throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
+            case X:
+                throw new LimitedPeriodException("Please wait until set number of days before using this service");
+            case L:
+                throw new TokenAvailableLimitReachedException("Token limit reached");
             default:
+                //Do nothing
         }
 
         JsonPurchaseOrder jsonPurchaseOrder;
