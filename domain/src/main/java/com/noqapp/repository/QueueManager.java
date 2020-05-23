@@ -165,6 +165,4 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     Set<String> filterByDistinctCodeQR(String bizNameId);
 
     long countByBizNameId(String bizNameId);
-
-    void updateUnregisteredUserWithNameAndPhone(String codeQR, int tokenNumber, String customerName, String customerPhone);
 }
