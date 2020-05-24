@@ -35,6 +35,9 @@ public enum BusinessTypeEnum {
     CF("CF", "Cafeteria", O, "Store", OD),
     CFQ("CFQ", "Cafeteria (Queue Online)", Q, "Store", OQ),
 
+    CD("CD", "CSD", O, "Store", OD),
+    CDQ("CDQ", "CSD (Queue Online)", Q, "Store", OQ),
+
     SM("SM", "Shopping Mall", Q, "Queue", QQ),
     MT("MT", "Movie Theater", Q, "Queue", QQ),
     SC("SC", "School", Q, "Queue", QQ),
