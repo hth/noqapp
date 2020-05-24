@@ -13,6 +13,7 @@ import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.RegisteredDeviceManager;
@@ -310,7 +311,7 @@ public class WebJoinQueueController {
                 }
 
                 try {
-                    if (bizStore.isAuthorizedUser()) {
+                    if (bizStore.getBizName().getPriorityAccess() == OnOffEnum.O) {
                         if (userProfile != null) {
                             if (null == businessCustomerService.findByBusinessCustomerIdAndBizNameId(userProfile.getQueueUserId(), bizStore.getBizName().getId())) {
                                 throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
