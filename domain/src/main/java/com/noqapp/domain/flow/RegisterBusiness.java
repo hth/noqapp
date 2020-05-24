@@ -79,7 +79,7 @@ public class RegisterBusiness implements Serializable {
     private AddressOriginEnum addressStoreOrigin;
     private String bizCategoryId;
     private String famousFor;
-    private boolean remoteJoin;
+    private boolean remoteJoin = true;
     /* Now defaults to allow logged in user ONLY. */
     private boolean allowLoggedInUser = true;
     private int availableTokenCount;
