@@ -9,6 +9,7 @@ import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.PaymentPermissionEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 
@@ -148,6 +149,9 @@ public class BizNameEntity extends BaseEntity {
 
     @Field("BI")
     private Set<String> businessServiceImages = new LinkedHashSet<>();
+
+    @Field("PA")
+    private OnOffEnum priorityAccess = OnOffEnum.F;
 
     @Field("DV")
     private Map<String, DataVisibilityEnum> dataVisibilities = new HashMap<String, DataVisibilityEnum>() {{
@@ -503,6 +507,15 @@ public class BizNameEntity extends BaseEntity {
 
     public BizNameEntity addBusinessServiceImages(String businessServiceImage) {
         this.businessServiceImages.add(businessServiceImage);
+        return this;
+    }
+
+    public OnOffEnum getPriorityAccess() {
+        return priorityAccess;
+    }
+
+    public BizNameEntity setPriorityAccess(OnOffEnum priorityAccess) {
+        this.priorityAccess = priorityAccess;
         return this;
     }
 
