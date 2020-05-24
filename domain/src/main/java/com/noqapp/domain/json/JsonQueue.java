@@ -6,6 +6,7 @@ import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
@@ -129,6 +130,12 @@ public class JsonQueue extends AbstractDomain {
 
     @JsonProperty("as")
     private long averageServiceTime;
+
+    @JsonProperty("ls")
+    private int limitServiceByDays = 0;
+
+    @JsonProperty("pa")
+    private OnOffEnum priorityAccess = OnOffEnum.F;
 
     //***************************/
     //*  Queue Settings Starts. */
@@ -455,6 +462,24 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setAverageServiceTime(long averageServiceTime) {
         this.averageServiceTime = averageServiceTime;
+        return this;
+    }
+
+    public int getLimitServiceByDays() {
+        return limitServiceByDays;
+    }
+
+    public JsonQueue setLimitServiceByDays(int limitServiceByDays) {
+        this.limitServiceByDays = limitServiceByDays;
+        return this;
+    }
+
+    public OnOffEnum getPriorityAccess() {
+        return priorityAccess;
+    }
+
+    public JsonQueue setPriorityAccess(OnOffEnum priorityAccess) {
+        this.priorityAccess = priorityAccess;
         return this;
     }
 

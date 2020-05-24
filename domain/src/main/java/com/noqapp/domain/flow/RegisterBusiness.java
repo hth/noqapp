@@ -145,6 +145,14 @@ public class RegisterBusiness implements Serializable {
                             .setTokenNotAvailableFrom(1700)
                             .setEndHourStore(1800);
                         break;
+                    case CD:
+                    case CDQ:
+                        businessHour
+                            .setTokenAvailableFrom(830)
+                            .setStartHourStore(915)
+                            .setTokenNotAvailableFrom(1630)
+                            .setEndHourStore(1700);
+                        break;
                     default:
                         //Do Nothing for other business types. Default hours are 0.
                 }
