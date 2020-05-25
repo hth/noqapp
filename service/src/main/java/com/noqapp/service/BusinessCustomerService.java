@@ -1,11 +1,14 @@
 package com.noqapp.service;
 
-import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BusinessCustomerPriorityEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
+import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 import com.noqapp.repository.BizNameManager;
+import com.noqapp.repository.BusinessCustomerPriorityManager;
 import com.noqapp.repository.BusinessCustomerManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.UserProfileManager;
@@ -30,18 +33,21 @@ public class BusinessCustomerService {
     private UserProfileManager userProfileManager;
     private QueueManager queueManager;
     private BizNameManager bizNameManager;
+    private BusinessCustomerPriorityManager businessCustomerPriorityManager;
 
     @Autowired
     public BusinessCustomerService(
         BusinessCustomerManager businessCustomerManager,
         UserProfileManager userProfileManager,
         QueueManager queueManager,
-        BizNameManager bizNameManager
+        BizNameManager bizNameManager,
+        BusinessCustomerPriorityManager businessCustomerPriorityManager
     ) {
         this.businessCustomerManager = businessCustomerManager;
         this.userProfileManager = userProfileManager;
         this.queueManager = queueManager;
         this.bizNameManager = bizNameManager;
+        this.businessCustomerPriorityManager = businessCustomerPriorityManager;
     }
 
     /**
@@ -52,7 +58,8 @@ public class BusinessCustomerService {
         BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(
             qid,
             bizNameId,
-            businessCustomerId
+            businessCustomerId,
+            CustomerPriorityLevelEnum.I
         );
         businessCustomerManager.save(businessCustomer);
 
@@ -89,28 +96,33 @@ public class BusinessCustomerService {
         return businessCustomerManager.findOneByQid(qid, bizNameId);
     }
 
+    public BusinessCustomerEntity findOneByQidAndAttribute(String qid, String bizNameId, BusinessCustomerAttributeEnum businessCustomerAttribute) {
+        return businessCustomerManager.findOneByQidAndAttribute(qid, bizNameId, businessCustomerAttribute);
+    }
+
     @Mobile
     public BusinessCustomerEntity findOneByCustomerId(String businessCustomerId, String bizNameId) {
         return businessCustomerManager.findOneByCustomerId(businessCustomerId, bizNameId);
     }
 
     @Mobile
-    public boolean addAuthorizedUserForDoingBusiness(String inviteCode, String qid) {
-        if (StringUtils.isNotBlank(inviteCode)) {
-            switch (inviteCode.toUpperCase()) {
-                case "CSD@GURUGRAM":
-                    BizNameEntity bizName = bizNameManager.getById("5eb3b9c0017c222cd473dded");
-                    if (null != bizName) {
-                        BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(qid, bizName.getId(), qid);
-                        businessCustomerManager.save(businessCustomer);
-                        LOG.info("Authorized user created successfully qid={} bizName={} bizNameId={}", qid, bizName.getBusinessName(), bizName.getId());
-                    }
-                    return true;
-                default:
-                    return false;
-            }
+    public String addAuthorizedUserForDoingBusiness(String customerId, String bizNameId, String qid) {
+        if (StringUtils.isNotBlank(customerId)) {
+            BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(qid, bizNameId, customerId, CustomerPriorityLevelEnum.I);
+            businessCustomerManager.save(businessCustomer);
+            LOG.info("Authorized user created successfully qid={} bizNameId={}, customerId={}", qid, bizNameId, customerId);
+            return businessCustomer.getId();
         }
 
-        return false;
+        return null;
+    }
+
+    @Mobile
+    public void addBusinessCustomerAttribute(String businessCustomerId, BusinessCustomerAttributeEnum businessCustomerAttribute) {
+        businessCustomerManager.addBusinessCustomerAttribute(businessCustomerId, businessCustomerAttribute);
+    }
+
+    public void remove(BusinessCustomerEntity businessCustomer) {
+        businessCustomerManager.deleteHard(businessCustomer);
     }
 }

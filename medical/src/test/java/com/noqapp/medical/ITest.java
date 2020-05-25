@@ -33,6 +33,8 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BizStoreManagerImpl;
 import com.noqapp.repository.BusinessCustomerManager;
 import com.noqapp.repository.BusinessCustomerManagerImpl;
+import com.noqapp.repository.BusinessCustomerPriorityManager;
+import com.noqapp.repository.BusinessCustomerPriorityManagerImpl;
 import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.BusinessUserStoreManagerImpl;
@@ -184,6 +186,7 @@ public class ITest extends RealMongoForITest {
     protected InviteManager inviteManager;
     protected RegisteredDeviceManager registeredDeviceManager;
     protected BizNameManager bizNameManager;
+    protected BusinessCustomerPriorityManager businessCustomerPriorityManager;
     protected BizStoreManager bizStoreManager;
     protected StoreHourManager storeHourManager;
     protected BusinessUserStoreManager businessUserStoreManager;
@@ -266,6 +269,7 @@ public class ITest extends RealMongoForITest {
         medicalPathologyManager = new MedicalPathologyManagerImpl(getMongoTemplate());
         statsBizStoreDailyManager = new StatsBizStoreDailyManagerImpl(getMongoTemplate());
         couponManager = new CouponManagerImpl(getMongoTemplate());
+        businessCustomerPriorityManager = new BusinessCustomerPriorityManagerImpl(getMongoTemplate());
 
         userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
         firebaseMessageService = new FirebaseMessageService("", okHttpClient);
@@ -277,7 +281,8 @@ public class ITest extends RealMongoForITest {
             businessCustomerManager,
             userProfileManager,
             queueManager,
-            bizNameManager
+            bizNameManager,
+            businessCustomerPriorityManager
         );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
         couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);

@@ -27,6 +27,8 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BizStoreManagerImpl;
 import com.noqapp.repository.BusinessCustomerManager;
 import com.noqapp.repository.BusinessCustomerManagerImpl;
+import com.noqapp.repository.BusinessCustomerPriorityManager;
+import com.noqapp.repository.BusinessCustomerPriorityManagerImpl;
 import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.BusinessUserStoreManagerImpl;
@@ -121,6 +123,7 @@ public class ITest extends RealMongoForITest {
     protected UserMedicalProfileService userMedicalProfileService;
     protected TokenQueueService tokenQueueService;
     protected BusinessCustomerService businessCustomerService;
+    protected BusinessCustomerPriorityManager businessCustomerPriorityManager;
     protected ApiHealthService apiHealthService;
     protected FirebaseMessageService firebaseMessageService;
     protected BusinessUserService businessUserService;
@@ -222,6 +225,7 @@ public class ITest extends RealMongoForITest {
         statsCronManager = new StatsCronManagerImpl(getMongoTemplate());
         couponManager = new CouponManagerImpl(getMongoTemplate());
         customTextToSpeechManager = new CustomTextToSpeechManagerImpl(getMongoTemplate());
+        businessCustomerPriorityManager = new BusinessCustomerPriorityManagerImpl(getMongoTemplate());
 
         userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
         firebaseMessageService = new FirebaseMessageService("", okHttpClient);
@@ -233,7 +237,8 @@ public class ITest extends RealMongoForITest {
             businessCustomerManager,
             userProfileManager,
             queueManager,
-            bizNameManager
+            bizNameManager,
+            businessCustomerPriorityManager
         );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
         couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
