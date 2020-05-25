@@ -9,6 +9,7 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
+import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.PaymentPermissionEnum;
 
 import com.mongodb.client.DistinctIterable;
@@ -214,6 +215,16 @@ public final class BizNameManagerImpl implements BizNameManager {
         mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id)).and("BT").is(existingBusinessType)),
             update("BT", migrateToBusinessType),
+            BizNameEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void updatePriorityAccess(String id, OnOffEnum onOff) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(new ObjectId(id))),
+            update("PA", onOff),
             BizNameEntity.class,
             TABLE
         );
