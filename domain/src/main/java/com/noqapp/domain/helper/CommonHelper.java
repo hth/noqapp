@@ -3,6 +3,8 @@ package com.noqapp.domain.helper;
 import static java.util.stream.Collectors.toMap;
 
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.InvocationByEnum;
 import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
@@ -143,6 +145,10 @@ public class CommonHelper {
                     case BK:
                         categoryName = BankDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
                         break;
+                    case CD:
+                    case CDQ:
+                        categoryName = CanteenStoreDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
+                        break;
                     default:
                         categoryName = bizStore.getBizCategoryId();
                 }
@@ -151,6 +157,24 @@ public class CommonHelper {
             LOG.error("Failed getting category bizStoreId={} businessType{}", bizStore.getId(), bizStore.getBusinessType());
         }
         return categoryName;
+    }
+
+    @Mobile
+    public static BusinessCustomerAttributeEnum findBusinessCustomerAttribute(BizStoreEntity bizStore) {
+        try {
+            if (StringUtils.isNotBlank(bizStore.getBizCategoryId())) {
+                switch (bizStore.getBusinessType()) {
+                    case CD:
+                    case CDQ:
+                        return CanteenStoreDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getBusinessCustomerAttribute();
+                    default:
+                        throw new UnsupportedOperationException("Reached un-supported condition");
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Failed getting category bizStoreId={} businessType{}", bizStore.getId(), bizStore.getBusinessType());
+        }
+        return null;
     }
 
     public static String getBannerImage(BizStoreEntity bizStore) {
