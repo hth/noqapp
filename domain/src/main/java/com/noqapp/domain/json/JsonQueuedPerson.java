@@ -2,6 +2,8 @@ package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
+import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -16,11 +18,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 /**
@@ -100,6 +105,12 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     @JsonProperty("d")
     private String displayName;
+
+    @JsonProperty("pl")
+    private CustomerPriorityLevelEnum customerPriorityLevel = CustomerPriorityLevelEnum.I;
+
+    @JsonProperty("ca")
+    private Set<BusinessCustomerAttributeEnum> businessCustomerAttributes = new HashSet<>();
 
     public int getToken() {
         return token;
@@ -277,6 +288,24 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     public JsonQueuedPerson setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
+    }
+
+    public CustomerPriorityLevelEnum getCustomerPriorityLevel() {
+        return customerPriorityLevel;
+    }
+
+    public JsonQueuedPerson setCustomerPriorityLevel(CustomerPriorityLevelEnum customerPriorityLevel) {
+        this.customerPriorityLevel = customerPriorityLevel;
+        return this;
+    }
+
+    public Set<BusinessCustomerAttributeEnum> getBusinessCustomerAttributes() {
+        return businessCustomerAttributes;
+    }
+
+    public JsonQueuedPerson setBusinessCustomerAttributes(Set<BusinessCustomerAttributeEnum> businessCustomerAttributes) {
+        this.businessCustomerAttributes = businessCustomerAttributes;
         return this;
     }
 }
