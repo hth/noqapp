@@ -9,5 +9,8 @@ public enum ActionTypeEnum {
     EDIT,
     REMOVE,
     INACTIVE,
-    ACTIVE
+    ACTIVE,
+    APPROVE,
+    REJECT,
+    CLEAR,
 }
