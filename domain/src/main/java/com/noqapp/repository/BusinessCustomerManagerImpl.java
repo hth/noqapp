@@ -5,6 +5,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
+import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
 
 import com.mongodb.DuplicateKeyException;
 
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -55,7 +57,7 @@ public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
 
     @Override
     public void deleteHard(BusinessCustomerEntity object) {
-        throw new UnsupportedOperationException("Method not implemented");
+        mongoTemplate.remove(object);
     }
 
     @Override
@@ -73,6 +75,25 @@ public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
                 query(where("QID").is(qid).and("BN").is(bizNameId)),
                 BusinessCustomerEntity.class,
                 TABLE
+        );
+    }
+
+    @Override
+    public BusinessCustomerEntity findOneByQidAndAttribute(String qid, String bizNameId, BusinessCustomerAttributeEnum businessCustomerAttribute) {
+        return mongoTemplate.findOne(
+            query(where("QID").is(qid).and("BN").is(bizNameId).and("CA").all(businessCustomerAttribute)),
+            BusinessCustomerEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void addBusinessCustomerAttribute(String businessCustomerId, BusinessCustomerAttributeEnum businessCustomerAttribute) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(businessCustomerId)),
+            new Update().addToSet("CA", businessCustomerAttribute),
+            BusinessCustomerEntity.class,
+            TABLE
         );
     }
 }

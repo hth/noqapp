@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
+import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.PaymentPermissionEnum;
 
 import java.util.List;
@@ -78,5 +79,7 @@ public interface BizNameManager extends RepositoryManager<BizNameEntity> {
     void updatePaymentPermission(Map<String, PaymentPermissionEnum> paymentPermissions, String id);
 
     void changeBizNameBusinessType(String id, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType);
+
+    void updatePriorityAccess(String id, OnOffEnum onOff);
 }
 

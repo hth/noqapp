@@ -1,5 +1,25 @@
+### Change May 25 2020
+
+    // Removed Authorized User to store and moved to BizName
+    db.getCollection('BIZ_STORE').update({}, {$unset: {AU:false}}, {multi: true});
+    
+    db.getCollection('BIZ_NAME').update({}, {$set: {PA:"F"}}, {multi: true});
+    db.getCollection('BUSINESS_CUSTOMER').update({}, {$set: {PL:"I"}}, {multi: true});
+    
+    drop index business_customer_idx
+
+### Change May 18 2020
+
+    //Email migrated to AWS and has to reset to send out pending mails. 
+    db.getCollection('MAIL').find({"MS" : "F"}).count()
+    db.getCollection('MAIL').update({"MS" : "F"}, {$set: {"MS":"N"}}, {multi: true});
+
+    // Added Authorized User to store
+    db.getCollection('BIZ_STORE').update({}, {$set: {AU:false}}, {multi: true});
+
 ### Change May 17 2020
 
+    // Limited Service by Days
     db.getCollection('BIZ_NAME').update({}, {$set: {"LS":NumberInt(0)}}, {multi: true});
 
 ### Change May 8 2020

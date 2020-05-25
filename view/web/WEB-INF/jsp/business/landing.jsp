@@ -44,6 +44,7 @@
                         <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
                         <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
                         <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/customer/landing.htm">Service Priority</a>
                         <a href="${pageContext.request.contextPath}/business/customerHistory/landing.htm">Customer Lookup</a>
                         <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
@@ -86,6 +87,8 @@
                                     || BusinessTypeEnum.GSQ eq businessLandingForm.businessType
                                     || BusinessTypeEnum.CF eq businessLandingForm.businessType
                                     || BusinessTypeEnum.CFQ eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.CD eq store.businessType
+                                    || BusinessTypeEnum.CDQ eq store.businessType
                                     }">
                                         <c:if test="${businessLandingForm.bizStores.size() != 0}">
                                             <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
@@ -167,6 +170,8 @@
                                                         || BusinessTypeEnum.GSQ eq store.businessType
                                                         || BusinessTypeEnum.CF eq store.businessType
                                                         || BusinessTypeEnum.CFQ eq store.businessType
+                                                        || BusinessTypeEnum.CD eq store.businessType
+                                                        || BusinessTypeEnum.CDQ eq store.businessType
                                                         }">
                                                             <span style="display:block; font-size:13px;">&nbsp;</span>
                                                         </c:when>
