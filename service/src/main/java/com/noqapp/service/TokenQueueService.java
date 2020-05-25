@@ -563,7 +563,9 @@ public class TokenQueueService {
             BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, queue.getBizNameId());
             if (null != businessCustomer) {
                 queue.setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
-                    .setBusinessCustomerIdChangeCount(businessCustomer.getVersion());
+                    .setBusinessCustomerIdChangeCount(businessCustomer.getVersion())
+                    .setCustomerPriorityLevel(businessCustomer.getCustomerPriorityLevel())
+                    .setBusinessCustomerAttributes(businessCustomer.getBusinessCustomerAttributes());
             } else {
                 queue.setBusinessCustomerId(null)
                     .setBusinessCustomerIdChangeCount(0);

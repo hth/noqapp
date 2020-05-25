@@ -1,6 +1,8 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
@@ -14,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.StringJoiner;
 
 import javax.validation.constraints.NotNull;
@@ -131,6 +134,12 @@ public class QueueEntity extends BaseEntity {
 
     @Field("TI")
     private String transactionId;
+
+    @Field("PL")
+    private CustomerPriorityLevelEnum customerPriorityLevel;
+
+    @Field("CA")
+    private Set<BusinessCustomerAttributeEnum> businessCustomerAttributes;
 
     @SuppressWarnings("unused")
     public QueueEntity() {
@@ -398,6 +407,24 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+        return this;
+    }
+
+    public CustomerPriorityLevelEnum getCustomerPriorityLevel() {
+        return customerPriorityLevel;
+    }
+
+    public QueueEntity setCustomerPriorityLevel(CustomerPriorityLevelEnum customerPriorityLevel) {
+        this.customerPriorityLevel = customerPriorityLevel;
+        return this;
+    }
+
+    public Set<BusinessCustomerAttributeEnum> getBusinessCustomerAttributes() {
+        return businessCustomerAttributes;
+    }
+
+    public QueueEntity setBusinessCustomerAttributes(Set<BusinessCustomerAttributeEnum> businessCustomerAttributes) {
+        this.businessCustomerAttributes = businessCustomerAttributes;
         return this;
     }
 
