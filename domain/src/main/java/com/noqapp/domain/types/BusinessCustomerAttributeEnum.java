@@ -7,7 +7,7 @@ package com.noqapp.domain.types;
 public enum BusinessCustomerAttributeEnum {
     AP("AP", "Approved"),
     RJ("RJ", "Reject"),
-    GY("GY", "Grocery"),
+    GR("GY", "Grocery"),
     LQ("LQ", "Liquor");
 
     private final String description;

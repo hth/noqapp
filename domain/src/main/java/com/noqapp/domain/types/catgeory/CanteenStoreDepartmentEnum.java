@@ -1,6 +1,6 @@
 package com.noqapp.domain.types.catgeory;
 
-import static com.noqapp.domain.types.BusinessCustomerAttributeEnum.GY;
+import static com.noqapp.domain.types.BusinessCustomerAttributeEnum.GR;
 import static com.noqapp.domain.types.BusinessCustomerAttributeEnum.LQ;
 
 import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
@@ -11,12 +11,12 @@ import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
  */
 public enum CanteenStoreDepartmentEnum {
 
-    GA("GA", "Grocery Serving", GY),
-    GR("GR", "Grocery Ex-Servicemen", GY),
-    GO("GO", "Grocery Officers", GY),
-    LA("LA", "Liquor Serving", LQ),
-    LR("LR", "Liquor Ex-Servicemen", LQ),
-    LO("LO", "Liquor Officers", LQ);
+    SG("SG", "Serving Grocery", GR),
+    EG("EG", "Ex-Servicemen Grocery", GR),
+    OG("OG", "Officers Grocery", GR),
+    SL("SL", "Serving Liquor", LQ),
+    EL("EL", "Ex-Servicemen Liquor", LQ),
+    OL("OL", "Officers Liquor", LQ);
 
     private final String description;
     private final String name;
