@@ -97,7 +97,11 @@ public class BusinessCustomerService {
     }
 
     public BusinessCustomerEntity findOneByQidAndAttribute(String qid, String bizNameId, BusinessCustomerAttributeEnum businessCustomerAttribute) {
-        return businessCustomerManager.findOneByQidAndAttribute(qid, bizNameId, businessCustomerAttribute);
+        if (null == businessCustomerAttribute) {
+            return findOneByQid(qid, bizNameId);
+        } else {
+            return businessCustomerManager.findOneByQidAndAttribute(qid, bizNameId, businessCustomerAttribute);
+        }
     }
 
     @Mobile
