@@ -136,6 +136,8 @@ public class TextToSpeechService {
             case BAQ:
             case ST:
             case STQ:
+            case CD:
+            case CDQ:
             case SM:
             case MT:
             case SC:
