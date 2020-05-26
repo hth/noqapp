@@ -37,6 +37,7 @@ public enum MobileSystemErrorCodeEnum {
     QUEUE_NOT_STARTED("3101", ALERT),
     QUEUE_NOT_RE_STARTED("3102", ALERT),
     QUEUE_AUTHORIZED_ONLY("3401", ALERT),
+    QUEUE_JOINING_IN_AUTHORIZED_QUEUE("3402", ALERT),
 
     /** User related. */
     USER_EXISTING("4010", ALERT),
