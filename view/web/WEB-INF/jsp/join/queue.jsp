@@ -109,6 +109,15 @@
                         <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'aq--'}">
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Joining un-authorized queue. Please select the correct queue.
+                            </div>
+                        </div>
+                        <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
                         <c:if test="${!empty param.joinFailure and param.joinFailure eq 'c--'}">
                         <div class="error-box">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">

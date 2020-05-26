@@ -27,6 +27,8 @@ var noQAuthentication = {
                 let json = $.parseJSON(data);
                 if (json['c'] === 'auth') {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=a--#";
+                } else if (json['c'] === 'auth_queue') {
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=aq--#";
                 } else if (json['c'] === 'closed') {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=c--#";
                 } else if (json['c'] === 'before') {
