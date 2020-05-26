@@ -8,8 +8,8 @@ import java.util.Map;
  * 5/24/20 12:25 PM
  */
 public enum CustomerPriorityLevelEnum {
-    I("I", "Cast Iron (0)", "FFFFFF"),
-    S("S", "Silver (1)", "B1D877"),
+    I("I", "Cast Iron (0)", "B4CDDF"),
+    S("S", "Silver (1)", "D66E53"),
     G("G", "Gold (2)", "8CDCDA"),
     P("P", "Platinum (3)", "F16A70"),
     R("R", "Unobtainium (Highest)", "4D4D4D");
