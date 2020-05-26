@@ -126,11 +126,20 @@ public class BusinessCustomerService {
         businessCustomerManager.addBusinessCustomerAttribute(businessCustomerId, businessCustomerAttribute);
     }
 
+    @Deprecated
     public void remove(BusinessCustomerEntity businessCustomer) {
         businessCustomerManager.deleteHard(businessCustomer);
     }
 
     public void save(BusinessCustomerEntity businessCustomer) {
         businessCustomerManager.save(businessCustomer);
+    }
+
+    public void rejectBusinessCustomer(String qid, String bizNameId) {
+        businessCustomerManager.rejectBusinessCustomer(qid, bizNameId);
+    }
+
+    public void clearBusinessCustomer(String qid, String bizNameId) {
+        businessCustomerManager.clearBusinessCustomer(qid, bizNameId);
     }
 }
