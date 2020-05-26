@@ -26,6 +26,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessCustomerService;
 import com.noqapp.service.FirebaseService;
+import com.noqapp.service.JoinAbortService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.TokenQueueService;
@@ -123,7 +124,7 @@ public class WebJoinQueueController {
     private GeoIPLocationService geoIPLocationService;
     private RegisteredDeviceManager registeredDeviceManager;
     private FirebaseService firebaseService;
-    private BusinessCustomerService businessCustomerService;
+    private JoinAbortService joinAbortService;
 
     @Autowired
     public WebJoinQueueController(
@@ -135,7 +136,7 @@ public class WebJoinQueueController {
         GeoIPLocationService geoIPLocationService,
         RegisteredDeviceManager registeredDeviceManager,
         FirebaseService firebaseService,
-        BusinessCustomerService businessCustomerService
+        JoinAbortService joinAbortService
     ) {
         this.bizService = bizService;
         this.showHTMLService = showHTMLService;
@@ -145,7 +146,7 @@ public class WebJoinQueueController {
         this.geoIPLocationService = geoIPLocationService;
         this.registeredDeviceManager = registeredDeviceManager;
         this.firebaseService = firebaseService;
-        this.businessCustomerService = businessCustomerService;
+        this.joinAbortService = joinAbortService;
     }
 
     /**
@@ -316,25 +317,7 @@ public class WebJoinQueueController {
                 }
 
                 try {
-                    if (bizStore.getBizName().getPriorityAccess() == OnOffEnum.O) {
-                        if (userProfile != null) {
-                            BusinessCustomerEntity businessCustomerEntity = businessCustomerService.findOneByQid(userProfile.getQueueUserId(), bizStore.getBizName().getId());
-                            if (null == businessCustomerEntity) {
-                                throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
-                            } else {
-                                switch (bizStore.getBusinessType()) {
-                                    case CD:
-                                    case CDQ:
-                                        if (!businessCustomerEntity.getBusinessCustomerAttributes().contains(CommonHelper.findBusinessCustomerAttribute(bizStore))) {
-                                            throw new JoiningNonAuthorizedQueueException("Please select the authorized queue");
-                                        }
-                                        break;
-                                }
-                            }
-                        } else {
-                            throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
-                        }
-                    }
+                    joinAbortService.checkCustomerApprovedForTheQueue(userProfile.getQueueUserId(), bizStore);
                 } catch (AuthorizedUserCanJoinQueueException e) {
                     LOG.error("Authorization required to join Web Queue reason={}", e.getLocalizedMessage(), e);
                     return String.format("{ \"c\" : \"%s\" }", "auth");
@@ -343,18 +326,18 @@ public class WebJoinQueueController {
                     return String.format("{ \"c\" : \"%s\" }", "auth_queue");
                 }
 
+                /* Register device, which happens to be web. */
                 String did = UUID.randomUUID().toString();
                 RegisteredDeviceEntity registeredDevice = null;
-                if (null != userProfile) {
-                    registeredDevice = registeredDeviceManager.findRecentDevice(userProfile.getQueueUserId());
-                    if (null != registeredDevice) {
-                        did = registeredDevice.getDeviceId();
-                    }
+                registeredDevice = registeredDeviceManager.findRecentDevice(userProfile.getQueueUserId());
+                if (null != registeredDevice) {
+                    did = registeredDevice.getDeviceId();
                 }
+
                 jsonToken = tokenQueueService.getNextToken(
                     codeQRDecoded,
                     did,
-                    null != userProfile ? userProfile.getQueueUserId() : null,
+                    userProfile.getQueueUserId(),
                     null,
                     bizStore.getAverageServiceTime(),
                     TokenServiceEnum.W

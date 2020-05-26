@@ -5,12 +5,14 @@ import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.common.ComposeMessagesForFCM;
+import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonPurchaseOrder;
 import com.noqapp.domain.json.JsonPurchaseOrderProduct;
 import com.noqapp.domain.json.JsonResponse;
@@ -18,10 +20,13 @@ import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.domain.types.DeliveryModeEnum;
+import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 import com.noqapp.repository.QueueManager;
+import com.noqapp.service.exceptions.AuthorizedUserCanJoinQueueException;
 import com.noqapp.service.exceptions.BeforeStartOfStoreException;
+import com.noqapp.service.exceptions.JoiningNonAuthorizedQueueException;
 import com.noqapp.service.exceptions.PurchaseOrderCancelException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
@@ -61,6 +66,7 @@ public class JoinAbortService {
     private QueueManager queueManager;
     private PurchaseOrderProductService purchaseOrderProductService;
     private BizService bizService;
+    private BusinessCustomerService businessCustomerService;
     private FirebaseMessageService firebaseMessageService;
 
     private ExecutorService executorService;
@@ -76,6 +82,7 @@ public class JoinAbortService {
         QueueManager queueManager,
         PurchaseOrderProductService purchaseOrderProductService,
         BizService bizService,
+        BusinessCustomerService businessCustomerService,
         FirebaseMessageService firebaseMessageService
     ) {
         this.preventPaidAbortBeforeHours = preventPaidAbortBeforeHours;
@@ -86,6 +93,7 @@ public class JoinAbortService {
         this.queueManager = queueManager;
         this.purchaseOrderProductService = purchaseOrderProductService;
         this.bizService = bizService;
+        this.businessCustomerService = businessCustomerService;
         this.firebaseMessageService = firebaseMessageService;
 
         /* For executing in order of sequence. */
@@ -286,5 +294,29 @@ public class JoinAbortService {
     public void deleteReferenceToTransactionId(String codeQR, String transactionId) {
         queueManager.deleteReferenceToTransactionId(codeQR, transactionId);
         purchaseOrderService.deleteReferenceToTransactionId(transactionId);
+    }
+
+    @Mobile
+    public void checkCustomerApprovedForTheQueue(String qid, BizStoreEntity bizStore) {
+        if (bizStore.getBizName().getPriorityAccess() == OnOffEnum.O) {
+            switch (bizStore.getBusinessType()) {
+                case CD:
+                case CDQ:
+                    BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQidAndAttribute(qid, bizStore.getBizName().getId(), CommonHelper.findBusinessCustomerAttribute(bizStore));
+                    if (null == businessCustomer) {
+                        throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
+                    }
+
+                    if (!businessCustomer.getBusinessCustomerAttributes().contains(CommonHelper.findBusinessCustomerAttribute(bizStore))) {
+                        throw new JoiningNonAuthorizedQueueException("Please select the authorized queue");
+                    }
+                    break;
+                default:
+                    businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
+                    if (null == businessCustomer) {
+                        throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
+                    }
+            }
+        }
     }
 }
