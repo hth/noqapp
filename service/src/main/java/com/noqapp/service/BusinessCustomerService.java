@@ -129,4 +129,8 @@ public class BusinessCustomerService {
     public void remove(BusinessCustomerEntity businessCustomer) {
         businessCustomerManager.deleteHard(businessCustomer);
     }
+
+    public void save(BusinessCustomerEntity businessCustomer) {
+        businessCustomerManager.save(businessCustomer);
+    }
 }
