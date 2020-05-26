@@ -9,6 +9,8 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
+import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
@@ -729,5 +731,29 @@ public class QueueManagerImpl implements QueueManager {
             QueueEntity.class,
             TABLE
         );
+    }
+
+    public void updateCustomerPriorityAndCustomerAttributes(
+        String qid,
+        String codeQR,
+        int tokenNumber,
+        CustomerPriorityLevelEnum customerPriorityLevel,
+        BusinessCustomerAttributeEnum businessCustomerAttribute
+    ) {
+        if (null != businessCustomerAttribute) {
+            mongoTemplate.updateFirst(
+                query(where("QID").is(qid).and("QR").is(codeQR).and("TN").is(tokenNumber)),
+                entityUpdate(update("PL", customerPriorityLevel).addToSet("CA", businessCustomerAttribute)),
+                QueueEntity.class,
+                TABLE
+            );
+        } else {
+            mongoTemplate.updateFirst(
+                query(where("QID").is(qid).and("QR").is(codeQR).and("TN").is(tokenNumber)),
+                new Update().unset("PL").unset("CA"),
+                QueueEntity.class,
+                TABLE
+            );
+        }
     }
 }

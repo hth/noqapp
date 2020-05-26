@@ -2,6 +2,8 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
+import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
@@ -165,4 +167,12 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     Set<String> filterByDistinctCodeQR(String bizNameId);
 
     long countByBizNameId(String bizNameId);
+
+    void updateCustomerPriorityAndCustomerAttributes(
+        String qid,
+        String codeQR,
+        int tokenNumber,
+        CustomerPriorityLevelEnum customerPriorityLevel,
+        BusinessCustomerAttributeEnum businessCustomerAttribute
+    );
 }

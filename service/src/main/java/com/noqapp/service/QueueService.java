@@ -23,6 +23,8 @@ import com.noqapp.domain.stats.HealthCareStat;
 import com.noqapp.domain.stats.HealthCareStatList;
 import com.noqapp.domain.stats.NewRepeatCustomers;
 import com.noqapp.domain.stats.YearlyData;
+import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
+import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
@@ -50,6 +52,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -632,5 +635,16 @@ public class QueueService {
     @Mobile
     public QueueEntity findByTransactionId(String codeQR, String transactionId, String qid) {
         return queueManager.findByTransactionId(codeQR, transactionId, qid);
+    }
+
+    @Mobile
+    public void updateCustomerPriorityAndCustomerAttributes(
+        String qid,
+        String codeQR,
+        int tokenNumber,
+        CustomerPriorityLevelEnum customerPriorityLevel,
+        BusinessCustomerAttributeEnum businessCustomerAttribute
+    ) {
+        queueManager.updateCustomerPriorityAndCustomerAttributes(qid, codeQR, tokenNumber, customerPriorityLevel, businessCustomerAttribute);
     }
 }
