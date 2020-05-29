@@ -135,10 +135,6 @@ public class BusinessCustomerService {
         businessCustomerManager.save(businessCustomer);
     }
 
-    public void rejectBusinessCustomer(String qid, String bizNameId) {
-        businessCustomerManager.rejectBusinessCustomer(qid, bizNameId);
-    }
-
     public void clearBusinessCustomer(String qid, String bizNameId) {
         businessCustomerManager.clearBusinessCustomer(qid, bizNameId);
     }

@@ -25,10 +25,12 @@ var noQAuthentication = {
             data: $("#webJoinQueue").serialize(),
             success: function (data) {
                 let json = $.parseJSON(data);
-                if (json['c'] === 'auth') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=a--#";
-                } else if (json['c'] === 'auth_queue') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=aq--#";
+                if (json['c'] === 'pre-approved-req') {
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=par--#";
+                } else if (json['c'] === 'non-approved') {
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=na--#";
+                } else if (json['c'] === 'denied-joining-queue') {
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=djq--#";
                 } else if (json['c'] === 'closed') {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=c--#";
                 } else if (json['c'] === 'before') {

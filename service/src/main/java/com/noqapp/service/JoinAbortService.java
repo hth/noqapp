@@ -19,14 +19,16 @@ import com.noqapp.domain.json.JsonResponse;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
+import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 import com.noqapp.repository.QueueManager;
-import com.noqapp.service.exceptions.AuthorizedUserCanJoinQueueException;
+import com.noqapp.service.exceptions.JoiningQueuePreApprovedRequiredException;
 import com.noqapp.service.exceptions.BeforeStartOfStoreException;
-import com.noqapp.service.exceptions.JoiningNonAuthorizedQueueException;
+import com.noqapp.service.exceptions.JoiningNonApprovedQueueException;
+import com.noqapp.service.exceptions.JoiningQueuePermissionDeniedException;
 import com.noqapp.service.exceptions.PurchaseOrderCancelException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
@@ -304,17 +306,21 @@ public class JoinAbortService {
                 case CDQ:
                     BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQidAndAttribute(qid, bizStore.getBizName().getId(), CommonHelper.findBusinessCustomerAttribute(bizStore));
                     if (null == businessCustomer) {
-                        throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
+                        throw new JoiningQueuePreApprovedRequiredException("Store has to pre-approve. Please register before joining the queue.");
                     }
 
                     if (!businessCustomer.getBusinessCustomerAttributes().contains(CommonHelper.findBusinessCustomerAttribute(bizStore))) {
-                        throw new JoiningNonAuthorizedQueueException("Please select the authorized queue");
+                        throw new JoiningNonApprovedQueueException("This queue is not approved. Select correct pre-approved queue.");
+                    }
+
+                    if (businessCustomer.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.RJ)) {
+                        throw new JoiningQueuePermissionDeniedException("Business has prevented you from joining this queue. Please contact store.");
                     }
                     break;
                 default:
                     businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
                     if (null == businessCustomer) {
-                        throw new AuthorizedUserCanJoinQueueException("Store has to authorize for joining the queue. Contact store for access.");
+                        throw new JoiningQueuePreApprovedRequiredException("Store has to authorize for joining the queue. Contact store for access.");
                     }
             }
         }

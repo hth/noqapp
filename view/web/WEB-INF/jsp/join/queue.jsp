@@ -100,22 +100,31 @@
                         <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
-                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'a--'}">
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'par--'}">
                         <div class="error-box">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                Approval required to access store. Please contact store.
+                                Store has to pre-approve. Please complete pre-approval before joining the queue.
                             </div>
                         </div>
                         <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
-                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'aq--'}">
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'na--'}">
                         <div class="error-box">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                Joining un-authorized queue. Please select the correct queue.
+                                This queue is not approved. Select correct pre-approved queue.
                             </div>
                         </div>
                         <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'djq--'}">
+                            <div class="error-box">
+                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                    Business has denied you from joining. Please contact business for approval.
+                                </div>
+                            </div>
+                            <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
                         <c:if test="${!empty param.joinFailure and param.joinFailure eq 'c--'}">

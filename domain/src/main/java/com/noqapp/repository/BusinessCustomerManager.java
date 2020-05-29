@@ -17,7 +17,5 @@ public interface BusinessCustomerManager extends RepositoryManager<BusinessCusto
 
     void addBusinessCustomerAttribute(String businessCustomerId, BusinessCustomerAttributeEnum businessCustomerAttribute);
 
-    void rejectBusinessCustomer(String qid, String bizNameId);
-
     void clearBusinessCustomer(String qid, String bizNameId);
 }
