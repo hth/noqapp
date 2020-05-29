@@ -98,16 +98,6 @@ public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
     }
 
     @Override
-    public void rejectBusinessCustomer(String qid, String bizNameId) {
-        mongoTemplate.updateMulti(
-            query(where("QID").is(qid).and("BN").is(bizNameId)),
-            new Update().addToSet("CA", BusinessCustomerAttributeEnum.RJ),
-            BusinessCustomerEntity.class,
-            TABLE
-        );
-    }
-
-    @Override
     public void clearBusinessCustomer(String qid, String bizNameId) {
         mongoTemplate.remove(
             query(where("QID").is(qid).and("BN").is(bizNameId)),

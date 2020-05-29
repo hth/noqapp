@@ -1,38 +1,33 @@
 package com.noqapp.view.controller.open;
 
-import static com.noqapp.common.errors.MobileSystemErrorCodeEnum.QUEUE_JOINING_IN_AUTHORIZED_QUEUE;
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
-import com.noqapp.common.errors.ErrorEncounteredJson;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.MessageOriginEnum;
-import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.search.elastic.service.GeoIPLocationService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
-import com.noqapp.service.BusinessCustomerService;
 import com.noqapp.service.FirebaseService;
 import com.noqapp.service.JoinAbortService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.TokenQueueService;
-import com.noqapp.service.exceptions.AuthorizedUserCanJoinQueueException;
 import com.noqapp.service.exceptions.BeforeStartOfStoreException;
-import com.noqapp.service.exceptions.JoiningNonAuthorizedQueueException;
+import com.noqapp.service.exceptions.JoiningNonApprovedQueueException;
+import com.noqapp.service.exceptions.JoiningQueuePermissionDeniedException;
+import com.noqapp.service.exceptions.JoiningQueuePreApprovedRequiredException;
 import com.noqapp.service.exceptions.LimitedPeriodException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.TokenAvailableLimitReachedException;
@@ -318,12 +313,15 @@ public class WebJoinQueueController {
 
                 try {
                     joinAbortService.checkCustomerApprovedForTheQueue(userProfile.getQueueUserId(), bizStore);
-                } catch (AuthorizedUserCanJoinQueueException e) {
-                    LOG.error("Authorization required to join Web Queue reason={}", e.getLocalizedMessage(), e);
-                    return String.format("{ \"c\" : \"%s\" }", "auth");
-                } catch (JoiningNonAuthorizedQueueException e) {
-                    LOG.warn("Only approved users allowed reason={}", e.getLocalizedMessage());
-                    return String.format("{ \"c\" : \"%s\" }", "auth_queue");
+                } catch (JoiningQueuePreApprovedRequiredException e) {
+                    LOG.warn("Store has to pre-approve reason={}", e.getLocalizedMessage());
+                    return String.format("{ \"c\" : \"%s\" }", "pre-approved-req");
+                } catch (JoiningNonApprovedQueueException e) {
+                    LOG.warn("This queue is not approved reason={}", e.getLocalizedMessage());
+                    return String.format("{ \"c\" : \"%s\" }", "non-approved");
+                } catch (JoiningQueuePermissionDeniedException e) {
+                    LOG.warn("Store has denied joining queue reason={}", e.getLocalizedMessage());
+                    return String.format("{ \"c\" : \"%s\" }", "denied-joining-queue");
                 }
 
                 /* Register device, which happens to be web. */

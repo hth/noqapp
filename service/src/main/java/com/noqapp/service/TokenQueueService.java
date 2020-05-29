@@ -15,6 +15,7 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
@@ -560,7 +561,8 @@ public class TokenQueueService {
             }
 
             /* Add business customer id if any associated with qid and codeQR. */
-            BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQid(qid, queue.getBizNameId());
+            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
+            BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQidAndAttribute(qid, queue.getBizNameId(), CommonHelper.findBusinessCustomerAttribute(bizStore));
             if (null != businessCustomer) {
                 queue.setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
                     .setBusinessCustomerIdChangeCount(businessCustomer.getVersion())
