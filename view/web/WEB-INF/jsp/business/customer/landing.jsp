@@ -130,7 +130,7 @@
                                                     <form:select path="priorityLevel" cssClass="form-field-select single-dropdown"
                                                             cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
                                                         <form:option value="" label="--- Select ---"/>
-                                                        <form:options items="${customerPriorityLevels}" itemValue="name" itemLabel="description" />
+                                                        <form:options items="${businessCustomerPriorityForm.customerPriorityLevels}" />
                                                     </form:select>
                                                     <span class="info-txt">(Low to High Priority. 1 is low and 10 is high. Default priority is 0.)</span>
                                                 </div>
@@ -166,7 +166,7 @@
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
                                                     <td>${businessCustomerPriority.priorityName}</td>
-                                                    <td>${businessCustomerPriority.customerPriorityLevel}</td>
+                                                    <td>${businessCustomerPriority.customerPriorityLevel.description}</td>
                                                 </tr>
                                                 </c:forEach>
                                             </table>
