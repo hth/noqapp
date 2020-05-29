@@ -1,3 +1,10 @@
+### Change May 26 2020
+    
+    ALTER DATABASE noqapp CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+    
+    ALTER TABLE QUEUE CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    ALTER TABLE PURCHASE_ORDER CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 ### Change May 25 2020
 
     // Removed Authorized User to store and moved to BizName

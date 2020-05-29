@@ -48,6 +48,9 @@ public class BusinessCustomerEntity extends BaseEntity {
     @Field("CA")
     private Set<BusinessCustomerAttributeEnum> businessCustomerAttributes = new HashSet<>();
 
+    @Field("LC")
+    private String limitBusinessCategory;
+
     public BusinessCustomerEntity(
         String queueUserId,
         String bizNameId,
@@ -97,6 +100,15 @@ public class BusinessCustomerEntity extends BaseEntity {
 
     public BusinessCustomerEntity addBusinessCustomerAttributes(BusinessCustomerAttributeEnum businessCustomerAttribute) {
         this.businessCustomerAttributes.add(businessCustomerAttribute);
+        return this;
+    }
+
+    public String getLimitBusinessCategory() {
+        return limitBusinessCategory;
+    }
+
+    public BusinessCustomerEntity setLimitBusinessCategory(String limitBusinessCategory) {
+        this.limitBusinessCategory = limitBusinessCategory;
         return this;
     }
 }

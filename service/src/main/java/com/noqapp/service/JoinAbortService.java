@@ -309,7 +309,7 @@ public class JoinAbortService {
                         throw new JoiningQueuePreApprovedRequiredException("Store has to pre-approve. Please register before joining the queue.");
                     }
 
-                    if (!businessCustomer.getBusinessCustomerAttributes().contains(CommonHelper.findBusinessCustomerAttribute(bizStore))) {
+                    if (StringUtils.isNotBlank(businessCustomer.getLimitBusinessCategory()) && !businessCustomer.getLimitBusinessCategory().equalsIgnoreCase(bizStore.getBizCategoryId())) {
                         throw new JoiningNonApprovedQueueException("This queue is not approved. Select correct pre-approved queue.");
                     }
 

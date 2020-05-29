@@ -25,6 +25,7 @@ public class BusinessCustomerPriorityForm {
     private Map<String, String> onOffTypes = OnOffEnum.asMapWithNameAsKey();
     private Map<String, String> customerPriorityLevels = CustomerPriorityLevelEnum.asMapWithNameAsKey();
 
+    /** Existing priorities. */
     public List<BusinessCustomerPriorityEntity> businessCustomerPriorities = new ArrayList<>();
 
     public ScrubbedInput getPriorityName() {
