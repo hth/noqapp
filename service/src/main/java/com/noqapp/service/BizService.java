@@ -161,7 +161,6 @@ public class BizService {
         }
     }
 
-    @CacheEvict(value = "bizStore-codeQR", key = "#bizStore.codeQR")
     public void saveStore(BizStoreEntity bizStore, String changeInitiateReason) {
         bizStoreManager.save(bizStore);
         try {
@@ -177,6 +176,7 @@ public class BizService {
     }
 
     @Async
+    @CacheEvict(value = "bizStore-codeQR", key = "#bizStore.codeQR")
     public void sendMailWhenStoreSettingHasChanged(BizStoreEntity bizStore, String changeInitiateReason) {
         try {
             bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
