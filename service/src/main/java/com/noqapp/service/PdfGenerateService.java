@@ -55,14 +55,14 @@ public class PdfGenerateService {
 
     @Autowired
     public PdfGenerateService(
-            @Value("${fopConfig:classpath:/xslfo/fop-conf.xml}")
-            Resource fopConfig,
+        @Value("${fopConfig:classpath:/xslfo/fop-conf.xml}")
+        Resource fopConfig,
 
-            @Value("${businessDetailXsl:classpath:/xslfo/xslt/business-detail.xsl}")
-            Resource businessDetailXsl,
+        @Value("${businessDetailXsl:classpath:/xslfo/xslt/business-detail.xsl}")
+        Resource businessDetailXsl,
 
-            @Value("${medicalRecordXsl:classpath:/xslfo/xslt/medical-record.xsl}")
-            Resource medicalRecordXsl
+        @Value("${medicalRecordXsl:classpath:/xslfo/xslt/medical-record.xsl}")
+        Resource medicalRecordXsl
     ) throws IOException {
         this.businessDetailXsl = businessDetailXsl;
         this.medicalRecordXsl = medicalRecordXsl;
