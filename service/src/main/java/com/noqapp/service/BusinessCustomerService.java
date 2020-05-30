@@ -122,7 +122,7 @@ public class BusinessCustomerService {
         } catch (DuplicateKeyException e) {
             LOG.warn("Record duplicate exists for business customer {} {}", customerId, bizNameId);
         } catch (Exception e) {
-            LOG.error("Error creating business customer");
+            LOG.error("Error creating business customer {} {}", customerId, bizNameId);
         }
 
         return null;
