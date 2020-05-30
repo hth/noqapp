@@ -1,3 +1,7 @@
+### Change May 29 2020
+    
+    db.getCollection('BUSINESS_CUSTOMER').remove({"BN" : "5eb3b9c0017c222cd473dded"})
+
 ### Change May 26 2020
     
     ALTER DATABASE noqapp CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;

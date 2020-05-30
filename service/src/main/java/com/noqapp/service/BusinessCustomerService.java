@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -111,11 +112,17 @@ public class BusinessCustomerService {
 
     @Mobile
     public String addAuthorizedUserForDoingBusiness(String customerId, String bizNameId, String qid) {
-        if (StringUtils.isNotBlank(customerId)) {
-            BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(qid, bizNameId, customerId, CustomerPriorityLevelEnum.I);
-            businessCustomerManager.save(businessCustomer);
-            LOG.info("Authorized user created successfully qid={} bizNameId={}, customerId={}", qid, bizNameId, customerId);
-            return businessCustomer.getId();
+        try {
+            if (StringUtils.isNotBlank(customerId)) {
+                BusinessCustomerEntity businessCustomer = new BusinessCustomerEntity(qid, bizNameId, customerId, CustomerPriorityLevelEnum.I);
+                businessCustomerManager.save(businessCustomer);
+                LOG.info("Authorized user created successfully qid={} bizNameId={}, customerId={}", qid, bizNameId, customerId);
+                return businessCustomer.getId();
+            }
+        } catch (DuplicateKeyException e) {
+            LOG.warn("Record duplicate exists for business customer {} {}", customerId, bizNameId);
+        } catch (Exception e) {
+            LOG.error("Error creating business customer");
         }
 
         return null;
