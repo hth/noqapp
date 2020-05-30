@@ -41,7 +41,6 @@ public enum CustomerPriorityLevelEnum {
             put(S.name, S.description);
             put(G.name, G.description);
             put(P.name, P.description);
-            put(R.name, R.description);
         }};
     }
 
