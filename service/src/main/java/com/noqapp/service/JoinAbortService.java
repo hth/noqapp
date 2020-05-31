@@ -103,7 +103,6 @@ public class JoinAbortService {
     }
 
     @Mobile
-    @Deprecated
     public JsonToken joinQueue(String codeQR, String did, long averageServiceTime, TokenServiceEnum tokenService) {
         return joinQueue(codeQR, did, null, null, averageServiceTime, tokenService);
     }
