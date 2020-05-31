@@ -168,6 +168,8 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     long countByBizNameId(String bizNameId);
 
+    void updateUnregisteredUserWithNameAndPhone(String codeQR, int tokenNumber, String customerName, String customerPhone);
+
     void updateCustomerPriorityAndCustomerAttributes(
         String qid,
         String codeQR,

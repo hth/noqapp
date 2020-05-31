@@ -37,6 +37,12 @@ public class JsonBusinessCustomerLookup extends AbstractDomain {
     @JsonProperty("qr")
     private ScrubbedInput codeQR;
 
+    @JsonProperty("cn")
+    private ScrubbedInput customerName;
+
+    @JsonProperty("ru")
+    private boolean registeredUser;
+
     public ScrubbedInput getCustomerPhone() {
         return customerPhone;
     }
@@ -61,6 +67,24 @@ public class JsonBusinessCustomerLookup extends AbstractDomain {
 
     public JsonBusinessCustomerLookup setCodeQR(ScrubbedInput codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public ScrubbedInput getCustomerName() {
+        return customerName;
+    }
+
+    public JsonBusinessCustomerLookup setCustomerName(ScrubbedInput customerName) {
+        this.customerName = customerName;
+        return this;
+    }
+
+    public boolean isRegisteredUser() {
+        return registeredUser;
+    }
+
+    public JsonBusinessCustomerLookup setRegisteredUser(boolean registeredUser) {
+        this.registeredUser = registeredUser;
         return this;
     }
 }
