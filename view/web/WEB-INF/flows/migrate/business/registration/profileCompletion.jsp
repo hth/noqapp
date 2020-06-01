@@ -75,7 +75,7 @@
                             <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                                 <ul>
                                 <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                    <li>${message.text}</li>
+                                <li>${message.text}</li>
                                 </c:forEach>
                                 </ul>
                             </c:if>
@@ -179,15 +179,29 @@
 
                                     <c:if test="${!register.registerUser.emailValidated}">
                                     <li>
-                                        <div class="alert-info">
-                                            <p>
-                                                Your email address
-                                                <a href="#" class="txt-red">${register.registerUser.email}</a>
-                                                has not been validated. Please validated email address to continue merchant
-                                                account registration.
-                                            </p>
-                                            <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a></p>
-                                        </div>
+                                        <c:choose>
+                                            <c:when test="${fn:endsWith(register.registerUser.email, '@mail.noqapp.com')}">
+                                                <div class="alert-info">
+                                                    <p>
+                                                        Please add email address to begin business registration. Email address can be added only through NoQueue App used during registration.
+                                                    </p>
+                                                    <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client">
+                                                        <img src="${parentHost}/static2/internal/img/google-play.png"/>
+                                                    </a>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="alert-info">
+                                                    <p>
+                                                        Your email address
+                                                        <a href="#" class="txt-red">${register.registerUser.email}</a>
+                                                        has not been validated. Please validated email address to continue business
+                                                        account registration.
+                                                    </p>
+                                                    <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a></p>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </li>
                                     </c:if>
 
