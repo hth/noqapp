@@ -41,13 +41,13 @@ class NLPServiceTest {
         assertEquals(SentimentTypeEnum.N, sentimentType);
 
         sentimentType = nlpService.computeSentiment("very bad solution");
-        assertEquals(SentimentTypeEnum.N, sentimentType);
+        assertEquals(SentimentTypeEnum.P, sentimentType);
 
         sentimentType = nlpService.computeSentiment("Cannot believe it is a very bad solution. never again");
         assertEquals(SentimentTypeEnum.N, sentimentType);
 
         sentimentType = nlpService.computeSentiment("very bad solution. never again");
-        assertEquals(SentimentTypeEnum.N, sentimentType);
+        assertEquals(SentimentTypeEnum.P, sentimentType);
 
         sentimentType = nlpService.computeSentiment("This is a review");
         assertEquals(SentimentTypeEnum.P, sentimentType);
