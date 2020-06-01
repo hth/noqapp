@@ -21,7 +21,11 @@ public final class RandomString {
     private static final char[] SYMBOLS = new char[33];
     private static final String QID_SHORTEN = "^10+(?!$)";
     private static final String LAST_THREE_DIGITS = "(\\d+)(?=\\d{3}(?:,|$))";
+
+    /* No mail is sent out with this domain. */
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
+
+    /* Mail is sent out with this domain. Though its not delivered to any one other than admin of the store. */
     public static final String MANAGER_NOQAPP_COM = "@m.noqapp.com";
 
     static {
