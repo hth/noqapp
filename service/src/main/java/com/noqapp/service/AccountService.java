@@ -152,8 +152,8 @@ public class AccountService {
     ) {
         String phoneWithCountryCode = Formatter.phoneCleanup(phone);
         String phoneRaw = Formatter.phoneStripCountryCode("+" + phoneWithCountryCode);
-        String firstNameCleanedUp = WordUtils.capitalizeFully(firstName);
-        String lastNameCleanedUp = WordUtils.capitalizeFully(lastName);
+        String firstNameCleanedUp = WordUtils.capitalizeFully(StringUtils.normalizeSpace(firstName));
+        String lastNameCleanedUp = WordUtils.capitalizeFully(StringUtils.normalizeSpace(lastName));
         LOG.debug("Check by phoneWithCountryCode={} phoneRaw={}", phoneWithCountryCode, phoneRaw);
 
         UserProfileEntity existingUserProfile = checkUserExistsByPhone(phoneWithCountryCode);
@@ -296,8 +296,8 @@ public class AccountService {
         String password
     ) {
         UserProfileEntity userProfileOfAdmin = userProfileManager.findByQueueUserId(qidOfAdmin);
-        String firstNameCleanedUp = WordUtils.capitalizeFully(firstName);
-        String lastNameCleanedUp = WordUtils.capitalizeFully(lastName);
+        String firstNameCleanedUp = WordUtils.capitalizeFully(StringUtils.normalizeSpace(firstName));
+        String lastNameCleanedUp = WordUtils.capitalizeFully(StringUtils.normalizeSpace(lastName));
         if (StringUtils.isNotBlank(mail) && null == doesUserExists(mail)) {
             UserAccountEntity userAccount = null;
             UserProfileEntity userProfile;
@@ -487,16 +487,18 @@ public class AccountService {
 
     private void updateName(String firstName, String lastName, String qid) {
         UserAccountEntity userAccount = findByQueueUserId(qid);
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+
+        String firstNameCleanedUp = WordUtils.capitalizeFully(StringUtils.normalizeSpace(firstName));
+        String lastNameCleanedUp = WordUtils.capitalizeFully(StringUtils.normalizeSpace(lastName));
 
         /* For display name we set the first name and last name. */
-        userAccount.setFirstName(firstName);
-        userAccount.setLastName(lastName);
+        userAccount.setFirstName(firstNameCleanedUp);
+        userAccount.setLastName(lastNameCleanedUp);
         userAccount.setDisplayName(userAccount.getName());
 
         /* Changed to use a query as it fixes versioning issue. */
-        userAccountManager.updateName(firstName, lastName, userAccount.getName(), qid);
-        userProfileManager.updateName(firstName, lastName, qid);
+        userAccountManager.updateName(firstNameCleanedUp, lastNameCleanedUp, userAccount.getName(), qid);
+        userProfileManager.updateName(firstNameCleanedUp, lastNameCleanedUp, qid);
     }
 
     public void validateAccount(EmailValidateEntity emailValidate, UserAccountEntity userAccount) {

@@ -1,7 +1,5 @@
 package com.noqapp.domain;
 
-import static com.noqapp.common.utils.DateUtil.DTF_YYYY_MM_DD;
-
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.types.AddressOriginEnum;
@@ -21,7 +19,6 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -125,8 +122,8 @@ public class UserProfileEntity extends BaseEntity {
     private UserProfileEntity(String email, String firstName, String lastName, String queueUserId, String birthday) {
         super();
         this.email = email;
-        this.firstName = WordUtils.capitalizeFully(firstName);
-        this.lastName = WordUtils.capitalizeFully(lastName);
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.queueUserId = queueUserId;
         this.birthday = birthday;
     }
