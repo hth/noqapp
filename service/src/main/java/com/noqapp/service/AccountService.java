@@ -458,10 +458,6 @@ public class AccountService {
     public boolean reachedMaxDependents(String qid) {
         UserProfileEntity userProfile = findProfileByQueueUserId(qid);
         long count = userProfileManager.countDependentProfilesByPhone(userProfile.getPhone());
-        if (UserLevelEnum.S_MANAGER == userProfile.getLevel()) {
-            return 10 <= count;
-        }
-
         return 5 <= count;
     }
 
