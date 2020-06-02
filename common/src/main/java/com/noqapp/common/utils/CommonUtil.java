@@ -2,6 +2,8 @@ package com.noqapp.common.utils;
 
 import com.google.maps.model.LatLng;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
@@ -200,17 +202,18 @@ public final class CommonUtil {
      * For privacy reason, abbreviate user name on public forum.
      * First Name will become First N
      */
-    public static String abbreviateName(String name) {
+    public static String abbreviateName(String id, String name) {
         try {
-            if (name.contains(" ")) {
+            String normalize = StringUtils.normalizeSpace(name);
+            if (normalize.contains(" ")) {
                 String[] splits = name.split(" ");
                 if (splits.length >= 1) {
                     return splits[0] + " " + splits[1].substring(0, 1);
                 }
             }
-            return name;
+            return normalize;
         } catch (Exception e) {
-            LOG.error("Abbreviate name {} reason={}", name, e.getLocalizedMessage(), e);
+            LOG.error("Abbreviate name {} {} reason={}", id, name, e.getLocalizedMessage());
             return name;
         }
     }

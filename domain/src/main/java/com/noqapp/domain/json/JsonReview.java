@@ -61,7 +61,7 @@ public class JsonReview extends AbstractDomain {
         this.ratingCount = ratingCount;
         this.review = review;
         this.profileImage = profileImage;
-        this.name = CommonUtil.abbreviateName(name);
+        this.name = CommonUtil.abbreviateName(id, name);
         this.reviewShow = reviewShow;
         this.created = created;
     }
