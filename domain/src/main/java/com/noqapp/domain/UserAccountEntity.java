@@ -5,7 +5,6 @@ import com.noqapp.domain.types.AccountInactiveReasonEnum;
 import com.noqapp.domain.types.RoleEnum;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.text.WordUtils;
 
 import org.joda.time.DateTime;
 
@@ -97,8 +96,8 @@ public class UserAccountEntity extends BaseEntity {
         this();
         this.queueUserId = queueUserId;
         this.userId = userId;
-        this.firstName = WordUtils.capitalizeFully(firstName);
-        this.lastName = WordUtils.capitalizeFully(lastName);
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.displayName = getName();
     }
 
@@ -140,7 +139,7 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = WordUtils.capitalizeFully(firstName);
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -148,7 +147,7 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = WordUtils.capitalizeFully(lastName);
+        this.lastName = lastName;
     }
 
     public Set<RoleEnum> getRoles() {

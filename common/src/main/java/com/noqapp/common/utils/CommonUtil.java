@@ -211,6 +211,11 @@ public final class CommonUtil {
                     return splits[0] + " " + splits[1].substring(0, 1);
                 }
             }
+
+            /* Remove below check by 2021-01-01. */
+            if (normalize.length() != name.length()) {
+                LOG.warn("Fix name {}", name);
+            }
             return normalize;
         } catch (Exception e) {
             LOG.error("Abbreviate name {} reason={}", name, e.getLocalizedMessage());
