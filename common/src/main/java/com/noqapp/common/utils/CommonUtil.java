@@ -212,8 +212,9 @@ public final class CommonUtil {
                 }
             }
 
+            /* Remove below check by 2021-01-01. */
             if (normalize.length() != name.length()) {
-                LOG.warn("Fix name  {}", name);
+                LOG.warn("Fix name {}", name);
             }
             return normalize;
         } catch (Exception e) {
