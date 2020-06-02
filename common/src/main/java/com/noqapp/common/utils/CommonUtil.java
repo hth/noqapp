@@ -206,7 +206,7 @@ public final class CommonUtil {
         try {
             String normalize = StringUtils.normalizeSpace(name);
             if (normalize.contains(" ")) {
-                String[] splits = name.split(" ");
+                String[] splits = normalize.split(" ");
                 if (splits.length >= 1) {
                     return splits[0] + " " + splits[1].substring(0, 1);
                 }
