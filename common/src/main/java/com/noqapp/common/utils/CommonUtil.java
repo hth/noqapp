@@ -201,13 +201,18 @@ public final class CommonUtil {
      * First Name will become First N
      */
     public static String abbreviateName(String name) {
-        if (name.contains(" ")) {
-            String[] splits = name.split(" ");
-            if (splits.length >= 1) {
-                return splits[0] + " " + splits[1].substring(0, 1);
+        try {
+            if (name.contains(" ")) {
+                String[] splits = name.split(" ");
+                if (splits.length >= 1) {
+                    return splits[0] + " " + splits[1].substring(0, 1);
+                }
             }
+            return name;
+        } catch (Exception e) {
+            LOG.error("Abbreviate name {} reason={}", name, e.getLocalizedMessage(), e);
+            return name;
         }
-        return name;
     }
 
     /**
