@@ -202,7 +202,7 @@ public final class CommonUtil {
      * For privacy reason, abbreviate user name on public forum.
      * First Name will become First N
      */
-    public static String abbreviateName(String id, String name) {
+    public static String abbreviateName(String name) {
         try {
             String normalize = StringUtils.normalizeSpace(name);
             if (normalize.contains(" ")) {
@@ -213,7 +213,7 @@ public final class CommonUtil {
             }
             return normalize;
         } catch (Exception e) {
-            LOG.error("Abbreviate name {} {} reason={}", id, name, e.getLocalizedMessage());
+            LOG.error("Abbreviate name {} reason={}", name, e.getLocalizedMessage());
             return name;
         }
     }
