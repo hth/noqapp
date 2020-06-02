@@ -24,6 +24,6 @@ class CommonUtilTest {
     void abbreviateName() {
         assertEquals("James B" , CommonUtil.abbreviateName("James Bond"));
         assertEquals("James B" , CommonUtil.abbreviateName("James Bond William"));
-//        assertEquals("Pankaj  Kumar Singh" , CommonUtil.abbreviateName("Pankaj  Kumar Singh"));
+        assertEquals("Pankaj K" , CommonUtil.abbreviateName("Pankaj  Kumar Singh"));
     }
 }
