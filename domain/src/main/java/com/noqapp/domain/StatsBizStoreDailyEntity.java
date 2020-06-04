@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -260,6 +263,15 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
     public StatsBizStoreDailyEntity setYear(int year) {
         this.year = year;
         return this;
+    }
+
+    @Transient
+    public BigDecimal dayAverageRating() {
+        if (totalRating > 0 && totalCustomerRated > 0) {
+            return new BigDecimal(totalRating).divide(new BigDecimal(totalCustomerRated), RoundingMode.CEILING);
+        } else {
+            return new BigDecimal(0);
+        }
     }
 
     @Override
