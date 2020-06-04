@@ -259,6 +259,7 @@ public class ServicedPersonalFCM {
                             userProfile.getQueueUserId(),
                             bizStore.getCodeQR(),
                             bizStore.getDisplayName(),
+                            bizStore.getTimeZone(),
                             medicalRecord.getFollowUpDay());
 
                         if (firebaseMessageService.messageToTopic(jsonMessage)) {

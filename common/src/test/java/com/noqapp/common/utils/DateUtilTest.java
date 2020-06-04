@@ -7,6 +7,8 @@ import org.joda.time.DateTime;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.TimeZone;
@@ -59,5 +61,14 @@ class DateUtilTest {
             DateUtil.dateToString(DateUtil.plusDays_old(1)),
             DateUtil.dateToString(DateUtil.plusDays(1)),
             "Should be equal " + DateUtil.dateToISO_8601(DateUtil.plusDays_old(1)) + " with " + DateUtil.dateToISO_8601(DateUtil.plusDays(1)));
+    }
+
+    @Test
+    void convertDateToStringOf_DTF_DD_MMM_YYYY() {
+        Date system = new Date();
+        system.setTime(1591305227723L);
+        assertEquals(
+           "05 Jun, 2020",
+            DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(system, "Asia/Calcutta"));
     }
 }
