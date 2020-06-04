@@ -265,15 +265,6 @@ public class StatsBizStoreDailyEntity extends BaseEntity {
         return this;
     }
 
-    @Transient
-    public BigDecimal dayAverageRating() {
-        if (totalRating > 0 && totalCustomerRated > 0) {
-            return new BigDecimal(totalRating).divide(new BigDecimal(totalCustomerRated), RoundingMode.CEILING);
-        } else {
-            return new BigDecimal(0);
-        }
-    }
-
     @Override
     public String toString() {
         return "StatsBizStoreDailyEntity{" +
