@@ -29,6 +29,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -205,7 +207,6 @@ public class BusinessStatsMail {
                                     }
                                     rootMap.put("totalRating", storeTotalRating);
                                     rootMap.put("totalCustomerRated", storeTotalCustomerRated);
-                                    rootMap.put("averageRating", statsBizStoreDaily.dayAverageRating());
                                     rootMap.put("totalHoursSaved", storeTotalHoursSaved / (60 * 1000));
                                     rootMap.put("timeOfService", formattedTime(firstServicedOrSkipped) + " - " + formattedTime(lastServicedOrSkipped));
 
@@ -258,6 +259,7 @@ public class BusinessStatsMail {
                             }
                             rootMap.put("totalRating", totalRating);
                             rootMap.put("totalCustomerRated", totalCustomerRated);
+                            rootMap.put("averageRating", new BigDecimal(totalRating).divide(new BigDecimal(totalCustomerRated), RoundingMode.CEILING));
                             rootMap.put("totalHoursSaved", totalHoursSaved/(60 * 1000));
                             rootMap.put("timeOfServices", timeOfServices);
 
