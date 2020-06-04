@@ -92,7 +92,7 @@ public class HospitalUpComingVisitFCM {
                     + " for " + hospitalVisitSchedule.getHospitalVisitFor().getDescription() + ".\n\n"
                     + "Please book your appointment. For more details on upcoming hospital visit, click on Medical Profile."
                     + "\n\n"
-                    + "Note: This email is auto-generated based on your Date of Birth set in your profile or Hospital/Doctor has scheduled a visit.";
+                    + "Note: This message is auto-generated based on your Date of Birth set in your profile or dependent's profile or Hospital/Doctor has scheduled a visit.";
                 RegisteredDeviceEntity registeredDevice = deviceService.findRegisteredDeviceByQid(hospitalVisitSchedule.getQueueUserId());
                 tokenQueueService.sendMessageToSpecificUser(title, body, null, registeredDevice, MessageOriginEnum.A);
                 hospitalVisitScheduleManager.increaseNotificationCount(hospitalVisitSchedule.getId());
