@@ -13,5 +13,6 @@ public enum MessageOriginEnum {
     D,  //Display                   (NOT In App DB)
     A,  //Alert                     (In App DB)
     MF, //Medical Follow Up         (In App DB)
-    CQO //Current Queue And Order   (In App DB)
+    CQO,//Current Queue And Order   (In App DB)
+    AU, //Auth                      (NOT In App DB)
 }

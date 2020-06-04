@@ -292,6 +292,23 @@ public class JoinAbortService {
     }
 
     @Mobile
+    public void authenticateMessageToClient(String qid, String title, String body, String codeQR) {
+        executorService.execute(() -> composeMessageForClientAuth(
+            deviceService.findRegisteredDeviceByQid(qid),
+            title,
+            body,
+            codeQR));
+    }
+
+    /** Sends personal message with all the current queue and orders. */
+    private void composeMessageForClientAuth(RegisteredDeviceEntity registeredDevice, String title, String body, String codeQR) {
+        if (null != registeredDevice) {
+            JsonMessage jsonMessage = ComposeMessagesForFCM.composeMessageForClientAuth(registeredDevice, body, title, codeQR);
+            firebaseMessageService.messageToTopic(jsonMessage);
+        }
+    }
+
+    @Mobile
     public void deleteReferenceToTransactionId(String codeQR, String transactionId) {
         queueManager.deleteReferenceToTransactionId(codeQR, transactionId);
         purchaseOrderService.deleteReferenceToTransactionId(transactionId);

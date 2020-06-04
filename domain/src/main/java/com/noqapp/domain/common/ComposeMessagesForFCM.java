@@ -1,8 +1,5 @@
 package com.noqapp.domain.common;
 
-import static com.noqapp.common.utils.DateUtil.DTF_DD_MMM_YYYY;
-import static com.noqapp.common.utils.DateUtil.SDF_DD_MMM_YYYY;
-
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
@@ -124,6 +121,16 @@ public class ComposeMessagesForFCM {
         String codeQR
     ) {
         return composeMessage(registeredDevice, null, body, title, codeQR, MessageOriginEnum.D);
+    }
+
+    @Mobile
+    public static JsonMessage composeMessageForClientAuth(
+        RegisteredDeviceEntity registeredDevice,
+        String body,
+        String title,
+        String codeQR
+    ) {
+        return composeMessage(registeredDevice, null, body, title, codeQR, MessageOriginEnum.AU);
     }
 
     public static JsonMessage composeMessage(
