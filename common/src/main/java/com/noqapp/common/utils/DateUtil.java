@@ -211,13 +211,16 @@ public final class DateUtil {
         return DateUtil.asDate(localDate);
     }
 
-
     public static String dateToISO_8601(Date date) {
         return DateFormatUtils.format(date, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
     }
 
     public static String dateToString_UTC(Date date, DateTimeFormatter dateTimeFormatter) {
         return dateTimeFormatter.format(date.toInstant().atZone(ZoneOffset.UTC));
+    }
+
+    public static String convertDateToStringOf_DTF_DD_MMM_YYYY(Date date, String timeZone) {
+        return DTF_DD_MMM_YYYY.format(date.toInstant().atZone(ZoneId.of(timeZone)));
     }
 
     /**

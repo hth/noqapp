@@ -1,5 +1,6 @@
 package com.noqapp.domain.common;
 
+import static com.noqapp.common.utils.DateUtil.DTF_DD_MMM_YYYY;
 import static com.noqapp.common.utils.DateUtil.SDF_DD_MMM_YYYY;
 
 import com.noqapp.common.utils.DateUtil;
@@ -164,6 +165,7 @@ public class ComposeMessagesForFCM {
         String queueUserId,
         String codeQR,
         String displayName,
+        String timeZone,
         Date followUpDay
     ) {
         JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
@@ -175,11 +177,11 @@ public class ComposeMessagesForFCM {
 
         if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
             jsonMessage.getNotification()
-                .setBody("Follow up has been scheduled for " + SDF_DD_MMM_YYYY.format(followUpDay))
+                .setBody("Follow up has been scheduled for " + DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(followUpDay, timeZone))
                 .setTitle(displayName + " follow-up");
         } else {
             jsonMessage.setNotification(null);
-            jsonData.setBody("Follow up has been scheduled for " + SDF_DD_MMM_YYYY.format(followUpDay))
+            jsonData.setBody("Follow up has been scheduled for " + DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(followUpDay, timeZone))
                 .setTitle(displayName + " follow-up");
         }
 
