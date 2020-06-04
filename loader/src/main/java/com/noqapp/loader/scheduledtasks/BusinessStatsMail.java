@@ -205,6 +205,7 @@ public class BusinessStatsMail {
                                     }
                                     rootMap.put("totalRating", storeTotalRating);
                                     rootMap.put("totalCustomerRated", storeTotalCustomerRated);
+                                    rootMap.put("averageRating", statsBizStoreDaily.dayAverageRating());
                                     rootMap.put("totalHoursSaved", storeTotalHoursSaved / (60 * 1000));
                                     rootMap.put("timeOfService", formattedTime(firstServicedOrSkipped) + " - " + formattedTime(lastServicedOrSkipped));
 
