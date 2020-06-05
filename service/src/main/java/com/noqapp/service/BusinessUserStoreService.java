@@ -20,7 +20,6 @@ import com.noqapp.domain.json.JsonDataVisibility;
 import com.noqapp.domain.json.JsonHour;
 import com.noqapp.domain.json.JsonPaymentPermission;
 import com.noqapp.domain.json.JsonTopic;
-import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.CommonStatusEnum;
