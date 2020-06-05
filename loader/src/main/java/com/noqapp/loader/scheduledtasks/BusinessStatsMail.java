@@ -259,7 +259,11 @@ public class BusinessStatsMail {
                             }
                             rootMap.put("totalRating", totalRating);
                             rootMap.put("totalCustomerRated", totalCustomerRated);
-                            rootMap.put("averageRating", new BigDecimal(totalRating).divide(new BigDecimal(totalCustomerRated), RoundingMode.CEILING));
+                            if (totalRating > 0 && totalCustomerRated > 0) {
+                                rootMap.put("averageRating", new BigDecimal(totalRating).divide(new BigDecimal(totalCustomerRated), RoundingMode.CEILING));
+                            } else {
+                                rootMap.put("averageRating", "N/A");
+                            }
                             rootMap.put("totalHoursSaved", totalHoursSaved/(60 * 1000));
                             rootMap.put("timeOfServices", timeOfServices);
 
