@@ -43,11 +43,12 @@ public class EmpLandingService {
 
     @Autowired
     public EmpLandingService(
-            BusinessUserService businessUserService,
-            AccountService accountService,
-            BizService bizService,
-            TokenQueueService tokenQueueService,
-            BusinessUserStoreService businessUserStoreService) {
+        BusinessUserService businessUserService,
+        AccountService accountService,
+        BizService bizService,
+        TokenQueueService tokenQueueService,
+        BusinessUserStoreService businessUserStoreService
+    ) {
         this.businessUserService = businessUserService;
         this.accountService = accountService;
         this.bizService = bizService;
@@ -62,8 +63,8 @@ public class EmpLandingService {
         LOG.info("Approve Business Clicked businessUserId={} qid={}", businessUserId, qid);
         BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
         businessUser
-                .setValidateByQid(qid)
-                .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
+            .setValidateByQid(qid)
+            .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V);
         businessUserService.save(businessUser);
 
         BizNameEntity bizName = businessUser.getBizName();
@@ -77,8 +78,8 @@ public class EmpLandingService {
         accountService.save(userProfile);
 
         UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
-                userProfile.getQueueUserId(),
-                userProfile.getLevel()
+            userProfile.getQueueUserId(),
+            userProfile.getLevel()
         );
         accountService.save(userAccount);
 
@@ -92,20 +93,20 @@ public class EmpLandingService {
 
             /* Create relation for easy access. */
             BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
-                    businessUser.getQueueUserId(),
-                    bizStore.getId(),
-                    bizName.getId(),
-                    bizStore.getCodeQR(),
-                    userProfile.getLevel());
+                businessUser.getQueueUserId(),
+                bizStore.getId(),
+                bizName.getId(),
+                bizStore.getCodeQR(),
+                userProfile.getLevel());
             businessUserStoreService.save(businessUserStore);
             //End cron job code
 
             LOG.info("added QR for qid={} bizName={} queueName={} topic={} bizStore={} ",
-                    qid,
-                    bizName.getBusinessName(),
-                    bizStore.getDisplayName(),
-                    bizStore.getTopic(),
-                    bizStore.getId());
+                qid,
+                bizName.getBusinessName(),
+                bizStore.getDisplayName(),
+                bizStore.getTopic(),
+                bizStore.getId());
         }
 
         if (1 < bizStores.size()) {
@@ -134,7 +135,7 @@ public class EmpLandingService {
                 tokenQueueService.sendMessageToSpecificUser(title, body, userProfile.getQueueUserId(), MessageOriginEnum.D);
             } else {
                 LOG.warn("This facility is avail to just users with userLevel={} or userLevel={} and not userLevel={}",
-                        UserLevelEnum.CLIENT, UserLevelEnum.Q_SUPERVISOR, userProfile.getLevel());
+                    UserLevelEnum.CLIENT, UserLevelEnum.Q_SUPERVISOR, userProfile.getLevel());
             }
         }
     }
@@ -146,8 +147,8 @@ public class EmpLandingService {
         LOG.info("Decline Business Clicked businessUserId={} qid={}", businessUserId, qid);
         BusinessUserEntity businessUser = businessUserService.findById(businessUserId);
         businessUser
-                .setValidateByQid(qid)
-                .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.N);
+            .setValidateByQid(qid)
+            .setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.N);
         businessUserService.save(businessUser);
     }
 }
