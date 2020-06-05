@@ -608,7 +608,7 @@ public class ScheduleAppointmentService {
         }
 
         if (bizStore.getBizName().isDayClosed()) {
-            LOG.warn("Scheduled business is closed", scheduleDate);
+            LOG.warn("Scheduled business is closed {}", scheduleDate);
             throw new AppointmentBookingException("Booking failed as " + bizStore.getBizName().getBusinessName() + " is closed on that day");
         }
     }
