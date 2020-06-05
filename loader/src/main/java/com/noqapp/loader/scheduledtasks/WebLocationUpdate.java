@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.stream.Stream;
 
 /**
+ * To be confirmed if updates are happening before deleting it.
  * hitender
  * 6/5/20 4:03 PM
  */
@@ -45,7 +46,7 @@ public class WebLocationUpdate {
 
     /**
      * Update web location periodically when business store or names of business store is changed.
-     * This is a backup. Mostly update should happen when names are changed
+     * This is a fall back process. Mostly update should happen when names are changed.
      */
     @Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
     public void updateWebLocationOfStores() {
@@ -56,7 +57,6 @@ public class WebLocationUpdate {
         oneTimeStatusSwitch = "OFF";
         LOG.info("Updating web location of stores");
 
-        /* Write your method after here. Un-comment @Scheduled. */
         try (Stream<BizStoreEntity> stream = bizService.findAllWithStream()) {
             stream.iterator().forEachRemaining(bizStore -> {
                 String webLocation = bizService.buildWebLocationForStore(
