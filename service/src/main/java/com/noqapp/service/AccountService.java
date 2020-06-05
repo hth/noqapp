@@ -766,6 +766,7 @@ public class AccountService {
             .setTimeZone(new ScrubbedInput(timeZone));
 
         UserProfileEntity userProfile  = userProfileManager.findByQueueUserId(qid);
+        String oldPhone = userProfile.getPhone();
         userProfile.setPhone(registerUser.getPhoneWithCountryCode());
         userProfile.setPhoneRaw(registerUser.getPhoneNotFormatted());
         userProfile.setCountryShortName(registerUser.getCountryShortName());
@@ -776,13 +777,13 @@ public class AccountService {
             registerUser.getPhoneWithCountryCode(),
             registerUser.getCountryShortName(),
             registerUser.getTimeZone(),
-            userProfile.getPhone()));
+            oldPhone));
         UserAccountEntity userAccount = findByQueueUserId(qid);
         return updateAuthenticationKey(userAccount.getUserAuthentication().getId());
     }
 
-    private void updateDependentsPhoneNumber(String newPhone, String countryShortName, String timeZone, String phone) {
-        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfilesByPhone(phone);
+    private void updateDependentsPhoneNumber(String newPhone, String countryShortName, String timeZone, String oldPhone) {
+        List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfilesByPhone(oldPhone);
         for (UserProfileEntity dependentUserProfile : dependentUserProfiles) {
             boolean status = userProfileManager.updateDependentDetailsOnPhoneMigration(
                 dependentUserProfile.getQueueUserId(),
