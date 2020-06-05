@@ -53,7 +53,7 @@ public class MailManagerImpl implements MailManager {
             }
             mongoTemplate.save(object, TABLE);
         } catch (DataIntegrityViolationException e) {
-            LOG.error("Duplicate record entry for MailEntity={}", e);
+            LOG.error("Duplicate record entry for MailEntity={}", e.getLocalizedMessage(), e);
             throw new RuntimeException(e.getMessage());
         }
     }
