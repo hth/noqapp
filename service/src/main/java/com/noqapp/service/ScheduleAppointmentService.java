@@ -454,7 +454,8 @@ public class ScheduleAppointmentService {
 
     private void populateJsonScheduleList(
         JsonScheduleList jsonScheduleList,
-        String queueUserId, List<ScheduleAppointmentEntity> scheduleAppointments
+        String queueUserId, 
+        List<ScheduleAppointmentEntity> scheduleAppointments
     ) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
