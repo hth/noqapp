@@ -637,6 +637,11 @@ public class AccountService {
     @Mobile
     @SuppressWarnings ("unused")
     public UserAccountEntity updateUID(String existingUserId, String newUserId) {
+        if (null != findByQueueUserId(newUserId)) {
+            LOG.info("Account already exists with email {} {}", newUserId, existingUserId);
+            throw new DuplicateAccountException("Account already exists " + newUserId);
+        }
+
         UserAccountEntity userAccount = findByUserId(existingUserId);
         if (!userAccount.isAccountValidated()) {
             emailValidateService.invalidateAllEntries(userAccount.getQueueUserId());
