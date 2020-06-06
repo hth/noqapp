@@ -13,10 +13,12 @@ public enum CanteenStoreDepartmentEnum {
 
     EG("EG", "Ex-Servicemen Grocery", GR),
     SG("SG", "Serving-PBOR Grocery", GR),
+    XG("XG", "Ex-Officers Grocery", GR),
     OG("OG", "Officers Grocery", GR),
 
     EL("EL", "Ex-Servicemen Liquor", LQ),
     SL("SL", "Serving-PBOR Liquor", LQ),
+    XL("XL", "Ex-Officers Liquor", LQ),
     OL("OL", "Officers Liquor", LQ);
 
     private final String description;
