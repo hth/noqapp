@@ -11,11 +11,14 @@ import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
  */
 public enum CanteenStoreDepartmentEnum {
 
-    SG("SG", "Serving Grocery", GR),
     EG("EG", "Ex-Servicemen Grocery", GR),
+    XG("XG", "Ex-Officers Grocery", GR),
+    SG("SG", "Serving-PBOR Grocery", GR),
     OG("OG", "Officers Grocery", GR),
-    SL("SL", "Serving Liquor", LQ),
+
     EL("EL", "Ex-Servicemen Liquor", LQ),
+    XL("XL", "Ex-Officers Liquor", LQ),
+    SL("SL", "Serving-PBOR Liquor", LQ),
     OL("OL", "Officers Liquor", LQ);
 
     private final String description;
