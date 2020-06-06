@@ -12,7 +12,8 @@ public enum CustomerPriorityLevelEnum {
     S("S", "Silver (1)", "D66E53"),
     G("G", "Gold (2)", "8CDCDA"),
     P("P", "Platinum (3)", "F16A70"),
-    R("R", "Unobtainium (Highest)", "4D4D4D");
+    D("D", "Diamond (4)", "4D4D4D"),
+    U("U", "Unobtainium (Highest)", "4D4D4D");
 
     private final String description;
     private final String name;
@@ -41,6 +42,7 @@ public enum CustomerPriorityLevelEnum {
             put(S.name, S.description);
             put(G.name, G.description);
             put(P.name, P.description);
+            put(D.name, D.description);
         }};
     }
 
