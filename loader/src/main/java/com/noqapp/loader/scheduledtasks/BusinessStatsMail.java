@@ -216,12 +216,18 @@ public class BusinessStatsMail {
                                         mailSentCount.getAndIncrement();
 
                                         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
-                                        mailService.sendAnyMail(
-                                            userProfile.getEmail(),
-                                            userProfile.getName(),
-                                            storeName + " Daily Summary",
-                                            rootMap,
-                                            "stats/admin-overview.ftl");
+                                        switch (bizStore.getBusinessType()) {
+                                            case DO:
+                                                //Do not send for doctor
+                                                break;
+                                            default:
+                                                mailService.sendAnyMail(
+                                                    userProfile.getEmail(),
+                                                    userProfile.getName(),
+                                                    storeName + " Daily Summary",
+                                                    rootMap,
+                                                    "stats/admin-overview.ftl");
+                                        }
                                     }
                                 }
 
