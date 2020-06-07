@@ -5,6 +5,9 @@ import static com.noqapp.domain.types.BusinessCustomerAttributeEnum.LQ;
 
 import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * hitender
  * 5/23/20 3:27 PM
@@ -41,6 +44,19 @@ public enum CanteenStoreDepartmentEnum {
 
     public BusinessCustomerAttributeEnum getBusinessCustomerAttribute() {
         return businessCustomerAttribute;
+    }
+
+    public static List<CanteenStoreDepartmentEnum> ordered() {
+        return new LinkedList<CanteenStoreDepartmentEnum>() {{
+            add(OG);
+            add(OL);
+            add(XG);
+            add(XL);
+            add(SG);
+            add(SL);
+            add(EG);
+            add(EL);
+        }};
     }
 
     @Override
