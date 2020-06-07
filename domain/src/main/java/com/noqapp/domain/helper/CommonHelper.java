@@ -74,9 +74,7 @@ public class CommonHelper {
                     : PharmacyCategoryEnum.asMapWithNameAsKey(); /* For Store show default categories. */
             case CD:
             case CDQ:
-                List<CanteenStoreDepartmentEnum> canteenStoreDepartmentEnums = Stream.of(CanteenStoreDepartmentEnum.values())
-                .sorted(Comparator.comparing(CanteenStoreDepartmentEnum::getDescription))
-                .collect(Collectors.toList());
+                List<CanteenStoreDepartmentEnum> canteenStoreDepartmentEnums = CanteenStoreDepartmentEnum.ordered();
 
                 map = new LinkedHashMap<>();
                 for (CanteenStoreDepartmentEnum canteenStoreDepartment : canteenStoreDepartmentEnums) {
