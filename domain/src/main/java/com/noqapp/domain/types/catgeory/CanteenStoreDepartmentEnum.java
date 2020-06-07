@@ -5,21 +5,24 @@ import static com.noqapp.domain.types.BusinessCustomerAttributeEnum.LQ;
 
 import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * hitender
  * 5/23/20 3:27 PM
  */
 public enum CanteenStoreDepartmentEnum {
 
-    EG("EG", "Ex-Servicemen Grocery", GR),
-    XG("XG", "Ex-Officers Grocery", GR),
-    SG("SG", "Serving-PBOR Grocery", GR),
-    OG("OG", "Officers Grocery", GR),
+    EG("EG", "Retired/Servicemen (Grocery)", GR),
+    XG("XG", "Officer Retired (Grocery)", GR),
+    SG("SG", "Serving-PBOR (Grocery)", GR),
+    OG("OG", "Officer Serving (Grocery)", GR),
 
-    EL("EL", "Ex-Servicemen Liquor", LQ),
-    XL("XL", "Ex-Officers Liquor", LQ),
-    SL("SL", "Serving-PBOR Liquor", LQ),
-    OL("OL", "Officers Liquor", LQ);
+    EL("EL", "Retired/Servicemen (Liquor)", LQ),
+    XL("XL", "Officer Retired (Liquor)", LQ),
+    SL("SL", "Serving-PBOR (Liquor)", LQ),
+    OL("OL", "Officer Serving (Liquor)", LQ);
 
     private final String description;
     private final String name;
@@ -41,6 +44,19 @@ public enum CanteenStoreDepartmentEnum {
 
     public BusinessCustomerAttributeEnum getBusinessCustomerAttribute() {
         return businessCustomerAttribute;
+    }
+
+    public static List<CanteenStoreDepartmentEnum> ordered() {
+        return new LinkedList<CanteenStoreDepartmentEnum>() {{
+            add(OG);
+            add(OL);
+            add(XG);
+            add(XL);
+            add(SG);
+            add(SL);
+            add(EG);
+            add(EL);
+        }};
     }
 
     @Override
