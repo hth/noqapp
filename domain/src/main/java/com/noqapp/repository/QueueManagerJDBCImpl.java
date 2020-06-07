@@ -157,6 +157,16 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String servicedInPastXDays =
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE QR = ? AND QID = ? AND QS = '" + QueueUserStateEnum.S.name() + "' AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() LIMIT 1)";
 
+    private static final String countDistinctQIDInPastXDays =
+        "SELECT DISTINCT COUNT(QID)" +
+            " FROM " +
+            "QUEUE WHERE BN = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW()";
+
+    private static final String distinctQIDsInBiz =
+        "SELECT DISTINCT QID" +
+            " FROM " +
+            "QUEUE WHERE BN = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW()";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
 
@@ -405,6 +415,24 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             servicedInPastXDays,
             new Object[]{codeQR, qid, days},
             Boolean.class
+        );
+    }
+
+    @Override
+    public long countDistinctQIDsInBiz(String bizNameId, int days) {
+        return jdbcTemplate.queryForObject(
+            countDistinctQIDInPastXDays,
+            new Object[]{bizNameId, days},
+            Long.class
+        );
+    }
+
+    @Override
+    public List<String> distinctQIDsInBiz(String bizNameId, int days) {
+        return jdbcTemplate.queryForList(
+            distinctQIDsInBiz,
+            new Object[]{bizNameId, days},
+            String.class
         );
     }
 }

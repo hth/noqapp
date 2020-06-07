@@ -21,8 +21,8 @@ public enum UserLevelEnum {
     Q_SUPERVISOR("Queue Supervisor", 22),
     A_SUPERVISOR("Asset Supervisor", 23),
     S_MANAGER("Store Manager", 24),
-    M_ACCOUNTANT("Merchant Accountant", 26),
-    M_ADMIN("Merchant Admin", 29),
+    M_ACCOUNTANT("Business Accountant", 26),
+    M_ADMIN("Business Admin", 29),
 
     /* System User Level. */
     TECHNICIAN("Tech", 40),

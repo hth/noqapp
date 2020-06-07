@@ -13,7 +13,7 @@ import java.util.Base64;
 import javax.validation.constraints.NotNull;
 
 /**
- * Access given to NoQApp Super and Manager to Merchant account.
+ * Support access given to NoQueue Supervisor and Manager for customer business account.
  *
  * hitender
  * 2/3/18 11:49 PM

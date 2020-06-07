@@ -5,9 +5,9 @@ package com.noqapp.domain.types;
  * 2/4/18 12:25 AM
  */
 public enum ExternalPermissionEnum {
-    P("P", "Payment Access", "Support Payment Setup"),
-    A("A", "Advertisement Access", "Support Advertisement"),
-    C("C", "Complete Access", "Support Merchant");
+    P("P", "Payment Access", "Support Team NoQueue Payment Setup"),
+    A("A", "Advertisement Access", "Support Team NoQueue Advertisement"),
+    C("C", "Complete Access", "Support Team NoQueue");
 
     private final String name;
     private final String description;
