@@ -647,4 +647,12 @@ public class QueueService {
     ) {
         queueManager.updateCustomerPriorityAndCustomerAttributes(qid, codeQR, tokenNumber, customerPriorityLevel, businessCustomerAttribute);
     }
+
+    public long countDistinctQIDsInBiz(String bizNameId, int days) {
+        return queueManagerJDBC.countDistinctQIDsInBiz(bizNameId, days);
+    }
+
+    public List<String> distinctQIDsInBiz(String bizNameId, int days) {
+        return queueManagerJDBC.distinctQIDsInBiz(bizNameId, days);
+    }
 }

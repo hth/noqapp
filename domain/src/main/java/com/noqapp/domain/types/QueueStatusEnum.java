@@ -13,6 +13,7 @@ public enum QueueStatusEnum {
     D("D", "Done"),
     C("C", "Closed"),
 
+    /* These should not be used for FCM messages. These needs to be fixed in a separate enum. */
     /* B is when user joins with a different time on mobile. */
     B("B", "Before Opening Time"),
     X("X", "Business service limitation imposed"),

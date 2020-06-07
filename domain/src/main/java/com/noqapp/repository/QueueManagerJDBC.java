@@ -76,4 +76,8 @@ public interface QueueManagerJDBC {
     QueueEntity findOneHistoricalByRecordReferenceId(String codeQR, String recordReferenceId);
 
     boolean hasServicedInPastXDays(String codeQR, String qid, int days);
+
+    long countDistinctQIDsInBiz(String bizNameId, int days);
+
+    List<String> distinctQIDsInBiz(String bizNameId, int days);
 }
