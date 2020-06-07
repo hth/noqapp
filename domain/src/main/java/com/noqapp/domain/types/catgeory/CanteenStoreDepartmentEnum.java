@@ -14,14 +14,14 @@ import java.util.List;
  */
 public enum CanteenStoreDepartmentEnum {
 
-    EG("EG", "Retired/Servicemen (Grocery)", GR),
+    EG("EG", "Ex-Servicemen (Grocery)", GR),
     XG("XG", "Officer Retired (Grocery)", GR),
-    SG("SG", "Serving-PBOR (Grocery)", GR),
+    SG("SG", "Serving (Grocery)", GR),
     OG("OG", "Officer Serving (Grocery)", GR),
 
-    EL("EL", "Retired/Servicemen (Liquor)", LQ),
+    EL("EL", "Ex-Servicemen (Liquor)", LQ),
     XL("XL", "Officer Retired (Liquor)", LQ),
-    SL("SL", "Serving-PBOR (Liquor)", LQ),
+    SL("SL", "Serving (Liquor)", LQ),
     OL("OL", "Officer Serving (Liquor)", LQ);
 
     private final String description;
