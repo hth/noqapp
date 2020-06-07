@@ -216,12 +216,18 @@ public class BusinessStatsMail {
                                         mailSentCount.getAndIncrement();
 
                                         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUserStore.getQueueUserId());
-                                        mailService.sendAnyMail(
-                                            userProfile.getEmail(),
-                                            userProfile.getName(),
-                                            storeName + " Daily Summary",
-                                            rootMap,
-                                            "stats/admin-overview.ftl");
+                                        switch (bizStore.getBusinessType()) {
+                                            case DO:
+                                                //Do not send to doctor. Skipping hospital admin.
+                                                break;
+                                            default:
+                                                mailService.sendAnyMail(
+                                                    userProfile.getEmail(),
+                                                    userProfile.getName(),
+                                                    storeName + " Daily Summary",
+                                                    rootMap,
+                                                    "stats/admin-overview.ftl");
+                                        }
                                     }
                                 }
 
@@ -272,12 +278,18 @@ public class BusinessStatsMail {
                                 mailSentCount.getAndIncrement();
 
                                 UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUser.getQueueUserId());
-                                mailService.sendAnyMail(
-                                    userProfile.getEmail(),
-                                    userProfile.getName(),
-                                    businessName + " Daily Summary",
-                                    rootMap,
-                                    "stats/admin-overview.ftl");
+                                switch (businessUser.getBizName().getBusinessType()) {
+                                    case DO:
+                                        //Do not send to doctor. Skipping hospital admin.
+                                        break;
+                                    default:
+                                        mailService.sendAnyMail(
+                                            userProfile.getEmail(),
+                                            userProfile.getName(),
+                                            businessName + " Daily Summary",
+                                            rootMap,
+                                            "stats/admin-overview.ftl");
+                                }
                             }
                         } catch (Exception e) {
                             LOG.error("Failed sending stat bizName id={} name={} reason={}", bizName.getId(), bizName.getBusinessName(), e.getLocalizedMessage(), e);
