@@ -109,25 +109,6 @@ public class TextToSpeechService {
 
         List<JsonTextToSpeech> jsonTextToSpeeches = new LinkedList<>();
         switch (businessType) {
-            case DO:
-                switch (countryShortName) {
-                    case "IN":
-                        String languageCode = nationalLanguageCode(countryShortName);
-                        if (null != languageCode) {
-                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingHindi), languageCode, FEMALE));
-                        }
-
-                        languageCode = foreignLanguageCode(countryShortName);
-                        jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingEnglish), languageCode, MALE));
-                        break;
-                    case "US":
-                        languageCode = nationalLanguageCode(countryShortName);
-                        if (null != languageCode) {
-                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingEnglish), languageCode, MALE));
-                        }
-                        break;
-                }
-                break;
             case RS:
             case RSQ:
             case FT:
@@ -153,6 +134,24 @@ public class TextToSpeechService {
             case NC:
             case BK:
             case PA:
+            case DO:
+                switch (countryShortName) {
+                    case "IN":
+                        String languageCode = nationalLanguageCode(countryShortName);
+                        if (null != languageCode) {
+                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingHindi), languageCode, FEMALE));
+                        }
+
+                        languageCode = foreignLanguageCode(countryShortName);
+                        jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingEnglish), languageCode, MALE));
+                        break;
+                    case "US":
+                        languageCode = nationalLanguageCode(countryShortName);
+                        if (null != languageCode) {
+                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingEnglish), languageCode, MALE));
+                        }
+                        break;
+                }
                 break;
             default:
                 LOG.error("Reached unreachable condition. Add more business type.");
