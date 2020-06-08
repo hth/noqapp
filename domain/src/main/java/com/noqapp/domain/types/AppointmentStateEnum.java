@@ -42,7 +42,7 @@ public enum AppointmentStateEnum {
             put(O.name, O.description);
             put(A.name, A.description);
             put(S.name, S.description);
-            put(F.name, F.description);
+//            put(F.name, F.description);
         }};
     }
 
