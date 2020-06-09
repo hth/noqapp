@@ -605,7 +605,6 @@ public class AdminBusinessLandingController {
                     if (UserLevelEnum.S_MANAGER == accountService.findProfileByQueueUserId(businessUser.getQueueUserId()).getLevel()) {
                         ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
                         if (null != professionalProfile) {
-
                             professionalProfile.removeManagerAtStoreCodeQR(bizStore.getCodeQR());
                             professionalProfileService.save(professionalProfile);
                         }
