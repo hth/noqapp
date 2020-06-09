@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -92,6 +93,11 @@ public class BusinessUserStoreService {
         businessUserStoreManager.save(businessUserStore);
     }
 
+    @CacheEvict(value = "access-codeQR")
+    public void evictFromCache(String qid, String codeQR) {
+        LOG.info("Remove from cache {} {}", qid, codeQR);
+    }
+
     public void activateAccount(String qid, String bizNameId) {
         businessUserStoreManager.activateAccount(qid, bizNameId);
     }
@@ -100,6 +106,7 @@ public class BusinessUserStoreService {
         businessUserStoreManager.removeFromBusiness(qid, bizNameId);
     }
 
+    @CacheEvict(value = "access-store")
     public void removeFromStore(String qid, String bizStoreId) {
         businessUserStoreManager.removeFromStore(qid, bizStoreId);
     }
