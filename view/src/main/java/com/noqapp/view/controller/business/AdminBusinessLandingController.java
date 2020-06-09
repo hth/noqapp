@@ -527,6 +527,9 @@ public class AdminBusinessLandingController {
                             professionalProfileService.save(professionalProfile);
                         }
                     }
+
+                    /* Clean cache. */
+                    businessUserStoreService.evictFromCache(businessUser.getQueueUserId(), bizStore.getCodeQR());
                     break;
                 case "REJECT":
                 case "DELETE":
@@ -597,10 +600,12 @@ public class AdminBusinessLandingController {
                             businessUser.getQueueUserId(),
                             queueSupervisorActionForm.getBizStoreId().getText());
 
+                    bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
+                    businessUserStoreService.evictFromCache(businessUser.getQueueUserId(), bizStore.getCodeQR());
                     if (UserLevelEnum.S_MANAGER == accountService.findProfileByQueueUserId(businessUser.getQueueUserId()).getLevel()) {
                         ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
                         if (null != professionalProfile) {
-                            bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
+
                             professionalProfile.removeManagerAtStoreCodeQR(bizStore.getCodeQR());
                             professionalProfileService.save(professionalProfile);
                         }
