@@ -164,14 +164,21 @@ public class AddQueueSupervisorFlowActions {
 
         /* Check if invitee and store are not in the same country. */
         if (!userProfile.getCountryShortName().equalsIgnoreCase(inviteQueueSupervisor.getCountryShortName())) {
+            LOG.info("Cannot add as supervisor country code not matching {} {}", userProfile.getCountryShortName(), inviteQueueSupervisor.getCountryShortName());
             return messageWhenStoreAndInviteeAreFromDifferentCountry(inviteQueueSupervisor, messageContext, userProfile);
+        }
+
+        UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
+        if (!userAccount.isAccountValidated() && userProfile.getQueueUserId().endsWith(MAIL_NOQAPP_COM)) {
+            LOG.info("Cannot add as supervisor as email is not validated {} {}", userAccount.getQueueUserId(), userProfile.getEmail());
+            return messageWhenEmailIsNotValidatedOfInviteeWithPhoneNumber(messageContext);
         }
 
         UserProfileEntity userProfileOfInviteeCode = null;
         if (!userProfile.getInviteCode().equals(inviteQueueSupervisor.getInviteeCode().getText())) {
             if ("ON".equalsIgnoreCase(quickDataEntryByPassSwitch)) {
                 userProfileOfInviteeCode = accountService.findProfileByInviteCode(inviteQueueSupervisor.getInviteeCode().getText());
-                UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
+                userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
 
                 /* Force email address validation. */
                 if (!userAccount.isAccountValidated()) {
@@ -312,7 +319,7 @@ public class AddQueueSupervisorFlowActions {
         }
         accountService.save(userProfile);
 
-        UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
+        userAccount = accountService.changeAccountRolesToMatchUserLevel(
                 userProfile.getQueueUserId(),
                 userProfile.getLevel());
         accountService.save(userAccount);
@@ -411,6 +418,17 @@ public class AddQueueSupervisorFlowActions {
                         .build());
 
         throw new InviteSupervisorException("User does not exists or Invitee code does not match");
+    }
+
+    private InviteQueueSupervisor messageWhenEmailIsNotValidatedOfInviteeWithPhoneNumber(MessageContext messageContext) {
+        messageContext.addMessage(
+            new MessageBuilder()
+                .error()
+                .source("inviteQueueSupervisor.phoneNumber")
+                .defaultText("Email is not validated. Please ask invitee to confirm their email address before adding them as supervisor.")
+                .build());
+
+        throw new InviteSupervisorException("User email address is not validated. Please ask invitee to confirm their email address.");
     }
 
     private InviteQueueSupervisor messageWhenStoreAndInviteeAreFromDifferentCountry(

@@ -180,7 +180,7 @@
                                     <c:if test="${!register.registerUser.emailValidated}">
                                     <li>
                                         <c:choose>
-                                            <c:when test="${fn:endsWith(register.registerUser.email, '@mail.noqapp.com')}">
+                                            <c:when test="${fn:endsWith(register.registerUser.email, '@mail.noqapp.com') || fn:length(register.registerUser.email) eq 0}">
                                                 <div class="alert-info">
                                                     <p>
                                                         Please add email address to begin business registration. Email address can be added only through NoQueue App used during registration.

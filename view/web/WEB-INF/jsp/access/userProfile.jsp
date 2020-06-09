@@ -216,7 +216,7 @@
                                 </div>
                                 <div class="col-fields">
                                     <c:choose>
-                                        <c:when test="${phoneValidated}">
+                                        <c:when test="${userProfileForm.phoneValidated}">
                                             <form:input path="phone" cssClass="form-field-admin" cssStyle="background-color: lightgrey" cssErrorClass="form-field-admin error-field" readonly="${userProfileForm.phoneValidated}"/>
                                         </c:when>
                                         <c:otherwise>
