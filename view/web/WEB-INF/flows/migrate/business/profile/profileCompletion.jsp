@@ -170,9 +170,9 @@
                                         <form:label path="email" cssErrorClass="lb_error">Email Address</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="email" cssClass="form-field-admin"
-                                                    cssErrorClass="form-field-admin error-field"
-                                                    readonly="${register.registerUser.phoneValidated}"/>
+                                        <form:input path="email" cssClass="form-field-admin" cssStyle="text-transform : lowercase;"
+                                                cssErrorClass="form-field-admin error-field"
+                                                readonly="${register.registerUser.phoneValidated}"/>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
