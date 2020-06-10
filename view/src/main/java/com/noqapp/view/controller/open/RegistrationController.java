@@ -3,6 +3,7 @@ package com.noqapp.view.controller.open;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.ParseJsonStringToMap;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.GenderEnum;
@@ -161,7 +162,7 @@ public class RegistrationController {
     public String getAvailability(@RequestBody String body) throws IOException {
         String email;
         try {
-            email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(body).get("mail").getText());
+            email = StringUtils.lowerCase(ParseJsonStringToMap.jsonStringToMap(new ScrubbedInput(body).getText()).get("mail").getText());
         } catch (IOException e) {
             LOG.error("Failed parsing mail reason={}", e.getLocalizedMessage(), e);
             throw e;
