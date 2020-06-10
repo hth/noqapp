@@ -82,7 +82,7 @@ public class ComposeMessagesForFCM {
     }
 
     /**
-     * Personal message sent by client to self or by merchant to client.
+     * Personal message sent by client to self or by business to client.
      * @param messageOrigin based of this message behaves differently.
      */
     @Mobile

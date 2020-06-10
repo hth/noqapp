@@ -39,7 +39,7 @@ public class JsonRequestRefund extends AbstractDomain {
     @JsonProperty("refundNote")
     private String refundNote;
 
-    /* A merchant generated unique key to identify this refund. Will be auto generated if left blank. */
+    /* A business generated unique key to identify this refund. Will be auto generated if left blank. */
     @JsonProperty("merchantRefundId")
     private String merchantRefundId;
 

@@ -158,7 +158,7 @@ public final class CommonUtil {
     }
 
     /**
-     * Used when merchant is dispensing token for people without app.
+     * Used when business is dispensing token for people without app.
      */
     public static String appendRandomToDeviceId(String did) {
         return did + "-" + RandomString.newInstance(6).nextString();

@@ -220,7 +220,7 @@ public class JoinAbortService {
     @Mobile
     public void abort(String id, String codeQR) {
         queueManager.abort(id);
-        /* Irrespective of Queue with order or without order, notify merchant of abort by just sending a refresh notification. */
+        /* Irrespective of Queue with order or without order, notify business of abort by just sending a refresh notification. */
         tokenQueueService.forceRefreshOnSomeActivity(codeQR);
     }
 

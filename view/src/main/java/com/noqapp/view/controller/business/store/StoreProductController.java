@@ -450,7 +450,7 @@ public class StoreProductController {
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
     }
 
-    /** Preferred product creates a new zip file for merchant app to download. */
+    /** Preferred product creates a new zip file for business app to download. */
     @PostMapping(value = "/preferredRefresh")
     public String preferredRefresh(
         @ModelAttribute("storeProductForm")

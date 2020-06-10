@@ -421,7 +421,7 @@ public class QueueService {
     }
 
     /**
-     * When merchant has served a specific token.
+     * When business has served a specific token.
      *
      * @param codeQR
      * @param servedNumber
@@ -462,7 +462,7 @@ public class QueueService {
     }
 
     /**
-     * Merchant when pausing to serve queue.
+     * Business when pausing to serve queue.
      */
     @Mobile
     public JsonToken pauseServingQueue(
@@ -486,7 +486,7 @@ public class QueueService {
     }
 
     /**
-     * Merchant when starting or re-starting to serve token when QueueState has been either Start or Re-Start.
+     * Business when starting or re-starting to serve token when QueueState has been either Start or Re-Start.
      *
      * @param codeQR
      * @param goTo   counter name
@@ -530,7 +530,7 @@ public class QueueService {
     }
 
     /**
-     * Merchant when serving a specific token in queue. This is works for out of order request in queue.
+     * Business when serving a specific token in queue. This is works for out of order request in queue.
      *
      * @param codeQR
      * @param goTo   counter name
