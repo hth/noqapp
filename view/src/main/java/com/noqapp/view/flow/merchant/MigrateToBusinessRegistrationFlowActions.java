@@ -261,7 +261,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
                 /*
                  * Even though it is a new business, using
                  * {@link com.noqapp.service.BusinessUserService#findBusinessUser(String, String)} way its safe to
-                 * create a new Merchant Admin or update same account when it was rejected/flagged previously. This
+                 * create a new Business Admin or update same account when it was rejected/flagged previously. This
                  * enforces we are updating the correct record.
                  *
                  * If we use {@link com.noqapp.service.BusinessUserService#loadBusinessUser()}, there is a likelihood

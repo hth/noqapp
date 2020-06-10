@@ -135,7 +135,7 @@ public class AccountService {
         userAccountManager.save(userAccount);
     }
 
-    /** Creates new user for client or merchant account. There are some rollback but this process should not fail. */
+    /** Creates new user for client or business account. There are some rollback but this process should not fail. */
     public UserAccountEntity createNewAccount(
         String phone,
         String firstName,
@@ -283,7 +283,7 @@ public class AccountService {
     }
 
     /**
-     * Creates new agent for client or merchant account. There are some rollback but this process should not fail.
+     * Creates new agent for client or business account. There are some rollback but this process should not fail.
      * Defaults role to Q_SUPERVISOR
      */
     public UserAccountEntity createNewAgentAccount(
@@ -556,7 +556,7 @@ public class AccountService {
                 userAccount.setRoles(roles);
                 break;
             case ADMIN:
-                /* As of now admin does not have any Merchant role. */
+                /* As of now admin does not have any Business role. */
                 roles.add(RoleEnum.ROLE_CLIENT);
                 roles.add(RoleEnum.ROLE_TECHNICIAN);
                 roles.add(RoleEnum.ROLE_SUPERVISOR);

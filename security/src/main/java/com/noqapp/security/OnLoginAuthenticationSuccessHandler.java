@@ -145,7 +145,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             case ROLE_M_ADMIN:
                 return businessAdminLanding;
 
-            /* All the above ROLES are for Client and Merchant Landing. */
+            /* All the above ROLES are for Client and Business Landing. */
             case ROLE_ANALYSIS:
                 return displayLanding;
             case ROLE_TECHNICIAN:

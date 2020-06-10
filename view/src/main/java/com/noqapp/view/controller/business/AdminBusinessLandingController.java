@@ -178,7 +178,7 @@ public class AdminBusinessLandingController {
 
     /**
      * Loading landing page for business.
-     * Note: This link is mapped in web flow after merchant adds new store to existing business.
+     * Note: This link is mapped in web flow after business adds new store to existing business.
      */
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
     public String landing(

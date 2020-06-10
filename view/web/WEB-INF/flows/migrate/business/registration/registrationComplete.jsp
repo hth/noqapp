@@ -64,7 +64,7 @@
                                     <h3>Registration Complete</h3>
                                     <c:choose>
                                         <c:when test="${register.autoApproveBusinessTurnedOn eq 'ON'}">
-                                            <p>Your merchant account has been approved. Refreshing in next <span id="countdown">5</span> seconds</p>
+                                            <p>Your business account has been approved. Refreshing in next <span id="countdown">5</span> seconds</p>
                                         </c:when>
                                         <c:otherwise>
                                             <p>Your details are being verified. Would notify you once verification is complete.</p>

@@ -11,10 +11,10 @@ import com.noqapp.domain.annotation.Mobile;
 public enum AppFlavorEnum {
     NQCL("NQCL", "NoQueue Client"),
     NQCH("NQCH", "NoQueue Client Hospital"),
-    NQMS("NQMS", "NoQueue Merchant Store"),
-    NQMH("NQMH", "NoQueue Merchant HealthCare"),
-    NQMT("NQMT", "NoQueue Merchant TV"),
-    NQMI("NQMI", "NoQueue Merchant Inventory"),
+    NQMS("NQMS", "NoQueue Business Store"),
+    NQMH("NQMH", "NoQueue Business HealthCare"),
+    NQMT("NQMT", "NoQueue Business TV"),
+    NQMI("NQMI", "NoQueue Business Inventory"),
     NQIH("NQIH", "NoQueue Instant Health");
 
     private String name;

@@ -189,7 +189,7 @@ public class TokenQueueService {
             if (null == queue) {
                 /*
                  * Find storeHour early, helps prevent issuing token when queue is closed or due to some obstruction.
-                 * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
+                 * To eliminate this, we need to let business know about queue closed and prevent clients from joining.
                  */
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
                 /* This condition exists only for non paid system. */
@@ -301,7 +301,7 @@ public class TokenQueueService {
             if (null == queue) {
                 /*
                  * Find storeHour early, helps prevent issuing token when queue is closed or due to some obstruction.
-                 * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
+                 * To eliminate this, we need to let business know about queue closed and prevent clients from joining.
                  */
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
                 /* This condition exists only for non paid system. */
@@ -429,7 +429,7 @@ public class TokenQueueService {
 
         /*
          * Find storeHour early, helps prevent issuing token when queue is closed or due to some obstruction.
-         * To eliminate this, we need to let merchant know about queue closed and prevent clients from joining.
+         * To eliminate this, we need to let business know about queue closed and prevent clients from joining.
          */
         ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
         DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
@@ -623,7 +623,7 @@ public class TokenQueueService {
          */
         sendMessageToSelectedTokenUser(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo, serving);
 
-        LOG.info("After sending message to merchant and personal message to user of token");
+        LOG.info("After sending message to business and personal message to user of token");
         QueueEntity queue = findOne(codeQR, serving);
         if (queue != null && queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
@@ -746,7 +746,7 @@ public class TokenQueueService {
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
             JsonData jsonData = new JsonTopicData(MessageOriginEnum.A, FirebaseMessageTypeEnum.P).getJsonAlertData()
                 //Added additional info to message for Android to not crash as it looks for CodeQR.
-                //TODO improve messaging to do some action on Client and Merchant app when status is Closed.
+                //TODO improve messaging to do some action on Client and Business app when status is Closed.
                 .setCodeQR(tokenQueue.getId())
                 .setBusinessType(tokenQueue.getBusinessType());
 
@@ -812,7 +812,7 @@ public class TokenQueueService {
                     }
 
                     /*
-                     * This message has to go as the merchant with the opened queue
+                     * This message has to go as the business with the opened queue
                      * will not get any update if some one joins. FCM makes sure the message is dispersed.
                      */
                     long confirmedWaiting = queueManager.countAllQueued(codeQR);
@@ -887,7 +887,7 @@ public class TokenQueueService {
 
             /*
              * Note: QueueStatus with 'S', 'R', 'D' should be ignore by client app.
-             * As this is a personal message when server is planning to serve a spacific token.
+             * As this is a personal message when server is planning to serve a specific token.
              */
             switch (queueStatus) {
                 case S:

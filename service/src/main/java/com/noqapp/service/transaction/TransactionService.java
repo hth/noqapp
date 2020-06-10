@@ -191,7 +191,7 @@ public class TransactionService {
                                 case PO:
                                 case NM:
                                     LOG.warn("Order Payment performed outside of NoQueue. " +
-                                        "Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
+                                        "Cancel is prevented {} by client. Visit business as refund is due.", transactionId);
                                     throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
                                 case OP:
                                 case PR:
@@ -211,7 +211,7 @@ public class TransactionService {
                             break;
                         case Q:
                             LOG.warn("Queue Payment performed outside of NoQueue. " +
-                                "Cancel is prevented {} by client. Visit merchant as refund is due.", transactionId);
+                                "Cancel is prevented {} by client. Visit business as refund is due.", transactionId);
                             throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
                     }
                     break;
@@ -318,7 +318,7 @@ public class TransactionService {
                 ) {
                     switch (purchaseOrderBeforeCancel.getTransactionVia()) {
                         case E:
-                            /* Complete refund when external as its initiated by merchant */
+                            /* Complete refund when external as its initiated by business */
                             break;
                         case U:
                             LOG.error("Payment via {} {}. Cannot cancel", purchaseOrderBeforeCancel.getTransactionVia(), transactionId);

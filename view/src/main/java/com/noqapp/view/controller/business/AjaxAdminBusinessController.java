@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 /**
- * All merchant admin related ajax call resides here.
+ * All business admin related ajax call resides here.
  *
  * hitender
  * 2018-12-25 07:12

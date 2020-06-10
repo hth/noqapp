@@ -19,7 +19,7 @@
         <div class="logo-left"><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue"/></a></div>
         <div class="top-menu-right">
             <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
-            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Merchant Register</a></span>
+            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Business Register</a></span>
         </div>
 
         <div class="clearFix"></div>

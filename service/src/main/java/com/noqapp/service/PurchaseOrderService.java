@@ -375,7 +375,7 @@ public class PurchaseOrderService {
             paymentMode
         );
 
-        /* Notification not required as Merchant has the update payment and Client always fetches fresh. */
+        /* Notification not required as Business has the update payment and Client always fetches fresh. */
         //TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         //doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
         return purchaseOrder;
@@ -384,7 +384,7 @@ public class PurchaseOrderService {
     @Mobile
     public JsonPurchaseOrderList cancelOrderByMerchant(String qid, String transactionId) {
         Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
-        LOG.info("Merchant is cancelling order for {} {}", qid, transactionId);
+        LOG.info("Business is cancelling order for {} {}", qid, transactionId);
 
         PurchaseOrderEntity purchaseOrder = transactionService.cancelPurchaseInitiatedByMerchant(qid, transactionId);
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
@@ -1231,7 +1231,7 @@ public class PurchaseOrderService {
                     }
 
                     /*
-                     * This message has to go as the merchant with the opened queue
+                     * This message has to go as the business with the opened queue
                      * will not get any update if some one joins. FCM makes sure the message is dispersed.
                      */
                     long confirmedWaiting = purchaseOrderManager.countAllPlacedOrder(codeQR);
@@ -1449,7 +1449,7 @@ public class PurchaseOrderService {
     }
 
     /**
-     * When merchant has served a specific token.
+     * When business has served a specific token.
      *
      * @param codeQR
      * @param servedNumber
@@ -1486,7 +1486,7 @@ public class PurchaseOrderService {
     }
 
     /**
-     * Merchant when starting or re-starting to serve token when QueueState has been either Start or Re-Start.
+     * Business when starting or re-starting to serve token when QueueState has been either Start or Re-Start.
      *
      * @param codeQR
      * @param goTo   counter name
@@ -1583,7 +1583,7 @@ public class PurchaseOrderService {
          */
         sendMessageToSelectedTokenUser(codeQR, purchaseOrder, tokenQueue, goTo, purchaseOrder.getTokenNumber());
 
-        LOG.info("After sending message to merchant and personal message to user of token");
+        LOG.info("After sending message to business and personal message to user of token");
         if (purchaseOrder.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", purchaseOrder.getQueueUserId(), purchaseOrder.getDid());
 

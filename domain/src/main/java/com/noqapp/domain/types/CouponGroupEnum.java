@@ -1,12 +1,12 @@
 package com.noqapp.domain.types;
 
 /**
- * Added to differentiate between client and merchant coupons.
+ * Added to differentiate between client and business coupons.
  * User: hitender
  * Date: 2019-06-17 16:25
  */
 public enum CouponGroupEnum {
-    M("M", "Merchant"),
+    M("M", "Business"),
     C("C", "Client");
 
     private String name;

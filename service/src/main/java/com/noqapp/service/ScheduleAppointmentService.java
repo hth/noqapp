@@ -302,7 +302,7 @@ public class ScheduleAppointmentService {
         }
     }
 
-    /** Contains profile information. To be used by merchant only. */
+    /** Contains profile information. To be used by business only. */
     @Mobile
     public JsonScheduleList findScheduleForDayAsJson(String codeQR, String scheduleDate) {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
@@ -500,7 +500,7 @@ public class ScheduleAppointmentService {
                 .setMessage(message);
 
             /*
-             * This message has to go as the merchant with the opened queue
+             * This message has to go as the business with the opened queue
              * will not get any update if some one joins. FCM makes sure the message is dispersed.
              */
             if (DeviceTypeEnum.I == deviceType) {
