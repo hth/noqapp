@@ -38,7 +38,7 @@ public class CustomTextToSpeechValidator implements Validator {
     public void validate(Object target, Errors errors) {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "textToSpeechType", "field.required", new Object[]{"Customize for"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "languageTag", "field.required", new Object[]{"Select Language"});
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "template", "field.required", new Object[]{"Custom Announcement"});
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "template", "field.required", new Object[]{"Voice Announcement"});
 
         if (!errors.hasErrors()) {
             CustomTextToSpeechForm customTextToSpeechForm = (CustomTextToSpeechForm) target;
@@ -48,8 +48,8 @@ public class CustomTextToSpeechValidator implements Validator {
                         if (!customTextToSpeechForm.getTemplate().contains(word)) {
                             errors.rejectValue("template",
                                 "missing.pattern",
-                                new Object[]{word, "Custom Announcement", SN.getDictionaryAsString()},
-                                word + " is missing from Custom Announcement. Your sentence should contain each of these " + SN.getDictionaryAsString());
+                                new Object[]{word, "Voice Announcement", SN.getDictionaryAsString()},
+                                word + " is missing from Voice Announcement. Your sentence should contain each of these " + SN.getDictionaryAsString());
                         }
                     }
                     break;
@@ -64,8 +64,8 @@ public class CustomTextToSpeechValidator implements Validator {
                         if (null != textToSpeechTemplateSet && textToSpeechTemplateSet.size() >= 2) {
                             errors.rejectValue("template",
                                 "max.limit",
-                                new Object[]{"Custom Announcement", 2, "announcement"},
-                                "Custom Announcement has reached max of " + 2 + " announcement");
+                                new Object[]{"Voice Announcement", 2, "announcement"},
+                                "Voice Announcement has reached max of " + 2 + " announcement");
                         }
                         break;
                     default:
