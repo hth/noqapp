@@ -76,7 +76,7 @@ public class SendNotificationValidator implements Validator {
                         "Body minimum length is should be greater than " + MIN_TITLE_TEXT_LIMIT + " and less than " + MAX_BODY_TEXT_LIMIT + " characters");
                 }
 
-                if (StringUtils.isNotBlank(form.getQid().getText())) {
+                if (null != form.getQid() && StringUtils.isNotBlank(form.getQid().getText())) {
                     UserAccountEntity userAccount = accountService.findByQueueUserId(form.getQid().getText());
                     if (userAccount == null) {
                         LOG.warn("QID not found {}", form.getQid().getText());

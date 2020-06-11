@@ -67,21 +67,26 @@ public class BulkMessageService {
         tokenQueueService.sendAlertMessageToAllOnSpecificTopic(title, body, tokenQueue, QueueStatusEnum.C);
     }
 
-    public long sendMessageToPastClients(String bizNameId, int days) {
+    public int sendMessageToPastClients(String bizNameId) {
+        return queueService.countDistinctQIDsInBiz(bizNameId, 45);
+    }
+
+    public int sendMessageToPastClients(String bizNameId, int days) {
         return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? 45 : days);
     }
 
-    public void sendMessageToPastClients(String title, String body, String bizNameId, String qid) {
+    public int sendMessageToPastClients(String title, String body, String bizNameId, String qid) {
         NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
             .setTitle(title)
             .setBody(body)
             .setQueueUserId(qid);
         notificationMessageManager.save(notificationMessage);
 
-        List<String> qids = queueService.distinctQIDsInBiz(bizNameId, 45);
-        LOG.info("Sending message by {} total send={} {} {} {}", qid, qids.size(), title, body, bizNameId);
-        for (String senderQid : qids) {
-            tokenQueueService.sendMessageToSpecificUser(title, body, senderQid, MessageOriginEnum.A);
-        }
+        int sendMessageCount = sendMessageToPastClients(bizNameId);
+        LOG.info("Sending message by {} total send={} {} {} {}", qid, sendMessageCount, title, body, bizNameId);
+        queueService.distinctQIDsInBiz(bizNameId, 45).stream().iterator()
+            .forEachRemaining(senderQid -> tokenQueueService.sendMessageToSpecificUser(title, body, senderQid, MessageOriginEnum.A));
+
+        return sendMessageCount;
     }
 }
