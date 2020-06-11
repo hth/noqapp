@@ -3,6 +3,7 @@ package com.noqapp.service;
 import com.noqapp.domain.NotificationMessageEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.NotificationMessageManager;
 
@@ -66,8 +67,26 @@ public class BulkMessageService {
         tokenQueueService.sendAlertMessageToAllOnSpecificTopic(title, body, tokenQueue, QueueStatusEnum.C);
     }
 
-    public long sendMessageToPastClients(String bizNameId, int days) {
-        return queueService.countDistinctQIDsInBiz(bizNameId, days);
+    public int sendMessageToPastClients(String bizNameId) {
+        return queueService.countDistinctQIDsInBiz(bizNameId, 45);
     }
 
+    public int sendMessageToPastClients(String bizNameId, int days) {
+        return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? 45 : days);
+    }
+
+    public int sendMessageToPastClients(String title, String body, String bizNameId, String qid) {
+        NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
+            .setTitle(title)
+            .setBody(body)
+            .setQueueUserId(qid);
+        notificationMessageManager.save(notificationMessage);
+
+        int sendMessageCount = sendMessageToPastClients(bizNameId);
+        LOG.info("Sending message by {} total send={} {} {} {}", qid, sendMessageCount, title, body, bizNameId);
+        queueService.distinctQIDsInBiz(bizNameId, 45).stream().iterator()
+            .forEachRemaining(senderQid -> tokenQueueService.sendMessageToSpecificUser(title, body, senderQid, MessageOriginEnum.A));
+
+        return sendMessageCount;
+    }
 }

@@ -15,6 +15,7 @@ public class SendNotificationForm {
     private int sentCount;
     private boolean success;
     private ScrubbedInput qid;
+    private String businessName;
 
     public ScrubbedInput getTitle() {
         return title;
@@ -76,6 +77,15 @@ public class SendNotificationForm {
 
     public SendNotificationForm setQid(ScrubbedInput qid) {
         this.qid = qid;
+        return this;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public SendNotificationForm setBusinessName(String businessName) {
+        this.businessName = businessName;
         return this;
     }
 }

@@ -77,7 +77,7 @@ public interface QueueManagerJDBC {
 
     boolean hasServicedInPastXDays(String codeQR, String qid, int days);
 
-    long countDistinctQIDsInBiz(String bizNameId, int days);
+    int countDistinctQIDsInBiz(String bizNameId, int days);
 
     List<String> distinctQIDsInBiz(String bizNameId, int days);
 }
