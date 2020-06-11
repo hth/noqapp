@@ -54,7 +54,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Custom Announcement</h3>
+                        <h3>Voice Announcement</h3>
                         <div class="space10"></div>
                         <form:form method="POST" action="./landing.htm" modelAttribute="customTextToSpeechForm">
                         <spring:hasBindErrors name="customTextToSpeechForm">
@@ -100,7 +100,7 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="template" cssErrorClass="lb_error">Custom Announcement</form:label>
+                                        <form:label path="template" cssErrorClass="lb_error">Voice Announcement</form:label>
                                     </div>
                                     <div class="col-fields">
                                         <form:input path="template" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
@@ -164,7 +164,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <div class="alert-info">
-                                            <p>System is set for default announcement as custom announcement is not configured.</p>
+                                            <p>System is set for default announcement as voice announcement is not configured.</p>
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
