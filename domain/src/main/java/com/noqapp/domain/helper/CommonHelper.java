@@ -98,7 +98,6 @@ public class CommonHelper {
                         LOG.error("Un-supported businessType={}", businessType);
                         throw new UnsupportedOperationException("Reached un-supported condition");
                 }
-
             case RS:
             case FT:
             case BA:
@@ -170,7 +169,7 @@ public class CommonHelper {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Failed getting category bizStoreId={} businessType{}", bizStore.getId(), bizStore.getBusinessType());
+            LOG.error("Failed getting business customer attribute bizStoreId={} businessType{}", bizStore.getId(), bizStore.getBusinessType());
         }
         return null;
     }
