@@ -171,8 +171,11 @@ public class BizService {
             LOG.warn("QueueUser is null, check the call, bizStoreId={} name={} reason={} errorReason={}", bizStore.getId(), bizStore.getDisplayName(), changeInitiateReason, e.getLocalizedMessage(), e);
         }
 
-        String finalChangeInitiateReason = changeInitiateReason;
-        sendMailWhenStoreSettingHasChanged(bizStore, finalChangeInitiateReason);
+        try {
+            sendMailWhenStoreSettingHasChanged(bizStore, changeInitiateReason);
+        } catch (Exception e) {
+            LOG.warn("Failed sending change mail for store {} {}", bizStore.getId(), e.getLocalizedMessage(), e);
+        }
     }
 
     @Async
