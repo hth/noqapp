@@ -68,7 +68,8 @@
                                 <li>
                                     <div class="alert-info">
                                         <p>
-                                            Sends message to all users of: <b>${sendNotificationForm.businessName}</b>. These users have at least visited once in last 45 days.
+                                            Sends message to all users of: <b>${sendNotificationForm.businessName}</b>. </br>
+                                            Users should have at least visited once in last 45 days.
                                         </p>
                                     </div>
                                 </li>
@@ -115,7 +116,9 @@
                                             </div>
                                             </c:when>
                                             <c:otherwise>
+                                            <div class="left-btn">
                                                 <input type="submit" value="OK" class="cancel-btn" name="cancel-send-notification">
+                                            </div>
                                             </c:otherwise>
                                         </c:choose>
                                         <div class="clearFix"></div>
@@ -123,14 +126,18 @@
                                     <div class="clearFix"></div>
                                 </li>
 
-                                <c:choose>
-                                    <c:when test="${sendNotificationForm.success}">
-                                        Message delivered successfully to ${sendNotificationForm.sentCount} people
-                                    </c:when>
-                                    <c:otherwise>
-                                        Your message will reach to ${sendNotificationForm.sentCount} people
-                                    </c:otherwise>
-                                </c:choose>
+                                <div class="alert-info">
+                                    <p>
+                                    <c:choose>
+                                        <c:when test="${sendNotificationForm.success}">
+                                            Message delivered successfully to ${sendNotificationForm.sentCount} people
+                                        </c:when>
+                                        <c:otherwise>
+                                            Your message will reach to ${sendNotificationForm.sentCount} people
+                                        </c:otherwise>
+                                    </c:choose>
+                                    </p>
+                                </div>
                             </ul>
                         </form:form>
                     </div>

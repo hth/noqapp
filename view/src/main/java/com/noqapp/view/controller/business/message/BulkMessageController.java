@@ -23,10 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
+ * Sends bulk message to all the customers who have visited the business at least once.
  * hitender
  * 6/11/20 11:26 AM
  */
-@SuppressWarnings ({
+@SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
     "PMD.LocalVariableCouldBeFinal",
     "PMD.MethodArgumentCouldBeFinal",
@@ -69,7 +70,7 @@ public class BulkMessageController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        LOG.info("Sending Global notification landed qid={}", queueUser.getQueueUserId());
+        LOG.info("Sending message to your user landed qid={}", queueUser.getQueueUserId());
 
         if (model.asMap().containsKey("result")) {
             model.addAttribute(
@@ -91,7 +92,7 @@ public class BulkMessageController {
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
-        LOG.info("Landed on bulk upload page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
+        LOG.info("Sending bulk message qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
         sendNotificationValidator.validate(sendNotificationForm, result);
         if (result.hasErrors()) {
@@ -113,7 +114,7 @@ public class BulkMessageController {
                 .setSuccess(true)
                 .setIgnoreSentiments(false);
             redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
-            LOG.info("Sent message {} {} {}",
+            LOG.info("Sent bulk message {} {} {}",
                 sendMessageCount,
                 sendNotificationForm.getTitle(),
                 sendNotificationForm.getBody());
@@ -124,11 +125,11 @@ public class BulkMessageController {
     }
 
     @PostMapping(params = {"cancel-send-notification"}, produces = "text/html;charset=UTF-8")
-    public String postPreferredBusinessCancel(
+    public String sendNotification(
         @ModelAttribute("sendNotificationForm")
         SendNotificationForm sendNotificationForm
     ) {
-        LOG.info("Loading admin landing after user search cancelled");
+        LOG.info("Loading main landing after user has either cancelled or sent notification successfully");
         return "redirect:/";
     }
 }
