@@ -374,11 +374,14 @@ public class MailService {
      */
     @Async
     public void sendOTPMail(String userId, String name, String otp, String message) {
+        LOG.info("Mail Verification to be sent {} {} {}", userId, name, otp);
         if (StringUtils.isNotBlank(userId) && !userId.endsWith(MAIL_NOQAPP_COM)) {
             Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("mailOTP", otp);
             rootMap.put("message", message);
             sendAnyMail(userId, name, "Confirmation mail for NoQApp", rootMap, "mail/mail-otp.ftl");
+        } else {
+            LOG.warn("Could not send mail verification {} {} {}", userId, name, otp);
         }
     }
 
