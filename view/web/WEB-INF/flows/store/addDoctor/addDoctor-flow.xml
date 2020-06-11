@@ -4,7 +4,7 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
       http://www.springframework.org/schema/webflow/spring-webflow.xsd">
 
-    <secured attributes="ROLE_M_ADMIN"/>
+    <secured attributes="ROLE_M_ADMIN, ROLE_TECHNICIAN, ROLE_SUPERVISOR" match="any"/>
 
     <on-start>
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizStoreId')"
