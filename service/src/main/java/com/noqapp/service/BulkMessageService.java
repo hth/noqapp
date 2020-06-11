@@ -3,6 +3,7 @@ package com.noqapp.service;
 import com.noqapp.domain.NotificationMessageEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.NotificationMessageManager;
 
@@ -67,7 +68,20 @@ public class BulkMessageService {
     }
 
     public long sendMessageToPastClients(String bizNameId, int days) {
-        return queueService.countDistinctQIDsInBiz(bizNameId, days);
+        return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? 45 : days);
     }
 
+    public void sendMessageToPastClients(String title, String body, String bizNameId, String qid) {
+        NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
+            .setTitle(title)
+            .setBody(body)
+            .setQueueUserId(qid);
+        notificationMessageManager.save(notificationMessage);
+
+        List<String> qids = queueService.distinctQIDsInBiz(bizNameId, 45);
+        LOG.info("Sending message by {} total send={} {} {} {}", qid, qids.size(), title, body, bizNameId);
+        for (String senderQid : qids) {
+            tokenQueueService.sendMessageToSpecificUser(title, body, senderQid, MessageOriginEnum.A);
+        }
+    }
 }
