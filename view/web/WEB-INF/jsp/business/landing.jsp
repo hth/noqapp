@@ -38,6 +38,7 @@
                         <a href="${pageContext.request.contextPath}/business/migrateBusinessType.htm">Migrate Business Type</a>
                         <a href="${pageContext.request.contextPath}/business/dataVisibility/landing.htm">Data Visibility</a>
                         <a href="${pageContext.request.contextPath}/business/customTextToSpeech/landing.htm">Customize Announcement</a>
+                        <a href="${pageContext.request.contextPath}/business/message/bulk.htm">Message Customer</a>
                         <a href="${pageContext.request.contextPath}/business/survey/landing.htm">Survey</a>
                         <a href="${pageContext.request.contextPath}/business/paymentConfiguration/landing.htm">Payment Permission</a>
                         <a href="${pageContext.request.contextPath}/business/advertisement/landing.htm">Advertisement</a>
@@ -87,8 +88,8 @@
                                     || BusinessTypeEnum.GSQ eq businessLandingForm.businessType
                                     || BusinessTypeEnum.CF eq businessLandingForm.businessType
                                     || BusinessTypeEnum.CFQ eq businessLandingForm.businessType
-                                    || BusinessTypeEnum.CD eq store.businessType
-                                    || BusinessTypeEnum.CDQ eq store.businessType
+                                    || BusinessTypeEnum.CD eq businessLandingForm.businessType
+                                    || BusinessTypeEnum.CDQ eq businessLandingForm.businessType
                                     }">
                                         <c:if test="${businessLandingForm.bizStores.size() != 0}">
                                             <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
