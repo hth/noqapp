@@ -105,8 +105,8 @@ public class BulkMessageController {
             int sendMessageCount = bulkMessageService.sendMessageToPastClients(
                 sendNotificationForm.getTitle().getText(),
                 sendNotificationForm.getBody().getText(),
-                queueUser.getQueueUserId(),
-                businessUser.getBizName().getId()
+                businessUser.getBizName().getId(),
+                queueUser.getQueueUserId()
             );
 
             sendNotificationForm
