@@ -25,6 +25,9 @@ public class NotificationMessageEntity extends BaseEntity {
     @Field("BD")
     private String body;
 
+    @Field("MC")
+    private int messageSendCount;
+
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -49,6 +52,15 @@ public class NotificationMessageEntity extends BaseEntity {
 
     public NotificationMessageEntity setBody(String body) {
         this.body = body;
+        return this;
+    }
+
+    public int getMessageSendCount() {
+        return messageSendCount;
+    }
+
+    public NotificationMessageEntity setMessageSendCount(int messageSendCount) {
+        this.messageSendCount = messageSendCount;
         return this;
     }
 }

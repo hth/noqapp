@@ -68,11 +68,11 @@ public class BulkMessageService {
     }
 
     public int sendMessageToPastClients(String bizNameId) {
-        return queueService.countDistinctQIDsInBiz(bizNameId, 45);
+        return queueService.countDistinctQIDsInBiz(bizNameId, 60);
     }
 
     public int sendMessageToPastClients(String bizNameId, int days) {
-        return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? 45 : days);
+        return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? 60 : days);
     }
 
     public int sendMessageToPastClients(String title, String body, String bizNameId, String qid) {
@@ -84,9 +84,11 @@ public class BulkMessageService {
 
         int sendMessageCount = sendMessageToPastClients(bizNameId);
         LOG.info("Sending message by {} total send={} {} {} {}", qid, sendMessageCount, title, body, bizNameId);
-        queueService.distinctQIDsInBiz(bizNameId, 45).stream().iterator()
+        queueService.distinctQIDsInBiz(bizNameId, 60).stream().iterator()
             .forEachRemaining(senderQid -> tokenQueueService.sendMessageToSpecificUser(title, body, senderQid, MessageOriginEnum.A));
 
+        notificationMessage.setMessageSendCount(sendMessageCount);
+        notificationMessageManager.save(notificationMessage);
         return sendMessageCount;
     }
 }

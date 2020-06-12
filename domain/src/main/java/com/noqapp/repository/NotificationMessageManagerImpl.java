@@ -38,7 +38,10 @@ public class NotificationMessageManagerImpl implements NotificationMessageManage
 
     @Override
     public void save(NotificationMessageEntity object) {
-        mongoTemplate.save(object);
+        if (object.getId() != null) {
+            object.setUpdated();
+        }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override
