@@ -1,5 +1,8 @@
 package com.noqapp.view.flow.merchant.validator;
 
+import static com.noqapp.common.errors.MobileSystemErrorCodeEnum.USER_INPUT;
+
+import com.noqapp.common.errors.ErrorEncounteredJson;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
@@ -111,6 +114,17 @@ public class UserFlowValidator {
                     .defaultText("Email address has to be at least of size " + mailLength + " characters")
                     .build());
             status = "failure";
+        } else if (registerUser.getEmail() != null && registerUser.getEmail().length() >= mailLength) {
+            if (!CommonUtil.validateMail(registerUser.getEmail())) {
+                LOG.warn("Failed validation mail={}", registerUser.getEmail());
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "email")
+                        .defaultText("Please correct the email address")
+                        .build());
+                status = "failure";
+            }
         }
 
         /* Ask for password when email is not validated. */

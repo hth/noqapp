@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.open.validator;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.UserProfileEntity;
@@ -269,6 +270,17 @@ public class UserRegistrationValidation {
                         .defaultText("Email Address has to be at least of size " + mailLength + " characters")
                         .build());
                 status = "failure";
+            } else if (merchantRegistration.getMail() != null && merchantRegistration.getMail().getText().length() >= mailLength) {
+                if (!CommonUtil.validateMail(merchantRegistration.getMail().getText())) {
+                    LOG.warn("Failed validation mail={}", merchantRegistration.getMail());
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source("mail")
+                            .defaultText("Please correct the email address")
+                            .build());
+                    status = "failure";
+                }
             }
         }
         return status;

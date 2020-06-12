@@ -379,7 +379,7 @@ public class MailService {
             Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("mailOTP", otp);
             rootMap.put("message", message);
-            sendAnyMail(userId, name, "Confirmation mail for NoQApp", rootMap, "mail/mail-otp.ftl");
+            sendAnyMail(userId, name, "Confirmation mail for NoQueue", rootMap, "mail/mail-otp.ftl");
         } else {
             LOG.warn("Could not send mail verification {} {} {}", userId, name, otp);
         }
