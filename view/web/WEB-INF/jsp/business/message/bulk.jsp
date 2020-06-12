@@ -69,7 +69,7 @@
                                     <div class="alert-info">
                                         <p>
                                             Sends message to all users of: <b>${sendNotificationForm.businessName}</b>. </br>
-                                            Users should have at least visited once in last 45 days.
+                                            Users should have at least visited once in last 60 days.
                                         </p>
                                     </div>
                                 </li>
