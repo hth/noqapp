@@ -45,6 +45,9 @@ public final class CommonUtil {
     public static final String AUTH_KEY_HIDDEN = "*********";
     public static final String UNAUTHORIZED = "Unauthorized";
     private static final Pattern p = Pattern.compile("\\{([^}]*)\\}");
+
+    /* Will keep out bob @ aol.com (spaces in emails) or steve (no domain at all) or mary@aolcom (no period before .com), I use */
+    private static final Pattern mailPattern = Pattern.compile("/^\\S+@\\S+\\.\\S+$/");
     private static Random random;
     private static Map<String, String> languages;
 
@@ -280,5 +283,10 @@ public final class CommonUtil {
         }
 
         return fromDevice;
+    }
+
+    public static boolean validateMail(String mail) {
+        Matcher matcher = mailPattern.matcher(mail);
+        return matcher.matches();
     }
 }
