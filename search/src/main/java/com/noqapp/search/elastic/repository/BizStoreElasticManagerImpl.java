@@ -88,10 +88,10 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
                 .source(bizStoreElastic.asJson(), XContentType.JSON);
 
             IndexResponse indexResponse = restHighLevelClient.index(request, RequestOptions.DEFAULT);
-            if (indexResponse.getResult() == DocWriteResponse.Result.CREATED) {
-                LOG.info("Created elastic document successfully id={} bizStoreElastic={}", bizStoreElastic.getId(), bizStoreElastic);
-            } else if (indexResponse.getResult() == DocWriteResponse.Result.UPDATED) {
-                LOG.info("Updated elastic document id={} bizStoreElastic={}", bizStoreElastic.getId(), bizStoreElastic);
+            if (DocWriteResponse.Result.CREATED == indexResponse.getResult()) {
+                LOG.info("Created elastic document successfully id={}", bizStoreElastic.getId());
+            } else if (DocWriteResponse.Result.UPDATED == indexResponse.getResult()) {
+                LOG.info("Updated elastic document id={}", bizStoreElastic.getId());
             }
 
             ReplicationResponse.ShardInfo shardInfo = indexResponse.getShardInfo();
@@ -106,7 +106,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         } catch (IOException e) {
             LOG.error("Failed saving id={} reason={}", bizStoreElastic.getId(), e.getLocalizedMessage(), e);
         } catch (ElasticsearchException e) {
-            if (e.status() == RestStatus.CONFLICT) {
+            if (RestStatus.CONFLICT == e.status()) {
                 LOG.error("Failed on version conflict id={} reason={}", bizStoreElastic.getId(), e.getDetailedMessage(), e);
             } else {
                 LOG.error("Failed saving id={} reason={}", bizStoreElastic.getId(), e.getDetailedMessage(), e);
@@ -120,9 +120,9 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
-            if (deleteResponse.getResult() == DocWriteResponse.Result.CREATED) {
+            if (DocWriteResponse.Result.CREATED == deleteResponse.getResult()) {
                 LOG.warn("Created successfully id={}", id);
-            } else if (deleteResponse.getResult() == DocWriteResponse.Result.UPDATED) {
+            } else if (DocWriteResponse.Result.UPDATED == deleteResponse.getResult()) {
                 LOG.warn("Updated document id={}", id);
             }
 
@@ -138,7 +138,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         } catch (IOException e) {
             LOG.error("Failed deleting id={} reason={}", id, e.getLocalizedMessage(), e);
         } catch (ElasticsearchException e) {
-            if (e.status() == RestStatus.CONFLICT) {
+            if (RestStatus.CONFLICT == e.status()) {
                 LOG.error("Failed on version conflict id={} reason={}", id, e.getDetailedMessage(), e);
             } else {
                 LOG.error("Failed saving id={} reason={}", id, e.getDetailedMessage(), e);
@@ -172,11 +172,11 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
             } else {
                 long created = 0, updated = 0, deleted = 0;
                 for (BulkItemResponse bulkItemResponse : bulkResponse) {
-                    if (bulkItemResponse.getOpType() == OpType.INDEX || bulkItemResponse.getOpType() == OpType.CREATE) {
+                    if (OpType.INDEX == bulkItemResponse.getOpType() || OpType.CREATE == bulkItemResponse.getOpType()) {
                         created++;
-                    } else if (bulkItemResponse.getOpType() == OpType.UPDATE) {
+                    } else if (OpType.UPDATE == bulkItemResponse.getOpType()) {
                         updated++;
-                    } else if (bulkItemResponse.getOpType() == OpType.DELETE) {
+                    } else if (OpType.DELETE == bulkItemResponse.getOpType()) {
                         deleted++;
                     }
                 }
