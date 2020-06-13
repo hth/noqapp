@@ -42,15 +42,15 @@ public class MessageCustomerService {
 
     @Mobile
     @Async
-    public void sendMessageToSubscribers(String title, String body, List<ScrubbedInput> codeQRs, String qid) {
+    public void sendMessageToSubscribers(String title, String body, List<String> codeQRs, String qid) {
         NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
             .setTitle(title)
             .setBody(body)
             .setQueueUserId(qid);
         notificationMessageManager.save(notificationMessage);
 
-        for (ScrubbedInput codeQR : codeQRs) {
-            sendMessageToSubscriber(title, body, codeQR.getText());
+        for (String codeQR : codeQRs) {
+            sendMessageToSubscriber(title, body, codeQR);
         }
     }
 
