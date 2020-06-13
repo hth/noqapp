@@ -2,7 +2,7 @@ package com.noqapp.view.controller.business.message;
 
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
-import com.noqapp.service.BulkMessageService;
+import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.view.form.admin.SendNotificationForm;
 import com.noqapp.view.validator.SendNotificationValidator;
@@ -34,29 +34,29 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
     "PMD.LongVariable"
 })
 @Controller
-@RequestMapping(value = "/business/message/bulk")
-public class BulkMessageController {
-    private static final Logger LOG = LoggerFactory.getLogger(BulkMessageController.class);
+@RequestMapping(value = "/business/message/customer")
+public class MessageCustomerController {
+    private static final Logger LOG = LoggerFactory.getLogger(MessageCustomerController.class);
 
     private String nextPage;
 
     private SendNotificationValidator sendNotificationValidator;
-    private BulkMessageService bulkMessageService;
+    private MessageCustomerService messageCustomerService;
     private BusinessUserService businessUserService;
 
     @Autowired
-    public BulkMessageController(
-        @Value("${nextPage:/business/message/bulk}")
+    public MessageCustomerController(
+        @Value("${nextPage:/business/message/customer}")
         String nextPage,
 
         SendNotificationValidator sendNotificationValidator,
-        BulkMessageService bulkMessageService,
+        MessageCustomerService messageCustomerService,
         BusinessUserService businessUserService
     ) {
         this.nextPage = nextPage;
 
         this.sendNotificationValidator = sendNotificationValidator;
-        this.bulkMessageService = bulkMessageService;
+        this.messageCustomerService = messageCustomerService;
         this.businessUserService = businessUserService;
     }
 
@@ -78,7 +78,7 @@ public class BulkMessageController {
                 model.asMap().get("result"));
         }
         sendNotificationForm.setBusinessName(businessUser.getBizName().getBusinessName());
-        sendNotificationForm.setSentCount(bulkMessageService.sendMessageToPastClients(businessUser.getBizName().getId()));
+        sendNotificationForm.setSentCount(messageCustomerService.sendMessageToPastClients(businessUser.getBizName().getId()));
         return nextPage;
     }
 
@@ -98,11 +98,11 @@ public class BulkMessageController {
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
-            return "redirect:" + "/business/message/bulk" + ".htm";
+            return "redirect:" + "/business/message/customer" + ".htm";
         }
 
         try {
-            int sendMessageCount = bulkMessageService.sendMessageToPastClients(
+            int sendMessageCount = messageCustomerService.sendMessageToPastClients(
                 sendNotificationForm.getTitle().getText(),
                 sendNotificationForm.getBody().getText(),
                 businessUser.getBizName().getId(),
@@ -121,7 +121,7 @@ public class BulkMessageController {
         } catch (Exception e) {
             LOG.error("Failed sending message reason={}", e.getLocalizedMessage(), e);
         }
-        return "redirect:" + "/business/message/bulk" + ".htm";
+        return "redirect:" + "/business/message/customer" + ".htm";
     }
 
     @PostMapping(params = {"cancel-send-notification"}, produces = "text/html;charset=UTF-8")

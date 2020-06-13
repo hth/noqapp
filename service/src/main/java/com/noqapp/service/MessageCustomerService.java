@@ -20,15 +20,15 @@ import java.util.List;
  * 6/4/20 6:57 PM
  */
 @Service
-public class BulkMessageService {
-    private static final Logger LOG = LoggerFactory.getLogger(BulkMessageService.class);
+public class MessageCustomerService {
+    private static final Logger LOG = LoggerFactory.getLogger(MessageCustomerService.class);
 
     private QueueService queueService;
     private TokenQueueService tokenQueueService;
     private NotificationMessageManager notificationMessageManager;
 
     @Autowired
-    public BulkMessageService(
+    public MessageCustomerService(
         QueueService queueService,
         TokenQueueService tokenQueueService,
         NotificationMessageManager notificationMessageManager

@@ -38,7 +38,7 @@
                         <a href="${pageContext.request.contextPath}/business/migrateBusinessType.htm">Migrate Business Type</a>
                         <a href="${pageContext.request.contextPath}/business/dataVisibility/landing.htm">Data Visibility</a>
                         <a href="${pageContext.request.contextPath}/business/customTextToSpeech/landing.htm">Voice Announcement</a>
-                        <a href="${pageContext.request.contextPath}/business/message/bulk.htm">Message Your Customers</a>
+                        <a href="${pageContext.request.contextPath}/business/message/customer.htm">Message Your Customers</a>
                         <a href="${pageContext.request.contextPath}/business/survey/landing.htm">Survey</a>
                         <a href="${pageContext.request.contextPath}/business/paymentConfiguration/landing.htm">Payment Permission</a>
                         <a href="${pageContext.request.contextPath}/business/advertisement/landing.htm">Advertisement</a>
