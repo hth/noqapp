@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.NotificationMessageEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -39,15 +40,15 @@ public class MessageCustomerService {
     }
 
     @Mobile
-    public void sendMessageToSubscribers(String title, String body, List<String> codeQRs, String qid) {
+    public void sendMessageToSubscribers(String title, String body, List<ScrubbedInput> codeQRs, String qid) {
         NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
             .setTitle(title)
             .setBody(body)
             .setQueueUserId(qid);
         notificationMessageManager.save(notificationMessage);
 
-        for (String codeQR : codeQRs) {
-            sendMessageToSubscriber(title, body, codeQR);
+        for (ScrubbedInput codeQR : codeQRs) {
+            sendMessageToSubscriber(title, body, codeQR.getText());
         }
     }
 
