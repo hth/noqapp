@@ -90,7 +90,7 @@ public enum MobileSystemErrorCodeEnum {
     TRANSACTION_GATEWAY_DEFAULT("4500", ALERT),
     SERVICE_PAYMENT_NOT_ALLOWED_FOR_THIS_BUSINESS_TYPE("4501", ALERT),
 
-    /* Appointments. */
+    /** Appointments. */
     CANNOT_ACCEPT_APPOINTMENT("4701", ALERT),
     CANNOT_BOOK_APPOINTMENT("4702", ALERT),
     FAILED_TO_FIND_APPOINTMENT("4704", ALERT),
@@ -98,6 +98,10 @@ public enum MobileSystemErrorCodeEnum {
     FAILED_TO_RESCHEDULE_APPOINTMENT("4706", ALERT),
     APPOINTMENT_ALREADY_EXISTS("4710", ALERT),
     APPOINTMENT_ACTION_NOT_PERMITTED("4720", ALERT),
+
+    /** Authentication. */
+    QRCODE_INVALID("4910", ALERT),
+    QRCODE_UNAUTH_ACCESS_QUEUE("4911", ALERT),
 
     /** Mobile application related issue. */
     SEVERE("5000", ERROR),
