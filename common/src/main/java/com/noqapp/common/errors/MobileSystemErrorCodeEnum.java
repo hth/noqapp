@@ -101,7 +101,7 @@ public enum MobileSystemErrorCodeEnum {
 
     /** Authentication. */
     QRCODE_INVALID("4910", ALERT),
-    QRCODE_UNAUTH_ACCESS_QUEUE("4911", ALERT),
+    QRCODE_DENIED_ACCESS("4911", ALERT),
 
     /** Mobile application related issue. */
     SEVERE("5000", ERROR),
