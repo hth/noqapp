@@ -323,14 +323,14 @@ public class BizStoreManagerImpl implements BizStoreManager {
         Date queueAppointment,
         float rating,
         int ratingCount,
-        long averageServiceTime
+        long computedAverageServiceTime
     ) {
-        LOG.info("Set next run for id={} zoneId={} archiveNextRun={} rating={} averageServiceTime={}",
+        LOG.info("Set next run for id={} zoneId={} archiveNextRun={} rating={} computedAverageServiceTime={}",
             id,
             zoneId,
             archiveNextRun,
             rating,
-            averageServiceTime);
+            computedAverageServiceTime);
 
         Update update;
         if (rating == 0 && ratingCount == 0) {
@@ -350,8 +350,8 @@ public class BizStoreManagerImpl implements BizStoreManager {
         }
 
         /* Do not update the average service time when its zero. */
-        if (0 != averageServiceTime) {
-            update.set("AS", averageServiceTime);
+        if (0 != computedAverageServiceTime) {
+            update.set("CT", computedAverageServiceTime);
         }
 
         return mongoTemplate.updateFirst(
