@@ -135,6 +135,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field("AS")
     private long averageServiceTime;
 
+    @Field("CT")
+    private long computedAverageServiceTime;
+
     @DBRef
     @Field("BIZ_NAME")
     private BizNameEntity bizName;
@@ -536,6 +539,15 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
+    public long getComputedAverageServiceTime() {
+        return computedAverageServiceTime;
+    }
+
+    public BizStoreEntity setComputedAverageServiceTime(long computedAverageServiceTime) {
+        this.computedAverageServiceTime = computedAverageServiceTime;
+        return this;
+    }
+
     public int getValidationCount() {
         return validationCount;
     }
@@ -921,9 +933,9 @@ public class BizStoreEntity extends BaseEntity {
         } else {
             long seconds = averageServiceTime / 1000;
             if (seconds > 60) {
-                time = String.valueOf(seconds / 60) + " min(s)";
+                time = seconds / 60 + " min(s)";
             } else {
-                time = String.valueOf(seconds) + " sec(s)";
+                time = seconds + " sec(s)";
             }
         }
 

@@ -80,7 +80,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
             Date queueAppointment,
             float rating,
             int ratingCount,
-            long averageServiceTime);
+            long computedAverageServiceTime);
 
     List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
     List<BizStoreEntity> findAllQueueAcceptingAppointmentForTheDay(Date now);
