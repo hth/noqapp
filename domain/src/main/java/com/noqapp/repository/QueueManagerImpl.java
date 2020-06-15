@@ -397,7 +397,7 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public QueueEntity findOneQueueByQid(String qid, String codeQR) {
+    public QueueEntity findOneWithoutState(String qid, String codeQR) {
         return mongoTemplate.findOne(
                 query(where("QR").is(codeQR).and("QID").is(qid)),
                 QueueEntity.class,

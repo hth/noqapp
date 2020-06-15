@@ -100,7 +100,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     List<QueueEntity> findInAQueueByQidWithAnyQueueState(String qid, String codeQR);
 
     /** Finds one, no matter whats the state. We are finding the one where QID is of the Client and not guardian. */
-    QueueEntity findOneQueueByQid(String qid, String codeQR);
+    QueueEntity findOneWithoutState(String qid, String codeQR);
 
     /** Get all the queues that have been serviced for today by DID. */
     @Mobile
