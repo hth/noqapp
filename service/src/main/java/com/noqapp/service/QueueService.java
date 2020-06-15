@@ -52,7 +52,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * User: hitender
@@ -251,10 +250,16 @@ public class QueueService {
         queueManager.addPhoneNumberToExistingQueue(token, codeQR, did, phone);
     }
 
+    @Mobile
+    public QueueEntity findOneWithoutState(String qid, String codeQR) {
+        return queueManager.findOneWithoutState(qid, codeQR);
+    }
+
     public QueueEntity findQueuedOne(String codeQR, String did, String qid) {
         return queueManager.findQueuedOne(codeQR, did, qid);
     }
 
+    @Mobile
     public QueueEntity findQueuedOneByQid(String codeQR, String qid) {
         return findQueuedOne(codeQR, null, qid);
     }

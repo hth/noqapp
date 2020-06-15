@@ -1,6 +1,5 @@
 package com.noqapp.service;
 
-import com.noqapp.domain.BusinessCustomerPriorityEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -65,7 +64,7 @@ public class BusinessCustomerService {
         businessCustomerManager.save(businessCustomer);
 
         /* Update queue with business customer id. */
-        QueueEntity queue = queueManager.findOneQueueByQid(qid, codeQR);
+        QueueEntity queue = queueManager.findOneWithoutState(qid, codeQR);
         queue.setBusinessCustomerId(businessCustomerId)
             .setBusinessCustomerIdChangeCount(businessCustomer.getVersion());
         queueManager.save(queue);
@@ -78,7 +77,7 @@ public class BusinessCustomerService {
         businessCustomerManager.save(businessCustomer);
 
         /* Update queue with business customer id. */
-        QueueEntity queue = queueManager.findOneQueueByQid(qid, codeQR);
+        QueueEntity queue = queueManager.findOneWithoutState(qid, codeQR);
         queue.setBusinessCustomerId(businessCustomerId)
             .setBusinessCustomerIdChangeCount(businessCustomer.getVersion());
         queueManager.save(queue);
