@@ -33,6 +33,9 @@ import org.springframework.util.Assert;
 
 import org.elasticsearch.common.geo.GeoPoint;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.util.Base64;
 import java.util.Date;
@@ -933,9 +936,9 @@ public class BizStoreEntity extends BaseEntity {
         } else {
             long seconds = averageServiceTime / 1000;
             if (seconds > 60) {
-                time = seconds / 60 + " min(s)";
+                time = new BigDecimal(averageServiceTime).divide(new BigDecimal(60_000), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING) + " min(s)";
             } else {
-                time = seconds + " sec(s)";
+                time = new BigDecimal(averageServiceTime).divide(new BigDecimal(1000), MathContext.DECIMAL64) + " sec(s)";
             }
         }
 
