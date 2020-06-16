@@ -17,6 +17,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.annotation.Transient;
+
 import java.util.Date;
 import java.util.StringJoiner;
 import java.util.TimeZone;
@@ -78,6 +80,9 @@ public class JsonToken extends AbstractDomain {
 
     @JsonProperty("po")
     private JsonPurchaseOrder jsonPurchaseOrder;
+
+    @Transient
+    private Date expectedServiceBeginDate;
 
     /* Note: Avoid firebase broadcasting QID in JsonToken. Hence refrained from using QID here. */
     JsonToken() {}
@@ -169,6 +174,7 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken setExpectedServiceBegin(Date expectedServiceBegin) {
         if (null != expectedServiceBegin) {
+            this.expectedServiceBeginDate = expectedServiceBegin;
             this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         }
         return this;
@@ -176,6 +182,7 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken setExpectedServiceBegin(Date expectedServiceBegin, String timeZone) {
         if (null != expectedServiceBegin) {
+            this.expectedServiceBeginDate = expectedServiceBegin;
             this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone(timeZone));
         }
         return this;
@@ -197,6 +204,10 @@ public class JsonToken extends AbstractDomain {
     public JsonToken setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
         this.jsonPurchaseOrder = jsonPurchaseOrder;
         return this;
+    }
+
+    public Date getExpectedServiceBeginDate() {
+        return expectedServiceBeginDate;
     }
 
     @Override

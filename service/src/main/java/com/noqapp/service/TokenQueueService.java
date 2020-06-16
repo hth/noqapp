@@ -28,6 +28,7 @@ import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizStoreManager;
@@ -182,6 +183,23 @@ public class TokenQueueService {
         long averageServiceTime,
         TokenServiceEnum tokenService
     ) {
+        return getNextToken(codeQR, did, qid, guardianQid, averageServiceTime, tokenService, null);
+    }
+
+    /**
+     * Gets new token or reloads existing token if previously registered.
+     * This process adds the user to queue. Invokes broadcast.
+     */
+    @Mobile
+    public JsonToken getNextToken(
+        String codeQR,
+        String did,
+        String qid,
+        String guardianQid,
+        long averageServiceTime,
+        TokenServiceEnum tokenService,
+        UserLevelEnum userLevel
+    ) {
         try {
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
 
@@ -230,7 +248,12 @@ public class TokenQueueService {
                 }
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
-                TokenQueueEntity tokenQueue = getNextToken(codeQR, bizStore.getAvailableTokenCount());
+                TokenQueueEntity tokenQueue;
+                if (userLevel == UserLevelEnum.S_MANAGER) {
+                    tokenQueue = getNextToken(codeQR, 0);
+                } else {
+                    tokenQueue = getNextToken(codeQR, bizStore.getAvailableTokenCount());
+                }
                 if (tokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
                     return new JsonToken(codeQR, bizStore.getBusinessType())
                         .setToken(0)

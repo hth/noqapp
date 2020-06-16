@@ -24,6 +24,7 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.service.exceptions.JoiningQueuePreApprovedRequiredException;
 import com.noqapp.service.exceptions.BeforeStartOfStoreException;
@@ -103,6 +104,15 @@ public class JoinAbortService {
     }
 
     @Mobile
+    public JsonToken joinQueue(String codeQR, String did, long averageServiceTime, TokenServiceEnum tokenService, UserLevelEnum userLevel) {
+        LOG.info("joinQueue codeQR={} did={}", codeQR, did);
+        JsonToken jsonToken = tokenQueueService.getNextToken(codeQR, did, null, null, averageServiceTime, tokenService, userLevel);
+        checkLimitationEncountered(codeQR, jsonToken);
+
+        return jsonToken;
+    }
+
+    @Mobile
     public JsonToken joinQueue(String codeQR, String did, long averageServiceTime, TokenServiceEnum tokenService) {
         return joinQueue(codeQR, did, null, null, averageServiceTime, tokenService);
     }
@@ -111,19 +121,7 @@ public class JoinAbortService {
     public JsonToken joinQueue(String codeQR, String did, String qid, String guardianQid, long averageServiceTime, TokenServiceEnum tokenService) {
         LOG.info("joinQueue codeQR={} did={} qid={} guardianQid={}", codeQR, did, qid, guardianQid);
         JsonToken jsonToken = tokenQueueService.getNextToken(codeQR, did, qid, guardianQid, averageServiceTime, tokenService);
-
-        switch (jsonToken.getQueueStatus()) {
-            case C:
-                throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
-            case B:
-                throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
-            case X:
-                throw new LimitedPeriodException("Please wait until set number of days before using this service");
-            case L:
-                throw new TokenAvailableLimitReachedException("Token limit reached");
-            default:
-                //Do nothing
-        }
+        checkLimitationEncountered(codeQR, jsonToken);
 
         return jsonToken;
     }
@@ -132,19 +130,7 @@ public class JoinAbortService {
     @Mobile
     public JsonToken payBeforeJoinQueue(String codeQR, String did, String qid, String guardianQid, BizStoreEntity bizStore, TokenServiceEnum tokenService) {
         JsonToken jsonToken = tokenQueueService.getPaidNextToken(codeQR, did, qid, guardianQid, bizStore.getAverageServiceTime(), tokenService);
-
-        switch (jsonToken.getQueueStatus()) {
-            case C:
-                throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
-            case B:
-                throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
-            case X:
-                throw new LimitedPeriodException("Please wait until set number of days before using this service");
-            case L:
-                throw new TokenAvailableLimitReachedException("Token limit reached");
-            default:
-                //Do nothing
-        }
+        checkLimitationEncountered(codeQR, jsonToken);
 
         JsonPurchaseOrder jsonPurchaseOrder;
         PurchaseOrderEntity purchaseOrder = purchaseOrderService.findByTransactionId(jsonToken.getTransactionId());
@@ -159,6 +145,21 @@ public class JoinAbortService {
         }
         jsonToken.setJsonPurchaseOrder(jsonPurchaseOrder);
         return jsonToken;
+    }
+
+    private void checkLimitationEncountered(String codeQR, JsonToken jsonToken) {
+        switch (jsonToken.getQueueStatus()) {
+            case C:
+                throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
+            case B:
+                throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
+            case X:
+                throw new LimitedPeriodException("Please wait until set number of days before using this service");
+            case L:
+                throw new TokenAvailableLimitReachedException("Token limit reached");
+            default:
+                //Do nothing
+        }
     }
 
     /**
