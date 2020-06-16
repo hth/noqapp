@@ -401,4 +401,22 @@ public final class DateUtil {
         LocalDate last = ym.atEndOfMonth();
         return Date.from(last.atStartOfDay(ZoneId.of(timeZone)).plusDays(1).minusSeconds(1).toInstant());
     }
+
+    public static String timeSlot(Date date, String timeZone) {
+        ZonedDateTime zonedDateTime = convertToLocalDateTime(date, timeZone);
+        LocalTime localTime = zonedDateTime.toLocalTime();
+        int minutes = localTime.getMinute();
+        if (minutes >= 45) {
+            LocalTime before = localTime.minusMinutes(minutes).plusMinutes(30);
+            LocalTime after = before.plusHours(1);
+            return "arrive between time slot " + before.getHour() + ":" + before.getMinute() + " - " + after.getHour() + ":" + after.getMinute();
+        } else if (minutes <= 15) {
+            LocalTime before = localTime.minusMinutes(minutes).minusMinutes(30);
+            LocalTime after = before.plusHours(1);
+            return "arrive between time slot " + before.getHour() + ":" + before.getMinute() + " - " + after.getHour() + ":" + after.getMinute();
+        } else {
+            LocalTime after = localTime.plusHours(1);
+            return "arrive between time slot " + localTime.getHour() + ":" + "00" + " - " + after.getHour() + ":" + "00";
+        }
+    }
 }

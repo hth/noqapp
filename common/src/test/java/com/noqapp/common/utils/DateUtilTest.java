@@ -71,4 +71,27 @@ class DateUtilTest {
            "05 Jun, 2020",
             DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(system, "Asia/Calcutta"));
     }
+
+    @Test
+    void timeSlot() {
+        Date system = new Date();
+        system.setTime(1591305227723L);
+        System.out.println(system);
+        assertEquals("Thu Jun 04 14:13:47 PDT 2020 " + "arrive between time slot 13:30 - 14:30", system + " " + DateUtil.timeSlot(system, "America/Los_Angeles"));
+
+        system = new Date();
+        system.setTime(1591962751284L);
+        System.out.println(system);
+        assertEquals("Fri Jun 12 04:52:31 PDT 2020 " + "arrive between time slot 4:30 - 5:30", system + " " + DateUtil.timeSlot(system, "America/Los_Angeles"));
+
+        system = new Date();
+        system.setTime(1591963203464L);
+        System.out.println(system);
+        assertEquals("Fri Jun 12 05:00:03 PDT 2020 " + "arrive between time slot 4:30 - 5:30", system + " " + DateUtil.timeSlot(system, "America/Los_Angeles"));
+
+        system = new Date();
+        system.setTime(1591964267244L);
+        System.out.println(system);
+        assertEquals("Fri Jun 12 05:17:47 PDT 2020 " + "arrive between time slot 5:00 - 6:00", system + " " + DateUtil.timeSlot(system, "America/Los_Angeles"));
+    }
 }
