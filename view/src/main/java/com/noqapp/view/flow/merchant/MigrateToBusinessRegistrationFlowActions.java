@@ -66,7 +66,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     @SuppressWarnings("all")
     @Autowired
     public MigrateToBusinessRegistrationFlowActions(
-        @Value("${BusinessRegister.autoApprove.turnedOn:ON}")
+        @Value("${BusinessRegister.autoApprove.turnedOn:OFF}")
         String autoApproveBusinessTurnedOn,
 
         Environment environment,
