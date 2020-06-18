@@ -1,11 +1,14 @@
 package com.noqapp.repository;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
+import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 
 import com.mongodb.DuplicateKeyException;
 
@@ -17,6 +20,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
+
+import java.util.LinkedHashSet;
 
 /**
  * hitender
@@ -101,6 +106,29 @@ public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
     public void clearBusinessCustomer(String qid, String bizNameId) {
         mongoTemplate.remove(
             query(where("QID").is(qid).and("BN").is(bizNameId)),
+            BusinessCustomerEntity.class,
+            TABLE
+        );
+    }
+
+    public void updateBusinessCustomer(
+        String businessCustomerId,
+        LinkedHashSet<BusinessCustomerAttributeEnum> businessCustomerAttributes,
+        CustomerPriorityLevelEnum customerPriorityLevel,
+        String limitBusinessCategory
+    ) {
+        Update update;
+        if (null == limitBusinessCategory) {
+            update = update("PL", customerPriorityLevel)
+                .pullAll("CA", businessCustomerAttributes.toArray());
+        } else {
+            update = update("PL", customerPriorityLevel)
+                .pullAll("CA", businessCustomerAttributes.toArray())
+                .set("LC", limitBusinessCategory);
+        }
+        mongoTemplate.updateFirst(
+            query(where("id").is(businessCustomerId)),
+            entityUpdate(update),
             BusinessCustomerEntity.class,
             TABLE
         );

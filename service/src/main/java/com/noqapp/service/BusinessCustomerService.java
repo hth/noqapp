@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashSet;
+
 /**
  * hitender
  * 6/17/18 2:14 PM
@@ -141,6 +143,17 @@ public class BusinessCustomerService {
         businessCustomerManager.save(businessCustomer);
     }
 
+    @Mobile
+    public void updateBusinessCustomer(
+        String businessCustomerId,
+        LinkedHashSet<BusinessCustomerAttributeEnum> businessCustomerAttributes,
+        CustomerPriorityLevelEnum customerPriorityLevel,
+        String limitBusinessCategory
+    ) {
+        businessCustomerManager.updateBusinessCustomer(businessCustomerId, businessCustomerAttributes, customerPriorityLevel, limitBusinessCategory);
+    }
+
+    @Mobile
     public void clearBusinessCustomer(String qid, String bizNameId) {
         businessCustomerManager.clearBusinessCustomer(qid, bizNameId);
     }
