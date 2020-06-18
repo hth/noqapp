@@ -107,7 +107,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             } else {
                 /* Throw exception when its NOT a social signup. */
                 LOG.error("Reached condition for invalid account qid={}", userAccount.getQueueUserId());
-                throw new AccountNotActiveException("Account is blocked for " + userAccount.getAccountInactiveReason().getDescription() + ". Contact support.");
+                throw new AccountNotActiveException("Account is blocked. Contact support.");
             }
         }
     }
