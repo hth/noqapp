@@ -141,6 +141,9 @@ public class QueueEntity extends BaseEntity {
     @Field("CA")
     private Set<BusinessCustomerAttributeEnum> businessCustomerAttributes;
 
+    @Field("AC")
+    private String authorizedCheckByQid;
+
     @SuppressWarnings("unused")
     public QueueEntity() {
         //Default constructor, required to keep bean happy
@@ -425,6 +428,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setBusinessCustomerAttributes(Set<BusinessCustomerAttributeEnum> businessCustomerAttributes) {
         this.businessCustomerAttributes = businessCustomerAttributes;
+        return this;
+    }
+
+    public String getAuthorizedCheckByQid() {
+        return authorizedCheckByQid;
+    }
+
+    public QueueEntity setAuthorizedCheckByQid(String authorizedCheckByQid) {
+        this.authorizedCheckByQid = authorizedCheckByQid;
         return this;
     }
 
