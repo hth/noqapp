@@ -2,6 +2,9 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
+import com.noqapp.domain.types.CustomerPriorityLevelEnum;
+
+import java.util.LinkedHashSet;
 
 /**
  * hitender
@@ -18,4 +21,10 @@ public interface BusinessCustomerManager extends RepositoryManager<BusinessCusto
     void addBusinessCustomerAttribute(String businessCustomerId, BusinessCustomerAttributeEnum businessCustomerAttribute);
 
     void clearBusinessCustomer(String qid, String bizNameId);
+
+    void updateBusinessCustomer(
+        String businessCustomerId,
+        LinkedHashSet<BusinessCustomerAttributeEnum> businessCustomerAttributes,
+        CustomerPriorityLevelEnum customerPriorityLevel,
+        String limitBusinessCategory);
 }
