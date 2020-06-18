@@ -125,7 +125,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 case BOC:
                 case BUP:
                     LOG.warn("Account In Active {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
-                    throw new AccountNotActiveException("Account is blocked. Contact support.");
+                    throw new AccountNotActiveException("Account is blocked for " + userAccount.getAccountInactiveReason().getDescription() + ". Contact support.");
                 default:
                     LOG.error("Reached condition for invalid account qid={} {}", userAccount.getQueueUserId(), userAccount.getAccountInactiveReason());
                     throw new AccountNotActiveException("Account is blocked. Contact support.");

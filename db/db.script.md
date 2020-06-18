@@ -38,6 +38,7 @@ as a value, then it gets endless connections.
         SE DATETIME,
         BN VARCHAR(24)      NOT NULL,
         ST VARCHAR(1),
+        AC VARCHAR(13),
         V INT,
         U DATETIME,
         C DATETIME,

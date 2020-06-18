@@ -1,3 +1,8 @@
+### Changes June 18 2020
+
+    ALTER TABLE `noqapp_test`.`QUEUE` 
+    ADD COLUMN `AC` VARCHAR(13) AFTER `ST`;
+
 ### Change May 29 2020
     
     db.getCollection('BUSINESS_CUSTOMER').remove({"BN" : "5eb3b9c0017c222cd473dded"})
