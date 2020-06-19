@@ -409,6 +409,7 @@ public class BizService {
     }
 
     @Mobile
+    @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
     public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
         bizStoreManager.updateBizStoreAvailableTokenCount(availableTokenCount, codeQR);
     }

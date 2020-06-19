@@ -117,13 +117,20 @@ public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
         CustomerPriorityLevelEnum customerPriorityLevel,
         String limitBusinessCategory
     ) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(businessCustomerId)),
+            entityUpdate(new Update().pullAll("CA", BusinessCustomerAttributeEnum.values())), //Clean before update
+            BusinessCustomerEntity.class,
+            TABLE
+        );
+
         Update update;
         if (null == limitBusinessCategory) {
             update = update("PL", customerPriorityLevel)
-                .pullAll("CA", businessCustomerAttributes.toArray());
+                .addToSet("CA").each(businessCustomerAttributes);
         } else {
             update = update("PL", customerPriorityLevel)
-                .pullAll("CA", businessCustomerAttributes.toArray())
+                .addToSet("CA").each(businessCustomerAttributes)
                 .set("LC", limitBusinessCategory);
         }
         mongoTemplate.updateFirst(
