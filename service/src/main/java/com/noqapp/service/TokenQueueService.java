@@ -287,12 +287,7 @@ public class TokenQueueService {
                     return new JsonToken(codeQR, tokenQueue.getBusinessType());
                 }
 
-                return new JsonToken(codeQR, tokenQueue.getBusinessType())
-                        .setToken(queue.getTokenNumber())
-                        .setServingNumber(tokenQueue.getCurrentlyServing())
-                        .setDisplayName(tokenQueue.getDisplayName())
-                        .setQueueStatus(tokenQueue.getQueueStatus())
-                        .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+                return getJsonToken(codeQR, queue, tokenQueue);
             }
 
             TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
@@ -300,17 +295,20 @@ public class TokenQueueService {
                     queue.getTokenNumber(), tokenQueue.getTopic(), qid, did, tokenQueue.getQueueStatus());
 
             doActionBasedOnQueueStatus(codeQR, tokenQueue);
-
-            return new JsonToken(codeQR, tokenQueue.getBusinessType())
-                    .setToken(queue.getTokenNumber())
-                    .setServingNumber(tokenQueue.getCurrentlyServing())
-                    .setDisplayName(tokenQueue.getDisplayName())
-                    .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+            return getJsonToken(codeQR, queue, tokenQueue);
         } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
         }
+    }
+
+    private JsonToken getJsonToken(String codeQR, QueueEntity queue, TokenQueueEntity tokenQueue) {
+        return new JsonToken(codeQR, tokenQueue.getBusinessType())
+            .setToken(queue.getTokenNumber())
+            .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayName(tokenQueue.getDisplayName())
+            .setQueueStatus(tokenQueue.getQueueStatus())
+            .setExpectedServiceBegin(queue.getExpectedServiceBegin());
     }
 
     @Mobile
