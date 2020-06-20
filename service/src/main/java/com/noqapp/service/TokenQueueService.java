@@ -292,7 +292,7 @@ public class TokenQueueService {
 
             TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
             LOG.info("Already registered token={} topic={} qid={} did={} queueStatus={}",
-                    queue.getTokenNumber(), tokenQueue.getTopic(), qid, did, tokenQueue.getQueueStatus());
+                queue.getTokenNumber(), tokenQueue.getTopic(), qid, did, tokenQueue.getQueueStatus());
 
             doActionBasedOnQueueStatus(codeQR, tokenQueue);
             return getJsonToken(codeQR, queue, tokenQueue);
