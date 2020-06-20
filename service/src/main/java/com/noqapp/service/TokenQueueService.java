@@ -238,7 +238,7 @@ public class TokenQueueService {
 
                 int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
                 int tokenFrom = storeHour.getTokenAvailableFrom();
-                if (requesterTime < tokenFrom || requesterTime > storeHour.getEndHour()) {
+                if (requesterTime < tokenFrom) {
                     LOG.warn("Requester time qid={} {} codeQR={}", qid, requesterTime, codeQR);
                     return new JsonToken(codeQR, bizStore.getBusinessType())
                         .setToken(0)
