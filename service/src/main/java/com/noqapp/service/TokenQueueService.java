@@ -253,6 +253,14 @@ public class TokenQueueService {
                         qid, tokenFrom, requesterTime, codeQR);
                 }
 
+                /* This code finds if there is an existing token issued to the  user. */
+                queue = queueManager.findOneWithoutState(qid, codeQR);
+                if (null != queue && queue.getQueueUserState() == QueueUserStateEnum.A) {
+                    queue.setQueueUserState(QueueUserStateEnum.Q);
+                    queueManager.save(queue);
+                    return getJsonToken(codeQR, queue, tokenQueueManager.findByCodeQR(codeQR));
+                }
+
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
                 TokenQueueEntity tokenQueue;
                 if (userLevel == UserLevelEnum.S_MANAGER) {
