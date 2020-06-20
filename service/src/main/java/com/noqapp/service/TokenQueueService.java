@@ -238,14 +238,19 @@ public class TokenQueueService {
 
                 int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
                 int tokenFrom = storeHour.getTokenAvailableFrom();
-                if (requesterTime < tokenFrom || requesterTime > storeHour.getEndHour()) {
-                    LOG.warn("Requester time qid={} {} codeQR={}", qid, requesterTime, codeQR);
+                if (requesterTime < tokenFrom) {
+                    //Might need to add condition || requesterTime > storeHour.getEndHour() to prevent users from taking token after hours.
+                    //This should be prevented on mobile front.
+                    LOG.warn("Requester time qid={} tokenFrom={} requesterTime={} codeQR={}", qid, tokenFrom, requesterTime, codeQR);
                     return new JsonToken(codeQR, bizStore.getBusinessType())
                         .setToken(0)
                         .setServingNumber(0)
                         .setDisplayName(bizStore.getDisplayName())
                         .setQueueStatus(QueueStatusEnum.B)
                         .setExpectedServiceBegin(new Date());
+                } else if (requesterTime > storeHour.getEndHour()) {
+                    LOG.error("Requester attempted token after close time qid={} tokenFrom={} requesterTime={} codeQR={}",
+                        qid, tokenFrom, requesterTime, codeQR);
                 }
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
@@ -266,7 +271,6 @@ public class TokenQueueService {
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
                 doActionBasedOnQueueStatus(codeQR, tokenQueue);
-
                 try {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenQueue.getBusinessType());
                     if (StringUtils.isNotBlank(guardianQid)) {

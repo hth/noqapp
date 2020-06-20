@@ -286,7 +286,7 @@ public class ShowHTMLService {
                 timeIn24HourFormat);
 
             rootMap.put("queueStatus", "Closed");
-        } else if (storeHour.getTokenNotAvailableFrom() < timeIn24HourFormat && storeHour.getEndHour() > timeIn24HourFormat) {
+        } else if (storeHour.getTokenNotAvailableFrom() <= timeIn24HourFormat && storeHour.getEndHour() > timeIn24HourFormat) {
             LOG.debug("computeQueueStatus getTokenNotAvailableFrom={} < timeIn24HourFormat={} & getEndHour={} > timeIn24HourFormat={}",
                 storeHour.getTokenNotAvailableFrom(),
                 timeIn24HourFormat,
