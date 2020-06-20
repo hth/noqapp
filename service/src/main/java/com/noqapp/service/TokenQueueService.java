@@ -266,7 +266,6 @@ public class TokenQueueService {
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
                 doActionBasedOnQueueStatus(codeQR, tokenQueue);
-
                 try {
                     queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenQueue.getBusinessType());
                     if (StringUtils.isNotBlank(guardianQid)) {
