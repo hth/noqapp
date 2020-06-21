@@ -255,10 +255,25 @@ public class TokenQueueService {
 
                 /* This code finds if there is an existing token issued to the  user. */
                 queue = queueManager.findOneWithoutState(qid, codeQR);
-                if (null != queue && queue.getQueueUserState() == QueueUserStateEnum.A) {
-                    queue.setQueueUserState(QueueUserStateEnum.Q);
-                    queueManager.save(queue);
-                    return getJsonToken(codeQR, queue, tokenQueueManager.findByCodeQR(codeQR));
+                if (null != queue) {
+                    switch (queue.getQueueUserState()) {
+                        case A:
+                            queue.setQueueUserState(QueueUserStateEnum.Q);
+                            queueManager.save(queue);
+                            TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+                            doActionBasedOnQueueStatus(codeQR, tokenQueue);
+                            return getJsonToken(codeQR, queue, tokenQueue);
+                        case N:
+                        case S:
+                        default:
+                            /* Person already served or skipped. */
+                            return new JsonToken(codeQR, bizStore.getBusinessType())
+                                .setToken(0)
+                                .setServingNumber(0)
+                                .setDisplayName(bizStore.getDisplayName())
+                                .setQueueStatus(QueueStatusEnum.X)
+                                .setExpectedServiceBegin(new Date());
+                    }
                 }
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
