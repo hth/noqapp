@@ -398,6 +398,7 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity findOneWithoutState(String qid, String codeQR) {
+        Assertions.assertTrue(StringUtils.isNotBlank(qid), "QID should not be blank");
         return mongoTemplate.findOne(
             query(where("QR").is(codeQR).and("QID").is(qid)),
             QueueEntity.class,
