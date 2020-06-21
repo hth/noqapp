@@ -255,7 +255,7 @@ public class TokenQueueService {
 
                 /* This code finds if there is an existing token issued to the  user. */
                 queue = queueManager.findOneWithoutState(qid, codeQR);
-                if (null != queue) {
+                if (null != queue && StringUtils.isNotBlank(qid)) {
                     switch (queue.getQueueUserState()) {
                         case A:
                             queue.setQueueUserState(QueueUserStateEnum.Q);
