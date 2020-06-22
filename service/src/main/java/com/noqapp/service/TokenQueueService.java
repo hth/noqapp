@@ -263,6 +263,7 @@ public class TokenQueueService {
                                 switch (queue.getQueueUserState()) {
                                     case A:
                                         queue.setQueueUserState(QueueUserStateEnum.Q);
+                                        queue.active();
                                         queueManager.save(queue);
                                         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
                                         doActionBasedOnQueueStatus(codeQR, tokenQueue);
