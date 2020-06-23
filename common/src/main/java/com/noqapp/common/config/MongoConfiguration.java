@@ -1,9 +1,11 @@
 package com.noqapp.common.config;
 
-import com.mongodb.MongoClient;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
 import com.mongodb.ReadPreference;
 import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
+import com.mongodb.client.MongoClients;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
@@ -63,12 +65,21 @@ public class MongoConfiguration {
     @Bean
     MongoDbFactory mongoDbFactory() {
         // Mongo Client
-        MongoClient mongoClient = new MongoClient(getMongoSeeds());
+        MongoClient mongoClient = MongoClients.create(populateMongoClientSettings());
 
         // Mongo DB Factory
-        MongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongoClient, mongoDatabaseName);
+        MongoDbFactory mongoDbFactory = new SimpleMongoClientDbFactory(mongoClient, mongoDatabaseName);
 
         return mongoDbFactory;
+    }
+
+    private MongoClientSettings populateMongoClientSettings() {
+        MongoClientSettings settings = MongoClientSettings.builder()
+            .applicationName("NoQueue")
+            .applyToClusterSettings(builder -> builder.hosts(getMongoSeeds()))
+            .build();
+
+        return settings;
     }
 
     @Bean
