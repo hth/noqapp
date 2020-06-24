@@ -369,18 +369,18 @@ public class ITest extends RealMongoForITest {
         medicalTransactionService = new MedicalTransactionService(
             getMongoTemplate(),
             transactionManager(),
-            getMongoTemplate(),
-            masterLabManager
+            masterLabManager,
+            mongoHosts()
         );
 
         transactionService = new TransactionService(
             getMongoTemplate(),
             transactionManager(),
-            getMongoTemplate(),
             purchaseOrderManager,
             purchaseOrderProductManager,
             storeProductManager,
-            cashfreeService
+            cashfreeService,
+            mongoHosts()
         );
 
         storeProductService = new StoreProductService(storeProductManager, bizStoreManager, fileService, transactionService);
