@@ -10,6 +10,7 @@ import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.service.exceptions.FailedTransactionException;
 
 import com.mongodb.ClientSessionOptions;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.result.DeleteResult;
 
@@ -20,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,25 +36,25 @@ public class MedicalTransactionService {
 
     private MongoOperations mongoOperations;
     private MongoTransactionManager mongoTransactionManager;
-    private MongoTemplate mongoTemplate;
     private MasterLabManager masterLabManager;
+    private List<ServerAddress> mongoHosts;
 
     @Autowired
     public MedicalTransactionService(
         MongoOperations mongoOperations,
         MongoTransactionManager mongoTransactionManager,
-        MongoTemplate mongoTemplate,
-        MasterLabManager masterLabManager
+        MasterLabManager masterLabManager,
+        List<ServerAddress> mongoHosts
     ) {
         this.mongoOperations = mongoOperations;
         this.mongoTransactionManager = mongoTransactionManager;
-        this.mongoTemplate = mongoTemplate;
         this.masterLabManager = masterLabManager;
+        this.mongoHosts = mongoHosts;
     }
 
     public void bulkProductUpdate(List<MasterLabEntity> masterLabs, HealthCareServiceEnum healthCareService) {
         //TODO(hth) this is a hack for supporting integration test
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() != 2) {
+        if (mongoHosts.size() < 2) {
             try {
                 long deletedCount = masterLabManager.deleteMatching(healthCareService);
                 for (MasterLabEntity masterLab : masterLabs) {

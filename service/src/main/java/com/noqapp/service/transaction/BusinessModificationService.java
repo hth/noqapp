@@ -16,6 +16,7 @@ import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.exceptions.FailedTransactionException;
 
 import com.mongodb.ClientSessionOptions;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.ClientSession;
 
 import org.bson.types.ObjectId;
@@ -26,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,26 +42,26 @@ public class BusinessModificationService {
 
     private MongoOperations mongoOperations;
     private MongoTransactionManager mongoTransactionManager;
-    private MongoTemplate mongoTemplate;
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
     private TokenQueueManager tokenQueueManager;
+    private List<ServerAddress> mongoHosts;
 
     @Autowired
     public BusinessModificationService(
         MongoOperations mongoOperations,
         MongoTransactionManager mongoTransactionManager,
-        MongoTemplate mongoTemplate,
         BizNameManager bizNameManager,
         BizStoreManager bizStoreManager,
-        TokenQueueManager tokenQueueManager
+        TokenQueueManager tokenQueueManager,
+        List<ServerAddress> mongoHosts
     ) {
         this.mongoOperations = mongoOperations;
         this.mongoTransactionManager = mongoTransactionManager;
-        this.mongoTemplate = mongoTemplate;
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
         this.tokenQueueManager = tokenQueueManager;
+        this.mongoHosts = mongoHosts;
     }
 
     public boolean isQueueStatusAtStart(String bizNameId) {
@@ -78,7 +78,7 @@ public class BusinessModificationService {
 
     public void changeBizNameBusinessType(String bizNameId, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType) {
         //TODO(hth) this is a hack for supporting integration test
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
+        if (mongoHosts.size() < 2) {
             try {
                 bizNameManager.changeBizNameBusinessType(bizNameId, existingBusinessType, migrateToBusinessType);
                 List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizNameId);
