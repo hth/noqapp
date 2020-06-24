@@ -325,8 +325,8 @@ public class ITest extends RealMongoForITest {
         medicalTransactionService = new MedicalTransactionService(
             getMongoTemplate(),
             transactionManager(),
-            getMongoTemplate(),
-            masterLabManager
+            masterLabManager,
+            mongoHosts()
         );
 
         statsCronService = new StatsCronService(statsCronManager);
