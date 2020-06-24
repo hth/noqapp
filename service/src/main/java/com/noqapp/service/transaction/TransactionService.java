@@ -24,6 +24,7 @@ import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
 import com.noqapp.service.payment.CashfreeService;
 
 import com.mongodb.ClientSessionOptions;
+import com.mongodb.ServerAddress;
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.result.DeleteResult;
 
@@ -55,34 +56,34 @@ public class TransactionService {
 
     private MongoOperations mongoOperations;
     private MongoTransactionManager mongoTransactionManager;
-    private MongoTemplate mongoTemplate;
     private PurchaseOrderManager purchaseOrderManager;
     private PurchaseOrderProductManager purchaseOrderProductManager;
     private StoreProductManager storeProductManager;
     private CashfreeService cashfreeService;
+    private List<ServerAddress> mongoHosts;
 
     @Autowired
     public TransactionService(
         MongoOperations mongoOperations,
         MongoTransactionManager mongoTransactionManager,
-        MongoTemplate mongoTemplate,
         PurchaseOrderManager purchaseOrderManager,
         PurchaseOrderProductManager purchaseOrderProductManager,
         StoreProductManager storeProductManager,
-        CashfreeService cashfreeService
+        CashfreeService cashfreeService,
+        List<ServerAddress> mongoHosts
     ) {
         this.mongoOperations = mongoOperations;
         this.mongoTransactionManager = mongoTransactionManager;
-        this.mongoTemplate = mongoTemplate;
         this.purchaseOrderManager = purchaseOrderManager;
         this.purchaseOrderProductManager = purchaseOrderProductManager;
         this.storeProductManager = storeProductManager;
         this.cashfreeService = cashfreeService;
+        this.mongoHosts = mongoHosts;
     }
 
     public void completePurchase(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts) {
         //TODO(hth) this is a hack for supporting integration test
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
+        if (mongoHosts.size() < 2) {
             try {
                 purchaseOrderManager.save(purchaseOrder);
                 for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
@@ -126,7 +127,7 @@ public class TransactionService {
 
     public void bulkProductUpdate(List<StoreProductEntity> storeProducts, String bizStoreId, String qid) {
         //TODO(hth) this is a hack for supporting integration test
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
+        if (mongoHosts.size() < 2) {
             try {
                 long deletedCount = storeProductManager.removedStoreProduct(bizStoreId);
                 for (StoreProductEntity storeProduct : storeProducts) {
@@ -229,7 +230,7 @@ public class TransactionService {
         }
 
         //TODO(hth) this is a hack for supporting integration test
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
+        if (mongoHosts.size() < 2) {
             try {
                 if (PaymentModeEnum.CA != purchaseOrderBeforeCancel.getPaymentMode() && priceIsPositive) {
                     JsonRequestRefund jsonRequestRefund = new JsonRequestRefund()
@@ -310,7 +311,7 @@ public class TransactionService {
         }
 
         //TODO(hth) this is a hack for supporting integration test
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() < 2) {
+        if (mongoHosts.size() < 2) {
             try {
                 if (priceIsPositive &&
                     PurchaseOrderStateEnum.PO == purchaseOrderBeforeCancel.getPresentOrderState() &&

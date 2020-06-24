@@ -72,26 +72,16 @@ public class QueueManagerImpl implements QueueManager {
         if (object.getId() != null) {
             object.setUpdated();
         }
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
-            mongoTemplate.setWriteConcern(WriteConcern.W3);
-        }
         mongoTemplate.save(object, TABLE);
     }
 
     @Override
     public void insert(QueueEntity object) {
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
-            mongoTemplate.setWriteConcern(WriteConcern.W3);
-        }
         mongoTemplate.insert(object, TABLE);
     }
 
     @Override
     public void abort(String id) {
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
-            mongoTemplate.setWriteConcern(WriteConcern.W3);
-        }
-
         mongoTemplate.updateFirst(
             query(where("id").is(id)),
             entityUpdate(update("QS", QueueUserStateEnum.A).set("SB", new Date()).set("SE", new Date()).set("A", false)),
@@ -264,11 +254,6 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity getNext(String codeQR, String goTo, String sid) {
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
-            mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
-            mongoTemplate.setWriteConcern(WriteConcern.W3);
-        }
-
         QueueEntity queue = mongoTemplate.findOne(
             query(where("QR").is(codeQR)
                 .orOperator(
@@ -292,11 +277,6 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public QueueEntity getThisAsNext(String codeQR, String goTo, String sid, int tokenNumber) {
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
-            mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
-            mongoTemplate.setWriteConcern(WriteConcern.W3);
-        }
-
         QueueEntity queue = mongoTemplate.findOne(
             query(where("QR").is(codeQR).and("TN").is(tokenNumber)
                 .orOperator(

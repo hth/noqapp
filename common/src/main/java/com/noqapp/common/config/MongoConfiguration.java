@@ -76,7 +76,7 @@ public class MongoConfiguration {
     private MongoClientSettings populateMongoClientSettings() {
         MongoClientSettings settings = MongoClientSettings.builder()
             .applicationName("NoQueue")
-            .applyToClusterSettings(builder -> builder.hosts(getMongoSeeds()))
+            .applyToClusterSettings(builder -> builder.hosts(mongoHosts()))
             .build();
 
         return settings;
@@ -109,7 +109,8 @@ public class MongoConfiguration {
         return new DefaultMongoTypeMapper(null);
     }
 
-    private List<ServerAddress> getMongoSeeds() {
+    @Bean
+    List<ServerAddress> mongoHosts() {
         List<ServerAddress> serverAddresses = new ArrayList<>();
 
         if (StringUtils.isNotBlank(mongoReplicaSet)) {

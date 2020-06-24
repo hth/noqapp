@@ -17,13 +17,10 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
-import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
-import com.mongodb.ReadPreference;
-import com.mongodb.WriteConcern;
 import com.mongodb.client.result.UpdateResult;
 
 import org.apache.commons.lang3.StringUtils;
@@ -186,11 +183,6 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
 
     @Override
     public PurchaseOrderEntity getNext(String codeQR, String goTo, String sid) {
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
-            mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
-            mongoTemplate.setWriteConcern(WriteConcern.W3);
-        }
-
         PurchaseOrderEntity purchaseOrder = mongoTemplate.findOne(
             query(where("QR").is(codeQR)
                 .orOperator(
@@ -214,11 +206,6 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
 
     @Override
     public PurchaseOrderEntity getThisAsNext(String codeQR, String goTo, String sid, int tokenNumber) {
-        if (mongoTemplate.getMongoDbFactory().getLegacyDb().getMongo().getAllAddress().size() > 2) {
-            mongoTemplate.setReadPreference(ReadPreference.primaryPreferred());
-            mongoTemplate.setWriteConcern(WriteConcern.W3);
-        }
-
         PurchaseOrderEntity purchaseOrder = mongoTemplate.findOne(
             query(where("QR").is(codeQR).and("TN").is(tokenNumber)
                 .orOperator(
