@@ -976,6 +976,7 @@ public class AdminBusinessLandingController {
             case CDQ:
                 return BusinessTypeEnum.CD;
             default:
+                LOG.warn("No support to migrate this business type {}", businessType);
                 return null;
         }
     }
