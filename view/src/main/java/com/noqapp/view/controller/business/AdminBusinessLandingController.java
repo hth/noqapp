@@ -971,6 +971,10 @@ public class AdminBusinessLandingController {
                 return BusinessTypeEnum.CFQ;
             case CFQ:
                 return BusinessTypeEnum.CF;
+            case CD:
+                return BusinessTypeEnum.CDQ;
+            case CDQ:
+                return BusinessTypeEnum.CD;
             default:
                 return null;
         }
