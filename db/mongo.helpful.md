@@ -1,4 +1,16 @@
 ##Mongo Helpful Queries
+
+Search by starting first Capital letter
+
+    db.getCollection('USER_ACCOUNT').find({"UID" : {$regex : "([A-Z][a-zA-Z]*\s*)+"}})
+
+Find registered 
+
+    db.getCollection('BUSINESS_CUSTOMER').find({"BN" : "5eb3b9c0017c222cd473dded"}).count()
+    db.getCollection('BUSINESS_CUSTOMER').find({"BN" : "5eb3b9c0017c222cd473dded", "CA" : {$all: ["AP"]} }).count()
+    db.getCollection('BUSINESS_CUSTOMER').find({"BN" : "5eb3b9c0017c222cd473dded", "CA" : {$all: ["AP"]}, "PL" : "S" }).count()
+    db.getCollection('BUSINESS_CUSTOMER').find({"BN" : "5eb3b9c0017c222cd473dded", "CA" : {$all: ["AP"]}, "PL" : "P" }).count()
+
 Reset Queue
 
     db.TOKEN_QUEUE.update({},  { $set : {"LN" : NumberInt(0)}}, false, true);
