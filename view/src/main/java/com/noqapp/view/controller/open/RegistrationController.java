@@ -119,7 +119,7 @@ public class RegistrationController {
                 return registrationPage;
             }
 
-            executorService.submit(() -> smsService.sendPromotionalSMS(
+            executorService.submit(() -> smsService.sendTransactionalSMS(
                 merchantRegistration.getPhone(),
                 smsTxtOnRegistration));
 

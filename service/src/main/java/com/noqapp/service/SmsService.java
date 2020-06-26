@@ -42,6 +42,8 @@ public class SmsService {
     private static final Logger LOG = LoggerFactory.getLogger(SmsService.class);
 
     private String smsApiKey;
+    private String tokenSenderName;
+
     private OkHttpClient okHttpClient;
     private ApiHealthService apiHealthService;
     private boolean sendSMSTurnedOn;
@@ -50,6 +52,9 @@ public class SmsService {
     public SmsService(
         @Value("${textLocal.sms.apiKey}")
         String smsApiKey,
+
+        @Value("${textLocal.sender.token}")
+        String tokenSenderName,
 
         OkHttpClient okHttpClient,
         ApiHealthService apiHealthService,
@@ -61,6 +66,8 @@ public class SmsService {
             LOG.error("Failed encoding sms key {}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed encoding sms key");
         }
+        this.tokenSenderName = tokenSenderName;
+
         this.okHttpClient = okHttpClient;
         this.apiHealthService = apiHealthService;
         if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
@@ -112,7 +119,7 @@ public class SmsService {
         SendResponse sendResponse;
         try {
             String message = "&message=" + URLEncoder.encode(messageToSend, ScrubbedInput.UTF_8);
-            String sender = "&sender=" + URLEncoder.encode("TXTLCL", ScrubbedInput.UTF_8);
+            String sender = "&sender=" + URLEncoder.encode(tokenSenderName, ScrubbedInput.UTF_8);
             String numbers = "&numbers=" + URLEncoder.encode(phoneWithCountryCode, ScrubbedInput.UTF_8);
 
             Request request = new Request.Builder()
@@ -155,7 +162,7 @@ public class SmsService {
         SendResponse sendResponse;
         try {
             String message = "&message=" + URLEncoder.encode(messageToSend, ScrubbedInput.UTF_8);
-            String sender = "&sender=" + URLEncoder.encode("TXTLCL", ScrubbedInput.UTF_8);
+            String sender = "&sender=" + URLEncoder.encode(tokenSenderName, ScrubbedInput.UTF_8);
             String numbers = "&numbers=" + URLEncoder.encode(phoneWithCountryCode, ScrubbedInput.UTF_8);
 
             Request request = new Request.Builder()
