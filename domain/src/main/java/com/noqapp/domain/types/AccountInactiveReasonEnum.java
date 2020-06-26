@@ -16,7 +16,8 @@ import java.util.Map;
 public enum AccountInactiveReasonEnum {
     ANV("ANV", "Account Not Validated"),
     BOC("BOC", "Breach Of Compliance"),
-    BUP("BUP", "Breach Of Users Policy");
+    BUP("BUP", "Breach Of Users Policy & Conduct"),
+    ADP("ADP", "Access denied for limited period");
 
     private final String name;
     private final String description;
@@ -39,6 +40,7 @@ public enum AccountInactiveReasonEnum {
             put(ANV.name, ANV.description);
             put(BOC.name, BOC.description);
             put(BUP.name, BUP.description);
+            put(ADP.name, ADP.description);
         }};
     }
 

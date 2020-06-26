@@ -109,6 +109,9 @@ public class UserController {
                     case BUP:
                         userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.BUP);
                         break;
+                    case ADP:
+                        userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.ADP);
+                        break;
                     default:
                         LOG.error("Reached unsupported condition actionType={}", searchUserForm.getAccountInactiveReason());
                         throw new UnsupportedOperationException("Reached unsupported condition for actionType " + searchUserForm.getAccountInactiveReason());
