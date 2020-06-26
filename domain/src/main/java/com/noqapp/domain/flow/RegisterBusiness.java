@@ -79,6 +79,7 @@ public class RegisterBusiness implements Serializable {
     private String bizCategoryId;
     private String famousFor;
     private boolean remoteJoin = true;
+    private long averageServiceTime = 300000;
     /* Now defaults to allow logged in user ONLY. */
     private boolean allowLoggedInUser = true;
     private int availableTokenCount;
@@ -543,6 +544,15 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
+    public long getAverageServiceTime() {
+        return averageServiceTime;
+    }
+
+    public RegisterBusiness setAverageServiceTime(long averageServiceTime) {
+        this.averageServiceTime = averageServiceTime;
+        return this;
+    }
+
     public boolean isAllowLoggedInUser() {
         return allowLoggedInUser;
     }
@@ -744,6 +754,7 @@ public class RegisterBusiness implements Serializable {
         this.foundAddressStorePlaceId = bizStore.getPlaceId();
         this.bizCategoryId = bizStore.getBizCategoryId();
         this.walkInState = bizStore.getWalkInState() == null ? WalkInStateEnum.D : bizStore.getWalkInState();
+        this.averageServiceTime = bizStore.getAverageServiceTime() == 0 ? 300000 : bizStore.getAverageServiceTime();
         this.remoteJoin = bizStore.isRemoteJoin();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
         this.availableTokenCount = bizStore.getAvailableTokenCount();
