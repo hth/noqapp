@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.DateUtil.MINUTES_IN_MILLISECONDS;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -37,6 +38,7 @@ import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.service.utils.ServiceUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -310,6 +312,7 @@ public class TokenQueueService {
                         queue.setGuardianQid(guardianQid);
                     }
                     Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
+                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, bizStore.getTimeZone());
                     queue.setExpectedServiceBegin(expectedServiceBegin)
                         .setBizNameId(bizStore.getBizName().getId());
                     queueManager.insert(queue);
@@ -524,14 +527,16 @@ public class TokenQueueService {
         Date expectedServiceBegin = null;
         if (0 != averageServiceTime) {
             LocalTime now = LocalTime.now(zoneId);
-            LOG.info("Time now={}", now);
+            LOG.debug("Time now={} at zoneId={}", now, zoneId.getId());
             LocalTime start = LocalTime.parse(String.format(Locale.US, "%04d", storeHour.getStartHour()), Formatter.inputFormatter);
-            LOG.info("Time start={} format={}", start, String.format(Locale.US, "%04d", storeHour.getStartHour()));
+            LOG.debug("Time start={} format={}", start, String.format(Locale.US, "%04d", storeHour.getStartHour()));
 
             Duration duration = Duration.between(now, start.atOffset(zoneId.getRules().getOffset(Instant.now())));
-            LOG.info("duration in minutes={}", duration.toMinutes());
-            long serviceInMinutes = averageServiceTime / 60_000 * (tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing());
-            LOG.info("Service in minutes={} averageServiceTime={}", serviceInMinutes, averageServiceTime);
+            LOG.debug("duration in minutes={}", duration.toMinutes());
+
+            /* Why subtract 1, as the time has to be calculated for the start of service. By keeping last number, service time is delayed. */
+            long serviceInMinutes = averageServiceTime / MINUTES_IN_MILLISECONDS * (tokenQueue.getLastNumber() - 1 - tokenQueue.getCurrentlyServing()) + 1;
+            LOG.debug("Service in minutes={} averageServiceTime={}", serviceInMinutes, averageServiceTime);
 
             if (duration.isNegative()) {
                 expectedServiceBegin = DateUtil.convertToDateTime_UTC(
@@ -539,21 +544,17 @@ public class TokenQueueService {
                         .plusMinutes(serviceInMinutes)
                         .plusMinutes(storeHour.getDelayedInMinutes()));
             } else {
-                LOG.info("Now {}", LocalDateTime.now());
-                LOG.info("Plus serviceInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes));
-                LOG.info("Plus duration {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()));
-                LOG.info("Plus getDelayedInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()).plusMinutes(storeHour.getDelayedInMinutes()));
-                LOG.info("convertToDateTime {}", DateUtil.convertToDateTime_UTC(
-                    LocalDateTime.now()
-                        .plusMinutes(serviceInMinutes)
-                        .plusMinutes(duration.toMinutes())
-                        .plusMinutes(storeHour.getDelayedInMinutes())));
-
+                LOG.debug("Now {}", LocalDateTime.now());
+                LOG.debug("Plus serviceInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes));
+                LOG.debug("Plus duration {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()));
+                LOG.debug("Plus getDelayedInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()).plusMinutes(storeHour.getDelayedInMinutes()));
                 expectedServiceBegin = DateUtil.convertToDateTime_UTC(
                     LocalDateTime.now()
                         .plusMinutes(serviceInMinutes)
                         .plusMinutes(duration.toMinutes())
                         .plusMinutes(storeHour.getDelayedInMinutes()));
+                LOG.debug("convertToDateTime {}", expectedServiceBegin);
+                LOG.debug("Token {} Local Time {}", tokenQueue.getLastNumber(), DateUtil.dateToISO_8601(expectedServiceBegin, zoneId));
             }
         }
         return expectedServiceBegin;
