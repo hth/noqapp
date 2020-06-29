@@ -1,7 +1,5 @@
 package com.noqapp.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.health.service.ApiHealthService;
@@ -11,13 +9,15 @@ import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
+import com.noqapp.service.utils.ServiceUtils;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -70,15 +70,22 @@ class TokenQueueServiceTest {
             .setLunchTimeStart(1300)
             .setLunchTimeEnd(1400);
 
-        for (int i = 1; i < 200; i++) {
-            Date expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(
-                300000,
-                ZoneId.of("Asia/Calcutta"),
-                storeHour,
-                new TokenQueueEntity().setLastNumber(i).setCurrentlyServing(0)
-            );
-
-            System.out.println("Expected Service: " + expectedServiceBegin);
-        }
+        Assertions.assertThrows(ExpectedServiceBeyondStoreClosingHour.class, () -> {
+            for (int i = 1; i < 100; i++) {
+                try {
+                    Date expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(
+                        300000,
+                        ZoneId.of("Asia/Calcutta"),
+                        storeHour,
+                        new TokenQueueEntity().setLastNumber(i).setCurrentlyServing(0)
+                    );
+                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of("Asia/Calcutta").getId(), storeHour);
+                    System.out.println("Expected Service: " + expectedServiceBegin + ", for token " + i + ", time slot = " + timeSlot);
+                } catch (ExpectedServiceBeyondStoreClosingHour e) {
+                    System.err.println("Can service " + --i);
+                    throw e;
+                }
+            }
+        });
     }
 }
