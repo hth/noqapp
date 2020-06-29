@@ -914,6 +914,16 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     @Transient
+    public int getLunchStartHour(DayOfWeek dayOfWeek) {
+        return storeHours.get(dayOfWeek.getValue() - 1).getLunchTimeStart();
+    }
+
+    @Transient
+    public int getLunchEndHour(DayOfWeek dayOfWeek) {
+        return storeHours.get(dayOfWeek.getValue() - 1).getLunchTimeEnd();
+    }
+
+    @Transient
     public int getAppointmentStartHour(DayOfWeek dayOfWeek) {
         return storeHours.get(dayOfWeek.getValue() - 1).getAppointmentStartHour();
     }

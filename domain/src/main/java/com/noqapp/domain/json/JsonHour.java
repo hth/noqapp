@@ -48,6 +48,12 @@ public class JsonHour extends AbstractDomain {
     @JsonProperty("ae")
     private int appointmentEndHour;
 
+    @JsonProperty("ls")
+    private int lunchTimeStart;
+
+    @JsonProperty("le")
+    private int lunchTimeEnd;
+
     @JsonProperty("pj")
     private boolean preventJoining;
 
@@ -119,6 +125,24 @@ public class JsonHour extends AbstractDomain {
 
     public JsonHour setAppointmentEndHour(int appointmentEndHour) {
         this.appointmentEndHour = appointmentEndHour;
+        return this;
+    }
+
+    public int getLunchTimeStart() {
+        return lunchTimeStart;
+    }
+
+    public JsonHour setLunchTimeStart(int lunchTimeStart) {
+        this.lunchTimeStart = lunchTimeStart;
+        return this;
+    }
+
+    public int getLunchTimeEnd() {
+        return lunchTimeEnd;
+    }
+
+    public JsonHour setLunchTimeEnd(int lunchTimeEnd) {
+        this.lunchTimeEnd = lunchTimeEnd;
         return this;
     }
 

@@ -26,6 +26,7 @@ import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.QueueManager;
+import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
 import com.noqapp.service.exceptions.JoiningQueuePreApprovedRequiredException;
 import com.noqapp.service.exceptions.BeforeStartOfStoreException;
 import com.noqapp.service.exceptions.JoiningNonApprovedQueueException;
@@ -153,6 +154,8 @@ public class JoinAbortService {
                 throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
             case B:
                 throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
+            case A:
+                throw new ExpectedServiceBeyondStoreClosingHour("Your service time exceeds store closing hour " + codeQR);
             case X:
                 throw new LimitedPeriodException("Please wait until set number of days before using this service");
             case L:

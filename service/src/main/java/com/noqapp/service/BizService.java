@@ -194,6 +194,7 @@ public class BizService {
             rootMap.put("onlineOrOffline", bizStore.isActive());
             rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
             rootMap.put("businessTypeMessageOrigin", bizStore.getBusinessType().getMessageOrigin().name());
+            rootMap.put("aht", bizStore.getAverageServiceTimeFormatted());
             if (bizStore.getBusinessType().getMessageOrigin() == MessageOriginEnum.Q) {
                 if (bizStore.isEnabledPayment()) {
                     rootMap.put("productPrice", bizStore.getProductPrice() == 0 ? 0 : MathUtil.displayPrice(bizStore.getProductPrice()));
@@ -232,6 +233,14 @@ public class BizService {
                     storeHoursAsMap.put("Stop issuing token after: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getTokenNotAvailableFrom(DayOfWeek.of(storeHour.getDayOfWeek()))));
                     storeHoursAsMap.put("Queue start time: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getStartHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
                     storeHoursAsMap.put("Queue close time: ", DateFormatter.convertMilitaryTo12HourFormat(bizStore.getEndHour(DayOfWeek.of(storeHour.getDayOfWeek()))));
+
+                    if (bizStore.getLunchStartHour(DayOfWeek.of(storeHour.getDayOfWeek())) == 0 && bizStore.getLunchEndHour(DayOfWeek.of(storeHour.getDayOfWeek())) == 0) {
+                        storeHoursAsMap.put("Lunch time: ", "N/A");
+                    } else {
+                        String lunchStartTime = DateFormatter.convertMilitaryTo12HourFormat(bizStore.getLunchStartHour(DayOfWeek.of(storeHour.getDayOfWeek())));
+                        String lunchEndTime = DateFormatter.convertMilitaryTo12HourFormat(bizStore.getLunchEndHour(DayOfWeek.of(storeHour.getDayOfWeek())));
+                        storeHoursAsMap.put("Lunch time: ", lunchStartTime + " -- " + lunchEndTime);
+                    }
 
                     switch (bizStore.getAppointmentState()) {
                         case O:
@@ -274,7 +283,7 @@ public class BizService {
             mailService.sendAnyMail(
                 userProfile.getEmail(),
                 userProfile.getName(),
-                bizStore.getDisplayName() + ": Queue changes confirmation",
+                bizStore.getDisplayName() + ": " + bizStore.getBusinessType().getClassifierTitle() + " changes confirmation",
                 rootMap,
                 "mail/changedStoreSetting.ftl");
         }
@@ -286,7 +295,7 @@ public class BizService {
             mailService.sendAnyMail(
                 userProfile.getEmail(),
                 userProfile.getName(),
-                bizStore.getDisplayName() + ": Queue changes confirmation",
+                bizStore.getDisplayName() + ": " + bizStore.getBusinessType().getClassifierTitle() + " changes confirmation",
                 rootMap,
                 "mail/changedStoreSetting.ftl");
         }
@@ -395,6 +404,8 @@ public class BizService {
                 .setAppointmentStartHour(storeHour.getAppointmentStartHour())
                 .setEndHour(storeHour.getEndHour())
                 .setAppointmentEndHour(storeHour.getAppointmentEndHour())
+                .setLunchTimeStart(storeHour.getLunchTimeStart())
+                .setLunchTimeEnd(storeHour.getLunchTimeEnd())
                 .setPreventJoining(storeHour.isPreventJoining())
                 .setDayClosed(storeHour.isDayClosed() || storeHour.isTempDayClosed())
                 .setDelayedInMinutes(storeHour.getDelayedInMinutes());

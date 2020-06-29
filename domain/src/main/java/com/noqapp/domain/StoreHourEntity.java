@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.DayOfWeek;
+import java.time.LocalTime;
+import java.util.Locale;
 
 /**
  * User: hitender
@@ -51,6 +53,12 @@ public class StoreHourEntity extends BaseEntity {
 
     @Field ("AE")
     private int appointmentEndHour;
+
+    @Field ("LS")
+    private int lunchTimeStart;
+
+    @Field ("LE")
+    private int lunchTimeEnd;
 
     @Field ("DC")
     private boolean dayClosed = false;
@@ -142,6 +150,24 @@ public class StoreHourEntity extends BaseEntity {
         return this;
     }
 
+    public int getLunchTimeStart() {
+        return lunchTimeStart;
+    }
+
+    public StoreHourEntity setLunchTimeStart(int lunchTimeStart) {
+        this.lunchTimeStart = lunchTimeStart;
+        return this;
+    }
+
+    public int getLunchTimeEnd() {
+        return lunchTimeEnd;
+    }
+
+    public StoreHourEntity setLunchTimeEnd(int lunchTimeEnd) {
+        this.lunchTimeEnd = lunchTimeEnd;
+        return this;
+    }
+
     public boolean isDayClosed() {
         return dayClosed;
     }
@@ -226,6 +252,32 @@ public class StoreHourEntity extends BaseEntity {
     @Transient
     public String getDayOfTheWeekAsString() {
         return WordUtils.capitalizeFully(DayOfWeek.of(dayOfWeek).name());
+    }
+
+    @Transient
+    public boolean isLunchTimeEnabled() {
+        return lunchTimeStart != 0 && lunchTimeEnd != 0;
+    }
+
+    @Transient
+    public LocalTime startHour() {
+        return LocalTime.parse(String.format(Locale.US, "%04d", startHour), Formatter.inputFormatter);
+    }
+
+    @Transient
+    public LocalTime endHour() {
+        return LocalTime.parse(String.format(Locale.US, "%04d", endHour), Formatter.inputFormatter);
+    }
+
+    @Transient
+    public LocalTime lunchStartHour() {
+        LocalTime lunchStart = LocalTime.parse(String.format(Locale.US, "%04d", lunchTimeStart), Formatter.inputFormatter);
+        return lunchStart.minusHours(1);
+    }
+
+    @Transient
+    public LocalTime lunchEndHour() {
+        return LocalTime.parse(String.format(Locale.US, "%04d", lunchTimeEnd), Formatter.inputFormatter);
     }
 
     @Override

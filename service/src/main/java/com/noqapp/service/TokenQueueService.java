@@ -38,6 +38,7 @@ import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
 import com.noqapp.service.utils.ServiceUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -55,9 +56,11 @@ import org.junit.jupiter.api.Assertions;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
@@ -312,14 +315,22 @@ public class TokenQueueService {
                         queue.setGuardianQid(guardianQid);
                     }
                     Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
-                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, bizStore.getTimeZone());
                     queue.setExpectedServiceBegin(expectedServiceBegin)
-                        .setBizNameId(bizStore.getBizName().getId());
+                        .setBizNameId(bizStore.getBizName().getId())
+                        .setTimeSlotMessage(ServiceUtils.timeSlot(expectedServiceBegin, bizStore.getTimeZone(), storeHour));
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
                 } catch (DuplicateKeyException e) {
                     LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
                     return new JsonToken(codeQR, tokenQueue.getBusinessType());
+                } catch (ExpectedServiceBeyondStoreClosingHour e) {
+                    LOG.error("Error serving to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
+                    return new JsonToken(codeQR, bizStore.getBusinessType())
+                        .setToken(0)
+                        .setServingNumber(0)
+                        .setDisplayName(bizStore.getDisplayName())
+                        .setQueueStatus(QueueStatusEnum.A)
+                        .setExpectedServiceBegin(new Date());
                 }
 
                 return getJsonToken(codeQR, queue, tokenQueue);
@@ -518,44 +529,60 @@ public class TokenQueueService {
             .setTransactionId(queue.getTransactionId());
     }
 
-    Date computeExpectedServiceBeginTime(
-        long averageServiceTime,
-        ZoneId zoneId,
-        StoreHourEntity storeHour,
-        TokenQueueEntity tokenQueue
-    ) {
-        Date expectedServiceBegin = null;
+    /** Calculate based on zone and then save the expected service time based on UTC. */
+    Date computeExpectedServiceBeginTime(long averageServiceTime, ZoneId zoneId, StoreHourEntity storeHour, TokenQueueEntity tokenQueue) {
+        Date expectedServiceBegin;
         if (0 != averageServiceTime) {
-            LocalTime now = LocalTime.now(zoneId);
-            LOG.debug("Time now={} at zoneId={}", now, zoneId.getId());
-            LocalTime start = LocalTime.parse(String.format(Locale.US, "%04d", storeHour.getStartHour()), Formatter.inputFormatter);
-            LOG.debug("Time start={} format={}", start, String.format(Locale.US, "%04d", storeHour.getStartHour()));
-
-            Duration duration = Duration.between(now, start.atOffset(zoneId.getRules().getOffset(Instant.now())));
-            LOG.debug("duration in minutes={}", duration.toMinutes());
+            ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
+            LOG.debug("Time zonedNow={} at zoneId={} bizStoreId={}", zonedNow, zoneId.getId(), storeHour.getBizStoreId());
+            ZonedDateTime zonedStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.startHour()), zoneId);
+            ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId);
+            Duration duration = Duration.between(zonedNow, zonedStartHour);
+            LOG.debug("Duration in minutes={}", duration.toMinutes());
 
             /* Why subtract 1, as the time has to be calculated for the start of service. By keeping last number, service time is delayed. */
             long serviceInMinutes = averageServiceTime / MINUTES_IN_MILLISECONDS * (tokenQueue.getLastNumber() - 1 - tokenQueue.getCurrentlyServing()) + 1;
             LOG.debug("Service in minutes={} averageServiceTime={}", serviceInMinutes, averageServiceTime);
 
+            ZonedDateTime zonedServiceTime;
             if (duration.isNegative()) {
-                expectedServiceBegin = DateUtil.convertToDateTime_UTC(
-                    LocalDateTime.now()
+                LOG.debug("Store has already started or closed");
+                zonedServiceTime = ZonedDateTime.of(
+                    LocalDateTime.now(zoneId)
                         .plusMinutes(serviceInMinutes)
-                        .plusMinutes(storeHour.getDelayedInMinutes()));
+                        .plusMinutes(storeHour.getDelayedInMinutes()),
+                    zoneId);
             } else {
-                LOG.debug("Now {}", LocalDateTime.now());
-                LOG.debug("Plus serviceInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes));
-                LOG.debug("Plus duration {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()));
-                LOG.debug("Plus getDelayedInMinutes {}", LocalDateTime.now().plusMinutes(serviceInMinutes).plusMinutes(duration.toMinutes()).plusMinutes(storeHour.getDelayedInMinutes()));
-                expectedServiceBegin = DateUtil.convertToDateTime_UTC(
-                    LocalDateTime.now()
+                zonedServiceTime = ZonedDateTime.of(
+                    LocalDateTime.now(zoneId)
                         .plusMinutes(serviceInMinutes)
                         .plusMinutes(duration.toMinutes())
-                        .plusMinutes(storeHour.getDelayedInMinutes()));
-                LOG.debug("convertToDateTime {}", expectedServiceBegin);
-                LOG.debug("Token {} Local Time {}", tokenQueue.getLastNumber(), DateUtil.dateToISO_8601(expectedServiceBegin, zoneId));
+                        .plusMinutes(storeHour.getDelayedInMinutes()),
+                    zoneId);
+                LOG.debug("Plus getDelayedInMinutes {}", zonedServiceTime);
+
+                if (storeHour.isLunchTimeEnabled()) {
+                    Duration breakTime = Duration.between(storeHour.lunchStartHour(), storeHour.lunchEndHour());
+                    ZonedDateTime zonedLunchStart = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+                    LOG.debug("Expected ServiceTime={} lunchTimeStart={}", zonedServiceTime, zonedLunchStart);
+                    if (zonedServiceTime.compareTo(zonedLunchStart) > 0) {
+                        zonedServiceTime = zonedServiceTime.plusMinutes(breakTime.toMinutes());
+                    }
+                }
             }
+
+            if (zonedServiceTime.compareTo(zonedEndHour) > 0) {
+                LOG.error("After closing hour zonedServiceTime={} endHour={}", zonedServiceTime, zonedEndHour);
+                throw new ExpectedServiceBeyondStoreClosingHour("Serving time exceeds after store closing time");
+            }
+
+            /* Changed to UTC time before saving. */
+            expectedServiceBegin = DateUtil.convertToDateTime_UTC(zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
+            LOG.debug("Expected service time for token {} UTC {} {}", tokenQueue.getLastNumber(), expectedServiceBegin, zonedServiceTime);
+        } else {
+            LOG.error("AverageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
+            ZonedDateTime zonedServiceTime = ZonedDateTime.of(LocalDateTime.now(zoneId), zoneId);
+            expectedServiceBegin = DateUtil.convertToDateTime_UTC(zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
         }
         return expectedServiceBegin;
     }

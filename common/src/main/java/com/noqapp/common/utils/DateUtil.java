@@ -46,6 +46,7 @@ import java.util.regex.Pattern;
 public final class DateUtil {
     private static final Logger LOG = LoggerFactory.getLogger(DateUtil.class);
 
+    public static final int MINUTES_IN_MILLISECONDS = 60_000;
     private static final int MINUTE_IN_SECONDS = 60;
     private static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
     public static final int HOURS = 24;
@@ -400,23 +401,5 @@ public final class DateUtil {
         YearMonth ym = YearMonth.from(zdt);
         LocalDate last = ym.atEndOfMonth();
         return Date.from(last.atStartOfDay(ZoneId.of(timeZone)).plusDays(1).minusSeconds(1).toInstant());
-    }
-
-    public static String timeSlot(Date date, String timeZone) {
-        ZonedDateTime zonedDateTime = convertToLocalDateTime(date, timeZone);
-        LocalTime localTime = zonedDateTime.toLocalTime();
-        int minutes = localTime.getMinute();
-        if (minutes >= 45) {
-            LocalTime before = localTime.minusMinutes(minutes).plusMinutes(30);
-            LocalTime after = before.plusHours(1);
-            return "arrive between time slot " + before.getHour() + ":" + before.getMinute() + " - " + after.getHour() + ":" + after.getMinute();
-        } else if (minutes <= 15) {
-            LocalTime before = localTime.minusMinutes(minutes).minusMinutes(30);
-            LocalTime after = before.plusHours(1);
-            return "arrive between time slot " + before.getHour() + ":" + before.getMinute() + " - " + after.getHour() + ":" + after.getMinute();
-        } else {
-            LocalTime after = localTime.plusHours(1);
-            return "arrive between time slot " + localTime.getHour() + ":" + "00" + " - " + after.getHour() + ":" + "00";
-        }
     }
 }

@@ -1,8 +1,10 @@
 package com.noqapp.view.controller.open;
 
+import static com.noqapp.common.errors.MobileSystemErrorCodeEnum.SERVICE_AFTER_CLOSING_HOUR;
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
+import com.noqapp.common.errors.ErrorEncounteredJson;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
@@ -25,6 +27,7 @@ import com.noqapp.service.QueueService;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.exceptions.BeforeStartOfStoreException;
+import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
 import com.noqapp.service.exceptions.JoiningNonApprovedQueueException;
 import com.noqapp.service.exceptions.JoiningQueuePermissionDeniedException;
 import com.noqapp.service.exceptions.JoiningQueuePreApprovedRequiredException;
@@ -359,6 +362,9 @@ public class WebJoinQueueController {
                 } catch (BeforeStartOfStoreException e) {
                     LOG.error("Failed joining queue as trying to join before store opens Web Queue reason={}", e.getLocalizedMessage(), e);
                     return String.format("{ \"c\" : \"%s\" }", "before");
+                } catch (ExpectedServiceBeyondStoreClosingHour e) {
+                    LOG.warn("Failed joining queue as service time is after store close reason={}", e.getLocalizedMessage());
+                    return String.format("{ \"c\" : \"%s\" }", "after");
                 } catch (LimitedPeriodException e) {
                     LOG.warn("Failed joining queue as limited join allowed qid={}, reason={}", userProfile.getQueueUserId(), e.getLocalizedMessage());
                     return String.format("{ \"c\" : \"%s\" }", "wait");

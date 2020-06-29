@@ -187,6 +187,46 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
+                                                    <td class="lable-td">
+                                                        <form:label path="businessHours[${status.index}].lunchTimeStart" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Lunch Start Time</form:label>
+                                                    </td>
+                                                    <td>
+                                                        <form:input path="businessHours[${status.index}].lunchTimeStart" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <span>(As 1800 for 6:00 PM)</span>
+                                                    </td>
+                                                    <td>
+                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                        <c:choose>
+                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                                <span class="tooltip" title="Time when store closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="tooltip" title="Time when queue closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="lable-td">
+                                                        <form:label path="businessHours[${status.index}].lunchTimeEnd" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Lunch End Time</form:label>
+                                                    </td>
+                                                    <td>
+                                                        <form:input path="businessHours[${status.index}].lunchTimeEnd" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                        <span>(As 1800 for 6:00 PM)</span>
+                                                    </td>
+                                                    <td>
+                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                        <c:choose>
+                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                                <span class="tooltip" title="Time when store closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="tooltip" title="Time when queue closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                </tr>
+                                                <tr>
                                                     <td class="lable-td pT0">
                                                         <form:label path="businessHours[${status.index}].dayClosed" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Closed</form:label>
                                                     </td>
