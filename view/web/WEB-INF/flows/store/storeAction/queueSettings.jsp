@@ -136,6 +136,17 @@
                                         <div class="clearFix"></div>
                                     </li>
                                     </c:if>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="averageServiceTimeInMinutes" cssErrorClass="lb_error">Average Handling Time</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="averageServiceTimeInMinutes" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            <span style="display:block; font-size:14px;">(AHT: Expected average service time per customer in minutes)</span>
+                                        </div>
+                                        <span class="tooltip" title="Expected service time per customer at store" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <div class="clearFix"></div>
+                                    </li>
                                 </ul>
 
                                 <div class="col-lable3"></div>

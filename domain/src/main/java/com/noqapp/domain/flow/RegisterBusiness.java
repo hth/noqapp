@@ -27,6 +27,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -798,6 +801,8 @@ public class RegisterBusiness implements Serializable {
                 .setAppointmentEndHour(storeHour.getAppointmentEndHour())
                 .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
                 .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+                .setLunchTimeStart(storeHour.getLunchTimeStart())
+                .setLunchTimeEnd(storeHour.getLunchTimeEnd())
                 .setDayClosed(storeHour.isDayClosed());
 
             businessHours.add(businessHour);
@@ -811,6 +816,15 @@ public class RegisterBusiness implements Serializable {
     public boolean decidePathTraversalOnRegistrationComplete() {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return queueUser.getUserLevel() == UserLevelEnum.M_ADMIN;
+    }
+
+
+    public BigDecimal getAverageServiceTimeInMinutes() {
+        return new BigDecimal(averageServiceTime).divide(new BigDecimal(60_000), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING);
+    }
+
+    public void setAverageServiceTimeInMinutes(BigDecimal averageServiceTimeInMinutes) {
+        averageServiceTime = averageServiceTimeInMinutes.multiply(new BigDecimal(60_000)).longValue();
     }
 
     @Override

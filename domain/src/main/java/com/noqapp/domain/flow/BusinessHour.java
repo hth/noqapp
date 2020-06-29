@@ -17,6 +17,8 @@ public class BusinessHour implements Serializable {
     private int endHourStore;
     private int tokenAvailableFrom;
     private int tokenNotAvailableFrom;
+    private int lunchTimeStart;
+    private int lunchTimeEnd;
     private int appointmentStartHour;
     private int appointmentEndHour;
     private boolean dayClosed = false;
@@ -67,6 +69,24 @@ public class BusinessHour implements Serializable {
 
     public BusinessHour setTokenNotAvailableFrom(int tokenNotAvailableFrom) {
         this.tokenNotAvailableFrom = tokenNotAvailableFrom;
+        return this;
+    }
+
+    public int getLunchTimeStart() {
+        return lunchTimeStart;
+    }
+
+    public BusinessHour setLunchTimeStart(int lunchTimeStart) {
+        this.lunchTimeStart = lunchTimeStart;
+        return this;
+    }
+
+    public int getLunchTimeEnd() {
+        return lunchTimeEnd;
+    }
+
+    public BusinessHour setLunchTimeEnd(int lunchTimeEnd) {
+        this.lunchTimeEnd = lunchTimeEnd;
         return this;
     }
 
@@ -130,6 +150,24 @@ public class BusinessHour implements Serializable {
     @Transient
     public String getTokenNotAvailableFromAsString() {
         return Formatter.convertMilitaryTo12HourFormat(tokenNotAvailableFrom);
+    }
+
+    /** Used for displaying store hours on JSP. */
+    @Transient
+    public String getLunchTimeStartAsString() {
+        if (lunchTimeStart == 0) {
+            return "N/A";
+        }
+        return Formatter.convertMilitaryTo12HourFormat(lunchTimeStart);
+    }
+
+    /** Used for displaying store hours on JSP. */
+    @Transient
+    public String getLunchTimeEndAsString() {
+        if (lunchTimeEnd == 0) {
+            return "N/A";
+        }
+        return Formatter.convertMilitaryTo12HourFormat(lunchTimeEnd);
     }
 
     @Override

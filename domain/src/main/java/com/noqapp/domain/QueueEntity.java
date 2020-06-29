@@ -144,6 +144,9 @@ public class QueueEntity extends BaseEntity {
     @Field("AC")
     private String authorizedCheckByQid;
 
+    @Field("SL")
+    private String timeSlotMessage;
+
     @SuppressWarnings("unused")
     public QueueEntity() {
         //Default constructor, required to keep bean happy
@@ -437,6 +440,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setAuthorizedCheckByQid(String authorizedCheckByQid) {
         this.authorizedCheckByQid = authorizedCheckByQid;
+        return this;
+    }
+
+    public String getTimeSlotMessage() {
+        return timeSlotMessage;
+    }
+
+    public QueueEntity setTimeSlotMessage(String timeSlotMessage) {
+        this.timeSlotMessage = timeSlotMessage;
         return this;
     }
 

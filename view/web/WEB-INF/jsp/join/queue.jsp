@@ -145,6 +145,15 @@
                         <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'a--'}">
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Service is after store hour. Please do not visit.
+                            </div>
+                        </div>
+                        <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
                         <c:if test="${!empty param.joinFailure and param.joinFailure eq 'x--'}">
                         <div class="error-box">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">

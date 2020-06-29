@@ -127,7 +127,7 @@
                                         </li>
                                         <li>
                                             <div class="col-lable3">
-                                                <form:label path="famousFor" cssErrorClass="lb_error">Famour For</form:label>
+                                                <form:label path="famousFor" cssErrorClass="lb_error">Famous For</form:label>
                                             </div>
                                             <div class="col-fields">
                                                 <form:input path="famousFor" cssClass="form-field-admin" readonly="true"/>
@@ -181,6 +181,16 @@
                                             <div class="clearFix"></div>
                                         </li>
                                         </c:if>
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="averageServiceTimeInMinutes" cssErrorClass="lb_error">Average Handling Time</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="averageServiceTimeInMinutes" cssClass="form-field-admin" disabled="true"/>
+                                                <span style="display:block; font-size:14px;">(AHT: Expected average service time per customer in minutes)</span>
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -261,6 +271,18 @@
                                                         <tr>
                                                             <td>${registerBusiness.businessType.classifierTitle} Close Time</td>
                                                             <td><c:out value="${businessHour.endHourStoreAsString}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>${registerBusiness.businessType.classifierTitle} Lunch Start Time</td>
+                                                            <td><c:out value="${businessHour.lunchTimeStartAsString}"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>${registerBusiness.businessType.classifierTitle} Lunch End Time</td>
+                                                            <td><c:out value="${businessHour.lunchTimeEndAsString}"/></td>
                                                         </tr>
                                                     </table>
                                                     </c:otherwise>

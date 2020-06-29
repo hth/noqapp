@@ -16,3 +16,7 @@ How to remove specific file on Mac OS
     find . -type f -name '*.iml' -delete
     find . -type f -name 'main*.iml' -delete
     find . -type f -name 'test*.iml' -delete
+    
+Flush Redis DB
+
+    redis-cli FLUSHALL    
