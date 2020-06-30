@@ -26,6 +26,7 @@ import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 
 /**
  * User: hitender
@@ -42,7 +43,8 @@ public class SmsService {
     private static final Logger LOG = LoggerFactory.getLogger(SmsService.class);
 
     private String smsApiKey;
-    private String tokenSenderName;
+    private String smsSenderName;
+    private String smsSenderNameTxtLcl;
 
     private OkHttpClient okHttpClient;
     private ApiHealthService apiHealthService;
@@ -53,8 +55,11 @@ public class SmsService {
         @Value("${textLocal.sms.apiKey}")
         String smsApiKey,
 
-        @Value("${textLocal.sender.token}")
-        String tokenSenderName,
+        @Value("${sms.sender.noqueue}")
+        String smsSenderName,
+
+        @Value("${sms.sender.txtlcl}")
+        String smsSenderNameTxtLcl,
 
         OkHttpClient okHttpClient,
         ApiHealthService apiHealthService,
@@ -66,7 +71,8 @@ public class SmsService {
             LOG.error("Failed encoding sms key {}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed encoding sms key");
         }
-        this.tokenSenderName = tokenSenderName;
+        this.smsSenderName = smsSenderName;
+        this.smsSenderNameTxtLcl = smsSenderNameTxtLcl;
 
         this.okHttpClient = okHttpClient;
         this.apiHealthService = apiHealthService;
@@ -114,12 +120,13 @@ public class SmsService {
      * https://play.google.com/store/apps/details?id=com.noqapp.android.client
      */
     public String sendPromotionalSMS(String phoneWithCountryCode, String messageToSend) {
+        boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         Response response = null;
         SendResponse sendResponse;
         try {
             String message = "&message=" + URLEncoder.encode(messageToSend, ScrubbedInput.UTF_8);
-            String sender = "&sender=" + URLEncoder.encode(tokenSenderName, ScrubbedInput.UTF_8);
+            String sender = "&sender=" + URLEncoder.encode(smsSenderName, ScrubbedInput.UTF_8);
             String numbers = "&numbers=" + URLEncoder.encode(phoneWithCountryCode, ScrubbedInput.UTF_8);
 
             Request request = new Request.Builder()
@@ -131,6 +138,9 @@ public class SmsService {
                 ObjectMapper mapper = new ObjectMapper();
                 sendResponse = mapper.readValue(response.body() != null ? response.body().string() : null, SendResponse.class);
                 LOG.info("SMS sent {} {} {} {} {}", phoneWithCountryCode, messageToSend, response.message(), sendResponse.getStatus(), sendResponse.getBalance());
+                if (sendResponse.getStatus().equalsIgnoreCase("failure")) {
+                    methodStatusSuccess = false;
+                }
                 return sendResponse.getStatus();
             } else {
                 LOG.info("SMS sent skipped {} {}", phoneWithCountryCode, messageToSend);
@@ -146,10 +156,10 @@ public class SmsService {
                 "sendPromotionalSMS",
                 this.getClass().getName(),
                 Duration.between(start, Instant.now()),
-                HealthStatusEnum.G);
+                methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
 
             if (response != null) {
-                response.body().close();
+                Objects.requireNonNull(response.body()).close();
             }
         }
 
@@ -157,12 +167,13 @@ public class SmsService {
     }
 
     public String sendTransactionalSMS(String phoneWithCountryCode, String messageToSend) {
+        boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         Response response = null;
         SendResponse sendResponse;
         try {
             String message = "&message=" + URLEncoder.encode(messageToSend, ScrubbedInput.UTF_8);
-            String sender = "&sender=" + URLEncoder.encode(tokenSenderName, ScrubbedInput.UTF_8);
+            String sender = "&sender=" + URLEncoder.encode(smsSenderName, ScrubbedInput.UTF_8);
             String numbers = "&numbers=" + URLEncoder.encode(phoneWithCountryCode, ScrubbedInput.UTF_8);
 
             Request request = new Request.Builder()
@@ -174,6 +185,9 @@ public class SmsService {
                 ObjectMapper mapper = new ObjectMapper();
                 sendResponse = mapper.readValue(response.body() != null ? response.body().string() : null, SendResponse.class);
                 LOG.info("SMS sent {} {} {} {} {}", phoneWithCountryCode, messageToSend, response.message(), sendResponse.getStatus(), sendResponse.getBalance());
+                if (sendResponse.getStatus().equalsIgnoreCase("failure")) {
+                    methodStatusSuccess = false;
+                }
                 return sendResponse.getStatus();
             } else {
                 LOG.info("SMS sent skipped {} {}", phoneWithCountryCode, messageToSend);
@@ -189,10 +203,10 @@ public class SmsService {
                 "sendTransactionalSMS",
                 this.getClass().getName(),
                 Duration.between(start, Instant.now()),
-                HealthStatusEnum.G);
+                methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
 
             if (response != null) {
-                response.body().close();
+                Objects.requireNonNull(response.body()).close();
             }
         }
 
