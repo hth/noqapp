@@ -147,10 +147,14 @@ public class StoreManagerLandingController {
             LOG.info("Landed on business page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
             /* Above condition to make sure users with right roles and access gets access. */
 
-            if (queueUser.getUserLevel() != UserLevelEnum.M_ADMIN) {
-                LOG.warn("Permission denied for qid={} having access as business user", queueUser.getQueueUserId());
-                response.sendError(SC_NOT_FOUND, "Could not find");
-                return null;
+            switch (queueUser.getUserLevel()) {
+                case M_ADMIN:
+                case SUPERVISOR:
+                    break;
+                default:
+                    LOG.warn("Permission denied for qid={} having access as business user", queueUser.getQueueUserId());
+                    response.sendError(SC_NOT_FOUND, "Could not find");
+                    return null;
             }
 
             ActionTypeEnum actionType = ActionTypeEnum.valueOf(action.getText());
