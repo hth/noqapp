@@ -97,6 +97,9 @@ public class JsonQueuedPerson extends AbstractDomain {
     @JsonProperty("po")
     private JsonPurchaseOrder jsonPurchaseOrder;
 
+    @JsonProperty("sl")
+    private String timeSlotMessage;
+
     @JsonProperty("c")
     private String created;
     
@@ -246,6 +249,15 @@ public class JsonQueuedPerson extends AbstractDomain {
 
     public JsonQueuedPerson setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
         this.jsonPurchaseOrder = jsonPurchaseOrder;
+        return this;
+    }
+
+    public String getTimeSlotMessage() {
+        return timeSlotMessage;
+    }
+
+    public JsonQueuedPerson setTimeSlotMessage(String timeSlotMessage) {
+        this.timeSlotMessage = timeSlotMessage;
         return this;
     }
 
