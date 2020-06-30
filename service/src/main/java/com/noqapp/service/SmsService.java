@@ -108,7 +108,7 @@ public class SmsService {
                 HealthStatusEnum.G);
 
             if (response != null) {
-                response.body().close();
+                Objects.requireNonNull(response.body()).close();
             }
         }
 
@@ -136,7 +136,7 @@ public class SmsService {
             if (sendSMSTurnedOn) {
                 response = okHttpClient.newCall(request).execute();
                 ObjectMapper mapper = new ObjectMapper();
-                sendResponse = mapper.readValue(response.body() != null ? response.body().string() : null, SendResponse.class);
+                sendResponse = mapper.readValue(response.body() != null ? Objects.requireNonNull(response.body()).string() : null, SendResponse.class);
                 LOG.info("SMS sent {} sms=\"{}\" length={} {} {} {}",
                     phoneWithCountryCode, messageToSend, messageToSend.length(),
                     response.message(), sendResponse.getStatus(), sendResponse.getBalance());
@@ -185,7 +185,7 @@ public class SmsService {
             if (sendSMSTurnedOn) {
                 response = okHttpClient.newCall(request).execute();
                 ObjectMapper mapper = new ObjectMapper();
-                sendResponse = mapper.readValue(response.body() != null ? response.body().string() : null, SendResponse.class);
+                sendResponse = mapper.readValue(response.body() != null ? Objects.requireNonNull(response.body()).string() : null, SendResponse.class);
                 LOG.info("SMS sent {} sms=\"{}\" length={} {} {} {}",
                     phoneWithCountryCode, messageToSend, messageToSend.length(),
                     response.message(), sendResponse.getStatus(), sendResponse.getBalance());
