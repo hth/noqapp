@@ -282,7 +282,8 @@ public class TokenQueueService {
                                             .setServingNumber(0)
                                             .setDisplayName(bizStore.getDisplayName())
                                             .setQueueStatus(QueueStatusEnum.X)
-                                            .setExpectedServiceBegin(new Date());
+                                            .setExpectedServiceBegin(new Date())
+                                            .setTimeSlotMessage(queue.getTimeSlotMessage());
                                 }
                             }
                         }
@@ -354,7 +355,8 @@ public class TokenQueueService {
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(tokenQueue.getQueueStatus())
-            .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+            .setExpectedServiceBegin(queue.getExpectedServiceBegin())
+            .setTimeSlotMessage(queue.getTimeSlotMessage());
     }
 
     @Mobile

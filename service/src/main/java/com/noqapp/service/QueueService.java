@@ -354,6 +354,7 @@ public class QueueService {
                 .setRecordReferenceId(queue.getRecordReferenceId())
                 .setCreated(queue.getCreated())
                 .setTransactionId(queue.getTransactionId())
+                .setTimeSlotMessage(queue.getTimeSlotMessage())
                 .setRecordReferenceId(queue.getRecordReferenceId())
                 .setCodeQR(queue.getCodeQR())
                 .setDisplayName(queue.getDisplayName())

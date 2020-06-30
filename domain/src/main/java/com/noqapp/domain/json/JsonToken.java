@@ -81,6 +81,9 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty("po")
     private JsonPurchaseOrder jsonPurchaseOrder;
 
+    @JsonProperty("sl")
+    private String timeSlotMessage;
+
     @Transient
     private Date expectedServiceBeginDate;
 
@@ -203,6 +206,15 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken setJsonPurchaseOrder(JsonPurchaseOrder jsonPurchaseOrder) {
         this.jsonPurchaseOrder = jsonPurchaseOrder;
+        return this;
+    }
+
+    public String getTimeSlotMessage() {
+        return timeSlotMessage;
+    }
+
+    public JsonToken setTimeSlotMessage(String timeSlotMessage) {
+        this.timeSlotMessage = timeSlotMessage;
         return this;
     }
 
