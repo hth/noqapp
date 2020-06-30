@@ -31,10 +31,12 @@ public enum FacilityEnum {
     /* For Restaurant Stores */
     FRS("FRS", "Fresh Food"),
 
+    CAS("CAS", "Cash"),
+    CRD("CRD", "Debit/Credit Cards"),
     FRW("FRW", "Free Drinking Water");
 
     public static EnumSet<FacilityEnum> DOCTOR_HOSPITAL = EnumSet.of(EM, IC, IU, NI, RA, MP, IF, LS, GS, CS, PY, SX, GY, DE, AH, SO);
-    public static EnumSet<FacilityEnum> GROCERY = EnumSet.of(DEL, PIK);
+    public static EnumSet<FacilityEnum> GROCERY = EnumSet.of(DEL, PIK, CAS, CRD);
     public static EnumSet<FacilityEnum> RESTAURANT = EnumSet.of(DEL, FRS, FRW);
 
     private final String description;
