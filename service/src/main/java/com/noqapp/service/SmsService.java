@@ -137,7 +137,9 @@ public class SmsService {
                 response = okHttpClient.newCall(request).execute();
                 ObjectMapper mapper = new ObjectMapper();
                 sendResponse = mapper.readValue(response.body() != null ? response.body().string() : null, SendResponse.class);
-                LOG.info("SMS sent {} {} {} {} {}", phoneWithCountryCode, messageToSend, response.message(), sendResponse.getStatus(), sendResponse.getBalance());
+                LOG.info("SMS sent {} sms=\"{}\" length={} {} {} {}",
+                    phoneWithCountryCode, messageToSend, messageToSend.length(),
+                    response.message(), sendResponse.getStatus(), sendResponse.getBalance());
                 if (sendResponse.getStatus().equalsIgnoreCase("failure")) {
                     methodStatusSuccess = false;
                 }
@@ -184,7 +186,9 @@ public class SmsService {
                 response = okHttpClient.newCall(request).execute();
                 ObjectMapper mapper = new ObjectMapper();
                 sendResponse = mapper.readValue(response.body() != null ? response.body().string() : null, SendResponse.class);
-                LOG.info("SMS sent {} {} {} {} {}", phoneWithCountryCode, messageToSend, response.message(), sendResponse.getStatus(), sendResponse.getBalance());
+                LOG.info("SMS sent {} sms=\"{}\" length={} {} {} {}",
+                    phoneWithCountryCode, messageToSend, messageToSend.length(),
+                    response.message(), sendResponse.getStatus(), sendResponse.getBalance());
                 if (sendResponse.getStatus().equalsIgnoreCase("failure")) {
                     methodStatusSuccess = false;
                 }
