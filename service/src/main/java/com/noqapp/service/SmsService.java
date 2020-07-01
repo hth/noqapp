@@ -92,7 +92,7 @@ public class SmsService {
             response = okHttpClient.newCall(request).execute();
 
             ObjectMapper mapper = new ObjectMapper();
-            balanceResponse = mapper.readValue(response.body() != null ? response.body().string() : null, BalanceResponse.class);
+            balanceResponse = mapper.readValue(response.body() != null ? Objects.requireNonNull(response.body()).string() : null, BalanceResponse.class);
             LOG.info("{} {}", response.message(), balanceResponse.asJson());
             return balanceResponse.getBalance().getAvailableSMS();
         } catch (UnknownHostException e) {
