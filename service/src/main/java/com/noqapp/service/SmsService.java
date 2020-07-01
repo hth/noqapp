@@ -126,7 +126,7 @@ public class SmsService {
         SendResponse sendResponse;
         try {
             String message = "&message=" + URLEncoder.encode(messageToSend, ScrubbedInput.UTF_8);
-            String sender = "&sender=" + URLEncoder.encode(smsSenderName, ScrubbedInput.UTF_8);
+            String sender = "&sender=" + URLEncoder.encode(smsSenderNameTxtLcl, ScrubbedInput.UTF_8);
             String numbers = "&numbers=" + URLEncoder.encode(phoneWithCountryCode, ScrubbedInput.UTF_8);
 
             Request request = new Request.Builder()
@@ -137,7 +137,7 @@ public class SmsService {
                 response = okHttpClient.newCall(request).execute();
                 ObjectMapper mapper = new ObjectMapper();
                 sendResponse = mapper.readValue(response.body() != null ? Objects.requireNonNull(response.body()).string() : null, SendResponse.class);
-                LOG.info("SMS sent {} sms=\"{}\" length={} {} {} {}",
+                LOG.info("SMS promotional sent {} sms=\"{}\" length={} {} {} {}",
                     phoneWithCountryCode, messageToSend, messageToSend.length(),
                     response.message(), sendResponse.getStatus(), sendResponse.getBalance());
                 if (sendResponse.getStatus().equalsIgnoreCase("failure")) {
@@ -186,11 +186,12 @@ public class SmsService {
                 response = okHttpClient.newCall(request).execute();
                 ObjectMapper mapper = new ObjectMapper();
                 sendResponse = mapper.readValue(response.body() != null ? Objects.requireNonNull(response.body()).string() : null, SendResponse.class);
-                LOG.info("SMS sent {} sms=\"{}\" length={} {} {} {}",
+                LOG.info("SMS transactional sent {} sms=\"{}\" length={} {} {} {}",
                     phoneWithCountryCode, messageToSend, messageToSend.length(),
                     response.message(), sendResponse.getStatus(), sendResponse.getBalance());
                 if (sendResponse.getStatus().equalsIgnoreCase("failure")) {
                     methodStatusSuccess = false;
+                    sendPromotionalSMS(phoneWithCountryCode, messageToSend);
                 }
                 return sendResponse.getStatus();
             } else {
