@@ -58,10 +58,10 @@ public class FirebaseMessageService {
         try {
             response = okHttpClient.newCall(request).execute();
         } catch (UnknownHostException e) {
-            LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed connecting to FCM host while making FCM request {} reason={}", jsonMessage, e.getLocalizedMessage(), e);
             return false;
         } catch (IOException e) {
-            LOG.error("Failed making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed making FCM request {} reason={}", jsonMessage, e.getLocalizedMessage(), e);
             return false;
         } finally {
             if (null != response) {
