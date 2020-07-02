@@ -78,4 +78,15 @@ public class JsonMessage extends AbstractDomain {
     public void setNotification(JsonNotification notification) {
         this.notification = notification;
     }
+
+    @Override
+    public String toString() {
+        return "JsonMessage{" +
+            "to='" + to + '\'' +
+            ", priority='" + priority + '\'' +
+            ", content_available=" + content_available +
+            ", data=" + data +
+            ", notification=" + notification +
+            '}';
+    }
 }
