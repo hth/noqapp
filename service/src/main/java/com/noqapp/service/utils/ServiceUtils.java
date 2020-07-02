@@ -71,30 +71,29 @@ public class ServiceUtils {
             LOG.debug("Close to start {}", Duration.between(localTime, storeHour.startHour()).toMinutes());
             LocalTime after = arrivalHour.plusHours(1);
 
-            return "arrive between time slot "
-                + String.format(Locale.US, "%02d", arrivalHour.getHour()) + ":" + String.format(Locale.US, "%02d", arrivalHour.getMinute()) + " - "
+            return String.format(Locale.US, "%02d", arrivalHour.getHour()) + ":" + String.format(Locale.US, "%02d", arrivalHour.getMinute()) + " - "
                 + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
         } else if (Duration.between(localTime, storeHour.endHour()).toMinutes() <= 15) {
             LOG.debug("Close to end {}", Duration.between(localTime, storeHour.endHour()).toMinutes());
             LocalTime arrivalHour = storeHour.endHour().minusHours(1);
             LocalTime departureHour = storeHour.endHour();
-            return "arrive between time slot " + String.format(Locale.US, "%02d", arrivalHour.getHour()) + ":" + String.format(Locale.US, "%02d", arrivalHour.getMinute()) + " - "
+            return String.format(Locale.US, "%02d", arrivalHour.getHour()) + ":" + String.format(Locale.US, "%02d", arrivalHour.getMinute()) + " - "
                 + String.format(Locale.US, "%02d", departureHour.getHour()) + ":" + String.format(Locale.US, "%02d", departureHour.getMinute()) + " (store closes)";
         }
 
         if (minutes >= 45) {
             LocalTime before = localTime.minusMinutes(minutes).plusMinutes(30);
             LocalTime after = before.plusHours(1);
-            return "arrive between time slot " + String.format(Locale.US, "%02d", before.getHour()) + ":" + String.format(Locale.US, "%02d", before.getMinute()) + " - "
+            return String.format(Locale.US, "%02d", before.getHour()) + ":" + String.format(Locale.US, "%02d", before.getMinute()) + " - "
                 + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
         } else if (minutes <= 15) {
             LocalTime before = localTime.minusMinutes(minutes).minusMinutes(30);
             LocalTime after = before.plusHours(1);
-            return "arrive between time slot " + String.format(Locale.US, "%02d", before.getHour()) + ":" + String.format(Locale.US, "%02d", before.getMinute()) + " - "
+            return String.format(Locale.US, "%02d", before.getHour()) + ":" + String.format(Locale.US, "%02d", before.getMinute()) + " - "
                 + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
         } else {
             LocalTime after = localTime.plusHours(1);
-            return "arrive between time slot " + localTime.getHour() + ":" + "00" + " - " + after.getHour() + ":" + "00";
+            return  localTime.getHour() + ":" + "00" + " - " + after.getHour() + ":" + "00";
         }
     }
 }
