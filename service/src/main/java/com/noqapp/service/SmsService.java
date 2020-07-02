@@ -76,9 +76,9 @@ public class SmsService {
 
         this.okHttpClient = okHttpClient;
         this.apiHealthService = apiHealthService;
-        if (environment.getProperty("build.env").equalsIgnoreCase("prod") || environment.getProperty("build.env").equalsIgnoreCase("sandbox")) {
-            sendSMSTurnedOn = true;
-        }
+//        if (environment.getProperty("build.env").equalsIgnoreCase("prod") || environment.getProperty("build.env").equalsIgnoreCase("sandbox")) {
+            this.sendSMSTurnedOn = true;
+//        }
     }
 
     public int findAvailableSMS() {
