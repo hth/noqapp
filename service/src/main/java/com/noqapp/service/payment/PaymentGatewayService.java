@@ -23,6 +23,7 @@ import okhttp3.Response;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * hitender
@@ -76,16 +77,16 @@ public class PaymentGatewayService {
         try {
             response = okHttpClient.newCall(request).execute();
             ObjectMapper mapper = new ObjectMapper();
-            jsonVerifyAccessResponse = mapper.readValue(response.body() != null ? response.body().string() : null, JsonVerifyAccessResponse.class);
+            jsonVerifyAccessResponse = mapper.readValue(response.body() != null ? Objects.requireNonNull(response.body()).string() : null, JsonVerifyAccessResponse.class);
         } catch (UnknownHostException e) {
-            LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed connecting to cashfree host while making request reason={}", e.getLocalizedMessage(), e);
             return false;
         } catch (IOException e) {
-            LOG.error("Failed making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed making cashfree request reason={}", e.getLocalizedMessage(), e);
             return false;
         } finally {
             if (response != null) {
-                response.body().close();
+                Objects.requireNonNull(response.body()).close();
             }
         }
 
@@ -113,16 +114,16 @@ public class PaymentGatewayService {
         try {
             response = okHttpClient.newCall(request).execute();
             ObjectMapper mapper = new ObjectMapper();
-            jsonVerifyAccessPayoutResponse = mapper.readValue(response.body() != null ? response.body().string() : null, JsonVerifyAccessPayoutResponse.class);
+            jsonVerifyAccessPayoutResponse = mapper.readValue(response.body() != null ? Objects.requireNonNull(response.body()).string() : null, JsonVerifyAccessPayoutResponse.class);
         } catch (UnknownHostException e) {
-            LOG.error("Failed connecting to FCM host while making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed connecting to cashfree host while making request reason={}", e.getLocalizedMessage(), e);
             return false;
         } catch (IOException e) {
-            LOG.error("Failed making FCM request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed making cashfree request reason={}", e.getLocalizedMessage(), e);
             return false;
         } finally {
             if (response != null) {
-                response.body().close();
+                Objects.requireNonNull(response.body()).close();
             }
         }
 
