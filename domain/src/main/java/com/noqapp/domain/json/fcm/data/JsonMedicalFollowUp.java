@@ -94,7 +94,7 @@ public class JsonMedicalFollowUp extends JsonData {
     }
 
     public JsonMedicalFollowUp setPopFollowUpAlert(Date popFollowUpAlert) {
-        this.popFollowUpAlert = DateFormatUtils.format(popFollowUpAlert, ISO8601_FMT, TimeZone.getTimeZone("UTC"));;
+        this.popFollowUpAlert = DateFormatUtils.format(popFollowUpAlert, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         return this;
     }
 

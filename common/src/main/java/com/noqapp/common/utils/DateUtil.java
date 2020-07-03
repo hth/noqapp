@@ -28,6 +28,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -401,5 +402,10 @@ public final class DateUtil {
         YearMonth ym = YearMonth.from(zdt);
         LocalDate last = ym.atEndOfMonth();
         return Date.from(last.atStartOfDay(ZoneId.of(timeZone)).plusDays(1).minusSeconds(1).toInstant());
+    }
+
+    public static Date convertFromISODate(String isoFormattedDateString) {
+        TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(isoFormattedDateString);
+        return Date.from(Instant.from(ta));
     }
 }

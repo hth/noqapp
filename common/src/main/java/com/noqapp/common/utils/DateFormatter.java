@@ -12,8 +12,8 @@ import java.util.Locale;
  * Date: 6/13/17 6:16 PM
  */
 public class DateFormatter {
-    private static DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HHmm");
-    private static DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("hh:mm a");
+    private static final DateTimeFormatter inputFormatter = DateTimeFormat.forPattern("HHmm");
+    private static final DateTimeFormatter outputFormatter = DateTimeFormat.forPattern("hh:mm a");
 
     private static String convertMilitaryTo12HourFormat(String rawTimestamp) {
         DateTime dateTime = inputFormatter.parseDateTime(rawTimestamp);
