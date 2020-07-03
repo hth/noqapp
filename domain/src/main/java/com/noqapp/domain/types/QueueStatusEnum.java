@@ -18,6 +18,7 @@ public enum QueueStatusEnum {
     B("B", "Before Opening Time"),
     A("A", "After Closing Time"),
     X("X", "Business service limitation imposed"),
+    T("T", "You have been served today"),
     L("L", "Reached available token");
 
     private final String name;

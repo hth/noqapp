@@ -279,7 +279,7 @@ public class TokenQueueService {
                                             .setToken(0)
                                             .setServingNumber(0)
                                             .setDisplayName(bizStore.getDisplayName())
-                                            .setQueueStatus(QueueStatusEnum.X)
+                                            .setQueueStatus(QueueStatusEnum.T)
                                             .setExpectedServiceBegin(new Date())
                                             .setTimeSlotMessage(queue.getTimeSlotMessage());
                                 }

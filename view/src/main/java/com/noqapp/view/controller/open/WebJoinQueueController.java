@@ -1,6 +1,5 @@
 package com.noqapp.view.controller.open;
 
-import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
 import com.noqapp.common.utils.DateFormatter;
@@ -38,7 +37,6 @@ import com.noqapp.view.form.WebJoinQueueForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,14 +55,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,8 +81,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = "/open/join")
 public class WebJoinQueueController {
     private static final Logger LOG = LoggerFactory.getLogger(WebJoinQueueController.class);
-
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO8601_FMT);
 
     @Value ("${joinQueue:/join/queue}")
     private String joinQueuePage;
@@ -354,6 +345,10 @@ public class WebJoinQueueController {
                             throw new StoreDayClosedException("Store is closed today codeQR " + codeQRDecoded);
                         case B:
                             throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQRDecoded);
+                        case A:
+                            throw new ExpectedServiceBeyondStoreClosingHour("Your service time exceeds store closing hour " + codeQRDecoded);
+                        case T:
+                            throw new AlreadyServicedTodayException("You have been serviced today");
                         case X:
                             throw new LimitedPeriodException("Please wait until set number of days before using this service");
                         case L:
@@ -366,6 +361,9 @@ public class WebJoinQueueController {
                 } catch (BeforeStartOfStoreException e) {
                     LOG.error("Failed joining queue as trying to join before store opens Web Queue reason={}", e.getLocalizedMessage(), e);
                     return String.format("{ \"c\" : \"%s\" }", "before");
+                } catch (AlreadyServicedTodayException e) {
+                    LOG.warn("Failed joining queue as already service today reason={}", e.getLocalizedMessage());
+                    return String.format("{ \"c\" : \"%s\" }", "alreadyServiced");
                 } catch (ExpectedServiceBeyondStoreClosingHour e) {
                     LOG.warn("Failed joining queue as service time is after store close reason={}", e.getLocalizedMessage());
                     return String.format("{ \"c\" : \"%s\" }", "after");
