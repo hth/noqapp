@@ -47,7 +47,7 @@ import javax.validation.constraints.NotNull;
 public class TextToSpeechService {
     private static final Logger LOG = LoggerFactory.getLogger(TextToSpeechService.class);
 
-    private final String nowServingHindi = "No Queue token संख्या ${currentlyServingToken} कृपया ${queueServiceName} ${goTo} पर जयहें";
+    private final String nowServingHindi = "No Queue token संख्या ${currentlyServingToken} कृपया ${queueServiceName} ${goTo} पर जाहेहें";
     private final String nowServingEnglish = "No Queue token number ${currentlyServingToken}, please visit ${queueServiceName}, in ${goTo}";
 
     private BizStoreManager bizStoreManager;
@@ -139,11 +139,11 @@ public class TextToSpeechService {
                     case "IN":
                         String languageCode = nationalLanguageCode(countryShortName);
                         if (null != languageCode) {
-                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingHindi), languageCode, FEMALE));
+                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingHindi), languageCode, MALE));
                         }
 
                         languageCode = foreignLanguageCode(countryShortName);
-                        jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingEnglish), languageCode, MALE));
+                        jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingEnglish), languageCode, FEMALE));
                         break;
                     case "US":
                         languageCode = nationalLanguageCode(countryShortName);
