@@ -139,11 +139,11 @@ public class TextToSpeechService {
                     case "IN":
                         String languageCode = nationalLanguageCode(countryShortName);
                         if (null != languageCode) {
-                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingHindi), languageCode, FEMALE));
+                            jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingHindi), languageCode, MALE));
                         }
 
                         languageCode = foreignLanguageCode(countryShortName);
-                        jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingEnglish), languageCode, MALE));
+                        jsonTextToSpeeches.add(PopulateTextToSpeech.nowServingText(sub.replace(nowServingEnglish), languageCode, FEMALE));
                         break;
                     case "US":
                         languageCode = nationalLanguageCode(countryShortName);
