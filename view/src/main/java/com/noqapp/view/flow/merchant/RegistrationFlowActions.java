@@ -520,6 +520,8 @@ class RegistrationFlowActions {
                 storeHour.setTokenNotAvailableFrom(businessHour.getTokenNotAvailableFrom());
                 storeHour.setAppointmentStartHour(businessHour.getAppointmentStartHour());
                 storeHour.setAppointmentEndHour(businessHour.getAppointmentEndHour());
+                storeHour.setLunchTimeStart(businessHour.getLunchTimeStart());
+                storeHour.setLunchTimeEnd(businessHour.getLunchTimeEnd());
             }
 
             storeHours.add(storeHour);
