@@ -47,8 +47,8 @@ import javax.validation.constraints.NotNull;
 public class TextToSpeechService {
     private static final Logger LOG = LoggerFactory.getLogger(TextToSpeechService.class);
 
-    private final String nowServingHindi = "No Queue token ${currentlyServingToken} कृपया ${queueServiceName} ${goTo} पर जायें।";
-    private final String nowServingEnglish = "No Queue token number ${currentlyServingToken}, please visit ${queueServiceName}, in ${goTo}";
+    private final String nowServingHindi = "No Queue token ${currentlyServingToken}, ${queueServiceName}, krupya ${goTo} kee or jaayeah";
+    private final String nowServingEnglish = "No Queue token ${currentlyServingToken}, for ${queueServiceName}, please proceed to ${goTo}";
 
     private BizStoreManager bizStoreManager;
     private TextToSpeechConfiguration textToSpeechConfiguration;
