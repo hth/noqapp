@@ -44,7 +44,6 @@ public class SmsService {
 
     private String smsApiKey;
     private String smsSenderName;
-    private String smsSenderNameTxtLcl;
 
     private OkHttpClient okHttpClient;
     private ApiHealthService apiHealthService;
@@ -58,9 +57,6 @@ public class SmsService {
         @Value("${sms.sender.noqueue}")
         String smsSenderName,
 
-        @Value("${sms.sender.txtlcl}")
-        String smsSenderNameTxtLcl,
-
         OkHttpClient okHttpClient,
         ApiHealthService apiHealthService,
         Environment environment
@@ -72,13 +68,12 @@ public class SmsService {
             throw new RuntimeException("Failed encoding sms key");
         }
         this.smsSenderName = smsSenderName;
-        this.smsSenderNameTxtLcl = smsSenderNameTxtLcl;
 
         this.okHttpClient = okHttpClient;
         this.apiHealthService = apiHealthService;
-//        if (environment.getProperty("build.env").equalsIgnoreCase("prod") || environment.getProperty("build.env").equalsIgnoreCase("sandbox")) {
+        if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
             this.sendSMSTurnedOn = true;
-//        }
+        }
     }
 
     public int findAvailableSMS() {
@@ -126,7 +121,7 @@ public class SmsService {
         SendResponse sendResponse;
         try {
             String message = "&message=" + URLEncoder.encode(messageToSend, ScrubbedInput.UTF_8);
-            String sender = "&sender=" + URLEncoder.encode(smsSenderNameTxtLcl, ScrubbedInput.UTF_8);
+            String sender = "&sender=" + URLEncoder.encode(smsSenderName, ScrubbedInput.UTF_8);
             String numbers = "&numbers=" + URLEncoder.encode(phoneWithCountryCode, ScrubbedInput.UTF_8);
 
             Request request = new Request.Builder()
