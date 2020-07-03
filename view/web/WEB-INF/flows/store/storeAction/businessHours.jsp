@@ -64,213 +64,213 @@
         <div class="warp-inner">
             <!-- Add New Supervisor -->
             <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')">
-                <div class="admin-main">
-                    <form:form modelAttribute="registerBusiness">
-                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                        <div class="admin-title">
-                            <h2>Add ${registerBusiness.businessType.classifierTitle} Hours For Each Day</h2>
+            <div class="admin-main">
+                <form:form modelAttribute="registerBusiness">
+                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                    <div class="admin-title">
+                        <h2>Add ${registerBusiness.businessType.classifierTitle} Hours For Each Day</h2>
+                    </div>
+                    <div class="error-box">
+                        <div class="error-txt">
+                            <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                            <ul>
+                                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                <li>${message.text}</li>
+                                </c:forEach>
+                            </ul>
+                            </c:if>
                         </div>
-                        <div class="error-box">
-                            <div class="error-txt">
-                                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                <ul>
-                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                    <li>${message.text}</li>
-                                    </c:forEach>
-                                </ul>
-                                </c:if>
-                            </div>
+                    </div>
+                    <div class="admin-content">
+                        <div class="full">
+                            <ul class="col2-grid">
+                                <li>
+                                    <table width="325px" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td class="lable-td pT0">
+                                                <label for="copyData">Copy Monday's Data For All Other Days</label>
+                                            </td>
+                                            <td>
+                                                <input id="copyData" name="copyData" type="checkbox" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </li>
+                                <div class="clearFix"></div>
+                            </ul>
                         </div>
-                        <div class="admin-content">
-                            <div class="full">
-                                <ul class="col2-grid">
+
+                        <div class="full">
+                            <ul class="col2-grid">
+                                <c:forEach items="${registerBusiness.businessHours}" var="businessHour" varStatus="status">
                                     <li>
-                                        <table width="325px" border="0" cellspacing="0" cellpadding="0">
+                                        <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
-                                                <td class="lable-td pT0">
-                                                    <label for="copyData">Copy Monday's Data For All Other Days</label>
+                                                <td width="45%" class="lable-td">
+                                                    <form:label path="businessHours[${status.index}].tokenAvailableFrom" cssErrorClass="lb_error">Token Available Time</form:label>
+                                                </td>
+                                                <td width="45%">
+                                                    <form:input path="businessHours[${status.index}].tokenAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                    <span>(As 1800 for 6:00 PM)</span>
                                                 </td>
                                                 <td>
-                                                    <input id="copyData" name="copyData" type="checkbox" />
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                    <c:choose>
+                                                       <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                           <span class="tooltip" title="Time when customers can place the order." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                       </c:when>
+                                                        <c:otherwise>
+                                                            <span class="tooltip" title="Time when customers can join the queue." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="lable-td">
+                                                    <form:label path="businessHours[${status.index}].startHourStore" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Start Time</form:label>
+                                                </td>
+                                                <td>
+                                                    <form:input path="businessHours[${status.index}].startHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                    <span>(As 1000 for 10:00 AM)</span>
+                                                </td>
+                                                <td>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                    <c:choose>
+                                                        <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                            <span class="tooltip" title="Time when store opens up" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="tooltip" title="Time when queue opens up" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="lable-td">
+                                                    <form:label path="businessHours[${status.index}].tokenNotAvailableFrom" cssErrorClass="lb_error">Token Not Available After</form:label>
+                                                </td>
+                                                <td>
+                                                    <form:input path="businessHours[${status.index}].tokenNotAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                    <span>(As 1800 for 6:00 PM)</span>
+                                                </td>
+                                                <td>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                    <c:choose>
+                                                        <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                            <span class="tooltip" title="Time when store stops accepting order for the day" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="tooltip" title="Time when queue stops accepting new requests" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="lable-td">
+                                                    <form:label path="businessHours[${status.index}].endHourStore" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Close Time</form:label>
+                                                </td>
+                                                <td>
+                                                    <form:input path="businessHours[${status.index}].endHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                    <span>(As 1800 for 6:00 PM)</span>
+                                                </td>
+                                                <td>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                    <c:choose>
+                                                        <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                            <span class="tooltip" title="Time when store closes for the day" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="tooltip" title="Time when queue closes for the day" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="lable-td">
+                                                    <form:label path="businessHours[${status.index}].lunchTimeStart" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Lunch Start Time</form:label>
+                                                </td>
+                                                <td>
+                                                    <form:input path="businessHours[${status.index}].lunchTimeStart" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                    <span>(As 1800 for 6:00 PM)</span>
+                                                </td>
+                                                <td>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                    <c:choose>
+                                                        <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                            <span class="tooltip" title="Time when store closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="tooltip" title="Time when queue closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="lable-td">
+                                                    <form:label path="businessHours[${status.index}].lunchTimeEnd" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Lunch End Time</form:label>
+                                                </td>
+                                                <td>
+                                                    <form:input path="businessHours[${status.index}].lunchTimeEnd" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
+                                                    <span>(As 1800 for 6:00 PM)</span>
+                                                </td>
+                                                <td>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                    <c:choose>
+                                                        <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                            <span class="tooltip" title="Time when store closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="tooltip" title="Time when queue closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="lable-td pT0">
+                                                    <form:label path="businessHours[${status.index}].dayClosed" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Closed</form:label>
+                                                </td>
+                                                <td>
+                                                    <form:checkbox path="businessHours[${status.index}].dayClosed" cssErrorClass="error-field"/>
+                                                </td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
+                                                            <span class="tooltip" title="Day when store is closed" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="tooltip" title="Day when queue is closed" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </td>
                                             </tr>
                                         </table>
                                     </li>
-                                    <div class="clearFix"></div>
-                                </ul>
-                            </div>
+                                </c:forEach>
 
-                            <div class="full">
-                                <ul class="col2-grid">
-                                    <c:forEach items="${registerBusiness.businessHours}" var="businessHour" varStatus="status">
-                                        <li>
-                                            <h4><strong><c:out value="${businessHour.dayOfWeek}"/></strong></h4>
-                                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                <tr>
-                                                    <td width="45%" class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].tokenAvailableFrom" cssErrorClass="lb_error">Token Available Time</form:label>
-                                                    </td>
-                                                    <td width="45%">
-                                                        <form:input path="businessHours[${status.index}].tokenAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
-                                                        <span>(As 1800 for 6:00 PM)</span>
-                                                    </td>
-                                                    <td>
-                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                                        <c:choose>
-                                                           <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
-                                                               <span class="tooltip" title="Time when customers can place the order." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                           </c:when>
-                                                            <c:otherwise>
-                                                                <span class="tooltip" title="Time when customers can join the queue." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].startHourStore" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Start Time</form:label>
-                                                    </td>
-                                                    <td>
-                                                        <form:input path="businessHours[${status.index}].startHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
-                                                        <span>(As 1000 for 10:00 AM)</span>
-                                                    </td>
-                                                    <td>
-                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                                        <c:choose>
-                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
-                                                                <span class="tooltip" title="Time when store opens up" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="tooltip" title="Time when queue opens up" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].tokenNotAvailableFrom" cssErrorClass="lb_error">Token Not Available After</form:label>
-                                                    </td>
-                                                    <td>
-                                                        <form:input path="businessHours[${status.index}].tokenNotAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
-                                                        <span>(As 1800 for 6:00 PM)</span>
-                                                    </td>
-                                                    <td>
-                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                                        <c:choose>
-                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
-                                                                <span class="tooltip" title="Time when store stops accepting order for the day" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="tooltip" title="Time when queue stops accepting new requests" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].endHourStore" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Close Time</form:label>
-                                                    </td>
-                                                    <td>
-                                                        <form:input path="businessHours[${status.index}].endHourStore" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
-                                                        <span>(As 1800 for 6:00 PM)</span>
-                                                    </td>
-                                                    <td>
-                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                                        <c:choose>
-                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
-                                                                <span class="tooltip" title="Time when store closes for the day" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="tooltip" title="Time when queue closes for the day" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].lunchTimeStart" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Lunch Start Time</form:label>
-                                                    </td>
-                                                    <td>
-                                                        <form:input path="businessHours[${status.index}].lunchTimeStart" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
-                                                        <span>(As 1800 for 6:00 PM)</span>
-                                                    </td>
-                                                    <td>
-                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                                        <c:choose>
-                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
-                                                                <span class="tooltip" title="Time when store closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="tooltip" title="Time when queue closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="lable-td">
-                                                        <form:label path="businessHours[${status.index}].lunchTimeEnd" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Lunch End Time</form:label>
-                                                    </td>
-                                                    <td>
-                                                        <form:input path="businessHours[${status.index}].lunchTimeEnd" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
-                                                        <span>(As 1800 for 6:00 PM)</span>
-                                                    </td>
-                                                    <td>
-                                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                                        <c:choose>
-                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
-                                                                <span class="tooltip" title="Time when store closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="tooltip" title="Time when queue closes for lunch" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="lable-td pT0">
-                                                        <form:label path="businessHours[${status.index}].dayClosed" cssErrorClass="lb_error">${registerBusiness.businessType.classifierTitle} Closed</form:label>
-                                                    </td>
-                                                    <td>
-                                                        <form:checkbox path="businessHours[${status.index}].dayClosed" cssErrorClass="error-field"/>
-                                                    </td>
-                                                    <td>
-                                                        <c:choose>
-                                                            <c:when test="${registerBusiness.businessType.messageOrigin == MessageOriginEnum.O}">
-                                                                <span class="tooltip" title="Day when store is closed" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="tooltip" title="Day when queue is closed" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </li>
-                                    </c:forEach>
+                                <div class="clearFix"></div>
+                            </ul>
 
-                                    <div class="clearFix"></div>
-                                </ul>
+                            <div class="btn-hours">
+                                <%--<div class="left-btn">--%>
+                                    <%--<input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">--%>
+                                <%--</div>--%>
+                                <%--<div class="right-btn">--%>
+                                    <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
+                                <%--</div>--%>
 
-                                <div class="btn-hours">
-                                    <%--<div class="left-btn">--%>
-                                        <%--<input name="_eventId_submit" class="next-btn" value="NEXT" type="submit">--%>
-                                    <%--</div>--%>
-                                    <%--<div class="right-btn">--%>
-                                        <%--<input name="_eventId_cancel" class="cancel-btn" value="CANCEL" type="submit">--%>
-                                    <%--</div>--%>
-
-                                    <div class="button-btn">
-                                        <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
-                                        <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
-                                    </div>
-                                    <div class="clearFix"></div>
+                                <div class="button-btn">
+                                    <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
+                                    <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                 </div>
                                 <div class="clearFix"></div>
                             </div>
+                            <div class="clearFix"></div>
                         </div>
-                    </form:form>
-                </div>
-                <!-- Add New Supervisor -->
+                    </div>
+                </form:form>
+            </div>
+            <!-- Add New Supervisor -->
             </sec:authorize>
         </div>
     </div>
