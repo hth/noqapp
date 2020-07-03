@@ -331,6 +331,20 @@
             document.getElementById('businessHours4.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
             document.getElementById('businessHours5.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
             document.getElementById('businessHours6.endHourStore').value = document.getElementById('businessHours0.endHourStore').value;
+
+            document.getElementById('businessHours1.lunchTimeStart').value = document.getElementById('businessHours0.lunchTimeStart').value;
+            document.getElementById('businessHours2.lunchTimeStart').value = document.getElementById('businessHours0.lunchTimeStart').value;
+            document.getElementById('businessHours3.lunchTimeStart').value = document.getElementById('businessHours0.lunchTimeStart').value;
+            document.getElementById('businessHours4.lunchTimeStart').value = document.getElementById('businessHours0.lunchTimeStart').value;
+            document.getElementById('businessHours5.lunchTimeStart').value = document.getElementById('businessHours0.lunchTimeStart').value;
+            document.getElementById('businessHours6.lunchTimeStart').value = document.getElementById('businessHours0.lunchTimeStart').value;
+
+            document.getElementById('businessHours1.lunchTimeEnd').value = document.getElementById('businessHours0.lunchTimeEnd').value;
+            document.getElementById('businessHours2.lunchTimeEnd').value = document.getElementById('businessHours0.lunchTimeEnd').value;
+            document.getElementById('businessHours3.lunchTimeEnd').value = document.getElementById('businessHours0.lunchTimeEnd').value;
+            document.getElementById('businessHours4.lunchTimeEnd').value = document.getElementById('businessHours0.lunchTimeEnd').value;
+            document.getElementById('businessHours5.lunchTimeEnd').value = document.getElementById('businessHours0.lunchTimeEnd').value;
+            document.getElementById('businessHours6.lunchTimeEnd').value = document.getElementById('businessHours0.lunchTimeEnd').value;
         }
     });
 </script>
