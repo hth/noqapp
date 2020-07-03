@@ -94,11 +94,18 @@ public class JsonUserPreference extends AbstractDomain {
     }
 
     public static JsonUserPreference convertToJsonUserPreference(UserPreferenceEntity userPreference) {
-        return new JsonUserPreference()
-            .setPromotionalSMS(userPreference.getPromotionalSMS())
-            .setFirebaseNotification(userPreference.getFirebaseNotification())
-            .setDeliveryMode(userPreference.getDeliveryMode())
-            .setPaymentMethod(userPreference.getPaymentMethod())
-            .setUserAddressId(userPreference.getUserAddressId());
+        if (null != userPreference) {
+            return new JsonUserPreference()
+                .setPromotionalSMS(userPreference.getPromotionalSMS())
+                .setFirebaseNotification(userPreference.getFirebaseNotification())
+                .setDeliveryMode(userPreference.getDeliveryMode())
+                .setPaymentMethod(userPreference.getPaymentMethod())
+                .setUserAddressId(userPreference.getUserAddressId());
+        } else {
+            /* These fields are default, hence populating as default when null. */
+            return new JsonUserPreference()
+                .setPromotionalSMS(CommunicationModeEnum.R)
+                .setFirebaseNotification(CommunicationModeEnum.R);
+        }
     }
 }
