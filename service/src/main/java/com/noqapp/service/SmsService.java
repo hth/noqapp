@@ -191,7 +191,6 @@ public class SmsService {
                     response.message(), sendResponse.getStatus(), sendResponse.getBalance());
                 if (sendResponse.getStatus().equalsIgnoreCase("failure")) {
                     methodStatusSuccess = false;
-                    sendPromotionalSMS(phoneWithCountryCode, messageToSend);
                 }
                 return sendResponse.getStatus();
             } else {
