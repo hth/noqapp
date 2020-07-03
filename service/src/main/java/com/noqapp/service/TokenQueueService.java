@@ -7,7 +7,6 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
-import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
@@ -64,7 +63,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -325,7 +323,7 @@ public class TokenQueueService {
                     LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
                     return new JsonToken(codeQR, tokenQueue.getBusinessType());
                 } catch (ExpectedServiceBeyondStoreClosingHour e) {
-                    LOG.error("Error serving to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
+                    LOG.warn("Error serving to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage());
                     return new JsonToken(codeQR, bizStore.getBusinessType())
                         .setToken(0)
                         .setServingNumber(0)
