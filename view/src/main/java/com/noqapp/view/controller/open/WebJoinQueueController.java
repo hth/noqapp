@@ -1,11 +1,10 @@
 package com.noqapp.view.controller.open;
 
-import static com.noqapp.common.errors.MobileSystemErrorCodeEnum.SERVICE_AFTER_CLOSING_HOUR;
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
-import com.noqapp.common.errors.ErrorEncounteredJson;
 import com.noqapp.common.utils.DateFormatter;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
@@ -26,6 +25,7 @@ import com.noqapp.service.JoinAbortService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.service.exceptions.AlreadyServicedTodayException;
 import com.noqapp.service.exceptions.BeforeStartOfStoreException;
 import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
 import com.noqapp.service.exceptions.JoiningNonApprovedQueueException;
@@ -38,6 +38,7 @@ import com.noqapp.view.form.WebJoinQueueForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,10 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -329,7 +333,7 @@ public class WebJoinQueueController {
 
                 /* Register device, which happens to be web. */
                 String did = UUID.randomUUID().toString();
-                RegisteredDeviceEntity registeredDevice = null;
+                RegisteredDeviceEntity registeredDevice;
                 registeredDevice = registeredDeviceManager.findRecentDevice(userProfile.getQueueUserId());
                 if (null != registeredDevice) {
                     did = registeredDevice.getDeviceId();
@@ -373,25 +377,16 @@ public class WebJoinQueueController {
                     return String.format("{ \"c\" : \"%s\" }", "limit");
                 }
 
-                if (null != userProfile) {
-                    queue = queueService.findQueuedOne(codeQRDecoded, did, userProfile.getQueueUserId());
-                    tokenQueueService.updateQueueWithUserDetail(codeQRDecoded, userProfile.getQueueUserId(), queue);
+                queue = queueService.findQueuedOne(codeQRDecoded, did, userProfile.getQueueUserId());
+                tokenQueueService.updateQueueWithUserDetail(codeQRDecoded, userProfile.getQueueUserId(), queue);
 
-                    if (null != registeredDevice) {
-                        subscribeDeviceToTopic(codeQRDecoded, userProfile.getQueueUserId(), registeredDevice);
-                    }
-                } else {
-                    queueService.addPhoneNumberToExistingQueue(
-                        jsonToken.getToken(),
-                        codeQRDecoded,
-                        did,
-                        webJoinQueue.getPhone().getText());
+                if (null != registeredDevice) {
+                    subscribeDeviceToTopic(codeQRDecoded, userProfile.getQueueUserId(), registeredDevice);
                 }
             }
 
             if (StringUtils.isNotBlank(jsonToken.getExpectedServiceBegin())) {
-                Date date = simpleDateFormat.parse(jsonToken.getExpectedServiceBegin());
-                jsonToken.setExpectedServiceBegin(date, bizStore.getTimeZone());
+                jsonToken.setExpectedServiceBegin(DateUtil.convertFromISODate(jsonToken.getExpectedServiceBegin()), bizStore.getTimeZone());
             }
 
             String expectedServiceBegin = StringUtils.isBlank(jsonToken.getExpectedServiceBegin()) ? "" : jsonToken.getExpectedServiceBegin();
@@ -400,7 +395,7 @@ public class WebJoinQueueController {
                 + "#" + jsonToken.getToken()
                 + "#" + expectedServiceBegin;
             return String.format("{ \"c\" : \"%s\" }", Base64.getEncoder().encodeToString(combined.getBytes()));
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             LOG.error("Failed Joining Web Queue reason={}", e.getLocalizedMessage(), e);
             throw e;
         }
