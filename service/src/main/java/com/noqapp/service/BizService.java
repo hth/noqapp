@@ -226,7 +226,7 @@ public class BizService {
                 }
             }
 
-            for (StoreHourEntity storeHour : bizStore.getStoreHours()) {
+            for (StoreHourEntity storeHour : storeHours) {
                 Map<String, Object> storeHoursAsMap = new LinkedHashMap<>();
                 if (storeHour.isDayClosed()) {
                     storeHoursAsMap.put("Is closed for the day? ", storeHour.isDayClosed() || storeHour.isTempDayClosed() ? "Yes" : "No");
