@@ -182,7 +182,9 @@ public class BizService {
     @CacheEvict(value = "bizStore-codeQR", key = "#bizStore.codeQR")
     public void sendMailWhenStoreSettingHasChanged(BizStoreEntity bizStore, String changeInitiateReason) {
         try {
-            bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
+            /* Get all store hours. */
+            List<StoreHourEntity> storeHours = findAllStoreHours(bizStore.getId());
+            bizStore.setStoreHours(storeHours);
 
             Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("changeInitiateReason", changeInitiateReason);
