@@ -195,7 +195,7 @@ public class BizService {
             rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
             rootMap.put("businessTypeMessageOrigin", bizStore.getBusinessType().getMessageOrigin().name());
             rootMap.put("aht", bizStore.getAverageServiceTimeFormatted());
-            if (bizStore.getBusinessType().getMessageOrigin() == MessageOriginEnum.Q) {
+            if (MessageOriginEnum.Q == bizStore.getBusinessType().getMessageOrigin()) {
                 if (bizStore.isEnabledPayment()) {
                     rootMap.put("productPrice", bizStore.getProductPrice() == 0 ? 0 : MathUtil.displayPrice(bizStore.getProductPrice()));
                     rootMap.put("cancellationPrice", bizStore.getCancellationPrice() == 0 ? 0 : MathUtil.displayPrice(bizStore.getCancellationPrice()));
