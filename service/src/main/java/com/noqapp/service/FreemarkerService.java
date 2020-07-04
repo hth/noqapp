@@ -40,7 +40,7 @@ public class FreemarkerService {
             Template template = cfg.getTemplate(ftl);
             return processTemplateIntoString(template, rootMap);
         } catch (Exception e) {
-            LOG.error("Failed processing ftl={} {}", ftl, rootMap);
+            LOG.error("Failed processing ftl={} reason={} {}", ftl, e.getLocalizedMessage(), rootMap, e);
             throw e;
         }
     }
@@ -51,7 +51,7 @@ public class FreemarkerService {
             Template template = cfg.getTemplate(ftl);
             return processTemplateIntoString(template, rootMap);
         } catch (Exception e) {
-            LOG.error("Failed processing ftl={} {}", ftl, rootMap);
+            LOG.error("Failed processing ftl={} {} {}", ftl, e.getLocalizedMessage(), rootMap, e);
             throw e;
         }
     }
