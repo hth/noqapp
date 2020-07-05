@@ -8,7 +8,9 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.AuthorizedQueueUser;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.InvocationByEnum;
+import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
@@ -138,9 +140,7 @@ public class AuthorizedQueueUserDetailFlowActions {
                 );
 
                 businessUserStoreService.save(businessUserStoreEntity);
-                ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(authorizedQueueUser.getQid());
-                professionalProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
-                professionalProfileService.save(professionalProfile);
+                whenDoctorUpdateProfessionalProfile(authorizedQueueUser.getQid(), bizStore, userProfile);
             } catch (RuntimeException e) {
                 LOG.error("Failed to authorize user to business profile qid={} bizStoreId={} reason={}",
                     authorizedQueueUser.getQid(),
@@ -148,6 +148,16 @@ public class AuthorizedQueueUserDetailFlowActions {
                     e.getLocalizedMessage(),
                     e);
                 throw new AuthorizedQueueUserDetailException("Failed to authorize user to business");
+            }
+        }
+    }
+
+    private void whenDoctorUpdateProfessionalProfile(String qid, BizStoreEntity bizStore, UserProfileEntity userProfile) {
+        if (bizStore.getBusinessType() == BusinessTypeEnum.DO && userProfile.getLevel() == UserLevelEnum.S_MANAGER) {
+            ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(qid);
+            if (professionalProfile != null) {
+                professionalProfile.addManagerAtStoreCodeQR(bizStore.getCodeQR());
+                professionalProfileService.save(professionalProfile);
             }
         }
     }
