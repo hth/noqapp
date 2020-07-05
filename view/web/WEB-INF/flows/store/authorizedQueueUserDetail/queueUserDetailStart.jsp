@@ -23,11 +23,9 @@
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">
-                    <sec:authentication property="principal.userShortName"/></button>
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <div class="menu-top-arrow">
-                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
@@ -107,8 +105,7 @@
                                             <th nowrap>
                                                 ${authorizedQueueUser.businessType.classifierTitle} Name
                                                 &nbsp;
-                                                <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                                     alt="Sort" height="16px;"/>
+                                                <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png" alt="Sort" height="16px;"/>
                                             </th>
                                         </tr>
                                         <c:forEach items="${authorizedQueueUser.bizStores}" var="store" varStatus="status">
@@ -120,10 +117,10 @@
                                                 &nbsp;${status.count}
                                             </td>
                                             <td>
-                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;">${store.addressWrappedFunky}</a>
+                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span></a>
                                             </td>
                                             <td nowrap>
-                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">${store.displayName}</a>
+                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.displayName}</span></a>
                                                 <c:choose>
                                                 <c:when test="${!empty store.bizCategoryId}">
                                                 <span style="display:block; font-size:13px;">${authorizedQueueUser.categories.get(store.bizCategoryId)}</span>
@@ -161,18 +158,17 @@
                                             <th nowrap>
                                                 ${authorizedQueueUser.businessType.classifierTitle} Name
                                                 &nbsp;
-                                                <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png"
-                                                     alt="Sort" height="16px;"/>
+                                                <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png" alt="Sort" height="16px;"/>
                                             </th>
                                         </tr>
                                         <c:forEach items="${authorizedQueueUser.enrolledInStores}" var="store" varStatus="status">
                                         <tr>
                                             <td>${status.count}&nbsp;</td>
                                             <td>
-                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;">${store.addressWrappedFunky}</a>
+                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span></a>
                                             </td>
                                             <td nowrap>
-                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">${store.displayName}</a>
+                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.displayName}</span></a>
                                                 <span style="display:block; font-size:13px;">${authorizedQueueUser.categories.get(store.bizCategoryId)}</span>
                                             </td>
                                         </tr>
