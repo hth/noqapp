@@ -169,7 +169,7 @@ public class BizNameEntity extends BaseEntity {
     @Field("DC")
     private boolean dayClosed = false;
 
-    @Field("LS")
+    @Field("SD")
     private int limitServiceByDays = 0;
 
     @Field("CL")

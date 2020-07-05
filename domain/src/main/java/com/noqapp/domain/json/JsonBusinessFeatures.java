@@ -33,7 +33,7 @@ public class JsonBusinessFeatures extends AbstractDomain {
     @JsonProperty("pa")
     private OnOffEnum priorityAccess;
 
-    @JsonProperty("ls")
+    @JsonProperty("sd")
     private int limitServiceByDays;
 
     public OnOffEnum getPriorityAccess() {
