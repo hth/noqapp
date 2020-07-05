@@ -182,7 +182,9 @@ public class BizService {
     @CacheEvict(value = "bizStore-codeQR", key = "#bizStore.codeQR")
     public void sendMailWhenStoreSettingHasChanged(BizStoreEntity bizStore, String changeInitiateReason) {
         try {
-            bizStore.setStoreHours(findAllStoreHours(bizStore.getId()));
+            /* Get all store hours. */
+            List<StoreHourEntity> storeHours = findAllStoreHours(bizStore.getId());
+            bizStore.setStoreHours(storeHours);
 
             Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("changeInitiateReason", changeInitiateReason);
@@ -195,7 +197,7 @@ public class BizService {
             rootMap.put("famousFor", StringUtils.isBlank(bizStore.getFamousFor()) ? "N/A" : bizStore.getFamousFor());
             rootMap.put("businessTypeMessageOrigin", bizStore.getBusinessType().getMessageOrigin().name());
             rootMap.put("aht", bizStore.getAverageServiceTimeFormatted());
-            if (bizStore.getBusinessType().getMessageOrigin() == MessageOriginEnum.Q) {
+            if (MessageOriginEnum.Q == bizStore.getBusinessType().getMessageOrigin()) {
                 if (bizStore.isEnabledPayment()) {
                     rootMap.put("productPrice", bizStore.getProductPrice() == 0 ? 0 : MathUtil.displayPrice(bizStore.getProductPrice()));
                     rootMap.put("cancellationPrice", bizStore.getCancellationPrice() == 0 ? 0 : MathUtil.displayPrice(bizStore.getCancellationPrice()));
@@ -224,7 +226,7 @@ public class BizService {
                 }
             }
 
-            for (StoreHourEntity storeHour : bizStore.getStoreHours()) {
+            for (StoreHourEntity storeHour : storeHours) {
                 Map<String, Object> storeHoursAsMap = new LinkedHashMap<>();
                 if (storeHour.isDayClosed()) {
                     storeHoursAsMap.put("Is closed for the day? ", storeHour.isDayClosed() || storeHour.isTempDayClosed() ? "Yes" : "No");

@@ -169,7 +169,8 @@ public class CommonHelper {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Failed getting business customer attribute bizStoreId={} businessType{}", bizStore.getId(), bizStore.getBusinessType());
+            LOG.error("Failed getting business customer attribute bizStoreId={} businessType={} {}",
+                bizStore.getId(), bizStore.getBusinessType(), e.getLocalizedMessage(), e);
         }
         return null;
     }
@@ -179,7 +180,9 @@ public class CommonHelper {
             String bannerImage;
             switch (bizStore.getBusinessType()) {
                 case DO:
-                    bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                    bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty()
+                        ? null
+                        : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
                     break;
                 case RS:
                 case FT:
@@ -188,10 +191,14 @@ public class CommonHelper {
                         : bizStore.getCodeQR() + "/" + bizStore.getStoreInteriorImages().iterator().next();
                     break;
                 default:
-                    bannerImage = bizStore.getStoreServiceImages().isEmpty() ? null : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
+                    bannerImage = bizStore.getStoreServiceImages().isEmpty()
+                        ? null
+                        : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
                     if (StringUtils.isBlank(bannerImage)) {
                         /* If none is found, then get image from bizName. */
-                        bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty() ? null : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
+                        bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty()
+                            ? null
+                            : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
                     }
             }
             LOG.info("bizStore Id={} name=\"{}\" bannerImage={}", bizStore.getId(), bizStore.getDisplayName(), bannerImage);
