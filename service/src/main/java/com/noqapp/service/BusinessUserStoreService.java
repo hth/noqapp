@@ -260,7 +260,7 @@ public class BusinessUserStoreService {
         accountService.changeUserLevel(userProfile.getQueueUserId(), changeToUserLevel);
 
         long change = businessUserStoreManager.doesUserExists(qid) ? businessUserStoreManager.updateUserLevel(qid, changeToUserLevel) : 1;
-        change = change +  businessUserService.updateUserLevel(qid, changeToUserLevel);
+        change = change + businessUserService.updateUserLevel(qid, changeToUserLevel);
         UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(qid, changeToUserLevel);
         accountService.save(userAccount);
         return change;
