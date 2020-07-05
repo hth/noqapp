@@ -1,6 +1,8 @@
-### Changes July 4 2020
+### Changes July 5, 2020
 
-    db.getCollection('BIZ_NAME').update({}, {$rename:{"LS":"SD"}}, false, true);
+    db.getCollection('BIZ_NAME').update({"LS" : {$exists : true}}, {$rename:{"LS":"SD"}}, false, true);
+    
+    Note: Deleted store (trial store created by bani camp) - with QR Code - 5f005dfe5a857416901c2516
 
 ### Changes June 18 2020
 
