@@ -48,4 +48,6 @@ public interface BusinessUserStoreManager extends RepositoryManager<BusinessUser
 
     /** Counts number of users assigned to business. */
     long countNumberOfStoreUsers(String bizNameId);
+
+    boolean doesUserExists(String qid);
 }

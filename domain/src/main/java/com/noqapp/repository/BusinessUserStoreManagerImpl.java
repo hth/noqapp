@@ -239,6 +239,15 @@ public class BusinessUserStoreManagerImpl implements BusinessUserStoreManager {
     }
 
     @Override
+    public boolean doesUserExists(String qid) {
+        return mongoTemplate.exists(
+            query(where("QID").is(qid)),
+            BusinessUserStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public long countNumberOfStoreUsers(String bizNameId) {
         return mongoTemplate.count(
             query(where("BN").is(bizNameId)),
