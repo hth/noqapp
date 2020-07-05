@@ -95,6 +95,12 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty("e")
     private int endHour;
 
+    @JsonProperty("ls")
+    private int lunchTimeStart;
+
+    @JsonProperty("le")
+    private int lunchTimeEnd;
+
     @JsonProperty("de")
     private int delayedInMinutes;
 
@@ -355,6 +361,24 @@ public class JsonQueue extends AbstractDomain {
 
     public int getEndHour() {
         return endHour;
+    }
+
+    public int getLunchTimeStart() {
+        return lunchTimeStart;
+    }
+
+    public JsonQueue setLunchTimeStart(int lunchTimeStart) {
+        this.lunchTimeStart = lunchTimeStart;
+        return this;
+    }
+
+    public int getLunchTimeEnd() {
+        return lunchTimeEnd;
+    }
+
+    public JsonQueue setLunchTimeEnd(int lunchTimeEnd) {
+        this.lunchTimeEnd = lunchTimeEnd;
+        return this;
     }
 
     public int getDelayedInMinutes() {

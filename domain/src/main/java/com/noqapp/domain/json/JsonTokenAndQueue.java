@@ -90,6 +90,12 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("e")
     private int endHour;
 
+    @JsonProperty("ls")
+    private int lunchTimeStart;
+
+    @JsonProperty("le")
+    private int lunchTimeEnd;
+
     @JsonProperty ("o")
     private String topic;
 
@@ -147,6 +153,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.tokenAvailableFrom = jsonQueue.getTokenAvailableFrom();
         this.startHour = jsonQueue.getStartHour();
         this.endHour = jsonQueue.getEndHour();
+        this.lunchTimeStart = jsonQueue.getLunchTimeStart();
+        this.lunchTimeEnd = jsonQueue.getLunchTimeEnd();
         this.topic = jsonQueue.getTopic();
         this.queueUserId = qid;
         this.servingNumber = jsonQueue.getServingNumber();
@@ -184,6 +192,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.tokenAvailableFrom = bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek());
         this.startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
         this.endHour = bizStore.getEndHour(zonedDateTime.getDayOfWeek());
+        this.lunchTimeStart = bizStore.getLunchStartHour(zonedDateTime.getDayOfWeek());
+        this.lunchTimeEnd = bizStore.getLunchEndHour(zonedDateTime.getDayOfWeek());
         this.topic = bizStore.getTopic();
         this.queueUserId = queue.getQueueUserId();
         //Skipped serving number
@@ -217,6 +227,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.tokenAvailableFrom = bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek());
         this.startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
         this.endHour = bizStore.getEndHour(zonedDateTime.getDayOfWeek());
+        this.lunchTimeStart = bizStore.getLunchStartHour(zonedDateTime.getDayOfWeek());
+        this.lunchTimeEnd = bizStore.getLunchEndHour(zonedDateTime.getDayOfWeek());
         this.topic = bizStore.getTopic();
         this.queueUserId = purchaseOrder.getQueueUserId();
         this.servingNumber = tokenQueue.getCurrentlyServing();
@@ -253,6 +265,8 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.tokenAvailableFrom = bizStore.getTokenAvailableFrom(zonedDateTime.getDayOfWeek());
         this.startHour = bizStore.getStartHour(zonedDateTime.getDayOfWeek());
         this.endHour = bizStore.getEndHour(zonedDateTime.getDayOfWeek());
+        this.lunchTimeStart = bizStore.getLunchStartHour(zonedDateTime.getDayOfWeek());
+        this.lunchTimeEnd = bizStore.getLunchEndHour(zonedDateTime.getDayOfWeek());
         this.topic = bizStore.getTopic();
         this.queueUserId = purchaseOrder.getQueueUserId();
         //Skipped serving number
@@ -323,6 +337,14 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public int getEndHour() {
         return endHour;
+    }
+
+    public int getLunchTimeStart() {
+        return lunchTimeStart;
+    }
+
+    public int getLunchTimeEnd() {
+        return lunchTimeEnd;
     }
 
     public String getTopic() {
