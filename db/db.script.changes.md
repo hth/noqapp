@@ -1,3 +1,7 @@
+### Changes July 4 2020
+
+    db.getCollection('BIZ_NAME').update({}, {$rename:{"LS":"SD"}}, false, true);
+
 ### Changes June 18 2020
 
     ALTER TABLE `noqapp_test`.`QUEUE` 
