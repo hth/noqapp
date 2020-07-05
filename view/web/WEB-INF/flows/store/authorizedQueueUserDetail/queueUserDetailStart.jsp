@@ -117,10 +117,10 @@
                                                 &nbsp;${status.count}
                                             </td>
                                             <td>
-                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;">${store.addressWrappedFunky}</a>
+                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span></a>
                                             </td>
                                             <td nowrap>
-                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">${store.displayName}</a>
+                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.displayName}</span></a>
                                                 <c:choose>
                                                 <c:when test="${!empty store.bizCategoryId}">
                                                 <span style="display:block; font-size:13px;">${authorizedQueueUser.categories.get(store.bizCategoryId)}</span>
@@ -165,10 +165,10 @@
                                         <tr>
                                             <td>${status.count}&nbsp;</td>
                                             <td>
-                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;">${store.addressWrappedFunky}</a>
+                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span></a>
                                             </td>
                                             <td nowrap>
-                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">${store.displayName}</a>
+                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.displayName}</span></a>
                                                 <span style="display:block; font-size:13px;">${authorizedQueueUser.categories.get(store.bizCategoryId)}</span>
                                             </td>
                                         </tr>
