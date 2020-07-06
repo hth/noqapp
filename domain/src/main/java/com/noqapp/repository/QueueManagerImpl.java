@@ -498,6 +498,16 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
+    public void updateNotifiedOnService(String id, boolean notifiedOnService) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            update("NS", notifiedOnService),
+            QueueEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review, SentimentTypeEnum sentimentType) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
