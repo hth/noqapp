@@ -11,7 +11,7 @@ import java.util.Map;
 public enum UnitOfMeasurementEnum {
     CN("CN", "count (nos)"),
     DZ("DZ", "dozen"),
-    HD("1/2 DZ", "1/2 dozen"),
+    HD("HD", "1/2 dozen"),
     MG("MG", "mg"),
     GM("GM", "gm"),
     KG("KG", "kg"),
