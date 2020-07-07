@@ -127,7 +127,7 @@ public class BizStoreSearchElasticService {
         LOG.info("Elastic query q={}", q.asJson());
         Search search = new Search()
             .setFrom(0)
-            .setSize(PaginationEnum.TWENTY.getLimit())
+            .setSize(PaginationEnum.THIRTY.getLimit())
             .setQuery(q);
 
         return executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
@@ -183,7 +183,7 @@ public class BizStoreSearchElasticService {
                     .geohash(geoHash)
                     .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.DESC));
-                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
+                searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
@@ -224,7 +224,7 @@ public class BizStoreSearchElasticService {
                 boolQueryBuilder.filter(QueryBuilders.multiMatchQuery(query, "N", "DN", "BC"));
                 searchSourceBuilder.query(boolQueryBuilder);
                 searchSourceBuilder.sort(new FieldSortBuilder("DN").order(SortOrder.ASC));
-                searchSourceBuilder.size(PaginationEnum.TEN.getLimit());
+                searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
