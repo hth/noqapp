@@ -126,6 +126,8 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     void increaseAttemptToSendNotificationCount(String id);
 
+    void updateNotifiedOnService(String id, boolean notifiedOnService);
+
     @Mobile
     boolean reviewService(String codeQR, int token, String did, String qid, int ratingCount, int hoursSaved, String review, SentimentTypeEnum sentimentType);
 

@@ -138,8 +138,7 @@ public class ServicedPersonalFCM {
                     TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queue.getCodeQR());
                     JsonMessage jsonMessage = ComposeMessagesForFCM.composeMessage(registeredDevice, tokenQueue.getTopic(), queue);
                     if (firebaseMessageService.messageToTopic(jsonMessage)) {
-                        queue.setNotifiedOnService(true);
-                        queueManager.save(queue);
+                        queueManager.updateNotifiedOnService(queue.getId(), true);
                         sent++;
                     } else {
                         failure++;
