@@ -163,12 +163,12 @@ class ServiceUtilsTest {
         //15:15
         zonedServiceTime = zonedServiceTime.plusMinutes(15);
         date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("14:30 - 15:30", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        assertEquals("15:00 - 16:00 (store closes)", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
 
         //15:30
         zonedServiceTime = zonedServiceTime.plusMinutes(15);
         date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("15:00 - 16:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        assertEquals("15:00 - 16:00 (store closes)", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
 
         //15:45
         zonedServiceTime = zonedServiceTime.plusMinutes(15);
