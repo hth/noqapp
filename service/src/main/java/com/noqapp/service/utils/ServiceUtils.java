@@ -1,5 +1,10 @@
 package com.noqapp.service.utils;
 
+import static com.noqapp.common.utils.Constants.MINUTES_15;
+import static com.noqapp.common.utils.Constants.MINUTES_30;
+import static com.noqapp.common.utils.Constants.MINUTES_45;
+import static com.noqapp.common.utils.Constants.MINUTES_60;
+
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.GetTimeAgoUtils;
@@ -66,14 +71,14 @@ public class ServiceUtils {
         LocalTime localTime = zonedDateTime.toLocalTime();
         int minutes = localTime.getMinute();
 
-        if (Duration.between(storeHour.startHour(), localTime).toMinutes() <= 15) {
-            LocalTime arrivalHour = storeHour.startHour().minusMinutes(15);
+        if (Duration.between(storeHour.startHour(), localTime).toMinutes() <= MINUTES_15) {
+            LocalTime arrivalHour = storeHour.startHour().minusMinutes(MINUTES_15);
             LOG.debug("Close to start {}", Duration.between(localTime, storeHour.startHour()).toMinutes());
             LocalTime after = arrivalHour.plusHours(1);
 
             return String.format(Locale.US, "%02d", arrivalHour.getHour()) + ":" + String.format(Locale.US, "%02d", arrivalHour.getMinute()) + " - "
                 + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
-        } else if (Duration.between(localTime, storeHour.endHour()).toMinutes() <= 15) {
+        } else if (Duration.between(localTime, storeHour.endHour()).toMinutes() < MINUTES_60) {
             LOG.debug("Close to end {}", Duration.between(localTime, storeHour.endHour()).toMinutes());
             LocalTime arrivalHour = storeHour.endHour().minusHours(1);
             LocalTime departureHour = storeHour.endHour();
@@ -81,13 +86,13 @@ public class ServiceUtils {
                 + String.format(Locale.US, "%02d", departureHour.getHour()) + ":" + String.format(Locale.US, "%02d", departureHour.getMinute()) + " (store closes)";
         }
 
-        if (minutes >= 45) {
-            LocalTime before = localTime.minusMinutes(minutes).plusMinutes(30);
+        if (minutes >= MINUTES_45) {
+            LocalTime before = localTime.minusMinutes(minutes).plusMinutes(MINUTES_30);
             LocalTime after = before.plusHours(1);
             return String.format(Locale.US, "%02d", before.getHour()) + ":" + String.format(Locale.US, "%02d", before.getMinute()) + " - "
                 + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
-        } else if (minutes <= 15) {
-            LocalTime before = localTime.minusMinutes(minutes).minusMinutes(30);
+        } else if (minutes <= MINUTES_15) {
+            LocalTime before = localTime.minusMinutes(minutes).minusMinutes(MINUTES_30);
             LocalTime after = before.plusHours(1);
             return String.format(Locale.US, "%02d", before.getHour()) + ":" + String.format(Locale.US, "%02d", before.getMinute()) + " - "
                 + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());

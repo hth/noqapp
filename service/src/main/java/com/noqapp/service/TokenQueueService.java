@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.Constants.PREVENT_JOINING_BEFORE_CLOSING;
 import static com.noqapp.common.utils.DateUtil.MINUTES_IN_MILLISECONDS;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
@@ -536,7 +537,7 @@ public class TokenQueueService {
             ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
             LOG.debug("Time zonedNow={} at zoneId={} bizStoreId={}", zonedNow, zoneId.getId(), storeHour.getBizStoreId());
             ZonedDateTime zonedStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.startHour()), zoneId);
-            ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId);
+            ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId).minusMinutes(PREVENT_JOINING_BEFORE_CLOSING);
             Duration duration = Duration.between(zonedNow, zonedStartHour);
             LOG.debug("Duration in minutes={}", duration.toMinutes());
 

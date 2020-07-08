@@ -22,6 +22,11 @@ public class Constants {
     public static final String WORD_PATTERN_TEXT = " words 'A-to-Z', spaces ' ' and/or dots/dash '.', '-";
     public static final int PRIME_73 = 73;
     public static final String DIRTY = "Y";
+    public static final int PREVENT_JOINING_BEFORE_CLOSING = 30; //Minutes
+    public static final int MINUTES_15 = 15; //Minutes
+    public static final int MINUTES_30 = MINUTES_15 * 2; //Minutes
+    public static final int MINUTES_45 = MINUTES_15 * 3; //Minutes
+    public static final int MINUTES_60 = MINUTES_30 * 2; //Minutes
 
     private Constants() {
     }
