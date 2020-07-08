@@ -573,7 +573,7 @@ public class TokenQueueService {
             }
 
             if (zonedServiceTime.compareTo(zonedEndHour) > 0) {
-                LOG.error("After closing hour zonedServiceTime={} endHour={}", zonedServiceTime, zonedEndHour);
+                LOG.error("After closing hour zonedServiceTime={} endHour={} bizStoreId={}", zonedServiceTime, zonedEndHour, storeHour.getBizStoreId());
                 throw new ExpectedServiceBeyondStoreClosingHour("Serving time exceeds after store closing time");
             }
 
