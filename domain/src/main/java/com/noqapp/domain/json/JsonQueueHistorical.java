@@ -121,8 +121,8 @@ public class JsonQueueHistorical extends AbstractDomain {
         this.hoursSaved = queue.getHoursSaved();
         this.review = queue.getReview();
         this.serverName = queue.getServerName();
-        this.serviceBeginTime = queue.getServiceBeginTime() == null ? "" : DateFormatUtils.format(queue.getServiceBeginTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));;
-        this.serviceEndTime = queue.getServiceEndTime() == null ? "" : DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));;
+        this.serviceBeginTime = queue.getServiceBeginTime() == null ? "" : DateFormatUtils.format(queue.getServiceBeginTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+        this.serviceEndTime = queue.getServiceEndTime() == null ? "" : DateFormatUtils.format(queue.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.guardianQid = queue.getGuardianQid();
         this.created = DateFormatUtils.format(queue.getCreated(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
