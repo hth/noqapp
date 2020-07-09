@@ -126,6 +126,8 @@ public class DomainConversion {
                 .setAppointmentEndHour(storeHour.getAppointmentEndHour())
                 .setTokenAvailableFrom(storeHour.getTokenAvailableFrom() )
                 .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+                .setLunchTimeStart(storeHour.getLunchTimeStart())
+                .setLunchTimeEnd(storeHour.getLunchTimeEnd())
                 .setDayClosed(storeHour.isDayClosed() || storeHour.isTempDayClosed())
             );
         }
@@ -144,6 +146,8 @@ public class DomainConversion {
                 .setAppointmentEndHour(storeHour.getAppointmentEndHour())
                 .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
                 .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+                .setLunchTimeStart(storeHour.getLunchTimeStart())
+                .setLunchTimeEnd(storeHour.getLunchTimeEnd())
                 .setDayClosed(true)
             );
         }
