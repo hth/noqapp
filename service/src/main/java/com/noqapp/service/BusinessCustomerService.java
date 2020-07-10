@@ -121,9 +121,9 @@ public class BusinessCustomerService {
                 return businessCustomer.getId();
             }
         } catch (DuplicateKeyException e) {
-            LOG.warn("Record duplicate exists for business customer {} {}", customerId, bizNameId);
+            LOG.warn("Record duplicate exists for business customer {} {} by {}", customerId, bizNameId, qid);
         } catch (Exception e) {
-            LOG.error("Error creating business customer {} {}", customerId, bizNameId);
+            LOG.error("Error creating business customer {} {} by {}", customerId, bizNameId, qid);
         }
 
         return null;
