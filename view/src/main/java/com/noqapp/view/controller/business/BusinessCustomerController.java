@@ -83,7 +83,7 @@ public class BusinessCustomerController {
         return this.nextPage;
     }
 
-    @PostMapping(value = "/priority", produces = "text/html;charset=UTF-8")
+    @PostMapping(value = "/priority", produces = "text/html;charset=UTF-8", params = "edit")
     public String update(
         @ModelAttribute("businessCustomerPriorityForm")
         BusinessCustomerPriorityForm businessCustomerPriorityForm,
@@ -102,6 +102,12 @@ public class BusinessCustomerController {
 
         businessCustomerPriorityService.changePriorityAccess(businessUser.getBizName().getId(), businessCustomerPriorityForm.getPriorityAccess());
         return "redirect:/business/customer/landing.htm";
+    }
+
+    @PostMapping(value = "/priority",  produces = "text/html;charset=UTF-8", params = "cancel-edit")
+    public String update() {
+        LOG.info("Cancel priority ON/OFF");
+        return "redirect:/business/landing.htm";
     }
 
     @PostMapping(value = "/priority/{action}", produces = "text/html;charset=UTF-8")
@@ -141,5 +147,14 @@ public class BusinessCustomerController {
         }
 
         return "redirect:/business/customer/landing.htm";
+    }
+
+    @PostMapping(value = "/priority/{action}",  produces = "text/html;charset=UTF-8", params = "cancel-add")
+    public String priorityAction(
+        @PathVariable("action")
+        ScrubbedInput action
+    ) {
+        LOG.info("Cancel priority add");
+        return "redirect:/business/landing.htm";
     }
 }

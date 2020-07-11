@@ -96,7 +96,7 @@
                                         <div class="col-fields">
                                             <div class="button-btn">
                                                 <button name="edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
-                                                <button name="cancel_Edit" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                                <button name="cancel-edit" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                             </div>
                                             <div class="clearFix"></div>
                                         </div>
@@ -141,7 +141,7 @@
                                         <div class="col-fields">
                                             <div class="button-btn">
                                                 <button name="add" class="ladda-button next-btn" style="width:48%; float: left">Add</button>
-                                                <button name="cancel_Add" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                                <button name="cancel-add" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                             </div>
                                             <div class="clearFix"></div>
                                         </div>
