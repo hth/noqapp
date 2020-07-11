@@ -28,6 +28,8 @@ public class BusinessCustomerPriorityForm {
     /** Existing priorities. */
     public List<BusinessCustomerPriorityEntity> businessCustomerPriorities = new ArrayList<>();
 
+    private String bizNameId;
+
     public ScrubbedInput getPriorityName() {
         return priorityName;
     }
@@ -84,6 +86,15 @@ public class BusinessCustomerPriorityForm {
 
     public BusinessCustomerPriorityForm setCustomerPriorityLevels(Map<String, String> customerPriorityLevels) {
         this.customerPriorityLevels = customerPriorityLevels;
+        return this;
+    }
+
+    public String getBizNameId() {
+        return bizNameId;
+    }
+
+    public BusinessCustomerPriorityForm setBizNameId(String bizNameId) {
+        this.bizNameId = bizNameId;
         return this;
     }
 }
