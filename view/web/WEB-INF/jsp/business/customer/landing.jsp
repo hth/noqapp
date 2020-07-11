@@ -72,6 +72,20 @@
                             <div class="alert-info">
                                 <p>Priority helps give more privileges and better customer service to your customer.</p>
                             </div>
+
+                            <spring:hasBindErrors name="businessCustomerPriorityForm">
+                                <div class="error-box">
+                                    <div class="error-txt">
+                                        <ul>
+                                            <c:forEach items="${errors.allErrors}" var="message">
+                                                <li><spring:message message="${message}" /></li>
+                                            </c:forEach>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="space10"></div>
+                            </spring:hasBindErrors>
+                            
                             <div class="addbtn-store">
                                 <form:form method="post" action="${pageContext.request.contextPath}/business/customer/priority.htm" modelAttribute="businessCustomerPriorityForm">
                                 <div class="admin-content">
@@ -80,7 +94,7 @@
                                             <li>
                                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                 <div class="col-lable3">
-                                                    <form:label path="priorityAccess" cssErrorClass="lb_error" style="color: #9f1313;">Priority Access</form:label>
+                                                    <form:label path="priorityAccess" cssErrorClass="lb_error">Priority Access</form:label>
                                                 </div>
                                                 <div class="col-fields">
                                                     <form:select path="priorityAccess" cssClass="form-field-select single-dropdown"
@@ -114,7 +128,7 @@
                                             <li>
                                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                 <div class="col-lable3">
-                                                    <form:label path="priorityName" cssErrorClass="lb_error" style="color: #9f1313;">Priority Name</form:label>
+                                                    <form:label path="priorityName" cssErrorClass="lb_error">Priority Name</form:label>
                                                 </div>
                                                 <div class="col-fields">
                                                     <form:input path="priorityName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
@@ -124,7 +138,7 @@
                                             <li>
                                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                 <div class="col-lable3">
-                                                    <form:label path="priorityLevel" cssErrorClass="lb_error" style="color: #9f1313;">Priority Level</form:label>
+                                                    <form:label path="priorityLevel" cssErrorClass="lb_error">Priority Level</form:label>
                                                 </div>
                                                 <div class="col-fields">
                                                     <form:select path="priorityLevel" cssClass="form-field-select single-dropdown"

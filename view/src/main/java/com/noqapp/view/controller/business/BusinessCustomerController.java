@@ -9,6 +9,7 @@ import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.service.BusinessCustomerPriorityService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.view.form.business.BusinessCustomerPriorityForm;
+import com.noqapp.view.validator.BusinessCustomerPriorityValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
@@ -46,6 +50,7 @@ public class BusinessCustomerController {
 
     private BusinessUserService businessUserService;
     private BusinessCustomerPriorityService businessCustomerPriorityService;
+    private BusinessCustomerPriorityValidator businessCustomerPriorityValidator;
 
     @Autowired
     public BusinessCustomerController(
@@ -53,12 +58,14 @@ public class BusinessCustomerController {
         String nextPage,
 
         BusinessUserService businessUserService,
-        BusinessCustomerPriorityService businessCustomerPriorityService
+        BusinessCustomerPriorityService businessCustomerPriorityService,
+        BusinessCustomerPriorityValidator businessCustomerPriorityValidator
     ) {
         this.nextPage = nextPage;
 
         this.businessUserService = businessUserService;
         this.businessCustomerPriorityService = businessCustomerPriorityService;
+        this.businessCustomerPriorityValidator = businessCustomerPriorityValidator;
     }
 
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
@@ -66,6 +73,8 @@ public class BusinessCustomerController {
         @ModelAttribute("businessCustomerPriorityForm")
         BusinessCustomerPriorityForm businessCustomerPriorityForm,
 
+        Model model,
+        RedirectAttributes redirectAttrs,
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -80,6 +89,14 @@ public class BusinessCustomerController {
 
         businessCustomerPriorityForm.setPriorityAccess(businessUser.getBizName().getPriorityAccess());
         businessCustomerPriorityForm.setBusinessCustomerPriorities(businessCustomerPriorityService.findAll(businessUser.getBizName().getId()));
+
+        //Gymnastic to show BindingResult errors if any
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.businessCustomerPriorityForm", model.asMap().get("result"));
+        } else {
+            redirectAttrs.addFlashAttribute("businessCustomerPriorityForm", businessCustomerPriorityForm);
+        }
+
         return this.nextPage;
     }
 
@@ -88,6 +105,8 @@ public class BusinessCustomerController {
         @ModelAttribute("businessCustomerPriorityForm")
         BusinessCustomerPriorityForm businessCustomerPriorityForm,
 
+        BindingResult result,
+        RedirectAttributes redirectAttrs,
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -100,6 +119,13 @@ public class BusinessCustomerController {
         LOG.info("Landed on business page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
+        businessCustomerPriorityValidator.validatePriorityAccess(businessCustomerPriorityForm, result);
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
+            LOG.warn("Failed validation");
+            //Re-direct to prevent resubmit
+            return "redirect:/business/customer/landing.htm";
+        }
         businessCustomerPriorityService.changePriorityAccess(businessUser.getBizName().getId(), businessCustomerPriorityForm.getPriorityAccess());
         return "redirect:/business/customer/landing.htm";
     }
@@ -118,6 +144,8 @@ public class BusinessCustomerController {
         @ModelAttribute("businessCustomerPriorityForm")
         BusinessCustomerPriorityForm businessCustomerPriorityForm,
 
+        BindingResult result,
+        RedirectAttributes redirectAttrs,
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -129,6 +157,15 @@ public class BusinessCustomerController {
         }
         LOG.info("Landed on business page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
+
+        businessCustomerPriorityForm.setBizNameId(businessUser.getBizName().getId());
+        businessCustomerPriorityValidator.validate(businessCustomerPriorityForm, result);
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
+            LOG.warn("Failed validation");
+            //Re-direct to prevent resubmit
+            return "redirect:/business/customer/landing.htm";
+        }
 
         ActionTypeEnum actionType = ActionTypeEnum.valueOf(action.getText().toUpperCase());
         switch (actionType) {
@@ -154,7 +191,7 @@ public class BusinessCustomerController {
         @PathVariable("action")
         ScrubbedInput action
     ) {
-        LOG.info("Cancel priority add");
+        LOG.info("Cancel priority {}", action);
         return "redirect:/business/landing.htm";
     }
 }
