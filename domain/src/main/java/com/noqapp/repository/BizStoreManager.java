@@ -125,5 +125,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     void removePendingElastic(String id);
 
     void changeStoreBusinessType(String bizNameId, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType);
+
+    void updateStoreTokenAndHandlingTime(String codeQR, long averageServiceTime, int availableTokenCount);
 }
 

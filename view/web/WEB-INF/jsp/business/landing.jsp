@@ -150,10 +150,10 @@
                                                     </span>
                                                     <c:choose>
                                                         <c:when test="${store.averageServiceTime > 0}">
-                                                            <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted} per client</span>
+                                                            <a href="/business/averageHandling/${store.id}.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted} per client</span></a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span>
+                                                            <a href="/business/averageHandling/${store.id}.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span></a>
                                                         </c:otherwise>
                                                     </c:choose>
 

@@ -583,6 +583,17 @@ public class BizStoreManagerImpl implements BizStoreManager {
         );
     }
 
+    @Override
+    @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
+    public void updateStoreTokenAndHandlingTime(String codeQR, long averageServiceTime, int availableTokenCount) {
+        mongoTemplate.updateFirst(
+            query(where("QR").is(codeQR)),
+            update("AS", averageServiceTime).set("AT", availableTokenCount),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM

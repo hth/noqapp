@@ -1,5 +1,7 @@
 package com.noqapp.domain;
 
+import static com.noqapp.common.utils.Constants.MINUTES_60;
+
 import com.noqapp.common.utils.Formatter;
 
 import org.apache.commons.text.WordUtils;
@@ -11,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Locale;
 
@@ -269,15 +272,28 @@ public class StoreHourEntity extends BaseEntity {
         return LocalTime.parse(String.format(Locale.US, "%04d", endHour), Formatter.inputFormatter);
     }
 
+    /** Lunch hour when enabled, limits the token availability by an hour. */
     @Transient
     public LocalTime lunchStartHour() {
         LocalTime lunchStart = LocalTime.parse(String.format(Locale.US, "%04d", lunchTimeStart), Formatter.inputFormatter);
-        return lunchStart.minusHours(1);
+        return lunchStart.minusMinutes(MINUTES_60);
     }
 
     @Transient
     public LocalTime lunchEndHour() {
         return LocalTime.parse(String.format(Locale.US, "%04d", lunchTimeEnd), Formatter.inputFormatter);
+    }
+
+    @Transient
+    public long storeOpenDurationInMinutes() {
+        long minutes;
+        if (isLunchTimeEnabled()) {
+            minutes = Duration.between(startHour(), lunchStartHour()).toMinutes() + Duration.between(lunchEndHour(), endHour()).toMinutes();
+        } else {
+            minutes = Duration.between(startHour(), endHour()).toMinutes();
+        }
+
+        return minutes;
     }
 
     @Override
