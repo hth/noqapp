@@ -717,4 +717,8 @@ public class BizService {
         LOG.debug("StoreHour={}", storeHour);
         return storeHour;
     }
+
+    public void updateStoreTokenAndHandlingTime(String codeQR, long averageServiceTime, int availableTokenCount) {
+        bizStoreManager.updateStoreTokenAndHandlingTime(codeQR, averageServiceTime, availableTokenCount);
+    }
 }
