@@ -9,7 +9,6 @@ import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ActionTypeEnum;
-import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.BizStoreElasticService;

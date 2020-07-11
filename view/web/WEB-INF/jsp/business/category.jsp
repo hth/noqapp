@@ -59,9 +59,7 @@
                     </div>
 
                     <div class="alert-info">
-                        <p>
-                            Contact NoQueue Support to add business categories. These are global categories available to all stores.
-                        </p>
+                        <p>Contact NoQueue Support to add business categories. These are global categories available to all stores.</p>
                     </div>
 
                     <div class="store-table">
