@@ -143,7 +143,7 @@
                                 &nbsp;
                                 <img src="${pageContext.request.contextPath}/static2/internal/img/sortAZ.png" alt="Sort" height="16px;"/>
                             </th>
-                            <th>Total Store Open</th>
+                            <th>Duration Store is Open</th>
                             <th>Average Handling Time (AHT)</th>
                         </tr>
                         <c:forEach items="${averageHandlingForm.openDurationEachDayOfWeek}" var="openDurationEachDayOfWeek" varStatus="status">
@@ -162,7 +162,7 @@
                                 <c:when test="${!openDurationEachDayOfWeek.value.closed}">
                                     <c:choose>
                                         <c:when test="${openDurationEachDayOfWeek.value.averageServiceTime != 0}">
-                                            <td nowrap><span style="display:block; font-size:13px;">${openDurationEachDayOfWeek.value.averageServiceTimeFormatted}</span></td>
+                                            <td nowrap><span style="display:block; font-size:13px;">${openDurationEachDayOfWeek.value.averageServiceTimeFormatted} per customer</span></td>
                                         </c:when>
                                         <c:otherwise>
                                             <td nowrap><span style="display:block; font-size:13px;">Unlimited</span></td>
