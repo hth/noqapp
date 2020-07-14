@@ -44,6 +44,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.PatternSyntaxException;
 
 import javax.validation.constraints.NotNull;
 
@@ -307,31 +308,36 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public String getAddressWrappedFunky() {
-        if (StringUtils.isNotBlank(area)) {
-            String[] split = address.split(area);
-            if (split.length > 1) {
-                String address = split[0].length() > 0 ? split[0] + "<br/>" : "";
-                /* Compare name of area and town to ignore repeat of it. */
-                if (StringUtils.isNotBlank(area) && !area.equalsIgnoreCase(town)) {
-                    address += area + ", ";
-                }
+        try {
+            if (StringUtils.isNotBlank(area)) {
+                String[] split = address.split(area);
+                if (split.length > 1) {
+                    String address = split[0].length() > 0 ? split[0] + "<br/>" : "";
+                    /* Compare name of area and town to ignore repeat of it. */
+                    if (StringUtils.isNotBlank(area) && !area.equalsIgnoreCase(town)) {
+                        address += area + ", ";
+                    }
 
-                if (StringUtils.isNotBlank(area)) {
-                    address += town + "," + "<br/>";
-                }
+                    if (StringUtils.isNotBlank(area)) {
+                        address += town + "," + "<br/>";
+                    }
 
-                address += split[1].replace(", " + town + ",", "").replaceFirst(",", "").trim();
-                LOG.debug("Address={}", address);
-                return address;
-            } else {
-                if (StringUtils.countMatches(address, ",") > 3) {
-                    split = address.split(",", 3);
-                    return split[0] + "<br/>" + split[1] + "<br/>" + split[2];
+                    address += split[1].replace(", " + town + ",", "").replaceFirst(",", "").trim();
+                    LOG.debug("Address={}", address);
+                    return address;
+                } else {
+                    if (StringUtils.countMatches(address, ",") > 3) {
+                        split = address.split(",", 3);
+                        return split[0] + "<br/>" + split[1] + "<br/>" + split[2];
+                    }
                 }
             }
+            LOG.warn("Returning old address wrapping bizId={} {} {}", id, displayName, bizName.getBusinessName());
+            return getAddressWrappedMore();
+        } catch (PatternSyntaxException e) {
+            LOG.error("Failed parsing area {} {}", area, e.getLocalizedMessage(), e);
+            return area;
         }
-        LOG.warn("Returning old address wrapping bizId={} {} {}", id, displayName, bizName.getBusinessName());
-        return getAddressWrappedMore();
     }
 
     /** Something like Sunnyvale, California. */
