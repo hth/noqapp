@@ -335,7 +335,7 @@ public class BizStoreEntity extends BaseEntity {
             LOG.warn("Returning old address wrapping bizId={} {} {}", id, displayName, bizName.getBusinessName());
             return getAddressWrappedMore();
         } catch (PatternSyntaxException e) {
-            LOG.error("Failed parsing area {} {}", area, e.getLocalizedMessage(), e);
+            LOG.error("Failed parsing area codeQR={} {} {}", codeQR, area, e.getLocalizedMessage(), e);
             return area;
         }
     }
