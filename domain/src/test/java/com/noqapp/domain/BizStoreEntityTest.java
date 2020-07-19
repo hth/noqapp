@@ -41,7 +41,7 @@ class BizStoreEntityTest {
 
         bizStore4.setAddress("123, Sahid Bhagat Singh Colony, Jb Nagar, Chakala, Andheri (E), Mumbai East 400059")
             .setArea("Jb Nagar")
-            .setTown("Andheri")
+            .setTown("Chakala")
             .setDistrict("Mumbai")
             .setState("Maharashtra")
             .setStateShortName("MH");
@@ -83,6 +83,6 @@ class BizStoreEntityTest {
         assertEquals("Near PHED Office<br/> Ladnun<br/> Nagaur, Rajasthan 341306, India", address3);
 
         String address4 = bizStore4.getAddressWrappedFunky();
-        assertEquals("123, Sahid Bhagat Singh Colony<br/> Jb Nagar, Chakala, Andheri (E), Mumbai East 400059", address4);
+        assertEquals("123, Sahid Bhagat Singh Colony, <br/>Jb Nagar, Chakala,<br/>Andheri (E) Mumbai East 400059", address4);
     }
 }
