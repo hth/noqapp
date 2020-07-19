@@ -328,7 +328,11 @@ public class BizStoreEntity extends BaseEntity {
                 } else {
                     if (StringUtils.countMatches(address, ",") > 3) {
                         split = address.split(",", 3);
-                        return split[0] + "<br/>" + split[1] + "<br/>" + split[2];
+                        if(split[0].length() > 15) {
+                            return split[0] + "<br/>" + split[1] + "<br/>" + split[2];
+                        } else {
+                            return split[0] + "," + split[1] + "<br/>" + split[2];
+                        }
                     }
                 }
             }

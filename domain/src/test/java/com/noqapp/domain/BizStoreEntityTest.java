@@ -14,6 +14,7 @@ class BizStoreEntityTest {
     private BizStoreEntity bizStore1 = BizStoreEntity.newInstance();
     private BizStoreEntity bizStore2 = BizStoreEntity.newInstance();
     private BizStoreEntity bizStore3 = BizStoreEntity.newInstance();
+    private BizStoreEntity bizStore4 = BizStoreEntity.newInstance();
 
     @BeforeEach
     void setUp() {
@@ -37,6 +38,13 @@ class BizStoreEntityTest {
             .setDistrict("Nagaur")
             .setState("Rajasthan")
             .setStateShortName("RJ");
+
+        bizStore4.setAddress("123, Sahid Bhagat Singh Colony, Jb Nagar, Chakala, Andheri (E), Mumbai East 400059")
+            .setArea("Jb Nagar")
+            .setTown("Andheri")
+            .setDistrict("Mumbai")
+            .setState("Maharashtra")
+            .setStateShortName("MH");
     }
 
     @Test
@@ -73,5 +81,8 @@ class BizStoreEntityTest {
 
         String address3 = bizStore3.getAddressWrappedFunky();
         assertEquals("Near PHED Office<br/> Ladnun<br/> Nagaur, Rajasthan 341306, India", address3);
+
+        String address4 = bizStore4.getAddressWrappedFunky();
+        assertEquals("123, Sahid Bhagat Singh Colony<br/> Jb Nagar, Chakala, Andheri (E), Mumbai East 400059", address4);
     }
 }
