@@ -50,3 +50,7 @@ Find within range
 Remove Old Mail
 
     db.getCollection('MAIL').remove({"C" : {$lte : ISODate("2020-04-30 06:40:06.454Z")}})           
+
+Updated Inventory
+
+     db.getCollection('STORE_PRODUCT').update({"BS" : "5f0d754eb452cd1a5d46170d"}, {$set : {"IC":10000}}, false, true);

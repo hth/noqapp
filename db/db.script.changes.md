@@ -1,3 +1,7 @@
+### Changes July 20, 2020
+
+     Decreased auto delete records from 2 months to 15 days
+
 ### Changes July 5, 2020
 
     db.getCollection('BIZ_NAME').update({"LS" : {$exists : true}}, {$rename:{"LS":"SD"}}, false, true);
