@@ -32,6 +32,9 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     @Value ("${redis.port}")
     private int redisPort;
 
+    @Value("${redis.cache.duration}")
+    private int redisCacheDuration;
+
     @Bean
     LettuceConnectionFactory lettuceConnectionFactory() {
         LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
@@ -59,7 +62,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
 
         /* Number of seconds before expiration. Defaults to unlimited (0) */
-        redisCacheConfiguration.entryTtl(Duration.ofSeconds(30));
+        redisCacheConfiguration.entryTtl(Duration.ofSeconds(redisCacheDuration));
         redisCacheConfiguration.usePrefix();
 
         return redisCacheConfiguration;
