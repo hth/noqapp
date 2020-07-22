@@ -3,6 +3,7 @@ package com.noqapp.loader.scheduledtasks;
 import com.noqapp.domain.MailEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.types.MailStatusEnum;
+import com.noqapp.domain.types.PaginationEnum;
 import com.noqapp.repository.MailManager;
 import com.noqapp.service.StatsCronService;
 
@@ -205,7 +206,9 @@ public class MailProcess {
         try {
             int count = 0;
             boolean connected = false;
-            while (!connected && count < 10) {
+
+            /* Try connecting to mail server. */
+            while (!connected && count < PaginationEnum.TEN.getLimit()) {
                 count++;
                 try {
                     mailSender.testConnection();
@@ -219,7 +222,8 @@ public class MailProcess {
             boolean noAuthenticationException = false;
             mailManager.save(mail);
 
-            while (!noAuthenticationException && count < 10) {
+            /* Number of times send mail has to be tried. */
+            while (!noAuthenticationException && count < PaginationEnum.TWO.getLimit()) {
                 count++;
                 try {
                     MimeMessage dkimSignedMessage = dkimSignMessage(message, dkimPath, "noqapp.com", "noqapp");
