@@ -119,4 +119,18 @@ public class ReviewSentiment implements Serializable {
     public String getSentimentWatcherEmail() {
         return sentimentWatcherEmail;
     }
+
+    @Override
+    public String toString() {
+        return "ReviewSentiment{" +
+            "storeName='" + storeName + '\'' +
+            ", reviewerName='" + reviewerName + '\'' +
+            ", reviewerPhone='" + reviewerPhone + '\'' +
+            ", ratingCount=" + ratingCount +
+            ", hourSaved=" + hourSaved +
+            ", review='" + review + '\'' +
+            ", sentiment='" + sentiment + '\'' +
+            ", sentimentWatcherEmail='" + sentimentWatcherEmail + '\'' +
+            '}';
+    }
 }

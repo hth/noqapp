@@ -71,4 +71,15 @@ public class FeedbackMail implements Serializable {
     public String getBody() {
         return body;
     }
+
+    @Override
+    public String toString() {
+        return "FeedbackMail{" +
+            "userId='" + userId + '\'' +
+            ", qid='" + qid + '\'' +
+            ", name='" + name + '\'' +
+            ", subject='" + subject + '\'' +
+            ", body='" + body + '\'' +
+            '}';
+    }
 }

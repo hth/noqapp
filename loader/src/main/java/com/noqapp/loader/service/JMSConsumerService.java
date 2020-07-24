@@ -1,6 +1,8 @@
 package com.noqapp.loader.service;
 
 import com.noqapp.domain.jms.ChangeMailOTP;
+import com.noqapp.domain.jms.FeedbackMail;
+import com.noqapp.domain.jms.ReviewSentiment;
 import com.noqapp.domain.jms.SignupUserInfo;
 import com.noqapp.service.MailService;
 
@@ -10,6 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * hitender
@@ -36,5 +41,43 @@ public class JMSConsumerService {
     public void sendMailOnChangeInMail(ChangeMailOTP changeMailOTP) {
         LOG.info("ActiveMQ received {}", changeMailOTP);
         mailService.sendOTPMail(changeMailOTP.getUserId(), changeMailOTP.getName(), changeMailOTP.getMailOTP(), "email address");
+    }
+
+    @JmsListener(destination = "${activemq.destination.feedback}", containerFactory = "jmsFeedbackListenerContainerFactory")
+    public void sendMailOnCFeedback(FeedbackMail feedbackMail) {
+        LOG.info("ActiveMQ received {}", feedbackMail);
+
+        Map<String, Object> rootMap = new HashMap<>();
+        rootMap.put("userId", feedbackMail.getUserId());
+        rootMap.put("qid", feedbackMail.getQid());
+        rootMap.put("name", feedbackMail.getName());
+        rootMap.put("subject", feedbackMail.getSubject());
+        rootMap.put("body", feedbackMail.getBody());
+        mailService.sendAnyMail(
+            "contact@noqapp.com",
+            "NoQueue",
+            "Feedback from: " + feedbackMail.getName(),
+            rootMap,
+            "mail/feedback.ftl");
+    }
+
+    @JmsListener(destination = "${activemq.destination.review.negative}", containerFactory = "jmsReviewNegativeListenerContainerFactory")
+    public void sendMailOnReviewSentiment(ReviewSentiment reviewSentiment) {
+        LOG.info("ActiveMQ received {}", reviewSentiment);
+
+        Map<String, Object> rootMap = new HashMap<>();
+        rootMap.put("storeName", reviewSentiment.getStoreName());
+        rootMap.put("reviewerName", reviewSentiment.getReviewerName());
+        rootMap.put("reviewerPhone", reviewSentiment.getReviewerPhone());
+        rootMap.put("ratingCount", reviewSentiment.getRatingCount());
+        rootMap.put("hourSaved", reviewSentiment.getHourSaved());
+        rootMap.put("review", reviewSentiment.getReview());
+        rootMap.put("sentiment", reviewSentiment.getSentiment());
+        mailService.sendAnyMail(
+            reviewSentiment.getSentimentWatcherEmail(),
+            "Customer Sentiment Watcher",
+            "Review for: " + reviewSentiment.getStoreName(),
+            rootMap,
+            "mail/reviewSentiment.ftl");
     }
 }

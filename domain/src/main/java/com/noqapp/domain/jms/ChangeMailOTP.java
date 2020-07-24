@@ -53,4 +53,13 @@ public class ChangeMailOTP implements Serializable {
     public String getMailOTP() {
         return mailOTP;
     }
+
+    @Override
+    public String toString() {
+        return "ChangeMailOTP{" +
+            "userId='" + userId + '\'' +
+            ", name='" + name + '\'' +
+            ", mailOTP='" + mailOTP + '\'' +
+            '}';
+    }
 }
