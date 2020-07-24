@@ -53,4 +53,13 @@ public class SignupUserInfo implements Serializable {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "SignupUserInfo{" +
+            "userId='" + userId + '\'' +
+            ", qid='" + qid + '\'' +
+            ", name='" + name + '\'' +
+            '}';
+    }
 }

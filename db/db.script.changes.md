@@ -1,6 +1,6 @@
 ### Changes July 20, 2020
 
-     Decreased auto delete records from 2 months to 15 days
+    Decreased auto delete records from 2 months to 15 days
 
 ### Changes July 5, 2020
 
