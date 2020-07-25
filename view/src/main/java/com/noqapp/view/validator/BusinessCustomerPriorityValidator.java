@@ -1,8 +1,6 @@
 package com.noqapp.view.validator;
 
 import com.noqapp.repository.BusinessCustomerPriorityManager;
-import com.noqapp.service.ProfessionalProfileService;
-import com.noqapp.view.form.business.AverageHandlingForm;
 import com.noqapp.view.form.business.BusinessCustomerPriorityForm;
 
 import org.slf4j.Logger;

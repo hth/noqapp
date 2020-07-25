@@ -23,7 +23,7 @@ import org.springframework.validation.Validator;
     "PMD.LongVariable"
 })
 @Component
-public class AverageHandlingTimeValidator implements Validator {
+public class AverageServiceTimeValidator implements Validator {
     private static final Logger LOG = LoggerFactory.getLogger(CustomTextToSpeechValidator.class);
 
     @Override

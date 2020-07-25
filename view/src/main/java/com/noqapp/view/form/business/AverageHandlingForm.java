@@ -1,6 +1,6 @@
 package com.noqapp.view.form.business;
 
-import com.noqapp.domain.helper.ExpectedHandlingTime;
+import com.noqapp.domain.helper.ExpectedServiceTime;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,7 +24,7 @@ public class AverageHandlingForm {
     private boolean hasBreakTimeEnabled;
     private long averageServiceTime;
 
-    private Map<String, ExpectedHandlingTime> openDurationEachDayOfWeek = new LinkedHashMap<>();
+    private Map<String, ExpectedServiceTime> openDurationEachDayOfWeek = new LinkedHashMap<>();
 
     public String getBizStoreId() {
         return bizStoreId;
@@ -103,11 +103,11 @@ public class AverageHandlingForm {
         return this;
     }
 
-    public Map<String, ExpectedHandlingTime> getOpenDurationEachDayOfWeek() {
+    public Map<String, ExpectedServiceTime> getOpenDurationEachDayOfWeek() {
         return openDurationEachDayOfWeek;
     }
 
-    public AverageHandlingForm setOpenDurationEachDayOfWeek(Map<String, ExpectedHandlingTime> openDurationEachDayOfWeek) {
+    public AverageHandlingForm setOpenDurationEachDayOfWeek(Map<String, ExpectedServiceTime> openDurationEachDayOfWeek) {
         this.openDurationEachDayOfWeek = openDurationEachDayOfWeek;
         return this;
     }
