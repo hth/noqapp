@@ -152,7 +152,9 @@
                             <td nowrap><span style="display:block; font-size:13px;">${openDurationEachDayOfWeek.key}</span></td>
                             <c:choose>
                                 <c:when test="${!openDurationEachDayOfWeek.value.closed}">
-                                    <td nowrap><span style="display:block; font-size:13px;">${openDurationEachDayOfWeek.value.hours}:${openDurationEachDayOfWeek.value.minutes} (hours & minutes)</span></td>
+                                    <td nowrap>
+                                        <span style="display:block; font-size:13px;">${openDurationEachDayOfWeek.value.hours}:${openDurationEachDayOfWeek.value.minutes} (hours & minutes)</span>
+                                    </td>
                                 </c:when>
                                 <c:otherwise>
                                     <td nowrap><span style="display:block; font-size:13px;">Closed</span></td>
@@ -176,6 +178,11 @@
                         </tr>
                         </c:forEach>
                     </table>
+
+                    <div class="alert-info">
+                        <p><b>When lunch hour enabled</b>: Reduced by <b>lunch hour</b> and <b>one hour</b> before lunch and <b>1/2 hour</b> before store closing</p>
+                        <p><b>Without lunch hour</b>: Reduced by <b>1/2 hour</b> before store closing</p>
+                    </div>
                 </div>
             </div>
             <!-- Add New Supervisor -->

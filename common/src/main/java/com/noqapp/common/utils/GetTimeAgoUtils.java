@@ -1,15 +1,17 @@
 package com.noqapp.common.utils;
 
+import static com.noqapp.common.utils.DateUtil.HOURS;
+import static com.noqapp.common.utils.DateUtil.MINUTE_IN_SECONDS;
+
 /**
  * hitender
  * 6/3/20 8:50 PM
  */
 public class GetTimeAgoUtils {
-    private static final int SECOND_MILLIS = 1000;
-    private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
-    private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
-    private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
-
+    public static final int SECOND_MILLIS = 1_000;
+    private static final int MINUTE_MILLIS = MINUTE_IN_SECONDS * SECOND_MILLIS;
+    private static final int HOUR_MILLIS = MINUTE_IN_SECONDS * MINUTE_MILLIS;
+    private static final int DAY_MILLIS = HOURS * HOUR_MILLIS;
 
     public static String getTimeAgo(long time) {
 

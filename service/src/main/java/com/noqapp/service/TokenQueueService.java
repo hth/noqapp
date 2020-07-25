@@ -8,6 +8,7 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.GetTimeAgoUtils;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
@@ -314,10 +315,16 @@ public class TokenQueueService {
                         /* Set this field when client is really a guardian and has at least one dependent in profile. */
                         queue.setGuardianQid(guardianQid);
                     }
-                    Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
-                    queue.setExpectedServiceBegin(expectedServiceBegin)
-                        .setBizNameId(bizStore.getBizName().getId())
-                        .setTimeSlotMessage(ServiceUtils.timeSlot(expectedServiceBegin, bizStore.getTimeZone(), storeHour));
+
+                    /* For limited token. */
+                    if (bizStore.getAvailableTokenCount() > 0) {
+                        Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
+                        queue.setExpectedServiceBegin(expectedServiceBegin)
+                            .setBizNameId(bizStore.getBizName().getId())
+                            .setTimeSlotMessage(ServiceUtils.timeSlot(expectedServiceBegin, bizStore.getTimeZone(), storeHour));
+                    } else {
+                        queue.setBizNameId(bizStore.getBizName().getId());
+                    }
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
                 } catch (DuplicateKeyException e) {
@@ -542,33 +549,33 @@ public class TokenQueueService {
             LOG.debug("Duration in minutes={}", duration.toMinutes());
 
             /* Why subtract 1, as the time has to be calculated for the start of service. By keeping last number, service time is delayed. */
-            long serviceInMinutes = averageServiceTime / MINUTES_IN_MILLISECONDS * (tokenQueue.getLastNumber() - 1 - tokenQueue.getCurrentlyServing()) + 1;
-            LOG.debug("Service in minutes={} averageServiceTime={}", serviceInMinutes, averageServiceTime);
+            long serviceInSeconds = averageServiceTime / GetTimeAgoUtils.SECOND_MILLIS * (tokenQueue.getLastNumber() - 1 - tokenQueue.getCurrentlyServing()) + 1;
+            LOG.debug("Service in milliSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
 
             ZonedDateTime zonedServiceTime;
             if (duration.isNegative()) {
                 LOG.debug("Store has already started or closed");
                 zonedServiceTime = ZonedDateTime.of(
                     LocalDateTime.now(zoneId)
-                        .plusMinutes(serviceInMinutes)
+                        .plusSeconds(serviceInSeconds)
                         .plusMinutes(storeHour.getDelayedInMinutes()),
                     zoneId);
             } else {
                 zonedServiceTime = ZonedDateTime.of(
                     LocalDateTime.now(zoneId)
-                        .plusMinutes(serviceInMinutes)
+                        .plusSeconds(serviceInSeconds)
                         .plusMinutes(duration.toMinutes())
                         .plusMinutes(storeHour.getDelayedInMinutes()),
                     zoneId);
                 LOG.debug("Plus getDelayedInMinutes {}", zonedServiceTime);
+            }
 
-                if (storeHour.isLunchTimeEnabled()) {
-                    Duration breakTime = Duration.between(storeHour.lunchStartHour(), storeHour.lunchEndHour());
-                    ZonedDateTime zonedLunchStart = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
-                    LOG.debug("Expected ServiceTime={} lunchTimeStart={}", zonedServiceTime, zonedLunchStart);
-                    if (zonedServiceTime.compareTo(zonedLunchStart) > 0) {
-                        zonedServiceTime = zonedServiceTime.plusMinutes(breakTime.toMinutes());
-                    }
+            if (storeHour.isLunchTimeEnabled()) {
+                Duration breakTime = Duration.between(storeHour.lunchStartHour(), storeHour.lunchEndHour());
+                ZonedDateTime zonedLunchStart = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+                LOG.debug("Expected ServiceTime={} lunchTimeStart={}", zonedServiceTime, zonedLunchStart);
+                if (zonedServiceTime.compareTo(zonedLunchStart) > 0) {
+                    zonedServiceTime = zonedServiceTime.plusMinutes(breakTime.toMinutes());
                 }
             }
 
