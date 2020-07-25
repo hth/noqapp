@@ -48,7 +48,7 @@ public final class DateUtil {
     private static final Logger LOG = LoggerFactory.getLogger(DateUtil.class);
 
     public static final int MINUTES_IN_MILLISECONDS = 60_000;
-    private static final int MINUTE_IN_SECONDS = 60;
+    public static final int MINUTE_IN_SECONDS = 60;
     private static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;

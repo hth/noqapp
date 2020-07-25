@@ -1,5 +1,6 @@
 package com.noqapp.view.controller.business;
 
+import static com.noqapp.common.utils.Constants.MINUTES_60;
 import static com.noqapp.common.utils.DateUtil.MINUTES_IN_MILLISECONDS;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
@@ -9,7 +10,6 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.helper.ExpectedHandlingTime;
 import com.noqapp.domain.site.QueueUser;
-import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.view.form.business.AverageHandlingForm;
@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.util.List;
@@ -110,12 +109,14 @@ public class AverageHandlingController {
             .setAverageServiceTime(bizStore.getAverageServiceTime());
 
         for (StoreHourEntity storeHour : storeHours) {
-            long minutes = storeHour.storeOpenDurationInMinutes();
-            Duration duration = Duration.ofMinutes(minutes);
+            Duration duration = Duration.ofSeconds(bizService.availableStoreOpenDurationInSeconds(storeHour));
 
             BigDecimal averageServiceTime = bizStore.getAvailableTokenCount() == 0
                 ? new BigDecimal(0)
-                : new BigDecimal(minutes).divide(new BigDecimal(bizStore.getAvailableTokenCount()), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING);
+                : new BigDecimal(duration.getSeconds())
+                .divide(new BigDecimal(MINUTES_60), MathContext.DECIMAL64)
+                .divide(new BigDecimal(bizStore.getAvailableTokenCount()), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING);
+
             ExpectedHandlingTime expectedHandlingTime = new ExpectedHandlingTime()
                 .setDuration(duration)
                 .setAverageServiceTime(averageServiceTime.multiply(new BigDecimal(MINUTES_IN_MILLISECONDS)).longValue())
@@ -167,12 +168,11 @@ public class AverageHandlingController {
         }
 
         BizStoreEntity bizStore = bizService.getByStoreId(averageHandlingForm.getBizStoreId());
-        StoreHourEntity storeHour = bizService.findStoreHour(bizStore.getId(), averageHandlingForm.getSelectedDayOfWeek());
+        long averageHandlingTime = bizService.computeAverageHandlingTime(
+            averageHandlingForm.getSelectedDayOfWeek(),
+            averageHandlingForm.getAvailableTokenCount(),
+            bizStore);
 
-        long minutes = storeHour.storeOpenDurationInMinutes();
-        long averageHandlingTime = new BigDecimal(minutes)
-            .divide(new BigDecimal(averageHandlingForm.getAvailableTokenCount()), MathContext.DECIMAL64)
-            .multiply(new BigDecimal(MINUTES_IN_MILLISECONDS)).longValue();
         LOG.debug("ExistingToken={} NewToken={} ExistingAHT={} UpdatedAHT={}",
             bizStore.getAvailableTokenCount(),
             averageHandlingForm.getAvailableTokenCount(),

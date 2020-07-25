@@ -1,7 +1,11 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.Constants.PREVENT_JOINING_BEFORE_CLOSING;
+
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
+import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.GetTimeAgoUtils;
 import com.noqapp.common.utils.MathUtil;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.Validate;
@@ -45,6 +49,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -720,5 +726,21 @@ public class BizService {
 
     public void updateStoreTokenAndHandlingTime(String codeQR, long averageServiceTime, int availableTokenCount) {
         bizStoreManager.updateStoreTokenAndHandlingTime(codeQR, averageServiceTime, availableTokenCount);
+    }
+
+    public long computeAverageHandlingTime(DayOfWeek dayOfWeek, int availableTokenCount, BizStoreEntity bizStore) {
+        if (0 == availableTokenCount) {
+            return 0;
+        }
+
+        StoreHourEntity storeHour = findStoreHour(bizStore.getId(), dayOfWeek);
+        long seconds = availableStoreOpenDurationInSeconds(storeHour);
+        return new BigDecimal(seconds)
+            .divide(new BigDecimal(availableTokenCount), MathContext.DECIMAL64)
+            .multiply(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS)).longValue();
+    }
+
+    public long availableStoreOpenDurationInSeconds(StoreHourEntity storeHour) {
+        return (storeHour.storeOpenDurationInMinutes() - PREVENT_JOINING_BEFORE_CLOSING) * DateUtil.MINUTE_IN_SECONDS;
     }
 }
