@@ -8,12 +8,12 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
-import com.noqapp.domain.helper.ExpectedHandlingTime;
+import com.noqapp.domain.helper.ExpectedServiceTime;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.view.form.business.AverageHandlingForm;
-import com.noqapp.view.validator.AverageHandlingTimeValidator;
+import com.noqapp.view.validator.AverageServiceTimeValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +60,7 @@ public class AverageHandlingController {
 
     private BizService bizService;
     private BusinessUserService businessUserService;
-    private AverageHandlingTimeValidator averageHandlingTimeValidator;
+    private AverageServiceTimeValidator averageServiceTimeValidator;
 
     @Autowired
     public AverageHandlingController(
@@ -69,13 +69,13 @@ public class AverageHandlingController {
 
         BizService bizService,
         BusinessUserService businessUserService,
-        AverageHandlingTimeValidator averageHandlingTimeValidator
+        AverageServiceTimeValidator averageServiceTimeValidator
     ) {
         this.nextPage = nextPage;
 
         this.bizService = bizService;
         this.businessUserService = businessUserService;
-        this.averageHandlingTimeValidator = averageHandlingTimeValidator;
+        this.averageServiceTimeValidator = averageServiceTimeValidator;
     }
 
     @GetMapping(value = "/{storeId}", produces = "text/html;charset=UTF-8")
@@ -117,7 +117,7 @@ public class AverageHandlingController {
                 .divide(new BigDecimal(MINUTES_60), MathContext.DECIMAL64)
                 .divide(new BigDecimal(bizStore.getAvailableTokenCount()), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING);
 
-            ExpectedHandlingTime expectedHandlingTime = new ExpectedHandlingTime()
+            ExpectedServiceTime expectedServiceTime = new ExpectedServiceTime()
                 .setDuration(duration)
                 .setAverageServiceTime(averageServiceTime.multiply(new BigDecimal(MINUTES_IN_MILLISECONDS)).longValue())
                 .setClosed(storeHour.isDayClosed());
@@ -127,7 +127,7 @@ public class AverageHandlingController {
             }
 
             LOG.debug("Open hours {} {} {}", duration.toString(), storeHour.getDayOfTheWeekAsString(), averageServiceTime);
-            averageHandlingForm.getOpenDurationEachDayOfWeek().put(storeHour.getDayOfTheWeekAsString(), expectedHandlingTime);
+            averageHandlingForm.getOpenDurationEachDayOfWeek().put(storeHour.getDayOfTheWeekAsString(), expectedServiceTime);
         }
 
         //Gymnastic to show BindingResult errors if any
@@ -159,7 +159,7 @@ public class AverageHandlingController {
         LOG.info("Landed on business page qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
-        averageHandlingTimeValidator.validate(averageHandlingForm, result);
+        averageServiceTimeValidator.validate(averageHandlingForm, result);
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
@@ -168,7 +168,7 @@ public class AverageHandlingController {
         }
 
         BizStoreEntity bizStore = bizService.getByStoreId(averageHandlingForm.getBizStoreId());
-        long averageHandlingTime = bizService.computeAverageHandlingTime(
+        long averagesServiceTime = bizService.computeAverageServiceTime(
             averageHandlingForm.getSelectedDayOfWeek(),
             averageHandlingForm.getAvailableTokenCount(),
             bizStore);
@@ -179,7 +179,7 @@ public class AverageHandlingController {
             bizStore.getAverageServiceTime(),
             averageHandlingForm);
 
-        bizService.updateStoreTokenAndHandlingTime(bizStore.getCodeQR(), averageHandlingTime, averageHandlingForm.getAvailableTokenCount());
+        bizService.updateStoreTokenAndServiceTime(bizStore.getCodeQR(), averagesServiceTime, averageHandlingForm.getAvailableTokenCount());
         return "redirect:/business/landing.htm";
     }
 

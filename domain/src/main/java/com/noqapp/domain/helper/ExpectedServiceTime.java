@@ -11,7 +11,7 @@ import java.time.Duration;
  * hitender
  * 7/10/20 6:15 PM
  */
-public class ExpectedHandlingTime {
+public class ExpectedServiceTime {
 
     private Duration duration;
     private long averageServiceTime;
@@ -21,7 +21,7 @@ public class ExpectedHandlingTime {
         return duration;
     }
 
-    public ExpectedHandlingTime setDuration(Duration duration) {
+    public ExpectedServiceTime setDuration(Duration duration) {
         this.duration = duration;
         return this;
     }
@@ -30,7 +30,7 @@ public class ExpectedHandlingTime {
         return averageServiceTime;
     }
 
-    public ExpectedHandlingTime setAverageServiceTime(long averageServiceTime) {
+    public ExpectedServiceTime setAverageServiceTime(long averageServiceTime) {
         this.averageServiceTime = averageServiceTime;
         return this;
     }
@@ -47,7 +47,7 @@ public class ExpectedHandlingTime {
         return closed;
     }
 
-    public ExpectedHandlingTime setClosed(boolean closed) {
+    public ExpectedServiceTime setClosed(boolean closed) {
         this.closed = closed;
         return this;
     }

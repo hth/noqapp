@@ -724,11 +724,11 @@ public class BizService {
         return storeHour;
     }
 
-    public void updateStoreTokenAndHandlingTime(String codeQR, long averageServiceTime, int availableTokenCount) {
-        bizStoreManager.updateStoreTokenAndHandlingTime(codeQR, averageServiceTime, availableTokenCount);
+    public void updateStoreTokenAndServiceTime(String codeQR, long averageServiceTime, int availableTokenCount) {
+        bizStoreManager.updateStoreTokenAndServiceTime(codeQR, averageServiceTime, availableTokenCount);
     }
 
-    public long computeAverageHandlingTime(DayOfWeek dayOfWeek, int availableTokenCount, BizStoreEntity bizStore) {
+    public long computeAverageServiceTime(DayOfWeek dayOfWeek, int availableTokenCount, BizStoreEntity bizStore) {
         if (0 == availableTokenCount) {
             return 0;
         }
