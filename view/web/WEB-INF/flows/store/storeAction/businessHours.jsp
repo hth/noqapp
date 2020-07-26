@@ -68,7 +68,16 @@
                 <form:form modelAttribute="registerBusiness">
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                     <div class="admin-title">
-                        <h2>Add ${registerBusiness.businessType.classifierTitle} Hours For Each Day</h2>
+                        <c:choose>
+                            <c:when test="${!empty registerBusiness.bizStoreId}">
+                                <h2>Edit ${registerBusiness.businessType.classifierTitle} Hours For Each Day</h2>
+                                <h3>${registerBusiness.displayName}</h3>
+                            </c:when>
+                            <c:otherwise>
+                                <h2>Add ${registerBusiness.businessType.classifierTitle} Hours For Each Day</h2>
+                                <h3>${registerBusiness.displayName}</h3>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                     <div class="error-box">
                         <div class="error-txt">
