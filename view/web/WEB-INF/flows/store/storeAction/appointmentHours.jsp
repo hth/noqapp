@@ -56,6 +56,7 @@
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
                             <h2>Add Appointment Hours For Each Day</h2>
+                            <h3>${registerBusiness.displayName}</h3>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">

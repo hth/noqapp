@@ -58,6 +58,7 @@
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
                             <h2>Confirm your ${registerBusiness.businessType.classifierTitle.toLowerCase()} details</h2>
+                            <h3>${registerBusiness.displayName}</h3>
                         </div>
                         <div class="admin-content">
                             <div class="add-new">

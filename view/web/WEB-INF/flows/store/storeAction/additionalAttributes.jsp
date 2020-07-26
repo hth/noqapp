@@ -58,9 +58,11 @@
                             <c:choose>
                             <c:when test="${!empty registerBusiness.bizStoreId}">
                                 <h2>Edit ${registerBusiness.businessType.classifierTitle} Amenities & Facilities</h2>
+                                <h3>${registerBusiness.displayName}</h3>
                             </c:when>
                             <c:otherwise>
                                 <h2>${registerBusiness.businessType.classifierTitle} Amenities & Facilities</h2>
+                                <h3>${registerBusiness.displayName}</h3>
                             </c:otherwise>
                             </c:choose>
                         </div>

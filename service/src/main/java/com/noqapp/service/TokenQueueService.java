@@ -54,6 +54,9 @@ import org.springframework.stereotype.Service;
 
 import org.junit.jupiter.api.Assertions;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
@@ -548,9 +551,16 @@ public class TokenQueueService {
             Duration duration = Duration.between(zonedNow, zonedStartHour);
             LOG.debug("Duration in minutes={}", duration.toMinutes());
 
-            /* Why subtract 1, as the time has to be calculated for the start of service. By keeping last number, service time is delayed. */
-            long serviceInSeconds = averageServiceTime / GetTimeAgoUtils.SECOND_MILLIS * (tokenQueue.getLastNumber() - 1 - tokenQueue.getCurrentlyServing()) + 1;
-            LOG.debug("Service in milliSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
+            /*
+             * Why subtract 1, as the time has to be calculated for the start of service.
+             * By keeping last number, service time is delayed. Additional 1 at the end is to make sure this equation does not
+             * return 0.
+             */
+            long serviceInSeconds = new BigDecimal(averageServiceTime)
+                .divide(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING)
+                .multiply(new BigDecimal(tokenQueue.getLastNumber() - 1 - tokenQueue.getCurrentlyServing()))
+                .add(new BigDecimal(1)).longValue();
+            LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
 
             ZonedDateTime zonedServiceTime;
             if (duration.isNegative()) {

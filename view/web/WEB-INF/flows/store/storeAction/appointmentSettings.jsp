@@ -56,6 +56,7 @@
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
                             <h2>Appointment Setup</h2>
+                            <h3>${registerBusiness.displayName}</h3>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
