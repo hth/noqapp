@@ -90,8 +90,6 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     /** Stream all documents. */
     Stream<BizStoreEntity> findAllWithStream();
 
-    void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR);
-
     /** Counts number of times the category has been used. */
     long countCategoryUse(String bizCategoryId, String bizNameId);
 

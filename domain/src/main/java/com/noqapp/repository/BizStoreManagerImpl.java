@@ -407,16 +407,6 @@ public class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
-        mongoTemplate.updateFirst(
-            query(where("QR").is(codeQR)),
-            entityUpdate(update("AT", availableTokenCount)),
-            BizStoreEntity.class,
-            TABLE
-        );
-    }
-
-    @Override
     public long countCategoryUse(String bizCategoryId, String bizNameId) {
         return mongoTemplate.count(
             query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BC").is(bizCategoryId)),
