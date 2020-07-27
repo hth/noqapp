@@ -430,7 +430,11 @@ public class BizService {
     @Mobile
     @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
     public void updateBizStoreAvailableTokenCount(int availableTokenCount, String codeQR) {
-        bizStoreManager.updateBizStoreAvailableTokenCount(availableTokenCount, codeQR);
+        /* Avoid loading from cache as its being evicted. */
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
+        long averagesServiceTime = computeAverageServiceTime(dayOfWeek, availableTokenCount, bizStore.getId());
+        updateStoreTokenAndServiceTime(codeQR, averagesServiceTime, availableTokenCount);
     }
 
     public Map<String, Long> countCategoryUse(Set<String> categories, String bizNameId) {
@@ -728,12 +732,12 @@ public class BizService {
         bizStoreManager.updateStoreTokenAndServiceTime(codeQR, averageServiceTime, availableTokenCount);
     }
 
-    public long computeAverageServiceTime(DayOfWeek dayOfWeek, int availableTokenCount, BizStoreEntity bizStore) {
+    public long computeAverageServiceTime(DayOfWeek dayOfWeek, int availableTokenCount, String bizStoreId) {
         if (0 == availableTokenCount) {
             return 0;
         }
 
-        StoreHourEntity storeHour = findStoreHour(bizStore.getId(), dayOfWeek);
+        StoreHourEntity storeHour = findStoreHour(bizStoreId, dayOfWeek);
         long seconds = availableStoreOpenDurationInSeconds(storeHour);
         return new BigDecimal(seconds)
             .divide(new BigDecimal(availableTokenCount), MathContext.DECIMAL64)

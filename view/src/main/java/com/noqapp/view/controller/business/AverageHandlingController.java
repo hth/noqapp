@@ -171,7 +171,7 @@ public class AverageHandlingController {
         long averagesServiceTime = bizService.computeAverageServiceTime(
             averageHandlingForm.getSelectedDayOfWeek(),
             averageHandlingForm.getAvailableTokenCount(),
-            bizStore);
+            bizStore.getId());
 
         LOG.debug("ExistingToken={} NewToken={} ExistingAHT={} UpdatedAHT={}",
             bizStore.getAvailableTokenCount(),
