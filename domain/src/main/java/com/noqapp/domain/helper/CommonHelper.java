@@ -165,7 +165,7 @@ public class CommonHelper {
                     case CDQ:
                         return CanteenStoreDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getBusinessCustomerAttribute();
                     default:
-                        throw new UnsupportedOperationException("Reached un-supported condition");
+                        return null;
                 }
             }
         } catch (Exception e) {
