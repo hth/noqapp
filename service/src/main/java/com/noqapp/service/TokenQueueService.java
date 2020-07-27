@@ -666,7 +666,10 @@ public class TokenQueueService {
 
             /* Add business customer id if any associated with qid and codeQR. */
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
-            BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQidAndAttribute(qid, queue.getBizNameId(), CommonHelper.findBusinessCustomerAttribute(bizStore));
+            BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQidAndAttribute(
+                qid,
+                queue.getBizNameId(),
+                CommonHelper.findBusinessCustomerAttribute(bizStore));
             if (null != businessCustomer) {
                 queue.setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
                     .setBusinessCustomerIdChangeCount(businessCustomer.getVersion())
