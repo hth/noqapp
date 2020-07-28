@@ -21,6 +21,9 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -70,22 +73,27 @@ class TokenQueueServiceTest {
             .setLunchTimeStart(1300)
             .setLunchTimeEnd(1400);
 
+        Map<String, String> timeSlots = new LinkedHashMap<>();
         Assertions.assertThrows(ExpectedServiceBeyondStoreClosingHour.class, () -> {
             for (int i = 1; i < 100; i++) {
                 try {
                     Date expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(
                         300000,
-                        ZoneId.of("Asia/Calcutta"),
+                        ZoneId.of("Pacific/Honolulu"),
                         storeHour,
                         new TokenQueueEntity().setLastNumber(i).setCurrentlyServing(0)
                     );
-                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of("Asia/Calcutta").getId(), storeHour);
-                    System.out.println("Expected Service: " + expectedServiceBegin + ", for token " + i + ", time slot = " + timeSlot);
+                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of("Pacific/Honolulu").getId(), storeHour);
+                    timeSlots.put(String.valueOf(i), timeSlot);
                 } catch (ExpectedServiceBeyondStoreClosingHour e) {
                     System.err.println("Can service " + --i);
                     throw e;
                 }
             }
         });
+
+        for (String key : timeSlots.keySet()) {
+            System.out.println("Expected Service: for token " + key + ", time slot = " + timeSlots.get(key));
+        }
     }
 }

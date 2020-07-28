@@ -3,6 +3,7 @@ package com.noqapp.service.utils;
 import static com.noqapp.common.utils.Constants.MINUTES_15;
 import static com.noqapp.common.utils.Constants.MINUTES_30;
 import static com.noqapp.common.utils.Constants.MINUTES_45;
+import static com.noqapp.common.utils.Constants.MINUTES_59;
 import static com.noqapp.common.utils.Constants.MINUTES_60;
 
 import com.noqapp.common.utils.DateFormatter;
@@ -28,6 +29,8 @@ import java.util.TimeZone;
  */
 public class ServiceUtils {
     private static final Logger LOG = LoggerFactory.getLogger(ServiceUtils.class);
+
+    private static final boolean switchedOnHourSlot = true;
 
     /**
      * Calculate the estimated wait time
@@ -71,10 +74,14 @@ public class ServiceUtils {
         LocalTime localTime = zonedDateTime.toLocalTime();
         int minutes = localTime.getMinute();
 
-        if (Duration.between(storeHour.startHour(), localTime).toMinutes() <= MINUTES_15) {
-            LocalTime arrivalHour = storeHour.startHour().minusMinutes(MINUTES_15);
+        /*
+         * Note: Changing MINUTES_59 to lower number will reduce number of token issued during the store open hours.
+         * These numbers will change distribution of token over the hours.
+         */
+        if (Duration.between(storeHour.startHour(), localTime).toMinutes() < MINUTES_59) {
+            LocalTime arrivalHour = storeHour.startHour();
             LOG.debug("Close to start {}", Duration.between(localTime, storeHour.startHour()).toMinutes());
-            LocalTime after = arrivalHour.plusHours(1);
+            LocalTime after = arrivalHour.minusMinutes(arrivalHour.getMinute()).plusHours(1);
 
             return String.format(Locale.US, "%02d", arrivalHour.getHour()) + ":" + String.format(Locale.US, "%02d", arrivalHour.getMinute()) + " - "
                 + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
@@ -86,19 +93,27 @@ public class ServiceUtils {
                 + String.format(Locale.US, "%02d", departureHour.getHour()) + ":" + String.format(Locale.US, "%02d", departureHour.getMinute()) + " (store closes)";
         }
 
-        if (minutes >= MINUTES_45) {
-            LocalTime before = localTime.minusMinutes(minutes).plusMinutes(MINUTES_30);
-            LocalTime after = before.plusHours(1);
-            return String.format(Locale.US, "%02d", before.getHour()) + ":" + String.format(Locale.US, "%02d", before.getMinute()) + " - "
-                + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
-        } else if (minutes <= MINUTES_15) {
-            LocalTime before = localTime.minusMinutes(minutes).minusMinutes(MINUTES_30);
+        if (switchedOnHourSlot) {
+            LocalTime before = localTime.minusMinutes(minutes);
             LocalTime after = before.plusHours(1);
             return String.format(Locale.US, "%02d", before.getHour()) + ":" + String.format(Locale.US, "%02d", before.getMinute()) + " - "
                 + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
         } else {
-            LocalTime after = localTime.plusHours(1);
-            return  localTime.getHour() + ":" + "00" + " - " + after.getHour() + ":" + "00";
+            /* This code hardly is being used. */
+            if (minutes >= MINUTES_45) {
+                LocalTime before = localTime.minusMinutes(minutes).plusMinutes(MINUTES_30);
+                LocalTime after = before.plusHours(1);
+                return String.format(Locale.US, "%02d", before.getHour()) + ":" + String.format(Locale.US, "%02d", before.getMinute()) + " - "
+                    + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
+            } else if (minutes <= MINUTES_15) {
+                LocalTime before = localTime.minusMinutes(minutes).minusMinutes(MINUTES_30);
+                LocalTime after = before.plusHours(1);
+                return String.format(Locale.US, "%02d", before.getHour()) + ":" + String.format(Locale.US, "%02d", before.getMinute()) + " - "
+                    + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
+            } else {
+                LocalTime after = localTime.plusHours(1);
+                return  localTime.getHour() + ":" + "00" + " - " + after.getHour() + ":" + "00";
+            }
         }
     }
 }
