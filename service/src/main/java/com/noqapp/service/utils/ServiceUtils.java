@@ -3,6 +3,7 @@ package com.noqapp.service.utils;
 import static com.noqapp.common.utils.Constants.MINUTES_15;
 import static com.noqapp.common.utils.Constants.MINUTES_30;
 import static com.noqapp.common.utils.Constants.MINUTES_45;
+import static com.noqapp.common.utils.Constants.MINUTES_59;
 import static com.noqapp.common.utils.Constants.MINUTES_60;
 
 import com.noqapp.common.utils.DateFormatter;
@@ -73,7 +74,11 @@ public class ServiceUtils {
         LocalTime localTime = zonedDateTime.toLocalTime();
         int minutes = localTime.getMinute();
 
-        if (Duration.between(storeHour.startHour(), localTime).toMinutes() < MINUTES_30) {
+        /*
+         * Note: Changing MINUTES_59 to lower number will reduce number of token issued during the store open hours.
+         * These numbers will change distribution of token over the hours.
+         */
+        if (Duration.between(storeHour.startHour(), localTime).toMinutes() < MINUTES_59) {
             LocalTime arrivalHour = storeHour.startHour();
             LOG.debug("Close to start {}", Duration.between(localTime, storeHour.startHour()).toMinutes());
             LocalTime after = arrivalHour.minusMinutes(arrivalHour.getMinute()).plusHours(1);
