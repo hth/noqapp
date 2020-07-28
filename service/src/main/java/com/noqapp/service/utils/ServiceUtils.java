@@ -76,7 +76,7 @@ public class ServiceUtils {
         if (Duration.between(storeHour.startHour(), localTime).toMinutes() < MINUTES_30) {
             LocalTime arrivalHour = storeHour.startHour();
             LOG.debug("Close to start {}", Duration.between(localTime, storeHour.startHour()).toMinutes());
-            LocalTime after = arrivalHour.plusHours(1);
+            LocalTime after = arrivalHour.minusMinutes(arrivalHour.getMinute()).plusHours(1);
 
             return String.format(Locale.US, "%02d", arrivalHour.getHour()) + ":" + String.format(Locale.US, "%02d", arrivalHour.getMinute()) + " - "
                 + String.format(Locale.US, "%02d", after.getHour()) + ":" + String.format(Locale.US, "%02d", after.getMinute());
