@@ -54,3 +54,7 @@ Remove Old Mail
 Updated Inventory
 
      db.getCollection('STORE_PRODUCT').update({"BS" : "5f0d754eb452cd1a5d46170d"}, {$set : {"IC":10000}}, false, true);
+
+Queue Sort with selective columns  
+    
+    db.getCollection('QUEUE').find({"DN" : "Grocery/Liquor Ex-Servicemen"}, { TN: 1, SL: 1, C: 1, EB: 1 }).sort({ TN: -1 })
