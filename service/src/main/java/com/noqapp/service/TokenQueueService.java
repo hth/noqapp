@@ -334,7 +334,7 @@ public class TokenQueueService {
                     LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
                     return new JsonToken(codeQR, tokenQueue.getBusinessType());
                 } catch (ExpectedServiceBeyondStoreClosingHour e) {
-                    LOG.warn("Error serving to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage());
+                    LOG.warn("Error serving to queue did={} qid={} codeQR={} reason={}", did, qid, codeQR, e.getLocalizedMessage());
                     return new JsonToken(codeQR, bizStore.getBusinessType())
                         .setToken(0)
                         .setServingNumber(0)
