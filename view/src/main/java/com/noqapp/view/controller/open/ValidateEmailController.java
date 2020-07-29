@@ -103,7 +103,7 @@ public class ValidateEmailController {
             }
             return validateResult;
         } catch (Exception e) {
-            LOG.error("Failed validating reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed validating emailValidateKey={} reason={}", key.getText(), e.getLocalizedMessage(), e);
             methodStatusSuccess = false;
             throw e;
         } finally {
@@ -126,7 +126,7 @@ public class ValidateEmailController {
     ) throws IOException {
         String nextPage = null;
         if (StringUtils.isNotBlank(success.getText())) {
-            nextPage = Boolean.valueOf(success.getText()) ? validateSuccessPage : validateFailurePage;
+            nextPage = Boolean.parseBoolean(success.getText()) ? validateSuccessPage : validateFailurePage;
             model.addAttribute(
                 "registrationMessage",
                 "Please log in with your email address and password entered during registration.");
