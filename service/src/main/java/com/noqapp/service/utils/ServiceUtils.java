@@ -90,7 +90,7 @@ public class ServiceUtils {
             LocalTime arrivalHour = storeHour.endHour().minusHours(1);
             LocalTime departureHour = storeHour.endHour();
             return String.format(Locale.US, "%02d", arrivalHour.getHour()) + ":" + String.format(Locale.US, "%02d", arrivalHour.getMinute()) + " - "
-                + String.format(Locale.US, "%02d", departureHour.getHour()) + ":" + String.format(Locale.US, "%02d", departureHour.getMinute()) + " (store closes)";
+                + String.format(Locale.US, "%02d", departureHour.getHour()) + ":" + String.format(Locale.US, "%02d", departureHour.getMinute()) + " (closing)";
         }
 
         if (switchedOnHourSlot) {
