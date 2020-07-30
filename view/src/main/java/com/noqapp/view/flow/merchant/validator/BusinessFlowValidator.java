@@ -606,6 +606,120 @@ public class BusinessFlowValidator {
                             .build());
                     status = "failure";
                 }
+
+                if (businessHour.getLunchTimeStart() > 2359) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].lunchTimeStart")
+                            .defaultText("Lunch Start Time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " cannot exceed 2359")
+                            .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getLunchTimeEnd() > 2359) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].lunchTimeEnd")
+                            .defaultText("Lunch End Time for  "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " cannot exceed 2359")
+                            .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getLunchTimeStart() != 0 && businessHour.getLunchTimeStart() < businessHour.getStartHourStore()) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].lunchTimeStart")
+                            .defaultText("Lunch Start Time for  "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " should be after store start time. Or set value to 0.")
+                            .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getLunchTimeEnd() != 0 && (businessHour.getLunchTimeEnd() > businessHour.getEndHourStore() || businessHour.getLunchTimeEnd() < businessHour.getStartHourStore())) {
+                    if (businessHour.getLunchTimeEnd() > businessHour.getEndHourStore()) {
+                        messageContext.addMessage(
+                            new MessageBuilder()
+                                .error()
+                                .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].lunchTimeEnd")
+                                .defaultText("Lunch End Time for  "
+                                    + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                    + " should be before store close time.")
+                                .build());
+                        status = "failure";
+                    }
+
+                    if (businessHour.getLunchTimeEnd() < businessHour.getStartHourStore()) {
+                        messageContext.addMessage(
+                            new MessageBuilder()
+                                .error()
+                                .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].lunchTimeEnd")
+                                .defaultText("Lunch End Time for  "
+                                    + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                    + " should be after store start time.")
+                                .build());
+                        status = "failure";
+                    }
+                }
+
+                if (businessHour.getLunchTimeStart() > 0) {
+                    if (businessHour.getLunchTimeEnd() == 0) {
+                        messageContext.addMessage(
+                            new MessageBuilder()
+                                .error()
+                                .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].lunchTimeEnd")
+                                .defaultText("Lunch End Time for  "
+                                    + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                    + " should be set or remove Lunch Start Time")
+                                .build());
+                        status = "failure";
+                    }
+                }
+
+                if (businessHour.getLunchTimeEnd() > 0) {
+                    if (businessHour.getLunchTimeStart() == 0) {
+                        messageContext.addMessage(
+                            new MessageBuilder()
+                                .error()
+                                .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].lunchTimeStart")
+                                .defaultText("Lunch Start Time for  "
+                                    + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                    + " should be set or remove Lunch End Time.")
+                                .build());
+                        status = "failure";
+                    }
+                }
+
+                if (businessHour.getLunchTimeStart() == businessHour.getStartHourStore() || businessHour.getLunchTimeEnd() == businessHour.getEndHourStore()) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].lunchTimeStart")
+                            .defaultText("Lunch Start Time or End Time for  "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " should not match " + registerBusiness.getStoreBusinessType().getClassifierTitle() + " Start Time or Close Time.")
+                            .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getLunchTimeStart() > businessHour.getLunchTimeEnd()) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].lunchTimeStart")
+                            .defaultText("Lunch Start Time for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " should be before Lunch End Time.")
+                            .build());
+                    status = "failure";
+                }
             }
         }
 
@@ -658,7 +772,6 @@ public class BusinessFlowValidator {
                         .build());
                 status = "failure";
             }
-
 
             if (registerBusiness.getAppointmentOpenHowFar() > 52) {
                 messageContext.addMessage(
