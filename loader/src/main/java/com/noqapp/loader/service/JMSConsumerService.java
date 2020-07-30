@@ -33,19 +33,19 @@ public class JMSConsumerService {
 
     @JmsListener(destination = "${activemq.destination.mail.signup}", containerFactory = "jmsMailSingUpListenerContainerFactory")
     public void sendMailOnSignUp(SignupUserInfo signupUserInfo) {
-        LOG.info("ActiveMQ received on signup {}", signupUserInfo);
+        LOG.info("ActiveMQ received {}", signupUserInfo);
         mailService.sendValidationMailOnAccountCreation(signupUserInfo.getUserId(), signupUserInfo.getQid(), signupUserInfo.getName());
     }
 
     @JmsListener(destination = "${activemq.destination.mail.change}", containerFactory = "jmsMailChangeListenerContainerFactory")
     public void sendMailOnChangeInMail(ChangeMailOTP changeMailOTP) {
-        LOG.info("ActiveMQ received on change mail {}", changeMailOTP);
+        LOG.info("ActiveMQ received {}", changeMailOTP);
         mailService.sendOTPMail(changeMailOTP.getUserId(), changeMailOTP.getName(), changeMailOTP.getMailOTP(), "email address");
     }
 
     @JmsListener(destination = "${activemq.destination.feedback}", containerFactory = "jmsFeedbackListenerContainerFactory")
     public void sendMailOnCFeedback(FeedbackMail feedbackMail) {
-        LOG.info("ActiveMQ received on user feedback {}", feedbackMail);
+        LOG.info("ActiveMQ received {}", feedbackMail);
 
         Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("userId", feedbackMail.getUserId());
@@ -63,7 +63,7 @@ public class JMSConsumerService {
 
     @JmsListener(destination = "${activemq.destination.review.negative}", containerFactory = "jmsReviewNegativeListenerContainerFactory")
     public void sendMailOnReviewSentiment(ReviewSentiment reviewSentiment) {
-        LOG.info("ActiveMQ received sentiments {}", reviewSentiment);
+        LOG.info("ActiveMQ received {}", reviewSentiment);
 
         Map<String, Object> rootMap = new HashMap<>();
         rootMap.put("storeName", reviewSentiment.getStoreName());

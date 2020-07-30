@@ -7,8 +7,6 @@ import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.MailEntity;
 import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.UserPreferenceEntity;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.MailStatusEnum;
 import com.noqapp.domain.types.MailTypeEnum;
 import com.noqapp.repository.MailManager;
@@ -135,7 +133,7 @@ public class MailService {
         rootMap.put("parentHost", parentHost);
 
         try {
-            LOG.info("Account validation sent to={} name={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo, name);
+            LOG.info("Account validation sent to={}", StringUtils.isBlank(devSentTo) ? userId : devSentTo);
             MailEntity mail = new MailEntity()
                 .setToMail(userId)
                 .setToName(name)
@@ -212,15 +210,9 @@ public class MailService {
                 userAccount.getQueueUserId(),
                 userAccount.getUserId());
 
-            String name = userAccount.getName();
-            if (userAccount.getName().equalsIgnoreCase(userAccount.getQueueUserId())) {
-                UserProfileEntity userProfile = accountService.findProfileByQueueUserId(userAccount.getQueueUserId());
-                name = userProfile.getName();
-            }
-
             boolean status = accountValidationMail(
                 userAccount.getUserId(),
-                name,
+                userAccount.getName(),
                 accountValidate.getAuthenticationKey());
 
             if (status) {
