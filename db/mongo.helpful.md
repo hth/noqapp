@@ -59,3 +59,7 @@ Queue Sort with selective columns
     
     db.getCollection('QUEUE').find({"DN" : "Grocery/Liquor Ex-Servicemen"}, { TN: 1, SL: 1, C: 1, EB: 1 }).sort({ TN: -1 })
     db.getCollection('QUEUE').find({"QR" : "5ecda209547fbc370e824e1e"}, { TN: 1, SL: 1, C: 1, EB: 1 }).sort({ TN: -1 })
+    
+Regex NOT
+
+    db.getCollection('EMAIL_VALIDATE').find({ QID: { $not: /^1.*/ } }).count()    
