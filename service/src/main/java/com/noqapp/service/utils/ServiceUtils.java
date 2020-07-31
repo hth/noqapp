@@ -118,12 +118,12 @@ public class ServiceUtils {
         }
     }
 
-    public static JsonToken blankJsonToken(String codeQR, QueueStatusEnum queueStatusEnum, BizStoreEntity bizStore) {
+    public static JsonToken blankJsonToken(String codeQR, QueueStatusEnum queueStatus, BizStoreEntity bizStore) {
         return new JsonToken(codeQR, bizStore.getBusinessType())
             .setToken(0)
             .setServingNumber(0)
             .setDisplayName(bizStore.getDisplayName())
-            .setQueueStatus(queueStatusEnum)
+            .setQueueStatus(queueStatus)
             .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
     }
 }
