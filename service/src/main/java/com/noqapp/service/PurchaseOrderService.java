@@ -232,7 +232,7 @@ public class PurchaseOrderService {
                     .setServingNumber(0)
                     .setDisplayName(bizStore.getDisplayName())
                     .setQueueStatus(QueueStatusEnum.L)
-                    .setExpectedServiceBegin(new Date());
+                    .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
             }
             LOG.info("Assigned order number with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
             Date expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
@@ -607,7 +607,7 @@ public class PurchaseOrderService {
             } else {
                 jsonToken = new JsonToken(jsonPurchaseOrder.getCodeQR(), jsonPurchaseOrder.getBusinessType());
                 jsonToken.setToken(jsonPurchaseOrder.getToken());
-                jsonToken.setExpectedServiceBegin(new Date());
+                jsonToken.setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
             }
             /* Transaction Id is required key and is indexed set to unique. Without this, session and transaction fails. */
             purchaseOrder.setTransactionId(CommonUtil.generateTransactionId(bizStore.getId(), jsonToken.getToken()));
