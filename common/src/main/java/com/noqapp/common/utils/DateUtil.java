@@ -52,6 +52,7 @@ public final class DateUtil {
     private static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
+    public static final DateTimeFormatter DTF_ISO = DateTimeFormatter.ofPattern(ISO8601_FMT, Locale.US);
     public static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.US);
     public static final DateTimeFormatter DTF_DD_MMM_YYYY = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.US);
     private static final DateTimeFormatter DTF_YYYY_MM_DD_KK_MM = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
@@ -407,5 +408,17 @@ public final class DateUtil {
     public static Date convertFromISODate(String isoFormattedDateString) {
         TemporalAccessor ta = DateTimeFormatter.ISO_INSTANT.parse(isoFormattedDateString);
         return Date.from(Instant.from(ta));
+    }
+
+    public static ZonedDateTime getZonedDateTimeAtUTC() {
+        return ZonedDateTime.now(ZoneId.of("UTC"));
+    }
+
+    public static String getLocalDateTimeToISODate(ZonedDateTime expectedServiceBegin, String timeZone) {
+        return expectedServiceBegin.withZoneSameInstant(ZoneId.of(timeZone)).format(DateUtil.DTF_ISO);
+    }
+
+    public static String getLocalDateTimeToISODate(ZonedDateTime expectedServiceBegin) {
+        return getLocalDateTimeToISODate(expectedServiceBegin, "UTC");
     }
 }

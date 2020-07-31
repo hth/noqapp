@@ -20,8 +20,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashMap;
+import java.time.ZonedDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -77,13 +76,13 @@ class TokenQueueServiceTest {
         Assertions.assertThrows(ExpectedServiceBeyondStoreClosingHour.class, () -> {
             for (int i = 1; i < 100; i++) {
                 try {
-                    Date expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(
+                    ZonedDateTime expectedServiceBegin_UTC = tokenQueueService.computeExpectedServiceBeginTime(
                         300000,
                         ZoneId.of("Pacific/Honolulu"),
                         storeHour,
                         new TokenQueueEntity().setLastNumber(i).setCurrentlyServing(0)
                     );
-                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of("Pacific/Honolulu").getId(), storeHour);
+                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, ZoneId.of("Pacific/Honolulu").getId(), storeHour);
                     timeSlots.put(String.valueOf(i), timeSlot);
                 } catch (ExpectedServiceBeyondStoreClosingHour e) {
                     System.err.println("Can service " + --i);

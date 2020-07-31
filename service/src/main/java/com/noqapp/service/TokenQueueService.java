@@ -1,7 +1,6 @@
 package com.noqapp.service;
 
 import static com.noqapp.common.utils.Constants.PREVENT_JOINING_BEFORE_CLOSING;
-import static com.noqapp.common.utils.DateUtil.MINUTES_IN_MILLISECONDS;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -227,7 +226,7 @@ public class TokenQueueService {
                         .setServingNumber(0)
                         .setDisplayName(bizStore.getDisplayName())
                         .setQueueStatus(QueueStatusEnum.X)
-                        .setExpectedServiceBegin(new Date());
+                        .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
                 }
 
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
@@ -241,7 +240,7 @@ public class TokenQueueService {
                             .setServingNumber(0)
                             .setDisplayName(bizStore.getDisplayName())
                             .setQueueStatus(QueueStatusEnum.C)
-                            .setExpectedServiceBegin(new Date());
+                            .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
                 }
 
                 int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
@@ -255,7 +254,7 @@ public class TokenQueueService {
                         .setServingNumber(0)
                         .setDisplayName(bizStore.getDisplayName())
                         .setQueueStatus(QueueStatusEnum.B)
-                        .setExpectedServiceBegin(new Date());
+                        .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
                 } else if (requesterTime > storeHour.getEndHour()) {
                     LOG.error("Requester attempted token after close time qid={} tokenFrom={} requesterTime={} codeQR={}",
                         qid, tokenFrom, requesterTime, codeQR);
@@ -285,7 +284,7 @@ public class TokenQueueService {
                                             .setServingNumber(0)
                                             .setDisplayName(bizStore.getDisplayName())
                                             .setQueueStatus(QueueStatusEnum.T)
-                                            .setExpectedServiceBegin(new Date())
+                                            .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC())
                                             .setTimeSlotMessage(queue.getTimeSlotMessage());
                                 }
                             }
@@ -307,7 +306,7 @@ public class TokenQueueService {
                         .setServingNumber(0)
                         .setDisplayName(bizStore.getDisplayName())
                         .setQueueStatus(QueueStatusEnum.L)
-                        .setExpectedServiceBegin(new Date());
+                        .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
                 }
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
@@ -321,8 +320,8 @@ public class TokenQueueService {
 
                     /* For limited token. */
                     if (bizStore.getAvailableTokenCount() > 0) {
-                        Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
-                        queue.setExpectedServiceBegin(expectedServiceBegin)
+                        ZonedDateTime expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
+                        queue.setExpectedServiceBegin(Date.from(expectedServiceBegin.toInstant()))
                             .setBizNameId(bizStore.getBizName().getId())
                             .setTimeSlotMessage(ServiceUtils.timeSlot(expectedServiceBegin, bizStore.getTimeZone(), storeHour));
                     } else {
@@ -340,7 +339,7 @@ public class TokenQueueService {
                         .setServingNumber(0)
                         .setDisplayName(bizStore.getDisplayName())
                         .setQueueStatus(QueueStatusEnum.A)
-                        .setExpectedServiceBegin(new Date());
+                        .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
                 }
 
                 return getJsonToken(codeQR, queue, tokenQueue);
@@ -364,7 +363,7 @@ public class TokenQueueService {
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(tokenQueue.getQueueStatus())
-            .setExpectedServiceBegin(queue.getExpectedServiceBegin())
+            .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
             .setTimeSlotMessage(queue.getTimeSlotMessage());
     }
 
@@ -396,7 +395,7 @@ public class TokenQueueService {
                         .setServingNumber(0)
                         .setDisplayName(bizStore.getDisplayName())
                         .setQueueStatus(QueueStatusEnum.X)
-                        .setExpectedServiceBegin(new Date());
+                        .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
                 }
 
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
@@ -410,7 +409,7 @@ public class TokenQueueService {
                         .setServingNumber(0)
                         .setDisplayName(bizStore.getDisplayName())
                         .setQueueStatus(QueueStatusEnum.C)
-                        .setExpectedServiceBegin(new Date());
+                        .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
                 }
 
                 int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
@@ -421,7 +420,7 @@ public class TokenQueueService {
                         .setServingNumber(0)
                         .setDisplayName(bizStore.getDisplayName())
                         .setQueueStatus(QueueStatusEnum.B)
-                        .setExpectedServiceBegin(new Date());
+                        .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
                 }
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
@@ -432,7 +431,7 @@ public class TokenQueueService {
                         .setServingNumber(0)
                         .setDisplayName(bizStore.getDisplayName())
                         .setQueueStatus(QueueStatusEnum.L)
-                        .setExpectedServiceBegin(new Date());
+                        .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
                 }
                 /* Since its a dummy number set before purchase there is a possibility of having more numbers than limit set. */
                 tokenQueue.setLastNumber(Integer.parseInt(LocalDateTime.now().format(DateUtil.DTF_HH_MM_SS_SSS)));
@@ -458,7 +457,7 @@ public class TokenQueueService {
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setExpectedServiceBegin(queue.getExpectedServiceBegin())
+                    .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
                     .setTransactionId(queue.getTransactionId());
             }
 
@@ -473,7 +472,7 @@ public class TokenQueueService {
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(tokenQueue.getQueueStatus())
-                .setExpectedServiceBegin(queue.getExpectedServiceBegin())
+                .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
                 .setTransactionId(queue.getTransactionId());
         } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
@@ -499,7 +498,7 @@ public class TokenQueueService {
                     .setServingNumber(0)
                     .setDisplayName(bizStore.getDisplayName())
                     .setQueueStatus(QueueStatusEnum.L)
-                    .setExpectedServiceBegin(new Date());
+                    .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
             }
 
             doActionBasedOnQueueStatus(codeQR, newTokenQueue);
@@ -517,7 +516,7 @@ public class TokenQueueService {
         ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
         DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
-        Date expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue);
+        ZonedDateTime expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue);
         if (queue.getTokenNumber() > existingStateOfTokenQueue.getLastNumber()) {
             /*
              * Update expectedServiceBegin and Token Number when payment is being made while getting a new token.
@@ -526,7 +525,7 @@ public class TokenQueueService {
             boolean updatedState = queueManager.onPaymentChangeToQueue(
                 queue.getId(),
                 tokenQueue.getLastNumber(),
-                expectedServiceBegin);
+                Date.from(expectedServiceBegin.toInstant()));
 
             LOG.info("Queue state updated successfully={}", updatedState);
         }
@@ -541,8 +540,8 @@ public class TokenQueueService {
     }
 
     /** Calculate based on zone and then save the expected service time based on UTC. */
-    Date computeExpectedServiceBeginTime(long averageServiceTime, ZoneId zoneId, StoreHourEntity storeHour, TokenQueueEntity tokenQueue) {
-        Date expectedServiceBegin;
+    ZonedDateTime computeExpectedServiceBeginTime(long averageServiceTime, ZoneId zoneId, StoreHourEntity storeHour, TokenQueueEntity tokenQueue) {
+        ZonedDateTime expectedServiceBegin;
         if (0 != averageServiceTime) {
             ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
             LOG.debug("Time zonedNow={} at zoneId={} bizStoreId={}", zonedNow, zoneId.getId(), storeHour.getBizStoreId());
@@ -551,19 +550,14 @@ public class TokenQueueService {
             Duration duration = Duration.between(zonedNow, zonedStartHour);
             LOG.debug("Duration in minutes={}", duration.toMinutes());
 
-            /*
-             * Why subtract 1, as the time has to be calculated for the start of service.
-             * By keeping last number, service time is delayed. Additional 1 at the end is to make sure this equation does not
-             * return 0.
-             */
-            long serviceInSeconds = new BigDecimal(averageServiceTime)
-                .divide(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING)
-                .multiply(new BigDecimal(tokenQueue.getLastNumber() - 1 - tokenQueue.getCurrentlyServing()))
-                .add(new BigDecimal(1)).longValue();
-            LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
+            BigDecimal averageServiceTimeInSeconds = new BigDecimal(averageServiceTime)
+                .divide(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING);
 
             ZonedDateTime zonedServiceTime;
             if (duration.isNegative()) {
+                long serviceInSeconds = averageServiceTimeInSeconds.multiply(new BigDecimal(tokenQueue.getLastNumber())).longValue();
+                LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
+
                 LOG.debug("Store has already started or closed");
                 zonedServiceTime = ZonedDateTime.of(
                     LocalDateTime.now(zoneId)
@@ -571,6 +565,10 @@ public class TokenQueueService {
                         .plusMinutes(storeHour.getDelayedInMinutes()),
                     zoneId);
             } else {
+                int diff = tokenQueue.getLastNumber() == tokenQueue.getCurrentlyServing() ? 1 : tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing();
+                long serviceInSeconds = averageServiceTimeInSeconds.multiply(new BigDecimal(diff)).longValue();
+                LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
+
                 zonedServiceTime = ZonedDateTime.of(
                     LocalDateTime.now(zoneId)
                         .plusSeconds(serviceInSeconds)
@@ -599,12 +597,12 @@ public class TokenQueueService {
             }
 
             /* Changed to UTC time before saving. */
-            expectedServiceBegin = DateUtil.convertToDateTime_UTC(zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
+            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
             LOG.debug("Expected service time for token {} UTC {} {}", tokenQueue.getLastNumber(), expectedServiceBegin, zonedServiceTime);
         } else {
             LOG.error("AverageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
             ZonedDateTime zonedServiceTime = ZonedDateTime.of(LocalDateTime.now(zoneId), zoneId);
-            expectedServiceBegin = DateUtil.convertToDateTime_UTC(zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime());
+            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
         }
         return expectedServiceBegin;
     }

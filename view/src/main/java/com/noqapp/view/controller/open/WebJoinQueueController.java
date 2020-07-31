@@ -55,6 +55,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -278,7 +281,7 @@ public class WebJoinQueueController {
         WebJoinQueueForm webJoinQueue,
 
         HttpServletResponse response
-    ) throws IOException, ParseException {
+    ) throws IOException {
         try {
             LOG.info("CodeQR={}", webJoinQueue.getCodeQR().getText());
             String codeQRDecoded = new String(Base64.getDecoder().decode(webJoinQueue.getCodeQR().getText()), StandardCharsets.ISO_8859_1);
@@ -299,7 +302,7 @@ public class WebJoinQueueController {
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setExpectedServiceBegin(queue.getExpectedServiceBegin());
+                    .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")));
             } else {
                 UserProfileEntity userProfile = accountService.checkUserExistsByPhone(webJoinQueue.getPhone().getText());
                 if (bizStore.isAllowLoggedInUser() && userProfile == null) {
@@ -384,7 +387,7 @@ public class WebJoinQueueController {
             }
 
             if (StringUtils.isNotBlank(jsonToken.getExpectedServiceBegin())) {
-                jsonToken.setExpectedServiceBegin(DateUtil.convertFromISODate(jsonToken.getExpectedServiceBegin()), bizStore.getTimeZone());
+                jsonToken.setExpectedServiceBegin(jsonToken.getExpectedServiceBeginDate(), bizStore.getTimeZone());
             }
 
             String expectedServiceBegin = StringUtils.isBlank(jsonToken.getExpectedServiceBegin()) ? "" : jsonToken.getExpectedServiceBegin();

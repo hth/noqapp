@@ -2,7 +2,6 @@ package com.noqapp.service.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.types.QueueStatusEnum;
 
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -46,143 +44,119 @@ class ServiceUtilsTest {
             0, 0, 0, 0,
             zoneId);
 
-        zonedServiceTime = zonedServiceTime.plusHours(9).plusMinutes(30);
-        Date date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("09:30 - 10:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        //Change to UTC time as the input is UTC based
+        ZonedDateTime zonedServiceTime_UTC = zonedServiceTime.withZoneSameInstant(ZoneId.of("UTC"));
+
+        //9:30
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusHours(9).plusMinutes(30);
+        assertEquals("09:30 - 10:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //9:45
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("09:30 - 10:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("09:30 - 10:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //10:00
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("09:30 - 10:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("09:30 - 10:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //10:15
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("09:30 - 10:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("09:30 - 10:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //10:30
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("10:00 - 11:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("10:00 - 11:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //10:45
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("10:00 - 11:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("10:00 - 11:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //11:00
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("11:00 - 12:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("11:00 - 12:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //11:15
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("11:00 - 12:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("11:00 - 12:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //11:30
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("11:00 - 12:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("11:00 - 12:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //11:45
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("11:00 - 12:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("11:00 - 12:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //12:00
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("12:00 - 13:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("12:00 - 13:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //12:15
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("12:00 - 13:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("12:00 - 13:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //12:30
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("12:00 - 13:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("12:00 - 13:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //12:45
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("12:00 - 13:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("12:00 - 13:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //13:00
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("13:00 - 14:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("13:00 - 14:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //13:15
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("13:00 - 14:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("13:00 - 14:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //13:30
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("13:00 - 14:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("13:00 - 14:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //13:45
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("13:00 - 14:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("13:00 - 14:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //14:00
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("14:00 - 15:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("14:00 - 15:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //14:15
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("14:00 - 15:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("14:00 - 15:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //14:30
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("14:00 - 15:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("14:00 - 15:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //14:45
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("14:00 - 15:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("14:00 - 15:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //15:00
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("15:00 - 16:00", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("15:00 - 16:00", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //15:15
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("15:00 - 16:00 (closing)", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("15:00 - 16:00 (closing)", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //15:30
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("15:00 - 16:00 (closing)", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("15:00 - 16:00 (closing)", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //15:45
-        zonedServiceTime = zonedServiceTime.plusMinutes(15);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("15:00 - 16:00 (closing)", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(15);
+        assertEquals("15:00 - 16:00 (closing)", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //15:50
-        zonedServiceTime = zonedServiceTime.plusMinutes(5);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("15:00 - 16:00 (closing)", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(5);
+        assertEquals("15:00 - 16:00 (closing)", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
 
         //16:00
-        zonedServiceTime = zonedServiceTime.plusMinutes(10);
-        date = DateUtil.asDate(zonedServiceTime.toLocalDateTime());
-        assertEquals("15:00 - 16:00 (closing)", ServiceUtils.timeSlot(date, "America/Los_Angeles", storeHour));
+        zonedServiceTime_UTC = zonedServiceTime_UTC.plusMinutes(10);
+        assertEquals("15:00 - 16:00 (closing)", ServiceUtils.timeSlot(zonedServiceTime_UTC, "America/Los_Angeles", storeHour));
     }
 }
