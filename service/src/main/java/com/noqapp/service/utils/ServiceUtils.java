@@ -7,7 +7,6 @@ import static com.noqapp.common.utils.Constants.MINUTES_59;
 import static com.noqapp.common.utils.Constants.MINUTES_60;
 
 import com.noqapp.common.utils.DateFormatter;
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.GetTimeAgoUtils;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -19,7 +18,6 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -68,8 +66,8 @@ public class ServiceUtils {
         return Duration.between(DateFormatter.getLocalTime(requesterTime), DateFormatter.getLocalTime(storeStart)).getSeconds() * 1000;
     }
 
-    public static String timeSlot(Date date, String timeZone, StoreHourEntity storeHour) {
-        ZonedDateTime zonedDateTime = DateUtil.convertToLocalDateTime(date, timeZone);
+    public static String timeSlot(ZonedDateTime zonedDateTimeUTC, String timeZone, StoreHourEntity storeHour) {
+        ZonedDateTime zonedDateTime = zonedDateTimeUTC.withZoneSameInstant(ZoneId.of(timeZone));
 
         LocalTime localTime = zonedDateTime.toLocalTime();
         int minutes = localTime.getMinute();
