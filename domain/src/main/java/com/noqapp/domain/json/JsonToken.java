@@ -174,6 +174,7 @@ public class JsonToken extends AbstractDomain {
         return expectedServiceBegin;
     }
 
+    /** ZoneDateTime is set at UTC */
     public JsonToken setExpectedServiceBegin(ZonedDateTime expectedServiceBegin) {
         if (null != expectedServiceBegin) {
             this.expectedServiceBeginDate = expectedServiceBegin;

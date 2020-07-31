@@ -320,8 +320,8 @@ public class TokenQueueService {
 
                     /* For limited token. */
                     if (bizStore.getAvailableTokenCount() > 0) {
-                        Date expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
-                        queue.setExpectedServiceBegin(expectedServiceBegin)
+                        ZonedDateTime expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
+                        queue.setExpectedServiceBegin(Date.from(expectedServiceBegin.toInstant()))
                             .setBizNameId(bizStore.getBizName().getId())
                             .setTimeSlotMessage(ServiceUtils.timeSlot(expectedServiceBegin, bizStore.getTimeZone(), storeHour));
                     } else {
@@ -363,7 +363,7 @@ public class TokenQueueService {
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(tokenQueue.getQueueStatus())
-            .setExpectedServiceBegin(queue.getExpectedServiceBegin())
+            .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
             .setTimeSlotMessage(queue.getTimeSlotMessage());
     }
 
@@ -457,7 +457,7 @@ public class TokenQueueService {
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setExpectedServiceBegin(queue.getExpectedServiceBegin())
+                    .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
                     .setTransactionId(queue.getTransactionId());
             }
 
@@ -472,7 +472,7 @@ public class TokenQueueService {
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(tokenQueue.getQueueStatus())
-                .setExpectedServiceBegin(queue.getExpectedServiceBegin())
+                .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
                 .setTransactionId(queue.getTransactionId());
         } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
@@ -516,7 +516,7 @@ public class TokenQueueService {
         ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
         DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
-        Date expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue);
+        ZonedDateTime expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue);
         if (queue.getTokenNumber() > existingStateOfTokenQueue.getLastNumber()) {
             /*
              * Update expectedServiceBegin and Token Number when payment is being made while getting a new token.
@@ -525,7 +525,7 @@ public class TokenQueueService {
             boolean updatedState = queueManager.onPaymentChangeToQueue(
                 queue.getId(),
                 tokenQueue.getLastNumber(),
-                expectedServiceBegin);
+                Date.from(expectedServiceBegin.toInstant()));
 
             LOG.info("Queue state updated successfully={}", updatedState);
         }
