@@ -1,6 +1,7 @@
 package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -12,16 +13,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.annotation.Transient;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.StringJoiner;
-import java.util.TimeZone;
 
 /**
  * Since the object is broadcast, avoid using customer identifying details in here.
@@ -85,7 +83,8 @@ public class JsonToken extends AbstractDomain {
     private String timeSlotMessage;
 
     @Transient
-    private Date expectedServiceBeginDate;
+    @JsonIgnore
+    private ZonedDateTime expectedServiceBeginDate;
 
     /* Note: Avoid firebase broadcasting QID in JsonToken. Hence refrained from using QID here. */
     JsonToken() {}
@@ -175,18 +174,18 @@ public class JsonToken extends AbstractDomain {
         return expectedServiceBegin;
     }
 
-    public JsonToken setExpectedServiceBegin(Date expectedServiceBegin) {
+    public JsonToken setExpectedServiceBegin(ZonedDateTime expectedServiceBegin) {
         if (null != expectedServiceBegin) {
             this.expectedServiceBeginDate = expectedServiceBegin;
-            this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone("UTC"));
+            this.expectedServiceBegin = DateUtil.getLocalDateTimeToISODate(expectedServiceBegin);
         }
         return this;
     }
 
-    public JsonToken setExpectedServiceBegin(Date expectedServiceBegin, String timeZone) {
+    public JsonToken setExpectedServiceBegin(ZonedDateTime expectedServiceBegin, String timeZone) {
         if (null != expectedServiceBegin) {
             this.expectedServiceBeginDate = expectedServiceBegin;
-            this.expectedServiceBegin = DateFormatUtils.format(expectedServiceBegin, ISO8601_FMT, TimeZone.getTimeZone(timeZone));
+            this.expectedServiceBegin = DateUtil.getLocalDateTimeToISODate(expectedServiceBegin, timeZone);
         }
         return this;
     }
@@ -218,7 +217,7 @@ public class JsonToken extends AbstractDomain {
         return this;
     }
 
-    public Date getExpectedServiceBeginDate() {
+    public ZonedDateTime getExpectedServiceBeginDate() {
         return expectedServiceBeginDate;
     }
 
