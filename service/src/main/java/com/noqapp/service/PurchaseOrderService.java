@@ -72,6 +72,7 @@ import com.noqapp.service.exceptions.StoreTempDayClosedException;
 import com.noqapp.service.nlp.NLPService;
 import com.noqapp.service.payment.CashfreeService;
 import com.noqapp.service.transaction.TransactionService;
+import com.noqapp.service.utils.ServiceUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -227,7 +228,7 @@ public class PurchaseOrderService {
         try {
             TokenQueueEntity tokenQueue = tokenQueueService.getNextToken(codeQR, bizStore.getAvailableTokenCount());
             if (tokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
-                return TokenQueueService.blankJsonToken(codeQR, QueueStatusEnum.L, bizStore);
+                return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.L, bizStore);
             }
             LOG.info("Assigned order number with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
             ZonedDateTime expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);

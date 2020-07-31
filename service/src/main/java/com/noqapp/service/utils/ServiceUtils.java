@@ -7,8 +7,11 @@ import static com.noqapp.common.utils.Constants.MINUTES_59;
 import static com.noqapp.common.utils.Constants.MINUTES_60;
 
 import com.noqapp.common.utils.DateFormatter;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.GetTimeAgoUtils;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.QueueStatusEnum;
 
 import org.slf4j.Logger;
@@ -113,5 +116,14 @@ public class ServiceUtils {
                 return  localTime.getHour() + ":" + "00" + " - " + after.getHour() + ":" + "00";
             }
         }
+    }
+
+    public static JsonToken blankJsonToken(String codeQR, QueueStatusEnum queueStatusEnum, BizStoreEntity bizStore) {
+        return new JsonToken(codeQR, bizStore.getBusinessType())
+            .setToken(0)
+            .setServingNumber(0)
+            .setDisplayName(bizStore.getDisplayName())
+            .setQueueStatus(queueStatusEnum)
+            .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
     }
 }
