@@ -59,8 +59,6 @@ public final class DateUtil {
     public static final DateTimeFormatter DTF_HH_MM_SS_SSS = DateTimeFormatter.ofPattern("HHmmssSSS", Locale.US);
 
     public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-    public static final SimpleDateFormat SDF_MMM_YYYY = new SimpleDateFormat("MMM, yyyy", Locale.US);
-    public static final SimpleDateFormat SDF_DD_MMM_YYYY = new SimpleDateFormat("dd MMM, yyyy", Locale.US);
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
 
     public enum DAY {TODAY, TOMORROW}
@@ -339,7 +337,7 @@ public final class DateUtil {
     public static ZonedDateTime computeNextRunTimeAtUTC(TimeZone timeZone, int hourOfDay, int minuteOfDay, DAY day) {
         try {
             Assert.notNull(timeZone, "TimeZone should not be null");
-            String str = SDF_YYYY_MM_DD.format(new Date()) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
+            String str = DateUtil.getZonedDateTimeAtUTC().format(DTF_YYYY_MM_DD) + String.format(" %02d", hourOfDay) + String.format(":%02d", minuteOfDay);
             /* Compute next run. New Date technically gives us today's run date. */
             LocalDateTime localDateTime = LocalDateTime.parse(str, DTF_YYYY_MM_DD_KK_MM);
             switch (day) {
