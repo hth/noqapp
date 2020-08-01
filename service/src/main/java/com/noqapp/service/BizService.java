@@ -641,6 +641,8 @@ public class BizService {
             storeHour.getStartHour(),
             storeHour.getTokenNotAvailableFrom(),
             storeHour.getEndHour(),
+            storeHour.getLunchTimeStart(),
+            storeHour.getLunchTimeEnd(),
             storeHour.isDayClosed(),
             storeHour.isTempDayClosed(),
             storeHour.isPreventJoining(),

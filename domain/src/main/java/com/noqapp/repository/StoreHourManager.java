@@ -24,16 +24,18 @@ public interface StoreHourManager extends RepositoryManager<StoreHourEntity> {
 
     @Mobile
     StoreHourEntity modifyOne(
-            String bizStoreId,
-            DayOfWeek dayOfWeek,
-            int tokenAvailableFrom,
-            int startHour,
-            int tokenNotAvailableFrom,
-            int endHour,
-            boolean dayClosed,
-            boolean tempDayClosed,
-            boolean preventJoining,
-            int delayedInMinutes
+        String bizStoreId,
+        DayOfWeek dayOfWeek,
+        int tokenAvailableFrom,
+        int startHour,
+        int tokenNotAvailableFrom,
+        int endHour,
+        int lunchTimeStart,
+        int lunchTimeEnd,
+        boolean dayClosed,
+        boolean tempDayClosed,
+        boolean preventJoining,
+        int delayedInMinutes
     );
 
     /* Resets temp settings for the day made on store hours. */
