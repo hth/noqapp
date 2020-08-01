@@ -535,12 +535,16 @@ public class TokenQueueService {
                 }
             }
 
-            if (zonedServiceTime.compareTo(zonedEndHour) > 0) {
-                LOG.error("After closing hour for {} zonedServiceTime={} endHour={} bizStoreId={}",
+            if (zonedServiceTime.isAfter(zonedEndHour)) {
+                BizStoreEntity bizStore = bizStoreManager.getById(storeHour.getBizStoreId());
+                LOG.error("After closing hour token {} for {} {} zonedServiceTime={} endHour={} bizStoreId={} tokenQueue={}",
+                    tokenQueue.getLastNumber(),
+                    bizStore.getBizName().getBusinessName(),
                     tokenQueue.getDisplayName(),
                     zonedServiceTime,
                     zonedEndHour,
-                    storeHour.getBizStoreId());
+                    storeHour.getBizStoreId(),
+                    tokenQueue.getId());
                 throw new ExpectedServiceBeyondStoreClosingHour("Serving time exceeds after store closing time");
             }
 

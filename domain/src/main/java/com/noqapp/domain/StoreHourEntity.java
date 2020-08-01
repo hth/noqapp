@@ -288,7 +288,7 @@ public class StoreHourEntity extends BaseEntity {
     public long storeOpenDurationInMinutes() {
         long minutes;
         if (isLunchTimeEnabled() && lunchStartHour().isAfter(startHour())) {
-            minutes = Duration.between(startHour(), lunchStartHour()).toMinutes() + Duration.between(lunchEndHour(), endHour()).toMinutes();
+            minutes = Duration.between(startHour(), lunchStartHour()).toMinutes() + Duration.between(lunchEndHour(), endHour()).toMinutes() - MINUTES_60;
         } else {
             minutes = Duration.between(startHour(), endHour()).toMinutes();
         }
