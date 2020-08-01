@@ -530,7 +530,7 @@ public class TokenQueueService {
                 Duration breakTime = Duration.between(storeHour.lunchStartHour(), storeHour.lunchEndHour());
                 ZonedDateTime zonedLunchStart = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
                 LOG.debug("Expected ServiceTime={} lunchTimeStart={}", zonedServiceTime, zonedLunchStart);
-                if (zonedServiceTime.compareTo(zonedLunchStart) > 0) {
+                if (zonedServiceTime.isAfter(zonedLunchStart)) {
                     zonedServiceTime = zonedServiceTime.plusMinutes(breakTime.toMinutes());
                 }
             }
