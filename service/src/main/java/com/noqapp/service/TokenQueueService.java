@@ -333,7 +333,10 @@ public class TokenQueueService {
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(tokenQueue.getQueueStatus())
-            .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
+            .setExpectedServiceBegin(
+                queue.getExpectedServiceBegin() == null
+                    ? DateUtil.getZonedDateTimeAtUTC()
+                    : ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
             .setTimeSlotMessage(queue.getTimeSlotMessage());
     }
 
