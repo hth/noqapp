@@ -48,7 +48,6 @@ class TokenQueueServiceTest {
     @Mock private BusinessCustomerService businessCustomerService;
     @Mock private TextToSpeechService textToSpeechService;
     @Mock private ApiHealthService apiHealthService;
-    @Mock private BizStoreEntity bizStoreEntity;
 
     private TokenQueueService tokenQueueService;
 
