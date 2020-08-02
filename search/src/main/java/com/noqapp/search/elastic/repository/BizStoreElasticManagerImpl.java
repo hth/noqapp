@@ -89,9 +89,9 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
             IndexResponse indexResponse = restHighLevelClient.index(request, RequestOptions.DEFAULT);
             if (DocWriteResponse.Result.CREATED == indexResponse.getResult()) {
-                LOG.info("Created elastic document successfully id={}", bizStoreElastic.getId());
+                LOG.info("Created elastic document successfully id={} {}", bizStoreElastic.getId(), indexResponse);
             } else if (DocWriteResponse.Result.UPDATED == indexResponse.getResult()) {
-                LOG.info("Updated elastic document id={}", bizStoreElastic.getId());
+                LOG.info("Updated elastic document id={} {}", bizStoreElastic.getId(), indexResponse);
             }
 
             ReplicationResponse.ShardInfo shardInfo = indexResponse.getShardInfo();
@@ -120,10 +120,8 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
 
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
-            if (DocWriteResponse.Result.CREATED == deleteResponse.getResult()) {
-                LOG.warn("Created successfully id={}", id);
-            } else if (DocWriteResponse.Result.UPDATED == deleteResponse.getResult()) {
-                LOG.warn("Updated document id={}", id);
+            if (DocWriteResponse.Result.DELETED == deleteResponse.getResult()) {
+                LOG.info("Deleted elastic document successfully id={} response={}", id, deleteResponse);
             }
 
             ReplicationResponse.ShardInfo shardInfo = deleteResponse.getShardInfo();

@@ -1,8 +1,9 @@
 package com.noqapp.loader.scheduledtasks;
 
-import static com.noqapp.common.utils.DateUtil.SDF_YYYY_MM_DD;
+import static com.noqapp.common.utils.DateUtil.DTF_YYYY_MM_DD;
 
 import com.noqapp.common.utils.Constants;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -101,7 +102,7 @@ public class GenerateStoreQueueHTML {
             Files.deleteIfExists(pathToTxtFile);
             Files.createDirectories(pathToTxtFile.getParent());
             Files.createFile(pathToTxtFile);
-            String modifiedDate = SDF_YYYY_MM_DD.format(new Date());
+            String modifiedDate = DateUtil.getZonedDateTimeAtUTC().format(DTF_YYYY_MM_DD);
             SiteMapIndex siteMapIndex = new SiteMapIndex();
 
             /* Max URL supported is 50_000 per site map. */
