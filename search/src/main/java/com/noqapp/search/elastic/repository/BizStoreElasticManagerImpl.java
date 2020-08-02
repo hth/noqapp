@@ -121,7 +121,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
         try {
             DeleteResponse deleteResponse = restHighLevelClient.delete(request, RequestOptions.DEFAULT);
             if (DocWriteResponse.Result.DELETED == deleteResponse.getResult()) {
-                LOG.info("Deleted successfully id={} response={}", id, deleteResponse);
+                LOG.info("Deleted elastic document successfully id={} response={}", id, deleteResponse);
             }
 
             ReplicationResponse.ShardInfo shardInfo = deleteResponse.getShardInfo();
