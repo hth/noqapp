@@ -12,6 +12,7 @@ import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
+import com.noqapp.search.elastic.service.BizStoreSpatialElasticService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
@@ -34,6 +35,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -165,12 +169,14 @@ public class StoreManagerLandingController {
                     bizService.saveStore(bizStore, "Store is now online");
                     BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId()));
                     bizStoreElasticService.save(bizStoreElastic);
+                    bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
                     return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }", storeId.getText(), ActionTypeEnum.INACTIVE.name());
                 case INACTIVE:
                     bizStore.inActive();
                     bizService.saveStore(bizStore, "Store is now offline");
                     bizStoreElasticService.delete(bizStore.getId());
                     bizService.deleteAllManagingStore(bizStore.getId());
+                    bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
                     return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }", storeId.getText(), ActionTypeEnum.ACTIVE.name());
                 default:
                     LOG.error("Reached unreachable condition {}", actionType);

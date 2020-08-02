@@ -31,6 +31,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
@@ -61,6 +64,8 @@ public class BizStoreElasticService {
     private BizStoreSpatialElasticService bizStoreSpatialElasticService;
     private ApiHealthService apiHealthService;
 
+    private ScheduledExecutorService executorService;
+
     @Autowired
     public BizStoreElasticService(
         BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
@@ -76,6 +81,8 @@ public class BizStoreElasticService {
         this.storeHourManager = storeHourManager;
         this.bizStoreSpatialElasticService = bizStoreSpatialElasticService;
         this.apiHealthService = apiHealthService;
+
+        this.executorService = Executors.newScheduledThreadPool(2);
     }
 
     @Async
@@ -117,10 +124,7 @@ public class BizStoreElasticService {
             stream.iterator().forEachRemaining(bizStore -> {
                 BizStoreElastic bizStoreElastic = null;
                 try {
-                    bizStoreElastic = DomainConversion.getAsBizStoreElastic(
-                        bizStore,
-                        storeHourManager.findAll(bizStore.getId()));
-
+                    bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, storeHourManager.findAll(bizStore.getId()));
                     bizStoreElastics.add(bizStoreElastic);
                 } catch (Exception e) {
                     LOG.error("Failed to insert in elastic data={} reason={}",
@@ -155,7 +159,7 @@ public class BizStoreElasticService {
      */
     public List<BizStoreElastic> searchByBusinessName(String businessName) {
         LOG.info("Searching for {}", businessName);
-        return bizStoreElasticManager.searchByBusinessName(businessName, PaginationEnum.TEN.getLimit());
+        return bizStoreElasticManager.searchByBusinessName(businessName, PaginationEnum.THIRTY.getLimit());
     }
 
     /**
@@ -211,5 +215,34 @@ public class BizStoreElasticService {
                 bizStoreElastics.addBizStoreElastic(bizStoreElastic);
             }
         }
+    }
+
+    /** Deletes all stores from spatial index and adds all the active store back to spatial for that business. */
+    public void updateSpatial(String bizNameId) {
+        executorService.schedule(() -> {
+            List < BizStoreEntity > bizStores = bizStoreManager.getAllBizStores(bizNameId);
+            for (BizStoreEntity bizStore : bizStores) {
+                bizStoreSpatialElasticService.delete(bizStore.getId());
+            }
+
+            List<BizStoreElastic> bizStoreActiveElastics = new ArrayList<>();
+            bizStores.stream().iterator().forEachRemaining(bizStore -> {
+                if (bizStore.isActive()) {
+                    BizStoreElastic bizStoreElastic = null;
+                    try {
+                        bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, storeHourManager.findAll(bizStore.getId()));
+                        bizStoreActiveElastics.add(bizStoreElastic);
+                    } catch (Exception e) {
+                        LOG.error("Failed to insert in elastic data={} reason={}",
+                            bizStoreElastic,
+                            e.getLocalizedMessage(),
+                            e);
+                    }
+                }
+            });
+
+            Set<BizStoreElastic> bizStoreSpatialElastics = new HashSet<>(bizStoreActiveElastics);
+            saveSpatial(bizStoreSpatialElastics);
+        }, 20, TimeUnit.SECONDS);
     }
 }
