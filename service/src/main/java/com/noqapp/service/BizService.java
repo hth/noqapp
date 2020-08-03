@@ -63,6 +63,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
@@ -92,6 +95,8 @@ public class BizService {
     private MailService mailService;
     private UserProfileManager userProfileManager;
     private ScheduledTaskManager scheduledTaskManager;
+
+    private ScheduledExecutorService executorService;
 
     @Autowired
     public BizService(
@@ -124,6 +129,8 @@ public class BizService {
         this.mailService = mailService;
         this.userProfileManager = userProfileManager;
         this.scheduledTaskManager = scheduledTaskManager;
+
+        this.executorService = Executors.newScheduledThreadPool(2);
     }
 
     public BizNameEntity getByBizNameId(String bizId) {
@@ -177,14 +184,16 @@ public class BizService {
             LOG.warn("QueueUser is null, check the call, bizStoreId={} name={} reason={} errorReason={}", bizStore.getId(), bizStore.getDisplayName(), changeInitiateReason, e.getLocalizedMessage(), e);
         }
 
-        try {
-            sendMailWhenStoreSettingHasChanged(bizStore, changeInitiateReason);
-        } catch (Exception e) {
-            LOG.warn("Failed sending change mail for store {} {}", bizStore.getId(), e.getLocalizedMessage(), e);
-        }
+        String subject = changeInitiateReason;
+        executorService.schedule(() -> {
+            try {
+                sendMailWhenStoreSettingHasChanged(bizStore, subject);
+            } catch (Exception e) {
+                LOG.warn("Failed sending change mail for store {} {}", bizStore.getId(), e.getLocalizedMessage(), e);
+            }
+        }, 20, TimeUnit.SECONDS);
     }
 
-    @Async
     @CacheEvict(value = "bizStore-codeQR", key = "#bizStore.codeQR")
     public void sendMailWhenStoreSettingHasChanged(BizStoreEntity bizStore, String changeInitiateReason) {
         try {
