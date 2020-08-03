@@ -503,6 +503,7 @@ public class TokenQueueService {
                 .multiply(new BigDecimal(tokenQueue.getLastNumber())).longValue();
             LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
 
+            /* Compute from start of the store hour. */
             ZonedDateTime zonedServiceTime = zonedStartHour
                 .plusSeconds(serviceInSeconds)
                 .plusMinutes(storeHour.getDelayedInMinutes());
