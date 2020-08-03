@@ -493,38 +493,18 @@ public class TokenQueueService {
         if (0 != averageServiceTime) {
             ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
             LOG.debug("Time zonedNow={} at zoneId={} bizStoreId={}", zonedNow, zoneId.getId(), storeHour.getBizStoreId());
-            ZonedDateTime zonedStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.startHour()), zoneId);
             ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId).minusMinutes(PREVENT_JOINING_BEFORE_CLOSING);
-            Duration duration = Duration.between(zonedNow, zonedStartHour);
-            LOG.debug("Duration in minutes={}", duration.toMinutes());
 
-            BigDecimal averageServiceTimeInSeconds = new BigDecimal(averageServiceTime)
-                .divide(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING);
+            long serviceInSeconds = new BigDecimal(averageServiceTime)
+                .divide(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING)
+                .multiply(new BigDecimal(tokenQueue.getLastNumber())).longValue();
+            LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
 
-            ZonedDateTime zonedServiceTime;
-            if (duration.isNegative()) {
-                long serviceInSeconds = averageServiceTimeInSeconds.multiply(new BigDecimal(tokenQueue.getLastNumber())).longValue();
-                LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
-
-                LOG.debug("Store has already started or closed");
-                zonedServiceTime = ZonedDateTime.of(
-                    LocalDateTime.now(zoneId)
-                        .plusSeconds(serviceInSeconds)
-                        .plusMinutes(storeHour.getDelayedInMinutes()),
-                    zoneId);
-            } else {
-                int diff = tokenQueue.getLastNumber() == tokenQueue.getCurrentlyServing() ? 1 : tokenQueue.getLastNumber() - tokenQueue.getCurrentlyServing();
-                long serviceInSeconds = averageServiceTimeInSeconds.multiply(new BigDecimal(diff)).longValue();
-                LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
-
-                zonedServiceTime = ZonedDateTime.of(
-                    LocalDateTime.now(zoneId)
-                        .plusSeconds(serviceInSeconds)
-                        .plusMinutes(duration.toMinutes())
-                        .plusMinutes(storeHour.getDelayedInMinutes()),
-                    zoneId);
-                LOG.debug("Plus getDelayedInMinutes {}", zonedServiceTime);
-            }
+            ZonedDateTime zonedServiceTime = ZonedDateTime.of(
+                LocalDateTime.now(zoneId)
+                    .plusSeconds(serviceInSeconds)
+                    .plusMinutes(storeHour.getDelayedInMinutes()),
+                zoneId);
 
             if (storeHour.isLunchTimeEnabled()) {
                 Duration breakTime = Duration.between(storeHour.lunchStartHour(), storeHour.lunchEndHour());
