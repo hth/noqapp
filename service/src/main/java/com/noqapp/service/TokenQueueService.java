@@ -493,18 +493,19 @@ public class TokenQueueService {
         if (0 != averageServiceTime) {
             ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
             LOG.debug("Time zonedNow={} at zoneId={} bizStoreId={}", zonedNow, zoneId.getId(), storeHour.getBizStoreId());
-            ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId).minusMinutes(PREVENT_JOINING_BEFORE_CLOSING);
+            ZonedDateTime zonedStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.startHour()), zoneId);
+            ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId)
+                .minusMinutes(PREVENT_JOINING_BEFORE_CLOSING)
+                .plusMinutes(storeHour.getDelayedInMinutes());
 
             long serviceInSeconds = new BigDecimal(averageServiceTime)
                 .divide(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING)
                 .multiply(new BigDecimal(tokenQueue.getLastNumber())).longValue();
             LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
 
-            ZonedDateTime zonedServiceTime = ZonedDateTime.of(
-                LocalDateTime.now(zoneId)
-                    .plusSeconds(serviceInSeconds)
-                    .plusMinutes(storeHour.getDelayedInMinutes()),
-                zoneId);
+            ZonedDateTime zonedServiceTime = zonedStartHour
+                .plusSeconds(serviceInSeconds)
+                .plusMinutes(storeHour.getDelayedInMinutes());
 
             if (storeHour.isLunchTimeEnabled()) {
                 Duration breakTime = Duration.between(storeHour.lunchStartHour(), storeHour.lunchEndHour());
