@@ -873,7 +873,6 @@ public class AdminBusinessLandingController {
         @ModelAttribute("migrateBusinessTypeForm")
         MigrateBusinessTypeForm migrateBusinessTypeForm,
 
-        Model model,
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
