@@ -391,7 +391,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     public List<BizStoreEntity> findAllOrderEndedForTheDay(Date now) {
         LOG.info("Fetch past now={}", now);
         return mongoTemplate.find(
-            query(where("QH").lte(now).and("BT").in(BusinessTypeEnum.getSelectedMessageOrigin(MessageOriginEnum.O)).and("A").is(true).and("D").is(false)),
+            query(where("QH").lte(now).and("BT").in(BusinessTypeEnum.getSelectedMessageOrigin(MessageOriginEnum.O)).and("D").is(false)),
             BizStoreEntity.class,
             TABLE
         );
