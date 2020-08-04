@@ -66,14 +66,14 @@ import javax.servlet.http.HttpServletResponse;
  * User: hitender
  * Date: 12/7/16 11:40 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
-@RequestMapping (value = "/business")
+@RequestMapping(value = "/business")
 public class AdminBusinessLandingController {
     private static final Logger LOG = LoggerFactory.getLogger(AdminBusinessLandingController.class);
 
@@ -103,31 +103,31 @@ public class AdminBusinessLandingController {
 
     @Autowired
     public AdminBusinessLandingController(
-        @Value ("${BusinessUserStoreService.queue.limit}")
+        @Value("${BusinessUserStoreService.queue.limit}")
         int queueLimit,
 
-        @Value ("${nextPage:/business/landing}")
+        @Value("${nextPage:/business/landing}")
         String nextPage,
 
         @Value("${listQueueSupervisorPage:/business/listQueueSupervisor}")
         String listQueueSupervisorPage,
 
-        @Value ("${preferredBusinessPage:/business/preferredBusiness}")
+        @Value("${preferredBusinessPage:/business/preferredBusiness}")
         String preferredBusinessPage,
 
         @Value("${authorizedUsersPage:/business/authorizedUsers}")
         String authorizedUsersPage,
 
-        @Value ("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
+        @Value("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
         String migrateBusinessRegistrationFlow,
 
-        @Value ("${storeActionFlow:redirect:/store/storeAction.htm}")
+        @Value("${storeActionFlow:redirect:/store/storeAction.htm}")
         String storeActionFlow,
 
-        @Value ("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor.htm}")
+        @Value("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor.htm}")
         String addQueueSupervisorFlow,
 
-        @Value ("${addDoctorFlow:redirect:/store/addDoctor.htm}")
+        @Value("${addDoctorFlow:redirect:/store/addDoctor.htm}")
         String addDoctorFlow,
 
         @Value("${addNewAgentFlow:redirect:/store/addNewAgent.htm}")
@@ -136,10 +136,10 @@ public class AdminBusinessLandingController {
         @Value("${queueUserDetailFlow:redirect:/store/authorizedQueueUserDetail.htm}")
         String queueUserDetailFlow,
 
-        @Value ("${editBusinessFlow:redirect:/migrate/business/registration.htm}")
+        @Value("${editBusinessFlow:redirect:/migrate/business/registration.htm}")
         String editBusinessFlow,
 
-        @Value ("${migrateBusinessTypePage:/business/migrateBusinessType}")
+        @Value("${migrateBusinessTypePage:/business/migrateBusinessType}")
         String migrateBusinessTypePage,
 
         BusinessUserService businessUserService,
@@ -182,7 +182,7 @@ public class AdminBusinessLandingController {
      */
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
     public String landing(
-        @ModelAttribute ("businessLandingForm")
+        @ModelAttribute("businessLandingForm")
         BusinessLandingForm businessLandingForm,
 
         HttpServletResponse response
@@ -239,16 +239,16 @@ public class AdminBusinessLandingController {
         }
 
         businessLandingForm
-                .setBusinessType(bizName.getBusinessType())
-                .setBizCodeQR(bizName.getCodeQR())
-                .setCategories(CommonHelper.getCategories(bizName.getBusinessType(), InvocationByEnum.BUSINESS));
+            .setBusinessType(bizName.getBusinessType())
+            .setBizCodeQR(bizName.getCodeQR())
+            .setCategories(CommonHelper.getCategories(bizName.getBusinessType(), InvocationByEnum.BUSINESS));
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(businessUser.getBizName().getId());
         businessLandingForm.setBizStores(bizStores);
         for (BizStoreEntity bizStore : bizStores) {
             QueueDetail queueDetail = new QueueDetail()
-                    .setId(bizStore.getId())
-                    .setAssignedToQueue(businessUserStoreService.findNumberOfPeopleAssignedToQueue(bizStore.getId()))
-                    .setPendingApprovalToQueue(businessUserStoreService.findNumberOfPeoplePendingApprovalToQueue(bizStore.getId()));
+                .setId(bizStore.getId())
+                .setAssignedToQueue(businessUserStoreService.findNumberOfPeopleAssignedToQueue(bizStore.getId()))
+                .setPendingApprovalToQueue(businessUserStoreService.findNumberOfPeoplePendingApprovalToQueue(bizStore.getId()));
 
             businessLandingForm.addQueueDetail(queueDetail);
         }
@@ -257,15 +257,15 @@ public class AdminBusinessLandingController {
     /**
      * List queue supervisors for a store.
      */
-    @GetMapping (value = "/{storeId}/listQueueSupervisor", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/{storeId}/listQueueSupervisor", produces = "text/html;charset=UTF-8")
     public String listQueueSupervisor(
-        @ModelAttribute ("queueSupervisorForm")
+        @ModelAttribute("queueSupervisorForm")
         QueueSupervisorForm queueSupervisorForm,
 
-        @ModelAttribute ("queueSupervisorActionForm")
+        @ModelAttribute("queueSupervisorActionForm")
         QueueSupervisorActionForm queueSupervisorActionForm,
 
-        @PathVariable ("storeId")
+        @PathVariable("storeId")
         ScrubbedInput storeId,
 
         Model model,
@@ -290,8 +290,8 @@ public class AdminBusinessLandingController {
         queueSupervisorForm.setQueueSupervisors(queueSupervisors);
 
         List<QueueSupervisor> availableQueueSupervisor = businessUserStoreService.getAllNonAdminForBusiness(
-                bizStore.getBizName().getId(),
-                bizStore.getId()
+            bizStore.getBizName().getId(),
+            bizStore.getId()
         );
         /* Filter already existing Q_SUPERVISOR for this queue. */
         availableQueueSupervisor.removeAll(queueSupervisors);
@@ -308,10 +308,9 @@ public class AdminBusinessLandingController {
     /**
      * Only admin can add store as of now. Plan is to add support for S_MANAGER to allow adding stores. S_MANAGER with
      * Business Type of DO, will not have this option either.
-     *
      * Still not supported till this date.
      */
-    @GetMapping (value = "/addStore", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/addStore", produces = "text/html;charset=UTF-8")
     public String addStore(RedirectAttributes redirectAttrs, HttpServletResponse response) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -330,10 +329,9 @@ public class AdminBusinessLandingController {
     /**
      * Only admin can add store as of now. Plan is to add support for S_MANAGER to allow adding stores. S_MANAGER with
      * Business Type of DO, will not have this option either.
-     *
      * Still not supported till this date.
      */
-    @GetMapping (value = "/addFranchiseStore", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/addFranchiseStore", produces = "text/html;charset=UTF-8")
     public String addFranchiseStore(RedirectAttributes redirectAttrs, HttpServletResponse response) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BusinessUserEntity businessUser = businessUserService.loadBusinessUser();
@@ -349,9 +347,9 @@ public class AdminBusinessLandingController {
         return storeActionFlow;
     }
 
-    @GetMapping (value = "/{bizStoreId}/editStore", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/{bizStoreId}/editStore", produces = "text/html;charset=UTF-8")
     public String editStore(
-        @PathVariable ("bizStoreId")
+        @PathVariable("bizStoreId")
         ScrubbedInput bizStoreId,
 
         RedirectAttributes redirectAttrs,
@@ -371,9 +369,9 @@ public class AdminBusinessLandingController {
         return storeActionFlow;
     }
 
-    @GetMapping (value = "/{bizStoreId}/addQueueSupervisor", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/{bizStoreId}/addQueueSupervisor", produces = "text/html;charset=UTF-8")
     public String addQueueSupervisorFlow(
-        @PathVariable ("bizStoreId")
+        @PathVariable("bizStoreId")
         ScrubbedInput bizStoreId,
 
         RedirectAttributes redirectAttributes,
@@ -393,9 +391,9 @@ public class AdminBusinessLandingController {
         return addQueueSupervisorFlow;
     }
 
-    @GetMapping (value = "/{bizStoreId}/addDoctor", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/{bizStoreId}/addDoctor", produces = "text/html;charset=UTF-8")
     public String addDoctor(
-        @PathVariable ("bizStoreId")
+        @PathVariable("bizStoreId")
         ScrubbedInput bizStoreId,
 
         RedirectAttributes redirectAttributes,
@@ -416,9 +414,9 @@ public class AdminBusinessLandingController {
     }
 
     /** Authorized Users to New Store or Queue. */
-    @GetMapping (value = "/queueUserDetail/{businessUserId}", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/queueUserDetail/{businessUserId}", produces = "text/html;charset=UTF-8")
     public String queueUserDetail(
-        @PathVariable ("businessUserId")
+        @PathVariable("businessUserId")
         ScrubbedInput businessUserId,
 
         RedirectAttributes redirectAttributes,
@@ -438,9 +436,9 @@ public class AdminBusinessLandingController {
         return queueUserDetailFlow;
     }
 
-    @GetMapping (value ="/queueUserProfile/{businessUserId}", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/queueUserProfile/{businessUserId}", produces = "text/html;charset=UTF-8")
     public String queueUserProfile(
-        @PathVariable ("businessUserId")
+        @PathVariable("businessUserId")
         ScrubbedInput businessUserId,
 
         RedirectAttributes redirectAttributes,
@@ -468,7 +466,7 @@ public class AdminBusinessLandingController {
      */
     @PostMapping(value = "/actionQueueSupervisor")
     public String actionQueueSupervisor(
-        @ModelAttribute ("queueSupervisorActionForm")
+        @ModelAttribute("queueSupervisorActionForm")
         QueueSupervisorActionForm queueSupervisorActionForm,
 
         BindingResult result,
@@ -499,12 +497,12 @@ public class AdminBusinessLandingController {
                         LOG.warn("Failed validation since queue supervising has reached {} limit", queueLimit);
 
                         result.addError(
-                                new ObjectError(
-                                        "errorMessage",
-                                        userProfile.getName()
-                                                + " already manages max limit of "
-                                                + queueLimit
-                                                + " queues. Please un-subscribe user from other queues.")
+                            new ObjectError(
+                                "errorMessage",
+                                userProfile.getName()
+                                    + " already manages max limit of "
+                                    + queueLimit
+                                    + " queues. Please un-subscribe user from other queues.")
                         );
 
                         redirectAttrs.addFlashAttribute("result", result);
@@ -514,10 +512,10 @@ public class AdminBusinessLandingController {
 
                     bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
                     businessUserStoreService.addToBusinessUserStore(
-                            businessUser.getQueueUserId(),
-                            bizStore,
-                            businessUser.getBusinessUserRegistrationStatus(),
-                            userProfile.getLevel());
+                        businessUser.getQueueUserId(),
+                        bizStore,
+                        businessUser.getBusinessUserRegistrationStatus(),
+                        userProfile.getLevel());
 
                     if (UserLevelEnum.S_MANAGER == userProfile.getLevel()) {
                         ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQidAndRemoveAnySoftDelete(businessUser.getQueueUserId());
@@ -590,15 +588,15 @@ public class AdminBusinessLandingController {
                     accountService.save(userProfile);
 
                     UserAccountEntity userAccount = accountService.changeAccountRolesToMatchUserLevel(
-                            userProfile.getQueueUserId(),
-                            userProfile.getLevel());
+                        userProfile.getQueueUserId(),
+                        userProfile.getLevel());
                     accountService.save(userAccount);
                     break;
                 case "REMOVE":
                     /* This removes from administrating a Queue. Does not remove from business. */
                     businessUserStoreService.removeFromStore(
-                            businessUser.getQueueUserId(),
-                            queueSupervisorActionForm.getBizStoreId().getText());
+                        businessUser.getQueueUserId(),
+                        queueSupervisorActionForm.getBizStoreId().getText());
 
                     bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
                     businessUserStoreService.evictFromCache(businessUser.getQueueUserId(), bizStore.getCodeQR());
@@ -626,10 +624,10 @@ public class AdminBusinessLandingController {
             return goToPage;
         } catch (Exception e) {
             LOG.error("Failed updated status for id={} status={} reason={}",
-                    queueSupervisorActionForm.getBusinessUserId().getText(),
-                    queueSupervisorActionForm.getAction().getText(),
-                    e.getLocalizedMessage(),
-                    e);
+                queueSupervisorActionForm.getBusinessUserId().getText(),
+                queueSupervisorActionForm.getAction().getText(),
+                e.getLocalizedMessage(),
+                e);
 
             String goToPage;
             switch (queueSupervisorActionForm.getAction().getText()) {
@@ -644,12 +642,12 @@ public class AdminBusinessLandingController {
     }
 
     /** List all users with role of Queue Supervisor and Manager managing queues for business. */
-    @GetMapping (value = "/authorizedUsers", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/authorizedUsers", produces = "text/html;charset=UTF-8")
     public String authorizedUsers(
-        @ModelAttribute ("queueSupervisorForm")
+        @ModelAttribute("queueSupervisorForm")
         QueueSupervisorForm queueSupervisorForm,
 
-        @ModelAttribute ("queueSupervisorActionForm")
+        @ModelAttribute("queueSupervisorActionForm")
         QueueSupervisorActionForm queueSupervisorActionForm,
 
         HttpServletResponse response
@@ -662,9 +660,9 @@ public class AdminBusinessLandingController {
             return null;
         }
         LOG.info("List authorizedUser for {} qid={} {}",
-                businessUser.getBizName().getBusinessName(),
-                queueUser.getQueueUserId(),
-                queueUser.getUserLevel());
+            businessUser.getBizName().getBusinessName(),
+            queueUser.getQueueUserId(),
+            queueUser.getUserLevel());
         /* Above condition to make sure users with right roles and access gets access. */
 
         queueSupervisorForm.setQueueName(businessUser.getBizName().getBusinessName());
@@ -673,9 +671,9 @@ public class AdminBusinessLandingController {
     }
 
     /** Add new agent. */
-    @GetMapping (value = "/{bizStoreId}/addNewAgent", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/{bizStoreId}/addNewAgent", produces = "text/html;charset=UTF-8")
     public String addNewAgent(
-        @PathVariable ("bizStoreId")
+        @PathVariable("bizStoreId")
         ScrubbedInput bizStoreId,
 
         RedirectAttributes redirectAttributes,
@@ -705,7 +703,7 @@ public class AdminBusinessLandingController {
         @RequestParam("id")
         ScrubbedInput businessUserId,
 
-        @RequestParam ("userLevel")
+        @RequestParam("userLevel")
         ScrubbedInput userLevel,
 
         HttpServletResponse response
@@ -753,7 +751,7 @@ public class AdminBusinessLandingController {
     /**
      * Edit existing business.
      */
-    @GetMapping (value = "/editBusiness", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = "/editBusiness", produces = "text/html;charset=UTF-8")
     public String editBusiness(
         RedirectAttributes redirectAttrs,
         HttpServletResponse response
@@ -875,7 +873,6 @@ public class AdminBusinessLandingController {
         @ModelAttribute("migrateBusinessTypeForm")
         MigrateBusinessTypeForm migrateBusinessTypeForm,
 
-        Model model,
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
