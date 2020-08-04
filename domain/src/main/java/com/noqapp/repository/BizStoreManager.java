@@ -85,6 +85,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
     List<BizStoreEntity> findAllQueueAcceptingAppointmentForTheDay(Date now);
 
+    /** Even consider INACTIVE as store can be marked offline. */
     List<BizStoreEntity> findAllOrderEndedForTheDay(Date now);
 
     /** Stream all documents. */
