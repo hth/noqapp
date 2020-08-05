@@ -116,17 +116,17 @@ public class StoreHourManagerImpl implements StoreHourManager {
         int delayedInMinutes
     ) {
         LOG.info("Hour Change for bizStoreId={} " +
-                "dayOfWeek={} " +
-                "tokenAvailableFrom={} " +
-                "startHour={} " +
-                "tokenNotAvailableFrom={} " +
-                "endHour={} " +
-                "lunchTimeStart={} " +
-                "lunchTimeEnd={} " +
-                "dayClosed={} " +
-                "tempDayClosed={} " +
-                "preventJoining={} " +
-                "delayedInMinutes={}",
+            "dayOfWeek={} " +
+            "tokenAvailableFrom={} " +
+            "startHour={} " +
+            "tokenNotAvailableFrom={} " +
+            "endHour={} " +
+            "lunchTimeStart={} " +
+            "lunchTimeEnd={} " +
+            "dayClosed={} " +
+            "tempDayClosed={} " +
+            "preventJoining={} " +
+            "delayedInMinutes={}",
             bizStoreId,
             dayOfWeek.getValue(),
             tokenAvailableFrom,
