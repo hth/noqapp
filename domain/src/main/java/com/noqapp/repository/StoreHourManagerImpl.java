@@ -108,6 +108,8 @@ public class StoreHourManagerImpl implements StoreHourManager {
         int startHour,
         int tokenNotAvailableFrom,
         int endHour,
+        int lunchTimeStart,
+        int lunchTimeEnd,
         boolean dayClosed,
         boolean tempDayClosed,
         boolean preventJoining,
@@ -119,6 +121,8 @@ public class StoreHourManagerImpl implements StoreHourManager {
                 "startHour={} " +
                 "tokenNotAvailableFrom={} " +
                 "endHour={} " +
+                "lunchTimeStart={} " +
+                "lunchTimeEnd={} " +
                 "dayClosed={} " +
                 "tempDayClosed={} " +
                 "preventJoining={} " +
@@ -129,6 +133,8 @@ public class StoreHourManagerImpl implements StoreHourManager {
             startHour,
             tokenNotAvailableFrom,
             endHour,
+            lunchTimeStart,
+            lunchTimeEnd,
             dayClosed,
             tempDayClosed,
             preventJoining,
@@ -139,6 +145,8 @@ public class StoreHourManagerImpl implements StoreHourManager {
                 .set("SH", startHour)
                 .set("TE", tokenNotAvailableFrom)
                 .set("EH", endHour)
+                .set("LS", lunchTimeStart)
+                .set("LE", lunchTimeEnd)
                 .set("DC", dayClosed)
                 .set("TC", tempDayClosed)
                 .set("PJ", preventJoining)
