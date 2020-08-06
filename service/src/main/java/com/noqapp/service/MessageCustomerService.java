@@ -143,7 +143,7 @@ public class MessageCustomerService {
 
         BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-            String topic = "/topic/" + bizName.getCountryShortName() + UNDER_SCORE + bizNameId + UNDER_SCORE + deviceType.name();
+            String topic = "/topics/" + bizName.getCountryShortName() + UNDER_SCORE + bizNameId + UNDER_SCORE + deviceType.name();
             switch (deviceType) {
                 case A:
                     Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_A, 1000);
