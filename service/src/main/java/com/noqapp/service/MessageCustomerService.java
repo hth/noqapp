@@ -3,7 +3,6 @@ package com.noqapp.service;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
 import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.NotificationMessageEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
@@ -15,12 +14,11 @@ import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.NotificationMessageManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 
-import com.google.common.collect.Lists;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -43,8 +41,16 @@ public class MessageCustomerService {
     private FirebaseService firebaseService;
     private BizService bizService;
 
+    private int limitedToDays;
+
+    /* Supported max limit by Firebase. */
+    private final static int maxTokenLimit = 1_000;
+
     @Autowired
     public MessageCustomerService(
+        @Value("${limitedToDays:60}")
+        int limitedToDays,
+
         QueueService queueService,
         TokenQueueService tokenQueueService,
         NotificationMessageManager notificationMessageManager,
@@ -52,6 +58,8 @@ public class MessageCustomerService {
         FirebaseService firebaseService,
         BizService bizService
     ) {
+        this.limitedToDays = limitedToDays;
+
         this.queueService = queueService;
         this.tokenQueueService = tokenQueueService;
         this.notificationMessageManager = notificationMessageManager;
@@ -91,11 +99,11 @@ public class MessageCustomerService {
     }
 
     public int sendMessageToPastClients(String bizNameId) {
-        return queueService.countDistinctQIDsInBiz(bizNameId, 60);
+        return queueService.countDistinctQIDsInBiz(bizNameId, limitedToDays);
     }
 
     public int sendMessageToPastClients(String bizNameId, int days) {
-        return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? 60 : days);
+        return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? limitedToDays : days);
     }
 
     @Deprecated
@@ -108,7 +116,7 @@ public class MessageCustomerService {
 
         int sendMessageCount = sendMessageToPastClients(bizNameId);
         LOG.info("Sending message by {} total send={} {} {} {}", qid, sendMessageCount, title, body, bizNameId);
-        queueService.distinctQIDsInBiz(bizNameId, 60).stream().iterator()
+        queueService.distinctQIDsInBiz(bizNameId, limitedToDays).stream().iterator()
             .forEachRemaining(senderQid -> tokenQueueService.sendMessageToSpecificUser(title, body, senderQid, MessageOriginEnum.A));
 
         notificationMessage.setMessageSendCount(sendMessageCount);
@@ -128,7 +136,7 @@ public class MessageCustomerService {
 
         List<String> tokens_A = new ArrayList<>();
         List<String> tokens_I = new ArrayList<>();
-        queueService.distinctQIDsInBiz(bizNameId, 60).stream().iterator()
+        queueService.distinctQIDsInBiz(bizNameId, limitedToDays).stream().iterator()
             .forEachRemaining(senderQid -> {
                 RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(senderQid);
                 switch (registeredDevice.getDeviceType()) {
@@ -146,14 +154,14 @@ public class MessageCustomerService {
             String topic = "/topics/" + bizName.getCountryShortName() + UNDER_SCORE + bizNameId + UNDER_SCORE + deviceType.name();
             switch (deviceType) {
                 case A:
-                    Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_A, 1000);
+                    Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_A, maxTokenLimit);
                     for (List<String> collectionOfToken : collectionOfTokens) {
                         firebaseService.subscribeToTopic(collectionOfToken, topic);
                     }
                     tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
                     break;
                 case I:
-                    collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_I, 1000);
+                    collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_I, maxTokenLimit);
                     for (List<String> collectionOfToken : collectionOfTokens) {
                         firebaseService.subscribeToTopic(collectionOfToken, topic);
                     }
