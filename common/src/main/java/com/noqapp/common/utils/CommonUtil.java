@@ -22,6 +22,7 @@ import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Currency;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,6 +32,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -288,5 +290,12 @@ public final class CommonUtil {
     public static boolean validateMail(String mail) {
         Matcher matcher = mailPattern.matcher(mail);
         return matcher.matches();
+    }
+
+    public static <T> Collection<List<T>> partitionBasedOnSize(List<T> inputList, int size) {
+        final AtomicInteger counter = new AtomicInteger(0);
+        return inputList.stream()
+            .collect(Collectors.groupingBy(s -> counter.getAndIncrement() / size))
+            .values();
     }
 }
