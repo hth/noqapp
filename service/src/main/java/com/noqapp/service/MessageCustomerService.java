@@ -136,8 +136,8 @@ public class MessageCustomerService {
                         tokens_I.add(registeredDevice.getToken());
                         break;
                     case A:
-                    default:
                         tokens_A.add(registeredDevice.getToken());
+                        break;
                 }
             });
 
