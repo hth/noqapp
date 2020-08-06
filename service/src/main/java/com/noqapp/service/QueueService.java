@@ -654,11 +654,11 @@ public class QueueService {
         queueManager.updateCustomerPriorityAndCustomerAttributes(qid, codeQR, tokenNumber, customerPriorityLevel, businessCustomerAttribute);
     }
 
-    public int countDistinctQIDsInBiz(String bizNameId, int days) {
-        return queueManagerJDBC.countDistinctQIDsInBiz(bizNameId, days);
+    public int countDistinctQIDsInBiz(String bizNameId, int limitedToDays) {
+        return queueManagerJDBC.countDistinctQIDsInBiz(bizNameId, limitedToDays);
     }
 
-    public List<String> distinctQIDsInBiz(String bizNameId, int days) {
-        return queueManagerJDBC.distinctQIDsInBiz(bizNameId, days);
+    public List<String> distinctQIDsInBiz(String bizNameId, int limitedToDays) {
+        return queueManagerJDBC.distinctQIDsInBiz(bizNameId, limitedToDays);
     }
 }

@@ -420,19 +420,19 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     }
 
     @Override
-    public int countDistinctQIDsInBiz(String bizNameId, int days) {
+    public int countDistinctQIDsInBiz(String bizNameId, int limitedToDays) {
         return jdbcTemplate.queryForObject(
             countDistinctQIDInPastXDays,
-            new Object[]{bizNameId, days},
+            new Object[]{bizNameId, limitedToDays},
             Integer.class
         );
     }
 
     @Override
-    public List<String> distinctQIDsInBiz(String bizNameId, int days) {
+    public List<String> distinctQIDsInBiz(String bizNameId, int limitedToDays) {
         return jdbcTemplate.queryForList(
             distinctQIDsInBiz,
-            new Object[]{bizNameId, days},
+            new Object[]{bizNameId, limitedToDays},
             String.class
         );
     }
