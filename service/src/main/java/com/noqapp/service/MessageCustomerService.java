@@ -106,72 +106,59 @@ public class MessageCustomerService {
         return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? limitedToDays : days);
     }
 
-    @Deprecated
-    public int sendMessageToPastClients_Old(String title, String body, String bizNameId, String qid) {
-        NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
-            .setTitle(title)
-            .setBody(body)
-            .setQueueUserId(qid);
-        notificationMessageManager.save(notificationMessage);
-
-        int sendMessageCount = sendMessageToPastClients(bizNameId);
-        LOG.info("Sending message by {} total send={} {} {} {}", qid, sendMessageCount, title, body, bizNameId);
-        queueService.distinctQIDsInBiz(bizNameId, limitedToDays).stream().iterator()
-            .forEachRemaining(senderQid -> tokenQueueService.sendMessageToSpecificUser(title, body, senderQid, MessageOriginEnum.A));
-
-        notificationMessage.setMessageSendCount(sendMessageCount);
-        notificationMessageManager.save(notificationMessage);
-        return sendMessageCount;
-    }
-
     public int sendMessageToPastClients(String title, String body, String bizNameId, String qid) {
-        NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
-            .setTitle(title)
-            .setBody(body)
-            .setQueueUserId(qid);
-        notificationMessageManager.save(notificationMessage);
+        try {
+            NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
+                .setTitle(title)
+                .setBody(body)
+                .setQueueUserId(qid);
+            notificationMessageManager.save(notificationMessage);
 
-        int sendMessageCount = sendMessageToPastClients(bizNameId);
-        LOG.info("Sending message by {} total send={} {} {} {}", qid, sendMessageCount, title, body, bizNameId);
+            int sendMessageCount = sendMessageToPastClients(bizNameId);
+            LOG.info("Sending message by {} total send={} {} {} {}", qid, sendMessageCount, title, body, bizNameId);
 
-        List<String> tokens_A = new ArrayList<>();
-        List<String> tokens_I = new ArrayList<>();
-        queueService.distinctQIDsInBiz(bizNameId, limitedToDays).stream().iterator()
-            .forEachRemaining(senderQid -> {
-                RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(senderQid);
-                switch (registeredDevice.getDeviceType()) {
-                    case I:
-                        tokens_I.add(registeredDevice.getToken());
-                        break;
+            List<String> tokens_A = new ArrayList<>();
+            List<String> tokens_I = new ArrayList<>();
+            queueService.distinctQIDsInBiz(bizNameId, limitedToDays).stream().iterator()
+                .forEachRemaining(senderQid -> {
+                    RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(senderQid);
+                    switch (registeredDevice.getDeviceType()) {
+                        case I:
+                            tokens_I.add(registeredDevice.getToken());
+                            break;
+                        case A:
+                            tokens_A.add(registeredDevice.getToken());
+                            break;
+                    }
+                });
+
+            BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
+            for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+                String topic = "/topics/" + bizName.getCountryShortName() + UNDER_SCORE + bizNameId + UNDER_SCORE + deviceType.name();
+                switch (deviceType) {
                     case A:
-                        tokens_A.add(registeredDevice.getToken());
+                        Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_A, maxTokenLimit);
+                        for (List<String> collectionOfToken : collectionOfTokens) {
+                            firebaseService.subscribeToTopic(collectionOfToken, topic);
+                        }
+                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
+                        break;
+                    case I:
+                        collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_I, maxTokenLimit);
+                        for (List<String> collectionOfToken : collectionOfTokens) {
+                            firebaseService.subscribeToTopic(collectionOfToken, topic);
+                        }
+                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
                         break;
                 }
-            });
-
-        BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
-        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-            String topic = "/topics/" + bizName.getCountryShortName() + UNDER_SCORE + bizNameId + UNDER_SCORE + deviceType.name();
-            switch (deviceType) {
-                case A:
-                    Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_A, maxTokenLimit);
-                    for (List<String> collectionOfToken : collectionOfTokens) {
-                        firebaseService.subscribeToTopic(collectionOfToken, topic);
-                    }
-                    tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
-                    break;
-                case I:
-                    collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_I, maxTokenLimit);
-                    for (List<String> collectionOfToken : collectionOfTokens) {
-                        firebaseService.subscribeToTopic(collectionOfToken, topic);
-                    }
-                    tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
-                    break;
             }
-        }
 
-        notificationMessage.setMessageSendCount(sendMessageCount);
-        notificationMessageManager.save(notificationMessage);
-        return sendMessageCount;
+            notificationMessage.setMessageSendCount(sendMessageCount);
+            notificationMessageManager.save(notificationMessage);
+            return sendMessageCount;
+        } catch (Exception e) {
+            LOG.error("Failed sending message {} {}", bizNameId, qid);
+            return 0;
+        }
     }
 }
