@@ -347,7 +347,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public RegisteredDeviceEntity findRecentDevice(String qid) {
         return mongoTemplate.findOne(
-            query(where("QID").is(qid)).with(Sort.by(Sort.Direction.DESC, "U")),
+            query(where("QID").is(qid).and("DT").exists(true)).with(Sort.by(Sort.Direction.DESC, "U")),
             RegisteredDeviceEntity.class,
             TABLE
         );
