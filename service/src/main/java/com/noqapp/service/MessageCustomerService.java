@@ -123,11 +123,14 @@ public class MessageCustomerService {
                 .forEachRemaining(senderQid -> {
                     RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(senderQid);
                     switch (registeredDevice.getDeviceType()) {
+                        case A:
+                            tokens_A.add(registeredDevice.getToken());
+                            break;
                         case I:
                             tokens_I.add(registeredDevice.getToken());
                             break;
-                        case A:
-                            tokens_A.add(registeredDevice.getToken());
+                        case W:
+                            //Do nothing
                             break;
                     }
                 });
@@ -137,18 +140,17 @@ public class MessageCustomerService {
                 String topic = "/topics/" + bizName.getCountryShortName() + UNDER_SCORE + bizNameId + UNDER_SCORE + deviceType.name();
                 switch (deviceType) {
                     case A:
-                        Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_A, maxTokenLimit);
-                        for (List<String> collectionOfToken : collectionOfTokens) {
-                            firebaseService.subscribeToTopic(collectionOfToken, topic);
+                        if (subscribeToTopic(tokens_A, topic)) {
+                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
                         }
-                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
                         break;
                     case I:
-                        collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_I, maxTokenLimit);
-                        for (List<String> collectionOfToken : collectionOfTokens) {
-                            firebaseService.subscribeToTopic(collectionOfToken, topic);
+                        if (subscribeToTopic(tokens_I, topic)) {
+                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
                         }
-                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
+                        break;
+                    case W:
+                        //Do nothing
                         break;
                 }
             }
@@ -160,5 +162,23 @@ public class MessageCustomerService {
             LOG.error("Failed sending message {} {}", bizNameId, qid);
             return 0;
         }
+    }
+
+    private boolean subscribeToTopic(List<String> tokens, String topic) {
+        int size = tokens.size();
+        if (size == 0) {
+            return false;
+        }
+
+        if (size > maxTokenLimit) {
+            Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens, maxTokenLimit);
+            for (List<String> collectionOfToken : collectionOfTokens) {
+                firebaseService.subscribeToTopic(collectionOfToken, topic);
+            }
+        } else {
+            firebaseService.subscribeToTopic(tokens, topic);
+        }
+
+        return true;
     }
 }
