@@ -137,18 +137,26 @@ public class MessageCustomerService {
                 String topic = "/topics/" + bizName.getCountryShortName() + UNDER_SCORE + bizNameId + UNDER_SCORE + deviceType.name();
                 switch (deviceType) {
                     case A:
-                        Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_A, maxTokenLimit);
-                        for (List<String> collectionOfToken : collectionOfTokens) {
-                            firebaseService.subscribeToTopic(collectionOfToken, topic);
+                        if (tokens_A.size() > maxTokenLimit) {
+                            Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_A, maxTokenLimit);
+                            for (List<String> collectionOfToken : collectionOfTokens) {
+                                firebaseService.subscribeToTopic(collectionOfToken, topic);
+                            }
+                        } else {
+                            firebaseService.subscribeToTopic(tokens_A, topic);
                         }
                         tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
                         break;
                     case I:
-                        collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_I, maxTokenLimit);
-                        for (List<String> collectionOfToken : collectionOfTokens) {
-                            firebaseService.subscribeToTopic(collectionOfToken, topic);
+                        if (tokens_A.size() > maxTokenLimit) {
+                            Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens_I, maxTokenLimit);
+                            for (List<String> collectionOfToken : collectionOfTokens) {
+                                firebaseService.subscribeToTopic(collectionOfToken, topic);
+                            }
+                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
+                        } else {
+                            firebaseService.subscribeToTopic(tokens_I, topic);
                         }
-                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
                         break;
                 }
             }
