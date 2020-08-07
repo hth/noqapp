@@ -159,7 +159,7 @@ public class MessageCustomerService {
             notificationMessageManager.save(notificationMessage);
             return sendMessageCount;
         } catch (Exception e) {
-            LOG.error("Failed sending message {} {}", bizNameId, qid);
+            LOG.error("Failed sending message {} {} reason={}", bizNameId, qid, e.getMessage(), e);
             return 0;
         }
     }
