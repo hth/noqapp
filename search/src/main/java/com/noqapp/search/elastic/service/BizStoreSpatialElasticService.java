@@ -116,11 +116,6 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList nearMeByBusinessTypes(List<BusinessTypeEnum> filterOnBusinessTypes, String geoHash, String scrollId) {
-        return executeSearchByBusinessTypes(filterOnBusinessTypes, geoHash, scrollId);
-    }
-
-    @Mobile
     public BizStoreElasticList executeSearchExcludingBusinessType(
         BusinessTypeEnum filterMustNotBusinessType,
         String geoHash,
@@ -212,7 +207,7 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList executeSearchByBusinessTypes(
+    public BizStoreElasticList nearMeByBusinessTypes(
         List<BusinessTypeEnum> filterOnBusinessTypes,
         String geoHash,
         String scrollId
