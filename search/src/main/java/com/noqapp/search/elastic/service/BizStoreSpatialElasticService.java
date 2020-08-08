@@ -90,11 +90,6 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList searchByBusinessType(List<BusinessTypeEnum> searchByBusinessTypes, String geoHash, String scrollId) {
-        return searchByBusinessTypes(searchByBusinessTypes, geoHash, scrollId);
-    }
-
-    @Mobile
     public BizStoreElasticList searchByBusinessType(
         BusinessTypeEnum filterMustBusinessType,
         BusinessTypeEnum filterMustNotBusinessType,
@@ -121,8 +116,8 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList searchByBusinessTypes(List<BusinessTypeEnum> filterMustBusinessTypes, String geoHash, String scrollId) {
-        return executeSearchByBusinessTypes(filterMustBusinessTypes, geoHash, scrollId);
+    public BizStoreElasticList nearMeByBusinessTypes(List<BusinessTypeEnum> filterOnBusinessTypes, String geoHash, String scrollId) {
+        return executeSearchByBusinessTypes(filterOnBusinessTypes, geoHash, scrollId);
     }
 
     @Mobile
@@ -218,7 +213,7 @@ public class BizStoreSpatialElasticService {
 
     @Mobile
     public BizStoreElasticList executeSearchByBusinessTypes(
-        List<BusinessTypeEnum> filterMustBusinessTypes,
+        List<BusinessTypeEnum> filterOnBusinessTypes,
         String geoHash,
         String scrollId
     ) {
@@ -236,7 +231,7 @@ public class BizStoreSpatialElasticService {
 
                 /* Search just DO Query. */
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                for (BusinessTypeEnum businessType : filterMustBusinessTypes) {
+                for (BusinessTypeEnum businessType : filterOnBusinessTypes) {
                     boolQueryBuilder.should(QueryBuilders.matchQuery("BT", businessType));
                 }
                 boolQueryBuilder.filter(geoDistanceQuery("GH")
