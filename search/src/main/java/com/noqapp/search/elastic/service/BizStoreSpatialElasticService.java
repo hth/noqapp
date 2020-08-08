@@ -103,7 +103,7 @@ public class BizStoreSpatialElasticService {
     ) {
         BizStoreElasticList bizStoreElastics;
         if (null == filterMustBusinessType) {
-            bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(filterMustNotBusinessType, geoHash, scrollId);
+            bizStoreElastics = executeSearchExcludingBusinessType(filterMustNotBusinessType, geoHash, scrollId);
         } else {
             switch (filterMustBusinessType) {
                 case DO:
@@ -114,7 +114,7 @@ public class BizStoreSpatialElasticService {
                         scrollId);
                     break;
                 default:
-                    bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(filterMustNotBusinessType, geoHash, scrollId);
+                    bizStoreElastics = executeSearchExcludingBusinessType(filterMustNotBusinessType, geoHash, scrollId);
             }
         }
         return bizStoreElastics;
@@ -122,11 +122,11 @@ public class BizStoreSpatialElasticService {
 
     @Mobile
     public BizStoreElasticList searchByBusinessTypes(List<BusinessTypeEnum> filterMustBusinessTypes, String geoHash, String scrollId) {
-        return executeSearchOnBizStoreUsingRestClient(filterMustBusinessTypes, geoHash, scrollId);
+        return executeSearchByBusinessTypes(filterMustBusinessTypes, geoHash, scrollId);
     }
 
     @Mobile
-    public BizStoreElasticList executeNearMeSearchOnBizStoreUsingRestClient(
+    public BizStoreElasticList executeSearchExcludingBusinessType(
         BusinessTypeEnum filterMustNotBusinessType,
         String geoHash,
         String scrollId
@@ -217,7 +217,7 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList executeSearchOnBizStoreUsingRestClient(
+    public BizStoreElasticList executeSearchByBusinessTypes(
         List<BusinessTypeEnum> filterMustBusinessTypes,
         String geoHash,
         String scrollId
