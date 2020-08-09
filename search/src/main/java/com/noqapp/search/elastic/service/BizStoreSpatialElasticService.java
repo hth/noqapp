@@ -138,10 +138,9 @@ public class BizStoreSpatialElasticService {
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
 
-                /* Search just DO Query. */
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 for (BusinessTypeEnum businessType : filterOnBusinessTypes) {
-                    boolQueryBuilder.must(QueryBuilders.matchQuery("BT", businessType.name()));
+                    boolQueryBuilder.should(QueryBuilders.termQuery("BT", businessType.name()));
                 }
                 boolQueryBuilder.filter(geoDistanceQuery("GH")
                     .geohash(geoHash)
