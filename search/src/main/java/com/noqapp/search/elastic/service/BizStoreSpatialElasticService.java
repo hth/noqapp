@@ -35,6 +35,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -84,42 +85,7 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList nearMeSearch(BusinessTypeEnum filterMustNotBusinessType, String geoHash, String scrollId) {
-        return searchByBusinessType(null, filterMustNotBusinessType, geoHash, scrollId);
-    }
-
-    @Mobile
-    public BizStoreElasticList searchByBusinessType(
-        BusinessTypeEnum filterMustBusinessType,
-        BusinessTypeEnum filterMustNotBusinessType,
-        String geoHash,
-        String scrollId
-    ) {
-        BizStoreElasticList bizStoreElastics;
-        if (null == filterMustBusinessType) {
-            bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(filterMustNotBusinessType, geoHash, scrollId);
-        } else {
-            switch (filterMustBusinessType) {
-                case DO:
-                    bizStoreElastics = executeFilterBySearchOnBizStoreUsingRestClient(
-                        filterMustBusinessType,
-                        filterMustNotBusinessType,
-                        geoHash,
-                        scrollId);
-                    break;
-                default:
-                    bizStoreElastics = executeNearMeSearchOnBizStoreUsingRestClient(filterMustNotBusinessType, geoHash, scrollId);
-            }
-        }
-        return bizStoreElastics;
-    }
-
-    @Mobile
-    public BizStoreElasticList executeNearMeSearchOnBizStoreUsingRestClient(
-        BusinessTypeEnum filterMustNotBusinessType,
-        String geoHash,
-        String scrollId
-    ) {
+    public BizStoreElasticList nearMeExcludedBusinessTypes(List<BusinessTypeEnum> filterMustNotBusinessTypes, String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
@@ -132,15 +98,14 @@ public class BizStoreSpatialElasticService {
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
 
-                /* Search All Query. */
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 boolQueryBuilder.must(QueryBuilders.matchAllQuery());
-                if (null != filterMustNotBusinessType) {
-                    boolQueryBuilder.mustNot(QueryBuilders.matchQuery("BT", filterMustNotBusinessType.getName()));
+                for (BusinessTypeEnum businessType : filterMustNotBusinessTypes) {
+                    boolQueryBuilder.mustNot(QueryBuilders.matchQuery("BT", businessType.name()));
                 }
                 boolQueryBuilder.filter(geoDistanceQuery("GH")
-                        .geohash(geoHash)
-                        .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                    .geohash(geoHash)
+                    .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder);
 
                 searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
@@ -160,12 +125,7 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList executeFilterBySearchOnBizStoreUsingRestClient(
-        BusinessTypeEnum filterMustBusinessType,
-        BusinessTypeEnum filterMustNotBusinessType,
-        String geoHash,
-        String scrollId
-    ) {
+    public BizStoreElasticList nearMeByBusinessTypes(List<BusinessTypeEnum> filterOnBusinessTypes, String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
@@ -180,13 +140,12 @@ public class BizStoreSpatialElasticService {
 
                 /* Search just DO Query. */
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                boolQueryBuilder.must(QueryBuilders.matchQuery("BT", filterMustBusinessType.getName()));
-                if (null != filterMustNotBusinessType) {
-                    boolQueryBuilder.mustNot(QueryBuilders.matchQuery("BT", filterMustNotBusinessType.getName()));
+                for (BusinessTypeEnum businessType : filterOnBusinessTypes) {
+                    boolQueryBuilder.must(QueryBuilders.matchQuery("BT", businessType.name()));
                 }
                 boolQueryBuilder.filter(geoDistanceQuery("GH")
-                        .geohash(geoHash)
-                        .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                    .geohash(geoHash)
+                    .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder);
 
                 searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
