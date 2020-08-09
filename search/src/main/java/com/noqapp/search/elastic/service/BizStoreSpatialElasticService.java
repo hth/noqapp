@@ -98,7 +98,6 @@ public class BizStoreSpatialElasticService {
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 searchSourceBuilder.fetchSource(includeFields, excludeFields);
 
-                /* Search All Query. */
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 boolQueryBuilder.must(QueryBuilders.matchAllQuery());
                 for (BusinessTypeEnum businessType : filterMustNotBusinessTypes) {
@@ -142,7 +141,7 @@ public class BizStoreSpatialElasticService {
                 /* Search just DO Query. */
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 for (BusinessTypeEnum businessType : filterOnBusinessTypes) {
-                    boolQueryBuilder.should(QueryBuilders.matchQuery("BT", businessType));
+                    boolQueryBuilder.must(QueryBuilders.matchQuery("BT", businessType.name()));
                 }
                 boolQueryBuilder.filter(geoDistanceQuery("GH")
                     .geohash(geoHash)
