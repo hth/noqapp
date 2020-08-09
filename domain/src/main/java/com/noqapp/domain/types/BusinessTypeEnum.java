@@ -111,6 +111,26 @@ public enum BusinessTypeEnum {
         return businessTypeEnums;
     }
 
+    public static List<BusinessTypeEnum> excludeHospital() {
+        List<BusinessTypeEnum> list = Stream.of(BusinessTypeEnum.values()).collect(Collectors.toList());
+        list.remove(HS);
+        list.remove(DO);
+        return list;
+    }
+
+    public static List<BusinessTypeEnum> excludeCanteen() {
+        List<BusinessTypeEnum> list = Stream.of(BusinessTypeEnum.values()).collect(Collectors.toList());
+        list.remove(CD);
+        list.remove(CDQ);
+        return list;
+    }
+
+    public static List<BusinessTypeEnum> excludePlaceOfWorship() {
+        List<BusinessTypeEnum> list = Stream.of(BusinessTypeEnum.values()).collect(Collectors.toList());
+        list.remove(PW);
+        return list;
+    }
+
     @Override
     public String toString() {
         return description;
