@@ -85,28 +85,21 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
+    @Deprecated
     public BizStoreElasticList filteredSearch(BusinessTypeEnum filterMustNotBusinessType, String geoHash, String scrollId) {
         return searchByBusinessType(null, filterMustNotBusinessType, geoHash, scrollId);
     }
 
     @Mobile
-    public BizStoreElasticList searchByBusinessType(
-        BusinessTypeEnum filterMustBusinessType,
-        BusinessTypeEnum filterMustNotBusinessType,
-        String geoHash,
-        String scrollId
-    ) {
+    @Deprecated
+    public BizStoreElasticList searchByBusinessType(BusinessTypeEnum filterMustBusinessType, BusinessTypeEnum filterMustNotBusinessType, String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics;
         if (null == filterMustBusinessType) {
             bizStoreElastics = executeSearchExcludingBusinessType(filterMustNotBusinessType, geoHash, scrollId);
         } else {
             switch (filterMustBusinessType) {
                 case DO:
-                    bizStoreElastics = executeFilterBySearchOnBizStoreUsingRestClient(
-                        filterMustBusinessType,
-                        filterMustNotBusinessType,
-                        geoHash,
-                        scrollId);
+                    bizStoreElastics = executeFilterBySearchOnBizStoreUsingRestClient(filterMustBusinessType, filterMustNotBusinessType, geoHash, scrollId);
                     break;
                 default:
                     bizStoreElastics = executeSearchExcludingBusinessType(filterMustNotBusinessType, geoHash, scrollId);
@@ -116,11 +109,17 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList executeSearchExcludingBusinessType(
-        BusinessTypeEnum filterMustNotBusinessType,
-        String geoHash,
-        String scrollId
-    ) {
+    public BizStoreElasticList filteredSearch(List<BusinessTypeEnum> filterMustNotBusinessTypes, String geoHash, String scrollId) {
+        return searchByBusinessType(filterMustNotBusinessTypes, geoHash, scrollId);
+    }
+
+    @Mobile
+    public BizStoreElasticList searchByBusinessType(List<BusinessTypeEnum> filterMustNotBusinessType, String geoHash, String scrollId) {
+        return executeSearchExcludingBusinessType(filterMustNotBusinessType, geoHash, scrollId);
+    }
+
+    @Mobile
+    public BizStoreElasticList executeSearchExcludingBusinessType(BusinessTypeEnum filterMustNotBusinessType, String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
@@ -161,12 +160,49 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList executeFilterBySearchOnBizStoreUsingRestClient(
-        BusinessTypeEnum filterMustBusinessType,
-        BusinessTypeEnum filterMustNotBusinessType,
-        String geoHash,
-        String scrollId
-    ) {
+    public BizStoreElasticList executeSearchExcludingBusinessType(List<BusinessTypeEnum> filterMustNotBusinessTypes, String geoHash, String scrollId) {
+        BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
+        try {
+            SearchResponse searchResponse;
+            if (StringUtils.isNotBlank(scrollId)) {
+                SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+                scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+            } else {
+                SearchRequest searchRequest = new SearchRequest(BizStoreSpatialElastic.INDEX);
+                SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+                searchSourceBuilder.fetchSource(includeFields, excludeFields);
+
+                /* Search All Query. */
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                boolQueryBuilder.must(QueryBuilders.matchAllQuery());
+                for (BusinessTypeEnum businessType : filterMustNotBusinessTypes) {
+                    boolQueryBuilder.mustNot(QueryBuilders.matchQuery("BT", businessType.name()));
+                }
+                boolQueryBuilder.filter(geoDistanceQuery("GH")
+                    .geohash(geoHash)
+                    .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                searchSourceBuilder.query(boolQueryBuilder);
+
+                searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
+                searchRequest.source(searchSourceBuilder);
+                searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
+
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+            }
+
+            bizStoreElastics.setScrollId(searchResponse.getScrollId());
+            populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
+            return bizStoreElastics;
+        } catch (IOException e) {
+            LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
+            return bizStoreElastics;
+        }
+    }
+
+    @Deprecated
+    @Mobile
+    public BizStoreElasticList executeFilterBySearchOnBizStoreUsingRestClient(BusinessTypeEnum filterMustBusinessType, BusinessTypeEnum filterMustNotBusinessType, String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
@@ -207,11 +243,7 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList nearMeByBusinessTypes(
-        List<BusinessTypeEnum> filterOnBusinessTypes,
-        String geoHash,
-        String scrollId
-    ) {
+    public BizStoreElasticList nearMeByBusinessTypes(List<BusinessTypeEnum> filterOnBusinessTypes, String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
