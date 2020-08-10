@@ -135,7 +135,7 @@ public class MessageCustomerService {
                                 break;
                         }
                     } catch (Exception e) {
-                        LOG.error("Failed adding token {} {} ", senderQid, bizNameId);
+                        LOG.error("Failed adding token {} {} {}", senderQid, bizNameId, e.getMessage());
                     }
                 });
 
