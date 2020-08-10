@@ -122,16 +122,20 @@ public class MessageCustomerService {
             queueService.distinctQIDsInBiz(bizNameId, limitedToDays).stream().iterator()
                 .forEachRemaining(senderQid -> {
                     RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(senderQid);
-                    switch (registeredDevice.getDeviceType()) {
-                        case A:
-                            tokens_A.add(registeredDevice.getToken());
-                            break;
-                        case I:
-                            tokens_I.add(registeredDevice.getToken());
-                            break;
-                        case W:
-                            //Do nothing
-                            break;
+                    try {
+                        switch (registeredDevice.getDeviceType()) {
+                            case A:
+                                tokens_A.add(registeredDevice.getToken());
+                                break;
+                            case I:
+                                tokens_I.add(registeredDevice.getToken());
+                                break;
+                            case W:
+                                //Do nothing
+                                break;
+                        }
+                    } catch (Exception e) {
+                        LOG.error("Failed adding token {} {}", registeredDevice.getQueueUserId(), registeredDevice.getDeviceType());
                     }
                 });
 
