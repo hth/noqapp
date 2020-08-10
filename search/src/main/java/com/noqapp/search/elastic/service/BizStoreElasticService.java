@@ -1,5 +1,6 @@
 package com.noqapp.search.elastic.service;
 
+import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -212,6 +213,16 @@ public class BizStoreElasticService {
                     .setWebLocation(map.containsKey("WL") ? map.get("WL").toString() : "")
                     .setFamousFor(map.containsKey("FF") ? map.get("FF").toString() : "")
                     .setDisplayImage(map.containsKey("DI") ? map.get("DI").toString() : "");
+
+                switch (bizStoreElastic.getBusinessType()) {
+                    case CD:
+                    case CDQ:
+                        bizStoreElastic.setAddress(FileUtil.DASH);
+                        bizStoreElastic.setArea(FileUtil.DASH);
+                        bizStoreElastic.setTown(FileUtil.DASH);
+                    default:
+                        //Do nothing
+                }
                 bizStoreElastics.addBizStoreElastic(bizStoreElastic);
             }
         }
