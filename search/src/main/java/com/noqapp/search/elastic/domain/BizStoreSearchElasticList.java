@@ -1,6 +1,7 @@
 package com.noqapp.search.elastic.domain;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.json.JsonCategory;
 import com.noqapp.search.elastic.json.ElasticBizStoreSearchSource;
 
@@ -107,6 +108,15 @@ public class BizStoreSearchElasticList extends AbstractDomain {
 
         for (ElasticBizStoreSearchSource elasticBizStoreSearchSource : elasticBizStoreSearchSources) {
             BizStoreSearchElastic elastic = elasticBizStoreSearchSource.getBizStoreSearchElastic();
+            switch (elastic.getBusinessType()) {
+                case CD:
+                case CDQ:
+                    elastic.setAddress(FileUtil.DASH);
+                    elastic.setArea(FileUtil.DASH);
+                    elastic.setTown(FileUtil.DASH);
+                default:
+                    //Do nothing
+            }
             LOG.debug("{}, {}, hashCode={} {}", elastic.getDisplayName(), elastic.getBusinessName(), elastic.hashCode(), elastic);
             bizStoreSearchElastics.add(elastic);
         }

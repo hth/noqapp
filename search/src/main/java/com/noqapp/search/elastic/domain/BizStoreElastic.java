@@ -3,6 +3,7 @@ package com.noqapp.search.elastic.domain;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.shared.GeoPointOfQ;
@@ -629,7 +630,7 @@ public class BizStoreElastic extends AbstractDomain {
         /* Image populated here. */
         BusinessImageHolder businessImageHolder = DomainConversion.populateBizAndStoreImages(bizStore);
 
-        return new BizStoreElastic()
+        BizStoreElastic bizStoreElastic = new BizStoreElastic()
             //.setId missing intentionally
             .setBusinessName(bizStore.getBizName().getBusinessName())
             .setBusinessType(bizStore.getBusinessType())
@@ -668,6 +669,18 @@ public class BizStoreElastic extends AbstractDomain {
             .setAmenities(bizStore.getAmenities())
             .setFacilities(bizStore.getFacilities())
             .setActive(bizStore.isActive());
+
+        switch (bizStore.getBusinessType()) {
+            case CD:
+            case CDQ:
+                bizStoreElastic.setAddress(FileUtil.DASH);
+                bizStoreElastic.setArea(FileUtil.DASH);
+                bizStoreElastic.setTown(FileUtil.DASH);
+            default:
+                //Do nothing
+        }
+
+        return bizStoreElastic;
     }
 
     @Override
