@@ -119,6 +119,7 @@ public class MessageCustomerService {
 
             List<String> tokens_A = new ArrayList<>();
             List<String> tokens_I = new ArrayList<>();
+            BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
             queueService.distinctQIDsInBiz(bizNameId, limitedToDays).stream().iterator()
                 .forEachRemaining(senderQid -> {
                     RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(senderQid);
@@ -135,11 +136,10 @@ public class MessageCustomerService {
                                 break;
                         }
                     } catch (Exception e) {
-                        LOG.error("Failed adding token {} {} {}", senderQid, bizNameId, e.getMessage());
+                        LOG.error("Failed adding token {} {} {} {}", senderQid, bizName.getBusinessName(), bizNameId, e.getMessage());
                     }
                 });
 
-            BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
             for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                 String topic = "/topics/" + bizName.getCountryShortName() + UNDER_SCORE + bizNameId + UNDER_SCORE + deviceType.name();
                 switch (deviceType) {
