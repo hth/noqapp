@@ -19,17 +19,17 @@ import org.springframework.util.Assert;
  * Date: 11/19/16 7:15 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public final class BrowserManagerImpl implements BrowserManager {
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            BrowserEntity.class,
-            Document.class,
-            "collection");
+        BrowserEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -49,10 +49,10 @@ public final class BrowserManagerImpl implements BrowserManager {
     @Override
     public void update(String id) {
         mongoTemplate.updateFirst(
-                query(where("_id").is(id)),
-                entityUpdate(new Update()),
-                BrowserEntity.class,
-                TABLE
+            query(where("_id").is(id)),
+            entityUpdate(new Update()),
+            BrowserEntity.class,
+            TABLE
         );
     }
 

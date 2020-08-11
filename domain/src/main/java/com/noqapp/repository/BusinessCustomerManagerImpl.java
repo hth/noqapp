@@ -28,18 +28,18 @@ import java.util.LinkedHashSet;
  * 6/17/18 2:06 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessCustomerManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            BusinessCustomerEntity.class,
-            Document.class,
-            "collection");
+        BusinessCustomerEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -68,18 +68,18 @@ public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
     @Override
     public BusinessCustomerEntity findOneByCustomerId(String businessCustomerId, String bizNameId) {
         return mongoTemplate.findOne(
-                query(where("BC").is(businessCustomerId).and("BN").is(bizNameId)),
-                BusinessCustomerEntity.class,
-                TABLE
+            query(where("BC").is(businessCustomerId).and("BN").is(bizNameId)),
+            BusinessCustomerEntity.class,
+            TABLE
         );
     }
 
     @Override
     public BusinessCustomerEntity findOneByQid(String qid, String bizNameId) {
         return mongoTemplate.findOne(
-                query(where("QID").is(qid).and("BN").is(bizNameId)),
-                BusinessCustomerEntity.class,
-                TABLE
+            query(where("QID").is(qid).and("BN").is(bizNameId)),
+            BusinessCustomerEntity.class,
+            TABLE
         );
     }
 

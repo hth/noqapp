@@ -36,18 +36,18 @@ import java.util.List;
  * Date: 11/23/16 5:10 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class BusinessUserManagerImpl implements BusinessUserManager {
     private static final Logger LOG = LoggerFactory.getLogger(BusinessUserManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            BusinessUserEntity.class,
-            Document.class,
-            "collection");
+        BusinessUserEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -59,17 +59,17 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     @Override
     public BusinessUserEntity findByQid(String qid) {
         return mongoTemplate.findOne(
-                query(where("QID").is(qid)),
-                BusinessUserEntity.class,
-                TABLE);
+            query(where("QID").is(qid)),
+            BusinessUserEntity.class,
+            TABLE);
     }
 
     @Override
     public BusinessUserEntity findById(String id) {
         return mongoTemplate.findOne(
-                query(where("_id").is(id)),
-                BusinessUserEntity.class,
-                TABLE);
+            query(where("_id").is(id)),
+            BusinessUserEntity.class,
+            TABLE);
     }
 
     @Override
@@ -81,10 +81,10 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     @Override
     public BusinessUserEntity findBusinessUser(String qid, String bizId) {
         Query query = query(where("QID").is(qid)
-                .andOperator(
-                        isActive(),
-                        isNotDeleted()
-                )
+            .andOperator(
+                isActive(),
+                isNotDeleted()
+            )
         );
 
         if (null != bizId) {
@@ -97,14 +97,14 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     @Override
     public boolean doesBusinessUserExists(String qid, String bizId) {
         return mongoTemplate.exists(
-                query(where("QID").is(qid).and("B_N.$id").is(new ObjectId(bizId))
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
-                ),
-                BusinessUserEntity.class,
-                TABLE);
+            query(where("QID").is(qid).and("B_N.$id").is(new ObjectId(bizId))
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ),
+            BusinessUserEntity.class,
+            TABLE);
     }
 
     @Override
@@ -123,57 +123,57 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     @Override
     public List<BusinessUserEntity> awaitingBusinessApprovals() {
         return mongoTemplate.find(
-                query(where("RS").is(BusinessUserRegistrationStatusEnum.C)
-                        .and("UL").is(UserLevelEnum.M_ADMIN)
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
-                ).limit(10).with(Sort.by(ASC, "U")),
-                BusinessUserEntity.class,
-                TABLE);
+            query(where("RS").is(BusinessUserRegistrationStatusEnum.C)
+                .and("UL").is(UserLevelEnum.M_ADMIN)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ).limit(10).with(Sort.by(ASC, "U")),
+            BusinessUserEntity.class,
+            TABLE);
     }
 
     @Override
     public long awaitingBusinessApprovalCount() {
         return mongoTemplate.count(
-                query(where("RS").is(BusinessUserRegistrationStatusEnum.C)
-                        .and("UL").is(UserLevelEnum.M_ADMIN)
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
-                ),
-                BusinessUserEntity.class,
-                TABLE
+            query(where("RS").is(BusinessUserRegistrationStatusEnum.C)
+                .and("UL").is(UserLevelEnum.M_ADMIN)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ),
+            BusinessUserEntity.class,
+            TABLE
         );
     }
 
     @Override
     public List<BusinessUserEntity> getAllNonAdminForBusiness(String bizNameId) {
         return mongoTemplate.find(
-                query(where("B_N.$id").is(new ObjectId(bizNameId))
-                        .and("UL").ne(UserLevelEnum.M_ADMIN)
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
-                ),
-                BusinessUserEntity.class,
-                TABLE);
+            query(where("B_N.$id").is(new ObjectId(bizNameId))
+                .and("UL").ne(UserLevelEnum.M_ADMIN)
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ),
+            BusinessUserEntity.class,
+            TABLE);
     }
 
     @Override
     public List<BusinessUserEntity> getAllForBusiness(String bizNameId) {
         return mongoTemplate.find(
-                query(where("B_N.$id").is(new ObjectId(bizNameId))
-                        .andOperator(
-                                isActive(),
-                                isNotDeleted()
-                        )
-                ),
-                BusinessUserEntity.class,
-                TABLE);
+            query(where("B_N.$id").is(new ObjectId(bizNameId))
+                .andOperator(
+                    isActive(),
+                    isNotDeleted()
+                )
+            ),
+            BusinessUserEntity.class,
+            TABLE);
     }
 
     @Override
