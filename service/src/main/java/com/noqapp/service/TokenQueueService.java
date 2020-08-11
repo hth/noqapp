@@ -530,12 +530,17 @@ public class TokenQueueService {
                 throw new ExpectedServiceBeyondStoreClosingHour("Serving time exceeds after store closing time");
             }
 
+            ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
+            if (zonedServiceTime.isBefore(currentTime)) {
+                zonedServiceTime = currentTime;
+            }
+
             /* Changed to UTC time before saving. */
             expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
             LOG.debug("Expected service time for token {} UTC {} {}", tokenQueue.getLastNumber(), expectedServiceBegin, zonedServiceTime);
         } else {
             LOG.error("AverageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
-            ZonedDateTime zonedServiceTime = ZonedDateTime.of(LocalDateTime.now(zoneId), zoneId);
+            ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
             expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
         }
         return expectedServiceBegin;
