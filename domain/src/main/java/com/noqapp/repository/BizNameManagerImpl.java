@@ -42,18 +42,18 @@ import java.util.stream.Stream;
  * Date: 11/23/16 4:43 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public final class BizNameManagerImpl implements BizNameManager {
     private static final Logger LOG = LoggerFactory.getLogger(BizNameManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            BizNameEntity.class,
-            Document.class,
-            "collection");
+        BizNameEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -115,9 +115,9 @@ public final class BizNameManagerImpl implements BizNameManager {
      */
     public Set<String> findDistinctBizWithMatchingName(String businessName) {
         DistinctIterable<String> distinctIterable = mongoTemplate.getCollection(TABLE).distinct(
-                "N",
-                Filters.regex("N", "^" + businessName, "i"),
-                String.class);
+            "N",
+            Filters.regex("N", "^" + businessName, "i"),
+            String.class);
 
         Set<String> businessNames = new HashSet<>();
         for (String foundName : distinctIterable) {
@@ -134,8 +134,8 @@ public final class BizNameManagerImpl implements BizNameManager {
 
     public List<BizNameEntity> findAll(int skip, int limit) {
         return mongoTemplate.find(
-                new Query().skip(skip).limit(limit),
-                BizNameEntity.class
+            new Query().skip(skip).limit(limit),
+            BizNameEntity.class
         );
     }
 
@@ -146,9 +146,9 @@ public final class BizNameManagerImpl implements BizNameManager {
     @Override
     public BizNameEntity findByCodeQR(String codeQR) {
         return mongoTemplate.findOne(
-                query(where("QR").is(codeQR)),
-                BizNameEntity.class,
-                TABLE
+            query(where("QR").is(codeQR)),
+            BizNameEntity.class,
+            TABLE
         );
     }
 
@@ -166,9 +166,9 @@ public final class BizNameManagerImpl implements BizNameManager {
             query = query(where("WL").is(webLocation).and("_id").ne(id));
         }
         return mongoTemplate.exists(
-                query,
-                BizNameEntity.class,
-                TABLE
+            query,
+            BizNameEntity.class,
+            TABLE
         );
     }
 
