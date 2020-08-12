@@ -32,7 +32,7 @@
         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
     </listener>
     <listener>
-        <listener-class>com.noqapp.view.listener.NoQAppServletContextListener</listener-class>
+        <listener-class>com.noqapp.view.listener.NoQueueServletContextListener</listener-class>
     </listener>
 
     <!-- Ensure UTF-8 character encoding is used -->
