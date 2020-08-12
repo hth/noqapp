@@ -28,7 +28,7 @@ public class NoQueueServletContextListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent arg0) {
         //TODO make clean shutdown for quartz. This prevent now from tomcat shutdown
         deregisterJDBCDriver();
-        LOG.info("NoQApp context destroyed");
+        LOG.info("NoQueue context destroyed");
     }
 
     @Override
