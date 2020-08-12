@@ -21,14 +21,14 @@ import javax.servlet.ServletContextListener;
         "PMD.MethodArgumentCouldBeFinal",
         "PMD.LongVariable"
 })
-public class NoQAppServletContextListener implements ServletContextListener {
-    private static final Logger LOG = LoggerFactory.getLogger(NoQAppServletContextListener.class);
+public class NoQueueServletContextListener implements ServletContextListener {
+    private static final Logger LOG = LoggerFactory.getLogger(NoQueueServletContextListener.class);
 
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
         //TODO make clean shutdown for quartz. This prevent now from tomcat shutdown
         deregisterJDBCDriver();
-        LOG.info("NoQApp context destroyed");
+        LOG.info("NoQueue context destroyed");
     }
 
     @Override
