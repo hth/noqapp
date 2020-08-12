@@ -171,9 +171,10 @@
 
         <!--session-fixation-protection="migrateSession"-->
         <session-management invalid-session-url="/">
-            <concurrency-control max-sessions="3"
-                                 error-if-maximum-exceeded="true"
-                                 expired-url="/" />
+            <concurrency-control
+                    max-sessions="3"
+                    error-if-maximum-exceeded="true"
+                    expired-url="/" />
         </session-management>
 
         <csrf />
