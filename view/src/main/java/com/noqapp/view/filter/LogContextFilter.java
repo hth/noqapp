@@ -44,17 +44,16 @@ import javax.servlet.http.HttpServletResponseWrapper;
  * User: hitender
  * Date: 11/19/16 4:42 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 public class LogContextFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(LogContextFilter.class);
 
-    private static final Pattern EXTRACT_ENDPOINT_PATTERN =
-            Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
+    private static final Pattern EXTRACT_ENDPOINT_PATTERN = Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
     private static final String REQUEST_ID_MDC_KEY = "X-REQUEST-ID";
     private IPGeoConfiguration ipGeoConfiguration;
 
@@ -145,6 +144,7 @@ public class LogContextFilter implements Filter {
      * crawlers when a valid user has logged in. We plan to use this until a decision would be made in near future.
      * <p>
      * The reason for this addition has already been fixed in code at location below.
+     *
      * @see com.noqapp.view.controller.open.IndexController#index(org.springframework.ui.ModelMap)
      */
     private boolean isHttpHead(HttpServletRequest request) {
@@ -169,7 +169,7 @@ public class LogContextFilter implements Filter {
             super(response);
         }
 
-        public ServletOutputStream getOutputStream() throws IOException {
+        public ServletOutputStream getOutputStream() {
             return noBodyOutputStream;
         }
 
