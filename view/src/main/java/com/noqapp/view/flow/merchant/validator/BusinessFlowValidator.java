@@ -753,12 +753,12 @@ public class BusinessFlowValidator {
         String status = LandingController.SUCCESS;
 
         if (registerBusiness.getAppointmentState() != AppointmentStateEnum.O) {
-            if (registerBusiness.getAppointmentDuration() < 5) {
+            if (registerBusiness.getAppointmentDuration() < 1) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()
                         .source(source + "appointment duration")
-                        .defaultText("Appointment duration cannot be less than 5 minutes")
+                        .defaultText("Appointment duration cannot be less than 1 minute")
                         .build());
                 status = "failure";
             }
