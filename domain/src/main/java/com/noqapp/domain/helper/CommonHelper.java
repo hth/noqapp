@@ -98,6 +98,8 @@ public class CommonHelper {
                         LOG.error("Un-supported businessType={}", businessType);
                         throw new UnsupportedOperationException("Reached un-supported condition");
                 }
+            case PW:
+                return new LinkedHashMap<>();
             case RS:
             case FT:
             case BA:
@@ -112,7 +114,6 @@ public class CommonHelper {
             case MT:
             case SC:
             case CF:
-            case PW:
             case MU:
             case TA:
             case NC:
