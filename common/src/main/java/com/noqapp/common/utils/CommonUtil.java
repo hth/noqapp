@@ -272,19 +272,24 @@ public final class CommonUtil {
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 
-    public static String retrieveIPV4(String fromDevice, String fromRequest) {
+    @SuppressWarnings("unused")
+    public static List<String> retrieveIPV4(String fromDevice, String fromRequest) {
         LOG.info("Send ips are {} {}", fromDevice, fromRequest);
+        List<String> ips = new ArrayList<String>() {{
+            add(fromDevice);
+        }};
+
         try {
             InetAddress address = InetAddress.getByName(fromDevice);
             if (address instanceof Inet6Address) {
-                return fromRequest;
+                ips.add(fromRequest);
             }
-            return fromDevice;
+            return ips;
         } catch (UnknownHostException e) {
             LOG.error("Failed on unknown host fromDevice={} fromRequest={} reason={}", fromDevice, fromRequest, e.getLocalizedMessage());
         }
 
-        return fromDevice;
+        return ips;
     }
 
     public static boolean validateMail(String mail) {

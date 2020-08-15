@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.time.LocalTime;
+import java.util.List;
 
 /**
  * hitender
@@ -46,15 +47,18 @@ public class GeoIPLocationService {
     }
 
     @Mobile
-    public double[] getLocationAsDouble(String ip) {
-        CityResponse response = cityResponse(ip);
-        if (null == response) {
+    public double[] getLocationAsDouble(List<String> ips) {
+        for (String ip : ips) {
+            CityResponse response = cityResponse(ip);
+            if (null != response) {
+                double latitude = response.getLocation().getLatitude();
+                double longitude = response.getLocation().getLongitude();
+                return new double[]{longitude, latitude};
+            }
+
             return null;
         }
-
-        double latitude = response.getLocation().getLatitude();
-        double longitude = response.getLocation().getLongitude();
-        return new double[] {longitude, latitude};
+        return null;
     }
 
     private CityResponse cityResponse(String ip) {
