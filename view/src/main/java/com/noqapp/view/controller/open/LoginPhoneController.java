@@ -71,8 +71,10 @@ public class LoginPhoneController {
         }
         UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
         if (!userAccount.isPhoneValidated()) {
-            userAccount.setPhoneValidated(true);
+            userAccount.setPhoneValidated(true).setOtpCount(1);
             accountService.save(userAccount);
+        } else {
+            accountService.increaseOTPCount(userProfile.getQueueUserId());
         }
         String redirect;
         try {
