@@ -55,8 +55,6 @@ public class GeoIPLocationService {
                 double longitude = response.getLocation().getLongitude();
                 return new double[]{longitude, latitude};
             }
-
-            return null;
         }
         return null;
     }
