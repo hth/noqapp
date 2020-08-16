@@ -1,3 +1,7 @@
+### Changed Aug 16, 2020
+
+    db.getCollection('USER_ACCOUNT').update({}, {$set: {OC:NumberInt(0)}}, {multi: true});
+
 ### Changes July 20, 2020
 
     Decreased auto delete records from 2 months to 15 days
