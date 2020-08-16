@@ -81,6 +81,9 @@ public class UserAccountEntity extends BaseEntity {
     @Field ("USER_AUTHENTICATION")
     private UserAuthenticationEntity userAuthentication;
 
+    @Field("OC")
+    private int otpCount;
+
     private UserAccountEntity() {
         super();
         roles = new LinkedHashSet<>();
@@ -88,10 +91,10 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     private UserAccountEntity(
-            String queueUserId,
-            String userId,
-            String firstName,
-            String lastName
+        String queueUserId,
+        String userId,
+        String firstName,
+        String lastName
     ) {
         this();
         this.queueUserId = queueUserId;
@@ -102,10 +105,10 @@ public class UserAccountEntity extends BaseEntity {
     }
 
     public static UserAccountEntity newInstance(
-            String queueUserId,
-            String userId,
-            String firstName,
-            String lastName
+        String queueUserId,
+        String userId,
+        String firstName,
+        String lastName
     ) {
         return new UserAccountEntity(queueUserId, userId, firstName, lastName);
     }
@@ -114,40 +117,45 @@ public class UserAccountEntity extends BaseEntity {
         return queueUserId;
     }
 
-    public void setQueueUserId(String queueUserId) {
+    public UserAccountEntity setQueueUserId(String queueUserId) {
         this.queueUserId = queueUserId;
+        return this;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public UserAccountEntity setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
     public String getDisplayName() {
         return displayName;
     }
 
-    public void setDisplayName(String displayName) {
+    public UserAccountEntity setDisplayName(String displayName) {
         this.displayName = displayName;
+        return this;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public UserAccountEntity setFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public UserAccountEntity setLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
     public Set<RoleEnum> getRoles() {
@@ -174,7 +182,7 @@ public class UserAccountEntity extends BaseEntity {
         return accountValidated;
     }
 
-    public void setAccountValidated(boolean accountValidated) {
+    public UserAccountEntity setAccountValidated(boolean accountValidated) {
         if (!accountValidated && this.accountValidated) {
             /*
              * Update accountValidatedBeginDate with new date when account has been validated previously or else
@@ -184,22 +192,25 @@ public class UserAccountEntity extends BaseEntity {
         }
 
         this.accountValidated = accountValidated;
+        return this;
     }
 
     public Date getAccountValidatedBeginDate() {
         return accountValidatedBeginDate;
     }
 
-    public void setAccountValidatedBeginDate() {
+    public UserAccountEntity setAccountValidatedBeginDate() {
         this.accountValidatedBeginDate = DateUtil.midnight(DateTime.now().plusDays(1).toDate());
+        return this;
     }
 
     public boolean isPhoneValidated() {
         return phoneValidated;
     }
 
-    public void setPhoneValidated(boolean phoneValidated) {
+    public UserAccountEntity setPhoneValidated(boolean phoneValidated) {
         this.phoneValidated = phoneValidated;
+        return this;
     }
 
     public String getName() {
@@ -220,8 +231,18 @@ public class UserAccountEntity extends BaseEntity {
         return accountInactiveReason;
     }
 
-    public void setAccountInactiveReason(AccountInactiveReasonEnum accountInactiveReason) {
+    public UserAccountEntity setAccountInactiveReason(AccountInactiveReasonEnum accountInactiveReason) {
         this.accountInactiveReason = accountInactiveReason;
+        return this;
+    }
+
+    public int getOtpCount() {
+        return otpCount;
+    }
+
+    public UserAccountEntity setOtpCount(int otpCount) {
+        this.otpCount = otpCount;
+        return this;
     }
 
     @Override

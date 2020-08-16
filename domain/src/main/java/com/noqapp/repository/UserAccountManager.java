@@ -25,4 +25,8 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     boolean existWithAuth(String id);
 
     void updateName(String firstName, String lastName, String displayName, String qid);
+
+    void increaseOTPCount(String qid);
+
+    void resetOTPCount(String qid);
 }
