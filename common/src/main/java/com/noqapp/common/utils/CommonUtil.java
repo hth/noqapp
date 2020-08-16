@@ -213,7 +213,7 @@ public final class CommonUtil {
             if (normalize.contains(" ")) {
                 String[] splits = normalize.split(" ");
                 if (splits.length >= 1) {
-                    return splits[0] + " " + splits[1].substring(0, 1);
+                    return splits[0] + " " + splits[1].charAt(0);
                 }
             }
 
