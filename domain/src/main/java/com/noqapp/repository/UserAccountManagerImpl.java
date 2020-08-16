@@ -19,6 +19,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -124,6 +125,26 @@ public class UserAccountManagerImpl implements UserAccountManager {
         mongoTemplate.updateFirst(
             query(where("QID").is(qid)),
             entityUpdate(update("FN", firstName).set("LN", lastName).set("DN", displayName)),
+            UserAccountEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void increaseOTPCount(String qid) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            entityUpdate(new Update().inc("OC", 1)),
+            UserAccountEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void resetOTPCount(String qid) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            entityUpdate(update("OC", 0)),
             UserAccountEntity.class,
             TABLE
         );

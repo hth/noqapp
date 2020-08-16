@@ -811,4 +811,12 @@ public class AccountService {
     public boolean isPhoneValidated(String qid) {
         return userAccountManager.isPhoneValidated(qid);
     }
+
+    public void increaseOTPCount(String qid) {
+        userAccountManager.increaseOTPCount(qid);
+    }
+
+    public void resetOTPCount(String qid) {
+        userAccountManager.resetOTPCount(qid);
+    }
 }
