@@ -334,7 +334,7 @@ public class TokenQueueService {
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(tokenQueue.getQueueStatus())
             .setExpectedServiceBegin(
-                queue.getExpectedServiceBegin() == null
+                null == queue.getExpectedServiceBegin()
                     ? DateUtil.getZonedDateTimeAtUTC()
                     : ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
             .setTimeSlotMessage(queue.getTimeSlotMessage());
@@ -410,7 +410,10 @@ public class TokenQueueService {
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus())
-                    .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
+                    .setExpectedServiceBegin(
+                        null == queue.getExpectedServiceBegin()
+                            ? DateUtil.getZonedDateTimeAtUTC()
+                            : ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
                     .setTransactionId(queue.getTransactionId());
             }
 
@@ -425,7 +428,10 @@ public class TokenQueueService {
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(tokenQueue.getQueueStatus())
-                .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
+                .setExpectedServiceBegin(
+                    null == queue.getExpectedServiceBegin()
+                        ? DateUtil.getZonedDateTimeAtUTC()
+                        : ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")))
                 .setTransactionId(queue.getTransactionId());
         } catch (Exception e) {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
