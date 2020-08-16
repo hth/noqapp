@@ -275,13 +275,16 @@ public final class CommonUtil {
     @SuppressWarnings("unused")
     public static List<String> retrieveIPV4(String fromDevice, String fromRequest) {
         LOG.info("Send ips are {} {}", fromDevice, fromRequest);
-        List<String> ips = new ArrayList<String>() {{
-            add(fromDevice);
-        }};
+        List<String> ips = new ArrayList<>();
 
         try {
             InetAddress address = InetAddress.getByName(fromDevice);
-            if (address instanceof Inet6Address) {
+            if (!(address instanceof Inet6Address)) {
+                ips.add(fromDevice);
+            }
+
+            address = InetAddress.getByName(fromRequest);
+            if (!(address instanceof Inet6Address)) {
                 ips.add(fromRequest);
             }
             return ips;
