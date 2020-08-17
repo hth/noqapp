@@ -7,10 +7,8 @@
     <secured attributes="ROLE_CLIENT, ROLE_M_ADMIN" match="any"/>
 
     <on-start>
-        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizNameId')"
-                  result="conversationScope.bizNameId" />
-        <evaluate expression="migrateToBusinessRegistrationFlowActions.populateBusiness(bizNameId)"
-                  result="flowScope.register"/>
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'bizNameId')" result="conversationScope.bizNameId" />
+        <evaluate expression="migrateToBusinessRegistrationFlowActions.populateBusiness(bizNameId)" result="flowScope.register"/>
     </on-start>
 
     <action-state id="profileComplete">
@@ -63,7 +61,7 @@
         <on-entry>
             <evaluate expression="migrateToBusinessRegistrationFlowActions.additionalAttributes(register.registerBusiness, 'bizName')" />
         </on-entry>
-        <transition on="continue" to="registrationReview"/>
+        <transition on="continue" to="businessProperties"/>
         <transition on="cancel" to="registrationStart"/>
     </view-state>
 
@@ -71,10 +69,32 @@
         <on-entry>
             <evaluate expression="migrateToBusinessRegistrationFlowActions.additionalAttributes(register.registerBusiness, 'bizName')" />
         </on-entry>
-        <transition on="continueEdit" to="registrationEditReview"/>
+        <transition on="continueEdit" to="businessEditProperties"/>
         <transition on="cancel" to="registrationEditComplete"/>
     </view-state>
     <!-- Additional Attributes End -->
+
+    <view-state id="businessProperties" model="register">
+        <transition on="continue" to="validateBusinessProperties"/>
+        <transition on="cancel" to="registrationStart"/>
+    </view-state>
+
+    <view-state id="businessEditProperties" model="register">
+        <transition on="continueEdit" to="editValidateBusinessProperties"/>
+        <transition on="cancel" to="registrationEditComplete"/>
+    </view-state>
+
+    <action-state id="validateBusinessProperties">
+        <evaluate expression="businessFlowValidator.validateBusinessProperties(register.registerBusiness, messageContext)" />
+        <transition on="success" to="registrationReview"/>
+        <transition on="failure" to="businessProperties"/>
+    </action-state>
+
+    <action-state id="editValidateBusinessProperties">
+        <evaluate expression="businessFlowValidator.validateBusinessProperties(register.registerBusiness, messageContext)" />
+        <transition on="success" to="registrationEditReview"/>
+        <transition on="failure" to="businessEditProperties"/>
+    </action-state>
 
     <!-- Review -->
     <view-state id="registrationReview">

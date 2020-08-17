@@ -25,8 +25,7 @@
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <div class="menu-top-arrow">
-                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
@@ -160,18 +159,6 @@
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
-                                <c:if test="${register.registerBusiness.businessUserRegistrationStatus == BusinessUserRegistrationStatusEnum.V}">
-                                <li>
-                                    <div class="col-lable3">
-                                        <form:label path="registerBusiness.dayClosed" cssErrorClass="lb_error" style="color: #9f1313;">Business Closed</form:label>
-                                    </div>
-                                    <div class="col-fields">
-                                        <form:checkbox path="registerBusiness.dayClosed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true"/>
-                                        <span style="display:block; font-size:14px; color: #9f1313;">(Example: Closed for national holiday. This will remain closed unless unchecked. No Queues are open.)</span>
-                                    </div>
-                                    <div class="clearFix"></div>
-                                </li>
-                                </c:if>
                                 <c:if test="${!register.registerBusiness.claimed}">
                                 <li>
                                     <div class="col-lable3">
@@ -239,6 +226,35 @@
                                 </ul>
                             </div>
                             </c:if>
+
+                            <div class="full">
+                                <div class="admin-title pT30">
+                                    <h2>Additional Properties</h2>
+                                </div>
+                                <ul class="list-form">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.limitServiceByDays" cssErrorClass="lb_error">Limit Service By Days</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="registerBusiness.limitServiceByDays" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" disabled="true"/>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <c:if test="${register.registerBusiness.businessUserRegistrationStatus == BusinessUserRegistrationStatusEnum.V}">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.dayClosed" cssErrorClass="lb_error" style="color: #9f1313;">Business Closed</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:checkbox path="registerBusiness.dayClosed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" disabled="true"/>
+                                            <span style="display:block; font-size:14px; color: #9f1313;">(Example: Closed for national holiday. This will remain closed unless unchecked. No Queues are open.)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    </c:if>
+                                </ul>
+                            </div>
 
                             <div class="btn-hours">
                                 <c:choose>

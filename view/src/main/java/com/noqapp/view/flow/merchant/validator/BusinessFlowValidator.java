@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.ValidationUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -879,6 +880,38 @@ public class BusinessFlowValidator {
         }
 
         LOG.info("Validate business qid={} status={}", registerBusiness.getBusinessUser().getQueueUserId(), status);
+        return status;
+    }
+
+    @SuppressWarnings("unused")
+    public String validateBusinessProperties(RegisterBusiness registerBusiness, MessageContext messageContext) {
+        String status = LandingController.SUCCESS;
+
+        if (StringUtils.isBlank(registerBusiness.getLimitServiceByDays())) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("registerBusiness.limitServiceByDays")
+                    .defaultText("Limit Service By Days cannot be empty.")
+                    .build());
+            status = "failure";
+        }
+
+        try {
+            Integer.parseInt(registerBusiness.getLimitServiceByDays());
+            if (!StringUtils.isNumeric(registerBusiness.getLimitServiceByDays())) {
+                throw new NumberFormatException("Number is not number");
+            }
+        } catch (NumberFormatException e) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("registerBusiness.limitServiceByDays")
+                    .defaultText("Specify Limit Service By Days as a whole positive number.")
+                    .build());
+            status = "failure";
+        }
+
         return status;
     }
 }

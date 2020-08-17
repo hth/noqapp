@@ -41,8 +41,7 @@
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <div class="menu-top-arrow">
-                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
@@ -82,9 +81,9 @@
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                                 <ul>
-                                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
                                     <li>${message.text}</li>
-                                </c:forEach>
+                                    </c:forEach>
                                 </ul>
                                 </c:if>
                             </div>
@@ -201,18 +200,6 @@
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
-                                    <c:if test="${register.registerBusiness.businessUserRegistrationStatus == BusinessUserRegistrationStatusEnum.V}">
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="dayClosed" cssErrorClass="lb_error" style="color: #9f1313;">Business Closed</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:checkbox path="dayClosed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" />
-                                            <span style="display:block; font-size:14px; color: #9f1313;">(Example: Closed for national holiday. This will remain closed unless unchecked. Closed business for holiday does not get orders or appointments)</span>
-                                        </div>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    </c:if>
                                     <c:if test="${!register.registerBusiness.claimed}">
                                     <li>
                                         <div class="col-lable3">

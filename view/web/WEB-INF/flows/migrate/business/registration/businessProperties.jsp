@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.BusinessUserRegistrationStatusEnum" %>
 <%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -10,9 +11,21 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.css" type='text/css'>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+
+    <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/brands.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/solid.css" rel="stylesheet">
+
+    <!-- custom styling for all icons -->
+    i.fas,
+    i.fab {
+        border: 1px solid red;
+    }
 </head>
 
 <body>
@@ -52,50 +65,59 @@
             <!-- Add New Supervisor -->
             <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_CLIENT')">
                 <div class="admin-main">
-                    <form:form modelAttribute="register">
+                    <form:form modelAttribute="register.registerBusiness">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
-                            <h2>Edit Business Amenities & Facilities</h2>
+                            <h2>Add Business Additional Properties</h2>
                         </div>
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                    <ul>
-                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
-                                        </c:forEach>
-                                    </ul>
+                                <ul>
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                    <li>${message.text}</li>
+                                    </c:forEach>
+                                </ul>
                                 </c:if>
                             </div>
                         </div>
-
                         <div class="admin-content">
-                            <div class="full">
-                                <ul class="col3-grid">
-                                    <h4><strong>Amenities</strong></h4>
-                                    <form:checkboxes element="li" path="registerBusiness.amenities" items="${register.registerBusiness.amenitiesAvailable}"/>
-                                    <div class="clearFix"></div>
-                                </ul>
-                                <ul class="col3-grid">
-                                    <h4><strong>Facilities</strong></h4>
-                                    <form:checkboxes element="li" path="registerBusiness.facilities" items="${register.registerBusiness.facilitiesAvailable}"/>
-                                    <div class="clearFix"></div>
+                            <div class="add-new">
+                                <ul class="list-form">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="limitServiceByDays" cssErrorClass="lb_error">Limit Service By Days</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:input path="limitServiceByDays" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            <span style="display:block; font-size:14px;">When set to 0, there is no limit. Greater than 0, will block people from joining for set days</span>
+                                        </div>
+                                        <span class="tooltip" title="Limits re-joining within set number of days" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <c:if test="${register.registerBusiness.businessUserRegistrationStatus == BusinessUserRegistrationStatusEnum.V}">
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="dayClosed" cssErrorClass="lb_error" style="color: #9f1313;">Business Closed</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:checkbox path="dayClosed" cssClass="form-check-box" cssErrorClass="form-check-box error-field" />
+                                            <span style="display:block; font-size:14px; color: #9f1313;">(Example: Closed for national holiday. This will remain closed unless unchecked. Closed business for holiday does not get orders or appointments)</span>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    </c:if>
                                 </ul>
 
-                                <div class="btn-hours">
-                                    <c:choose>
-                                        <c:when test="${!empty register.registerBusiness.businessUser.validateByQid}">
+                                <div class="col-lable3"></div>
+                                <div class="col-fields">
+                                    <div class="button-btn">
                                         <div class="button-btn">
-                                            <button name="_eventId_continueEdit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
+                                            <button name="_eventId_continue" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
                                             <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                         </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                        <div class="button-btn">
-                                            <button name="_eventId_cancel" class="ladda-button cancel-btn">Cancel</button>
-                                        </div>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    </div>
                                     <div class="clearFix"></div>
                                 </div>
                                 <div class="clearFix"></div>
@@ -133,6 +155,7 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/services.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
@@ -166,6 +189,17 @@
     // l.toggle();
     // l.isLoading();
     // l.setProgress( 0-1 );
+</script>
+<script>
+    new jBox('Tooltip', {
+        attach: '.tooltip',
+        adjustDistance : {
+            top : 105,
+            bottom : 150,
+            left : 15,
+            right : 50
+        }
+    });
 </script>
 <script>
     (function(w, u, d){var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};var l = function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://code.upscope.io/F3TE6jAMct.js';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(typeof u!=="function"){w.Upscope=i;l();}})(window, window.Upscope, document);
