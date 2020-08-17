@@ -60,8 +60,9 @@ public class RegisterBusiness implements Serializable {
     private List<AmenityEnum> amenities = new ArrayList<>();
     private List<FacilityEnum> facilities = new ArrayList<>();
     private boolean populateAmenitiesAndFacilities = false;
-    private boolean dayClosed = false;
     private boolean claimed = true;
+    private String limitServiceByDays;
+    private boolean dayClosed = false;
     /* Reference to person who has recommended business. */
     private String inviteeCode;
     private AddressOriginEnum addressOrigin;
@@ -344,6 +345,15 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setClaimed(boolean claimed) {
         this.claimed = claimed;
+        return this;
+    }
+
+    public String getLimitServiceByDays() {
+        return limitServiceByDays;
+    }
+
+    public RegisterBusiness setLimitServiceByDays(String limitServiceByDays) {
+        this.limitServiceByDays = limitServiceByDays;
         return this;
     }
 

@@ -160,12 +160,7 @@ class RegistrationFlowActions {
         }
     }
 
-    /**
-     * For registering additional store.
-     *
-     * @param registerBusiness
-     * @return
-     */
+    /** For registering additional store. */
     RegisterBusiness registerBusinessDetails(RegisterBusiness registerBusiness) {
         try {
             BizNameEntity bizName = registerBusiness.getBusinessUser().getBizName();
@@ -306,12 +301,7 @@ class RegistrationFlowActions {
         }
     }
 
-    /**
-     * For registering new or for editing business.
-     *
-     * @param register
-     * @return
-     */
+    /** For registering new or for editing business. */
     BizNameEntity registerBusinessDetails(Register register) {
         RegisterBusiness registerBusiness = register.getRegisterBusiness();
         BizNameEntity bizName;
@@ -343,6 +333,7 @@ class RegistrationFlowActions {
             .setAmenities(registerBusiness.getAmenities())
             .setFacilities(registerBusiness.getFacilities())
             .setDayClosed(registerBusiness.isDayClosed())
+            .setLimitServiceByDays(Integer.parseInt(registerBusiness.getLimitServiceByDays()))
             .setClaimed(registerBusiness.isClaimed());
         validateAddress(bizName);
 
