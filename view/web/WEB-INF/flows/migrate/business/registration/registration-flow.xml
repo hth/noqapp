@@ -45,14 +45,14 @@
     <action-state id="validateBusinessDetails">
         <evaluate expression="businessFlowValidator.validateBusinessDetails(register, 'create', messageContext)"/>
         <transition on="success" to="additionalAttributes"/>
-        <transition on="success.SKIP_AMENITIES_FACILITIES" to="registrationReview"/>
+        <transition on="success.SKIP_AMENITIES_FACILITIES" to="businessProperties"/>
         <transition on="failure" to="registrationStart"/>
     </action-state>
 
     <action-state id="editValidateBusinessDetails">
         <evaluate expression="businessFlowValidator.validateBusinessDetails(register, 'edit', messageContext)"/>
         <transition on="success" to="additionalEditAttributes"/>
-        <transition on="success.SKIP_AMENITIES_FACILITIES" to="registrationEditReview"/>
+        <transition on="success.SKIP_AMENITIES_FACILITIES" to="businessEditProperties"/>
         <transition on="failure" to="registrationStart"/>
     </action-state>
 
