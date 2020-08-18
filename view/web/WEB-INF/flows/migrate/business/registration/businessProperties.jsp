@@ -90,7 +90,7 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="limitServiceByDays" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                            <span style="display:block; font-size:14px;">When set to 0, there is no limit. Greater than 0, will block people from joining for set days</span>
+                                            <span style="display:block; font-size:14px;">When set to 0, there is no limit. Greater than 0, will block serviced personnel from joining for set days.</span>
                                         </div>
                                         <span class="tooltip" title="Limits re-joining within set number of days" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
