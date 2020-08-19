@@ -28,18 +28,18 @@ import java.util.List;
  * hitender
  * 3/29/18 3:36 AM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Document(collection = "PURCHASE_ORDER")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "po_qid_bs_idx", def = "{'QID' : 1, 'BS' : 1}", unique = false),
-        @CompoundIndex(name = "po_bn_idx", def = "{'BN' : 1}", unique = false),
-        @CompoundIndex(name = "po_qr_idx", def = "{'QR' : 1}", unique = false),
-        @CompoundIndex(name = "po_ti_idx", def = "{'TI' : 1}", unique = true),
+    @CompoundIndex(name = "po_qid_bs_idx", def = "{'QID' : 1, 'BS' : 1}", unique = false),
+    @CompoundIndex(name = "po_bn_idx", def = "{'BN' : 1}", unique = false),
+    @CompoundIndex(name = "po_qr_idx", def = "{'QR' : 1}", unique = false),
+    @CompoundIndex(name = "po_ti_idx", def = "{'TI' : 1}", unique = true),
 })
 public class PurchaseOrderEntity extends BaseEntity {
 
@@ -65,7 +65,7 @@ public class PurchaseOrderEntity extends BaseEntity {
      * Guardian's DID.
      */
     @DBMapping
-    @Field ("DID")
+    @Field("DID")
     private String did;
 
     @Field("CN")
@@ -106,29 +106,31 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("PS")
     private PurchaseOrderStateEnum presentOrderState = PurchaseOrderStateEnum.IN;
 
-    @Field ("NS")
+    @Field("NS")
     private boolean notifiedOnService = false;
 
-    @Field ("NC")
+    @Field("NC")
     private int attemptToSendNotificationCounts = 0;
 
     @Field("OS")
-    private List<PurchaseOrderStateEnum> orderStates = new LinkedList<PurchaseOrderStateEnum>() {{add(PurchaseOrderStateEnum.IN);}};
+    private List<PurchaseOrderStateEnum> orderStates = new LinkedList<PurchaseOrderStateEnum>() {{
+        add(PurchaseOrderStateEnum.IN);
+    }};
 
     @DBMapping
-    @Field ("BT")
+    @Field("BT")
     private BusinessTypeEnum businessType;
 
     @DBMapping
-    @Field ("PQ")
+    @Field("PQ")
     private String partialPaymentAcceptedByQid;
 
     @DBMapping
-    @Field ("FQ")
+    @Field("FQ")
     private String fullPaymentAcceptedByQid;
 
     @DBMapping
-    @Field ("CQ")
+    @Field("CQ")
     private String couponAddedByQid;
 
     @DBMapping
@@ -139,54 +141,53 @@ public class PurchaseOrderEntity extends BaseEntity {
     private boolean discountedPurchase;
 
     @DBMapping
-    @Field ("RA")
+    @Field("RA")
     private int ratingCount;
 
     @DBMapping
-    @Field ("RV")
+    @Field("RV")
     private String review;
 
     @DBMapping
-    @Field ("ST")
+    @Field("ST")
     private SentimentTypeEnum sentimentType;
 
     /**
      * Order Number.
-     *
      * TODO(hth) There is a possibility of having same token number in purchase order, please validate as this happened for Queue.
      * Do no rely on tokenNumber when dealing with transactions. Instead use transaction id for all transaction and qid.
      */
     @DBMapping
-    @Field ("TN")
+    @Field("TN")
     private int tokenNumber;
 
     /* Locked when being served. */
     @DBMapping
-    @Field ("SN")
+    @Field("SN")
     private String serverName;
 
-    @Field ("SID")
+    @Field("SID")
     private String serverDeviceId;
 
     @DBMapping
-    @Field ("SB")
+    @Field("SB")
     private Date serviceBeginTime;
 
     @DBMapping
-    @Field ("SE")
+    @Field("SE")
     private Date serviceEndTime;
 
-    @Field ("EB")
+    @Field("EB")
     private Date expectedServiceBegin;
 
-    @Field ("TS")
+    @Field("TS")
     private TokenServiceEnum tokenService;
 
-    @Field ("VS")
+    @Field("VS")
     private boolean clientVisitedThisStore;
 
     @DBMapping
-    @Field ("TI")
+    @Field("TI")
     private String transactionId;
 
     @DBMapping

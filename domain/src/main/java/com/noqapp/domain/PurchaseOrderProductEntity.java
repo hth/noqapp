@@ -16,18 +16,18 @@ import java.util.StringJoiner;
  * hitender
  * 3/29/18 3:43 AM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Document(collection = "PURCHASE_ORDER_PRODUCT")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "por_qid_bs_idx", def = "{'QID' : 1, 'BS' : 1}", unique = false),
-        @CompoundIndex(name = "por_bn_idx", def = "{'BN' : 1}", unique = false),
-        @CompoundIndex(name = "por_qr_idx", def = "{'QR' : 1}", unique = false),
-        @CompoundIndex(name = "por_po_idx", def = "{'PO' : 1}", unique = false),
+    @CompoundIndex(name = "por_qid_bs_idx", def = "{'QID' : 1, 'BS' : 1}", unique = false),
+    @CompoundIndex(name = "por_bn_idx", def = "{'BN' : 1}", unique = false),
+    @CompoundIndex(name = "por_qr_idx", def = "{'QR' : 1}", unique = false),
+    @CompoundIndex(name = "por_po_idx", def = "{'PO' : 1}", unique = false),
 })
 public class PurchaseOrderProductEntity extends BaseEntity {
 
@@ -50,7 +50,7 @@ public class PurchaseOrderProductEntity extends BaseEntity {
     @Field("UV")
     private int unitValue;
 
-    @Field ("UM")
+    @Field("UM")
     private UnitOfMeasurementEnum unitOfMeasurement;
 
     /* Package size is the quantity of individual items in the unit. Like 1 strip contains 10 tablets. Defaults to 1. */
@@ -75,7 +75,7 @@ public class PurchaseOrderProductEntity extends BaseEntity {
     @Field("QR")
     private String codeQR;
 
-    @Field ("BT")
+    @Field("BT")
     private BusinessTypeEnum businessType;
 
     public String getProductId() {

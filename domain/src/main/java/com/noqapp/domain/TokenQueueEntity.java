@@ -19,36 +19,36 @@ import java.util.StringJoiner;
  * User: hitender
  * Date: 12/15/16 9:42 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
-@Document (collection = "TOKEN_QUEUE")
+@Document(collection = "TOKEN_QUEUE")
 public class TokenQueueEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(TokenQueueEntity.class);
     private static final String TOPICS = "/topics/";
 
-    @Field ("LN")
+    @Field("LN")
     private int lastNumber;
 
-    @Field ("CS")
+    @Field("CS")
     private int currentlyServing;
 
-    @Field ("TP")
+    @Field("TP")
     private String topic;
 
-    @Field ("DN")
+    @Field("DN")
     private String displayName;
 
-    @Field ("BT")
+    @Field("BT")
     private BusinessTypeEnum businessType;
 
-    @Field ("BC")
+    @Field("BC")
     private String bizCategoryId;
 
-    @Field ("QS")
+    @Field("QS")
     private QueueStatusEnum queueStatus = QueueStatusEnum.S;
 
     @Transient
@@ -151,7 +151,7 @@ public class TokenQueueEntity extends BaseEntity {
             case C:
                 //Very specific message to send to all on queue closed
                 firebaseMessageType = FirebaseMessageTypeEnum.C;
-                return  getTopicWellFormatted();
+                return getTopicWellFormatted();
             default:
                 LOG.error("Reached unreachable condition, queueStatus={}", queueStatus);
                 throw new IllegalStateException("Condition set is not defined");
@@ -184,11 +184,11 @@ public class TokenQueueEntity extends BaseEntity {
                 return getTopicWellFormatted();
             case OW:
                 firebaseMessageType = FirebaseMessageTypeEnum.C;
-                return  getTopicWellFormatted();
+                return getTopicWellFormatted();
             case LO:
             case FD:
                 firebaseMessageType = FirebaseMessageTypeEnum.C;
-                return  getTopicWellFormatted();
+                return getTopicWellFormatted();
             case OD:
                 firebaseMessageType = FirebaseMessageTypeEnum.C;
                 return getTopicWellFormatted();
