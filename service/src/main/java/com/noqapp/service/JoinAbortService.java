@@ -24,19 +24,18 @@ import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
-import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.service.exceptions.AlreadyServicedTodayException;
-import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
-import com.noqapp.service.exceptions.JoiningQueuePreApprovedRequiredException;
 import com.noqapp.service.exceptions.BeforeStartOfStoreException;
+import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
 import com.noqapp.service.exceptions.JoiningNonApprovedQueueException;
 import com.noqapp.service.exceptions.JoiningQueuePermissionDeniedException;
+import com.noqapp.service.exceptions.JoiningQueuePreApprovedRequiredException;
+import com.noqapp.service.exceptions.LimitedPeriodException;
 import com.noqapp.service.exceptions.PurchaseOrderCancelException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
 import com.noqapp.service.exceptions.QueueAbortPaidPastDurationException;
-import com.noqapp.service.exceptions.LimitedPeriodException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.TokenAvailableLimitReachedException;
 
@@ -103,15 +102,6 @@ public class JoinAbortService {
 
         /* For executing in order of sequence. */
         this.executorService = newSingleThreadExecutor();
-    }
-
-    @Mobile
-    public JsonToken joinQueue(String codeQR, String did, long averageServiceTime, TokenServiceEnum tokenService, UserLevelEnum userLevel) {
-        LOG.info("joinQueue codeQR={} did={}", codeQR, did);
-        JsonToken jsonToken = tokenQueueService.getNextToken(codeQR, did, null, null, averageServiceTime, tokenService, userLevel);
-        checkLimitationEncountered(codeQR, jsonToken);
-
-        return jsonToken;
     }
 
     @Mobile
