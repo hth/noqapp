@@ -23,20 +23,20 @@ import javax.validation.constraints.NotNull;
  * 2/24/18 8:07 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Document(collection = "M_RECORD")
 @CompoundIndexes(value = {
-        @CompoundIndex(name = "m_record_idx", def = "{'QID' : 1}", unique = false),
-        @CompoundIndex(name = "m_record_qr_idx", def = "{'QR' : 1}", unique = false, sparse = true),
+    @CompoundIndex(name = "m_record_idx", def = "{'QID' : 1}", unique = false),
+    @CompoundIndex(name = "m_record_qr_idx", def = "{'QR' : 1}", unique = false, sparse = true),
 })
 public class MedicalRecordEntity extends BaseEntity {
 
     @NotNull
-    @Field ("BT")
+    @Field("BT")
     private BusinessTypeEnum businessType;
 
     @NotNull
@@ -93,19 +93,19 @@ public class MedicalRecordEntity extends BaseEntity {
     @Field("RA")
     private Map<Long, String> recordAccessed = new HashMap<>();
 
-    @Field ("N")
+    @Field("N")
     private String businessName;
 
-    @Field ("BN")
+    @Field("BN")
     private String bizNameId;
 
-    @Field ("BCI")
+    @Field("BCI")
     private String bizCategoryId;
 
     @Field("QR")
     private String codeQR;
 
-    @Field ("FV")
+    @Field("FV")
     private FormVersionEnum formVersion;
 
     @Field("TIS")
