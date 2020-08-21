@@ -5,13 +5,13 @@ import static com.noqapp.common.utils.Constants.FILE_SEPARATOR;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -36,7 +36,7 @@ public class LoadMappingFiles {
     public static String loadMapping(String loadFileOfType) {
         try {
             URL url = LoadMappingFiles.class.getClassLoader().getResource(MAPPING_LOCATION + loadFileOfType + ".mapping.json");
-            Path path = Paths.get(url.toURI());
+            Path path = Paths.get(Objects.requireNonNull(url).toURI());
             StringBuilder data = new StringBuilder();
             Stream<String> lines = Files.lines(path);
             lines.forEach(line -> data.append(line).append("\n"));
