@@ -18,28 +18,28 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document (collection = "MAIL")
 public class MailEntity extends BaseEntity {
 
-    @Field ("TN")
+    @Field("TN")
     private String toName = "";
 
-    @Field ("TM")
+    @Field("TM")
     private String toMail;
 
-    @Field ("FN")
+    @Field("FN")
     private String fromName;
 
-    @Field ("FM")
+    @Field("FM")
     private String fromMail;
 
-    @Field ("ST")
+    @Field("ST")
     private String subject;
 
-    @Field ("ME")
+    @Field("ME")
     private String message;
 
-    @Field ("MS")
+    @Field("MS")
     private MailStatusEnum mailStatus;
 
-    @Field ("AT")
+    @Field("AT")
     private int attempts = 0;
 
     public String getToName() {
