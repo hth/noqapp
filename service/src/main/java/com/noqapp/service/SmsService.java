@@ -3,6 +3,8 @@ package com.noqapp.service;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.json.sms.textlocal.BalanceResponse;
 import com.noqapp.domain.json.sms.textlocal.SendResponse;
+import com.noqapp.domain.types.LocaleEnum;
+import com.noqapp.domain.types.MessageCodeEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 
@@ -14,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Service;
 
 import okhttp3.OkHttpClient;
@@ -27,6 +32,7 @@ import java.net.UnknownHostException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.Properties;
 
 /**
  * User: hitender
@@ -47,6 +53,8 @@ public class SmsService {
 
     private OkHttpClient okHttpClient;
     private ApiHealthService apiHealthService;
+    private Environment environment;
+
     private boolean sendSMSTurnedOn;
 
     @Autowired
@@ -71,6 +79,7 @@ public class SmsService {
 
         this.okHttpClient = okHttpClient;
         this.apiHealthService = apiHealthService;
+        this.environment = environment;
         if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
             this.sendSMSTurnedOn = true;
         }
@@ -210,5 +219,9 @@ public class SmsService {
         }
 
         return "failure";
+    }
+
+    public String smsMessage(MessageCodeEnum messageCode, LocaleEnum locale, Object ... args) {
+        return String.format(Objects.requireNonNull(environment.getProperty(messageCode.name() + "." + locale.name())), args);
     }
 }

@@ -96,6 +96,19 @@
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="smsLocale" cssErrorClass="lb_error">SMS Language</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:select path="smsLocale" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                <form:options items="${register.registerBusiness.availableLocaleTypes}" itemValue="name" itemLabel="description"/>
+                                            </form:select>
+                                        </div>
+                                        <span class="tooltip" title="SMS language supported" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                        <div class="clearFix"></div>
+                                    </li>
                                     <c:if test="${register.registerBusiness.businessUserRegistrationStatus == BusinessUserRegistrationStatusEnum.V}">
                                     <li>
                                         <div class="col-lable3">

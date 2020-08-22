@@ -75,11 +75,21 @@
     <!-- Additional Attributes End -->
 
     <view-state id="businessProperties" model="register">
+        <on-entry>
+            <!-- Populates all available business types -->
+            <evaluate result="register.registerBusiness.availableLocaleTypes"
+                      expression="T(com.noqapp.domain.types.LocaleEnum).asList()"/>
+        </on-entry>
         <transition on="continue" to="validateBusinessProperties"/>
         <transition on="cancel" to="registrationStart"/>
     </view-state>
 
     <view-state id="businessEditProperties" model="register">
+        <on-entry>
+            <!-- Populates all available business types -->
+            <evaluate result="register.registerBusiness.availableLocaleTypes"
+                      expression="T(com.noqapp.domain.types.LocaleEnum).asList()"/>
+        </on-entry>
         <transition on="continueEdit" to="editValidateBusinessProperties"/>
         <transition on="cancel" to="registrationEditComplete"/>
     </view-state>

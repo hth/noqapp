@@ -334,6 +334,7 @@ class RegistrationFlowActions {
             .setFacilities(registerBusiness.getFacilities())
             .setDayClosed(registerBusiness.isDayClosed())
             .setLimitServiceByDays(Integer.parseInt(registerBusiness.getLimitServiceByDays()))
+            .setSmsLocale(registerBusiness.getSmsLocale())
             .setClaimed(registerBusiness.isClaimed());
         validateAddress(bizName);
 

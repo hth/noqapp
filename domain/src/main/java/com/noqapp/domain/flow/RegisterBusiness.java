@@ -14,6 +14,7 @@ import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.LocaleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.WalkInStateEnum;
 
@@ -62,6 +63,7 @@ public class RegisterBusiness implements Serializable {
     private boolean populateAmenitiesAndFacilities = false;
     private boolean claimed = true;
     private String limitServiceByDays;
+    private LocaleEnum smsLocale;
     private boolean dayClosed = false;
     /* Reference to person who has recommended business. */
     private String inviteeCode;
@@ -187,6 +189,9 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     private List<BusinessTypeEnum> availableBusinessTypes;
+
+    @Transient
+    private List<LocaleEnum> availableLocaleTypes;
 
     @Transient
     public Map<String, String> categories;
@@ -330,15 +335,6 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
-    public boolean isDayClosed() {
-        return dayClosed;
-    }
-
-    public RegisterBusiness setDayClosed(boolean dayClosed) {
-        this.dayClosed = dayClosed;
-        return this;
-    }
-
     public boolean isClaimed() {
         return claimed;
     }
@@ -354,6 +350,24 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setLimitServiceByDays(String limitServiceByDays) {
         this.limitServiceByDays = limitServiceByDays;
+        return this;
+    }
+
+    public LocaleEnum getSmsLocale() {
+        return smsLocale;
+    }
+
+    public RegisterBusiness setSmsLocale(LocaleEnum smsLocale) {
+        this.smsLocale = smsLocale;
+        return this;
+    }
+
+    public boolean isDayClosed() {
+        return dayClosed;
+    }
+
+    public RegisterBusiness setDayClosed(boolean dayClosed) {
+        this.dayClosed = dayClosed;
         return this;
     }
 
@@ -388,6 +402,15 @@ public class RegisterBusiness implements Serializable {
 
     public void setAvailableBusinessTypes(List<BusinessTypeEnum> availableBusinessTypes) {
         this.availableBusinessTypes = availableBusinessTypes;
+    }
+
+    public List<LocaleEnum> getAvailableLocaleTypes() {
+        return availableLocaleTypes;
+    }
+
+    public RegisterBusiness setAvailableLocaleTypes(List<LocaleEnum> availableLocaleTypes) {
+        this.availableLocaleTypes = availableLocaleTypes;
+        return this;
     }
 
     public Map<String, String> getCategories() {
