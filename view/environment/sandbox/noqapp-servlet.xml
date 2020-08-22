@@ -30,6 +30,7 @@
 
     <!--suppress SpringModelInspection -->
     <util:properties id="systemProperty" location="classpath:/conf/sandbox.properties" />
+    <util:properties id="communication" location="classpath:/conf/communication.properties" />
     <!--suppress SpringModelInspection -->
     <util:properties id="environmentProperty" location="classpath:/build-info.properties" />
     <!--suppress SpringModelInspection -->
