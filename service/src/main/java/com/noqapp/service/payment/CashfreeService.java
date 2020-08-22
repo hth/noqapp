@@ -57,7 +57,7 @@ public class CashfreeService {
     public JsonResponseWithCFToken createTokenForPurchaseOrder(JsonRequestPurchaseOrderCF jsonRequestPurchaseOrderCF) {
         LOG.info("Send request to create token message with body={}", jsonRequestPurchaseOrderCF.asJson());
 
-        RequestBody body = RequestBody.create(Constants.JSON, jsonRequestPurchaseOrderCF.asJson());
+        RequestBody body = RequestBody.create(jsonRequestPurchaseOrderCF.asJson(), Constants.JSON);
         Request request = new Request.Builder()
             .url(cashfreeEndpoint + "/api/v2/cftoken/order")
             .addHeader("content-type", Constants.JSON.toString())
