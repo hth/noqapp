@@ -1,3 +1,7 @@
+### Changed Aug 22, 2020
+
+    db.getCollection('BIZ_NAME').update({}, {$set: {SL:"en_IN"}}, {multi: true});
+    
 ### Changed Aug 16, 2020
 
     db.getCollection('USER_ACCOUNT').update({}, {$set: {OC:NumberInt(0)}}, {multi: true});

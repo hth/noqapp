@@ -191,22 +191,32 @@ public class ScheduleAppointmentService {
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
-        sendMessageToTopic(
-            jsonSchedule.getCodeQR(),
-            "Appointment Received",
-            "Appointment requested for " + bizStore.getDisplayName() + " by " + userProfile.getName() + ".\n\n"
-                + "Date: " + jsonSchedule.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime())
-                + ". Please confirm this appointment at earliest. If not confirmed, this appointment will auto cancel after 12 hours from booking.");
-        /*
-         * Do not inform anyone other than the person with the
-         * token who is being served. This is personal message.
-         * of being served out of order/sequence.
-         */
-        sendMessageToSelectedTokenUser(
-            jsonSchedule.getCodeQR(),
-            jsonProfile.getQueueUserId(),
-            "Appointment Booked",
-            "Your appointment has been booked. Awaiting confirmation from " + bizStore.getDisplayName());
+        if (AppointmentStatusEnum.A == appointmentStatus) {
+            sendMessageToSelectedTokenUser(
+                scheduleAppointment.getCodeQR(),
+                jsonProfile.getQueueUserId(),
+                "Appointment Confirmed",
+                "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
+                    + "On Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
+                    + ". Please arrive 30 minutes before your appointment.");
+        } else {
+            sendMessageToTopic(
+                jsonSchedule.getCodeQR(),
+                "Appointment Received",
+                "Appointment requested for " + bizStore.getDisplayName() + " by " + userProfile.getName() + ".\n\n"
+                    + "Date: " + jsonSchedule.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(jsonSchedule.getStartTime())
+                    + ". Please confirm this appointment at earliest. If not confirmed, this appointment will auto cancel after 12 hours from booking.");
+            /*
+             * Do not inform anyone other than the person with the
+             * token who is being served. This is personal message.
+             * of being served out of order/sequence.
+             */
+            sendMessageToSelectedTokenUser(
+                jsonSchedule.getCodeQR(),
+                jsonProfile.getQueueUserId(),
+                "Appointment Booked",
+                "Your appointment has been booked. Awaiting confirmation from " + bizStore.getDisplayName());
+        }
 
         if (bizStore.getBizName().isNotClaimed()) {
             sendAppointmentMail("booked", userProfile, bizStore, scheduleAppointment);
