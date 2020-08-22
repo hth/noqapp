@@ -241,6 +241,17 @@
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="registerBusiness.smsLocale" cssErrorClass="lb_error">SMS Language</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:select path="registerBusiness.smsLocale" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                <form:options items="${register.registerBusiness.availableLocaleTypes}" itemValue="name" itemLabel="description" disabled="true"/>
+                                            </form:select>
+                                        </div>
+                                        <div class="clearFix"></div>
+                                    </li>
                                     <c:if test="${register.registerBusiness.businessUserRegistrationStatus == BusinessUserRegistrationStatusEnum.V}">
                                     <li>
                                         <div class="col-lable3">

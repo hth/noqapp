@@ -9,6 +9,7 @@ import com.noqapp.domain.types.BillingStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DataVisibilityEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.LocaleEnum;
 import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.PaymentPermissionEnum;
 import com.noqapp.domain.types.UserLevelEnum;
@@ -174,6 +175,9 @@ public class BizNameEntity extends BaseEntity {
 
     @Field("CL")
     private boolean claimed;
+
+    @Field("SL")
+    private LocaleEnum smsLocale = LocaleEnum.en_IN;
 
     @SuppressWarnings("unused")
     public BizNameEntity() {
@@ -561,6 +565,15 @@ public class BizNameEntity extends BaseEntity {
 
     public void setClaimed(boolean claimed) {
         this.claimed = claimed;
+    }
+
+    public LocaleEnum getSmsLocale() {
+        return smsLocale;
+    }
+
+    public BizNameEntity setSmsLocale(LocaleEnum smsLocale) {
+        this.smsLocale = smsLocale;
+        return this;
     }
 
     @Transient
