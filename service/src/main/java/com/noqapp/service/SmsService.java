@@ -16,9 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Service;
 
 import okhttp3.OkHttpClient;
@@ -33,6 +30,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
 import java.util.Properties;
+
+import javax.annotation.Resource;
 
 /**
  * User: hitender
@@ -56,6 +55,9 @@ public class SmsService {
     private Environment environment;
 
     private boolean sendSMSTurnedOn;
+
+    @Resource(name="communication")
+    private Properties communication;
 
     @Autowired
     public SmsService(
@@ -222,6 +224,6 @@ public class SmsService {
     }
 
     public String smsMessage(MessageCodeEnum messageCode, LocaleEnum locale, Object ... args) {
-        return String.format(Objects.requireNonNull(environment.getProperty(messageCode.name() + "." + locale.name())), args);
+        return String.format(communication.getProperty(messageCode.name() + "." + locale.name()), args);
     }
 }
