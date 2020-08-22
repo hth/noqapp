@@ -166,6 +166,16 @@ public class ScheduleAppointmentService {
                 + " closes at " + Formatter.convertMilitaryTo12HourFormat(storeHour.getEndHour()));
         }
 
+        AppointmentStatusEnum appointmentStatus;
+        switch (bizStore.getBusinessType()) {
+            case DO:
+            case HS:
+                appointmentStatus = AppointmentStatusEnum.U;
+                break;
+            default:
+                appointmentStatus = AppointmentStatusEnum.A;
+        }
+
         ScheduleAppointmentEntity scheduleAppointment = new ScheduleAppointmentEntity()
             .setCodeQR(jsonSchedule.getCodeQR())
             .setScheduleDate(jsonSchedule.getScheduleDate())
@@ -173,7 +183,7 @@ public class ScheduleAppointmentService {
             .setEndTime(jsonSchedule.getEndTime())
             .setQueueUserId(jsonSchedule.getQueueUserId())
             .setGuardianQid(guardianQid)
-            .setAppointmentStatus(AppointmentStatusEnum.U)
+            .setAppointmentStatus(appointmentStatus)
             .setChiefComplain(jsonSchedule.getChiefComplain());
         save(scheduleAppointment);
 
