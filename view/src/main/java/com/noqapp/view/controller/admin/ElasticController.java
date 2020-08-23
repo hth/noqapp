@@ -89,7 +89,7 @@ public class ElasticController {
                 } catch (Exception e) {
                     LOG.warn("Failed re-creating index reason={}", e.getLocalizedMessage(), e);
                 }
-            }, 45, TimeUnit.SECONDS);
+            }, 15, TimeUnit.SECONDS);
         } else {
             LOG.warn("Failed deleting elastic index");
         }
