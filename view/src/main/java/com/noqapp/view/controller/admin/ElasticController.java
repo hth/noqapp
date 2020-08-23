@@ -15,15 +15,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 /**
  * hitender
  * 11/17/17 12:37 PM
  */
 @SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
 @RequestMapping(value = "/admin/elastic")
@@ -34,6 +38,8 @@ public class ElasticController {
 
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreElasticService bizStoreElasticService;
+
+    private ScheduledExecutorService executorService;
 
     @Autowired
     public ElasticController(
@@ -47,6 +53,8 @@ public class ElasticController {
 
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreElasticService = bizStoreElasticService;
+
+        this.executorService = Executors.newSingleThreadScheduledExecutor();
     }
 
     @GetMapping
@@ -58,9 +66,19 @@ public class ElasticController {
 
     @PostMapping(value = "/recreate", produces = "text/html;charset=UTF-8")
     public String recreate() {
-        LOG.info("Generate Store Queue HTML");
-        elasticAdministrationService.deleteAllIndices();
-        bizStoreElasticService.addAllBizStoreToElastic();
+        LOG.info("Re-create elastic index started");
+        if (elasticAdministrationService.deleteAllIndices()) {
+            executorService.schedule(() -> {
+                try {
+                    bizStoreElasticService.addAllBizStoreToElastic();
+                    LOG.info("Re-create elastic index successfully");
+                } catch (Exception e) {
+                    LOG.warn("Failed re-creating index reason={}", e.getLocalizedMessage(), e);
+                }
+            }, 45, TimeUnit.SECONDS);
+        } else {
+            LOG.warn("Failed deleting elastic index");
+        }
         return "redirect:/admin/landing.htm";
     }
 }
