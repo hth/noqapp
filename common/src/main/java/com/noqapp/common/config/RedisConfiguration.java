@@ -64,6 +64,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
         /* Number of seconds before expiration. Defaults to unlimited (0) */
         redisCacheConfiguration.entryTtl(Duration.ofSeconds(redisCacheDuration));
         redisCacheConfiguration.usePrefix();
+        redisCacheConfiguration.disableCachingNullValues();
 
         return redisCacheConfiguration;
     }
