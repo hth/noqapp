@@ -1,6 +1,8 @@
 package com.noqapp.view.controller.admin;
 
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 
@@ -70,8 +72,20 @@ public class ElasticController {
         if (elasticAdministrationService.deleteAllIndices()) {
             executorService.schedule(() -> {
                 try {
-                    bizStoreElasticService.addAllBizStoreToElastic();
-                    LOG.info("Re-create elastic index successfully");
+                    boolean createdBizStoreMappingSuccessfully = elasticAdministrationService.addMapping(
+                        BizStoreElastic.INDEX,
+                        BizStoreElastic.TYPE);
+
+                    boolean createdSpatialMappingSuccessfully = elasticAdministrationService.addMapping(
+                        BizStoreSpatialElastic.INDEX,
+                        BizStoreSpatialElastic.TYPE);
+
+                    if (createdBizStoreMappingSuccessfully && createdSpatialMappingSuccessfully) {
+                        LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
+                        bizStoreElasticService.addAllBizStoreToElastic();
+                    } else {
+                        LOG.error("Failed re-create elastic index");
+                    }
                 } catch (Exception e) {
                     LOG.warn("Failed re-creating index reason={}", e.getLocalizedMessage(), e);
                 }
