@@ -229,6 +229,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty("fa")
     private List<FacilityEnum> facilities = new LinkedList<>();
 
+    @JsonProperty("sl")
+    private String timeSlotMessage;
+
     public JsonQueue() {
         //Required default constructor
     }
@@ -684,6 +687,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setFacilities(List<FacilityEnum> facilities) {
         this.facilities = facilities;
+        return this;
+    }
+
+    public String getTimeSlotMessage() {
+        return timeSlotMessage;
+    }
+
+    public JsonQueue setTimeSlotMessage(String timeSlotMessage) {
+        this.timeSlotMessage = timeSlotMessage;
         return this;
     }
 }
