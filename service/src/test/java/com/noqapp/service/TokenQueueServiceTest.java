@@ -88,7 +88,7 @@ class TokenQueueServiceTest {
                         300000,
                         ZoneId.of("Pacific/Honolulu"),
                         storeHour,
-                        new TokenQueueEntity().setLastNumber(i).setCurrentlyServing(0)
+                        i
                     );
                     String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, ZoneId.of("Pacific/Honolulu").getId(), storeHour);
                     timeSlots.put(String.valueOf(i), timeSlot);
