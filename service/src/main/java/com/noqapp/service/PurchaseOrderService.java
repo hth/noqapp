@@ -231,7 +231,7 @@ public class PurchaseOrderService {
                 return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.L, bizStore);
             }
             LOG.info("Assigned order number with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
-            ZonedDateTime expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue);
+            ZonedDateTime expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue.getLastNumber());
 
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setToken(tokenQueue.getLastNumber())
