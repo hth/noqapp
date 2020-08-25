@@ -286,7 +286,7 @@ public class TokenQueueService {
                         }
                         queue.setExpectedServiceBegin(Date.from(expectedServiceBegin.toInstant()))
                             .setBizNameId(bizStore.getBizName().getId())
-                            .setTimeSlotMessage(ServiceUtils.timeSlot(expectedServiceBegin, bizStore.getTimeZone(), storeHour));
+                            .setTimeSlotMessage(ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour));
                     } else {
                         queue.setBizNameId(bizStore.getBizName().getId())
                             .setTimeSlotMessage("Not Assigned");
@@ -501,7 +501,7 @@ public class TokenQueueService {
             expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
             LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
         } else {
-            LOG.warn("AverageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
+            LOG.error("Business invoked averageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
             ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
             expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
         }
@@ -545,7 +545,7 @@ public class TokenQueueService {
             expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
             LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
         } else {
-            LOG.error("AverageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
+            LOG.error("Client invoked averageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
             ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
             expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
         }
@@ -576,6 +576,40 @@ public class TokenQueueService {
             }
         }
         return zonedServiceTime;
+    }
+
+    /** This is used to display live status on mobile. */
+    public String expectedService(
+        long averageServiceTime,
+        ZoneId zoneId,
+        StoreHourEntity storeHour,
+        int lastNumber
+    ) {
+        if (storeHour.isDayClosed()) {
+            return "Closed today";
+        }
+
+        if (storeHour.isTempDayClosed()) {
+            return "Closed temporarily";
+        }
+
+        if (storeHour.isPreventJoining()) {
+            return "Closing soon";
+        }
+
+        ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
+        ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId);
+        if (zonedNow.isAfter(zonedEndHour)) {
+            return "Closed now";
+        }
+
+        try {
+            ZonedDateTime zonedDateTime = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, lastNumber);
+            return ServiceUtils.timeSlot(zonedDateTime, zoneId, storeHour);
+        } catch (ExpectedServiceBeyondStoreClosingHour e) {
+            LOG.warn("After closing reached {}", e.getLocalizedMessage());
+            return "Closed now";
+        }
     }
 
     /** Invokes a refresh when some event or activity happens that needs to be notified. */
