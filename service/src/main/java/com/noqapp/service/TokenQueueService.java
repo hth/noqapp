@@ -515,7 +515,7 @@ public class TokenQueueService {
 
             if (zonedServiceTime.isAfter(zonedEndHour)) {
                 BizStoreEntity bizStore = bizStoreManager.getById(storeHour.getBizStoreId());
-                LOG.error("After closing hour token {} for {} {} zonedServiceTime={} endHour={} bizStoreId={} codeQR={}",
+                LOG.warn("After closing hour token {} for {} {} zonedServiceTime={} endHour={} bizStoreId={} codeQR={}",
                     lastNumber,
                     bizStore.getBizName().getBusinessName(),
                     bizStore.getDisplayName(),
