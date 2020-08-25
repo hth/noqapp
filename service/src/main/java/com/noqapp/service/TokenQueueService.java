@@ -483,7 +483,12 @@ public class TokenQueueService {
     }
 
     /** Calculate based on zone and then save the expected service time based on UTC. */
-    ZonedDateTime computeExpectedServiceBeginTimeWhenInitiatedByMerchant(long averageServiceTime, ZoneId zoneId, StoreHourEntity storeHour, int lastNumber) {
+    ZonedDateTime computeExpectedServiceBeginTimeWhenInitiatedByMerchant(
+        long averageServiceTime,
+        ZoneId zoneId,
+        StoreHourEntity storeHour,
+        int lastNumber
+    ) {
         ZonedDateTime expectedServiceBegin;
         if (0 != averageServiceTime) {
             ZonedDateTime zonedServiceTime = computeZonedServiceTime(averageServiceTime, zoneId, storeHour, lastNumber);
@@ -504,7 +509,12 @@ public class TokenQueueService {
     }
 
     /** Calculate based on zone and then save the expected service time based on UTC. */
-    public ZonedDateTime computeExpectedServiceBeginTime(long averageServiceTime, ZoneId zoneId, StoreHourEntity storeHour, int lastNumber) {
+    public ZonedDateTime computeExpectedServiceBeginTime(
+        long averageServiceTime,
+        ZoneId zoneId,
+        StoreHourEntity storeHour,
+        int lastNumber
+    ) throws ExpectedServiceBeyondStoreClosingHour {
         ZonedDateTime expectedServiceBegin;
         if (0 != averageServiceTime) {
             ZonedDateTime zonedServiceTime = computeZonedServiceTime(averageServiceTime, zoneId, storeHour, lastNumber);
