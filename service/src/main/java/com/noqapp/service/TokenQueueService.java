@@ -496,7 +496,7 @@ public class TokenQueueService {
             expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
             LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
         } else {
-            LOG.error("AverageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
+            LOG.warn("AverageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
             ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
             expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
         }
@@ -515,7 +515,7 @@ public class TokenQueueService {
 
             if (zonedServiceTime.isAfter(zonedEndHour)) {
                 BizStoreEntity bizStore = bizStoreManager.getById(storeHour.getBizStoreId());
-                LOG.error("After closing hour token {} for {} {} zonedServiceTime={} endHour={} bizStoreId={} codeQR={}",
+                LOG.warn("After closing hour token {} for {} {} zonedServiceTime={} endHour={} bizStoreId={} codeQR={}",
                     lastNumber,
                     bizStore.getBizName().getBusinessName(),
                     bizStore.getDisplayName(),
