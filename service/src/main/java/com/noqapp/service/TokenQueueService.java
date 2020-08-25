@@ -496,7 +496,7 @@ public class TokenQueueService {
             expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
             LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
         } else {
-            LOG.error("AverageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
+            LOG.warn("AverageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
             ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
             expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
         }
