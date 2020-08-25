@@ -90,7 +90,7 @@ class TokenQueueServiceTest {
                         storeHour,
                         i
                     );
-                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, ZoneId.of("Pacific/Honolulu").getId(), storeHour);
+                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, ZoneId.of("Pacific/Honolulu"), storeHour);
                     timeSlots.put(String.valueOf(i), timeSlot);
                 } catch (ExpectedServiceBeyondStoreClosingHour e) {
                     System.err.println("Can service " + --i);

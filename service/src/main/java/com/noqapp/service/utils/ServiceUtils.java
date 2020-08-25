@@ -69,8 +69,8 @@ public class ServiceUtils {
         return Duration.between(DateFormatter.getLocalTime(requesterTime), DateFormatter.getLocalTime(storeStart)).getSeconds() * 1000;
     }
 
-    public static String timeSlot(ZonedDateTime zonedDateTimeUTC, String timeZone, StoreHourEntity storeHour) {
-        ZonedDateTime zonedDateTime = zonedDateTimeUTC.withZoneSameInstant(ZoneId.of(timeZone));
+    public static String timeSlot(ZonedDateTime zonedDateTimeUTC, ZoneId zoneId, StoreHourEntity storeHour) {
+        ZonedDateTime zonedDateTime = zonedDateTimeUTC.withZoneSameInstant(zoneId);
 
         LocalTime localTime = zonedDateTime.toLocalTime();
         int minutes = localTime.getMinute();
