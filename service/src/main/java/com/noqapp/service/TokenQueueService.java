@@ -600,7 +600,7 @@ public class TokenQueueService {
         ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
         ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId);
         if (zonedNow.isAfter(zonedEndHour)) {
-            return "Past working hours. Closed.";
+            return "Capacity reached.";
         }
 
         try {
