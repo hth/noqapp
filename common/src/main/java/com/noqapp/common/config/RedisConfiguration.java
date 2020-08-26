@@ -2,15 +2,18 @@ package com.noqapp.common.config;
 
 import static io.lettuce.core.ReadFrom.REPLICA_PREFERRED;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -35,14 +38,40 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     @Value("${redis.cache.duration}")
     private int redisCacheDuration;
 
+    @Value("${redis.clusters}")
+    private String redisCluster;
+
+    private Environment environment;
+
+    @Autowired
+    public RedisConfiguration(Environment environment) {
+        this.environment = environment;
+    }
+
     @Bean
     LettuceConnectionFactory lettuceConnectionFactory() {
         LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
             .readFrom(REPLICA_PREFERRED)
             .build();
 
-        RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
-        return new LettuceConnectionFactory(serverConfig, clientConfig);
+        if (environment.getProperty("build.env").equalsIgnoreCase("sandbox")) {
+            RedisClusterConfiguration clusterConfiguration = redisClusterConfiguration();
+            clusterConfiguration.clusterNode(redisHost, redisPort);
+            return new LettuceConnectionFactory(clusterConfiguration, clientConfig);
+        } else {
+            RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
+            return new LettuceConnectionFactory(serverConfig, clientConfig);
+        }
+    }
+
+    @Bean
+    public RedisClusterConfiguration redisClusterConfiguration() {
+        String[] splitServers = redisCluster.split(",");
+        RedisClusterConfiguration clusterConfiguration = new RedisClusterConfiguration();
+        for (String redisServer : splitServers) {
+            clusterConfiguration.clusterNode(redisServer, redisPort);
+        }
+        return clusterConfiguration;
     }
 
     @Bean
