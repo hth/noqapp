@@ -133,4 +133,19 @@ public class JsonTopicQueueData extends JsonData {
         this.businessType = businessType;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "JsonTopicQueueData{" +
+            "messageOrigin=" + messageOrigin +
+            ", message='" + message + '\'' +
+            ", lastNumber=" + lastNumber +
+            ", currentlyServing=" + currentlyServing +
+            ", codeQR='" + codeQR + '\'' +
+            ", queueStatus=" + queueStatus +
+            ", goTo='" + goTo + '\'' +
+            ", businessType=" + businessType +
+            ", messageId='" + messageId + '\'' +
+            '}';
+    }
 }
