@@ -49,36 +49,32 @@ public class RedisConfiguration extends CachingConfigurerSupport {
     }
 
     @Bean
+    RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(lettuceConnectionFactory());
+        return redisTemplate;
+    }
+
+    @Bean
     LettuceConnectionFactory lettuceConnectionFactory() {
         LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
             .readFrom(REPLICA_PREFERRED)
             .build();
 
-        if (environment.getProperty("build.env").equalsIgnoreCase("sandbox")) {
-            RedisClusterConfiguration clusterConfiguration = redisClusterConfiguration();
-            clusterConfiguration.clusterNode(redisHost, redisPort);
-            return new LettuceConnectionFactory(clusterConfiguration, clientConfig);
+        if (environment.getProperty("build.env").equalsIgnoreCase("dev")) {
+            return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort), clientConfig);
         } else {
-            RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
-            return new LettuceConnectionFactory(serverConfig, clientConfig);
+            return new LettuceConnectionFactory(redisClusterConfiguration(), clientConfig);
         }
     }
 
-    @Bean
-    public RedisClusterConfiguration redisClusterConfiguration() {
+    private RedisClusterConfiguration redisClusterConfiguration() {
         String[] splitServers = redisCluster.split(",");
         RedisClusterConfiguration clusterConfiguration = new RedisClusterConfiguration();
         for (String redisServer : splitServers) {
             clusterConfiguration.clusterNode(redisServer, redisPort);
         }
         return clusterConfiguration;
-    }
-
-    @Bean
-    RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(lettuceConnectionFactory());
-        return redisTemplate;
     }
 
     @Bean
