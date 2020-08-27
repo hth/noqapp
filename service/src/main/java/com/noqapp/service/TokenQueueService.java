@@ -224,8 +224,13 @@ public class TokenQueueService {
                     LOG.warn("Requester time qid={} tokenFrom={} requesterTime={} codeQR={}", qid, tokenFrom, requesterTime, codeQR);
                     return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.B, bizStore);
                 } else if (requesterTime > storeHour.getEndHour()) {
-                    LOG.error("Requester attempted token after close time qid={} tokenFrom={} requesterTime={} codeQR={}",
-                        qid, tokenFrom, requesterTime, codeQR);
+                    /* When not added by merchant. */
+                    if (tokenService != TokenServiceEnum.M) {
+                        LOG.error("Requester token after hours qid={} tokenFrom={} requesterTime={} codeQR={}", qid, tokenFrom, requesterTime, codeQR);
+                        return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.A, bizStore);
+                    } else {
+                        LOG.error("Business added token after store hours {} {}", qid, codeQR);
+                    }
                 }
 
                 /* This code finds if there is an existing token issued to the  user. */
@@ -270,7 +275,15 @@ public class TokenQueueService {
 
                 doActionBasedOnQueueStatus(codeQR, tokenQueue);
                 try {
-                    queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenQueue.getBusinessType());
+                    queue = new QueueEntity(
+                        codeQR,
+                        did,
+                        tokenService,
+                        qid,
+                        tokenQueue.getLastNumber(),
+                        tokenQueue.getDisplayName(),
+                        tokenQueue.getBusinessType());
+
                     if (StringUtils.isNotBlank(guardianQid)) {
                         /* Set this field when client is really a guardian and has at least one dependent in profile. */
                         queue.setGuardianQid(guardianQid);
@@ -280,9 +293,17 @@ public class TokenQueueService {
                     if (bizStore.getAvailableTokenCount() > 0) {
                         ZonedDateTime expectedServiceBegin;
                         if (tokenService == TokenServiceEnum.M) {
-                            expectedServiceBegin = computeExpectedServiceBeginTimeWhenInitiatedByMerchant(averageServiceTime, zoneId, storeHour, tokenQueue.getLastNumber());
+                            expectedServiceBegin = computeExpectedServiceBeginTimeWhenInitiatedByMerchant(
+                                averageServiceTime,
+                                zoneId,
+                                storeHour,
+                                tokenQueue.getLastNumber());
                         } else {
-                            expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue.getLastNumber());
+                            expectedServiceBegin = computeExpectedServiceBeginTime(
+                                averageServiceTime,
+                                zoneId,
+                                storeHour,
+                                tokenQueue.getLastNumber());
                         }
                         queue.setExpectedServiceBegin(Date.from(expectedServiceBegin.toInstant()))
                             .setBizNameId(bizStore.getBizName().getId())
