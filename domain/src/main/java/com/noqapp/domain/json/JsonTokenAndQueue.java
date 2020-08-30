@@ -108,6 +108,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("t")
     private int token;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty ("qid")
     private String queueUserId;
 
@@ -137,7 +140,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
     }
 
     /* For Active Queue. */
-    public JsonTokenAndQueue(int token, String qid, QueueStatusEnum queueStatus, JsonQueue jsonQueue, JsonPurchaseOrder jsonPurchaseOrder) {
+    public JsonTokenAndQueue(int token, String displayToken, String qid, QueueStatusEnum queueStatus, JsonQueue jsonQueue, JsonPurchaseOrder jsonPurchaseOrder) {
         this.codeQR = jsonQueue.getCodeQR();
         this.geoHash = jsonQueue.getGeoHash();
         this.businessName = jsonQueue.getBusinessName();
@@ -166,6 +169,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
         this.queueStatus = queueStatus;
         this.token = token;
+        this.displayToken = displayToken;
         //Keeping purchaseOrderState for sake of Mobile DB as it does not accepts null or blank
         this.purchaseOrderState = jsonPurchaseOrder == null ? PurchaseOrderStateEnum.IN : jsonPurchaseOrder.getPresentOrderState();
         this.jsonPurchaseOrder = jsonPurchaseOrder;
@@ -205,6 +209,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
         //Skipped queueStatus
         this.token = queue.getTokenNumber();
+        this.displayToken = queue.getDisplayToken();
         //Keeping purchaseOrderState for sake of Mobile DB as it does not accepts null or blank
         this.purchaseOrderState = jsonPurchaseOrder == null ? PurchaseOrderStateEnum.IN : jsonPurchaseOrder.getPresentOrderState();
         this.jsonPurchaseOrder = jsonPurchaseOrder;
@@ -241,6 +246,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         //Keeping queueStatus for sake of Mobile DB as it does not accepts null or blank
         this.queueStatus = QueueStatusEnum.S;
         this.token = purchaseOrder.getTokenNumber();
+        this.displayToken = purchaseOrder.getDisplayToken();
         this.purchaseOrderState = purchaseOrder.getPresentOrderState();
         this.jsonPurchaseOrder = null;
     }
@@ -279,6 +285,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         //Keeping queueStatus for sake of Mobile DB as it does not accepts null or blank
         this.queueStatus = QueueStatusEnum.S;
         this.token = purchaseOrder.getTokenNumber();
+        this.displayToken = purchaseOrder.getDisplayToken();
         this.purchaseOrderState = purchaseOrder.getPresentOrderState();
         this.jsonPurchaseOrder = null;
     }
@@ -361,6 +368,10 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public int getToken() {
         return token;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
     }
 
     public QueueStatusEnum getQueueStatus() {

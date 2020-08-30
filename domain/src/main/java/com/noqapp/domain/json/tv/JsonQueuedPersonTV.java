@@ -35,6 +35,9 @@ public class JsonQueuedPersonTV extends AbstractDomain {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty("qid")
     private String queueUserId;
 
@@ -53,6 +56,15 @@ public class JsonQueuedPersonTV extends AbstractDomain {
 
     public JsonQueuedPersonTV setToken(int token) {
         this.token = token;
+        return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public JsonQueuedPersonTV setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
         return this;
     }
 

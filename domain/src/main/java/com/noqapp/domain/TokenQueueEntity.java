@@ -5,6 +5,8 @@ import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +52,9 @@ public class TokenQueueEntity extends BaseEntity {
 
     @Field("QS")
     private QueueStatusEnum queueStatus = QueueStatusEnum.S;
+
+    @Field("AP")
+    private String appendPrefix = "Q";
 
     @Transient
     private FirebaseMessageTypeEnum firebaseMessageType;
@@ -124,6 +129,15 @@ public class TokenQueueEntity extends BaseEntity {
 
     public TokenQueueEntity setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+        return this;
+    }
+
+    public String getAppendPrefix() {
+        return appendPrefix;
+    }
+
+    public TokenQueueEntity setAppendPrefix(String appendPrefix) {
+        this.appendPrefix = appendPrefix;
         return this;
     }
 
@@ -222,6 +236,15 @@ public class TokenQueueEntity extends BaseEntity {
     @Transient
     public int numberOfPeopleInQueue() {
         return lastNumber - currentlyServing;
+    }
+
+    @Transient
+    public String generateDisplayToken() {
+        if (StringUtils.isBlank(appendPrefix)) {
+            return String.valueOf(100 + lastNumber);
+        } else {
+            return appendPrefix + (100 + lastNumber);
+        }
     }
 
     @Override

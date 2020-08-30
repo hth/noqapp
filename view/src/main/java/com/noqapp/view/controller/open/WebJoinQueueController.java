@@ -299,6 +299,7 @@ public class WebJoinQueueController {
                 TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQRDecoded);
                 jsonToken = new JsonToken(codeQRDecoded, bizStore.getBusinessType())
                     .setToken(queue.getTokenNumber())
+                    .setDisplayToken(queue.getDisplayToken())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus())

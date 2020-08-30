@@ -42,6 +42,9 @@ public class JsonClientOrderData extends JsonData {
     @JsonProperty("on")
     private int orderNumber;
 
+    @JsonProperty("dt")
+    private String displayToken;
+
     @JsonProperty("ps")
     private PurchaseOrderStateEnum purchaseOrderState;
 
@@ -77,6 +80,15 @@ public class JsonClientOrderData extends JsonData {
 
     public JsonClientOrderData setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
+        return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public JsonClientOrderData setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
         return this;
     }
 

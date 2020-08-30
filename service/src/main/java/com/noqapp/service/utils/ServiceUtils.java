@@ -121,6 +121,7 @@ public class ServiceUtils {
     public static JsonToken blankJsonToken(String codeQR, QueueStatusEnum queueStatus, BizStoreEntity bizStore) {
         return new JsonToken(codeQR, bizStore.getBusinessType())
             .setToken(0)
+            .setDisplayToken(String.valueOf(0))
             .setServingNumber(0)
             .setDisplayName(bizStore.getDisplayName())
             .setQueueStatus(queueStatus)

@@ -235,6 +235,7 @@ public class PurchaseOrderService {
 
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setToken(tokenQueue.getLastNumber())
+                .setDisplayToken(tokenQueue.generateDisplayToken())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(tokenQueue.getQueueStatus())
@@ -602,8 +603,9 @@ public class PurchaseOrderService {
                 jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
             } else {
                 jsonToken = new JsonToken(jsonPurchaseOrder.getCodeQR(), jsonPurchaseOrder.getBusinessType());
-                jsonToken.setToken(jsonPurchaseOrder.getToken());
-                jsonToken.setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
+                jsonToken.setToken(jsonPurchaseOrder.getToken())
+                    .setDisplayToken(jsonPurchaseOrder.getDisplayToken())
+                    .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
             }
             /* Transaction Id is required key and is indexed set to unique. Without this, session and transaction fails. */
             purchaseOrder.setTransactionId(CommonUtil.generateTransactionId(bizStore.getId(), jsonToken.getToken()));
@@ -1476,6 +1478,7 @@ public class PurchaseOrderService {
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             /* Better to show last number than served number. This is to maintain consistent state. */
             .setToken(tokenQueue.getCurrentlyServing())
+            .setDisplayToken(tokenQueue.generateDisplayToken())
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(QueueStatusEnum.D);
@@ -1508,6 +1511,7 @@ public class PurchaseOrderService {
             LOG.info("On next, found no one in queue, returning with DONE status");
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setToken(tokenQueue.getLastNumber())
+                .setDisplayToken(tokenQueue.generateDisplayToken())
                 .setServingNumber(tokenQueue.getLastNumber())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(QueueStatusEnum.D);
@@ -1551,6 +1555,7 @@ public class PurchaseOrderService {
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber())
+                .setDisplayToken(tokenQueue.generateDisplayToken())
                 .setCustomerName(purchaseOrder.getCustomerName())
                 .setTransactionId(purchaseOrder.getTransactionId());
         }
@@ -1560,6 +1565,7 @@ public class PurchaseOrderService {
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setToken(tokenQueue.getLastNumber())
+            .setDisplayToken(tokenQueue.generateDisplayToken())
             .setTransactionId(purchaseOrder.getTransactionId());
     }
 
@@ -1588,6 +1594,7 @@ public class PurchaseOrderService {
                 .setServingNumber(purchaseOrder.getTokenNumber())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber())
+                .setDisplayToken(tokenQueue.generateDisplayToken())
                 .setCustomerName(purchaseOrder.getCustomerName())
                 .setTransactionId(purchaseOrder.getTransactionId());
         }
@@ -1597,6 +1604,7 @@ public class PurchaseOrderService {
             .setServingNumber(purchaseOrder.getTokenNumber())
             .setDisplayName(tokenQueue.getDisplayName())
             .setToken(tokenQueue.getLastNumber())
+            .setDisplayToken(tokenQueue.generateDisplayToken())
             .setTransactionId(purchaseOrder.getTransactionId());
     }
 

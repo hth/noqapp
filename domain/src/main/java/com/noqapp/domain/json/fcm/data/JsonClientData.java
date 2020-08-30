@@ -44,6 +44,9 @@ public class JsonClientData extends JsonData {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty("dt")
+    private String displayToken;
+
     @JsonProperty("u")
     private QueueUserStateEnum queueUserState;
 
@@ -79,6 +82,15 @@ public class JsonClientData extends JsonData {
 
     public JsonClientData setToken(int token) {
         this.token = token;
+        return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public JsonClientData setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
         return this;
     }
 

@@ -345,6 +345,7 @@ public class QueueService {
                 .setCustomerPhone(queue.getCustomerPhone())
                 .setQueueUserState(queue.getQueueUserState())
                 .setToken(queue.getTokenNumber())
+                .setDisplayToken(queue.getDisplayToken())
                 .setServerDeviceId(queue.getServerDeviceId())
                 .setBusinessCustomerId(queue.getBusinessCustomerId())
                 .setBusinessCustomerIdChangeCount(queue.getBusinessCustomerIdChangeCount())
@@ -383,6 +384,7 @@ public class QueueService {
                         jsonQueuedPerson.addDependent(
                             new JsonQueuedDependent()
                                 .setToken(queue.getTokenNumber())
+                                .setDisplayToken(queue.getDisplayToken())
                                 .setQueueUserId(qid)
                                 .setCustomerName(userProfile.getName())
                                 .setGuardianPhone(queue.getCustomerPhone())
@@ -396,6 +398,7 @@ public class QueueService {
                     jsonQueuedPerson.addDependent(
                         new JsonQueuedDependent()
                             .setToken(queue.getTokenNumber())
+                            .setDisplayToken(queue.getDisplayToken())
                             .setQueueUserId(guardianProfile.getQueueUserId())
                             .setCustomerName(guardianProfile.getName())
                             .setGuardianPhone(queue.getCustomerPhone())
@@ -420,7 +423,8 @@ public class QueueService {
                 .setCustomerName(CommonUtil.abbreviateName(queue.getCustomerName()))
                 .setCustomerPhone(queue.getCustomerPhone())
                 .setQueueUserState(queue.getQueueUserState())
-                .setToken(queue.getTokenNumber());
+                .setToken(queue.getTokenNumber())
+                .setDisplayToken(queue.getDisplayToken());
 
             jsonQueuedPersonTVList.add(jsonQueuedPerson);
         }
@@ -462,6 +466,7 @@ public class QueueService {
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             /* Better to show last number than served number. This is to maintain consistent state. */
             .setToken(tokenQueue.getCurrentlyServing())
+            .setDisplayToken(tokenQueue.generateDisplayToken())
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(QueueStatusEnum.D);
@@ -486,6 +491,7 @@ public class QueueService {
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             .setToken(tokenQueue.getLastNumber())
+            .setDisplayToken(tokenQueue.generateDisplayToken())
             .setServingNumber(servedNumber)
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(QueueStatusEnum.R);
@@ -527,6 +533,7 @@ public class QueueService {
             LOG.info("On next, found no one in queue, returning with DONE status");
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setToken(tokenQueue.getLastNumber())
+                .setDisplayToken(tokenQueue.generateDisplayToken())
                 .setServingNumber(tokenQueue.getLastNumber())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(QueueStatusEnum.D);

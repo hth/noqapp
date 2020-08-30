@@ -41,14 +41,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(QueueManagerJDBCImpl.class);
 
     private static final String insert =
-        "INSERT INTO QUEUE (ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D)" +
+        "INSERT INTO QUEUE (ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D)" +
             " VALUES " +
-            "(:id,:qr,:did,:ts,:qid,:tn,:dn,:bt,:qs,:ti,:ns,:ra,:hr,:rv,:sn,:sb,:se,:bn,:rr,:st,:ac,:v,:u,:c,:a,:d)";
+            "(:id,:qr,:did,:ts,:qid,:tn,:dt,:dn,:bt,:qs,:ti,:ns,:ra,:hr,:rv,:sn,:sb,:se,:bn,:rr,:st,:ac,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM QUEUE WHERE ID = :id";
 
     private static final String findByQid_Simple =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? " +
             "ORDER BY C DESC";
@@ -56,7 +56,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     /* Inner condition removed. */
     @Deprecated
     private static final String findByQid =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? " +
             "AND " +
@@ -68,7 +68,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     /* Inner condition removed. */
     @Deprecated
     private static final String findByQidAndByLastUpdated =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? AND U >= ? " +
             "AND " +
@@ -78,7 +78,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findHistoricalRecordByCodeQRDateRange =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
             "AND " +
@@ -88,7 +88,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findByCodeQR =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
             "AND " +
@@ -114,7 +114,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "ORDER BY C DESC";
 
     private static final String findByDid =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE DID = ? " +
             "AND " +
@@ -124,7 +124,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findByDidAndByLastUpdated =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE DID = ? AND U >= ? " +
             "AND " +
@@ -143,14 +143,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE BN = ? AND QID = ? LIMIT 1)";
 
     private static final String findByCodeQR_Qid_Token =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QID = ? AND QR = ? AND TN = ? AND TI IS NOT NULL";
 
     private static final String findAfterCreateDate = "SELECT * FROM QUEUE WHERE C >= ? ORDER BY C DESC";
 
     private static final String findByCodeQR_RecordReferenceId =
-        "SELECT ID, QR, DID, TS, QID, TN, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QR = ? AND RR = ?";
 
@@ -194,6 +194,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
                 namedParameters.addValue("ts", queue.getTokenService().getName());
                 namedParameters.addValue("qid", queue.getQueueUserId());
                 namedParameters.addValue("tn", queue.getTokenNumber());
+                namedParameters.addValue("dt", queue.getDisplayToken());
                 namedParameters.addValue("dn", queue.getDisplayName());
                 namedParameters.addValue("bt", queue.getBusinessType().getName());
                 namedParameters.addValue("qs", queue.getQueueUserState().getName());
@@ -352,7 +353,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             findReviewsByCodeQR,
             new Object[]{codeQR, reviewLimitedToDays},
             (rs, rowNum) -> {
-                QueueEntity queue = new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
+                QueueEntity queue = new QueueEntity(null, null, null, rs.getString(4), 0, "0", null, null)
                     .setRatingCount(rs.getInt(1))
                     .setHoursSaved(rs.getInt(2))
                     .setReview(rs.getString(3));
@@ -369,7 +370,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             findReviewsByBizNameId,
             new Object[]{bizNameId, reviewLimitedToDays},
             (rs, rowNum) -> {
-                QueueEntity queue = new QueueEntity(null, null, null, rs.getString(4), 0, null, null)
+                QueueEntity queue = new QueueEntity(null, null, null, rs.getString(4), 0, "0", null, null)
                     .setRatingCount(rs.getInt(1))
                     .setHoursSaved(rs.getInt(2))
                     .setReview(rs.getString(3));

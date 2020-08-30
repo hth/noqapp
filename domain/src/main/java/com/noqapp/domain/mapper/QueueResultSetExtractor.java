@@ -25,27 +25,28 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
     private static final int TS = 4;
     private static final int QID = 5;
     private static final int TN = 6;
-    private static final int DN = 7;
-    private static final int BT = 8;
-    private static final int QS = 9;
-    private static final int TI = 10;
-    private static final int NS = 11;
-    private static final int RA = 12;
-    private static final int HR = 13;
-    private static final int RV = 14;
-    private static final int SN = 15;
-    private static final int SB = 16;
-    private static final int SE = 17;
-    private static final int BN = 18;
-    private static final int RR = 19;
-    private static final int ST = 20;
-    private static final int AC = 21;
+    private static final int DT = 7;
+    private static final int DN = 8;
+    private static final int BT = 9;
+    private static final int QS = 10;
+    private static final int TI = 11;
+    private static final int NS = 12;
+    private static final int RA = 13;
+    private static final int HR = 14;
+    private static final int RV = 15;
+    private static final int SN = 16;
+    private static final int SB = 17;
+    private static final int SE = 18;
+    private static final int BN = 19;
+    private static final int RR = 20;
+    private static final int ST = 21;
+    private static final int AC = 22;
 
-    private static final int V = 22;
-    private static final int U = 23;
-    private static final int C = 24;
-    private static final int A = 25;
-    private static final int D = 26;
+    private static final int V = 23;
+    private static final int U = 24;
+    private static final int C = 25;
+    private static final int A = 26;
+    private static final int D = 27;
 
     @Override
     public QueueEntity extractData(@NotNull ResultSet rs) throws SQLException {
@@ -55,6 +56,7 @@ public class QueueResultSetExtractor implements ResultSetExtractor {
                 TokenServiceEnum.valueOf(rs.getString(TS)),
                 rs.getString(QID),
                 rs.getInt(TN),
+                rs.getString(DT),
                 rs.getString(DN),
                 BusinessTypeEnum.valueOf(rs.getString(BT))
         );
