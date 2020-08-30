@@ -1,3 +1,22 @@
+### Changed Aug 28, 2020
+
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    ADD COLUMN `DT` CHAR(6) AFTER `TN`;
+    
+    ALTER TABLE `noqapp_test`.`QUEUE` 
+    ADD COLUMN `DT` CHAR(6) AFTER `TN`;
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
+    MODIFY TN INT NOT NULL;
+    
+## Update query and then run null
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
+    MODIFY DT CHAR(6) NOT NULL;    
+    
+    ALTER TABLE `noqapp_test`.`QUEUE`
+    MODIFY DT CHAR(6) NOT NULL;
+       
 ### Changed Aug 22, 2020
 
     db.getCollection('BIZ_NAME').update({}, {$set: {SL:"en_IN"}}, {multi: true});

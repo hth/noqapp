@@ -52,6 +52,9 @@ public class QueueEntity extends BaseEntity {
     @Field("TN")
     private int tokenNumber;
 
+    @Field("DT")
+    private String displayToken;
+
     @NotNull
     @Field("DN")
     private String displayName;
@@ -158,6 +161,7 @@ public class QueueEntity extends BaseEntity {
         TokenServiceEnum tokenService,
         String queueUserId,
         int tokenNumber,
+        String displayToken,
         String displayName,
         BusinessTypeEnum businessType
     ) {
@@ -166,6 +170,7 @@ public class QueueEntity extends BaseEntity {
         this.tokenService = tokenService;
         this.queueUserId = queueUserId;
         this.tokenNumber = tokenNumber;
+        this.displayToken = displayToken;
         this.displayName = displayName;
         this.businessType = businessType;
     }
@@ -184,6 +189,10 @@ public class QueueEntity extends BaseEntity {
 
     public int getTokenNumber() {
         return tokenNumber;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
     }
 
     public String getDisplayName() {

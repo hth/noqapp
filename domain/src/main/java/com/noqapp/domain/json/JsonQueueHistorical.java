@@ -46,6 +46,9 @@ public class JsonQueueHistorical extends AbstractDomain {
     @JsonProperty ("tn")
     private int tokenNumber;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty ("dn")
     private String displayName;
 
@@ -114,6 +117,7 @@ public class JsonQueueHistorical extends AbstractDomain {
         this.codeQR = queue.getCodeQR();
         this.queueUserId = queue.getQueueUserId();
         this.tokenNumber = queue.getTokenNumber();
+        this.displayToken = queue.getDisplayToken();
         this.displayName = queue.getDisplayName();
         this.businessType = queue.getBusinessType();
         this.queueUserState = queue.getQueueUserState();

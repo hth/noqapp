@@ -104,6 +104,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("t")
     private int token;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty ("n")
     private String customerName;
 
@@ -317,6 +320,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setToken(int token) {
         this.token = token;
+        return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public JsonPurchaseOrder setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
         return this;
     }
 

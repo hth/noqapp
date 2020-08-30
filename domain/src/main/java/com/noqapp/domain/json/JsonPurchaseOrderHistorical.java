@@ -83,6 +83,9 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     @JsonProperty("tn")
     private int tokenNumber;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     /* Locked when being served. */
     @JsonProperty("sn")
     private String serverName;
@@ -139,6 +142,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
         this.ratingCount = purchaseOrder.getRatingCount();
         this.review = purchaseOrder.getReview();
         this.tokenNumber = purchaseOrder.getTokenNumber();
+        this.displayToken = purchaseOrder.getDisplayToken();
         this.serverName = purchaseOrder.getServerName();
         this.serviceBeginTime = purchaseOrder.getServiceBeginTime() == null ? "" : DateFormatUtils.format(purchaseOrder.getServiceBeginTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
         this.serviceEndTime = purchaseOrder.getServiceEndTime() == null ? "" : DateFormatUtils.format(purchaseOrder.getServiceEndTime(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));

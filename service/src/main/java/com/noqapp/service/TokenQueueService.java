@@ -281,6 +281,7 @@ public class TokenQueueService {
                         tokenService,
                         qid,
                         tokenQueue.getLastNumber(),
+                        tokenQueue.generateDisplayToken(),
                         tokenQueue.getDisplayName(),
                         tokenQueue.getBusinessType());
 
@@ -340,6 +341,7 @@ public class TokenQueueService {
     private JsonToken getJsonToken(String codeQR, QueueEntity queue, TokenQueueEntity tokenQueue) {
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             .setToken(queue.getTokenNumber())
+            .setDisplayToken(queue.getDisplayToken())
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(tokenQueue.getQueueStatus())
@@ -401,7 +403,16 @@ public class TokenQueueService {
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
                 try {
-                    queue = new QueueEntity(codeQR, did, tokenService, qid, tokenQueue.getLastNumber(), tokenQueue.getDisplayName(), tokenQueue.getBusinessType());
+                    queue = new QueueEntity(
+                        codeQR,
+                        did,
+                        tokenService,
+                        qid,
+                        tokenQueue.getLastNumber(),
+                        tokenQueue.generateDisplayToken(),
+                        tokenQueue.getDisplayName(),
+                        tokenQueue.getBusinessType());
+
                     if (StringUtils.isNotBlank(guardianQid)) {
                         /* Set this field when client is really a guardian and has at least one dependent in profile. */
                         queue.setGuardianQid(guardianQid);
@@ -417,6 +428,7 @@ public class TokenQueueService {
 
                 return new JsonToken(codeQR, tokenQueue.getBusinessType())
                     .setToken(queue.getTokenNumber())
+                    .setDisplayToken(queue.getDisplayToken())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus())
@@ -435,6 +447,7 @@ public class TokenQueueService {
 
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setToken(queue.getTokenNumber())
+                .setDisplayToken(queue.getDisplayToken())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(tokenQueue.getQueueStatus())
@@ -496,6 +509,7 @@ public class TokenQueueService {
 
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             .setToken(tokenQueue.getLastNumber())
+            .setDisplayToken(tokenQueue.generateDisplayToken())
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(tokenQueue.getQueueStatus())
@@ -731,6 +745,7 @@ public class TokenQueueService {
                 .setServingNumber(tokenQueue.getCurrentlyServing())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber())
+                .setDisplayToken(tokenQueue.generateDisplayToken())
                 .setCustomerName(queue.getCustomerName())
                 .setTransactionId(queue.getTransactionId());
         }
@@ -740,6 +755,7 @@ public class TokenQueueService {
             .setServingNumber(tokenQueue.getCurrentlyServing())
             .setDisplayName(tokenQueue.getDisplayName())
             .setToken(tokenQueue.getLastNumber())
+            .setDisplayToken(tokenQueue.generateDisplayToken())
             .setTransactionId(queue.getTransactionId());
     }
 
@@ -768,6 +784,7 @@ public class TokenQueueService {
                 .setServingNumber(serving)
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber())
+                .setDisplayToken(tokenQueue.generateDisplayToken())
                 .setCustomerName(queue.getCustomerName())
                 .setTransactionId(queue.getTransactionId());
         }
@@ -777,6 +794,7 @@ public class TokenQueueService {
             .setServingNumber(serving)
             .setDisplayName(tokenQueue.getDisplayName())
             .setToken(tokenQueue.getLastNumber())
+            .setDisplayToken(tokenQueue.generateDisplayToken())
             .setTransactionId(queue.getTransactionId());
     }
 

@@ -161,6 +161,9 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("TN")
     private int tokenNumber;
 
+    @Field("DT")
+    private String displayToken;
+
     /* Locked when being served. */
     @DBMapping
     @Field("SN")
@@ -452,6 +455,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setTokenNumber(int tokenNumber) {
         this.tokenNumber = tokenNumber;
+        return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public PurchaseOrderEntity setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
         return this;
     }
 

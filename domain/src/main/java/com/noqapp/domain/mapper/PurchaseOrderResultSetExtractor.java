@@ -38,30 +38,31 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
     private static final int RV = 13;
     private static final int ST = 14;
     private static final int TN = 15;
+    private static final int DT = 16;
 
-    private static final int SD = 16;
-    private static final int PP = 17;
-    private static final int OP = 18;
-    private static final int BT = 19;
-    private static final int PQ = 20;
-    private static final int FQ = 21;
-    private static final int CQ = 22;
-    private static final int CI = 23;
-    private static final int SN = 24;
-    private static final int SB = 25;
-    private static final int SE = 26;
-    private static final int TI = 27;
-    private static final int TR = 28;
-    private static final int TM = 29;
-    private static final int TV = 30;
-    private static final int DN = 31;
-    private static final int AN = 32;
+    private static final int SD = 17;
+    private static final int PP = 18;
+    private static final int OP = 19;
+    private static final int BT = 20;
+    private static final int PQ = 21;
+    private static final int FQ = 22;
+    private static final int CQ = 23;
+    private static final int CI = 24;
+    private static final int SN = 25;
+    private static final int SB = 26;
+    private static final int SE = 27;
+    private static final int TI = 28;
+    private static final int TR = 29;
+    private static final int TM = 30;
+    private static final int TV = 31;
+    private static final int DN = 32;
+    private static final int AN = 33;
 
-    private static final int V = 33;
-    private static final int U = 34;
-    private static final int C = 35;
-    private static final int A = 36;
-    private static final int D = 37;
+    private static final int V = 34;
+    private static final int U = 35;
+    private static final int C = 36;
+    private static final int A = 37;
+    private static final int D = 38;
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -82,6 +83,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
         purchaseOrder.setReview(rs.getString(RV));
         purchaseOrder.setSentimentType(StringUtils.isBlank(rs.getString(ST)) ? null : SentimentTypeEnum.valueOf(rs.getString(ST)));
         purchaseOrder.setTokenNumber(rs.getInt(TN));
+        purchaseOrder.setDisplayToken(rs.getString(DT));
         purchaseOrder.setStoreDiscount(rs.getInt(SD));
         purchaseOrder.setPartialPayment(rs.getString(PP));
         purchaseOrder.setOrderPrice(rs.getString(OP));

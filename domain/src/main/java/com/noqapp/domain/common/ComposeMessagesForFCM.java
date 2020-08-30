@@ -46,6 +46,7 @@ public class ComposeMessagesForFCM {
             .setCodeQR(queue.getCodeQR())
             .setQueueUserId(queue.getQueueUserId())
             .setToken(queue.getTokenNumber())
+            .setDisplayToken(queue.getDisplayToken())
             .setQueueUserState(queue.getQueueUserState())
             .setTopic(topic);
 
@@ -143,6 +144,7 @@ public class ComposeMessagesForFCM {
             .setCodeQR(purchaseOrder.getCodeQR())
             .setQueueUserId(purchaseOrder.getQueueUserId())
             .setOrderNumber(purchaseOrder.getTokenNumber())
+            .setDisplayToken(purchaseOrder.getDisplayToken())
             .setPurchaseOrderState(purchaseOrder.getPresentOrderState())
             .setTopic(tokenQueue.getTopic());
 
