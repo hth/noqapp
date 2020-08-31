@@ -487,6 +487,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.displayName = purchaseOrder.getDisplayName();
 
         this.token = purchaseOrder.getTokenNumber();
+        this.displayToken = purchaseOrder.getDisplayToken();
         this.customerName = purchaseOrder.getCustomerName();
 
         this.transactionId = purchaseOrder.getTransactionId();
