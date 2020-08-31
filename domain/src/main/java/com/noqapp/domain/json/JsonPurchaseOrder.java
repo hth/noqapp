@@ -452,6 +452,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             //Empty purchaseOrderProducts List
             //No Setting Serving Number
             .setToken(po.getTokenNumber())
+            .setDisplayToken(po.getDisplayToken())
             .setCustomerName(po.getCustomerName())
             //No setting expectedServiceBegin
             .setPresentOrderState(po.getPresentOrderState())
