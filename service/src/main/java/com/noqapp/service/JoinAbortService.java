@@ -248,6 +248,7 @@ public class JoinAbortService {
             .setQueueUserId(purchaserQid)
             .setExpectedServiceBegin(jsonToken.getExpectedServiceBegin())
             .setToken(jsonToken.getToken())
+            .setDisplayToken(jsonToken.getDisplayToken())
             .setDeliveryMode(DeliveryModeEnum.QS);
 
         jsonPurchaseOrder.addJsonPurchaseOrderProduct(new JsonPurchaseOrderProduct()
