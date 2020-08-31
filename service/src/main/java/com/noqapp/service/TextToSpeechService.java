@@ -8,6 +8,7 @@ import static com.noqapp.common.utils.TextToSpeechForCountry.nationalLanguageCod
 import com.noqapp.common.config.TextToSpeechConfiguration;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.CustomTextToSpeechEntity;
+import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.common.PopulateTextToSpeech;
 import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
@@ -15,6 +16,7 @@ import com.noqapp.domain.json.tts.TextToSpeechTemplate;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.TextToSpeechTypeEnum;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.QueueManager;
 
 import com.google.cloud.texttospeech.v1.ListVoicesRequest;
 import com.google.cloud.texttospeech.v1.ListVoicesResponse;
@@ -50,16 +52,19 @@ public class TextToSpeechService {
     private final String nowServingHindi = "No Queue token ${currentlyServingToken}, ${queueServiceName}, krupya ${goTo} kee or jaayeah";
     private final String nowServingEnglish = "No Queue token ${currentlyServingToken}, for ${queueServiceName}, please proceed to ${goTo}";
 
+    private QueueManager queueManager;
     private BizStoreManager bizStoreManager;
     private TextToSpeechConfiguration textToSpeechConfiguration;
     private CustomTextToSpeechService customTextToSpeechService;
 
     @Autowired
     public TextToSpeechService(
+        QueueManager queueManager,
         BizStoreManager bizStoreManager,
         TextToSpeechConfiguration textToSpeechConfiguration,
         CustomTextToSpeechService customTextToSpeechService
     ) {
+        this.queueManager = queueManager;
         this.bizStoreManager = bizStoreManager;
         this.textToSpeechConfiguration = textToSpeechConfiguration;
         this.customTextToSpeechService = customTextToSpeechService;
@@ -80,7 +85,8 @@ public class TextToSpeechService {
      */
     public List<JsonTextToSpeech> populateTextToSpeech(String goTo, String codeQR, TokenQueueEntity tokenQueue) {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-        Map<String, String> valuesMap = populateNowServingMap(goTo, tokenQueue);
+        QueueEntity queue = queueManager.findOne(codeQR, tokenQueue.getCurrentlyServing());
+        Map<String, String> valuesMap = populateNowServingMap(goTo, tokenQueue, queue);
         CustomTextToSpeechEntity customTextToSpeech = customTextToSpeechService.findByBizNameId(bizStore.getBizName().getId());
 
         List<JsonTextToSpeech> jsonTextToSpeeches;
@@ -161,9 +167,9 @@ public class TextToSpeechService {
     }
 
     @NotNull
-    private Map<String, String> populateNowServingMap(String goTo, TokenQueueEntity tokenQueue) {
+    private Map<String, String> populateNowServingMap(String goTo, TokenQueueEntity tokenQueue, QueueEntity queue) {
         Map<String, String> valuesMap = new HashMap<>();
-        valuesMap.put("currentlyServingToken", String.valueOf(tokenQueue.getCurrentlyServing()));
+        valuesMap.put("currentlyServingToken", queue.getDisplayToken());
         valuesMap.put("queueServiceName", tokenQueue.getDisplayName());
         valuesMap.put("goTo", goTo);
         return valuesMap;

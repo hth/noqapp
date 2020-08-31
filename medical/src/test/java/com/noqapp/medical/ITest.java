@@ -302,6 +302,7 @@ public class ITest extends RealMongoForITest {
 
         customTextToSpeechService = new CustomTextToSpeechService(customTextToSpeechManager);
         textToSpeechService = new TextToSpeechService(
+            queueManager,
             bizStoreManager,
             textToSpeechConfiguration,
             customTextToSpeechService
