@@ -628,6 +628,7 @@ public class PurchaseOrderService {
             purchaseOrder
                 .addOrderState(PurchaseOrderStateEnum.VB)
                 .setTokenNumber(jsonToken.getToken())
+                .setDisplayToken(jsonToken.getDisplayToken())
                 .setExpectedServiceBegin(expectedServiceBegin);
             purchaseOrderManager.save(purchaseOrder);
             executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
@@ -641,6 +642,7 @@ public class PurchaseOrderService {
             doActionBasedOnQueueStatus(bizStore.getCodeQR(), purchaseOrder, tokenQueueService.findByCodeQR(bizStore.getCodeQR()), null);
             jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
                 .setToken(purchaseOrder.getTokenNumber())
+                .setDisplayToken(purchaseOrder.getDisplayToken())
                 .setServingNumber(jsonToken.getServingNumber())
                 .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
                 .setTransactionId(purchaseOrder.getTransactionId())
