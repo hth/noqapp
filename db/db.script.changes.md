@@ -1,21 +1,35 @@
 ### Changed Aug 28, 2020
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
-    ADD COLUMN `DT` CHAR(6) AFTER `TN`;
+    ADD COLUMN `DT` CHAR(5) AFTER `TN`;
     
     ALTER TABLE `noqapp_test`.`QUEUE` 
-    ADD COLUMN `DT` CHAR(6) AFTER `TN`;
+    ADD COLUMN `DT` CHAR(5) AFTER `TN`;
     
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
     MODIFY TN INT NOT NULL;
     
-## Update query and then run null
-    
-    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
-    MODIFY DT CHAR(6) NOT NULL;    
+    SET SQL_SAFE_UPDATES = 0;
+    update `noqapp_test`.`QUEUE` as Q1,
+          (select Q2.ID, Q2.DT, Q2.TN from `noqapp_test`.`QUEUE` as Q2 where Q2.DT is null) AS Q3 
+    set Q1.DT = Q3.TN
+    where
+     Q1.ID = Q3.ID; 
+     SET SQL_SAFE_UPDATES = 1;
     
     ALTER TABLE `noqapp_test`.`QUEUE`
-    MODIFY DT CHAR(6) NOT NULL;
+    MODIFY DT CHAR(5) NOT NULL;
+    
+    SET SQL_SAFE_UPDATES = 0;
+    update `noqapp_test`.`PURCHASE_ORDER` as Q1,
+          (select Q2.ID, Q2.DT, Q2.TN from `noqapp_test`.`PURCHASE_ORDER` as Q2 where Q2.DT is null) AS Q3 
+    set Q1.DT = Q3.TN
+    where
+     Q1.ID = Q3.ID;  
+     SET SQL_SAFE_UPDATES = 1;
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
+    MODIFY DT CHAR(5) NOT NULL;   
        
 ### Changed Aug 22, 2020
 
