@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.errors.MobileSystemErrorCodeEnum.PURCHASE_ORDER_NEGATIVE;
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
@@ -60,6 +61,7 @@ import com.noqapp.service.exceptions.CouponRemovalException;
 import com.noqapp.service.exceptions.FailedTransactionException;
 import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
+import com.noqapp.service.exceptions.PurchaseOrderNegativeException;
 import com.noqapp.service.exceptions.PurchaseOrderCancelException;
 import com.noqapp.service.exceptions.PurchaseOrderFailException;
 import com.noqapp.service.exceptions.PurchaseOrderProductNFException;
@@ -597,6 +599,11 @@ public class PurchaseOrderService {
             LOG.error("Computed order price {} and submitted order price {}", computedOrderPrice, purchaseOrder.getOrderPrice());
             throw new PriceMismatchException("Price sent and computed does not match");
         }
+        if (Integer.parseInt(purchaseOrder.getOrderPrice()) <= 1) {
+            LOG.error("Computed order price is less than 1 {} and submitted order price {}", computedOrderPrice, purchaseOrder.getOrderPrice());
+            throw new PurchaseOrderNegativeException("Order price cannot be negative");
+        }
+
         JsonToken jsonToken;
         try {
             if (jsonPurchaseOrder.getDeliveryMode() != DeliveryModeEnum.QS) {
