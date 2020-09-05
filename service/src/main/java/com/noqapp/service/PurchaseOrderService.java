@@ -598,9 +598,14 @@ public class PurchaseOrderService {
             LOG.error("Computed order price {} and submitted order price {}", computedOrderPrice, purchaseOrder.getOrderPrice());
             throw new PriceMismatchException("Price sent and computed does not match");
         }
-        if (Integer.parseInt(purchaseOrder.getOrderPrice()) <= 1) {
-            LOG.error("Computed order price is less than 1 {} and submitted order price {}", computedOrderPrice, purchaseOrder.getOrderPrice());
-            throw new PurchaseOrderNegativeException("Order price cannot be negative");
+
+        /* Check only when order is not placed by the system or via merchant. Skip price check when placed by merchant. */
+        if (TokenServiceEnum.M != tokenService) {
+            /* Can be narrowed down to pharmacy, lab or other Medical Services like. */
+            if (Integer.parseInt(purchaseOrder.getOrderPrice()) <= 1) {
+                LOG.error("Computed order price is less than 1 {} and submitted order price {}", computedOrderPrice, purchaseOrder.getOrderPrice());
+                throw new PurchaseOrderNegativeException("Order price cannot be negative");
+            }
         }
 
         JsonToken jsonToken;
