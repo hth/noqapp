@@ -1,11 +1,9 @@
 package com.noqapp.service;
 
-import static com.noqapp.common.errors.MobileSystemErrorCodeEnum.PURCHASE_ORDER_NEGATIVE;
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
-import com.noqapp.common.errors.ErrorEncounteredJson;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Validate;
@@ -62,9 +60,9 @@ import com.noqapp.service.exceptions.CouponRemovalException;
 import com.noqapp.service.exceptions.FailedTransactionException;
 import com.noqapp.service.exceptions.OrderFailedReActivationException;
 import com.noqapp.service.exceptions.PriceMismatchException;
-import com.noqapp.service.exceptions.PurchaseOrderNegativeException;
 import com.noqapp.service.exceptions.PurchaseOrderCancelException;
 import com.noqapp.service.exceptions.PurchaseOrderFailException;
+import com.noqapp.service.exceptions.PurchaseOrderNegativeException;
 import com.noqapp.service.exceptions.PurchaseOrderProductNFException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
