@@ -163,8 +163,8 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
-    public boolean onPaymentChangeToQueue(String id, int tokenNumber, Date expectedServiceBegin) {
-        Update update = entityUpdate(update("TN", tokenNumber).set("QS", QueueUserStateEnum.Q));
+    public boolean onPaymentChangeToQueue(String id, int tokenNumber, String displayToken, Date expectedServiceBegin) {
+        Update update = entityUpdate(update("TN", tokenNumber).set("DT", displayToken).set("QS", QueueUserStateEnum.Q));
         if (null != expectedServiceBegin) {
             update.set("EB", expectedServiceBegin);
         }

@@ -6,9 +6,9 @@ package com.noqapp.domain.types;
  */
 public enum AppointmentStatusEnum {
     U("U", "Un-Confirmed"),
-    C("C", "Cancel"),
-    A("A", "Accept"),
-    R("R", "Reject"),
+    C("C", "Cancelled"),
+    A("A", "Accepted"),
+    R("R", "Rejected"),
     S("S", "Serviced"),
     W("W", "Appointment Confirmed");
 

@@ -121,7 +121,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     PurchaseOrderEntity updateWithPartialCounterPayment(String partialPayment, String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode, String partialPaymentAcceptedByQid);
     PurchaseOrderEntity updateWithCounterPayment(String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode, String fullPaymentAcceptedByQid);
 
-    void updatePurchaseOrderWithToken(int token, Date expectedServiceBegin, String transactionId);
+    void updatePurchaseOrderWithToken(int token, String displayToken, Date expectedServiceBegin, String transactionId);
     void removePurchaseOrderForService(String transactionId);
 
     /** Cancel order when user returned back from Payment Gateway without paying. Currently support for only orders. */

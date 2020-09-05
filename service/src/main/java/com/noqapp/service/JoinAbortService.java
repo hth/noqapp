@@ -235,7 +235,7 @@ public class JoinAbortService {
     @Mobile
     public JsonToken updateWhenPaymentSuccessful(String codeQR, String transactionId) {
         JsonToken jsonToken = tokenQueueService.updateJsonToken(codeQR, transactionId);
-        purchaseOrderService.updatePurchaseOrderWithToken(jsonToken.getToken(), jsonToken.getExpectedServiceBegin(), transactionId);
+        purchaseOrderService.updatePurchaseOrderWithToken(jsonToken.getToken(), jsonToken.getDisplayToken(), jsonToken.getExpectedServiceBegin(), transactionId);
         return jsonToken;
     }
 
@@ -271,7 +271,7 @@ public class JoinAbortService {
                 : " at counter");
         } else {
             title = "Cancelled order by you";
-            body = "Your order at " + bizStore.getDisplayName() + " was cancelled by you";
+            body = "Your order at " + bizStore.getDisplayName() + " was cancelled by you.";
         }
 
         executorService.execute(() -> notifyClient(

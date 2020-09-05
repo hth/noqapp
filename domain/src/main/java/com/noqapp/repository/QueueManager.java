@@ -72,7 +72,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     QueueEntity getNext(String codeQR, String goTo, String sid);
 
     @Mobile
-    boolean onPaymentChangeToQueue(String id, int tokenNumber, Date expectedServiceBegin);
+    boolean onPaymentChangeToQueue(String id, int tokenNumber, String displayToken, Date expectedServiceBegin);
 
     /**
      * Gets a specific token as next. Used when serving NOT in sequence.

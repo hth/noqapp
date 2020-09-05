@@ -502,6 +502,7 @@ public class TokenQueueService {
             boolean updatedState = queueManager.onPaymentChangeToQueue(
                 queue.getId(),
                 tokenQueue.getLastNumber(),
+                tokenQueue.generateDisplayToken(),
                 Date.from(expectedServiceBegin.toInstant()));
 
             LOG.info("Queue state updated successfully={}", updatedState);
@@ -656,17 +657,17 @@ public class TokenQueueService {
     private void doActionBasedOnQueueStatus(String codeQR, TokenQueueEntity tokenQueue) {
         switch (tokenQueue.getQueueStatus()) {
             case D:
-                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
+                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null, tokenQueue.generateDisplayToken());
                 tokenQueueManager.changeQueueStatus(codeQR, QueueStatusEnum.R);
                 break;
             case S:
-                sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue, null);
+                sendMessageToTopic(codeQR, QueueStatusEnum.S, tokenQueue, null, tokenQueue.generateDisplayToken());
                 break;
             case R:
-                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null);
+                sendMessageToTopic(codeQR, QueueStatusEnum.R, tokenQueue, null, tokenQueue.generateDisplayToken());
                 break;
             default:
-                sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue, null);
+                sendMessageToTopic(codeQR, QueueStatusEnum.N, tokenQueue, null, tokenQueue.generateDisplayToken());
                 break;
         }
     }
@@ -733,11 +734,11 @@ public class TokenQueueService {
     @Mobile
     public JsonToken updateServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
         TokenQueueEntity tokenQueue = tokenQueueManager.updateServing(codeQR, serving, queueStatus);
-        sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
+        QueueEntity queue = findOne(codeQR, tokenQueue.getCurrentlyServing());
+        sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo, queue.getDisplayToken());
 
         LOG.info("After sending message to merchant");
-        QueueEntity queue = findOne(codeQR, tokenQueue.getCurrentlyServing());
-        if (queue != null && queue.getCustomerName() != null) {
+        if (queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
@@ -766,17 +767,17 @@ public class TokenQueueService {
     @Mobile
     public JsonToken updateThisServing(String codeQR, QueueStatusEnum queueStatus, int serving, String goTo) {
         TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
-        sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo);
+        QueueEntity queue = findOne(codeQR, serving);
+        sendMessageToTopic(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo, queue.getDisplayToken());
         /*
          * Do not inform anyone other than the person with the
          * token who is being served. This is personal message.
          * of being served out of order/sequence.
          */
-        sendMessageToSelectedTokenUser(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo, serving);
+        sendMessageToSelectedTokenUser(codeQR, tokenQueue.getQueueStatus(), tokenQueue, goTo, serving, queue.getDisplayToken());
 
         LOG.info("After sending message to business and personal message to user of token");
-        QueueEntity queue = findOne(codeQR, serving);
-        if (queue != null && queue.getCustomerName() != null) {
+        if (queue.getCustomerName() != null) {
             LOG.info("Sending message to merchant, queue qid={} did={}", queue.getQueueUserId(), queue.getDid());
 
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
@@ -801,10 +802,10 @@ public class TokenQueueService {
     /**
      * Send FCM message to Topic asynchronously.
      */
-    private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo) {
+    private void sendMessageToTopic(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, String displayToken) {
         switch (tokenQueue.getBusinessType().getMessageOrigin()) {
             case Q:
-                executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
+                executorService.submit(() -> invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo, displayToken));
                 break;
             case O:
                 //Do Nothing
@@ -818,10 +819,10 @@ public class TokenQueueService {
     /**
      * Send FCM message to person with specific token number asynchronously.
      */
-    private void sendMessageToSelectedTokenUser(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, int tokenNumber) {
+    private void sendMessageToSelectedTokenUser(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, int tokenNumber, String displayToken) {
         switch (tokenQueue.getBusinessType().getMessageOrigin()) {
             case Q:
-                executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber));
+                executorService.submit(() -> invokeThreadSendMessageToSelectedTokenUser(codeQR, queueStatus, tokenQueue, goTo, tokenNumber, displayToken));
                 break;
             case O:
                 //Do Nothing
@@ -955,7 +956,8 @@ public class TokenQueueService {
         String codeQR,
         QueueStatusEnum queueStatus,
         TokenQueueEntity tokenQueue,
-        String goTo
+        String goTo,
+        String displayToken
     ) {
         LOG.debug("Sending message codeQR={} goTo={} tokenQueue={} firebaseMessageType={}", codeQR, goTo, tokenQueue, FirebaseMessageTypeEnum.P);
         int timeout = 2;
@@ -1007,7 +1009,7 @@ public class TokenQueueService {
                     List<JsonTextToSpeech> jsonTextToSpeeches = textToSpeechService.populateTextToSpeech(goTo, codeQR, tokenQueue);
                     if (DeviceTypeEnum.I == deviceType) {
                         jsonMessage.getNotification()
-                            .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
+                            .setBody("Now Serving " + displayToken)
                             .setLocKey("serving")
                             .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
                             .setTitle(tokenQueue.getDisplayName());
@@ -1015,7 +1017,7 @@ public class TokenQueueService {
                         jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
                     } else {
                         jsonMessage.setNotification(null);
-                        jsonData.setBody("Now Serving " + tokenQueue.getCurrentlyServing())
+                        jsonData.setBody("Now Serving " + displayToken)
                             .setTitle(tokenQueue.getDisplayName());
 
                         jsonData.setJsonTextToSpeeches(jsonTextToSpeeches);
@@ -1041,7 +1043,8 @@ public class TokenQueueService {
         QueueStatusEnum queueStatus,
         TokenQueueEntity tokenQueue,
         String goTo,
-        int tokenNumber
+        int tokenNumber,
+        String displayToken
     ) {
         LOG.debug("Sending personal message codeQR={} goTo={} tokenNumber={}", codeQR, goTo, tokenNumber);
         QueueEntity queue = findOne(codeQR, tokenNumber);
@@ -1085,13 +1088,13 @@ public class TokenQueueService {
 
                     if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
                         jsonMessage.getNotification()
-                            .setBody("Now Serving " + tokenNumber)
+                            .setBody("Now Serving " + displayToken)
                             .setLocKey("serving")
                             .setLocArgs(new String[]{String.valueOf(tokenNumber)})
                             .setTitle(tokenQueue.getDisplayName());
                     } else {
                         jsonMessage.setNotification(null);
-                        jsonData.setBody("Now Serving " + tokenNumber)
+                        jsonData.setBody("Now Serving " + displayToken)
                             .setTitle(tokenQueue.getDisplayName());
                     }
             }
