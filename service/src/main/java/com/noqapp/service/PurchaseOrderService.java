@@ -5,6 +5,7 @@ import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
 import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
+import com.noqapp.common.errors.ErrorEncounteredJson;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Validate;
@@ -826,7 +827,7 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public void updatePurchaseOrderWithToken(int token, String expectedServiceBeginStr, String transactionId) {
+    public void updatePurchaseOrderWithToken(int token, String displayToken, String expectedServiceBeginStr, String transactionId) {
         Date expectedServiceBegin = new Date();
         if (StringUtils.isNotBlank(expectedServiceBeginStr)) {
             try {
@@ -835,7 +836,7 @@ public class PurchaseOrderService {
                 LOG.error("Parse date={} error reason={}", expectedServiceBeginStr, e.getLocalizedMessage(), e);
             }
         }
-        purchaseOrderManager.updatePurchaseOrderWithToken(token, expectedServiceBegin, transactionId);
+        purchaseOrderManager.updatePurchaseOrderWithToken(token, displayToken, expectedServiceBegin, transactionId);
     }
 
     @Mobile
@@ -1021,7 +1022,7 @@ public class PurchaseOrderService {
                         queueStatus = QueueStatusEnum.N;
                         break;
                 }
-                executorService.submit(() -> tokenQueueService.invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo));
+                executorService.submit(() -> tokenQueueService.invokeThreadSendMessageToTopic(codeQR, queueStatus, tokenQueue, goTo, purchaseOrder.getDisplayToken()));
                 break;
             default:
                 LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());
@@ -1255,13 +1256,13 @@ public class PurchaseOrderService {
                 default:
                     if (DeviceTypeEnum.I == deviceType) {
                         jsonMessage.getNotification()
-                            .setBody("Now Serving " + tokenQueue.getCurrentlyServing())
+                            .setBody("Now Serving " + purchaseOrder.getDisplayToken())
                             .setLocKey("serving")
                             .setLocArgs(new String[]{String.valueOf(tokenQueue.getCurrentlyServing())})
                             .setTitle(tokenQueue.getDisplayName());
                     } else {
                         jsonMessage.setNotification(null);
-                        jsonData.setBody("Now Serving " + tokenQueue.getCurrentlyServing())
+                        jsonData.setBody("Now Serving " + purchaseOrder.getDisplayToken())
                             .setTitle(tokenQueue.getDisplayName());
                     }
             }
@@ -1389,34 +1390,34 @@ public class PurchaseOrderService {
                     //Rarely will be sent. No message sent until PO
                     break;
                 case FO:
-                    message = "Apologies as we have failed to place order";
+                    message = "Apologies as we have failed to place order.";
                     break;
                 case OP:
-                    message = "Your order " + tokenNumber + " is being processed";
+                    message = "Your order " + purchaseOrder.getDisplayToken() + " is being processed.";
                     break;
                 case RP:
-                    message = "Your order is ready for pickup";
+                    message = "Your order is ready for pickup.";
                     break;
                 case RD:
-                    message = "Your order is ready for delivery";
+                    message = "Your order is ready for delivery.";
                     break;
                 case OW:
-                    message = "Your order is on the way";
+                    message = "Your order is on the way.";
                     break;
                 case LO:
                     message = "Apologies we have lost your order. We are working on it to find your order.";
                     break;
                 case FD:
-                    message = "We failed to deliver your order";
+                    message = "We failed to deliver your order.";
                     break;
                 case OD:
-                    message = "Your order has been successfully delivered";
+                    message = "Your order has been successfully delivered.";
                     break;
                 case DA:
-                    message = "We are re-attempting to deliver your order";
+                    message = "We are re-attempting to deliver your order.";
                     break;
                 case CO:
-                    message = "Your order was cancelled";
+                    message = "Your order was cancelled.";
                     break;
                 default:
                     LOG.error("Failed condition={} device is of type={} did={} token={}",
