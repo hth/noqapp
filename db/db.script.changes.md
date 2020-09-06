@@ -1,10 +1,10 @@
 ### Changed Aug 28, 2020
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
-    ADD COLUMN `DT` CHAR(5) AFTER `TN`;
+    ADD COLUMN `DT` CHAR(10) AFTER `TN`;
     
     ALTER TABLE `noqapp_test`.`QUEUE` 
-    ADD COLUMN `DT` CHAR(5) AFTER `TN`;
+    ADD COLUMN `DT` CHAR(10) AFTER `TN`;
     
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
     MODIFY TN INT NOT NULL;
@@ -18,7 +18,7 @@
      SET SQL_SAFE_UPDATES = 1;
     
     ALTER TABLE `noqapp_test`.`QUEUE`
-    MODIFY DT CHAR(5) NOT NULL;
+    MODIFY DT CHAR(10) NOT NULL;
     
     SET SQL_SAFE_UPDATES = 0;
     update `noqapp_test`.`PURCHASE_ORDER` as Q1,
@@ -29,7 +29,7 @@
      SET SQL_SAFE_UPDATES = 1;
     
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
-    MODIFY DT CHAR(5) NOT NULL;   
+    MODIFY DT CHAR(10) NOT NULL;   
        
 ### Changed Aug 22, 2020
 
