@@ -116,6 +116,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty("s")
     private int servingNumber;
 
+    @JsonProperty ("dt")
+    private String displayToken;
+
     @JsonProperty("l")
     private int lastNumber;
 
@@ -427,6 +430,15 @@ public class JsonQueue extends AbstractDomain {
 
     public int getServingNumber() {
         return servingNumber;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public JsonQueue setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
+        return this;
     }
 
     public JsonQueue setLastNumber(int lastNumber) {
