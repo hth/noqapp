@@ -1,3 +1,7 @@
+### Changed Sept 07, 2020
+
+     db.getCollection('TOKEN_QUEUE').update({}, {$set: {AP:"Q"}}, {multi: true});
+
 ### Changed Aug 28, 2020
 
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
