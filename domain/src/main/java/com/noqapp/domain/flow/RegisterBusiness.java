@@ -1,11 +1,14 @@
 package com.noqapp.domain.flow;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.AddressOriginEnum;
@@ -85,6 +88,7 @@ public class RegisterBusiness implements Serializable {
     private String bizCategoryId;
     private String famousFor;
     private boolean remoteJoin = true;
+    private String appendPrefixToToken = Constants.appendPrefix;
     private long averageServiceTime = 300000;
     /* Now defaults to allow logged in user ONLY. */
     private boolean allowLoggedInUser = true;
@@ -213,6 +217,9 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     private AppointmentStateEnum appointmentIsOff = AppointmentStateEnum.O;
+
+    @Transient
+    private Character[] tokenPrefixes = RandomString.alphabetCharacters();
 
     public String getBizId() {
         return bizId;
@@ -580,6 +587,15 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
+    public String getAppendPrefixToToken() {
+        return appendPrefixToToken;
+    }
+
+    public RegisterBusiness setAppendPrefixToToken(String appendPrefixToToken) {
+        this.appendPrefixToToken = appendPrefixToToken;
+        return this;
+    }
+
     public long getAverageServiceTime() {
         return averageServiceTime;
     }
@@ -654,6 +670,15 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setAppointmentIsOff(AppointmentStateEnum appointmentIsOff) {
         this.appointmentIsOff = appointmentIsOff;
+        return this;
+    }
+
+    public Character[] getTokenPrefixes() {
+        return tokenPrefixes;
+    }
+
+    public RegisterBusiness setTokenPrefixes(Character[] tokenPrefixes) {
+        this.tokenPrefixes = tokenPrefixes;
         return this;
     }
 
@@ -776,7 +801,7 @@ public class RegisterBusiness implements Serializable {
     }
 
     @Transient
-    public void populateWithBizStore(BizStoreEntity bizStore) {
+    public void populateWithBizStore(BizStoreEntity bizStore, TokenQueueEntity tokenQueue) {
         this.bizStoreId = bizStore.getId();
         this.displayName = bizStore.getDisplayName();
         this.storeBusinessType = bizStore.getBusinessType();
@@ -792,6 +817,7 @@ public class RegisterBusiness implements Serializable {
         this.walkInState = bizStore.getWalkInState() == null ? WalkInStateEnum.D : bizStore.getWalkInState();
         this.averageServiceTime = bizStore.getAverageServiceTime() == 0 ? 300000 : bizStore.getAverageServiceTime();
         this.remoteJoin = bizStore.isRemoteJoin();
+        this.appendPrefixToToken = tokenQueue.getAppendPrefix();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
         this.availableTokenCount = bizStore.getAvailableTokenCount();
         this.famousFor = bizStore.getFamousFor();

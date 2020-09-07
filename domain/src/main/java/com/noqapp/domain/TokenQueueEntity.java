@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
@@ -54,7 +55,7 @@ public class TokenQueueEntity extends BaseEntity {
     private QueueStatusEnum queueStatus = QueueStatusEnum.S;
 
     @Field("AP")
-    private String appendPrefix = "Q";
+    private String appendPrefix = Constants.appendPrefix;
 
     @Transient
     private FirebaseMessageTypeEnum firebaseMessageType;

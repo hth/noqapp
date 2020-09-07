@@ -8,11 +8,11 @@ import java.util.Random;
  * User: hitender
  * Date: 11/18/16 6:36 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 public final class RandomString {
 
@@ -102,5 +102,9 @@ public final class RandomString {
         } else {
             return StringUtils.lowerCase(fName + lastName.replaceAll("\\s+", "") + qid.replaceFirst(LAST_THREE_DIGITS, "") + newInstance(1).nextString());
         }
+    }
+
+    public static Character[] alphabetCharacters() {
+        return randomString.split("123456789")[1].chars().mapToObj(c -> (char) c).toArray(Character[]::new);
     }
 }

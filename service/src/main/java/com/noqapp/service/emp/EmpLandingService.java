@@ -1,5 +1,6 @@
 package com.noqapp.service.emp;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
@@ -88,7 +89,7 @@ public class EmpLandingService {
             //TODO remove me as this as to be done by cron job. Temp way of creating
             //For all registered false run job
             if (StringUtils.isNotBlank(bizStore.getCountryShortName())) {
-                tokenQueueService.createUpdate(bizStore);
+                tokenQueueService.createUpdate(bizStore, Constants.appendPrefix);
             }
 
             /* Create relation for easy access. */

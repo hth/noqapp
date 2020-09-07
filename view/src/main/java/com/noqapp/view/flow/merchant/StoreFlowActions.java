@@ -9,6 +9,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.flow.RegisterBusiness;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.site.QueueUser;
@@ -51,6 +52,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
 
     private BusinessUserService businessUserService;
     private BizService bizService;
+    private TokenQueueService tokenQueueService;
     private BizStoreElasticService bizStoreElasticService;
     private BusinessUserStoreService businessUserStoreService;
     private ProfessionalProfileService professionalProfileService;
@@ -86,6 +88,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
 
         this.businessUserService = businessUserService;
         this.bizService = bizService;
+        this.tokenQueueService = tokenQueueService;
         this.bizStoreElasticService = bizStoreElasticService;
         this.businessUserStoreService = businessUserStoreService;
         this.professionalProfileService = professionalProfileService;
@@ -151,7 +154,8 @@ public class StoreFlowActions extends RegistrationFlowActions {
         /* Mark field false when editing store. */
         registerBusiness.setBusinessAddressAsStore(false);
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
-        registerBusiness.populateWithBizStore(bizStore);
+        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
+        registerBusiness.populateWithBizStore(bizStore, tokenQueue);
         List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStoreId);
         registerBusiness.convertToBusinessHours(storeHours);
         return registerBusiness;
