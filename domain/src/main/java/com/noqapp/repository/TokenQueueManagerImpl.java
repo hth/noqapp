@@ -155,14 +155,14 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
         String topic,
         String displayName,
         BusinessTypeEnum businessType,
-        String bizCategoryId,
-        String appendPrefix
+        String appendPrefix,
+        String bizCategoryId
     ) {
         Update update;
         if (StringUtils.isBlank(bizCategoryId)) {
             update = entityUpdate(update("DN", displayName).set("BT", businessType).set("AP", appendPrefix));
         } else {
-            update = entityUpdate(update("DN", displayName).set("BT", businessType).set("BC", bizCategoryId).set("AP", appendPrefix));
+            update = entityUpdate(update("DN", displayName).set("BT", businessType).set("AP", appendPrefix).set("BC", bizCategoryId));
         }
 
         UpdateResult updateResult = mongoTemplate.updateFirst(

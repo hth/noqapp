@@ -147,8 +147,8 @@ public class TokenQueueService {
                     topic,
                     displayName,
                     businessType,
-                    bizCategoryId,
-                    null == appendPrefix ? Constants.appendPrefix : appendPrefix);
+                    null == appendPrefix ? Constants.appendPrefix : appendPrefix,
+                    bizCategoryId);
 
                 if (!updateSuccess) {
                     LOG.error("Failed update for codeQR={} topic={} displayName={}", codeQR, topic, displayName);

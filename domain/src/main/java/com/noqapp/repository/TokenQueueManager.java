@@ -29,8 +29,8 @@ public interface TokenQueueManager extends RepositoryManager<TokenQueueEntity> {
         String topic,
         String displayName,
         BusinessTypeEnum businessType,
-        String bizCategoryId,
-        String appendPrefix
+        String appendPrefix,
+        String bizCategoryId
     );
 
     void changeStoreBusinessType(String codeQR, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType);
