@@ -150,12 +150,19 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
     }
 
     @Override
-    public boolean updateDisplayNameAndBusinessType(String codeQR, String topic, String displayName, BusinessTypeEnum businessType, String bizCategoryId) {
+    public boolean updateDisplayNameAndBusinessType(
+        String codeQR,
+        String topic,
+        String displayName,
+        BusinessTypeEnum businessType,
+        String appendPrefix,
+        String bizCategoryId
+    ) {
         Update update;
         if (StringUtils.isBlank(bizCategoryId)) {
-            update = entityUpdate(update("DN", displayName).set("BT", businessType));
+            update = entityUpdate(update("DN", displayName).set("BT", businessType).set("AP", appendPrefix));
         } else {
-            update = entityUpdate(update("DN", displayName).set("BT", businessType).set("BC", bizCategoryId));
+            update = entityUpdate(update("DN", displayName).set("BT", businessType).set("AP", appendPrefix).set("BC", bizCategoryId));
         }
 
         UpdateResult updateResult = mongoTemplate.updateFirst(

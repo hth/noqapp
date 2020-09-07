@@ -5,6 +5,7 @@ import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.GetTimeAgoUtils;
@@ -123,7 +124,7 @@ public class TokenQueueService {
     }
 
     //TODO has to createUpdate by cron job
-    public void createUpdate(BizStoreEntity bizStore) {
+    public void createUpdate(BizStoreEntity bizStore, String appendPrefix) {
         String codeQR = bizStore.getCodeQR();
         String topic = bizStore.getTopic();
         String displayName = bizStore.getDisplayName();
@@ -138,6 +139,7 @@ public class TokenQueueService {
             if (null == token) {
                 token = new TokenQueueEntity(topic, displayName, businessType, bizCategoryId);
                 token.setId(codeQR);
+                token.setAppendPrefix(null == appendPrefix ? Constants.appendPrefix : appendPrefix);
                 tokenQueueManager.save(token);
             } else {
                 boolean updateSuccess = tokenQueueManager.updateDisplayNameAndBusinessType(
@@ -145,6 +147,7 @@ public class TokenQueueService {
                     topic,
                     displayName,
                     businessType,
+                    null == appendPrefix ? Constants.appendPrefix : appendPrefix,
                     bizCategoryId);
 
                 if (!updateSuccess) {

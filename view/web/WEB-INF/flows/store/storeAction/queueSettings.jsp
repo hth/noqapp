@@ -148,6 +148,20 @@
                                         <span class="tooltip" title="Expected service time per customer at store" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <div class="clearFix"></div>
                                     </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="appendPrefixToToken" cssErrorClass="lb_error">Append Token Prefix</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:select path="appendPrefixToToken" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                <form:option value="" label="--- Select ---"/>
+                                                <form:options items="${registerBusiness.tokenPrefixes}" />
+                                            </form:select>
+                                            <span style="display:block; font-size:14px;">(Appends prefix to tokens. Example A101 or V101)</span>
+                                        </div>
+                                        <span class="tooltip" title="Helps separate different token based on prefix" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <div class="clearFix"></div>
+                                    </li>
                                 </ul>
 
                                 <div class="col-lable3"></div>

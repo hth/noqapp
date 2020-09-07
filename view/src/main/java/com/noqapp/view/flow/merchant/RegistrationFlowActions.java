@@ -165,7 +165,7 @@ class RegistrationFlowActions {
         try {
             BizNameEntity bizName = registerBusiness.getBusinessUser().getBizName();
             BizStoreEntity bizStore = registerStore(registerBusiness, bizName);
-            tokenQueueService.createUpdate(bizStore);
+            tokenQueueService.createUpdate(bizStore, registerBusiness.getAppendPrefixToToken());
             populateStoreWithDefaultProduct(bizStore);
 
             if (RegisterBusiness.StoreFranchise.OFF == registerBusiness.getStoreFranchise()) {
