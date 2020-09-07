@@ -48,7 +48,7 @@ import java.util.Set;
 public class RegisterBusiness implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(RegisterBusiness.class);
 
-    public enum StoreFranchise {ON, OFF};
+    public enum StoreFranchise {ON, OFF}
 
     private String bizId;
     private String name;
