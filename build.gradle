@@ -1,5 +1,3 @@
-import com.eriwen.gradle.css.tasks.MinifyCssTask
-import com.eriwen.gradle.js.tasks.MinifyJsTask
 import com.github.spotbugs.SpotBugsTask
 
 if (!hasProperty('env')) {
@@ -71,8 +69,6 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "com.eriwen:gradle-js-plugin:2.14.1"
-        classpath "com.eriwen:gradle-css-plugin:2.14.0"
         classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:$spotbugsPluginGradle"
         classpath 'org.owasp:dependency-check-gradle:5.3.2'
         //classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1'
@@ -82,8 +78,6 @@ buildscript {
 }
 
 apply plugin: 'maven-publish'
-apply plugin: 'com.eriwen.gradle.js'
-apply plugin: 'css'
 
 allprojects {
     group = 'com.noqapp'
@@ -653,67 +647,6 @@ task setUpProfileForJunit() {
     }
 }
 
-css.source {
-    custom {
-        css {
-            srcDir "view/web/static2/**/**"
-            include "*.css"
-            exclude "*.min.css"
-        }
-    }
-}
-
-javascript.source {
-    custom {
-        js {
-            srcDir "view/web/static2/**/**"
-            include "*.js"
-            exclude "*.min.js"
-        }
-    }
-}
-
-css.source.custom.css.files.eachWithIndex { cssFile, idx ->
-    tasks.create(name: "dominifyCss${idx}", type: MinifyCssTask) {
-        if (cssFile.getParentFile().getName() != "css") {
-            source = cssFile
-            dest = "${buildDir}/tmp/css/${cssFile.getParentFile().getName()}/${cssFile.name}"
-            closure {
-                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
-            }
-        } else {
-            source = cssFile
-            dest = "${buildDir}/tmp/css/${cssFile.name}"
-            closure {
-                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
-            }
-        }
-        println("CSS files minifying: $cssFile")
-    }
-}
-
-javascript.source.custom.js.files.eachWithIndex { jsFile, idx ->
-    tasks.create(name: "dominifyJs${idx}", type: MinifyJsTask) {
-        if (jsFile.getParentFile().getName() != "js") {
-            source = jsFile
-            dest = "${buildDir}/tmp/js/${jsFile.getParentFile().getName()}/${jsFile.name}"
-            closure {
-                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
-            }
-        } else {
-            source = jsFile
-            dest = "${buildDir}/tmp/js/${jsFile.name}"
-            closure {
-                compilationLevel = 'SIMPLE_OPTIMIZATIONS'
-            }
-        }
-        println("JS files minifying: $jsFile")
-    }
-}
-
-task individualCssMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominifyCss") })
-task individualJsMinify(dependsOn: tasks.matching { Task task -> task.name.startsWith("dominifyJs") })
-
 task createBuildInfoFile {
     doLast {
         buildDir.mkdirs()
@@ -752,9 +685,7 @@ task createLoaderBuildInfoFile {
 task prepWar(dependsOn: [
         createBuildInfoFile,
         unzip,
-        copyJars,
-        individualCssMinify,
-        individualJsMinify
+        copyJars
 ]) {
     doLast {
         warClassesDir.mkdirs()
@@ -769,21 +700,6 @@ task prepWar(dependsOn: [
         copy {
             from 'view/web'
             into warDir
-            //if minify is working can exclude css and js
-        }
-
-        copy {
-            from("${buildDir}/tmp/css") {
-                include "**/*.css"
-            }
-            into "${warDir}/static2"
-        }
-
-        copy {
-            from("${buildDir}/tmp/js") {
-                include "**/*.js"
-            }
-            into "${warDir}/static2"
         }
 
         copy {
