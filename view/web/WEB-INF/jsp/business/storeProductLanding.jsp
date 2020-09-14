@@ -551,10 +551,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
-                                    <h2>
-                                        <span style="display:block; font-size:13px;">Total Products: <span id="products">${storeProductForm.storeProducts.size()}</span></span>
-                                    </h2>
-
+                                <h2><span style="display:block; font-size:13px;">Total Products: <span id="products">${storeProductForm.storeProducts.size()}</span></span></h2>
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <th>&nbsp;</th>
@@ -568,6 +565,7 @@
                                         <th style="text-align: left;">Price</th>
                                         <th style="text-align: left;">Categorization</th>
                                         <th style="text-align: left;">Units</th>
+                                        <th style="text-align: left;">Image</th>
                                         <th nowrap></th>
                                         <th nowrap></th>
                                     </tr>
@@ -594,6 +592,9 @@
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.unitValue_Formatted}${storeProduct.unitOfMeasurement.name.toLowerCase()}</span>
                                             <span style="display:block; font-size:13px;">Package: ${storeProduct.packageSize}</span>
+                                        </td>
+                                        <td>
+                                            <a href="/business/store/product/photo/${storeProductForm.bizStoreId}/${storeProduct.id}/image.htm" class="add-btn">Product Image</a>
                                         </td>
                                         <td>
                                             <a href="/business/store/product/${storeProductForm.bizStoreId}/${storeProduct.id}/edit.htm" class="add-btn">Edit</a>

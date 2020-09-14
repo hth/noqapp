@@ -76,9 +76,7 @@
                     <div class="error-box">
                         <div class="alert-info" style="text-align: left;">
                             <p>
-                                <span style="display:block; font-size:13px; text-align: center;">
-                                    <c:out value="${fileUploadForm.message}" />
-                                </span>
+                                <span style="display:block; font-size:13px; text-align: center;"><c:out value="${fileUploadForm.message}" /></span>
                             </p>
                         </div>
                     </div>
