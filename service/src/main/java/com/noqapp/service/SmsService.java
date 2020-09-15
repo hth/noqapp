@@ -224,6 +224,6 @@ public class SmsService {
     }
 
     public String smsMessage(MessageCodeEnum messageCode, LocaleEnum locale, Object ... args) {
-        return String.format(communication.getProperty(messageCode.name() + "." + locale.name()), args);
+        return String.format(communication.getProperty(messageCode.name() + "." + messageCode.getVersion() + "." + locale.name()), args);
     }
 }
