@@ -1,3 +1,7 @@
+### Changed Sept 14, 2020
+        
+    db.getCollection('STORE_PRODUCT').update({IM: {$exists : true}}, {$unset: {IM : ""}}, {multi: true});
+
 ### Changed Sept 07, 2020
 
      db.getCollection('TOKEN_QUEUE').update({}, {$set: {AP:"Q"}}, {multi: true});
