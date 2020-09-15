@@ -40,6 +40,7 @@ public class FtpService {
     /** AWS needs without file separator. */
     static String PROFILE_AWS = "profile";
     static String SERVICE_AWS = "service";
+    static String PRODUCT_AWS = "product";
     public static String MEDICAL_AWS = "medical";
     static String ARTICLE_AWS = "article";
     static String VIGYAPAN_AWS = "vigyapan";
@@ -47,6 +48,7 @@ public class FtpService {
     /** FTP needs with file separator. */
     public static String PROFILE = FileUtil.getFileSeparator() + PROFILE_AWS;
     public static String SERVICE = FileUtil.getFileSeparator() + SERVICE_AWS;
+    public static String PRODUCT = FileUtil.getFileSeparator() + PRODUCT_AWS;
     public static String ARTICLE = FileUtil.getFileSeparator() + ARTICLE_AWS;
     public static String VIGYAPAN = FileUtil.getFileSeparator() + VIGYAPAN_AWS;
 
@@ -55,6 +57,7 @@ public class FtpService {
     public static String[] directories = new String[]{
         FtpService.PROFILE,
         FtpService.SERVICE,
+        FtpService.PRODUCT,
         FtpService.MEDICAL,
         FtpService.ARTICLE,
         FtpService.VIGYAPAN};
@@ -230,7 +233,6 @@ public class FtpService {
     }
 
     public boolean exist() {
-
         try (DefaultFileSystemManager manager = new StandardFileSystemManager()) {
             manager.init();
             FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation), fileSystemOptions);
@@ -243,7 +245,6 @@ public class FtpService {
     }
 
     public boolean existFolder(String folderName) {
-
         try (DefaultFileSystemManager manager = new StandardFileSystemManager()) {
             manager.init();
             FileObject remoteFile = manager.resolveFile(createConnectionString(ftpLocation + folderName), fileSystemOptions);
@@ -256,7 +257,6 @@ public class FtpService {
     }
 
     public boolean createFolder(String folderName) {
-
         try (DefaultFileSystemManager manager = new StandardFileSystemManager()) {
             manager.init();
             String folderLocation;

@@ -565,7 +565,7 @@
                                         <th style="text-align: left;">Price</th>
                                         <th style="text-align: left;">Categorization</th>
                                         <th style="text-align: left;">Units</th>
-                                        <th style="text-align: left;">Image</th>
+                                        <th nowrap></th>
                                         <th nowrap></th>
                                         <th nowrap></th>
                                     </tr>
@@ -594,7 +594,7 @@
                                             <span style="display:block; font-size:13px;">Package: ${storeProduct.packageSize}</span>
                                         </td>
                                         <td>
-                                            <a href="/business/store/product/photo/${storeProductForm.bizStoreId}/${storeProduct.id}/image.htm" class="add-btn">Product Image</a>
+                                            <a href="/business/store/product/photo/${storeProductForm.bizStoreId}/${storeProduct.id}/image.htm" class="add-btn">Image</a>
                                         </td>
                                         <td>
                                             <a href="/business/store/product/${storeProductForm.bizStoreId}/${storeProduct.id}/edit.htm" class="add-btn">Edit</a>

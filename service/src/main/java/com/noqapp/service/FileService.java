@@ -422,6 +422,50 @@ public class FileService {
         }
     }
 
+    @Async
+    public void addProductImage(String qid, String storeProductId, String filename, BufferedImage bufferedImage) {
+        File toFile = null;
+        File decreaseResolution = null;
+        File tempFile = null;
+
+        try {
+            StoreProductEntity storeProduct = storeProductManager.findOne(storeProductId);
+            if (StringUtils.isNotBlank(storeProduct.getProductImage())) {
+                deleteProductImage(qid, storeProduct.getProductImage(), storeProduct.getBizStoreId());
+                storeProduct.setProductImage(null);
+                storeProductManager.save(storeProduct);
+            }
+
+            toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
+            decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
+
+            // /java/temp/directory/filename.extension
+            String toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
+            tempFile = new File(toFileAbsolutePath);
+            writeToFile(tempFile, ImageIO.read(decreaseResolution));
+            ftpService.upload(filename, storeProduct.getBizStoreId(), FtpService.PRODUCT);
+
+            storeProduct.setProductImage(filename);
+            storeProductManager.save(storeProduct);
+
+            LOG.debug("Uploaded product image file={}", toFileAbsolutePath);
+        } catch (IOException e) {
+            LOG.error("Failed adding product image={} reason={}", filename, e.getLocalizedMessage(), e);
+        } finally {
+            if (null != toFile) {
+                toFile.delete();
+            }
+
+            if (null != decreaseResolution) {
+                decreaseResolution.delete();
+            }
+
+            if (null != tempFile) {
+                tempFile.delete();
+            }
+        }
+    }
+
     public BizStoreEntity addStoreImage(String qid, String codeQR, String filename, BufferedImage bufferedImage, boolean service) {
         File toFile = null;
         File decreaseResolution = null;
@@ -487,6 +531,15 @@ public class FileService {
 
         /* Delete from S3. */
         S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.SERVICE_AWS).setCodeQR(codeQR);
+        s3FileManager.save(s3File);
+    }
+
+    public void deleteProductImage(String qid, String imageName, String bizStoreId) {
+        /* Delete existing file business service image before the upload process began. */
+        ftpService.delete(imageName, bizStoreId, FtpService.PRODUCT);
+
+        /* Delete from S3. */
+        S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.PRODUCT_AWS).setCodeQR(bizStoreId);
         s3FileManager.save(s3File);
     }
 
