@@ -446,6 +446,9 @@ public class StoreProductController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         StoreProductEntity storeProduct = storeProductService.findOne(storeProductForm.getStoreProductId().getText());
+        if (StringUtils.isNotBlank(storeProduct.getProductImage())) {
+            fileService.deleteProductImage(queueUser.getQueueUserId(), storeProduct.getProductImage(), storeProduct.getBizStoreId());
+        }
         storeProductService.delete(storeProduct);
         return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
     }

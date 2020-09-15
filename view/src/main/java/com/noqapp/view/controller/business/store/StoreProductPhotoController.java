@@ -216,7 +216,7 @@ public class StoreProductPhotoController {
 
         String storeProductId = httpServletRequest.getParameter("storeProductId");
         StoreProductEntity storeProduct = storeProductService.findOne(storeProductId);
-        fileService.deleteProductImage(queueUser.getQueueUserId(), storeProduct.getProductImage(), bizStoreId);
+        fileService.deleteProductImage(queueUser.getQueueUserId(), storeProduct.getProductImage(), storeProduct.getBizStoreId());
 
         storeProduct.setProductImage(null);
         storeProductService.save(storeProduct);
