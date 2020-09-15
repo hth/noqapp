@@ -4,6 +4,7 @@ import static com.noqapp.service.FtpService.ARTICLE;
 import static com.noqapp.service.FtpService.MEDICAL;
 import static com.noqapp.service.FtpService.PROFILE;
 import static com.noqapp.service.FtpService.SERVICE;
+import static com.noqapp.service.FtpService.PRODUCT;
 import static com.noqapp.service.FtpService.VIGYAPAN;
 
 import com.noqapp.common.utils.FileUtil;
@@ -228,7 +229,7 @@ public class FileOperationOnS3 {
             return;
         }
 
-        String[] locations = {SERVICE, ARTICLE, MEDICAL, VIGYAPAN};
+        String[] locations = {SERVICE, PRODUCT, ARTICLE, MEDICAL, VIGYAPAN};
         for (String location : locations) {
             processUploadToS3(location);
         }
@@ -315,7 +316,6 @@ public class FileOperationOnS3 {
                 }
             }
         }
-
     }
 
     private void processUploadToS3(String location) {

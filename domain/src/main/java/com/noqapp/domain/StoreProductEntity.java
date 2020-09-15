@@ -48,7 +48,7 @@ public class StoreProductEntity extends BaseEntity {
     private String productInfo;
 
     @Field("IM")
-    private String productImage = "https://noqapp.com/missing_product.png";
+    private String productImage;
 
     @Field("SC")
     private String storeCategoryId;
