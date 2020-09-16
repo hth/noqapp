@@ -1,3 +1,7 @@
+### Changed Sept 15, 2020
+
+    db.getCollection('STORE_PRODUCT').update({IM: {$exists : false}}, {$set: {IM : ""}}, {multi: true});
+
 ### Changed Sept 14, 2020
         
     db.getCollection('STORE_PRODUCT').update({IM: {$exists : true}}, {$unset: {IM : ""}}, {multi: true});
