@@ -55,6 +55,7 @@ public final class DateUtil {
     public static final DateTimeFormatter DTF_ISO = DateTimeFormatter.ofPattern(ISO8601_FMT, Locale.US);
     public static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.US);
     public static final DateTimeFormatter DTF_DD_MMM_YYYY = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.US);
+    public static final DateTimeFormatter DTF_DD_MMM_YYYY_KK_MM = DateTimeFormatter.ofPattern("dd MMM, yyyy kk:mm", Locale.US);
     private static final DateTimeFormatter DTF_YYYY_MM_DD_KK_MM = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
     public static final DateTimeFormatter DTF_HH_MM_SS_SSS = DateTimeFormatter.ofPattern("HHmmssSSS", Locale.US);
 
@@ -222,6 +223,10 @@ public final class DateUtil {
 
     public static String convertDateToStringOf_DTF_DD_MMM_YYYY(Date date, String timeZone) {
         return DTF_DD_MMM_YYYY.format(date.toInstant().atZone(ZoneId.of(timeZone)));
+    }
+
+    public static String convertDateToStringOf_DTF_DD_MMM_YYYY_KK_MM(Date date, String timeZone) {
+        return DTF_DD_MMM_YYYY_KK_MM.format(date.toInstant().atZone(ZoneId.of(timeZone)));
     }
 
     /**
