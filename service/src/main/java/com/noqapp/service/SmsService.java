@@ -26,8 +26,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -224,6 +226,8 @@ public class SmsService {
     }
 
     public String smsMessage(MessageCodeEnum messageCode, LocaleEnum locale, Object ... args) {
-        return String.format(communication.getProperty(messageCode.name() + "." + messageCode.getVersion() + "." + locale.name()), args);
+        String smsTemplate = communication.getProperty(messageCode.name() + "." + messageCode.getVersion() + "." + locale.name());
+        String smsMessageToUTF8 = new String(smsTemplate.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        return String.format(smsMessageToUTF8, args);
     }
 }
