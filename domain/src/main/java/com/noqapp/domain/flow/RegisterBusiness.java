@@ -66,7 +66,7 @@ public class RegisterBusiness implements Serializable {
     private boolean populateAmenitiesAndFacilities = false;
     private boolean claimed = true;
     private String limitServiceByDays;
-    private LocaleEnum smsLocale;
+    private LocaleEnum smsLocale = LocaleEnum.en_IN;
     private boolean dayClosed = false;
     /* Reference to person who has recommended business. */
     private String inviteeCode;

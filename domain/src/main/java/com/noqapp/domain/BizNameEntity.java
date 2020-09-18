@@ -177,7 +177,7 @@ public class BizNameEntity extends BaseEntity {
     private boolean claimed;
 
     @Field("SL")
-    private LocaleEnum smsLocale = LocaleEnum.en_IN;
+    private LocaleEnum smsLocale;
 
     @SuppressWarnings("unused")
     public BizNameEntity() {
