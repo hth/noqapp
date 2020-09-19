@@ -4,6 +4,7 @@ import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -33,4 +34,6 @@ public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAp
     ScheduleAppointmentEntity findAppointment(String id, String qid, String codeQR);
 
     long countNumberOfAppointments(String codeQR, String day);
+
+    Stream<ScheduleAppointmentEntity> findAllUpComingAppointmentsByBizStore(String codeQR, String day);
 }

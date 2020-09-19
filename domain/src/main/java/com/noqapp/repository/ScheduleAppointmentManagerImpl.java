@@ -30,6 +30,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -210,5 +211,14 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
             ScheduleAppointmentEntity.class,
             TABLE
         );
+    }
+
+    @Override
+    public Stream<ScheduleAppointmentEntity> findAllUpComingAppointmentsByBizStore(String codeQR, String day) {
+        return mongoTemplate.find(
+            query(where("QR").is(codeQR).and("SD").gte(day).and("AS").in(AppointmentStatusEnum.A, AppointmentStatusEnum.U)),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        ).stream();
     }
 }

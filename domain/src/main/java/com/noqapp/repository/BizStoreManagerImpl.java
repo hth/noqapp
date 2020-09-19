@@ -584,6 +584,16 @@ public class BizStoreManagerImpl implements BizStoreManager {
         );
     }
 
+    @Override
+    public void updateAllAppointmentState(String bizNameId, AppointmentStateEnum appointmentState) {
+        mongoTemplate.updateMulti(
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId))),
+            update("PS", appointmentState),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM

@@ -1,5 +1,6 @@
 package com.noqapp.view.controller.business;
 
+import static com.noqapp.domain.types.BusinessSupportEnum.OD;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.ScrubbedInput;
@@ -28,6 +29,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
+import com.noqapp.service.ScheduleAppointmentService;
 import com.noqapp.service.analytic.BizDimensionService;
 import com.noqapp.service.transaction.BusinessModificationService;
 import com.noqapp.view.form.QueueSupervisorActionForm;
@@ -100,6 +102,7 @@ public class AdminBusinessLandingController {
     private ProfessionalProfileService professionalProfileService;
     private PreferredBusinessService preferredBusinessService;
     private BusinessModificationService businessModificationService;
+    private ScheduleAppointmentService scheduleAppointmentService;
 
     @Autowired
     public AdminBusinessLandingController(
@@ -149,7 +152,8 @@ public class AdminBusinessLandingController {
         AccountService accountService,
         ProfessionalProfileService professionalProfileService,
         PreferredBusinessService preferredBusinessService,
-        BusinessModificationService businessModificationService
+        BusinessModificationService businessModificationService,
+        ScheduleAppointmentService scheduleAppointmentService
     ) {
         this.queueLimit = queueLimit;
         this.nextPage = nextPage;
@@ -174,6 +178,7 @@ public class AdminBusinessLandingController {
         this.professionalProfileService = professionalProfileService;
         this.preferredBusinessService = preferredBusinessService;
         this.businessModificationService = businessModificationService;
+        this.scheduleAppointmentService = scheduleAppointmentService;
     }
 
     /**
@@ -925,6 +930,11 @@ public class AdminBusinessLandingController {
                 businessUser.getBizName().getId(),
                 migrateBusinessTypeForm.getExistingBusinessType(),
                 migrateBusinessTypeForm.getAllowedMigrationBusinessType());
+
+            if (OD == migrateBusinessTypeForm.getAllowedMigrationBusinessType().getBusinessSupport()) {
+                /* Cancel all pending appointment when changing business type. */
+                scheduleAppointmentService.findAllUpComingAppointmentsByBizName(businessUser.getBizName().getId());
+            }
 
             migrateBusinessTypeForm
                 .setMigrationSuccess(true)

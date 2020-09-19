@@ -86,7 +86,7 @@
                                                             </div>
                                                             <div class="col-fields">
                                                                 <form:checkbox path="migrate" cssClass="form-check-box" cssErrorClass="form-check-box error-field" />
-                                                                <span style="display:block; font-size:14px; color: #9f1313;">Caution: Check to confirm migration of your business. <br/>Note: This is instantaneous.</span>
+                                                                <span style="display:block; font-size:14px; color: #9f1313;">Caution: Check to confirm migration of your business. <br/>Note: This is instantaneous. Pending appointments will be removed.</span>
                                                             </div>
 
                                                             <div class="clearFix"></div>
