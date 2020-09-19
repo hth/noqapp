@@ -1,5 +1,6 @@
 package com.noqapp.service.transaction;
 
+import static com.noqapp.domain.types.BusinessSupportEnum.OD;
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
@@ -8,11 +9,13 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.service.ScheduleAppointmentService;
 import com.noqapp.service.exceptions.FailedTransactionException;
 
 import com.mongodb.ClientSessionOptions;
@@ -45,6 +48,7 @@ public class BusinessModificationService {
     private BizNameManager bizNameManager;
     private BizStoreManager bizStoreManager;
     private TokenQueueManager tokenQueueManager;
+    private ScheduleAppointmentService scheduleAppointmentService;
     private List<ServerAddress> mongoHosts;
 
     @Autowired
@@ -54,6 +58,7 @@ public class BusinessModificationService {
         BizNameManager bizNameManager,
         BizStoreManager bizStoreManager,
         TokenQueueManager tokenQueueManager,
+        ScheduleAppointmentService scheduleAppointmentService,
         List<ServerAddress> mongoHosts
     ) {
         this.mongoOperations = mongoOperations;
@@ -61,6 +66,7 @@ public class BusinessModificationService {
         this.bizNameManager = bizNameManager;
         this.bizStoreManager = bizStoreManager;
         this.tokenQueueManager = tokenQueueManager;
+        this.scheduleAppointmentService = scheduleAppointmentService;
         this.mongoHosts = mongoHosts;
     }
 
@@ -86,7 +92,7 @@ public class BusinessModificationService {
                     tokenQueueManager.changeStoreBusinessType(bizStore.getCodeQR(), existingBusinessType, migrateToBusinessType);
                 }
                 bizStoreManager.changeStoreBusinessType(bizNameId, existingBusinessType, migrateToBusinessType);
-
+                bizStoreManager.updateAllAppointmentState(bizNameId, AppointmentStateEnum.O);
                 return;
             } catch (Exception e) {
                 LOG.error("Failed business type migration bizStoreId={} {} {} {}", bizNameId, existingBusinessType, migrateToBusinessType, e.getLocalizedMessage(), e);
@@ -122,6 +128,16 @@ public class BusinessModificationService {
                 update("BT", migrateToBusinessType),
                 BizStoreEntity.class
             );
+
+            if (OD == migrateToBusinessType.getBusinessSupport()) {
+                mongoOperations.withSession(session).updateMulti(
+                    query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId))),
+                    update("PS", AppointmentStateEnum.O),
+                    BizStoreEntity.class
+                );
+            }
+
+            scheduleAppointmentService.findAllUpComingAppointmentsByBizName(bizNameId);
 
             session.commitTransaction();
         } catch (Exception e) {

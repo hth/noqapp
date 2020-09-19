@@ -55,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -271,7 +272,7 @@ public class ScheduleAppointmentService {
 
         long durationInHours = DateUtil.getHoursBetween(LocalDateTime.now(), appointmentDateTime);
         if (durationInHours < appointmentCancelLimitedToHours && scheduleAppointment.getAppointmentStatus() == AppointmentStatusEnum.A) {
-            LOG.warn("Failed to cancel appointment as within {}hrs {} {} {}", appointmentCancelLimitedToHours, id, qid, codeQR);
+            LOG.warn("Failed to cancel appointment as within {} hrs {} {} {}", appointmentCancelLimitedToHours, id, qid, codeQR);
             throw new AppointmentCancellationException("Failed to cancel appointment as appointment is within " + appointmentCancelLimitedToHours + " hours.");
         }
 
@@ -631,6 +632,21 @@ public class ScheduleAppointmentService {
         if (bizStore.getBizName().isDayClosed()) {
             LOG.warn("Scheduled business is closed {}", scheduleDate);
             throw new AppointmentBookingException("Booking failed as " + bizStore.getBizName().getBusinessName() + " is closed on that day");
+        }
+    }
+
+    /** Cancel all pending appointment. */
+    public void findAllUpComingAppointmentsByBizName(String bizNameId) {
+        List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizNameId);
+        for (BizStoreEntity bizStore : bizStores) {
+            String day = Formatter.toDefaultDateFormatAsString(DateUtil.dateAtTimeZone(bizStore.getTimeZone()));
+            try (Stream<ScheduleAppointmentEntity> stream = scheduleAppointmentManager.findAllUpComingAppointmentsByBizStore(bizStore.getCodeQR(), day)) {
+                stream.iterator().forEachRemaining(scheduleAppointment -> scheduleAction(
+                    scheduleAppointment.getId(),
+                    AppointmentStatusEnum.R,
+                    scheduleAppointment.getQueueUserId(),
+                    scheduleAppointment.getCodeQR()));
+            }
         }
     }
 }

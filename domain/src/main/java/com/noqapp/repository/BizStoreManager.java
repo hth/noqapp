@@ -126,5 +126,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     void changeStoreBusinessType(String bizNameId, BusinessTypeEnum existingBusinessType, BusinessTypeEnum migrateToBusinessType);
 
     void updateStoreTokenAndServiceTime(String codeQR, long averageServiceTime, int availableTokenCount);
+
+    void updateAllAppointmentState(String bizNameId, AppointmentStateEnum o);
 }
 
