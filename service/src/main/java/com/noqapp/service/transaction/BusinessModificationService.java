@@ -68,7 +68,7 @@ public class BusinessModificationService {
         List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizNameId);
         for (BizStoreEntity bizStore : bizStores) {
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(bizStore.getCodeQR());
-            if (tokenQueue.getQueueStatus() != QueueStatusEnum.S) {
+            if (QueueStatusEnum.S != tokenQueue.getQueueStatus()) {
                 return false;
             }
         }
@@ -107,6 +107,7 @@ public class BusinessModificationService {
                 update("BT", migrateToBusinessType),
                 BizNameEntity.class
             );
+
             List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizNameId);
             for (BizStoreEntity bizStore : bizStores) {
                 mongoOperations.withSession(session).updateFirst(
@@ -115,6 +116,7 @@ public class BusinessModificationService {
                     TokenQueueEntity.class
                 );
             }
+
             mongoOperations.withSession(session).updateMulti(
                 query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("BT").is(existingBusinessType)),
                 update("BT", migrateToBusinessType),
@@ -129,6 +131,5 @@ public class BusinessModificationService {
         } finally {
             session.close();
         }
-
     }
 }
