@@ -737,9 +737,8 @@ public class BusinessFlowValidator {
                     status = registerBusiness.getBusinessType().getMessageOrigin() + status;
                     break;
                 case OQ:
-                    /* There are no appointments for these queues. */
-                    status = MessageOriginEnum.O + status;
-                    registerBusiness.setAppointmentState(AppointmentStateEnum.O);
+                    status = registerBusiness.getBusinessType().getMessageOrigin() + status;
+                    registerBusiness.setAppointmentState(AppointmentStateEnum.S);
                     break;
                 default:
                     LOG.error("Reached unreachable condition");
