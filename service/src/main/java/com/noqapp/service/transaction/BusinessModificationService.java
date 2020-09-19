@@ -68,7 +68,7 @@ public class BusinessModificationService {
         List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizNameId);
         for (BizStoreEntity bizStore : bizStores) {
             TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(bizStore.getCodeQR());
-            if (tokenQueue.getQueueStatus() != QueueStatusEnum.S) {
+            if (QueueStatusEnum.S != tokenQueue.getQueueStatus()) {
                 return false;
             }
         }
