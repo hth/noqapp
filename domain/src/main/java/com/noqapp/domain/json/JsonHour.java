@@ -11,38 +11,38 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * hitender
  * 3/26/18 10:52 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonHour extends AbstractDomain {
 
-    @JsonProperty ("dw")
+    @JsonProperty("dw")
     private int dayOfWeek;
 
-    @JsonProperty ("tf")
+    @JsonProperty("tf")
     private int tokenAvailableFrom;
 
-    @JsonProperty ("sh")
+    @JsonProperty("sh")
     private int startHour;
 
-    @JsonProperty ("as")
+    @JsonProperty("as")
     private int appointmentStartHour;
 
-    @JsonProperty ("te")
+    @JsonProperty("te")
     private int tokenNotAvailableFrom;
 
-    @JsonProperty ("eh")
+    @JsonProperty("eh")
     private int endHour;
 
     @JsonProperty("ae")
@@ -57,12 +57,12 @@ public class JsonHour extends AbstractDomain {
     @JsonProperty("pj")
     private boolean preventJoining;
 
-    @JsonProperty ("dc")
+    @JsonProperty("dc")
     private boolean dayClosed = false;
 
     /* TODO(hth) This includes temp day close and temp preventJoining. All this resets on next day. */
     /* When business queue delays the start time. Delayed by minutes. */
-    @JsonProperty ("de")
+    @JsonProperty("de")
     private int delayedInMinutes = 0;
 
     public int getDayOfWeek() {
