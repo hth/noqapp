@@ -1,7 +1,6 @@
 package com.noqapp.view.validator;
 
 import com.noqapp.view.form.business.AverageHandlingForm;
-import com.noqapp.view.form.business.DiscountForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
