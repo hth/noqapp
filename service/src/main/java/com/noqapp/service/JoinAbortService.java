@@ -275,10 +275,8 @@ public class JoinAbortService {
         }
 
         executorService.execute(() -> notifyClient(
-            deviceService.findRegisteredDeviceByQid(jsonPurchaseOrder.getQueueUserId()),
-            title,
-            body,
-            jsonPurchaseOrder.getCodeQR()));
+            deviceService.findRegisteredDeviceByQid(jsonPurchaseOrder.getQueueUserId()), title, body, jsonPurchaseOrder.getCodeQR())
+        );
     }
 
     /** Sends personal message with all the current queue and orders. */
@@ -292,10 +290,8 @@ public class JoinAbortService {
     @Mobile
     public void authenticateMessageToClient(String qid, String title, String body, String codeQR) {
         executorService.execute(() -> composeMessageForClientAuth(
-            deviceService.findRegisteredDeviceByQid(qid),
-            title,
-            body,
-            codeQR));
+            deviceService.findRegisteredDeviceByQid(qid), title, body, codeQR)
+        );
     }
 
     /** Sends personal message with all the current queue and orders. */
