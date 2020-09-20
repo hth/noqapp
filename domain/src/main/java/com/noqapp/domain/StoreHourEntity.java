@@ -3,6 +3,7 @@ package com.noqapp.domain;
 import static com.noqapp.common.utils.Constants.MINUTES_60;
 
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.domain.json.JsonHour;
 
 import org.apache.commons.text.WordUtils;
 
@@ -294,6 +295,22 @@ public class StoreHourEntity extends BaseEntity {
         }
 
         return minutes;
+    }
+
+    public static StoreHourEntity populateStoreHour(JsonHour jsonHour, StoreHourEntity storeHour) {
+        return new StoreHourEntity(storeHour.getBizStoreId(), jsonHour.getDayOfWeek())
+            .setTokenAvailableFrom(jsonHour.getTokenAvailableFrom())
+            .setStartHour(jsonHour.getStartHour())
+            .setAppointmentStartHour(jsonHour.getAppointmentStartHour())
+            .setTokenAvailableFrom(jsonHour.getTokenAvailableFrom())
+            .setEndHour(jsonHour.getEndHour())
+            .setAppointmentEndHour(jsonHour.getAppointmentEndHour())
+            .setLunchTimeStart(jsonHour.getLunchTimeStart())
+            .setLunchTimeEnd(jsonHour.getLunchTimeEnd())
+            .setDayClosed(jsonHour.isDayClosed())
+            .setTempDayClosed(storeHour.isTempDayClosed())
+            .setPreventJoining(jsonHour.isPreventJoining())
+            .setDelayedInMinutes(storeHour.getDelayedInMinutes());
     }
 
     @Override
