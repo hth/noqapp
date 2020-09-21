@@ -194,9 +194,9 @@ public class SmsService {
                 response = okHttpClient.newCall(request).execute();
                 ObjectMapper mapper = new ObjectMapper();
                 sendResponse = mapper.readValue(response.body() != null ? Objects.requireNonNull(response.body()).string() : null, SendResponse.class);
-                LOG.info("SMS transactional sent {} sms=\"{}\" length={} {} {} {}",
+                LOG.info("SMS transactional sent {} sms=\"{}\" length={} {} {} {} {}",
                     phoneWithCountryCode, messageToSend, messageToSend.length(),
-                    response.message(), sendResponse.getStatus(), sendResponse.getBalance());
+                    response.message(), sendResponse.getStatus(), sendResponse.getBalance(), message);
                 if (sendResponse.getStatus().equalsIgnoreCase("failure")) {
                     methodStatusSuccess = false;
                 }
