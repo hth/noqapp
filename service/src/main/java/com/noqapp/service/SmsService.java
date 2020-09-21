@@ -194,12 +194,15 @@ public class SmsService {
                 response = okHttpClient.newCall(request).execute();
                 ObjectMapper mapper = new ObjectMapper();
                 sendResponse = mapper.readValue(response.body() != null ? Objects.requireNonNull(response.body()).string() : null, SendResponse.class);
-                LOG.info("SMS transactional sent {} sms=\"{}\" length={} {} {} {} {}",
-                    phoneWithCountryCode, messageToSend, messageToSend.length(),
-                    response.message(), sendResponse.getStatus(), sendResponse.getBalance(), message);
                 if (sendResponse.getStatus().equalsIgnoreCase("failure")) {
                     methodStatusSuccess = false;
+                    LOG.warn("messageDecoded={} messageEncoded={} {} {}",
+                        messageToSend, URLEncoder.encode(messageToSend, ScrubbedInput.UTF_8),
+                        sendResponse.getErrors().get(0).getCode(), sendResponse.getErrors().get(0).getMessage());
                 }
+                LOG.info("SMS transactional sent {} sms=\"{}\" length={} {} {} {}",
+                    phoneWithCountryCode, messageToSend, messageToSend.length(),
+                    response.message(), sendResponse.getStatus(), sendResponse.getBalance());
                 return sendResponse.getStatus();
             } else {
                 LOG.info("SMS sent skipped {} {}", phoneWithCountryCode, messageToSend);
