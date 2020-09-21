@@ -174,8 +174,17 @@ public class ShowHTMLService {
         rootMap.put("domain", domain);
         rootMap.put("https", https);
         rootMap.put("bizName", bizStore.getBizName().getBusinessName());
-        rootMap.put("storeAddress", bizStore.getAddressWrappedFunky());
-        rootMap.put("phone", bizStore.getPhoneFormatted());
+        String address;
+        switch (bizStore.getBusinessType()) {
+            case CD:
+            case CDQ:
+                address = "-";
+                break;
+            default:
+                address = bizStore.getAddressWrappedFunky();
+        }
+        rootMap.put("storeAddress", address);
+        rootMap.put("phone", "N/A");
         rootMap.put("displayName", bizStore.getDisplayName());
         rootMap.put("categoryName", CommonHelper.findCategoryName(bizStore));
         rootMap.put("dayOfWeek", WordUtils.capitalizeFully(zonedDateTime.getDayOfWeek().name()));
