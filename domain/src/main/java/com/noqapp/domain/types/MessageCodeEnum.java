@@ -5,8 +5,8 @@ package com.noqapp.domain.types;
  * 8/21/20 6:17 PM
  */
 public enum MessageCodeEnum {
-    SMTS("SMTS", 1, "SMS Time Slot"),
-    SMEW("SMEW", 1, "SMS Estimated Wait");
+    SMTS("SMTS", 2, "SMS Time Slot"),
+    SMEW("SMEW", 2, "SMS Estimated Wait");
 
     private final String name;
     private final int version;
