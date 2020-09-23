@@ -248,6 +248,15 @@ public class TokenQueueEntity extends BaseEntity {
         }
     }
 
+    @Transient
+    public String generateDisplayServingNow() {
+        if (StringUtils.isBlank(appendPrefix)) {
+            return String.valueOf(100 + currentlyServing);
+        } else {
+            return appendPrefix + (100 + currentlyServing);
+        }
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", TokenQueueEntity.class.getSimpleName() + "[", "]")

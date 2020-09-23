@@ -123,6 +123,7 @@ public class ServiceUtils {
             .setToken(0)
             .setDisplayToken(String.valueOf(0))
             .setServingNumber(0)
+            .setDisplayServingNumber(String.valueOf(0))
             .setDisplayName(bizStore.getDisplayName())
             .setQueueStatus(queueStatus)
             .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());

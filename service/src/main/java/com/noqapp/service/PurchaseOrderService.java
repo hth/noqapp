@@ -238,6 +238,7 @@ public class PurchaseOrderService {
                 .setToken(tokenQueue.getLastNumber())
                 .setDisplayToken(tokenQueue.generateDisplayToken())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
+                .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setExpectedServiceBegin(expectedServiceBegin);
@@ -651,10 +652,11 @@ public class PurchaseOrderService {
             }
 
             doActionBasedOnQueueStatus(bizStore.getCodeQR(), purchaseOrder, tokenQueueService.findByCodeQR(bizStore.getCodeQR()), null);
-            jsonPurchaseOrder.setServingNumber(jsonToken.getServingNumber())
+            jsonPurchaseOrder
                 .setToken(purchaseOrder.getTokenNumber())
                 .setDisplayToken(purchaseOrder.getDisplayToken())
                 .setServingNumber(jsonToken.getServingNumber())
+                .setDisplayServingNumber(jsonToken.getDisplayServingNumber())
                 .setExpectedServiceBegin(jsonPurchaseOrder.getExpectedServiceBegin())
                 .setTransactionId(purchaseOrder.getTransactionId())
                 .setPresentOrderState(purchaseOrder.getOrderStates().get(purchaseOrder.getOrderStates().size() - 1))
@@ -1493,6 +1495,7 @@ public class PurchaseOrderService {
             .setToken(tokenQueue.getCurrentlyServing())
             .setDisplayToken(tokenQueue.generateDisplayToken())
             .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(QueueStatusEnum.D);
     }
@@ -1526,6 +1529,7 @@ public class PurchaseOrderService {
                 .setToken(tokenQueue.getLastNumber())
                 .setDisplayToken(tokenQueue.generateDisplayToken())
                 .setServingNumber(tokenQueue.getLastNumber())
+                .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(QueueStatusEnum.D);
         }
@@ -1566,6 +1570,7 @@ public class PurchaseOrderService {
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setServingNumber(tokenQueue.getCurrentlyServing())
+                .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber())
                 .setDisplayToken(tokenQueue.generateDisplayToken())
@@ -1576,6 +1581,7 @@ public class PurchaseOrderService {
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             .setQueueStatus(tokenQueue.getQueueStatus())
             .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
             .setDisplayName(tokenQueue.getDisplayName())
             .setToken(tokenQueue.getLastNumber())
             .setDisplayToken(tokenQueue.generateDisplayToken())
@@ -1605,6 +1611,7 @@ public class PurchaseOrderService {
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setServingNumber(purchaseOrder.getTokenNumber())
+                .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setToken(tokenQueue.getLastNumber())
                 .setDisplayToken(tokenQueue.generateDisplayToken())
@@ -1615,6 +1622,7 @@ public class PurchaseOrderService {
         return new JsonToken(codeQR, tokenQueue.getBusinessType())
             .setQueueStatus(tokenQueue.getQueueStatus())
             .setServingNumber(purchaseOrder.getTokenNumber())
+            .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
             .setDisplayName(tokenQueue.getDisplayName())
             .setToken(tokenQueue.getLastNumber())
             .setDisplayToken(tokenQueue.generateDisplayToken())

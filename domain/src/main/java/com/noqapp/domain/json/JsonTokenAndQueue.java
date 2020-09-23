@@ -102,6 +102,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("s")
     private int servingNumber;
 
+    @JsonProperty("ds")
+    private String displayServingNumber;
+
     @JsonProperty ("l")
     private int lastNumber;
 
@@ -161,6 +164,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = jsonQueue.getTopic();
         this.queueUserId = qid;
         this.servingNumber = jsonQueue.getServingNumber();
+        this.displayServingNumber = jsonQueue.getDisplayServingNumber();
         this.lastNumber = jsonQueue.getLastNumber();
         //Skipped ratingCount
         //Skipped hoursSaved
@@ -237,6 +241,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.topic = bizStore.getTopic();
         this.queueUserId = purchaseOrder.getQueueUserId();
         this.servingNumber = tokenQueue.getCurrentlyServing();
+        this.displayServingNumber = tokenQueue.generateDisplayServingNow();
         this.lastNumber = tokenQueue.getLastNumber();
         //Skipped ratingCount
         //Skipped hoursSaved
@@ -360,6 +365,10 @@ public class JsonTokenAndQueue extends AbstractDomain {
 
     public int getServingNumber() {
         return servingNumber;
+    }
+
+    public String getDisplayServingNumber() {
+        return displayServingNumber;
     }
 
     public int getLastNumber() {
