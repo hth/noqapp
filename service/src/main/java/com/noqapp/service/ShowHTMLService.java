@@ -219,11 +219,11 @@ public class ShowHTMLService {
                     computeQueueStatus(rootMap, zonedDateTime, storeHour);
                     break;
                 case N:
-                    rootMap.put("currentlyServing", "Serving Now " + tokenQueue.getCurrentlyServing());
+                    rootMap.put("currentlyServing", "Serving Now " + tokenQueue.generateDisplayServingNow());
                     computeQueueStatus(rootMap, zonedDateTime, storeHour);
                     break;
                 case D:
-                    rootMap.put("currentlyServing", "Last served token " + tokenQueue.getCurrentlyServing());
+                    rootMap.put("currentlyServing", "Last served token " + tokenQueue.generateDisplayServingNow());
                     computeQueueStatus(rootMap, zonedDateTime, storeHour);
                     break;
                 case C:

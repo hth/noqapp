@@ -116,6 +116,9 @@ public class JsonQueue extends AbstractDomain {
     @JsonProperty("s")
     private int servingNumber;
 
+    @JsonProperty("ds")
+    private String displayServingNumber;
+
     @JsonProperty ("dt")
     private String displayToken;
 
@@ -430,6 +433,15 @@ public class JsonQueue extends AbstractDomain {
 
     public int getServingNumber() {
         return servingNumber;
+    }
+
+    public String getDisplayServingNumber() {
+        return displayServingNumber;
+    }
+
+    public JsonQueue setDisplayServingNumber(String displayServingNumber) {
+        this.displayServingNumber = displayServingNumber;
+        return this;
     }
 
     public String getDisplayToken() {

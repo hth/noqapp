@@ -63,6 +63,9 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("s")
     private int servingNumber;
 
+    @JsonProperty("ds")
+    private String displayServingNumber;
+
     @JsonProperty ("t")
     private int token;
 
@@ -97,6 +100,7 @@ public class JsonToken extends AbstractDomain {
         this.token = tokenQueue.getLastNumber();
         this.displayToken = tokenQueue.getDisplayName();
         this.servingNumber = tokenQueue.getCurrentlyServing();
+        this.displayServingNumber = tokenQueue.generateDisplayToken();
         this.displayName = tokenQueue.getDisplayName();
         this.queueStatus = tokenQueue.getQueueStatus();
         this.businessType = tokenQueue.getBusinessType();
@@ -137,6 +141,15 @@ public class JsonToken extends AbstractDomain {
 
     public int getServingNumber() {
         return servingNumber;
+    }
+
+    public String getDisplayServingNumber() {
+        return displayServingNumber;
+    }
+
+    public JsonToken setDisplayServingNumber(String displayServingNumber) {
+        this.displayServingNumber = displayServingNumber;
+        return this;
     }
 
     public JsonToken setDisplayName(String displayName) {

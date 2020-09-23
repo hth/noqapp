@@ -468,6 +468,7 @@ public class QueueService {
             .setToken(tokenQueue.getCurrentlyServing())
             .setDisplayToken(tokenQueue.generateDisplayToken())
             .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(QueueStatusEnum.D);
     }
@@ -493,6 +494,7 @@ public class QueueService {
             .setToken(tokenQueue.getLastNumber())
             .setDisplayToken(tokenQueue.generateDisplayToken())
             .setServingNumber(servedNumber)
+            .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
             .setDisplayName(tokenQueue.getDisplayName())
             .setQueueStatus(QueueStatusEnum.R);
     }
@@ -535,6 +537,7 @@ public class QueueService {
                 .setToken(tokenQueue.getLastNumber())
                 .setDisplayToken(tokenQueue.generateDisplayToken())
                 .setServingNumber(tokenQueue.getLastNumber())
+                .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
                 .setDisplayName(tokenQueue.getDisplayName())
                 .setQueueStatus(QueueStatusEnum.D);
         }

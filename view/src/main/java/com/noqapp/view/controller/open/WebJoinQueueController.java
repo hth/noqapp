@@ -301,6 +301,7 @@ public class WebJoinQueueController {
                     .setToken(queue.getTokenNumber())
                     .setDisplayToken(queue.getDisplayToken())
                     .setServingNumber(tokenQueue.getCurrentlyServing())
+                    .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
                     .setDisplayName(tokenQueue.getDisplayName())
                     .setQueueStatus(tokenQueue.getQueueStatus())
                     .setExpectedServiceBegin(ZonedDateTime.ofInstant(queue.getExpectedServiceBegin().toInstant(), ZoneId.of("UTC")));

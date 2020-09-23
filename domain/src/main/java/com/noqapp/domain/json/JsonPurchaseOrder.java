@@ -101,6 +101,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("s")
     private int servingNumber;
 
+    @JsonProperty("ds")
+    private String displayServingNumber;
+
     @JsonProperty ("t")
     private int token;
 
@@ -311,6 +314,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setServingNumber(int servingNumber) {
         this.servingNumber = servingNumber;
+        return this;
+    }
+
+    public String getDisplayServingNumber() {
+        return displayServingNumber;
+    }
+
+    public JsonPurchaseOrder setDisplayServingNumber(String displayServingNumber) {
+        this.displayServingNumber = displayServingNumber;
         return this;
     }
 
