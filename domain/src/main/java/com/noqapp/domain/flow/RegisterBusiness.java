@@ -213,7 +213,7 @@ public class RegisterBusiness implements Serializable {
     private Map<String, String> walkinStates = WalkInStateEnum.asMapWithNameAsKey();
 
     @Transient
-    private Map<String, String> appointmentStates = AppointmentStateEnum.asMapWithNameAsKey();
+    private Map<String, String> appointmentStates;
 
     @Transient
     private AppointmentStateEnum appointmentIsOff = AppointmentStateEnum.O;
@@ -815,7 +815,7 @@ public class RegisterBusiness implements Serializable {
         this.foundAddressStorePlaceId = bizStore.getPlaceId();
         this.bizCategoryId = bizStore.getBizCategoryId();
         this.walkInState = bizStore.getWalkInState() == null ? WalkInStateEnum.D : bizStore.getWalkInState();
-        this.averageServiceTime = bizStore.getAverageServiceTime() == 0 ? Constants.MILLISECOND_2 : bizStore.getAverageServiceTime();
+        this.averageServiceTime = bizStore.getAverageServiceTime() == 0 ? Constants.MINUTES_2_IN_MILLISECOND : bizStore.getAverageServiceTime();
         this.remoteJoin = bizStore.isRemoteJoin();
         this.appendPrefixToToken = tokenQueue.getAppendPrefix();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();

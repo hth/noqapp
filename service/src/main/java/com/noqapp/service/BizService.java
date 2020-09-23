@@ -444,7 +444,7 @@ public class BizService {
         DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
         long averagesServiceTime = computeAverageServiceTime(dayOfWeek, availableTokenCount, bizStore.getId());
         if (0 == averagesServiceTime) {
-            averagesServiceTime = Constants.MILLISECOND_2;
+            averagesServiceTime = Constants.MINUTES_2_IN_MILLISECOND;
         }
         updateStoreTokenAndServiceTime(codeQR, averagesServiceTime, availableTokenCount);
     }

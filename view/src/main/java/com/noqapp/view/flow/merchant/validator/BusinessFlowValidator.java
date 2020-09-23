@@ -734,17 +734,15 @@ public class BusinessFlowValidator {
                     registerBusiness.setAppointmentState(AppointmentStateEnum.O);
                     break;
                 case QQ:
-                    status = registerBusiness.getBusinessType().getMessageOrigin() + status;
-                    break;
                 case OQ:
                     status = registerBusiness.getBusinessType().getMessageOrigin() + status;
-                    registerBusiness.setAppointmentState(AppointmentStateEnum.S);
                     break;
                 default:
                     LOG.error("Reached unreachable condition");
                     throw new UnsupportedOperationException("Reached Unsupported Condition");
             }
         }
+        registerBusiness.setAppointmentStates(AppointmentStateEnum.appointmentsFor(registerBusiness.getBusinessType().getBusinessSupport()));
         return status;
     }
 

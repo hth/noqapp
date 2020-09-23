@@ -1,7 +1,10 @@
 package com.noqapp.domain.types;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -44,6 +47,24 @@ public enum AppointmentStateEnum {
             put(S.name, S.description);
 //            put(F.name, F.description);
         }};
+    }
+
+    public static Map<String, String> appointmentsFor(BusinessSupportEnum businessSupport) {
+        Map<String, String> map = asMapWithNameAsKey();
+        switch (businessSupport) {
+            case OD:
+                map.remove(A.name);
+                map.remove(S.name);
+                break;
+            case QQ:
+                //Show all
+                break;
+            case OQ:
+                map.remove(A.name);
+                break;
+        }
+
+        return map;
     }
 
     @Override
