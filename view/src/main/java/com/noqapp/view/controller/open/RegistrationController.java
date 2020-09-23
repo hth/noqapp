@@ -121,9 +121,7 @@ public class RegistrationController {
             }
 
             executorService.submit(() -> smsService.sendTransactionalSMS(merchantRegistration.getPhone(), smsTxtOnRegistration, LocaleEnum.en_IN));
-            executorService.submit(() -> hospitalVisitScheduleService.addImmunizationRecord(
-                userAccount.getQueueUserId(),
-                merchantRegistration.getBirthday().getText()));
+            executorService.submit(() -> hospitalVisitScheduleService.addImmunizationRecord(userAccount.getQueueUserId(), merchantRegistration.getBirthday().getText()));
         } catch (DuplicateAccountException e) {
             LOG.error("Duplicate Account found reason={}", e.getLocalizedMessage(), e);
             return registrationPage;
