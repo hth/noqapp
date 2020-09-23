@@ -1,5 +1,6 @@
 package com.noqapp.inventory.service;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.RandomString;
@@ -188,7 +189,7 @@ public class CheckAssetService {
             for (CheckAssetEntity checkAsset : storeProducts) {
                 strings.add(checkAsset.toCommaSeparatedString());
             }
-            Files.write(pathOfCSV, strings, StandardCharsets.UTF_8);
+            Files.write(pathOfCSV, strings, Constants.CHAR_SET_UTF8);
 
             String fileName = "asset" + "_" + RandomString.newInstance(10).nextString().toLowerCase() + "_" + DateUtil.dateToString(new Date());
             File tar = new File(FileUtil.getTmpDir(), fileName + ".tar.gz");

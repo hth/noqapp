@@ -2,6 +2,7 @@ package com.noqapp.medical.service;
 
 import static com.noqapp.service.FtpService.MASTER_MEDICAL;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.annotation.Mobile;
@@ -98,7 +99,7 @@ public class MasterLabService {
             for (MasterLabEntity storeProduct : storeProducts) {
                 strings.add(storeProduct.toCommaSeparatedString());
             }
-            Files.write(pathOfCSV, strings, StandardCharsets.UTF_8);
+            Files.write(pathOfCSV, strings, Constants.CHAR_SET_UTF8);
 
             String fileName = "lab" + "_" + DateUtil.dateToString(new Date());
             tar = new File(FileUtil.getTmpDir(), fileName + ".tar.gz");
