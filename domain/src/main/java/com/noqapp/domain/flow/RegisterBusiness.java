@@ -213,7 +213,7 @@ public class RegisterBusiness implements Serializable {
     private Map<String, String> walkinStates = WalkInStateEnum.asMapWithNameAsKey();
 
     @Transient
-    private Map<String, String> appointmentStates = AppointmentStateEnum.asMapWithNameAsKey();
+    private Map<String, String> appointmentStates;
 
     @Transient
     private AppointmentStateEnum appointmentIsOff = AppointmentStateEnum.O;
