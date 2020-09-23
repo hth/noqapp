@@ -177,7 +177,7 @@ public class SmsService {
         return "failure";
     }
 
-    public String sendTransactionalSMS(String phoneWithCountryCode, String messageToSend) {
+    public String sendTransactionalSMS(String phoneWithCountryCode, String messageToSend, LocaleEnum locale) {
         boolean methodStatusSuccess = true;
         Instant start = Instant.now();
         Response response = null;
@@ -186,9 +186,10 @@ public class SmsService {
             String message = "&message=" + URLEncoder.encode(messageToSend, ScrubbedInput.UTF_8);
             String sender = "&sender=" + URLEncoder.encode(smsSenderName, ScrubbedInput.UTF_8);
             String numbers = "&numbers=" + URLEncoder.encode(phoneWithCountryCode, ScrubbedInput.UTF_8);
+            String unicode = "&unicode=" + (LocaleEnum.en_IN == locale ? Boolean.FALSE.toString() : Boolean.TRUE.toString());
 
             Request request = new Request.Builder()
-                .url("https://api.textlocal.in/send/?" + smsApiKey + numbers + message + sender)
+                .url("https://api.textlocal.in/send/?" + smsApiKey + numbers + message + sender + unicode)
                 .build();
 
             if (sendSMSTurnedOn) {

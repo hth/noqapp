@@ -7,6 +7,7 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.GenderEnum;
+import com.noqapp.domain.types.LocaleEnum;
 import com.noqapp.medical.service.HospitalVisitScheduleService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.MailService;
@@ -119,10 +120,7 @@ public class RegistrationController {
                 return registrationPage;
             }
 
-            executorService.submit(() -> smsService.sendTransactionalSMS(
-                merchantRegistration.getPhone(),
-                smsTxtOnRegistration));
-
+            executorService.submit(() -> smsService.sendTransactionalSMS(merchantRegistration.getPhone(), smsTxtOnRegistration, LocaleEnum.en_IN));
             executorService.submit(() -> hospitalVisitScheduleService.addImmunizationRecord(
                 userAccount.getQueueUserId(),
                 merchantRegistration.getBirthday().getText()));
