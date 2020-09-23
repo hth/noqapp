@@ -3,6 +3,7 @@ package com.noqapp.service;
 import static com.noqapp.common.utils.Constants.PREVENT_JOINING_BEFORE_CLOSING;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.GetTimeAgoUtils;
@@ -443,6 +444,9 @@ public class BizService {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
         long averagesServiceTime = computeAverageServiceTime(dayOfWeek, availableTokenCount, bizStore.getId());
+        if (0 == averagesServiceTime) {
+            averagesServiceTime = Constants.DEFAULT_AHT;
+        }
         updateStoreTokenAndServiceTime(codeQR, averagesServiceTime, availableTokenCount);
     }
 

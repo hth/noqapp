@@ -29,6 +29,7 @@ public class Constants {
     public static final int MINUTES_45 = MINUTES_15 * 3; //Minutes
     public static final int MINUTES_60 = MINUTES_30 * 2; //Minutes
     public static final int MINUTES_59 = MINUTES_60 - 1; //Minutes
+    public static final int DEFAULT_AHT = 300_000;
 
     private Constants() {
     }
