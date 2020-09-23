@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.json.sms.textlocal.BalanceResponse;
 import com.noqapp.domain.json.sms.textlocal.SendResponse;
@@ -230,7 +231,7 @@ public class SmsService {
 
     public String smsMessage(MessageCodeEnum messageCode, LocaleEnum locale, Object ... args) {
         String smsTemplate = communication.getProperty(messageCode.name() + "." + messageCode.getVersion() + "." + locale.name());
-        String smsMessageToUTF8 = new String(smsTemplate.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        String smsMessageToUTF8 = new String(smsTemplate.getBytes(StandardCharsets.ISO_8859_1), Constants.CHAR_SET_UTF8);
         return String.format(smsMessageToUTF8, args);
     }
 }

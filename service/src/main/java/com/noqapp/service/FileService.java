@@ -679,7 +679,7 @@ public class FileService {
         for (StoreProductEntity storeProduct : storeProducts) {
             strings.add(storeProduct.toCommaSeparatedString());
         }
-        Files.write(pathOfCSV, strings, StandardCharsets.UTF_8);
+        Files.write(pathOfCSV, strings, Constants.CHAR_SET_UTF8);
 
         String fileName = bizStoreId + "_" + DateUtil.dateToString(new Date());
         File tar = new File(FileUtil.getTmpDir(), fileName + ".tar.gz");

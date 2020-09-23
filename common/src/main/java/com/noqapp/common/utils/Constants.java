@@ -29,7 +29,8 @@ public class Constants {
     public static final int MINUTES_45 = MINUTES_15 * 3; //Minutes
     public static final int MINUTES_60 = MINUTES_30 * 2; //Minutes
     public static final int MINUTES_59 = MINUTES_60 - 1; //Minutes
-    public static final int DEFAULT_AHT = 300_000;
+    public static final int MILLISECOND_1 = 60_000;      //1 minutes in milliseconds
+    public static final int MILLISECOND_2 = MILLISECOND_1 * 2;
 
     private Constants() {
     }

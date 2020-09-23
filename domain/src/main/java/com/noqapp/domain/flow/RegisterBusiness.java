@@ -815,7 +815,7 @@ public class RegisterBusiness implements Serializable {
         this.foundAddressStorePlaceId = bizStore.getPlaceId();
         this.bizCategoryId = bizStore.getBizCategoryId();
         this.walkInState = bizStore.getWalkInState() == null ? WalkInStateEnum.D : bizStore.getWalkInState();
-        this.averageServiceTime = bizStore.getAverageServiceTime() == 0 ? Constants.DEFAULT_AHT : bizStore.getAverageServiceTime();
+        this.averageServiceTime = bizStore.getAverageServiceTime() == 0 ? Constants.MILLISECOND_2 : bizStore.getAverageServiceTime();
         this.remoteJoin = bizStore.isRemoteJoin();
         this.appendPrefixToToken = tokenQueue.getAppendPrefix();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();

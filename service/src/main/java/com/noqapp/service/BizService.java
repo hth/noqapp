@@ -45,7 +45,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -445,7 +444,7 @@ public class BizService {
         DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
         long averagesServiceTime = computeAverageServiceTime(dayOfWeek, availableTokenCount, bizStore.getId());
         if (0 == averagesServiceTime) {
-            averagesServiceTime = Constants.DEFAULT_AHT;
+            averagesServiceTime = Constants.MILLISECOND_2;
         }
         updateStoreTokenAndServiceTime(codeQR, averagesServiceTime, availableTokenCount);
     }
