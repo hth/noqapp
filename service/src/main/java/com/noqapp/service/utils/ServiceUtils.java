@@ -52,12 +52,12 @@ public class ServiceUtils {
             if (queueStatus == QueueStatusEnum.S) {
                 long timeToStoreStartInMilli = computeTimeToStoreStart(startHour, timeZone);
                 if (timeToStoreStartInMilli > 0) {
-                    return GetTimeAgoUtils.getTimeAgo(0 == positionInQueue ? 1 : positionInQueue * avgServiceTime + timeToStoreStartInMilli);
+                    return GetTimeAgoUtils.getTimeAgo((0 == positionInQueue ? 1 : positionInQueue) * avgServiceTime + timeToStoreStartInMilli);
                 } else {
-                    return GetTimeAgoUtils.getTimeAgo(0 == positionInQueue ? 1 : positionInQueue * avgServiceTime);
+                    return GetTimeAgoUtils.getTimeAgo((0 == positionInQueue ? 1 : positionInQueue) * avgServiceTime);
                 }
             } else {
-                return GetTimeAgoUtils.getTimeAgo(0 == positionInQueue ? 1 : positionInQueue * avgServiceTime);
+                return GetTimeAgoUtils.getTimeAgo((0 == positionInQueue ? 1 : positionInQueue) * avgServiceTime);
             }
         }
         return null;
