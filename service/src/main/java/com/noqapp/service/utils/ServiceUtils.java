@@ -59,6 +59,13 @@ public class ServiceUtils {
             } else {
                 return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime);
             }
+        } else if (avgServiceTime > 0 && positionInQueue == 0) {
+            long timeToStoreStartInMilli = computeTimeToStoreStart(startHour, timeZone);
+            if (timeToStoreStartInMilli > 0) {
+                return GetTimeAgoUtils.getTimeAgo(1 * avgServiceTime + timeToStoreStartInMilli);
+            } else {
+                return GetTimeAgoUtils.getTimeAgo(1 * avgServiceTime);
+            }
         }
         return null;
     }
