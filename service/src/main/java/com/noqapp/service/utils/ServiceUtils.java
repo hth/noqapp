@@ -48,23 +48,16 @@ public class ServiceUtils {
         int startHour,
         String timeZone
     ) {
-        if (avgServiceTime > 0 && positionInQueue > 0) {
+        if (avgServiceTime > 0) {
             if (queueStatus == QueueStatusEnum.S) {
                 long timeToStoreStartInMilli = computeTimeToStoreStart(startHour, timeZone);
                 if (timeToStoreStartInMilli > 0) {
-                    return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime + timeToStoreStartInMilli);
+                    return GetTimeAgoUtils.getTimeAgo(0 == positionInQueue ? 1 : positionInQueue * avgServiceTime + timeToStoreStartInMilli);
                 } else {
-                    return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime);
+                    return GetTimeAgoUtils.getTimeAgo(0 == positionInQueue ? 1 : positionInQueue * avgServiceTime);
                 }
             } else {
-                return GetTimeAgoUtils.getTimeAgo(positionInQueue * avgServiceTime);
-            }
-        } else if (avgServiceTime > 0 && positionInQueue == 0) {
-            long timeToStoreStartInMilli = computeTimeToStoreStart(startHour, timeZone);
-            if (timeToStoreStartInMilli > 0) {
-                return GetTimeAgoUtils.getTimeAgo(1 * avgServiceTime + timeToStoreStartInMilli);
-            } else {
-                return GetTimeAgoUtils.getTimeAgo(1 * avgServiceTime);
+                return GetTimeAgoUtils.getTimeAgo(0 == positionInQueue ? 1 : positionInQueue * avgServiceTime);
             }
         }
         return null;
