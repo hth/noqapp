@@ -552,12 +552,8 @@ public class TokenQueueService {
     }
 
     /** Calculate based on zone and then save the expected service time based on UTC. */
-    public ZonedDateTime computeExpectedServiceBeginTime(
-        long averageServiceTime,
-        ZoneId zoneId,
-        StoreHourEntity storeHour,
-        int lastNumber
-    ) throws ExpectedServiceBeyondStoreClosingHour {
+    public ZonedDateTime computeExpectedServiceBeginTime(long averageServiceTime, ZoneId zoneId, StoreHourEntity storeHour, int lastNumber)
+        throws ExpectedServiceBeyondStoreClosingHour {
         ZonedDateTime expectedServiceBegin;
         if (0 != averageServiceTime) {
             ZonedDateTime zonedServiceTime = computeZonedServiceTime(averageServiceTime, zoneId, storeHour, lastNumber);
@@ -581,7 +577,17 @@ public class TokenQueueService {
 
             ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
             if (zonedServiceTime.isBefore(currentTime)) {
-                zonedServiceTime = currentTime;
+                if (storeHour.isLunchTimeEnabled()) {
+                    ZonedDateTime zonedLunchStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+                    ZonedDateTime zonedLunchEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
+                    if (currentTime.isAfter(zonedLunchStartHour) && currentTime.isBefore(zonedLunchEndHour)) {
+                        zonedServiceTime = zonedLunchEndHour.plusMinutes(zonedServiceTime.getMinute());
+                    } else {
+                        zonedServiceTime = currentTime;
+                    }
+                } else {
+                    zonedServiceTime = currentTime;
+                }
             }
 
             /* Changed to UTC time before saving. */
