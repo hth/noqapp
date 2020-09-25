@@ -374,6 +374,7 @@ public class ArchiveAndReset {
         StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
         /* In queue history, we set things for tomorrow. */
         ZonedDateTime archiveNextRun = setupStoreForTomorrow(bizStore);
+        long averageServiceTime = bizService.computeAverageServiceTime(archiveNextRun.getDayOfWeek(), bizStore.getAvailableTokenCount(), bizStore.getId());
         if (null != bizStoreRating) {
             bizStoreManager.updateNextRunAndRatingWithAverageServiceTime(
                 bizStore.getId(),
@@ -383,8 +384,8 @@ public class ArchiveAndReset {
                 bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore).toInstant()) : null,
                 (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
                 bizStoreRating.getTotalCustomerRated(),
-                //TODO(hth) should we compute with yesterday average time or overall average time?
-                statsBizStoreDaily.getAverageServiceTime());
+                statsBizStoreDaily.getAverageServiceTime(),
+                averageServiceTime);
         } else {
             bizStoreManager.updateNextRun(
                 bizStore.getId(),

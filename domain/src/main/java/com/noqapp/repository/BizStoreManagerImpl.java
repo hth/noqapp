@@ -299,7 +299,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
 
     @Override
     public boolean updateNextRun(String id, String zoneId, Date archiveNextRun, Date queueAppointment) {
-        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, archiveNextRun, queueAppointment, 0, 0, 0);
+        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, archiveNextRun, queueAppointment, 0, 0, 0, 0);
     }
 
     @Override
@@ -323,7 +323,8 @@ public class BizStoreManagerImpl implements BizStoreManager {
         Date queueAppointment,
         float rating,
         int ratingCount,
-        long computedAverageServiceTime
+        long computedAverageServiceTime,
+        long averageServiceTime
     ) {
         LOG.info("Set next run for id={} zoneId={} archiveNextRun={} rating={} computedAverageServiceTime={}",
             id,
@@ -352,6 +353,9 @@ public class BizStoreManagerImpl implements BizStoreManager {
         /* Do not update the average service time when its zero. */
         if (0 != computedAverageServiceTime) {
             update.set("CT", computedAverageServiceTime);
+        }
+        if (0 != averageServiceTime) {
+            update.set("AS", averageServiceTime);
         }
 
         return mongoTemplate.updateFirst(

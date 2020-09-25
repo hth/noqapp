@@ -158,9 +158,9 @@ public class SmsService {
                 return "success";
             }
         } catch (UnknownHostException e) {
-            LOG.error("Failed connecting to SMS host reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed connecting to SMS host {} {} reason={}", phoneWithCountryCode, messageToSend, e.getLocalizedMessage(), e);
         } catch (IOException e) {
-            LOG.error("Failed sending SMS request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed sending SMS request {} {} reason={}", phoneWithCountryCode, messageToSend, e.getLocalizedMessage(), e);
         } finally {
             apiHealthService.insert(
                 "/sendPromotionalSMS",
@@ -211,9 +211,9 @@ public class SmsService {
                 return "success";
             }
         } catch (UnknownHostException e) {
-            LOG.error("Failed connecting to SMS host reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed connecting to SMS host {} {} reason={}", phoneWithCountryCode, messageToSend, e.getLocalizedMessage(), e);
         } catch (IOException e) {
-            LOG.error("Failed sending SMS request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed sending SMS request {} {} reason={}", phoneWithCountryCode, messageToSend, e.getLocalizedMessage(), e);
         } finally {
             apiHealthService.insert(
                 "/sendTransactionalSMS",

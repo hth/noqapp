@@ -74,13 +74,14 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     boolean updateNextRunQueueAppointment(String id, Date queueAppointment);
 
     boolean updateNextRunAndRatingWithAverageServiceTime(
-            String id,
-            String zoneId,
-            Date archiveNextRun,
-            Date queueAppointment,
-            float rating,
-            int ratingCount,
-            long computedAverageServiceTime);
+        String id,
+        String zoneId,
+        Date archiveNextRun,
+        Date queueAppointment,
+        float rating,
+        int ratingCount,
+        long computedAverageServiceTime,
+        long averageServiceTime);
 
     List<BizStoreEntity> findAllQueueEndedForTheDay(Date now);
     List<BizStoreEntity> findAllQueueAcceptingAppointmentForTheDay(Date now);
