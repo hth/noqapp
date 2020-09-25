@@ -70,7 +70,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     boolean isValidCodeQR(String codeQR);
 
     /** Set next cron run date for moving history from previous day. */
-    boolean updateNextRun(String id, String zoneId, Date archiveNextRun, Date queueAppointment);
+    boolean updateNextRun(String id, String zoneId, Date archiveNextRun, Date queueAppointment, long averageServiceTime);
     boolean updateNextRunQueueAppointment(String id, Date queueAppointment);
 
     boolean updateNextRunAndRatingWithAverageServiceTime(
