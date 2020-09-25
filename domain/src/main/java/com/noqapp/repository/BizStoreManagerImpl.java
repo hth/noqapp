@@ -298,8 +298,8 @@ public class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public boolean updateNextRun(String id, String zoneId, Date archiveNextRun, Date queueAppointment) {
-        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, archiveNextRun, queueAppointment, 0, 0, 0, 0);
+    public boolean updateNextRun(String id, String zoneId, Date archiveNextRun, Date queueAppointment, long averageServiceTime) {
+        return updateNextRunAndRatingWithAverageServiceTime(id, zoneId, archiveNextRun, queueAppointment, 0, 0, 0, averageServiceTime);
     }
 
     @Override

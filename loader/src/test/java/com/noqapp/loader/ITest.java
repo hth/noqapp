@@ -1,6 +1,22 @@
 package com.noqapp.loader;
 
 import com.noqapp.common.config.TextToSpeechConfiguration;
+import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.Constants;
+import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.AddressOriginEnum;
+import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.GenderEnum;
+import com.noqapp.domain.types.OnOffEnum;
+import com.noqapp.domain.types.UserLevelEnum;
+import com.noqapp.domain.types.catgeory.CanteenStoreDepartmentEnum;
 import com.noqapp.health.repository.ApiHealthNowManager;
 import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
@@ -30,6 +46,7 @@ import com.noqapp.repository.BusinessCustomerManagerImpl;
 import com.noqapp.repository.BusinessCustomerPriorityManager;
 import com.noqapp.repository.BusinessCustomerPriorityManagerImpl;
 import com.noqapp.repository.BusinessUserManager;
+import com.noqapp.repository.BusinessUserManagerImpl;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.BusinessUserStoreManagerImpl;
 import com.noqapp.repository.CouponManager;
@@ -46,6 +63,7 @@ import com.noqapp.repository.InviteManager;
 import com.noqapp.repository.InviteManagerImpl;
 import com.noqapp.repository.PreferredBusinessManager;
 import com.noqapp.repository.ProfessionalProfileManager;
+import com.noqapp.repository.ProfessionalProfileManagerImpl;
 import com.noqapp.repository.PublishArticleManager;
 import com.noqapp.repository.PublishArticleManagerImpl;
 import com.noqapp.repository.PurchaseOrderManager;
@@ -86,6 +104,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessCustomerService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.CouponService;
 import com.noqapp.service.CustomTextToSpeechService;
 import com.noqapp.service.EmailValidateService;
@@ -96,18 +115,29 @@ import com.noqapp.service.GenerateUserIdService;
 import com.noqapp.service.InviteService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.PreferredBusinessService;
+import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.PurchaseOrderProductService;
 import com.noqapp.service.QueueService;
+import com.noqapp.service.ReviewService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreCategoryService;
 import com.noqapp.service.TextToSpeechService;
 import com.noqapp.service.TokenQueueService;
+
+import org.bson.types.ObjectId;
+
+import org.springframework.mock.env.MockEnvironment;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import okhttp3.OkHttpClient;
+
+import java.time.DayOfWeek;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * hitender
@@ -127,6 +157,7 @@ public class ITest extends RealMongoForITest {
     protected ApiHealthService apiHealthService;
     protected FirebaseMessageService firebaseMessageService;
     protected BusinessUserService businessUserService;
+    protected BusinessUserStoreService businessUserStoreService;
     protected PreferredBusinessService preferredBusinessService;
     protected GenerateUserIdService generateUserIdService;
     protected EmailValidateService emailValidateService;
@@ -136,6 +167,8 @@ public class ITest extends RealMongoForITest {
     protected StatsCronService statsCronService;
     protected PurchaseOrderProductService purchaseOrderProductService;
     protected CouponService couponService;
+    protected ReviewService reviewService;
+    protected ProfessionalProfileService professionalProfileService;
     protected TextToSpeechService textToSpeechService;
     protected CustomTextToSpeechService customTextToSpeechService;
 
@@ -179,6 +212,8 @@ public class ITest extends RealMongoForITest {
     protected S3FileManager s3FileManager;
     protected StoreProductManager storeProductManager;
 
+    private MockEnvironment mockEnvironment;
+
     @Mock protected FtpService ftpService;
     @Mock protected MailService mailService;
     @Mock protected OkHttpClient okHttpClient;
@@ -190,6 +225,9 @@ public class ITest extends RealMongoForITest {
     @BeforeAll
     public void globalISetup() {
         MockitoAnnotations.initMocks(this);
+
+        mockEnvironment = new MockEnvironment();
+        mockEnvironment.setProperty("build.env", "sandbox");
 
         userAccountManager = new UserAccountManagerImpl(getMongoTemplate());
         userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
@@ -211,6 +249,7 @@ public class ITest extends RealMongoForITest {
         storeProductManager = new StoreProductManagerImpl(getMongoTemplate());
         storeCategoryManager = new StoreCategoryManagerImpl(getMongoTemplate());
         tokenQueueManager = new TokenQueueManagerImpl(getMongoTemplate());
+        businessUserManager = new BusinessUserManagerImpl(getMongoTemplate());
         queueManager = new QueueManagerImpl(getMongoTemplate());
         storeHourManager = new StoreHourManagerImpl(getMongoTemplate());
         businessCustomerManager = new BusinessCustomerManagerImpl(getMongoTemplate());
@@ -255,6 +294,23 @@ public class ITest extends RealMongoForITest {
             inviteService,
             forgotRecoverManager
         );
+
+        reviewService = new ReviewService(
+            180,
+            queueManager,
+            queueManagerJDBC,
+            purchaseOrderManager,
+            purchaseOrderManagerJDBC,
+            userProfileManager
+        );
+
+        professionalProfileManager = new ProfessionalProfileManagerImpl(getMongoTemplate());
+        professionalProfileService = new ProfessionalProfileService(
+            reviewService,
+            professionalProfileManager,
+            userProfileManager,
+            businessUserStoreManager,
+            bizStoreManager);
 
         customTextToSpeechService = new CustomTextToSpeechService(customTextToSpeechManager);
         textToSpeechService = new TextToSpeechService(
@@ -322,6 +378,18 @@ public class ITest extends RealMongoForITest {
             storeCategoryService
         );
 
+        businessUserService = new BusinessUserService(businessUserManager);
+        businessUserStoreService = new BusinessUserStoreService(
+            10,
+            businessUserStoreManager,
+            preferredBusinessService,
+            businessUserService,
+            tokenQueueService,
+            accountService,
+            bizService,
+            professionalProfileService
+        );
+
         medicalFileService = new MedicalFileService(medicalRecordManager, medicalPathologyManager, medicalRadiologyManager, s3FileManager, fileService ,ftpService);
         medicalTransactionService = new MedicalTransactionService(
             getMongoTemplate(),
@@ -331,5 +399,361 @@ public class ITest extends RealMongoForITest {
         );
 
         statsCronService = new StatsCronService(statsCronManager);
+
+        registerUser();
+        createBusinessCSD("9118000001100");
+    }
+
+    private void registerUser() {
+        /* System Users. Like Admin, Supervisor. */
+        addSystemUsers();
+
+        /* Clients. */
+        addClients();
+        addStoreUsersToCSD();
+    }
+
+    private void addClients() {
+        accountService.createNewAccount(
+            "+9118000000001",
+            "ROCKET",
+            "Docket",
+            "rocketd@r.com",
+            "2000-12-12",
+            GenderEnum.M,
+            "IN",
+            "Asia/Calcutta",
+            "password",
+            "",
+            true,
+            false
+        );
+
+        accountService.createNewAccount(
+            "+9118000000002",
+            "Pintoa D",
+            "mAni",
+            "pintod@r.com",
+            "2000-12-12",
+            GenderEnum.M,
+            "IN",
+            "Asia/Calcutta",
+            "password",
+            "",
+            true,
+            false
+        );
+
+        accountService.createNewAccount(
+            "+9118000001111",
+            "Damuscus",
+            null,
+            "damuscus@r.com",
+            "2000-12-12",
+            GenderEnum.M,
+            "IN",
+            "Asia/Calcutta",
+            "password",
+            "",
+            true,
+            false
+        );
+
+        accountService.createNewAccount(
+            "+9118000001112",
+            "Sita",
+            null,
+            "sita@r.com",
+            "2000-12-12",
+            GenderEnum.F,
+            "IN",
+            "Asia/Calcutta",
+            "password",
+            "",
+            true,
+            false
+        );
+    }
+
+    private void addSystemUsers() {
+        accountService.createNewAccount(
+            "+9118000000101",
+            "Admin",
+            "Admin",
+            "admin@r.com",
+            "2000-12-12",
+            GenderEnum.M,
+            "IN",
+            "Asia/Calcutta",
+            "password",
+            "",
+            true,
+            false
+        );
+
+        UserProfileEntity adminUserProfile = accountService.checkUserExistsByPhone("9118000000101");
+        adminUserProfile.setLevel(UserLevelEnum.ADMIN);
+        accountService.save(adminUserProfile);
+        UserAccountEntity adminUserAccount = accountService.changeAccountRolesToMatchUserLevel(
+            adminUserProfile.getQueueUserId(),
+            adminUserProfile.getLevel());
+        accountService.save(adminUserAccount);
+
+        accountService.createNewAccount(
+            "+9118000000102",
+            "Supervisor",
+            "Supervisor",
+            "super@r.com",
+            "2000-12-12",
+            GenderEnum.M,
+            "IN",
+            "Asia/Calcutta",
+            "password",
+            "",
+            true,
+            false
+        );
+
+        UserProfileEntity supervisorUserProfile = accountService.checkUserExistsByPhone("9118000000102");
+        supervisorUserProfile.setLevel(UserLevelEnum.SUPERVISOR);
+        accountService.save(supervisorUserProfile);
+        UserAccountEntity supervisorUserAccount = accountService.changeAccountRolesToMatchUserLevel(
+            supervisorUserProfile.getQueueUserId(),
+            supervisorUserProfile.getLevel());
+        accountService.save(supervisorUserAccount);
+    }
+
+    private void addStoreUsersToCSD() {
+        accountService.createNewAccount(
+            "+9118000001100",
+            "CSD",
+            "Gurugram",
+            "csd_business@r.com",
+            "2000-12-12",
+            GenderEnum.M,
+            "IN",
+            "Asia/Calcutta",
+            "password",
+            "",
+            true,
+            false
+        );
+
+        UserProfileEntity merchantUserProfile = accountService.checkUserExistsByPhone("9118000001100");
+        merchantUserProfile.setLevel(UserLevelEnum.M_ADMIN);
+        accountService.save(merchantUserProfile);
+        UserAccountEntity merchantUserAccount = accountService.changeAccountRolesToMatchUserLevel(
+            merchantUserProfile.getQueueUserId(),
+            merchantUserProfile.getLevel());
+        accountService.save(merchantUserAccount);
+
+        accountService.createNewAccount(
+            "+9118000001101",
+            "CSD",
+            "Gurugram",
+            "csd_store_supervisor@r.com",
+            "2000-12-12",
+            GenderEnum.M,
+            "IN",
+            "Asia/Calcutta",
+            "password",
+            "",
+            true,
+            false
+        );
+
+        UserProfileEntity queueSupervisorUserProfile = accountService.checkUserExistsByPhone("9118000001101");
+        queueSupervisorUserProfile.setLevel(UserLevelEnum.Q_SUPERVISOR);
+        accountService.save(queueSupervisorUserProfile);
+        UserAccountEntity queueSupervisorUserAccount = accountService.changeAccountRolesToMatchUserLevel(
+            queueSupervisorUserProfile.getQueueUserId(),
+            queueSupervisorUserProfile.getLevel());
+        accountService.save(queueSupervisorUserAccount);
+
+        accountService.createNewAccount(
+            "+9118000001102",
+            "Manager of CSD",
+            "Gurugram",
+            "manager_csd@r.com",
+            "2000-12-12",
+            GenderEnum.F,
+            "IN",
+            "Asia/Calcutta",
+            "password",
+            "",
+            true,
+            false
+        );
+
+        UserProfileEntity storeManagerUserProfile = accountService.checkUserExistsByPhone("9118000001102");
+        storeManagerUserProfile.setLevel(UserLevelEnum.S_MANAGER);
+        accountService.save(storeManagerUserProfile);
+        UserAccountEntity storeManagerUserAccount = accountService.changeAccountRolesToMatchUserLevel(
+            storeManagerUserProfile.getQueueUserId(),
+            storeManagerUserProfile.getLevel());
+        accountService.save(storeManagerUserAccount);
+    }
+
+    private void createBusinessCSD(String phone) {
+        UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
+
+        BizNameEntity bizName = BizNameEntity.newInstance(CommonUtil.generateCodeQR(Objects.requireNonNull(mockEnvironment.getProperty("build.env"))))
+            .setBusinessName("CSD Business")
+            .setBusinessType(BusinessTypeEnum.CDQ)
+            .setPhone("9118000000041")
+            .setPhoneRaw("18000000041")
+            .setAddress("Shop No 10 Plot No 102 Sector 29, Vashi, Navi Mumbai, Maharashtra 400703")
+            .setTown("Vashi")
+            .setStateShortName("MH")
+            .setTimeZone("Asia/Calcutta")
+            .setInviteeCode(userProfile.getInviteCode())
+            .setAddressOrigin(AddressOriginEnum.G)
+            .setCountryShortName("IN")
+            .setCoordinate(new double[]{71.022498, 18.0244723})
+            .setPriorityAccess(OnOffEnum.O);
+        String webLocation = bizService.buildWebLocationForBiz(
+            bizName.getTown(),
+            bizName.getStateShortName(),
+            bizName.getCountryShortName(),
+            bizName.getBusinessName(),
+            bizName.getId());
+
+        bizName.setWebLocation(webLocation);
+        bizName.setCodeQR(CommonUtil.generateCodeQR(Objects.requireNonNull(mockEnvironment.getProperty("build.env"))));
+        bizService.saveName(bizName);
+
+        BizStoreEntity bizStore = BizStoreEntity.newInstance()
+            .setBizName(bizName)
+            .setDisplayName("CSD Grocery for Ex-Servicemen")
+            .setBusinessType(bizName.getBusinessType())
+            .setBizCategoryId(CanteenStoreDepartmentEnum.EG.getName())
+            .setPhone("9118000000042")
+            .setPhoneRaw("18000000042")
+            .setAddress("Shop No 10 Plot No 102 Sector 29, Vashi, Navi Mumbai, Maharashtra 400703")
+            .setTimeZone("Asia/Calcutta")
+            .setCodeQR(ObjectId.get().toString())
+            .setAddressOrigin(AddressOriginEnum.G)
+            .setRemoteJoin(true)
+            .setAllowLoggedInUser(false)
+            .setAvailableTokenCount(0)
+            .setAverageServiceTime(50000)
+            .setCountryShortName("IN")
+            .setCoordinate(new double[]{73.022498, 19.0244723});
+        webLocation = bizService.buildWebLocationForBiz(
+            bizStore.getTown(),
+            bizStore.getStateShortName(),
+            bizStore.getCountryShortName(),
+            bizStore.getDisplayName(),
+            bizStore.getId());
+        bizStore.setWebLocation(webLocation);
+        bizStore.setCodeQR(CommonUtil.generateCodeQR(Objects.requireNonNull(mockEnvironment.getProperty("build.env"))));
+        bizService.saveStore(bizStore, "Created New Store");
+
+        List<StoreHourEntity> storeHours = new LinkedList<>();
+        for (int i = 1; i <= 7; i++) {
+            StoreHourEntity storeHour = new StoreHourEntity(bizStore.getId(), DayOfWeek.of(i).getValue());
+            storeHour.setStartHour(1)
+                .setTokenAvailableFrom(1)
+                .setTokenNotAvailableFrom(2359)
+                .setEndHour(2359);
+
+            storeHours.add(storeHour);
+        }
+
+        /* Add store hours. */
+        bizService.insertAll(storeHours);
+
+        /* Create Queue. */
+        tokenQueueService.createUpdate(bizStore, Constants.appendPrefix);
+
+        /* Add Queue Admin, Queue Supervisor, Queue Manager to Business and Store. */
+        BusinessUserEntity businessUser = BusinessUserEntity.newInstance(
+            userProfile.getQueueUserId(),
+            UserLevelEnum.M_ADMIN
+        );
+        businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.V)
+            .setValidateByQid(accountService.checkUserExistsByPhone("9118000001100").getQueueUserId())
+            .setBizName(bizName);
+        businessUserService.save(businessUser);
+
+        UserProfileEntity queueSupervisorUserProfile = accountService.checkUserExistsByPhone("9118000001101");
+        BusinessUserStoreEntity businessUserStore = new BusinessUserStoreEntity(
+            queueSupervisorUserProfile.getQueueUserId(),
+            bizStore.getId(),
+            bizName.getId(),
+            bizStore.getCodeQR(),
+            queueSupervisorUserProfile.getLevel());
+        businessUserStoreService.save(businessUserStore);
+
+        UserProfileEntity queueManagerUserProfile = accountService.checkUserExistsByPhone("9118000001102");
+        businessUserStore = new BusinessUserStoreEntity(
+            queueManagerUserProfile.getQueueUserId(),
+            bizStore.getId(),
+            bizName.getId(),
+            bizStore.getCodeQR(),
+            queueManagerUserProfile.getLevel());
+        businessUserStoreService.save(businessUserStore);
+
+        bizStore = BizStoreEntity.newInstance()
+            .setBizName(bizName)
+            .setDisplayName("CSD Liquor for Ex-Servicemen")
+            .setBusinessType(bizName.getBusinessType())
+            .setBizCategoryId(CanteenStoreDepartmentEnum.EL.getName())
+            .setPhone("9118000000042")
+            .setPhoneRaw("18000000042")
+            .setAddress("Shop No 10 Plot No 102 Sector 29, Vashi, Navi Mumbai, Maharashtra 400703")
+            .setTimeZone("Asia/Calcutta")
+            .setCodeQR(ObjectId.get().toString())
+            .setAddressOrigin(AddressOriginEnum.G)
+            .setRemoteJoin(true)
+            .setAllowLoggedInUser(false)
+            .setAvailableTokenCount(0)
+            .setAverageServiceTime(50000)
+            .setCountryShortName("IN")
+            .setCoordinate(new double[]{73.022498, 19.0244723});
+        webLocation = bizService.buildWebLocationForBiz(
+            bizStore.getTown(),
+            bizStore.getStateShortName(),
+            bizStore.getCountryShortName(),
+            bizStore.getDisplayName(),
+            bizStore.getId());
+        bizStore.setWebLocation(webLocation);
+        bizStore.setCodeQR(CommonUtil.generateCodeQR(Objects.requireNonNull(mockEnvironment.getProperty("build.env"))));
+        bizService.saveStore(bizStore, "Created New Store");
+
+        storeHours = new LinkedList<>();
+        for (int i = 1; i <= 7; i++) {
+            StoreHourEntity storeHour = new StoreHourEntity(bizStore.getId(), DayOfWeek.of(i).getValue());
+            storeHour.setStartHour(1)
+                .setTokenAvailableFrom(1)
+                .setTokenNotAvailableFrom(2359)
+                .setEndHour(2359);
+
+            storeHours.add(storeHour);
+        }
+
+        /* Add store hours. */
+        bizService.insertAll(storeHours);
+
+        /* Create Queue. */
+        tokenQueueService.createUpdate(bizStore, Constants.appendPrefix);
+
+        queueSupervisorUserProfile = accountService.checkUserExistsByPhone("9118000001101");
+        businessUserStore = new BusinessUserStoreEntity(
+            queueSupervisorUserProfile.getQueueUserId(),
+            bizStore.getId(),
+            bizName.getId(),
+            bizStore.getCodeQR(),
+            queueSupervisorUserProfile.getLevel());
+        businessUserStoreService.save(businessUserStore);
+
+        queueManagerUserProfile = accountService.checkUserExistsByPhone("9118000001102");
+        businessUserStore = new BusinessUserStoreEntity(
+            queueManagerUserProfile.getQueueUserId(),
+            bizStore.getId(),
+            bizName.getId(),
+            bizStore.getCodeQR(),
+            queueManagerUserProfile.getLevel());
+        businessUserStoreService.save(businessUserStore);
     }
 }

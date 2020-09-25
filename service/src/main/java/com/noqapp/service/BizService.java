@@ -675,7 +675,8 @@ public class BizService {
             bizStore.getId(),
             bizStore.getTimeZone(),
             archiveNextRun,
-            bizStore.getQueueAppointment());
+            bizStore.getQueueAppointment(),
+            bizStore.getAverageServiceTime());
     }
 
     @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")

@@ -41,7 +41,7 @@ public abstract class RealMongoForITest {
     private MongoClient mongoClient;
     private MongoTemplate mongoTemplate;
 
-    private static final String DATABASE_NAME = "noqapp-i-test";
+    private static final String DATABASE_NAME = "noqapp-is-test";
     int port;
 
     @BeforeAll

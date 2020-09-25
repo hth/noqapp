@@ -28,7 +28,7 @@ import java.util.List;
  * hitender
  * 11/18/18 1:54 PM
  */
-public abstract class RealMongoForITest {
+public abstract class RealMongoForITest extends ElasticForITest {
     /**
      * please store Starter or RuntimeConfig in a static final field
      * if you want to use artifact store caching (or else disable caching)
@@ -41,13 +41,12 @@ public abstract class RealMongoForITest {
     private MongoClient mongoClient;
     private MongoTemplate mongoTemplate;
 
-    private static final String DATABASE_NAME = "noqapp-i-test";
+    private static final String DATABASE_NAME = "noqapp-is-test";
     int port;
 
     @BeforeAll
     public void globalSetup() throws Exception {
         port = Network.getFreeServerPort();
-
         mongodExecutable = starter.prepare(new MongodConfigBuilder()
             .version(Version.Main.PRODUCTION)
             .net(new Net("localhost", port, Network.localhostIsIPv6()))

@@ -398,7 +398,8 @@ public class ArchiveAndReset {
                 bizStore.getId(),
                 bizStore.getTimeZone(),
                 Date.from(archiveNextRun.toInstant()),
-                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore).toInstant()) : null);
+                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore).toInstant()) : null,
+                averageServiceTime);
         }
 
         tokenQueueManager.resetForNewDay(bizStore.getCodeQR());

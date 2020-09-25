@@ -80,27 +80,32 @@ class TokenQueueServiceTest {
             .setLunchTimeStart(1300)
             .setLunchTimeEnd(1400);
 
-        Map<String, String> timeSlots = new LinkedHashMap<>();
-        Assertions.assertThrows(ExpectedServiceBeyondStoreClosingHour.class, () -> {
-            for (int i = 1; i < 100; i++) {
-                try {
-                    ZonedDateTime expectedServiceBegin_UTC = tokenQueueService.computeExpectedServiceBeginTime(
-                        300000,
-                        ZoneId.of("Pacific/Honolulu"),
-                        storeHour,
-                        i
-                    );
-                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, ZoneId.of("Pacific/Honolulu"), storeHour);
-                    timeSlots.put(String.valueOf(i), timeSlot);
-                } catch (ExpectedServiceBeyondStoreClosingHour e) {
-                    System.err.println("Can service " + --i);
-                    throw e;
-                }
-            }
-        });
+        String[] basedOnTimeZones = {"America/New_York", "America/Los_Angeles", "Pacific/Honolulu"};
+        for (String basedOnTimeZone : basedOnTimeZones) {
+            ZoneId zone = ZoneId.of(basedOnTimeZone);
 
-        for (String key : timeSlots.keySet()) {
-            System.out.println("Expected Service: for token " + key + ", time slot = " + timeSlots.get(key));
+            Map<String, String> timeSlots = new LinkedHashMap<>();
+            Assertions.assertThrows(ExpectedServiceBeyondStoreClosingHour.class, () -> {
+                for (int i = 1; i < 100; i++) {
+                    try {
+                        ZonedDateTime expectedServiceBegin_UTC = tokenQueueService.computeExpectedServiceBeginTime(
+                            300000,
+                            zone,
+                            storeHour,
+                            i
+                        );
+                        String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, zone, storeHour);
+                        timeSlots.put(String.valueOf(i), timeSlot);
+                    } catch (ExpectedServiceBeyondStoreClosingHour e) {
+                        System.err.println("Can service " + --i);
+                        throw e;
+                    }
+                }
+            });
+
+            for (String key : timeSlots.keySet()) {
+                System.out.println("Expected Service: for token " + key + ", time slot = " + timeSlots.get(key));
+            }
         }
     }
 }
