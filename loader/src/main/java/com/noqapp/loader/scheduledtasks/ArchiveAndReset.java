@@ -375,7 +375,7 @@ public class ArchiveAndReset {
         /* In queue history, we set things for tomorrow. */
         ZonedDateTime archiveNextRun = setupStoreForTomorrow(bizStore);
         long averageServiceTime = bizService.computeAverageServiceTime(archiveNextRun.getDayOfWeek(), bizStore.getAvailableTokenCount(), bizStore.getId());
-        LOG.info("Changed in codeQR={} {} {} existing={} new={}",
+        LOG.info("AverageServiceTime in codeQR={} {} {} existing={} new={}",
             bizStore.getCodeQR(),
             bizStore.getDisplayName(),
             bizStore.getAvailableTokenCount(),
