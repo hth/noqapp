@@ -30,7 +30,6 @@ import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
-import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizStoreManager;
@@ -537,7 +536,17 @@ public class TokenQueueService {
             ZonedDateTime zonedServiceTime = computeZonedServiceTime(averageServiceTime, zoneId, storeHour, lastNumber);
             ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
             if (zonedServiceTime.isBefore(currentTime)) {
-                zonedServiceTime = currentTime;
+                if (storeHour.isLunchTimeEnabled()) {
+                    ZonedDateTime zonedLunchStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+                    ZonedDateTime zonedLunchEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
+                    if (currentTime.isAfter(zonedLunchStartHour) && currentTime.isBefore(zonedLunchEndHour)) {
+                        zonedServiceTime = zonedLunchEndHour.plusMinutes(zonedServiceTime.getMinute());
+                    } else {
+                        zonedServiceTime = currentTime;
+                    }
+                } else {
+                    zonedServiceTime = currentTime;
+                }
             }
 
             /* Changed to UTC time before saving. */
@@ -552,8 +561,12 @@ public class TokenQueueService {
     }
 
     /** Calculate based on zone and then save the expected service time based on UTC. */
-    public ZonedDateTime computeExpectedServiceBeginTime(long averageServiceTime, ZoneId zoneId, StoreHourEntity storeHour, int lastNumber)
-        throws ExpectedServiceBeyondStoreClosingHour {
+    public ZonedDateTime computeExpectedServiceBeginTime(
+        long averageServiceTime,
+        ZoneId zoneId,
+        StoreHourEntity storeHour,
+        int lastNumber
+    ) throws ExpectedServiceBeyondStoreClosingHour {
         ZonedDateTime expectedServiceBegin;
         if (0 != averageServiceTime) {
             ZonedDateTime zonedServiceTime = computeZonedServiceTime(averageServiceTime, zoneId, storeHour, lastNumber);
@@ -617,8 +630,9 @@ public class TokenQueueService {
             .plusMinutes(storeHour.getDelayedInMinutes());
 
         if (storeHour.isLunchTimeEnabled()) {
-            Duration breakTime = Duration.between(storeHour.lunchStartHour(), storeHour.lunchEndHour());
             ZonedDateTime zonedLunchStart = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+            ZonedDateTime zonedLunchEnd = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
+            Duration breakTime = Duration.between(zonedLunchStart, zonedLunchEnd);
             LOG.debug("Expected ServiceTime={} lunchTimeStart={}", zonedServiceTime, zonedLunchStart);
             if (zonedServiceTime.isAfter(zonedLunchStart)) {
                 zonedServiceTime = zonedServiceTime.plusMinutes(breakTime.toMinutes());
@@ -656,7 +670,7 @@ public class TokenQueueService {
             ZonedDateTime zonedDateTime = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, lastNumber);
             return ServiceUtils.timeSlot(zonedDateTime, zoneId, storeHour);
         } catch (ExpectedServiceBeyondStoreClosingHour e) {
-            LOG.warn("After closing reached {}", e.getLocalizedMessage());
+            LOG.warn("After closing live status sending {} reason={}", "Capacity reached", e.getLocalizedMessage());
             return "Capacity reached";
         }
     }
