@@ -536,7 +536,17 @@ public class TokenQueueService {
             ZonedDateTime zonedServiceTime = computeZonedServiceTime(averageServiceTime, zoneId, storeHour, lastNumber);
             ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
             if (zonedServiceTime.isBefore(currentTime)) {
-                zonedServiceTime = currentTime;
+                if (storeHour.isLunchTimeEnabled()) {
+                    ZonedDateTime zonedLunchStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+                    ZonedDateTime zonedLunchEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
+                    if (currentTime.isAfter(zonedLunchStartHour) && currentTime.isBefore(zonedLunchEndHour)) {
+                        zonedServiceTime = zonedLunchEndHour.plusMinutes(zonedServiceTime.getMinute());
+                    } else {
+                        zonedServiceTime = currentTime;
+                    }
+                } else {
+                    zonedServiceTime = currentTime;
+                }
             }
 
             /* Changed to UTC time before saving. */
@@ -620,8 +630,9 @@ public class TokenQueueService {
             .plusMinutes(storeHour.getDelayedInMinutes());
 
         if (storeHour.isLunchTimeEnabled()) {
-            Duration breakTime = Duration.between(storeHour.lunchStartHour(), storeHour.lunchEndHour());
             ZonedDateTime zonedLunchStart = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+            ZonedDateTime zonedLunchEnd = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
+            Duration breakTime = Duration.between(zonedLunchStart, zonedLunchEnd);
             LOG.debug("Expected ServiceTime={} lunchTimeStart={}", zonedServiceTime, zonedLunchStart);
             if (zonedServiceTime.isAfter(zonedLunchStart)) {
                 zonedServiceTime = zonedServiceTime.plusMinutes(breakTime.toMinutes());
