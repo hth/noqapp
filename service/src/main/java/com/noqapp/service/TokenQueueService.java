@@ -30,7 +30,6 @@ import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
-import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizStoreManager;
@@ -552,8 +551,12 @@ public class TokenQueueService {
     }
 
     /** Calculate based on zone and then save the expected service time based on UTC. */
-    public ZonedDateTime computeExpectedServiceBeginTime(long averageServiceTime, ZoneId zoneId, StoreHourEntity storeHour, int lastNumber)
-        throws ExpectedServiceBeyondStoreClosingHour {
+    public ZonedDateTime computeExpectedServiceBeginTime(
+        long averageServiceTime,
+        ZoneId zoneId,
+        StoreHourEntity storeHour,
+        int lastNumber
+    ) throws ExpectedServiceBeyondStoreClosingHour {
         ZonedDateTime expectedServiceBegin;
         if (0 != averageServiceTime) {
             ZonedDateTime zonedServiceTime = computeZonedServiceTime(averageServiceTime, zoneId, storeHour, lastNumber);
