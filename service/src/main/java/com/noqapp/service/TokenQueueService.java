@@ -670,7 +670,7 @@ public class TokenQueueService {
             ZonedDateTime zonedDateTime = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, lastNumber);
             return ServiceUtils.timeSlot(zonedDateTime, zoneId, storeHour);
         } catch (ExpectedServiceBeyondStoreClosingHour e) {
-            LOG.warn("After closing reached {}", e.getLocalizedMessage());
+            LOG.warn("After closing live status sending {} reason={}", "Capacity reached", e.getLocalizedMessage());
             return "Capacity reached";
         }
     }
