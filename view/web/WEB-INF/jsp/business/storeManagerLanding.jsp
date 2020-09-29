@@ -177,6 +177,10 @@
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
+                                            <br/>
+                                            <a href="/business/store/inQueueReport/${store.codeQR}.htm" style="color: #0000FF;">
+                                                <span style="display:block; font-size:13px;">Print In Queue</span>
+                                            </a>
                                         </td>
                                     </tr>
                                     </c:forEach>

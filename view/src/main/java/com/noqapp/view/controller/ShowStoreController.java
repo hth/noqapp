@@ -98,10 +98,10 @@ public class ShowStoreController {
      */
     @GetMapping(value = "/i/{fileName}")
     public void getFileImage(
-            @PathVariable("fileName")
-            ScrubbedInput fileName,
+        @PathVariable("fileName")
+        ScrubbedInput fileName,
 
-            HttpServletResponse response
+        HttpServletResponse response
     ) {
         LOG.info("Loading image on business page fileName={}", fileName.getText());
         InputStream inputStream = null;
