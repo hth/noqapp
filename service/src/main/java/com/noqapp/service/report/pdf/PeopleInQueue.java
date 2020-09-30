@@ -8,13 +8,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.quodlibet.boxable.BaseTable;
+import be.quodlibet.boxable.Cell;
+import be.quodlibet.boxable.Row;
 import be.quodlibet.boxable.datatable.DataTable;
+import be.quodlibet.boxable.line.LineStyle;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +53,7 @@ public class PeopleInQueue extends PdfBoxBase {
     void populateReport(PDDocument document, PDPage page) {
         try {
             if (0 != jsonQueuePersonList.getQueuedPeople().size()) {
-                createTable(document, page);
+                createTable(document, page, bizStore.getDisplayName());
             } else {
                 markAsBlankPage(document, page);
             }
@@ -57,15 +62,7 @@ public class PeopleInQueue extends PdfBoxBase {
         }
     }
 
-    public void createTable(PDDocument document, PDPage page) throws IOException {
-        //Initialize table
-        float margin = PADDING_TOP_OF_DOCUMENT + 5;
-        float tableWidth = page.getMediaBox().getWidth() - (2 * margin);
-        float yStartNewPage = page.getMediaBox().getHeight() - (2 * margin);
-        float yStart = yStartNewPage;
-        float bottomMargin = PADDING_BOTTOM_OF_DOCUMENT + 5;
-
-
+    public void createTable(PDDocument document, PDPage page, String tableTitle) throws IOException {
         List<List> data = new ArrayList<>();
         data.add(
             new ArrayList<>(
@@ -82,8 +79,8 @@ public class PeopleInQueue extends PdfBoxBase {
         String c2 = "";
         String c3 = "";
         String c4 = "";
-        String c5 = "";
-        String c6 = "";
+        String c5;
+        String c6;
 
         List<JsonQueuedPerson> sorted = jsonQueuePersonList.getQueuedPeople().stream()
             .sorted(Comparator.comparing(JsonQueuedPerson::getToken))
@@ -103,7 +100,7 @@ public class PeopleInQueue extends PdfBoxBase {
                 c6 = jsonQueuedPerson != null ? jsonQueuedPerson.getCustomerName() : "";
 
                 data.add(new ArrayList<>(Arrays.asList(c1, c2, c3, c4 ,c5, c6)));
-                c1 = ""; c2 = ""; c3 = ""; c4 = ""; c5 = ""; c6 = "";
+                c1 = ""; c2 = ""; c3 = ""; c4 = "";
             }
         }
 
@@ -113,8 +110,24 @@ public class PeopleInQueue extends PdfBoxBase {
             data.add(new ArrayList<>(Arrays.asList(c1, c2, "", "", "", "")));
         }
 
+        //Initialize table
+        float margin = PADDING_TOP_OF_DOCUMENT + 5;
+        float tableWidth = page.getMediaBox().getWidth() - (2 * margin);
+        float yStartNewPage = page.getMediaBox().getHeight() - (2 * margin);
+        float yStart = yStartNewPage;
+        float bottomMargin = PADDING_BOTTOM_OF_DOCUMENT + 5;
+
         BaseTable dataTable = new BaseTable(yStart, yStartNewPage, bottomMargin, tableWidth, margin, document, page, true, true);
         DataTable t = new DataTable(dataTable, page);
+        Row<PDPage> headerRow = dataTable.createRow(15f);
+
+        Cell<PDPage> cell = headerRow.createCell(100, tableTitle);
+        cell.setFont(PDType1Font.HELVETICA_BOLD);
+        cell.setFillColor(Color.WHITE);
+        cell.setTextColor(Color.BLACK);
+        cell.setBottomBorderStyle(new LineStyle(Color.black, 1));
+        dataTable.addHeaderRow(headerRow);
+
         t.addListToTable(data, DataTable.HASHEADER);
         dataTable.draw();
     }
