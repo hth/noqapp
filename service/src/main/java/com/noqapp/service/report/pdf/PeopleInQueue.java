@@ -4,6 +4,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.json.JsonQueuedPerson;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
@@ -18,7 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * hitender
@@ -70,25 +73,44 @@ public class PeopleInQueue extends PdfBoxBase {
                     "Token",
                     "Name",
                     "Token",
+                    "Name",
+                    "Token",
                     "Name")));
 
         int count = 0;
-        String c1 = null;
-        String c2 = null;
-        for (JsonQueuedPerson jsonQueuedPerson : jsonQueuePersonList.getQueuedPeople()) {
-            if (count % 2 == 0) {
-                data.add(
-                    new ArrayList<>(
-                        Arrays.asList(
-                            c1,
-                            c2,
-                            jsonQueuedPerson != null ? jsonQueuedPerson.getDisplayToken() : "",
-                            jsonQueuedPerson != null ? jsonQueuedPerson.getCustomerName() : "")));
-            } else {
+        String c1 = "";
+        String c2 = "";
+        String c3 = "";
+        String c4 = "";
+        String c5 = "";
+        String c6 = "";
+
+        List<JsonQueuedPerson> sorted = jsonQueuePersonList.getQueuedPeople().stream()
+            .sorted(Comparator.comparing(JsonQueuedPerson::getToken))
+            .collect(Collectors.toList());
+
+        for (JsonQueuedPerson jsonQueuedPerson : sorted) {
+            count++;
+
+            if (StringUtils.isBlank(c1)) {
                 c1 = jsonQueuedPerson != null ? jsonQueuedPerson.getDisplayToken() : "";
                 c2 = jsonQueuedPerson != null ? jsonQueuedPerson.getCustomerName() : "";
+            } else if (StringUtils.isNotBlank(c1) && StringUtils.isBlank(c3)) {
+                c3 = jsonQueuedPerson != null ? jsonQueuedPerson.getDisplayToken() : "";
+                c4 = jsonQueuedPerson != null ? jsonQueuedPerson.getCustomerName() : "";
+            } else if (count % 3 == 0) {
+                c5 = jsonQueuedPerson != null ? jsonQueuedPerson.getDisplayToken() : "";
+                c6 = jsonQueuedPerson != null ? jsonQueuedPerson.getCustomerName() : "";
+
+                data.add(new ArrayList<>(Arrays.asList(c1, c2, c3, c4 ,c5, c6)));
+                c1 = ""; c2 = ""; c3 = ""; c4 = ""; c5 = ""; c6 = "";
             }
-            count++;
+        }
+
+        if (StringUtils.isNotBlank(c1) && StringUtils.isNotBlank(c3)) {
+            data.add(new ArrayList<>(Arrays.asList(c1, c2, c3, c4, "", "")));
+        } else if (StringUtils.isNotBlank(c1)) {
+            data.add(new ArrayList<>(Arrays.asList(c1, c2, "", "", "", "")));
         }
 
         BaseTable dataTable = new BaseTable(yStart, yStartNewPage, bottomMargin, tableWidth, margin, document, page, true, true);
