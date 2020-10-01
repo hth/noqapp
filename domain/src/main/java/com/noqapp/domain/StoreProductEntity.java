@@ -77,6 +77,9 @@ public class StoreProductEntity extends BaseEntity {
     @Field("PR")
     private String productReference;
 
+    @Field("DC")
+    private boolean displayCaseTurnedOn;
+
     public String getBizStoreId() {
         return bizStoreId;
     }
@@ -200,6 +203,15 @@ public class StoreProductEntity extends BaseEntity {
 
     public StoreProductEntity setProductReference(String productReference) {
         this.productReference = productReference;
+        return this;
+    }
+
+    public boolean isDisplayCaseTurnedOn() {
+        return displayCaseTurnedOn;
+    }
+
+    public StoreProductEntity setDisplayCaseTurnedOn(boolean displayCaseTurnedOn) {
+        this.displayCaseTurnedOn = displayCaseTurnedOn;
         return this;
     }
 
