@@ -110,6 +110,7 @@ public class FileService {
         "Unit",
         "Measurement",
         "Package Size",
+        "Displayed",
         "Key",
         "Reference"
     };
@@ -966,6 +967,7 @@ public class FileService {
                     .setProductInfo(record.get("Info"))
                     .setUnitValue(Integer.parseInt(record.get("Unit")))
                     .setUnitOfMeasurement(unitOfMeasurementEnum)
+                    .setDisplayCaseTurnedOn(Integer.parseInt(record.get("Displayed")) == 1)
                     .setPackageSize(Integer.parseInt(record.get("Package Size")))
                     .setProductType(productTypeEnum)
                     .setProductReference(record.get("Reference"));
@@ -1126,6 +1128,7 @@ public class FileService {
                                 storeProduct.getUnitValue(),
                                 null == storeProduct.getUnitOfMeasurement() ? "" : storeProduct.getUnitOfMeasurement().name(),
                                 storeProduct.getPackageSize(),
+                                storeProduct.isDisplayCaseTurnedOn() ? 1 : 0,
                                 storeProduct.getId(),
                                 storeProduct.getProductReference()
                             );

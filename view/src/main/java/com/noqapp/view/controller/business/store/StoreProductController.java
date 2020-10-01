@@ -287,6 +287,7 @@ public class StoreProductController {
                 .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
                 .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
+                .setDisplayCaseTurnedOn(storeProductForm.isDisplayCaseTurnedOn())
                 .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
                 .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
                 .setInventoryLimit(StringUtils.isBlank(storeProductForm.getInventoryLimit().getText()) ? 0 : new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())
@@ -344,6 +345,7 @@ public class StoreProductController {
             .setProductDiscount(new ScrubbedInput(new BigDecimal(storeProduct.getProductDiscount()).divide(new BigDecimal(100), MathContext.DECIMAL64).toString()))
             .setProductInfo(new ScrubbedInput(storeProduct.getProductInfo()))
             .setProductType(new ScrubbedInput(storeProduct.getProductType().name()))
+            .setDisplayCaseTurnedOn(storeProduct.isDisplayCaseTurnedOn())
             .setUnitOfMeasurement(new ScrubbedInput(storeProduct.getUnitOfMeasurement().name()))
             /*  When not store category is set. Which results in exception in JSP due to NULL. */
             .setStoreCategoryId(StringUtils.isBlank(storeProduct.getStoreCategoryId()) ? new ScrubbedInput("") : new ScrubbedInput(storeProduct.getStoreCategoryId()))
@@ -400,6 +402,7 @@ public class StoreProductController {
                 .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
                 .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
+                .setDisplayCaseTurnedOn(storeProductForm.isDisplayCaseTurnedOn())
                 .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
                 .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
                 .setInventoryLimit(StringUtils.isBlank(storeProductForm.getInventoryLimit().getText()) ? 0 : new BigDecimal(storeProductForm.getInventoryLimit().getText()).intValue())

@@ -31,6 +31,7 @@ public class StoreProductForm {
     private ScrubbedInput inventoryCurrent;
     private ScrubbedInput inventoryLimit;
     private ScrubbedInput productType;
+    private boolean displayCaseTurnedOn;
 
     private Map<String, String> categories;
     private List<StoreProductEntity> storeProducts;
@@ -164,6 +165,15 @@ public class StoreProductForm {
 
     public StoreProductForm setProductType(ScrubbedInput productType) {
         this.productType = productType;
+        return this;
+    }
+
+    public boolean isDisplayCaseTurnedOn() {
+        return displayCaseTurnedOn;
+    }
+
+    public StoreProductForm setDisplayCaseTurnedOn(boolean displayCaseTurnedOn) {
+        this.displayCaseTurnedOn = displayCaseTurnedOn;
         return this;
     }
 

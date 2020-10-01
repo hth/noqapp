@@ -273,6 +273,18 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
+                                                        <form:label path="displayCaseTurnedOn" cssErrorClass="lb_error">Put on Display</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:checkbox path="displayCaseTurnedOn" cssClass="form-check-box" cssErrorClass="form-check-box error-field" cssStyle="float:left; padding:5px 0;"
+                                                                placeholder="Show product on home screen"/>
+                                                    </div>
+                                                    <span class="tooltip" title="Display on store home screen"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
                                                     </div>
                                                     <div class="col-fields">
                                                         Required fields are marked with <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -291,7 +303,6 @@
                                             <div class="clearFix"></div>
                                         </div>
                                     </div>
-
                                 </form:form>
                                 </c:when>
                                 <c:otherwise>
@@ -500,7 +511,19 @@
                                                         <form:input path="productInfo" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Describe the product"/>
                                                     </div>
-                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <span class="tooltip" title="Describe the product"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="displayCaseTurnedOn" cssErrorClass="lb_error">Put on Display</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:checkbox path="displayCaseTurnedOn" cssClass="form-check-box" cssErrorClass="form-check-box error-field" cssStyle="float:left; padding:5px 0;"
+                                                                placeholder="Show product on home screen"/>
+                                                    </div>
+                                                    <span class="tooltip" title="Display on store home screen"><i class="fas fa-info-circle"></i></span>
                                                     <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -577,7 +600,7 @@
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProductForm.categories.get(storeProduct.storeCategoryId)}</span>
                                         </td>
-                                        <td>
+                                        <td style="${storeProduct.displayCaseTurnedOn == true ? "background: lightpink" : ""}">
                                             <span style="display:block; font-size:13px;">${storeProduct.productName}</span>
                                             <span style="display:block; font-size:13px;">Inventory: ${storeProduct.inventoryCurrent} out of ${storeProduct.inventoryLimit}</span>
                                             <span style="font-size:13px;">Description: ${storeProduct.productInfo}</span>
@@ -586,8 +609,10 @@
                                             <span style="display:block; font-size:13px;">${storeProduct.displayPrice}</span>
                                             <span style="display:block; font-size:13px;">Discount: ${storeProduct.displayDiscount}</span>
                                         </td>
-                                        <td nowrap>
+                                        <td style="${storeProduct.displayCaseTurnedOn == true ? "background: lightpink" : ""}" nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.productType.description}</span>
+                                            <br/>
+                                            <span style="display:block; font-size:13px;">${storeProduct.displayCaseTurnedOn == true ? "Is on display" : ""}</span>
                                         </td>
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.unitValue_Formatted}${storeProduct.unitOfMeasurement.name.toLowerCase()}</span>

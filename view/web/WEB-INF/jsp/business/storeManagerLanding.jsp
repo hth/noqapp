@@ -113,6 +113,8 @@
                                                 || BusinessTypeEnum.CF eq store.businessType
                                                 || BusinessTypeEnum.PH eq store.businessType
                                                 || BusinessTypeEnum.HS eq store.businessType
+                                                || BusinessTypeEnum.CD eq store.businessType
+                                                || BusinessTypeEnum.CDQ eq store.businessType
                                                 }">
                                                     <span style="display:block; font-size:13px;">
                                                         <a href="/business/store/product/${store.id}.htm" style="color: #0000FF;">Product List</a>
@@ -128,6 +130,8 @@
                                                             || BusinessTypeEnum.ST eq store.businessType
                                                             || BusinessTypeEnum.GS eq store.businessType
                                                             || BusinessTypeEnum.CF eq store.businessType
+                                                            || BusinessTypeEnum.CD eq store.businessType
+                                                            || BusinessTypeEnum.CDQ eq store.businessType
                                                             }">
                                                                 <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Store Image</a>
                                                             </c:when>
