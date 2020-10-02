@@ -822,6 +822,7 @@ public class FileService {
 
                 try {
                     StoreProductEntity storeProduct = getStoreProductEntityFromCSV(bizStore, record, storeCategoryId);
+                    replacePopulatedDataFromCSV(storeProduct);
                     storeProducts.add(storeProduct);
                 } catch (Exception e) {
                     LOG.warn("Failed parsing lineNumber={} reason={}", record.getRecordNumber(), e.getLocalizedMessage());
@@ -833,6 +834,12 @@ public class FileService {
             LOG.warn("Error reason={}", e.getLocalizedMessage());
             throw new CSVParsingException("Invalid file");
         }
+    }
+
+    /** Add reference to image link. */
+    private void replacePopulatedDataFromCSV(StoreProductEntity storeProduct) {
+        StoreProductEntity storeProductFromDB = storeProductManager.findOne(storeProduct.getId());
+        storeProduct.setProductImage(storeProductFromDB.getProductImage());
     }
 
     /** Read from a CSV file. */
