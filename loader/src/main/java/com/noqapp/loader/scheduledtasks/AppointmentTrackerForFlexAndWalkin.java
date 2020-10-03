@@ -4,6 +4,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.BizStoreManager;
@@ -94,7 +95,7 @@ public class AppointmentTrackerForFlexAndWalkin {
              *
              * Appointment in stores are pushed by up by 15 minutes.
              */
-            Date date = Date.from(Instant.now().plus(15, ChronoUnit.MINUTES));
+            Date date = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES));
 
             /*
              * Only find stores that are active and not deleted. It processes only queues.
@@ -151,6 +152,11 @@ public class AppointmentTrackerForFlexAndWalkin {
 
             scheduleAppointment.setAppointmentStatus(AppointmentStatusEnum.W);
             scheduleAppointmentManager.save(scheduleAppointment);
+        }
+
+        if (scheduleAppointments.size() > 0) {
+            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
+            LOG.info("Walking {} {} for \"{}\" \"{}\"", scheduleAppointments.size(), tokenQueue.getLastNumber(), bizStore.getDisplayName(), bizStore.getBizName().getBusinessName());
         }
     }
 }
