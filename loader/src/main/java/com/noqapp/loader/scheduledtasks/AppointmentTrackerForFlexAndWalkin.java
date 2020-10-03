@@ -93,16 +93,16 @@ public class AppointmentTrackerForFlexAndWalkin {
              * Date is based on UTC time of the System.
              * Hence its important to run on UTC time.
              *
-             * Appointment in stores are pushed by up by 15 minutes.
+             * Appointment in stores are pushed up by 15 minutes.
              */
-            Date date = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES));
+            Date date = Date.from(Instant.now().plus(15, ChronoUnit.MINUTES));
 
             /*
              * Only find stores that are active and not deleted. It processes only queues.
              */
             List<BizStoreEntity> bizStores = bizStoreManager.findAllQueueAcceptingAppointmentForTheDay(date);
             found += bizStores.size();
-            LOG.info("Stores accepting walkins found={} date={}", bizStores.size(), date);
+            LOG.info("Stores accepting walkin found={} date={}", bizStores.size(), date);
             for (BizStoreEntity bizStore : bizStores) {
                 try {
                     bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
@@ -156,7 +156,11 @@ public class AppointmentTrackerForFlexAndWalkin {
 
         if (scheduleAppointments.size() > 0) {
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
-            LOG.info("Walking {} {} for \"{}\" \"{}\"", scheduleAppointments.size(), tokenQueue.getLastNumber(), bizStore.getDisplayName(), bizStore.getBizName().getBusinessName());
+            LOG.info("Walking {} {} for \"{}\" \"{}\"",
+                scheduleAppointments.size(),
+                tokenQueue.getLastNumber(),
+                bizStore.getDisplayName(),
+                bizStore.getBizName().getBusinessName());
         }
     }
 }
