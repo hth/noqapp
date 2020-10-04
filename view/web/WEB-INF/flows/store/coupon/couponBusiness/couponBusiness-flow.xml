@@ -37,7 +37,7 @@
     </action-state>
 
     <view-state id="couponReview" model="couponForm">
-        <transition on="confirm" to="confirm"/>
+        <transition on="confirm" to="confirm" history="invalidate"/>
         <transition on="revise" to="couponStart"/>
         <transition on="cancel" to="home"/>
     </view-state>

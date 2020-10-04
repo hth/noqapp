@@ -17,6 +17,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.CouponService;
 import com.noqapp.service.DiscountService;
 import com.noqapp.view.flow.merchant.exception.CouponAlreadyExistsForClient;
+import com.noqapp.view.flow.merchant.exception.CouponGlobalAlreadyExistsException;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import com.noqapp.view.form.business.CouponForm;
 
@@ -127,11 +128,12 @@ public class CouponFlowActions {
         if (couponService.checkIfCouponExistsForQid(couponForm.getDiscountId(), couponForm.getQid())) {
             LOG.warn("Coupon already exists for {} {}", couponForm.getDiscountId(), couponForm.getQid());
 
+            DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
                     .source("name")
-                    .defaultText("Coupon " + couponForm.getDiscountName() + " already exists for " + userProfile.getPhoneRaw())
+                    .defaultText("Coupon " + discount.getDiscountName() + " already exists for " + userProfile.getPhoneRaw())
                     .build());
 
             throw new CouponAlreadyExistsForClient("Coupon already exists. Previous coupon has to expire before creating new coupon");
@@ -160,29 +162,46 @@ public class CouponFlowActions {
         couponForm.addUserProfile(userProfile);
     }
 
+    /** Global coupon. */
+    @SuppressWarnings("unused")
     public void populateClientCouponForm(CouponForm couponForm, MessageContext messageContext) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
         if (couponService.checkIfCouponExistsForQid(couponForm.getDiscountId(), couponForm.getQid())) {
             LOG.warn("Coupon already exists for {} {}", couponForm.getDiscountId(), couponForm.getQid());
 
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(couponForm.getQid());
             couponForm
                 .setQid(couponForm.getQid())
-                .setName(userProfile.getName())
-                .setAddress(userProfile.getAddress());
+                .setName(userProfile != null ? userProfile.getName() : null)
+                .setAddress(userProfile != null ? userProfile.getAddress() : null);
 
-            messageContext.addMessage(
-                new MessageBuilder()
-                    .error()
-                    .source("qid")
-                    .defaultText("Coupon " + couponForm.getDiscountName() + " already exists for " + userProfile.getName() + " ( Age " + userProfile.getAgeAsString() + ")")
-                    .build());
+            if (null != userProfile) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("qid")
+                        .defaultText("Coupon " + discount.getDiscountName() + " already exists for " + userProfile.getName() + " ( Age " + userProfile.getAgeAsString() + ")")
+                        .build());
 
-            throw new CouponAlreadyExistsForClient("Coupon already exists. Previous coupon has to expire before creating new coupon");
+                throw new CouponAlreadyExistsForClient("Coupon already exists. Previous coupon has to expire before creating new coupon");
+            } else {
+                /**
+                 * This condition will not be reached as {@link DiscountService#findAllActive(String)} method checks if discount
+                 * already exists.
+                 */
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("qid")
+                        .defaultText("Coupon " + discount.getDiscountName() + " already exists")
+                        .build());
+
+                throw new CouponGlobalAlreadyExistsException("Coupon already exists. Previous coupon has to expire before creating new coupon");
+            }
         }
 
-        DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
         couponForm.setBizNamedId(discount.getBizNameId())
             .setCouponCode(RandomString.newInstance(6).nextString())
             .setDiscountName(discount.getDiscountName())

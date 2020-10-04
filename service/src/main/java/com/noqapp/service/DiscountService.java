@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,7 +42,28 @@ public class DiscountService {
     }
 
     public List<DiscountEntity> findAllActive(String bizNameId) {
-        return discountManager.findAllActive(bizNameId);
+        List<DiscountEntity> discounts = discountManager.findAllActive(bizNameId);
+        List<DiscountEntity> remove = new ArrayList<>();
+        for (DiscountEntity discount : discounts) {
+            switch (discount.getCouponType()) {
+                case G:
+                    /* Only for Global Coupon. */
+                    if (couponManager.doesGlobalCouponTypeExists(discount.getId())) {
+                        remove.add(discount);
+                    }
+                    break;
+                case F:
+                case I:
+                    /* Do nothing for F and I as there can be multiple copies of it. */
+                    break;
+                default:
+                    LOG.error("Reached un-reachable condition {}", discount.getCouponType());
+                    throw new UnsupportedOperationException("Reached unsupported condition " + discount.getCouponType());
+            }
+        }
+
+        discounts.removeAll(remove);
+        return discounts;
     }
 
     public void inActive(String discountId) {

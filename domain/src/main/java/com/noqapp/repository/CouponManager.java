@@ -35,4 +35,6 @@ public interface CouponManager extends RepositoryManager<CouponEntity> {
     boolean checkIfCouponExistsForQid(String discountId, String qid);
 
     List<CouponEntity> findAllGlobalCouponForClient(String bizNameId);
+
+    boolean doesGlobalCouponTypeExists(String discountId);
 }

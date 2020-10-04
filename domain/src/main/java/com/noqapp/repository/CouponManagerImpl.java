@@ -192,11 +192,13 @@ public class CouponManagerImpl implements CouponManager {
 
     @Override
     public boolean checkIfCouponExistsForQid(String discountId, String qid) {
-        return mongoTemplate.exists(
-            query(where("DI").is(discountId).and("QID").is(qid).and("A").is(true)),
-            CouponEntity.class,
-            TABLE
-        );
+        Query query;
+        if (null == qid) {
+            query = query(where("DI").is(discountId).and("A").is(true));
+        } else {
+            query = query(where("DI").is(discountId).and("QID").is(qid).and("A").is(true));
+        }
+        return mongoTemplate.exists(query, CouponEntity.class, TABLE);
     }
 
     @Override
@@ -210,6 +212,16 @@ public class CouponManagerImpl implements CouponManager {
                     where("SD").lt(midnight),
                     where("ED").gte(midnight)
                 ).and("A").is(true)),
+            CouponEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public boolean doesGlobalCouponTypeExists(String discountId) {
+        Instant midnight = DateUtil.nowMidnightDate().toInstant();
+        return mongoTemplate.exists(
+            query(where("DI").is(discountId).and("CT").is(CouponTypeEnum.G).and("ED").gte(midnight).and("A").is(true)),
             CouponEntity.class,
             TABLE
         );
