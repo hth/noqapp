@@ -75,6 +75,9 @@
         <transition on-exception="com.noqapp.view.flow.merchant.exception.CouponAlreadyExistsForClient"
                     to="couponIndividualSelection"/>
 
+        <transition on-exception="com.noqapp.view.flow.merchant.exception.CouponGlobalAlreadyExistsException"
+                    to="couponStart"/>
+
         <transition on="submit" to="validateCoupon"/>
         <transition on="cancel" to="home"/>
     </view-state>
@@ -86,7 +89,7 @@
     </action-state>
 
     <view-state id="couponReview" model="couponForm">
-        <transition on="confirm" to="confirm"/>
+        <transition on="confirm" to="confirm" history="invalidate"/>
         <transition on="revise" to="couponStart"/>
         <transition on="cancel" to="home"/>
     </view-state>
