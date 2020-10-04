@@ -18,8 +18,7 @@ import java.util.List;
     "PMD.BeanMembersShouldSerialize",
     "PMD.LocalVariableCouldBeFinal",
     "PMD.MethodArgumentCouldBeFinal",
-    "PMD.LongVariable",
-    "unused"
+    "PMD.LongVariable"
 })
 @JsonAutoDetect(
     fieldVisibility = JsonAutoDetect.Visibility.ANY,
