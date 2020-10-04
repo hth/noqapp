@@ -75,6 +75,9 @@ public class JsonStoreProduct extends AbstractDomain {
     @JsonProperty("pr")
     private String productReference;
 
+    @JsonProperty("bs")
+    private String bizStoreId;
+
     @JsonProperty("a")
     private boolean active;
 
@@ -201,6 +204,15 @@ public class JsonStoreProduct extends AbstractDomain {
 
     public JsonStoreProduct setProductReference(String productReference) {
         this.productReference = productReference;
+        return this;
+    }
+
+    public String getBizStoreId() {
+        return bizStoreId;
+    }
+
+    public JsonStoreProduct setBizStoreId(String bizStoreId) {
+        this.bizStoreId = bizStoreId;
         return this;
     }
 
