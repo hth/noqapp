@@ -74,6 +74,14 @@ public class StoreProductManagerImpl implements StoreProductManager {
     }
 
     @Override
+    public List<StoreProductEntity> findAllDisplayCase(String storeId) {
+        return mongoTemplate.find(
+            query(where("BS").is(storeId).and("DC").is(true)).with(Sort.by(ASC, "PN")),
+            StoreProductEntity.class,
+            TABLE);
+    }
+
+    @Override
     public long countOfProduct(String storeId) {
         return mongoTemplate.count(query(where("BS").is(storeId)), StoreProductEntity.class, TABLE);
     }

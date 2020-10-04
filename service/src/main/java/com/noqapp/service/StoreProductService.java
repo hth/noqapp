@@ -50,6 +50,11 @@ public class StoreProductService {
         return storeProductManager.findAll(storeId);
     }
 
+    @Mobile
+    public List<StoreProductEntity> findAllDisplayCase(String storeId) {
+        return storeProductManager.findAllDisplayCase(storeId);
+    }
+
     public long countOfProduct(String storeId) {
         return storeProductManager.countOfProduct(storeId);
     }

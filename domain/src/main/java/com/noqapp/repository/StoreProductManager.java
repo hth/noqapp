@@ -14,6 +14,8 @@ public interface StoreProductManager extends RepositoryManager<StoreProductEntit
 
     List<StoreProductEntity> findAll(String storeId);
 
+    List<StoreProductEntity> findAllDisplayCase(String storeId);
+
     long countOfProduct(String storeId);
 
     boolean existProductName(String storeId, String productName);
