@@ -1,5 +1,8 @@
 package com.noqapp.loader.scheduledtasks;
 
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
@@ -85,5 +88,8 @@ class AppointmentFlexAndWalkinITest extends ITest {
 
         scheduleAppointmentManager.save(scheduleAppointment);
         appointmentFlexAndWalkin.scheduleToWalkin();
+
+        ScheduleAppointmentEntity updateAppointment = scheduleAppointmentManager.findAppointment(scheduleAppointment.getId(), scheduleAppointment.getQueueUserId(), scheduleAppointment.getCodeQR());
+        assertEquals(updateAppointment.getAppointmentStatus(), AppointmentStatusEnum.W);
     }
 }
