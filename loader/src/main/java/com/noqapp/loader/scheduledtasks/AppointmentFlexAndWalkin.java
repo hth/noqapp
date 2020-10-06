@@ -5,8 +5,10 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
 import com.noqapp.service.BizService;
@@ -38,8 +40,8 @@ import java.util.List;
     "PMD.LongVariable"
 })
 @Component
-public class AppointmentTrackerForFlexAndWalkin {
-    private static final Logger LOG = LoggerFactory.getLogger(AppointmentTrackerForFlexAndWalkin.class);
+public class AppointmentFlexAndWalkin {
+    private static final Logger LOG = LoggerFactory.getLogger(AppointmentFlexAndWalkin.class);
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
     private BizStoreManager bizStoreManager;
@@ -47,14 +49,14 @@ public class AppointmentTrackerForFlexAndWalkin {
     private DeviceService deviceService;
     private BizService bizService;
     private StatsCronService statsCronService;
-    private ArchiveAndReset archiveAndReset;
+    private ComputeNextRunService computeNextRunService;
 
     private String moveScheduledAppointmentToWalkin;
     private StatsCronEntity statsCron;
 
     @Autowired
-    public AppointmentTrackerForFlexAndWalkin(
-        @Value("${AppointmentTrackerForFlexAndWalkin.moveScheduledAppointmentToWalkin}")
+    public AppointmentFlexAndWalkin(
+        @Value("${AppointmentFlexAndWalkin.moveScheduledAppointmentToWalkin}")
         String moveScheduledAppointmentToWalkin,
 
         ScheduleAppointmentManager scheduleAppointmentManager,
@@ -63,7 +65,7 @@ public class AppointmentTrackerForFlexAndWalkin {
         DeviceService deviceService,
         BizService bizService,
         StatsCronService statsCronService,
-        ArchiveAndReset archiveAndReset
+        ComputeNextRunService computeNextRunService
     ) {
         this.moveScheduledAppointmentToWalkin = moveScheduledAppointmentToWalkin;
 
@@ -73,13 +75,13 @@ public class AppointmentTrackerForFlexAndWalkin {
         this.deviceService = deviceService;
         this.bizService = bizService;
         this.statsCronService = statsCronService;
-        this.archiveAndReset = archiveAndReset;
+        this.computeNextRunService = computeNextRunService;
     }
 
-    @Scheduled(fixedDelayString = "${loader.AppointmentTrackerForFlexAndWalkin.scheduleToWalkin}")
+    @Scheduled(fixedDelayString = "${loader.AppointmentFlexAndWalkin.scheduleToWalkin}")
     public void scheduleToWalkin() {
         statsCron = new StatsCronEntity(
-            AppointmentTrackerForFlexAndWalkin.class.getName(),
+            AppointmentFlexAndWalkin.class.getName(),
             "scheduleToWalkin",
             moveScheduledAppointmentToWalkin);
 
@@ -93,9 +95,9 @@ public class AppointmentTrackerForFlexAndWalkin {
              * Date is based on UTC time of the System.
              * Hence its important to run on UTC time.
              *
-             * Appointment in stores are pushed up by 15 minutes.
+             * Appointment in stores are pushed up by 30 minutes.
              */
-            Date date = Date.from(Instant.now().plus(15, ChronoUnit.MINUTES));
+            Date date = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES));
 
             /*
              * Only find stores that are active and not deleted. It processes only queues.
@@ -109,7 +111,7 @@ public class AppointmentTrackerForFlexAndWalkin {
                     moveFromAppointmentToWalkin(bizStore);
                     success++;
 
-                    bizStoreManager.updateNextRunQueueAppointment(bizStore.getId(), Date.from(archiveAndReset.setupTokenAvailableForTomorrow(bizStore).toInstant()));
+                    bizStoreManager.updateNextRunQueueAppointment(bizStore.getId(), Date.from(computeNextRunService.setupTokenAvailableForTomorrow(bizStore).toInstant()));
                 } catch (Exception e) {
                     failure++;
                     LOG.error("Insert fail on joining queue bizStore={} codeQR={} reason={}",
@@ -141,25 +143,38 @@ public class AppointmentTrackerForFlexAndWalkin {
             DateUtil.dateToString(now));
 
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-            tokenQueueService.getNextToken(
+            JsonToken jsonToken = tokenQueueService.getNextToken(
                 bizStore.getCodeQR(),
                 deviceService.findRegisteredDeviceByQid(scheduleAppointment.getQueueUserId()).getDeviceId(),
                 scheduleAppointment.getQueueUserId(),
                 scheduleAppointment.getGuardianQid(),
                 bizStore.getAverageServiceTime(),
-                TokenServiceEnum.M);
+                TokenServiceEnum.S);
 
-            scheduleAppointment.setAppointmentStatus(AppointmentStatusEnum.W);
-            scheduleAppointmentManager.save(scheduleAppointment);
+            /* Do not change the state if token is not issued. Will help in rerun of the appointment. */
+            if (0 != jsonToken.getToken()) {
+                scheduleAppointment.setAppointmentStatus(AppointmentStatusEnum.W);
+                scheduleAppointmentManager.save(scheduleAppointment);
+            } else {
+                LOG.error("Token not received for {} {} {}", bizStore.getCodeQR(), bizStore.getDisplayName(), bizStore.getBizName().getBusinessName());
+            }
         }
 
         if (scheduleAppointments.size() > 0) {
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
-            LOG.info("Walkin {} {} for \"{}\" \"{}\"",
-                scheduleAppointments.size(),
-                tokenQueue.getLastNumber(),
-                bizStore.getDisplayName(),
-                bizStore.getBizName().getBusinessName());
+            if (scheduleAppointments.size() != tokenQueue.getLastNumber()) {
+                LOG.error("Walkin {} {} for \"{}\" \"{}\"",
+                    scheduleAppointments.size(),
+                    tokenQueue.getLastNumber(),
+                    bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName());
+            } else {
+                LOG.info("Walkin {} {} for \"{}\" \"{}\"",
+                    scheduleAppointments.size(),
+                    tokenQueue.getLastNumber(),
+                    bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName());
+            }
         }
     }
 }

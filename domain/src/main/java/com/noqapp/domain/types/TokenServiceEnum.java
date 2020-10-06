@@ -9,7 +9,8 @@ package com.noqapp.domain.types;
 public enum TokenServiceEnum {
     C("C", "Client"),
     M("M", "Merchant"),
-    W("W", "Web");
+    W("W", "Web"),
+    S("S", "System");
 
     private final String name;
     private final String description;

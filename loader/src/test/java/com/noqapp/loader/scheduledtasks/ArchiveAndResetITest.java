@@ -35,7 +35,7 @@ public class ArchiveAndResetITest extends ITest {
             queueManagerJDBC,
             statsCronService,
             bizService,
-            scheduledTaskManager,
+            computeNextRunService,
             purchaseOrderManager,
             purchaseOrderProductManager,
             purchaseOrderManagerJDBC,
@@ -45,7 +45,7 @@ public class ArchiveAndResetITest extends ITest {
     }
 
     @Test
-    void doArchiveAndReset_Success() throws InterruptedException {
+    void doArchiveAndReset_Success() {
         BizNameEntity bizName = bizService.findByPhone("9118000000041");
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizName.getId());
         for (BizStoreEntity bizStore : bizStores) {

@@ -1,7 +1,5 @@
 package com.noqapp.loader.scheduledtasks;
 
-import static com.noqapp.common.utils.DateUtil.DAY.TOMORROW;
-
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
@@ -9,13 +7,13 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.QueueEntity;
-import com.noqapp.domain.ScheduledTaskEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
@@ -23,15 +21,12 @@ import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
-import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.utils.RandomBannerImage;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +42,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.Instant;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -82,7 +76,7 @@ public class ArchiveAndReset {
     private QueueManagerJDBC queueManagerJDBC;
     private StatsCronService statsCronService;
     private BizService bizService;
-    private ScheduledTaskManager scheduledTaskManager;
+    private ComputeNextRunService computeNextRunService;
     private PurchaseOrderManager purchaseOrderManager;
     private PurchaseOrderProductManager purchaseOrderProductManager;
     private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
@@ -106,7 +100,7 @@ public class ArchiveAndReset {
         QueueManagerJDBC queueManagerJDBC,
         StatsCronService statsCronService,
         BizService bizService,
-        ScheduledTaskManager scheduledTaskManager,
+        ComputeNextRunService computeNextRunService,
         PurchaseOrderManager purchaseOrderManager,
         PurchaseOrderProductManager purchaseOrderProductManager,
         PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
@@ -123,7 +117,7 @@ public class ArchiveAndReset {
         this.queueManagerJDBC = queueManagerJDBC;
         this.statsCronService = statsCronService;
         this.bizService = bizService;
-        this.scheduledTaskManager = scheduledTaskManager;
+        this.computeNextRunService = computeNextRunService;
         this.purchaseOrderManager = purchaseOrderManager;
         this.purchaseOrderProductManager = purchaseOrderProductManager;
         this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
@@ -373,7 +367,7 @@ public class ArchiveAndReset {
 
         StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
         /* In queue history, we set things for tomorrow. */
-        ZonedDateTime archiveNextRun = setupStoreForTomorrow(bizStore);
+        ZonedDateTime archiveNextRun = computeNextRunService.setupStoreForTomorrow(bizStore);
         long averageServiceTime = bizService.computeAverageServiceTime(archiveNextRun.getDayOfWeek(), bizStore.getAvailableTokenCount(), bizStore.getId());
         LOG.info("AverageServiceTime in codeQR={} {} {} existing={} new={}",
             bizStore.getCodeQR(),
@@ -388,7 +382,7 @@ public class ArchiveAndReset {
                 bizStore.getTimeZone(),
                 /* Converting to date remove everything to do with UTC, hence important to run server on UTC time. */
                 Date.from(archiveNextRun.toInstant()),
-                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore).toInstant()) : null,
+                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(computeNextRunService.setupTokenAvailableForTomorrow(bizStore).toInstant()) : null,
                 (float) bizStoreRating.getTotalRating() / bizStoreRating.getTotalCustomerRated(),
                 bizStoreRating.getTotalCustomerRated(),
                 statsBizStoreDaily.getAverageServiceTime(),
@@ -398,7 +392,7 @@ public class ArchiveAndReset {
                 bizStore.getId(),
                 bizStore.getTimeZone(),
                 Date.from(archiveNextRun.toInstant()),
-                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(setupTokenAvailableForTomorrow(bizStore).toInstant()) : null,
+                bizStore.getAppointmentState() != AppointmentStateEnum.O ? Date.from(computeNextRunService.setupTokenAvailableForTomorrow(bizStore).toInstant()) : null,
                 averageServiceTime);
         }
 
@@ -424,67 +418,6 @@ public class ArchiveAndReset {
         StoreHourEntity today = bizStore.getStoreHours().get(dayOfWeek.getValue() - 1);
         LOG.info("Reset Store dayOfWeek={} name={} id={}", DayOfWeek.of(today.getDayOfWeek()), bizStore.getDisplayName(), bizStore.getId());
         bizService.resetTemporarySettingsOnStoreHour(today.getId());
-    }
-
-    private ZonedDateTime setupStoreForTomorrow(BizStoreEntity bizStore) {
-        StoreHourEntity tomorrow = populateStoreHour(bizStore);
-
-        TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
-        /* When closed set hour to 23 and minute to 59. */
-        int hourOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeClosingHourOfDay();
-        int minuteOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeClosingMinuteOfDay();
-        LOG.info("Tomorrow Closing dayOfWeek={} Hour={} Minutes={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay, tomorrow.getId());
-        return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TOMORROW);
-    }
-
-    /**
-     * This method is run from two places as archiveAndReset starts the process of scheduling and MoveScheduledAppointmentToWalkin
-     * takes over for next run. Archive reset might over write the same at every run but duplicate update is acceptable for now.
-     * To make it single run, a date needs to be set when Walkin Appointment feature is turned ON. //TODO fix this when there is time
-     */
-    ZonedDateTime setupTokenAvailableForTomorrow(BizStoreEntity bizStore) {
-        StoreHourEntity tomorrow = populateStoreHour(bizStore);
-
-        TimeZone timeZone = TimeZone.getTimeZone(bizStore.getTimeZone());
-        /* When closed set hour to 23 and minute to 59. */
-        int hourOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 23 : tomorrow.storeTokenAvailableFromHourOfDay();
-        int minuteOfDay = tomorrow.isDayClosed() || tomorrow.isTempDayClosed() ? 59 : tomorrow.storeTokenAvailableFromMinuteOfDay();
-        LOG.info("Tomorrow token available from dayOfWeek={} Hour={} Minutes={} id={}", DayOfWeek.of(tomorrow.getDayOfWeek()), hourOfDay, minuteOfDay, tomorrow.getId());
-        return DateUtil.computeNextRunTimeAtUTC(timeZone, hourOfDay, minuteOfDay, TOMORROW);
-    }
-
-    private StoreHourEntity populateStoreHour(BizStoreEntity bizStore) {
-        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
-        StoreHourEntity tomorrow = bizStore.getStoreHours().get(CommonUtil.getNextDayOfWeek(dayOfWeek).getValue() - 1);
-        if (StringUtils.isNotBlank(bizStore.getScheduledTaskId())) {
-            populateForScheduledTask(bizStore, tomorrow);
-        }
-        return tomorrow;
-    }
-
-    private void populateForScheduledTask(BizStoreEntity bizStore, StoreHourEntity storeHour) {
-        ScheduledTaskEntity scheduledTask = scheduledTaskManager.findOneById(bizStore.getScheduledTaskId());
-        Date from = DateUtil.convertToDate(scheduledTask.getFrom(), bizStore.getTimeZone());
-        Date until = DateUtil.convertToDate(scheduledTask.getUntil(), bizStore.getTimeZone());
-        if (DateUtil.isThisDayBetween(from, until, TOMORROW, ZoneId.of(bizStore.getTimeZone()))) {
-            switch (scheduledTask.getScheduleTask()) {
-                case CLOSE:
-                    storeHour.setTempDayClosed(true);
-                    break;
-                default:
-                    throw new UnsupportedOperationException("Reached Unsupported Condition");
-            }
-
-            bizService.modifyOne(storeHour);
-        } else {
-            Date today = DateUtil.dateAtTimeZone(bizStore.getTimeZone());
-            if (today.after(until)) {
-                /* Remove schedule only when today is after set until schedule. */
-                LOG.info("Removing schedule displayName={} today={} until={}", bizStore.getDisplayName(), today, until);
-                bizService.unsetScheduledTask(bizStore.getId(), bizStore.getCodeQR());
-                scheduledTaskManager.inActive(bizStore.getScheduledTaskId());
-            }
-        }
     }
 
     /** Saves daily stats for BizStore Queues. */

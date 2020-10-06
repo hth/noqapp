@@ -13,6 +13,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.UserLevelEnum;
@@ -20,6 +21,7 @@ import com.noqapp.domain.types.catgeory.CanteenStoreDepartmentEnum;
 import com.noqapp.health.repository.ApiHealthNowManager;
 import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.medical.repository.MasterLabManagerImpl;
 import com.noqapp.medical.repository.MedicalPathologyManager;
@@ -79,6 +81,8 @@ import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.RegisteredDeviceManagerImpl;
 import com.noqapp.repository.S3FileManager;
 import com.noqapp.repository.S3FileManagerImpl;
+import com.noqapp.repository.ScheduleAppointmentManager;
+import com.noqapp.repository.ScheduleAppointmentManagerImpl;
 import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.StatsBizStoreDailyManagerImpl;
@@ -107,6 +111,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.CouponService;
 import com.noqapp.service.CustomTextToSpeechService;
+import com.noqapp.service.DeviceService;
 import com.noqapp.service.EmailValidateService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FirebaseMessageService;
@@ -138,12 +143,19 @@ import java.time.DayOfWeek;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * hitender
  * 11/18/18 1:55 PM
  */
 public class ITest extends RealMongoForITest {
+
+    protected String fcmToken;
+    protected String model;
+    protected String osVersion;
+    protected String appVersion;
+    protected String deviceType;
 
     protected AccountService accountService;
     protected InviteService inviteService;
@@ -171,6 +183,8 @@ public class ITest extends RealMongoForITest {
     protected ProfessionalProfileService professionalProfileService;
     protected TextToSpeechService textToSpeechService;
     protected CustomTextToSpeechService customTextToSpeechService;
+    protected ComputeNextRunService computeNextRunService;
+    protected DeviceService deviceService;
 
     protected TokenQueueManager tokenQueueManager;
     protected QueueManager queueManager;
@@ -208,6 +222,7 @@ public class ITest extends RealMongoForITest {
     protected AdvertisementManager advertisementManager;
     protected CouponManager couponManager;
     protected CustomTextToSpeechManager customTextToSpeechManager;
+    protected ScheduleAppointmentManager scheduleAppointmentManager;
 
     protected S3FileManager s3FileManager;
     protected StoreProductManager storeProductManager;
@@ -228,6 +243,12 @@ public class ITest extends RealMongoForITest {
 
         mockEnvironment = new MockEnvironment();
         mockEnvironment.setProperty("build.env", "sandbox");
+
+        fcmToken = UUID.randomUUID().toString();
+        deviceType = DeviceTypeEnum.A.getName();
+        model = "Model";
+        osVersion = "OS-Version";
+        appVersion = "1.2.700";
 
         userAccountManager = new UserAccountManagerImpl(getMongoTemplate());
         userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
@@ -264,6 +285,7 @@ public class ITest extends RealMongoForITest {
         statsCronManager = new StatsCronManagerImpl(getMongoTemplate());
         couponManager = new CouponManagerImpl(getMongoTemplate());
         customTextToSpeechManager = new CustomTextToSpeechManagerImpl(getMongoTemplate());
+        scheduleAppointmentManager = new ScheduleAppointmentManagerImpl(getMongoTemplate());
         businessCustomerPriorityManager = new BusinessCustomerPriorityManagerImpl(getMongoTemplate());
 
         userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
@@ -399,6 +421,8 @@ public class ITest extends RealMongoForITest {
         );
 
         statsCronService = new StatsCronService(statsCronManager);
+        computeNextRunService = new ComputeNextRunService(scheduledTaskManager, bizService);
+        deviceService = new DeviceService(registeredDeviceManager, userProfileManager);
 
         registerUser();
         createBusinessCSD("9118000001100");
