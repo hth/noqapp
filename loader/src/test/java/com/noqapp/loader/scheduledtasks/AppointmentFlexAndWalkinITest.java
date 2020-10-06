@@ -64,10 +64,26 @@ class AppointmentFlexAndWalkinITest extends ITest {
         }
 
         BizStoreEntity bizStore = bizService.findOneBizStore(bizName.getId());
-        UserProfileEntity userProfile = userProfileManager.findOneByPhone("9118000000001");
+        UserProfileEntity userProfile1 = userProfileManager.findOneByPhone("9118000000001");
+        ScheduleAppointmentEntity scheduleAppointment1 = scheduleAppointment(bizStore, userProfile1);
+
+        UserProfileEntity userProfile2 = userProfileManager.findOneByPhone("9118000000002");
+        ScheduleAppointmentEntity scheduleAppointment2 = scheduleAppointment(bizStore, userProfile2);
+        scheduleAppointmentManager.cancelAppointment(scheduleAppointment2.getId(), scheduleAppointment2.getQueueUserId(), scheduleAppointment2.getCodeQR());
+        
+        appointmentFlexAndWalkin.scheduleToWalkin();
+
+        ScheduleAppointmentEntity updateAppointment1 = scheduleAppointmentManager.findAppointment(scheduleAppointment1.getId(), scheduleAppointment1.getQueueUserId(), scheduleAppointment1.getCodeQR());
+        assertEquals(updateAppointment1.getAppointmentStatus(), AppointmentStatusEnum.W);
+
+        ScheduleAppointmentEntity updateAppointment2 = scheduleAppointmentManager.findAppointment(scheduleAppointment2.getId(), scheduleAppointment2.getQueueUserId(), scheduleAppointment2.getCodeQR());
+        assertEquals(updateAppointment2.getAppointmentStatus(), AppointmentStatusEnum.C);
+    }
+
+    private ScheduleAppointmentEntity scheduleAppointment(BizStoreEntity bizStore, UserProfileEntity userProfile1) {
         registeredDeviceManager.save(
             RegisteredDeviceEntity.newInstance(
-                userProfile.getQueueUserId(),
+                userProfile1.getQueueUserId(),
                 UUID.randomUUID().toString(),
                 DeviceTypeEnum.A,
                 AppFlavorEnum.NQCL,
@@ -81,15 +97,12 @@ class AppointmentFlexAndWalkinITest extends ITest {
             .setScheduleDate(DateUtil.dateToString(new Date()))
             .setStartTime(100)
             .setEndTime(200)
-            .setQueueUserId(userProfile.getQueueUserId())
+            .setQueueUserId(userProfile1.getQueueUserId())
             .setGuardianQid(null)
             .setAppointmentStatus(AppointmentStatusEnum.A)
             .setChiefComplain(null);
 
         scheduleAppointmentManager.save(scheduleAppointment);
-        appointmentFlexAndWalkin.scheduleToWalkin();
-
-        ScheduleAppointmentEntity updateAppointment = scheduleAppointmentManager.findAppointment(scheduleAppointment.getId(), scheduleAppointment.getQueueUserId(), scheduleAppointment.getCodeQR());
-        assertEquals(updateAppointment.getAppointmentStatus(), AppointmentStatusEnum.W);
+        return scheduleAppointment;
     }
 }
