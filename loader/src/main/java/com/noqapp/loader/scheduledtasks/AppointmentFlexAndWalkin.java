@@ -8,6 +8,7 @@ import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
+import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
 import com.noqapp.service.BizService;
@@ -39,8 +40,8 @@ import java.util.List;
     "PMD.LongVariable"
 })
 @Component
-public class AppointmentTrackerForFlexAndWalkin {
-    private static final Logger LOG = LoggerFactory.getLogger(AppointmentTrackerForFlexAndWalkin.class);
+public class AppointmentFlexAndWalkin {
+    private static final Logger LOG = LoggerFactory.getLogger(AppointmentFlexAndWalkin.class);
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
     private BizStoreManager bizStoreManager;
@@ -48,14 +49,14 @@ public class AppointmentTrackerForFlexAndWalkin {
     private DeviceService deviceService;
     private BizService bizService;
     private StatsCronService statsCronService;
-    private ArchiveAndReset archiveAndReset;
+    private ComputeNextRunService computeNextRunService;
 
     private String moveScheduledAppointmentToWalkin;
     private StatsCronEntity statsCron;
 
     @Autowired
-    public AppointmentTrackerForFlexAndWalkin(
-        @Value("${AppointmentTrackerForFlexAndWalkin.moveScheduledAppointmentToWalkin}")
+    public AppointmentFlexAndWalkin(
+        @Value("${AppointmentFlexAndWalkin.moveScheduledAppointmentToWalkin}")
         String moveScheduledAppointmentToWalkin,
 
         ScheduleAppointmentManager scheduleAppointmentManager,
@@ -64,7 +65,7 @@ public class AppointmentTrackerForFlexAndWalkin {
         DeviceService deviceService,
         BizService bizService,
         StatsCronService statsCronService,
-        ArchiveAndReset archiveAndReset
+        ComputeNextRunService computeNextRunService
     ) {
         this.moveScheduledAppointmentToWalkin = moveScheduledAppointmentToWalkin;
 
@@ -74,13 +75,13 @@ public class AppointmentTrackerForFlexAndWalkin {
         this.deviceService = deviceService;
         this.bizService = bizService;
         this.statsCronService = statsCronService;
-        this.archiveAndReset = archiveAndReset;
+        this.computeNextRunService = computeNextRunService;
     }
 
-    @Scheduled(fixedDelayString = "${loader.AppointmentTrackerForFlexAndWalkin.scheduleToWalkin}")
+    @Scheduled(fixedDelayString = "${loader.AppointmentFlexAndWalkin.scheduleToWalkin}")
     public void scheduleToWalkin() {
         statsCron = new StatsCronEntity(
-            AppointmentTrackerForFlexAndWalkin.class.getName(),
+            AppointmentFlexAndWalkin.class.getName(),
             "scheduleToWalkin",
             moveScheduledAppointmentToWalkin);
 
@@ -110,7 +111,7 @@ public class AppointmentTrackerForFlexAndWalkin {
                     moveFromAppointmentToWalkin(bizStore);
                     success++;
 
-                    bizStoreManager.updateNextRunQueueAppointment(bizStore.getId(), Date.from(archiveAndReset.setupTokenAvailableForTomorrow(bizStore).toInstant()));
+                    bizStoreManager.updateNextRunQueueAppointment(bizStore.getId(), Date.from(computeNextRunService.setupTokenAvailableForTomorrow(bizStore).toInstant()));
                 } catch (Exception e) {
                     failure++;
                     LOG.error("Insert fail on joining queue bizStore={} codeQR={} reason={}",

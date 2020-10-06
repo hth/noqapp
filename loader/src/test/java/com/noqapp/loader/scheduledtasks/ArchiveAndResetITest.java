@@ -35,7 +35,7 @@ public class ArchiveAndResetITest extends ITest {
             queueManagerJDBC,
             statsCronService,
             bizService,
-            scheduledTaskManager,
+            computeNextRunService,
             purchaseOrderManager,
             purchaseOrderProductManager,
             purchaseOrderManagerJDBC,

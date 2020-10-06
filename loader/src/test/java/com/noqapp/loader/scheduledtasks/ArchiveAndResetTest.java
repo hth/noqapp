@@ -11,6 +11,7 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
@@ -18,7 +19,6 @@ import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
-import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
@@ -55,7 +55,7 @@ class ArchiveAndResetTest {
     @Mock private QueueManagerJDBC queueManagerJDBC;
     @Mock private StatsCronService statsCronService;
     @Mock private BizService bizService;
-    @Mock private ScheduledTaskManager scheduledTaskManager;
+    @Mock private ComputeNextRunService computeNextRunService;
     @Mock private PurchaseOrderManager purchaseOrderManager;
     @Mock private PurchaseOrderProductManager purchaseOrderProductManager;
     @Mock private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
@@ -82,7 +82,7 @@ class ArchiveAndResetTest {
             queueManagerJDBC,
             statsCronService,
             bizService,
-            scheduledTaskManager,
+            computeNextRunService,
             purchaseOrderManager,
             purchaseOrderProductManager,
             purchaseOrderManagerJDBC,

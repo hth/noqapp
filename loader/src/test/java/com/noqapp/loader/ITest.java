@@ -20,6 +20,7 @@ import com.noqapp.domain.types.catgeory.CanteenStoreDepartmentEnum;
 import com.noqapp.health.repository.ApiHealthNowManager;
 import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.medical.repository.MasterLabManagerImpl;
 import com.noqapp.medical.repository.MedicalPathologyManager;
@@ -79,6 +80,8 @@ import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.RegisteredDeviceManagerImpl;
 import com.noqapp.repository.S3FileManager;
 import com.noqapp.repository.S3FileManagerImpl;
+import com.noqapp.repository.ScheduleAppointmentManager;
+import com.noqapp.repository.ScheduleAppointmentManagerImpl;
 import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.StatsBizStoreDailyManagerImpl;
@@ -107,6 +110,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.CouponService;
 import com.noqapp.service.CustomTextToSpeechService;
+import com.noqapp.service.DeviceService;
 import com.noqapp.service.EmailValidateService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FirebaseMessageService;
@@ -171,6 +175,8 @@ public class ITest extends RealMongoForITest {
     protected ProfessionalProfileService professionalProfileService;
     protected TextToSpeechService textToSpeechService;
     protected CustomTextToSpeechService customTextToSpeechService;
+    protected ComputeNextRunService computeNextRunService;
+    protected DeviceService deviceService;
 
     protected TokenQueueManager tokenQueueManager;
     protected QueueManager queueManager;
@@ -208,6 +214,7 @@ public class ITest extends RealMongoForITest {
     protected AdvertisementManager advertisementManager;
     protected CouponManager couponManager;
     protected CustomTextToSpeechManager customTextToSpeechManager;
+    protected ScheduleAppointmentManager scheduleAppointmentManager;
 
     protected S3FileManager s3FileManager;
     protected StoreProductManager storeProductManager;
@@ -264,6 +271,7 @@ public class ITest extends RealMongoForITest {
         statsCronManager = new StatsCronManagerImpl(getMongoTemplate());
         couponManager = new CouponManagerImpl(getMongoTemplate());
         customTextToSpeechManager = new CustomTextToSpeechManagerImpl(getMongoTemplate());
+        scheduleAppointmentManager = new ScheduleAppointmentManagerImpl(getMongoTemplate());
         businessCustomerPriorityManager = new BusinessCustomerPriorityManagerImpl(getMongoTemplate());
 
         userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
@@ -399,6 +407,8 @@ public class ITest extends RealMongoForITest {
         );
 
         statsCronService = new StatsCronService(statsCronManager);
+        computeNextRunService = new ComputeNextRunService(scheduledTaskManager, bizService);
+        deviceService = new DeviceService(registeredDeviceManager, userProfileManager);
 
         registerUser();
         createBusinessCSD("9118000001100");
