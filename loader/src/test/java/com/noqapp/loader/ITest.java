@@ -13,6 +13,7 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.UserLevelEnum;
@@ -142,12 +143,19 @@ import java.time.DayOfWeek;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * hitender
  * 11/18/18 1:55 PM
  */
 public class ITest extends RealMongoForITest {
+
+    protected String fcmToken;
+    protected String model;
+    protected String osVersion;
+    protected String appVersion;
+    protected String deviceType;
 
     protected AccountService accountService;
     protected InviteService inviteService;
@@ -235,6 +243,12 @@ public class ITest extends RealMongoForITest {
 
         mockEnvironment = new MockEnvironment();
         mockEnvironment.setProperty("build.env", "sandbox");
+
+        fcmToken = UUID.randomUUID().toString();
+        deviceType = DeviceTypeEnum.A.getName();
+        model = "Model";
+        osVersion = "OS-Version";
+        appVersion = "1.2.700";
 
         userAccountManager = new UserAccountManagerImpl(getMongoTemplate());
         userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
