@@ -85,7 +85,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
         LOG.info("ScheduleDate={} codeQR={}", scheduleDate, codeQR);
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("SD").is(scheduleDate)
-                .orOperator(
+                .andOperator(
                     where("AS").in(AppointmentStatusEnum.A, AppointmentStatusEnum.U),
                     where("AS").ne(AppointmentStatusEnum.W)
                 )
