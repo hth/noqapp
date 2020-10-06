@@ -147,8 +147,7 @@ public class AppointmentTrackerForFlexAndWalkin {
                 scheduleAppointment.getQueueUserId(),
                 scheduleAppointment.getGuardianQid(),
                 bizStore.getAverageServiceTime(),
-                TokenServiceEnum.C
-            );
+                TokenServiceEnum.M);
 
             scheduleAppointment.setAppointmentStatus(AppointmentStatusEnum.W);
             scheduleAppointmentManager.save(scheduleAppointment);
@@ -156,7 +155,7 @@ public class AppointmentTrackerForFlexAndWalkin {
 
         if (scheduleAppointments.size() > 0) {
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
-            LOG.info("Walking {} {} for \"{}\" \"{}\"",
+            LOG.info("Walkin {} {} for \"{}\" \"{}\"",
                 scheduleAppointments.size(),
                 tokenQueue.getLastNumber(),
                 bizStore.getDisplayName(),
