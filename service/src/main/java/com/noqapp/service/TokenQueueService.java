@@ -227,11 +227,11 @@ public class TokenQueueService {
                     return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.B, bizStore);
                 } else if (requesterTime > storeHour.getEndHour()) {
                     /* When not added by merchant. */
-                    if (tokenService != TokenServiceEnum.M) {
+                    if (tokenService != TokenServiceEnum.M && tokenService != TokenServiceEnum.S) {
                         LOG.error("Requester token after hours qid={} tokenFrom={} requesterTime={} codeQR={}", qid, tokenFrom, requesterTime, codeQR);
                         return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.A, bizStore);
                     } else {
-                        LOG.error("Business added token after store hours {} {}", qid, codeQR);
+                        LOG.error("{} added token after store hours {} {}", tokenService, qid, codeQR);
                     }
                 }
 

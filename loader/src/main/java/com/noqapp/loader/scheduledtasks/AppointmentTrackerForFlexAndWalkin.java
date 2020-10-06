@@ -5,6 +5,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.BizStoreManager;
@@ -93,9 +94,9 @@ public class AppointmentTrackerForFlexAndWalkin {
              * Date is based on UTC time of the System.
              * Hence its important to run on UTC time.
              *
-             * Appointment in stores are pushed up by 15 minutes.
+             * Appointment in stores are pushed up by 30 minutes.
              */
-            Date date = Date.from(Instant.now().plus(15, ChronoUnit.MINUTES));
+            Date date = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES));
 
             /*
              * Only find stores that are active and not deleted. It processes only queues.
@@ -141,25 +142,38 @@ public class AppointmentTrackerForFlexAndWalkin {
             DateUtil.dateToString(now));
 
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-            tokenQueueService.getNextToken(
+            JsonToken jsonToken = tokenQueueService.getNextToken(
                 bizStore.getCodeQR(),
                 deviceService.findRegisteredDeviceByQid(scheduleAppointment.getQueueUserId()).getDeviceId(),
                 scheduleAppointment.getQueueUserId(),
                 scheduleAppointment.getGuardianQid(),
                 bizStore.getAverageServiceTime(),
-                TokenServiceEnum.M);
+                TokenServiceEnum.S);
 
-            scheduleAppointment.setAppointmentStatus(AppointmentStatusEnum.W);
-            scheduleAppointmentManager.save(scheduleAppointment);
+            /* Do not change the state if token is not issued. Will help in rerun of the appointment. */
+            if (0 != jsonToken.getToken()) {
+                scheduleAppointment.setAppointmentStatus(AppointmentStatusEnum.W);
+                scheduleAppointmentManager.save(scheduleAppointment);
+            } else {
+                LOG.error("Token not received for {} {} {}", bizStore.getCodeQR(), bizStore.getDisplayName(), bizStore.getBizName().getBusinessName());
+            }
         }
 
         if (scheduleAppointments.size() > 0) {
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
-            LOG.info("Walkin {} {} for \"{}\" \"{}\"",
-                scheduleAppointments.size(),
-                tokenQueue.getLastNumber(),
-                bizStore.getDisplayName(),
-                bizStore.getBizName().getBusinessName());
+            if (scheduleAppointments.size() != tokenQueue.getLastNumber()) {
+                LOG.error("Walkin {} {} for \"{}\" \"{}\"",
+                    scheduleAppointments.size(),
+                    tokenQueue.getLastNumber(),
+                    bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName());
+            } else {
+                LOG.info("Walkin {} {} for \"{}\" \"{}\"",
+                    scheduleAppointments.size(),
+                    tokenQueue.getLastNumber(),
+                    bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName());
+            }
         }
     }
 }
