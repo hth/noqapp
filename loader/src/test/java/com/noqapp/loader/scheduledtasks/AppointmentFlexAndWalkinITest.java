@@ -70,7 +70,7 @@ class AppointmentFlexAndWalkinITest extends ITest {
         UserProfileEntity userProfile2 = userProfileManager.findOneByPhone("9118000000002");
         ScheduleAppointmentEntity scheduleAppointment2 = scheduleAppointment(bizStore, userProfile2);
         scheduleAppointmentManager.cancelAppointment(scheduleAppointment2.getId(), scheduleAppointment2.getQueueUserId(), scheduleAppointment2.getCodeQR());
-        
+
         appointmentFlexAndWalkin.scheduleToWalkin();
 
         ScheduleAppointmentEntity updateAppointment1 = scheduleAppointmentManager.findAppointment(scheduleAppointment1.getId(), scheduleAppointment1.getQueueUserId(), scheduleAppointment1.getCodeQR());
