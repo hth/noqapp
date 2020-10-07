@@ -220,14 +220,14 @@ public class TokenQueueService {
 
                 int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
                 int tokenFrom = storeHour.getTokenAvailableFrom();
-                if (requesterTime < tokenFrom) {
+                if (requesterTime < tokenFrom && tokenService != TokenServiceEnum.S) { //Ignore condition for walkin appointments
                     //Might need to add condition || requesterTime > storeHour.getEndHour() to prevent users from taking token after hours.
                     //This should be prevented on mobile front.
                     LOG.warn("Requester time qid={} tokenFrom={} requesterTime={} codeQR={}", qid, tokenFrom, requesterTime, codeQR);
                     return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.B, bizStore);
                 } else if (requesterTime > storeHour.getEndHour()) {
                     /* When not added by merchant. */
-                    if (tokenService != TokenServiceEnum.M && tokenService != TokenServiceEnum.S) {
+                    if (tokenService != TokenServiceEnum.M) {
                         LOG.error("Requester token after hours qid={} tokenFrom={} requesterTime={} codeQR={}", qid, tokenFrom, requesterTime, codeQR);
                         return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.A, bizStore);
                     } else {
