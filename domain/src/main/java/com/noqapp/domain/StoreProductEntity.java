@@ -79,6 +79,7 @@ public class StoreProductEntity extends BaseEntity {
     @Field("PR")
     private String productReference;
 
+    //TODO during bulk upload available dates are left blank
     @Field("AD")
     private Date availableDate;
 
@@ -212,7 +213,7 @@ public class StoreProductEntity extends BaseEntity {
     }
 
     public Date getAvailableDate() {
-        return availableDate == null ? getUpdated() : availableDate;
+        return availableDate;
     }
 
     public StoreProductEntity setAvailableDate(Date availableDate) {

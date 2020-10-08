@@ -3,6 +3,7 @@ package com.noqapp.view.controller.business.store;
 import static com.noqapp.view.controller.access.UserProfileController.getMultipartFiles;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreProductEntity;
@@ -287,6 +288,9 @@ public class StoreProductController {
                 .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
                 .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
+                .setAvailableDate(StringUtils.isNotBlank(storeProductForm.getAvailableDate().getText())
+                    ? DateUtil.convertDateStringOf_YYYY_MM_DD_ToDate(storeProductForm.getAvailableDate().getText())
+                    : null)
                 .setDisplayCaseTurnedOn(storeProductForm.isDisplayCaseTurnedOn())
                 .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
                 .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())
@@ -345,6 +349,9 @@ public class StoreProductController {
             .setProductDiscount(new ScrubbedInput(new BigDecimal(storeProduct.getProductDiscount()).divide(new BigDecimal(100), MathContext.DECIMAL64).toString()))
             .setProductInfo(new ScrubbedInput(storeProduct.getProductInfo()))
             .setProductType(new ScrubbedInput(storeProduct.getProductType().name()))
+            .setAvailableDate(null != storeProduct.getAvailableDate()
+                ? new ScrubbedInput(DateUtil.dateToString(storeProduct.getAvailableDate()))
+                : null)
             .setDisplayCaseTurnedOn(storeProduct.isDisplayCaseTurnedOn())
             .setUnitOfMeasurement(new ScrubbedInput(storeProduct.getUnitOfMeasurement().name()))
             /*  When not store category is set. Which results in exception in JSP due to NULL. */
@@ -402,6 +409,9 @@ public class StoreProductController {
                 .setProductInfo(null == storeProductForm.getProductInfo() ? null : storeProductForm.getProductInfo().getText())
                 .setStoreCategoryId(null == storeProductForm.getStoreCategoryId() ? null : storeProductForm.getStoreCategoryId().getText())
                 .setProductType(ProductTypeEnum.valueOf(storeProductForm.getProductType().getText()))
+                .setAvailableDate(StringUtils.isNotBlank(storeProductForm.getAvailableDate().getText())
+                    ? DateUtil.convertDateStringOf_YYYY_MM_DD_ToDate(storeProductForm.getAvailableDate().getText())
+                    : null)
                 .setDisplayCaseTurnedOn(storeProductForm.isDisplayCaseTurnedOn())
                 .setUnitOfMeasurement(UnitOfMeasurementEnum.valueOf(storeProductForm.getUnitOfMeasurement().getText()))
                 .setPackageSize(new BigDecimal(storeProductForm.getPackageSize().getText()).intValue())

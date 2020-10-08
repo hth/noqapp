@@ -8,6 +8,9 @@ import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import org.apache.commons.text.WordUtils;
 
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +34,7 @@ public class StoreProductForm {
     private ScrubbedInput inventoryCurrent;
     private ScrubbedInput inventoryLimit;
     private ScrubbedInput productType;
+    private ScrubbedInput availableDate;
     private boolean displayCaseTurnedOn;
 
     private Map<String, String> categories;
@@ -165,6 +169,15 @@ public class StoreProductForm {
 
     public StoreProductForm setProductType(ScrubbedInput productType) {
         this.productType = productType;
+        return this;
+    }
+
+    public ScrubbedInput getAvailableDate() {
+        return availableDate;
+    }
+
+    public StoreProductForm setAvailableDate(ScrubbedInput availableDate) {
+        this.availableDate = availableDate;
         return this;
     }
 
