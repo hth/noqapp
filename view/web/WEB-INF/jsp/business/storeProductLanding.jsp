@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/jquery/css/jquery-ui.css" />
 
     <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
     <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" rel="stylesheet">
@@ -285,6 +286,18 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
+                                                        <form:label path="availableDate" cssErrorClass="lb_error">Available on Display</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="availableDate" cssClass="datepicker form-field-left" cssErrorClass="datepicker form-field-left error-field"
+                                                                placeholder="Select a date YYYY-MM-DD"/>
+                                                    </div>
+                                                    <span class="tooltip" title="Date product available from day"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
                                                     </div>
                                                     <div class="col-fields">
                                                         Required fields are marked with <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -529,6 +542,18 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
+                                                        <form:label path="availableDate" cssErrorClass="lb_error">Available on Display</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="availableDate" cssClass="datepicker form-field-left" cssErrorClass="datepicker form-field-left error-field"
+                                                                placeholder="Select a date format YYYY-MM-DD"/>
+                                                    </div>
+                                                    <span class="tooltip" title="Date product available from day"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
                                                     </div>
                                                     <div class="col-fields">
                                                         Required fields are marked with <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -683,6 +708,8 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/jquery/js/jquery-ui.js"></script>
+
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
@@ -727,6 +754,13 @@
             left : 15,
             right : 50
         }
+    });
+</script>
+<script>
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
     });
 </script>
 <script>

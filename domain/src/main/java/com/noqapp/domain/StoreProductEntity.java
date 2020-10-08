@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonStoreProduct;
 import com.noqapp.domain.types.ProductTypeEnum;
@@ -15,6 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.Date;
 
 /**
  * hitender
@@ -76,6 +78,10 @@ public class StoreProductEntity extends BaseEntity {
     //TODO product description references to html location.
     @Field("PR")
     private String productReference;
+
+    //TODO during bulk upload available dates are left blank
+    @Field("AD")
+    private Date availableDate;
 
     @Field("DC")
     private boolean displayCaseTurnedOn;
@@ -203,6 +209,15 @@ public class StoreProductEntity extends BaseEntity {
 
     public StoreProductEntity setProductReference(String productReference) {
         this.productReference = productReference;
+        return this;
+    }
+
+    public Date getAvailableDate() {
+        return availableDate;
+    }
+
+    public StoreProductEntity setAvailableDate(Date availableDate) {
+        this.availableDate = availableDate;
         return this;
     }
 

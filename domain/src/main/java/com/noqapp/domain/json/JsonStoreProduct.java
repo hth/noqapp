@@ -9,8 +9,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.data.annotation.Transient;
+
+import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * hitender
@@ -74,6 +81,16 @@ public class JsonStoreProduct extends AbstractDomain {
     //TODO product info references to html location for more detail like for Medicine.
     @JsonProperty("pr")
     private String productReference;
+
+    @JsonProperty ("ad")
+    private String availableDate;
+
+    @Transient
+    @JsonProperty ("an")
+    private boolean availableNow;
+
+    @JsonProperty ("dc")
+    private boolean displayCaseTurnedOn;
 
     @JsonProperty("bs")
     private String bizStoreId;
@@ -204,6 +221,33 @@ public class JsonStoreProduct extends AbstractDomain {
 
     public JsonStoreProduct setProductReference(String productReference) {
         this.productReference = productReference;
+        return this;
+    }
+
+    public String getAvailableDate() {
+        return availableDate;
+    }
+
+    public JsonStoreProduct setAvailableDate(String availableDate) {
+        this.availableDate = availableDate;
+        return this;
+    }
+
+    public boolean isAvailableNow() {
+        return availableNow;
+    }
+
+    public JsonStoreProduct setAvailableNow(boolean availableNow) {
+        this.availableNow = availableNow;
+        return this;
+    }
+
+    public boolean isDisplayCaseTurnedOn() {
+        return displayCaseTurnedOn;
+    }
+
+    public JsonStoreProduct setDisplayCaseTurnedOn(boolean displayCaseTurnedOn) {
+        this.displayCaseTurnedOn = displayCaseTurnedOn;
         return this;
     }
 
