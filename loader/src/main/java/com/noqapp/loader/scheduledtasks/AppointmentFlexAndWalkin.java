@@ -111,7 +111,9 @@ public class AppointmentFlexAndWalkin {
                     moveFromAppointmentToWalkin(bizStore);
                     success++;
 
-                    bizStoreManager.updateNextRunQueueAppointment(bizStore.getId(), Date.from(computeNextRunService.setupTokenAvailableForTomorrow(bizStore).toInstant()));
+                    bizStoreManager.updateNextRunQueueAppointment(
+                        bizStore.getId(),
+                        Date.from(computeNextRunService.setupTokenAvailableForTomorrow(bizStore).toInstant()));
                 } catch (Exception e) {
                     failure++;
                     LOG.error("Insert fail on joining queue bizStore={} codeQR={} reason={}",
