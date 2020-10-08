@@ -131,7 +131,6 @@
                                         <div class="add-new">
                                             <ul class="list-form">
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="storeCategoryId" cssErrorClass="lb_error">Category</form:label>
                                                     </div>
@@ -151,10 +150,11 @@
                                                             </c:forEach>
                                                         </form:select>
                                                     </div>
+                                                    <span class="tooltip" title="Category to list this product"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productName" cssErrorClass="lb_error">Name</form:label>
                                                     </div>
@@ -162,10 +162,11 @@
                                                         <form:input path="productName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                     placeholder="Name of the product"/>
                                                     </div>
+                                                    <span class="tooltip" title="Name of the product"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productPrice" cssErrorClass="lb_error">Price of Product</form:label>
                                                     </div>
@@ -173,10 +174,35 @@
                                                         <form:input path="productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                     placeholder="Price of the product"/>
                                                     </div>
+                                                    <span class="tooltip" title="Price of product"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="tax" cssErrorClass="lb_error">Tax</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:select path="tax" cssClass="form-field-select single-dropdown"
+                                                                cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                            <form:option value="" label="--- Select ---"/>
+                                                            <c:forEach items="${storeProductForm.taxes}" var="category" varStatus="cnt">
+                                                                <c:choose>
+                                                                    <c:when test="${category.key eq storeProductForm.tax}">
+                                                                        <option value="${category.key}" selected="selected">${category.value}</option>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <option value="${category.key}">${category.value}</option>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </c:forEach>
+                                                        </form:select>
+                                                    </div>
+                                                    <span class="tooltip" title="Tax on product"><i class="fas fa-info-circle"></i></span>
                                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
                                                     <div class="col-lable3">
                                                         <form:label path="unitValue" cssErrorClass="lb_error">Unit</form:label>
                                                     </div>
@@ -184,10 +210,11 @@
                                                         <form:input path="unitValue" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number"/>
                                                     </div>
+                                                    <span class="tooltip" title="Unit like 1 kg or 100 gm or 0.5 ltr"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="unitOfMeasurement" cssErrorClass="lb_error">Measurement</form:label>
                                                     </div>
@@ -207,10 +234,11 @@
                                                             </c:forEach>
                                                         </form:select>
                                                     </div>
+                                                    <span class="tooltip" title="Unit like kg or gm or dozen"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="packageSize" cssErrorClass="lb_error">Package Size</form:label>
                                                     </div>
@@ -218,10 +246,11 @@
                                                         <form:input path="packageSize" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number"/>
                                                     </div>
+                                                    <span class="tooltip" title="Number of items grouped"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
-                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="col-lable3">
                                                         <form:label path="productType" cssErrorClass="lb_error">Product Categorization</form:label>
                                                     </div>
@@ -240,6 +269,8 @@
                                                             </c:forEach>
                                                         </form:select>
                                                     </div>
+                                                    <span class="tooltip" title="Category for users to identify the product"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
@@ -250,6 +281,8 @@
                                                         <form:input path="inventoryLimit" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number"/>
                                                     </div>
+                                                    <span class="tooltip" title="Inventory available"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
@@ -260,6 +293,8 @@
                                                         <form:input path="productDiscount" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Any specific discount on product"/>
                                                     </div>
+                                                    <span class="tooltip" title="Discount on product available. Defaults to no discount."><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
@@ -270,6 +305,8 @@
                                                         <form:input path="productInfo" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Describe the product"/>
                                                     </div>
+                                                    <span class="tooltip" title="Describe the product"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
                                                 <li>
@@ -388,7 +425,7 @@
                                                             <form:options items="${storeProductForm.categories}" />
                                                         </form:select>
                                                     </div>
-                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <span class="tooltip" title="Category to list this product"><i class="fas fa-info-circle"></i></span>
                                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -400,7 +437,7 @@
                                                         <form:input path="productName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                     placeholder="Name of the product"/>
                                                     </div>
-                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <span class="tooltip" title="Name of the product"><i class="fas fa-info-circle"></i></span>
                                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -412,7 +449,31 @@
                                                         <form:input path="productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                     placeholder="Price of the product"/>
                                                     </div>
-                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <span class="tooltip" title="Price of product"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
+                                                        <form:label path="tax" cssErrorClass="lb_error">Tax</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:select path="tax" cssClass="form-field-select single-dropdown"
+                                                                cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                            <form:option value="" label="--- Select ---"/>
+                                                            <c:forEach items="${storeProductForm.taxes}" var="category" varStatus="cnt">
+                                                                <c:choose>
+                                                                    <c:when test="${category.key eq storeProductForm.tax}">
+                                                                        <option value="${category.key}" selected="selected">${category.value}</option>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <option value="${category.key}">${category.value}</option>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </c:forEach>
+                                                        </form:select>
+                                                    </div>
+                                                    <span class="tooltip" title="Tax on product"><i class="fas fa-info-circle"></i></span>
                                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -424,7 +485,7 @@
                                                         <form:input path="unitValue" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number (Example: 500gm or 1kg or 2lt or 2dz)"/>
                                                     </div>
-                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <span class="tooltip" title="Unit like 1 kg or 100 gm or 0.5 ltr"><i class="fas fa-info-circle"></i></span>
                                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -450,7 +511,7 @@
                                                             </c:forEach>
                                                         </form:select>
                                                     </div>
-                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <span class="tooltip" title="Unit like kg or gm or dozen"><i class="fas fa-info-circle"></i></span>
                                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -462,7 +523,7 @@
                                                         <form:input path="packageSize" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number"/>
                                                     </div>
-                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <span class="tooltip" title="Number of items grouped"><i class="fas fa-info-circle"></i></span>
                                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -488,7 +549,7 @@
                                                             </c:forEach>
                                                         </form:select>
                                                     </div>
-                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <span class="tooltip" title="Category for users to identify the product"><i class="fas fa-info-circle"></i></span>
                                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -500,7 +561,7 @@
                                                         <form:input path="inventoryLimit" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
                                                                 placeholder="Number"/>
                                                     </div>
-                                                    <span class="tooltip" title="My first tooltip"><i class="fas fa-info-circle"></i></span>
+                                                    <span class="tooltip" title="Inventory available"><i class="fas fa-info-circle"></i></span>
                                                     <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
                                                     <div class="clearFix"></div>
                                                 </li>
@@ -632,6 +693,7 @@
                                         </td>
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.displayPrice}</span>
+                                            <span style="display:block; font-size:13px;">Tax: ${storeProduct.tax.value}</span>
                                             <span style="display:block; font-size:13px;">Discount: ${storeProduct.displayDiscount}</span>
                                         </td>
                                         <td style="${storeProduct.displayCaseTurnedOn == true ? "background: lightpink" : ""}" nowrap>

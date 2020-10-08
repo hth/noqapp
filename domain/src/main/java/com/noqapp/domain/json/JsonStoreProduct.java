@@ -2,6 +2,7 @@ package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.TaxEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -47,6 +48,9 @@ public class JsonStoreProduct extends AbstractDomain {
 
     @JsonProperty("p")
     private int productPrice;
+
+    @JsonProperty("ta")
+    private TaxEnum tax;
 
     @JsonProperty("d")
     private int productDiscount;
@@ -122,6 +126,15 @@ public class JsonStoreProduct extends AbstractDomain {
 
     public JsonStoreProduct setProductPrice(int productPrice) {
         this.productPrice = productPrice;
+        return this;
+    }
+
+    public TaxEnum getTax() {
+        return tax;
+    }
+
+    public JsonStoreProduct setTax(TaxEnum tax) {
+        this.tax = tax;
         return this;
     }
 
