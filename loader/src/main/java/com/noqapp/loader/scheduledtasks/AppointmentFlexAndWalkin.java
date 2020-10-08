@@ -95,9 +95,9 @@ public class AppointmentFlexAndWalkin {
              * Date is based on UTC time of the System.
              * Hence its important to run on UTC time.
              *
-             * Appointment in stores are pushed up by 15 minutes.
+             * Appointment in stores are pushed up by 30 minutes.
              */
-            Date date = Date.from(Instant.now().plus(15, ChronoUnit.MINUTES));
+            Date date = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES));
 
             /*
              * Only find stores that are active and not deleted. It processes only queues.
