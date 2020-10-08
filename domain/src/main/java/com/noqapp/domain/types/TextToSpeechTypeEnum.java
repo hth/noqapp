@@ -39,7 +39,7 @@ public enum TextToSpeechTypeEnum {
         for (String value : dictionary) {
             builder.append(value).append(", ");
         }
-        return builder.toString().substring(0, builder.toString().length() - ", ".length());
+        return builder.substring(0, builder.toString().length() - ", ".length());
     }
 
     public static Map<String, String> asMapWithNameAsKey() {

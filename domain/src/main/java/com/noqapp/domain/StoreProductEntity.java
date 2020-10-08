@@ -4,6 +4,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonStoreProduct;
 import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.TaxEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +43,9 @@ public class StoreProductEntity extends BaseEntity {
 
     @Field("PP")
     private int productPrice;
+
+    @Field("TA")
+    private TaxEnum tax = TaxEnum.ZE;
 
     @Field("PD")
     private int productDiscount;
@@ -110,6 +114,15 @@ public class StoreProductEntity extends BaseEntity {
 
     public StoreProductEntity setProductPrice(int productPrice) {
         this.productPrice = productPrice;
+        return this;
+    }
+
+    public TaxEnum getTax() {
+        return tax;
+    }
+
+    public StoreProductEntity setTax(TaxEnum tax) {
+        this.tax = tax;
         return this;
     }
 

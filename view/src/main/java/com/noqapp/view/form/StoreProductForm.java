@@ -4,12 +4,15 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.TaxEnum;
+import com.noqapp.domain.types.TextToSpeechTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import org.apache.commons.text.WordUtils;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +28,7 @@ public class StoreProductForm {
     private ScrubbedInput storeProductId;
     private ScrubbedInput productName;
     private ScrubbedInput productPrice;
+    private TaxEnum tax = TaxEnum.ZE;
     private ScrubbedInput productDiscount;
     private ScrubbedInput productInfo;
     private ScrubbedInput storeCategoryId;
@@ -41,6 +45,7 @@ public class StoreProductForm {
     private List<StoreProductEntity> storeProducts;
     private ProductTypeEnum[] productTypes;
     private UnitOfMeasurementEnum[] unitOfMeasurements;
+    private Map<String, BigDecimal> taxes = TaxEnum.asMapWithNameAsKey();
     private BusinessTypeEnum businessType;
 
     /* Form success or failure message. */
@@ -88,6 +93,15 @@ public class StoreProductForm {
 
     public StoreProductForm setProductPrice(ScrubbedInput productPrice) {
         this.productPrice = productPrice;
+        return this;
+    }
+
+    public TaxEnum getTax() {
+        return tax;
+    }
+
+    public StoreProductForm setTax(TaxEnum tax) {
+        this.tax = tax;
         return this;
     }
 
@@ -224,6 +238,10 @@ public class StoreProductForm {
     public StoreProductForm setUnitOfMeasurements(UnitOfMeasurementEnum[] unitOfMeasurements) {
         this.unitOfMeasurements = unitOfMeasurements;
         return this;
+    }
+
+    public Map<String, BigDecimal> getTaxes() {
+        return taxes;
     }
 
     public BusinessTypeEnum getBusinessType() {
