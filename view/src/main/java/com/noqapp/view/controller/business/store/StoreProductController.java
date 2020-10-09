@@ -280,6 +280,7 @@ public class StoreProductController {
         try {
             StoreProductEntity storeProduct = new StoreProductEntity()
                 .setBizStoreId(storeProductForm.getBizStoreId().getText())
+                .setBarCode(storeProductForm.getBarCode().getText())
                 .setProductName(storeProductForm.getProductName_Capitalized())
                 .setProductPrice(StringUtils.isBlank(storeProductForm.getProductPrice().getText()) ? 0 : new BigDecimal(storeProductForm.getProductPrice().getText()).multiply(new BigDecimal(100)).intValue())
                 .setTax(storeProductForm.getTax())
@@ -342,6 +343,7 @@ public class StoreProductController {
         StoreProductEntity storeProduct = storeProductService.findOne(storeProductId.getText());
         storeProductForm
             .setProductName(new ScrubbedInput(storeProduct.getProductName()))
+            .setBarCode(new ScrubbedInput(storeProduct.getBarCode()))
             .setProductPrice(new ScrubbedInput(new BigDecimal(storeProduct.getProductPrice()).divide(new BigDecimal(100), MathContext.DECIMAL64).toString()))
             .setProductDiscount(new ScrubbedInput(new BigDecimal(storeProduct.getProductDiscount()).divide(new BigDecimal(100), MathContext.DECIMAL64).toString()))
             .setProductInfo(new ScrubbedInput(storeProduct.getProductInfo()))
@@ -398,6 +400,7 @@ public class StoreProductController {
             StoreProductEntity storeProduct = storeProductService.findOne(storeProductForm.getStoreProductId().getText());
             storeProduct
                 .setBizStoreId(storeProductForm.getBizStoreId().getText())
+                .setBarCode(storeProductForm.getBarCode().getText())
                 .setProductName(storeProductForm.getProductName_Capitalized())
                 .setProductPrice(StringUtils.isBlank(storeProductForm.getProductPrice().getText()) ? 0 : new BigDecimal(storeProductForm.getProductPrice().getText()).multiply(new BigDecimal(100)).intValue())
                 .setTax(storeProductForm.getTax())

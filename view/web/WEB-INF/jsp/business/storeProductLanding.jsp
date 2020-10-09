@@ -168,6 +168,18 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
+                                                        <form:label path="barCode" cssErrorClass="lb_error">Product Barcode</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="barCode" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                    placeholder="Product barcode"/>
+                                                    </div>
+                                                    <span class="tooltip" title="Barcode of product"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
                                                         <form:label path="productPrice" cssErrorClass="lb_error">Price of Product</form:label>
                                                     </div>
                                                     <div class="col-fields">
@@ -443,6 +455,18 @@
                                                 </li>
                                                 <li>
                                                     <div class="col-lable3">
+                                                        <form:label path="barCode" cssErrorClass="lb_error">Product Barcode</form:label>
+                                                    </div>
+                                                    <div class="col-fields">
+                                                        <form:input path="barCode" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"
+                                                                placeholder="Product barcode"/>
+                                                    </div>
+                                                    <span class="tooltip" title="Barcode of product"><i class="fas fa-info-circle"></i></span>
+                                                    <sup style="color: #9f1313; font-size: 150%;">&nbsp;</sup>
+                                                    <div class="clearFix"></div>
+                                                </li>
+                                                <li>
+                                                    <div class="col-lable3">
                                                         <form:label path="productPrice" cssErrorClass="lb_error">Price of Product</form:label>
                                                     </div>
                                                     <div class="col-fields">
@@ -698,7 +722,7 @@
                                         </td>
                                         <td style="${storeProduct.displayCaseTurnedOn == true ? "background: lightpink" : ""}" nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.productType.description}</span>
-                                            <br/>
+                                            <span style="display:block; font-size:13px;">${!empty storeProduct.barCode ? storeProduct.barCode : "<br/>"}</span>
                                             <span style="display:block; font-size:13px;">${storeProduct.displayCaseTurnedOn == true ? "Is on display" : ""}</span>
                                         </td>
                                         <td nowrap>
@@ -707,6 +731,14 @@
                                         </td>
                                         <td>
                                             <a href="/business/store/product/photo/${storeProductForm.bizStoreId}/${storeProduct.id}/image.htm" class="add-btn">Image</a>
+                                            <c:choose>
+                                                <c:when test="${!empty storeProduct.productImage}">
+                                                    <span style="display:block; font-size:13px;">Present</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span style="display:block; font-size:13px;">Missing</span>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </td>
                                         <td>
                                             <a href="/business/store/product/${storeProductForm.bizStoreId}/${storeProduct.id}/edit.htm" class="add-btn">Edit</a>

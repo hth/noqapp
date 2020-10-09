@@ -25,6 +25,7 @@ public class StoreProductForm {
     private ScrubbedInput displayName;
 
     private ScrubbedInput bizStoreId;
+    private ScrubbedInput barCode;
     private ScrubbedInput storeProductId;
     private ScrubbedInput productName;
     private ScrubbedInput productPrice;
@@ -66,6 +67,15 @@ public class StoreProductForm {
 
     public StoreProductForm setBizStoreId(ScrubbedInput bizStoreId) {
         this.bizStoreId = bizStoreId;
+        return this;
+    }
+
+    public ScrubbedInput getBarCode() {
+        return barCode;
+    }
+
+    public StoreProductForm setBarCode(ScrubbedInput barCode) {
+        this.barCode = barCode;
         return this;
     }
 
