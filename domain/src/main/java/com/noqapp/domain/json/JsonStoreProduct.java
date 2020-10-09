@@ -43,6 +43,9 @@ public class JsonStoreProduct extends AbstractDomain {
     @JsonProperty("id")
     private String productId;
 
+    @JsonProperty("bc")
+    private String barCode;
+
     @JsonProperty("n")
     private String productName;
 
@@ -108,6 +111,15 @@ public class JsonStoreProduct extends AbstractDomain {
 
     public JsonStoreProduct setProductId(String productId) {
         this.productId = productId;
+        return this;
+    }
+
+    public String getBarCode() {
+        return barCode;
+    }
+
+    public JsonStoreProduct setBarCode(String barCode) {
+        this.barCode = barCode;
         return this;
     }
 

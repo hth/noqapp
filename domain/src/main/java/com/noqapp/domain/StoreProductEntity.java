@@ -1,6 +1,5 @@
 package com.noqapp.domain;
 
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonStoreProduct;
 import com.noqapp.domain.types.ProductTypeEnum;
@@ -37,6 +36,9 @@ public class StoreProductEntity extends BaseEntity {
 
     @Field("BS")
     private String bizStoreId;
+
+    @Field("BC")
+    private String barCode;
 
     @Field("PN")
     private String productName;
@@ -96,6 +98,15 @@ public class StoreProductEntity extends BaseEntity {
 
     public StoreProductEntity setBizStoreId(String bizStoreId) {
         this.bizStoreId = bizStoreId;
+        return this;
+    }
+
+    public String getBarCode() {
+        return barCode;
+    }
+
+    public StoreProductEntity setBarCode(String barCode) {
+        this.barCode = barCode;
         return this;
     }
 
