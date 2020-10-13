@@ -270,10 +270,23 @@ public class ScheduleAppointmentService {
         LocalDate appointmentDate = LocalDate.parse(scheduleAppointment.getScheduleDate());
         LocalDateTime appointmentDateTime = LocalDateTime.of(appointmentDate, DateFormatter.getLocalTime(startTime));
 
-        long durationInHours = DateUtil.getHoursBetween(LocalDateTime.now(), appointmentDateTime);
-        if (durationInHours < appointmentCancelLimitedToHours && scheduleAppointment.getAppointmentStatus() == AppointmentStatusEnum.A) {
-            LOG.warn("Failed to cancel appointment as within {} hrs {} {} {}", appointmentCancelLimitedToHours, id, qid, codeQR);
-            throw new AppointmentCancellationException("Failed to cancel appointment as appointment is within " + appointmentCancelLimitedToHours + " hours.");
+        switch (bizStore.getAppointmentState()) {
+            case S:
+                /* Allow cancelling of walkin appointments within 24 hrs. */
+                break;
+            case A:
+            case F:
+                long durationInHours = DateUtil.getHoursBetween(LocalDateTime.now(), appointmentDateTime);
+                if (durationInHours < appointmentCancelLimitedToHours && scheduleAppointment.getAppointmentStatus() == AppointmentStatusEnum.A) {
+                    LOG.warn("Failed to cancel appointment as within {} hrs {} {} {}", appointmentCancelLimitedToHours, id, qid, codeQR);
+                    throw new AppointmentCancellationException("Failed to cancel appointment as appointment is within " + appointmentCancelLimitedToHours + " hours.");
+                }
+                break;
+            case O:
+                break;
+            default:
+                LOG.error("Reached un-supported condition {}", bizStore.getAppointmentState().getDescription());
+                throw new UnsupportedOperationException("Reached not supported condition");
         }
 
         boolean status = scheduleAppointmentManager.cancelAppointment(id, qid, codeQR);
