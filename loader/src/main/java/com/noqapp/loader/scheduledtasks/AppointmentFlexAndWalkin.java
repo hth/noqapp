@@ -7,6 +7,7 @@ import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.AppointmentStatusEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.repository.BizStoreManager;
@@ -163,6 +164,13 @@ public class AppointmentFlexAndWalkin {
                     bizStore.getDisplayName(),
                     bizStore.getBizName().getBusinessName(),
                     jsonToken.getQueueStatus().getDescription());
+
+                tokenQueueService.sendMessageToSpecificUser(
+                    bizStore.getDisplayName() + ": Token not issued",
+                    jsonToken.getQueueStatus().friendlyDescription(),
+                    scheduleAppointment.getQueueUserId(),
+                    MessageOriginEnum.A
+                );
             }
         }
 
