@@ -169,8 +169,7 @@ public class AppointmentFlexAndWalkin {
                     bizStore.getDisplayName() + ": Token not issued",
                     jsonToken.getQueueStatus().friendlyDescription(),
                     scheduleAppointment.getQueueUserId(),
-                    MessageOriginEnum.A
-                );
+                    MessageOriginEnum.A);
             }
         }
 
