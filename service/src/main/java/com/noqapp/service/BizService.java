@@ -408,25 +408,27 @@ public class BizService {
         return storeHourManager.findAll(bizStoreId);
     }
 
-    public List<JsonHour> findAllStoreHoursAsJson(String bizStoreId) {
-        List<StoreHourEntity> storeHours = findAllStoreHours(bizStoreId);
-
+    public List<JsonHour> findAllStoreHoursAsJson(BizStoreEntity bizStore) {
         List<JsonHour> jsonHours = new LinkedList<>();
-        for (StoreHourEntity storeHour : storeHours) {
-            JsonHour jsonHour = new JsonHour()
-                .setDayOfWeek(storeHour.getDayOfWeek())
-                .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
-                .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
-                .setStartHour(storeHour.getStartHour())
-                .setAppointmentStartHour(storeHour.getAppointmentStartHour())
-                .setEndHour(storeHour.getEndHour())
-                .setAppointmentEndHour(storeHour.getAppointmentEndHour())
-                .setLunchTimeStart(storeHour.getLunchTimeStart())
-                .setLunchTimeEnd(storeHour.getLunchTimeEnd())
-                .setPreventJoining(storeHour.isPreventJoining())
-                .setDayClosed(storeHour.isDayClosed() || storeHour.isTempDayClosed())
-                .setDelayedInMinutes(storeHour.getDelayedInMinutes());
-            jsonHours.add(jsonHour);
+
+        if (null != bizStore) {
+            List<StoreHourEntity> storeHours = findAllStoreHours(bizStore.getId());
+            for (StoreHourEntity storeHour : storeHours) {
+                JsonHour jsonHour = new JsonHour()
+                    .setDayOfWeek(storeHour.getDayOfWeek())
+                    .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
+                    .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
+                    .setStartHour(storeHour.getStartHour())
+                    .setAppointmentStartHour(bizStore.getAppointmentState() == AppointmentStateEnum.O ? 0 : storeHour.getAppointmentStartHour())
+                    .setEndHour(storeHour.getEndHour())
+                    .setAppointmentEndHour(bizStore.getAppointmentState() == AppointmentStateEnum.O ? 0 : storeHour.getAppointmentEndHour())
+                    .setLunchTimeStart(storeHour.getLunchTimeStart())
+                    .setLunchTimeEnd(storeHour.getLunchTimeEnd())
+                    .setPreventJoining(storeHour.isPreventJoining())
+                    .setDayClosed(storeHour.isDayClosed() || storeHour.isTempDayClosed())
+                    .setDelayedInMinutes(storeHour.getDelayedInMinutes());
+                jsonHours.add(jsonHour);
+            }
         }
 
         return jsonHours;
