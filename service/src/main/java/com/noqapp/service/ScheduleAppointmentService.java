@@ -370,7 +370,7 @@ public class ScheduleAppointmentService {
         }
 
         jsonScheduleList
-            .setJsonHours(bizService.findAllStoreHoursAsJson(bizStore.getId()))
+            .setJsonHours(bizService.findAllStoreHoursAsJson(bizStore))
             .setAppointmentDuration(bizStore.getAppointmentDuration())
             .setAppointmentState(bizStore.getAppointmentState())
             .setAppointmentOpenHowFar(bizStore.getAppointmentOpenHowFar());
