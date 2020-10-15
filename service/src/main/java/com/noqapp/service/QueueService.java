@@ -200,7 +200,7 @@ public class QueueService {
                                 queue.getDisplayName(),
                                 queue.getQueueUserId(),
                                 queue.getTokenNumber());
-                            
+
                             jsonPurchaseOrder = new JsonPurchaseOrder();
                         } else {
                             jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
