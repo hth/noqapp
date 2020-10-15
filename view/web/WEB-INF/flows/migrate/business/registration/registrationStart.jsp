@@ -223,7 +223,7 @@
                                                     <form:input path="inviteeCode" cssClass="form-field-admin" cssStyle="text-transform: lowercase;" cssErrorClass="form-field-admin error-field"/>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <form:input path="inviteeCode" cssClass="form-field-admin" readonly="true"/>
+                                                    <form:input path="inviteeCode" cssClass="form-field-admin" cssStyle="text-transform: lowercase;" readonly="true"/>
                                                 </c:otherwise>
                                             </c:choose>
                                             <span style="display:block; font-size:14px;">Optional. Enter if you have been provided with one.</span>

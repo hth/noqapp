@@ -177,7 +177,7 @@
                                         <form:label path="registerBusiness.inviteeCode" cssErrorClass="lb_error">Have Invitee Code?</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="registerBusiness.inviteeCode" cssClass="form-field-admin" readonly="true"/>
+                                        <form:input path="registerBusiness.inviteeCode" cssClass="form-field-admin" cssStyle="text-transform: lowercase;" readonly="true"/>
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
