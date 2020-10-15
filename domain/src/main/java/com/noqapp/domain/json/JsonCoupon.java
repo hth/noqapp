@@ -170,16 +170,20 @@ public class JsonCoupon extends AbstractDomain {
     }
 
     public static JsonCoupon populate(CouponEntity coupon) {
-        return new JsonCoupon()
-            .setCouponId(coupon.getId())
-            .setBizNameId(coupon.getBizNameId())
-            .setCouponCode(coupon.getCouponCode())
-            .setDiscountName(coupon.getDiscountName())
-            .setDiscountDescription(coupon.getDiscountDescription())
-            .setDiscountAmount(coupon.getDiscountAmount())
-            .setDiscountType(coupon.getDiscountType())
-            .setCouponStartDate(DateFormatUtils.format(coupon.getCouponStartDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-            .setCouponEndDate(DateFormatUtils.format(coupon.getCouponEndDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
-            .setQid(coupon.getQid());
+        if (null != coupon) {
+            return new JsonCoupon()
+                .setCouponId(coupon.getId())
+                .setBizNameId(coupon.getBizNameId())
+                .setCouponCode(coupon.getCouponCode())
+                .setDiscountName(coupon.getDiscountName())
+                .setDiscountDescription(coupon.getDiscountDescription())
+                .setDiscountAmount(coupon.getDiscountAmount())
+                .setDiscountType(coupon.getDiscountType())
+                .setCouponStartDate(DateFormatUtils.format(coupon.getCouponStartDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+                .setCouponEndDate(DateFormatUtils.format(coupon.getCouponEndDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC")))
+                .setQid(coupon.getQid());
+        } else {
+            return new JsonCoupon();
+        }
     }
 }
