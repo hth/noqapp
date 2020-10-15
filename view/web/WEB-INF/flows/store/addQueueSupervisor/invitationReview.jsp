@@ -92,7 +92,7 @@
                                             <form:label path="inviteeCode" cssErrorClass="lb_error">Invitee Code</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="inviteeCode" cssClass="form-field-admin" cssErrorClass="form-field-admin lb_error" readonly="true"/>
+                                            <form:input path="inviteeCode" cssClass="form-field-admin" cssStyle="text-transform: lowercase;" cssErrorClass="form-field-admin lb_error" readonly="true"/>
                                             <span class="info-txt">(Owner of the Phone Number has to share invite code with you)</span>
                                         </div>
                                         <div class="clearFix"></div>
