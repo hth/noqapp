@@ -193,7 +193,18 @@ public class QueueService {
                     PurchaseOrderEntity purchaseOrder = purchaseOrderManager.findByTransactionId(queue.getTransactionId());
                     if (null == purchaseOrder) {
                         purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(queue.getQueueUserId(), queue.getTransactionId());
-                        jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
+                        if (null == purchaseOrder) {
+                            //TODO check when purchaseOrder is null
+                            LOG.error("Failed finding purchaseOrder={} displayName={} qid={} token={}",
+                                queue.getTransactionId(),
+                                queue.getDisplayName(),
+                                queue.getQueueUserId(),
+                                queue.getTokenNumber());
+                            
+                            jsonPurchaseOrder = new JsonPurchaseOrder();
+                        } else {
+                            jsonPurchaseOrder = purchaseOrderProductService.populateHistoricalJsonPurchaseOrder(purchaseOrder);
+                        }
                     } else {
                         jsonPurchaseOrder = purchaseOrderProductService.populateJsonPurchaseOrder(purchaseOrder);
                     }
@@ -227,7 +238,11 @@ public class QueueService {
                 jsonQueueHistoricalList.addQueueHistorical(jsonQueueHistorical);
             } catch (Exception e) {
                 //TODO This error should not be happening. Cause needs to be investigated. For now its on Sandbox but followup on Live.
-                LOG.error("Failed populating from queue with transactionId={} id={} {}", queue.getTransactionId(), queue.getId(), e.getLocalizedMessage(), e);
+                LOG.error("Failed populating from queue with transactionId={} id={} {}",
+                    queue.getTransactionId(),
+                    queue.getId(),
+                    e.getLocalizedMessage(),
+                    e);
             }
         }
         LOG.info("Queue history size {}", jsonQueueHistoricalList.getQueueHistoricals().size());
