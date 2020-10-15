@@ -15,8 +15,6 @@ import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
-import com.mongodb.ReadPreference;
-import com.mongodb.WriteConcern;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
@@ -47,10 +45,10 @@ import java.util.Set;
  * Date: 1/2/17 8:32 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class QueueManagerImpl implements QueueManager {
