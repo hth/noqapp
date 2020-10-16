@@ -29,6 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
@@ -399,7 +400,7 @@ public class QueueManagerImpl implements QueueManager {
 //        return mongoTemplate.getCollection(TABLE).distinct("QR", query);
 
         return mongoTemplate.find(
-            query(where("QS").ne(QueueUserStateEnum.Q)
+            query(where("QS").nin(QueueUserStateEnum.Q, QueueUserStateEnum.I)
                 .orOperator(
                     where("QID").is(qid),
                     where("GQ").is(qid)
