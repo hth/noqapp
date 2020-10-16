@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.TaxEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import org.springframework.data.annotation.Transient;
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.math.BigDecimal;
 import java.util.StringJoiner;
 
 /**
@@ -39,6 +41,9 @@ public class PurchaseOrderProductEntity extends BaseEntity {
 
     @Field("PP")
     private int productPrice;
+
+    @Field("TA")
+    private TaxEnum tax;
 
     @Field("PD")
     private int productDiscount;
@@ -102,6 +107,15 @@ public class PurchaseOrderProductEntity extends BaseEntity {
 
     public PurchaseOrderProductEntity setProductPrice(int productPrice) {
         this.productPrice = productPrice;
+        return this;
+    }
+
+    public TaxEnum getTax() {
+        return tax;
+    }
+
+    public PurchaseOrderProductEntity setTax(TaxEnum tax) {
+        this.tax = tax;
         return this;
     }
 
@@ -218,24 +232,8 @@ public class PurchaseOrderProductEntity extends BaseEntity {
         return productQuantity * (productPrice - productDiscount);
     }
 
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", PurchaseOrderProductEntity.class.getSimpleName() + "[", "]")
-            .add("productId=\"" + productId + "\"")
-            .add("productName=\"" + productName + "\"")
-            .add("productPrice=" + productPrice)
-            .add("productDiscount=" + productDiscount)
-            .add("productType=" + productType)
-            .add("unitValue=" + unitValue)
-            .add("unitOfMeasurement=" + unitOfMeasurement)
-            .add("packageSize=" + packageSize)
-            .add("productQuantity=" + productQuantity)
-            .add("purchaseOrderId=\"" + purchaseOrderId + "\"")
-            .add("queueUserId=\"" + queueUserId + "\"")
-            .add("bizStoreId=\"" + bizStoreId + "\"")
-            .add("bizNameId=\"" + bizNameId + "\"")
-            .add("codeQR=\"" + codeQR + "\"")
-            .add("businessType=" + businessType)
-            .toString();
+    @Transient
+    public int computeTax() {
+        return new BigDecimal(productPrice - productDiscount).multiply(tax.getValue().movePointLeft(2)).intValue();
     }
 }

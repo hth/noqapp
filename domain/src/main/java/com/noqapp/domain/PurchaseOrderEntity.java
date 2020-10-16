@@ -91,6 +91,10 @@ public class PurchaseOrderEntity extends BaseEntity {
     private String orderPrice;
 
     @DBMapping
+    @Field("TA")
+    private String tax;
+
+    @DBMapping
     @Field("DM")
     private DeliveryModeEnum deliveryMode;
 
@@ -301,6 +305,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setOrderPrice(String orderPrice) {
         this.orderPrice = orderPrice;
+        return this;
+    }
+
+    public String getTax() {
+        return tax;
+    }
+
+    public PurchaseOrderEntity setTax(String tax) {
+        this.tax = tax;
         return this;
     }
 
@@ -614,6 +627,10 @@ public class PurchaseOrderEntity extends BaseEntity {
         }
 
         return "";
+    }
+    @Transient
+    public int total() {
+        return Integer.parseInt(orderPrice) + Integer.parseInt(StringUtils.isBlank(tax) ? "0" : tax);
     }
 
     @Override

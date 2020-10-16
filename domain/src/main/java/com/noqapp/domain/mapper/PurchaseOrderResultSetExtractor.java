@@ -43,26 +43,27 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
     private static final int SD = 17;
     private static final int PP = 18;
     private static final int OP = 19;
-    private static final int BT = 20;
-    private static final int PQ = 21;
-    private static final int FQ = 22;
-    private static final int CQ = 23;
-    private static final int CI = 24;
-    private static final int SN = 25;
-    private static final int SB = 26;
-    private static final int SE = 27;
-    private static final int TI = 28;
-    private static final int TR = 29;
-    private static final int TM = 30;
-    private static final int TV = 31;
-    private static final int DN = 32;
-    private static final int AN = 33;
+    private static final int TA = 20;
+    private static final int BT = 21;
+    private static final int PQ = 22;
+    private static final int FQ = 23;
+    private static final int CQ = 24;
+    private static final int CI = 25;
+    private static final int SN = 26;
+    private static final int SB = 27;
+    private static final int SE = 28;
+    private static final int TI = 29;
+    private static final int TR = 30;
+    private static final int TM = 31;
+    private static final int TV = 32;
+    private static final int DN = 33;
+    private static final int AN = 34;
 
-    private static final int V = 34;
-    private static final int U = 35;
-    private static final int C = 36;
-    private static final int A = 37;
-    private static final int D = 38;
+    private static final int V = 35;
+    private static final int U = 36;
+    private static final int C = 37;
+    private static final int A = 38;
+    private static final int D = 39;
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -87,6 +88,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor {
         purchaseOrder.setStoreDiscount(rs.getInt(SD));
         purchaseOrder.setPartialPayment(rs.getString(PP));
         purchaseOrder.setOrderPrice(rs.getString(OP));
+        purchaseOrder.setTax(rs.getString(TA));
         purchaseOrder.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
         purchaseOrder.setPartialPaymentAcceptedByQid(rs.getString(PQ));
         purchaseOrder.setFullPaymentAcceptedByQid(rs.getString(FQ));

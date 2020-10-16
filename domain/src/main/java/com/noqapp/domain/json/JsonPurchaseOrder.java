@@ -73,6 +73,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("op")
     private String orderPrice;
 
+    @JsonProperty ("ta")
+    private String tax;
+
     @JsonProperty ("dm")
     private DeliveryModeEnum deliveryMode;
 
@@ -228,6 +231,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setOrderPrice(String orderPrice) {
         this.orderPrice = orderPrice;
+        return this;
+    }
+
+    public String getTax() {
+        return tax;
+    }
+
+    public JsonPurchaseOrder setTax(String tax) {
+        this.tax = tax;
         return this;
     }
 
@@ -455,6 +467,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setStoreDiscount(po.getStoreDiscount())
             .setPartialPayment(po.getPartialPayment())
             .setOrderPrice(po.getOrderPrice())
+            .setTax(po.getTax())
             .setDeliveryMode(po.getDeliveryMode())
             .setPaymentMode(po.getPaymentMode())
             .setPaymentStatus(po.getPaymentStatus())

@@ -447,7 +447,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     public BizStoreEntity unsetScheduledTask(String id) {
         return mongoTemplate.findAndModify(
             query(where("id").is(id)),
-            entityUpdate(new Update().unset("TA")),
+            entityUpdate(new Update().unset("SC")),
             FindAndModifyOptions.options().returnNew(true),
             BizStoreEntity.class,
             TABLE
@@ -458,7 +458,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     public void setScheduleTaskId(String codeQR, String scheduleTaskId) {
         mongoTemplate.updateFirst(
             query(where("QR").is(codeQR)),
-            entityUpdate(update("TA", scheduleTaskId)),
+            entityUpdate(update("SC", scheduleTaskId)),
             BizStoreEntity.class,
             TABLE
         );

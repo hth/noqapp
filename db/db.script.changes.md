@@ -1,3 +1,20 @@
+### Changed Oct 20, 2020
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+        ADD COLUMN `TA` VARCHAR(10) AFTER `OP`;
+        
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER_PRODUCT` 
+        ADD COLUMN `TA` CHAR(3) AFTER `PP`;
+        
+    SET SQL_SAFE_UPDATES = 0;
+    UPDATE `noqapp_test`.`PURCHASE_ORDER_PRODUCT` SET TA = "ZE";
+    UPDATE `noqapp_test`.`PURCHASE_ORDER` SET TA = "0";
+    SET SQL_SAFE_UPDATES = 1;  
+    
+### Changed Oct 15, 2020
+
+    db.getCollection('BIZ_STORE').update({"TA" : {$exists : true}}, {$rename: {"TA":"SC"}}, false, true);          
+
 ### Changed Sept 15, 2020
 
     db.getCollection('STORE_PRODUCT').update({IM: {$exists : false}}, {$set: {IM : ""}}, {multi: true});

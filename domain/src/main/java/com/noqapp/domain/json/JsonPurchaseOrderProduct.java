@@ -3,6 +3,7 @@ package com.noqapp.domain.json;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.TaxEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -43,6 +44,9 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
 
     @JsonProperty("pp")
     private int productPrice;
+
+    @JsonProperty("ta")
+    private TaxEnum tax;
 
     @JsonProperty("pd")
     private int productDiscount;
@@ -88,6 +92,15 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
 
     public JsonPurchaseOrderProduct setProductPrice(int productPrice) {
         this.productPrice = productPrice;
+        return this;
+    }
+
+    public TaxEnum getTax() {
+        return tax;
+    }
+
+    public JsonPurchaseOrderProduct setTax(TaxEnum tax) {
+        this.tax = tax;
         return this;
     }
 
@@ -150,6 +163,7 @@ public class JsonPurchaseOrderProduct extends AbstractDomain {
             .setProductId(purchaseOrderProduct.getProductId())
             .setProductName(purchaseOrderProduct.getProductName())
             .setProductPrice(purchaseOrderProduct.getProductPrice())
+            .setTax(purchaseOrderProduct.getTax())
             .setProductDiscount(purchaseOrderProduct.getProductDiscount())
             .setProductType(purchaseOrderProduct.getProductType())
             .setUnitValue(purchaseOrderProduct.getUnitValue())

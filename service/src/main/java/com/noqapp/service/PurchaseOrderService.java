@@ -417,7 +417,9 @@ public class PurchaseOrderService {
                 LOG.error("Not found product {}", purchaseOrderProduct.getId());
                 throw new PurchaseOrderProductNFException("Product Not Found");
             }
-            purchaseOrderProduct.setProductPrice(jsonPurchaseOrderProduct.getProductPrice());
+            purchaseOrderProduct
+                .setProductPrice(jsonPurchaseOrderProduct.getProductPrice())
+                .setTax(jsonPurchaseOrderProduct.getTax());
             purchaseOrderProductManager.save(purchaseOrderProduct);
             orderPrice = orderPrice.add(new BigDecimal(purchaseOrderProduct.getProductPrice()));
         }
@@ -529,6 +531,7 @@ public class PurchaseOrderService {
             .setStoreDiscount(storeDiscount)
             .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
             .setOrderPrice(String.valueOf(receivedOrderPrice))
+            .setTax(StringUtils.isNotBlank(jsonPurchaseOrder.getTax()) ? String.valueOf(jsonPurchaseOrder.getTax()) : "0")
             .setDeliveryMode(jsonPurchaseOrder.getDeliveryMode())
             //.setPaymentMode(jsonPurchaseOrder.getPaymentMode())
             .setBusinessType(bizStore.getBusinessType())
@@ -538,7 +541,7 @@ public class PurchaseOrderService {
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
 
         List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
-        int computedOrderPrice = 0;
+        int computedOrderPrice = 0, computedTax = 0;
         Map<String, Integer> productPurchases = new HashMap<>();
         for (JsonPurchaseOrderProduct jsonPurchaseOrderProduct : jsonPurchaseOrder.getJsonPurchaseOrderProducts()) {
             StoreProductEntity storeProduct = null;
@@ -551,6 +554,7 @@ public class PurchaseOrderService {
                 purchaseOrderProduct.setProductId(jsonPurchaseOrderProduct.getProductId())
                     .setProductName(storeProduct.getProductName())
                     .setProductPrice(storeProduct.getProductPrice())
+                    .setTax(storeProduct.getTax())
                     .setProductDiscount(storeProduct.getProductDiscount())
                     .setProductType(storeProduct.getProductType())
                     .setUnitValue(storeProduct.getUnitValue())
@@ -575,6 +579,7 @@ public class PurchaseOrderService {
                 purchaseOrderProduct
                     .setProductName(jsonPurchaseOrderProduct.getProductName())
                     .setProductPrice(jsonPurchaseOrderProduct.getProductPrice())
+                    .setTax(jsonPurchaseOrderProduct.getTax())
                     .setProductDiscount(discountIfAny ? jsonPurchaseOrderProduct.getProductPrice() : discountedPrice);
             }
 
@@ -587,6 +592,7 @@ public class PurchaseOrderService {
                 .setPurchaseOrderId(purchaseOrder.getId());
             purchaseOrderProducts.add(purchaseOrderProduct);
             computedOrderPrice = computedOrderPrice + purchaseOrderProduct.computeCost();
+            computedTax = computedTax + purchaseOrderProduct.computeTax();
         }
 
         if (StringUtils.isBlank(purchaseOrder.getOrderPrice())) {
@@ -595,7 +601,7 @@ public class PurchaseOrderService {
         }
 
         /* Check if total price computed and submitted is same. */
-        if (computedOrderPrice - storeDiscount != Integer.parseInt(purchaseOrder.getOrderPrice()) && !jsonPurchaseOrder.isCustomized()) {
+        if (computedOrderPrice + computedTax - storeDiscount != purchaseOrder.total() && !jsonPurchaseOrder.isCustomized()) {
             LOG.error("Computed order price {} and submitted order price {}", computedOrderPrice, purchaseOrder.getOrderPrice());
             throw new PriceMismatchException("Price sent and computed does not match");
         }
