@@ -64,13 +64,13 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
 
             int i = 0;
             for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
-                LOG.info("Added purchaseOrderProducts id={}", purchaseOrderProduct.getId());
+                LOG.info("Adding purchaseOrderProducts id={}", purchaseOrderProduct.getId());
 
                 MapSqlParameterSource namedParameters = new MapSqlParameterSource();
                 namedParameters.addValue("id", purchaseOrderProduct.getId());
                 namedParameters.addValue("pn", purchaseOrderProduct.getProductName());
                 namedParameters.addValue("pp", purchaseOrderProduct.getProductPrice());
-                namedParameters.addValue("ta", purchaseOrderProduct.getTax());
+                namedParameters.addValue("ta", purchaseOrderProduct.getTax().getName());
                 namedParameters.addValue("pd", purchaseOrderProduct.getProductDiscount());
                 namedParameters.addValue("pt", null == purchaseOrderProduct.getProductType() ? null : purchaseOrderProduct.getProductType().getName());
                 namedParameters.addValue("uv", purchaseOrderProduct.getUnitValue());
