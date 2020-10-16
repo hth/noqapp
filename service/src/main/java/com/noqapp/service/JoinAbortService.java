@@ -245,6 +245,7 @@ public class JoinAbortService {
             .setCodeQR(bizStore.getCodeQR())
             .setBusinessType(bizStore.getBusinessType())
             .setOrderPrice(String.valueOf(bizStore.getProductPrice()))
+            .setTax(String.valueOf(bizStore.getTax().getValue().intValue()))
             .setQueueUserId(purchaserQid)
             .setExpectedServiceBegin(jsonToken.getExpectedServiceBegin())
             .setToken(jsonToken.getToken())
@@ -254,6 +255,7 @@ public class JoinAbortService {
         jsonPurchaseOrder.addJsonPurchaseOrderProduct(new JsonPurchaseOrderProduct()
             .setProductId(bizStore.getId())
             .setProductPrice(bizStore.getProductPrice())
+            .setTax(bizStore.getTax())
             .setProductQuantity(1)
             .setProductName(bizStore.getDisplayName()));
 

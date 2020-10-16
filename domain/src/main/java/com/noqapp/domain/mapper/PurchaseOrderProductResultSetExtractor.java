@@ -3,6 +3,7 @@ package com.noqapp.domain.mapper;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.TaxEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,24 +23,25 @@ public class PurchaseOrderProductResultSetExtractor implements ResultSetExtracto
     private static final int ID = 1;
     private static final int PN = 2;
     private static final int PP = 3;
-    private static final int PD = 4;
-    private static final int PT = 5;
-    private static final int UV = 6;
-    private static final int UM = 7;
-    private static final int PS = 8;
-    private static final int PQ = 9;
-    private static final int PO = 10;
-    private static final int QID = 11;
-    private static final int BS = 12;
-    private static final int BN = 13;
-    private static final int QR = 14;
-    private static final int BT = 15;
+    private static final int TA = 4;
+    private static final int PD = 5;
+    private static final int PT = 6;
+    private static final int UV = 7;
+    private static final int UM = 8;
+    private static final int PS = 9;
+    private static final int PQ = 10;
+    private static final int PO = 11;
+    private static final int QID = 12;
+    private static final int BS = 13;
+    private static final int BN = 14;
+    private static final int QR = 15;
+    private static final int BT = 16;
 
-    private static final int V = 16;
-    private static final int U = 17;
-    private static final int C = 18;
-    private static final int A = 19;
-    private static final int D = 20;
+    private static final int V = 17;
+    private static final int U = 18;
+    private static final int C = 19;
+    private static final int A = 20;
+    private static final int D = 21;
 
     @Override
     public PurchaseOrderProductEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
@@ -47,6 +49,7 @@ public class PurchaseOrderProductResultSetExtractor implements ResultSetExtracto
         purchaseOrderProduct.setId(rs.getString(ID));
         purchaseOrderProduct.setProductName(rs.getString(PN));
         purchaseOrderProduct.setProductPrice(rs.getInt(PP));
+        purchaseOrderProduct.setTax(TaxEnum.valueOf(rs.getString(TA)));
         purchaseOrderProduct.setProductDiscount(rs.getInt(PD));
         purchaseOrderProduct.setProductType(StringUtils.isBlank(rs.getString(PT)) ? null : ProductTypeEnum.valueOf(rs.getString(PT)));
         purchaseOrderProduct.setUnitValue(rs.getInt(UV));

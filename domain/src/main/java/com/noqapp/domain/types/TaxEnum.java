@@ -9,13 +9,13 @@ import java.util.Map;
  * 10/8/20 11:03 AM
  */
 public enum TaxEnum {
-    ZE("ZE", "Zero", new BigDecimal(0)),
-    PT("PT", "PointTwoFive", new BigDecimal(25).movePointLeft(2)),
-    TH("TH", "Three",  new BigDecimal(3)),
-    FI("FI", "Five",  new BigDecimal(5)),
-    TW("TW", "Twelve",  new BigDecimal(12)),
-    ET("ET", "Eighteen",  new BigDecimal(18)),
-    TE("TE", "TwentyEight",  new BigDecimal(28));
+    ZE("ZE", "0%", new BigDecimal(0)),
+    PT("PT", "0.25%", new BigDecimal(25).movePointLeft(2)),
+    TH("TH", "3%", new BigDecimal(3)),
+    FI("FI", "5%", new BigDecimal(5)),
+    TW("TW", "12%", new BigDecimal(12)),
+    ET("ET", "18%", new BigDecimal(18)),
+    TE("TE", "28%", new BigDecimal(28));
 
     private final String name;
     private final String description;

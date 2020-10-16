@@ -11,6 +11,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
+import com.noqapp.domain.types.TaxEnum;
 import com.noqapp.domain.types.WalkInStateEnum;
 
 import com.google.maps.model.LatLng;
@@ -237,6 +238,9 @@ public class BizStoreEntity extends BaseEntity {
     @Field("PP")
     private int productPrice;
 
+    @Field("TA")
+    private TaxEnum tax = TaxEnum.ZE;
+
     @Field("CF")
     private int cancellationPrice;
 
@@ -268,7 +272,7 @@ public class BizStoreEntity extends BaseEntity {
     //******************************************/
 
     /* Contains Id if a task is assigned. */
-    @Field("TA")
+    @Field("SC")
     private String scheduledTaskId;
 
     @Field("ES")
@@ -792,6 +796,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setProductPrice(int productPrice) {
         this.productPrice = productPrice;
+        return this;
+    }
+
+    public TaxEnum getTax() {
+        return tax;
+    }
+
+    public BizStoreEntity setTax(TaxEnum tax) {
+        this.tax = tax;
         return this;
     }
 

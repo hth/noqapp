@@ -17,6 +17,7 @@ import com.noqapp.domain.json.JsonQueuedPerson;
 import com.noqapp.domain.json.medical.JsonUserMedicalProfile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
+import com.noqapp.domain.types.TaxEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
@@ -765,6 +766,7 @@ public class MedicalRecordService {
             JsonPurchaseOrderProduct jsonPurchaseOrderProduct = new JsonPurchaseOrderProduct()
                 .setProductName(jsonMedicalMedicine.getName())
                 .setProductPrice(0)
+                .setTax(TaxEnum.ZE)
                 .setProductDiscount(0)
                 .setProductId(null)
                 .setProductQuantity(jsonMedicalMedicine.getTimes());

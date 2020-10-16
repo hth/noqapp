@@ -34,16 +34,16 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
     private static final Logger LOG = LoggerFactory.getLogger(PurchaseOrderProductManagerJDBCImpl.class);
 
     private static final String insert =
-        "INSERT INTO PURCHASE_ORDER_PRODUCT (ID, PN, PP, PD, PT, UV, UM, PS, PQ, PO, QID, BS, BN, QR, BT, V, U, C, A, D)" +
+        "INSERT INTO PURCHASE_ORDER_PRODUCT (ID, PN, PP, TA, PD, PT, UV, UM, PS, PQ, PO, QID, BS, BN, QR, BT, V, U, C, A, D)" +
             " VALUES " +
-            "(:id,:pn,:pp,:pd,:pt,:uv,:um,:ps,:pq,:po,:qid,:bs,:bn,:qr,:bt,:v,:u,:c,:a,:d)";
+            "(:id,:pn,:pp,:ta,:pd,:pt,:uv,:um,:ps,:pq,:po,:qid,:bs,:bn,:qr,:bt,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM PURCHASE_ORDER_PRODUCT WHERE ID = :id";
     private static final String delete_by_purchaseOrder = "DELETE FROM PURCHASE_ORDER_PRODUCT WHERE PO = :po";
     private static final String delete_by_purchaseOrderId = "DELETE FROM PURCHASE_ORDER_PRODUCT WHERE PO = ?";
 
     private static final String query_by_purchaseOrder =
-            "SELECT ID, PN, PP, PD, PT, UV, UM, PS, PQ, PO, QID, BS, BN, QR, BT, V, U, C, A, D" +
+            "SELECT ID, PN, PP, TA, PD, PT, UV, UM, PS, PQ, PO, QID, BS, BN, QR, BT, V, U, C, A, D" +
                     " FROM " +
                     "PURCHASE_ORDER_PRODUCT WHERE PO = ? " +
                     "ORDER BY C DESC";
@@ -70,6 +70,7 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
                 namedParameters.addValue("id", purchaseOrderProduct.getId());
                 namedParameters.addValue("pn", purchaseOrderProduct.getProductName());
                 namedParameters.addValue("pp", purchaseOrderProduct.getProductPrice());
+                namedParameters.addValue("ta", purchaseOrderProduct.getTax());
                 namedParameters.addValue("pd", purchaseOrderProduct.getProductDiscount());
                 namedParameters.addValue("pt", null == purchaseOrderProduct.getProductType() ? null : purchaseOrderProduct.getProductType().getName());
                 namedParameters.addValue("uv", purchaseOrderProduct.getUnitValue());
