@@ -29,7 +29,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
@@ -395,10 +394,6 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public List<QueueEntity> findAllNotQueuedByQid(String qid) {
-        //todo (hth) Add distinct
-//        DBObject query = QueryBuilder.start("QID").is(qid).and("QS").notEquals(QueueUserStateEnum.Q).and("C").get();
-//        return mongoTemplate.getCollection(TABLE).distinct("QR", query);
-
         return mongoTemplate.find(
             query(where("QS").nin(QueueUserStateEnum.Q, QueueUserStateEnum.I)
                 .orOperator(
