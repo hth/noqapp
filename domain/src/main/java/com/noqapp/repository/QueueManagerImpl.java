@@ -29,7 +29,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
@@ -395,10 +394,6 @@ public class QueueManagerImpl implements QueueManager {
 
     @Override
     public List<QueueEntity> findAllNotQueuedByQid(String qid) {
-        //todo (hth) Add distinct
-//        DBObject query = QueryBuilder.start("QID").is(qid).and("QS").notEquals(QueueUserStateEnum.Q).and("C").get();
-//        return mongoTemplate.getCollection(TABLE).distinct("QR", query);
-
         return mongoTemplate.find(
             query(where("QS").nin(QueueUserStateEnum.Q, QueueUserStateEnum.I)
                 .orOperator(
@@ -428,8 +423,7 @@ public class QueueManagerImpl implements QueueManager {
                 )
             ),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -437,8 +431,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("QS").ne(QueueUserStateEnum.I)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -446,8 +439,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("QS").ne(QueueUserStateEnum.I)).with(Sort.by(ASC, "TN")),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -455,8 +447,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.I).and("TI").exists(true)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -473,8 +464,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.count(
             query(where("QR").is(codeQR)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -482,8 +472,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.find(
             query(where("QR").is(codeQR)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -492,8 +481,7 @@ public class QueueManagerImpl implements QueueManager {
             query(where("id").is(id)),
             entityUpdate(new Update().inc("NC", 1)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -502,8 +490,7 @@ public class QueueManagerImpl implements QueueManager {
             query(where("id").is(id)),
             update("NS", notifiedOnService),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -551,8 +538,7 @@ public class QueueManagerImpl implements QueueManager {
                     where("QS").is(QueueUserStateEnum.A))
             ).with(Sort.by(ASC, "TN")),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -560,8 +546,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.count(
             query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -589,8 +574,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.findOne(
             query(where("QR").is(codeQR).and("PH").is(phone).and("QS").is(QueueUserStateEnum.Q)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -599,8 +583,7 @@ public class QueueManagerImpl implements QueueManager {
             query(where("QR").is(codeQR).and("DID").is(did).and("TN").is(token)),
             entityUpdate(update("PH", customerPhone)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -615,8 +598,7 @@ public class QueueManagerImpl implements QueueManager {
                     .set("A", false)
             ),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
 
         return updateResult.getModifiedCount();
     }
@@ -627,8 +609,7 @@ public class QueueManagerImpl implements QueueManager {
             query(where("id").is(id)),
             entityUpdate(update("SB", new Date())),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -638,8 +619,7 @@ public class QueueManagerImpl implements QueueManager {
             entityUpdate(update("QID", changeToQueueUserId)),
             FindAndModifyOptions.options().returnNew(true),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -647,8 +627,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("QS").is(QueueUserStateEnum.Q)).with(Sort.by(DESC, "TN")).limit(10),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -656,8 +635,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("RA").gt(0)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -665,8 +643,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.find(
             query(where("BN").is(bizNameId).and("RA").gt(0)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -674,8 +651,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.findOne(
             query(where("QR").is(codeQR).and("RR").is(recordReferenceId)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -684,8 +660,7 @@ public class QueueManagerImpl implements QueueManager {
             query(where("QR").is(codeQR).and("QID").is(qid).and("TN").is(tokenNumber).and("TI").exists(false)),
             entityUpdate(update("TI", transactionId)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
 
         LOG.debug("update result={}", updateResult.getModifiedCount());
     }
@@ -695,8 +670,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.find(
             query(where("BN").is(bizNameId)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -719,8 +693,7 @@ public class QueueManagerImpl implements QueueManager {
         return mongoTemplate.count(
             query(where("BN").is(bizNameId)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -729,8 +702,7 @@ public class QueueManagerImpl implements QueueManager {
             query(where("QR").is(codeQR).and("TN").is(tokenNumber)),
             entityUpdate(update("CN", customerName).set("PH", customerPhone)),
             QueueEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 
     @Override
@@ -746,15 +718,13 @@ public class QueueManagerImpl implements QueueManager {
                 query(where("QID").is(qid).and("QR").is(codeQR).and("TN").is(tokenNumber)),
                 entityUpdate(update("PL", customerPriorityLevel).addToSet("CA", businessCustomerAttribute)),
                 QueueEntity.class,
-                TABLE
-            );
+                TABLE);
         } else {
             mongoTemplate.updateFirst(
                 query(where("QID").is(qid).and("QR").is(codeQR).and("TN").is(tokenNumber)),
                 new Update().unset("PL").unset("CA"),
                 QueueEntity.class,
-                TABLE
-            );
+                TABLE);
         }
     }
 }
