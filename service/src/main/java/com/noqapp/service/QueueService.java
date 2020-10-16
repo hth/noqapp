@@ -195,11 +195,12 @@ public class QueueService {
                         purchaseOrder = purchaseOrderManagerJDBC.findOrderByTransactionId(queue.getQueueUserId(), queue.getTransactionId());
                         if (null == purchaseOrder) {
                             //TODO check when purchaseOrder is null
-                            LOG.error("Failed finding purchaseOrder={} displayName={} qid={} token={}",
+                            LOG.error("Failed finding purchaseOrder={} displayName={} qid={} token={} date={}",
                                 queue.getTransactionId(),
                                 queue.getDisplayName(),
                                 queue.getQueueUserId(),
-                                queue.getTokenNumber());
+                                queue.getTokenNumber(),
+                                queue.getCreated());
 
                             jsonPurchaseOrder = new JsonPurchaseOrder();
                         } else {
