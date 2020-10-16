@@ -15,8 +15,6 @@ import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
-import com.mongodb.ReadPreference;
-import com.mongodb.WriteConcern;
 import com.mongodb.client.DistinctIterable;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
@@ -31,6 +29,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
@@ -47,10 +46,10 @@ import java.util.Set;
  * Date: 1/2/17 8:32 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class QueueManagerImpl implements QueueManager {
@@ -401,7 +400,7 @@ public class QueueManagerImpl implements QueueManager {
 //        return mongoTemplate.getCollection(TABLE).distinct("QR", query);
 
         return mongoTemplate.find(
-            query(where("QS").ne(QueueUserStateEnum.Q)
+            query(where("QS").nin(QueueUserStateEnum.Q, QueueUserStateEnum.I)
                 .orOperator(
                     where("QID").is(qid),
                     where("GQ").is(qid)
