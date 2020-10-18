@@ -28,6 +28,7 @@ public abstract class AbstractDomain {
      * Converts this object to JSON representation;
      * do not use annotation as this breaks and content length is set to -1
      */
+    @Deprecated
     public String asJson() {
         try {
             ObjectMapper mapper = new ObjectMapper();
