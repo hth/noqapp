@@ -64,7 +64,7 @@ public class PurchaseOrderProductManagerJDBCImpl implements PurchaseOrderProduct
 
             int i = 0;
             for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
-                LOG.info("Adding purchaseOrderProducts id={}", purchaseOrderProduct.getId());
+                LOG.info("Batch add purchaseOrderProducts id={}", purchaseOrderProduct.getId());
 
                 MapSqlParameterSource namedParameters = new MapSqlParameterSource();
                 namedParameters.addValue("id", purchaseOrderProduct.getId());
