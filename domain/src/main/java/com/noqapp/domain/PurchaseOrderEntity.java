@@ -117,7 +117,7 @@ public class PurchaseOrderEntity extends BaseEntity {
     private int attemptToSendNotificationCounts = 0;
 
     @Field("OS")
-    private List<PurchaseOrderStateEnum> orderStates = new LinkedList<PurchaseOrderStateEnum>() {{
+    private List<PurchaseOrderStateEnum> orderStates = new LinkedList<>() {{
         add(PurchaseOrderStateEnum.IN);
     }};
 

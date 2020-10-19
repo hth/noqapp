@@ -998,7 +998,7 @@ public class MedicalRecordService {
     private List<String> getAllQIDsForGuardian(String qid) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
         List<UserProfileEntity> dependentUserProfiles = userProfileManager.findDependentProfilesByPhone(userProfile.getPhone());
-        List<String> queueUserIds = new LinkedList<String>() {{
+        List<String> queueUserIds = new LinkedList<>() {{
             add(qid);
         }};
 

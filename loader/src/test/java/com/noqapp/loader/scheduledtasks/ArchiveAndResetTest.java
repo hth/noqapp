@@ -105,7 +105,7 @@ class ArchiveAndResetTest {
         c.setServiceBeginTime(DateUtil.now().minusMinutes(10).toDate());
         c.setServiceEndTime(DateUtil.now().minusMinutes(0).toDate());
 
-        queues = new LinkedList<QueueEntity>() {{
+        queues = new LinkedList<>() {{
             add(a);
             add(b);
             add(c);
