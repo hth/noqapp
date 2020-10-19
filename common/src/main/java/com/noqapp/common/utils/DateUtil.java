@@ -245,6 +245,12 @@ public final class DateUtil {
         return ChronoUnit.DAYS.between(start, end);
     }
 
+    public static long getMinutesBetween(LocalDateTime start, LocalDateTime end) {
+        Assert.notNull(start, "Start date is null");
+        Assert.notNull(end, "End date is null");
+        return ChronoUnit.MINUTES.between(start, end);
+    }
+
     public static long getHoursBetween(LocalDateTime start, LocalDateTime end) {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");
@@ -263,24 +269,6 @@ public final class DateUtil {
         Assert.notNull(end, "End date is null");
         Interval interval = new Interval(start.getTime(), end.getTime());
         return interval.toPeriod(PeriodType.months()).getYears();
-    }
-
-    private static int getMillisBetween(Date start, Date end) {
-        Assert.notNull(start, "Start date is null");
-        Assert.notNull(end, "End date is null");
-        Interval interval = new Interval(start.getTime(), end.getTime());
-        return interval.toPeriod(PeriodType.millis()).getMillis();
-    }
-
-    public static int getSecondsBetween(Date start, Date end) {
-        return getMillisBetween(start, end) / 1000;
-    }
-
-    public static int getMinuteBetween(Date start, Date end) {
-        Assert.notNull(start, "Start date is null");
-        Assert.notNull(end, "End date is null");
-        Interval interval = new Interval(start.getTime(), end.getTime());
-        return interval.toPeriod(PeriodType.minutes()).getMinutes();
     }
 
     @Deprecated
