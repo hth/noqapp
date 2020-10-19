@@ -346,7 +346,7 @@ public class BusinessStatsMail {
                     "[" + text + ": " + "N/A" + "] (--)";
             }
 
-            int act = Integer.valueOf(actual);
+            int act = Integer.parseInt(actual);
             if (act < expected) {
                 return "Schedule [" + DateFormatter.convertMilitaryTo12HourFormat(expected) + "] " +
                     "[" + text + ": " + DateFormatter.convertMilitaryTo12HourFormat(act) + "] (Early)";
