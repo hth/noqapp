@@ -216,7 +216,7 @@ public class JsonQueue extends AbstractDomain {
     private Set<String> storeInteriorImages = new LinkedHashSet<>();
 
     @JsonProperty("pm")
-    private List<PaymentModeEnum> paymentModes = new LinkedList<PaymentModeEnum>() {{
+    private List<PaymentModeEnum> paymentModes = new LinkedList<>() {{
         add(PaymentModeEnum.CA);
         add(PaymentModeEnum.CC);
         add(PaymentModeEnum.DC);
@@ -224,7 +224,7 @@ public class JsonQueue extends AbstractDomain {
     }};
 
     @JsonProperty("dm")
-    private List<DeliveryModeEnum> deliveryModes = new LinkedList<DeliveryModeEnum>() {{
+    private List<DeliveryModeEnum> deliveryModes = new LinkedList<>() {{
         add(DeliveryModeEnum.HD);
         add(DeliveryModeEnum.TO);
     }};

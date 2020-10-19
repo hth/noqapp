@@ -70,7 +70,7 @@ public class MedicalRecordForm {
     }
 
     public MedicalRecordForm populatePhysicalHistoricalForm(List<MedicalPhysicalEntity> medicalPhysicals) {
-        medicalPhysicalHistoricals = new LinkedList<MedicalPhysicalForm>() {{
+        medicalPhysicalHistoricals = new LinkedList<>() {{
             for (MedicalPhysicalEntity medicalPhysical : medicalPhysicals) {
                 add(new MedicalPhysicalForm()
                     .setBloodPressure(medicalPhysical.getBloodPressure())

@@ -47,7 +47,7 @@ public enum CanteenStoreDepartmentEnum {
     }
 
     public static List<CanteenStoreDepartmentEnum> ordered() {
-        return new LinkedList<CanteenStoreDepartmentEnum>() {{
+        return new LinkedList<>() {{
             add(OG);
             add(OL);
             add(XG);
