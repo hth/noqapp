@@ -325,16 +325,16 @@ public class BizService {
             List<BizNameEntity> bizNameEntities = bizNameManager.findAllBizWithMatchingName(businessName);
             for (BizNameEntity bizName : bizNameEntities) {
                 List<BizStoreEntity> bizStores = bizStoreManager.findAllWithStartingAddressStartingPhone(
-                        bizAddress,
-                        bizPhone,
-                        bizName);
+                    bizAddress,
+                    bizPhone,
+                    bizName);
                 bizStoreEntities.addAll(bizStores);
             }
         } else {
             List<BizStoreEntity> bizStores = bizStoreManager.findAllWithStartingAddressStartingPhone(
-                    bizAddress,
-                    bizPhone,
-                    null);
+                bizAddress,
+                bizPhone,
+                null);
             bizStoreEntities.addAll(bizStores);
         }
         return bizStoreEntities;
@@ -481,24 +481,24 @@ public class BizService {
     }
 
     public String buildWebLocationForStore(
-            String area,
-            String town,
-            String stateShortName,
-            String countryShortNameStore,
-            String name,
-            String displayName,
-            String storeId,
-            String bizNameWebLocation
+        String area,
+        String town,
+        String stateShortName,
+        String countryShortNameStore,
+        String name,
+        String displayName,
+        String storeId,
+        String bizNameWebLocation
     ) {
 
         String webLocation = computeWebLocationForStore(
-                area,
-                town,
-                stateShortName,
-                countryShortNameStore,
-                name,
-                displayName,
-                bizNameWebLocation);
+            area,
+            town,
+            stateShortName,
+            countryShortNameStore,
+            name,
+            displayName,
+            bizNameWebLocation);
 
         while (doesStoreWebLocationExists(webLocation, storeId)) {
             webLocation = CommonUtil.replaceLast(webLocation, "/", "/" + RandomString.newInstance(3).nextString() + "/");
@@ -528,13 +528,13 @@ public class BizService {
     }
 
     private String computeWebLocationForStore(
-            String area,
-            String town,
-            String stateShortName,
-            String countryShortNameStore,
-            String name,
-            String displayName,
-            String bizNameWebLocation
+        String area,
+        String town,
+        String stateShortName,
+        String countryShortNameStore,
+        String name,
+        String displayName,
+        String bizNameWebLocation
     ) {
         try {
             String webLocation;
@@ -624,8 +624,8 @@ public class BizService {
         List<BizNameEntity> bizNames = bizNameManager.findAllBizWithMatchingName(businessName);
         for (BizNameEntity bizName : bizNames) {
             JsonBusiness jsonBusiness = new JsonBusiness()
-                    .setBizId(bizName.getId())
-                    .setBizName(bizName.getBusinessName());
+                .setBizId(bizName.getId())
+                .setBizName(bizName.getBusinessName());
 
             jsonBusinesses.add(jsonBusiness);
         }
