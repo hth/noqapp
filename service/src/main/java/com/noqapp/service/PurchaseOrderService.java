@@ -480,7 +480,7 @@ public class PurchaseOrderService {
         if (jsonPurchaseOrder.getDeliveryMode() == DeliveryModeEnum.QS) {
             /* Find person being served, check if its the person that would get discounted service. */
             QueueEntity queue = queueManager.findOne(jsonPurchaseOrder.getCodeQR(), jsonPurchaseOrder.getToken());
-            Integer lastVisited = daysBetweenService(queue.getQueueUserId(), bizStore);
+            Long lastVisited = daysBetweenService(queue.getQueueUserId(), bizStore);
             if (null != lastVisited) {
                 if (lastVisited <= bizStore.getFreeFollowupDays()) {
                     discountIfAny = true;
@@ -712,7 +712,7 @@ public class PurchaseOrderService {
     }
 
     /** Days between now and previous visit. */
-    private Integer daysBetweenService(String qid, BizStoreEntity bizStore) {
+    private Long daysBetweenService(String qid, BizStoreEntity bizStore) {
         Date lastVisited = purchaseOrderManagerJDBC.clientVisitedStoreAndServicedDate(bizStore.getCodeQR(), qid);
         if (null == lastVisited) {
             return null;

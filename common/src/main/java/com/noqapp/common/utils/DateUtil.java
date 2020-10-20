@@ -156,7 +156,7 @@ public final class DateUtil {
      * @return
      */
     @SuppressWarnings("unused")
-    public static int getDaysBetween_UTC(String start, String end) {
+    public static long getDaysBetween_UTC(String start, String end) {
         Assert.isTrue(StringUtils.isNotBlank(start), "Start date string is null");
         Assert.isTrue(StringUtils.isNotBlank(end), "End date string is null");
         return getDaysBetween(convertToDate(start, ZoneOffset.UTC), convertToDate(end, ZoneOffset.UTC));
@@ -235,11 +235,10 @@ public final class DateUtil {
      * @param end
      * @return
      */
-    public static int getDaysBetween(Date start, Date end) {
+    public static long getDaysBetween(Date start, Date end) {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");
-        Interval interval = new Interval(start.getTime(), end.getTime());
-        return interval.toPeriod(PeriodType.days()).getDays();
+        return getDaysBetween(DateUtil.asLocalDate(start), DateUtil.asLocalDate(end));
     }
 
     public static long getDaysBetween(LocalDate start, LocalDate end) {
