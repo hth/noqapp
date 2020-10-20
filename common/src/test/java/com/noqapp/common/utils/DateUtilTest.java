@@ -43,7 +43,7 @@ class DateUtilTest {
 
     @Test
     void dayAtTimezone() {
-        String day = Formatter.toDefaultDateFormatAsString(DateUtil.dateAtTimeZone("Asia/Calcutta"));
+        String day = DateUtil.dateToString(DateUtil.dateAtTimeZone("Asia/Calcutta"));
         assertEquals(day, day, "Both dates should be same");
     }
 

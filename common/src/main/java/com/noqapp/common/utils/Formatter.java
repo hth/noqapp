@@ -58,7 +58,6 @@ public final class Formatter {
     /* Defaults to US. */
     private static final String FORMAT_TO_US = "US";
     private static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
-    private static final SimpleDateFormat SDF_DEFAULT = new SimpleDateFormat("yyyy-MM-dd");
 
     public static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
     private static DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("hh:mm a");
@@ -110,10 +109,6 @@ public final class Formatter {
 
     public static String toSmallDate(Date date) {
         return SDF_SMALL.format(date);
-    }
-
-    public static String toDefaultDateFormatAsString(Date date) {
-        return SDF_DEFAULT.format(date);
     }
 
     /**
