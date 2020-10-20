@@ -234,6 +234,10 @@ public class PurchaseOrderProductEntity extends BaseEntity {
 
     @Transient
     public int computeTax() {
-        return new BigDecimal(productPrice - productDiscount).multiply(tax.getValue().movePointLeft(2)).intValue();
+        BigDecimal taxCompute = new BigDecimal(productPrice - productDiscount);
+        if (taxCompute.intValue() <= 0) {
+            return 0;
+        }
+        return taxCompute.multiply(tax.getValue().movePointLeft(2)).intValue();
     }
 }

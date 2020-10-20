@@ -1,11 +1,13 @@
 package com.noqapp.service.transaction;
 
+import static com.noqapp.common.utils.Constants.MINUTES_05;
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.StoreProductEntity;
@@ -19,8 +21,8 @@ import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.StoreProductManager;
 import com.noqapp.service.exceptions.FailedTransactionException;
 import com.noqapp.service.exceptions.PurchaseOrderCancelException;
-import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
+import com.noqapp.service.exceptions.QueueAbortPaidPastDurationException;
 import com.noqapp.service.payment.CashfreeService;
 
 import com.mongodb.ClientSessionOptions;
@@ -34,14 +36,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -54,6 +57,8 @@ import java.util.Objects;
 public class TransactionService {
     private static final Logger LOG = LoggerFactory.getLogger(TransactionService.class);
 
+    private int preventPaidAbortBeforeHours;
+
     private MongoOperations mongoOperations;
     private MongoTransactionManager mongoTransactionManager;
     private PurchaseOrderManager purchaseOrderManager;
@@ -64,6 +69,9 @@ public class TransactionService {
 
     @Autowired
     public TransactionService(
+        @Value("${preventPaidAbortBeforeHours:2}")
+        int preventPaidAbortBeforeHours,
+
         MongoOperations mongoOperations,
         MongoTransactionManager mongoTransactionManager,
         PurchaseOrderManager purchaseOrderManager,
@@ -72,6 +80,8 @@ public class TransactionService {
         CashfreeService cashfreeService,
         List<ServerAddress> mongoHosts
     ) {
+        this.preventPaidAbortBeforeHours = preventPaidAbortBeforeHours;
+
         this.mongoOperations = mongoOperations;
         this.mongoTransactionManager = mongoTransactionManager;
         this.purchaseOrderManager = purchaseOrderManager;
@@ -180,46 +190,14 @@ public class TransactionService {
         boolean priceIsPositive = new BigDecimal(purchaseOrderBeforeCancel.orderPriceForTransaction()).intValue() > 0;
         if (priceIsPositive && null != purchaseOrderBeforeCancel.getTransactionVia()) {
             switch (purchaseOrderBeforeCancel.getTransactionVia()) {
+                case I:
                 case E:
-                    switch (purchaseOrderBeforeCancel.getBusinessType().getMessageOrigin()) {
-                        case O:
-                            switch (purchaseOrderBeforeCancel.getPresentOrderState()) {
-                                case IN:
-                                case PC:
-                                case VB:
-                                case IB:
-                                case FO:
-                                case PO:
-                                case NM:
-                                    LOG.warn("Order Payment performed outside of NoQueue. " +
-                                        "Cancel is prevented {} by client. Visit business as refund is due.", transactionId);
-                                    throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
-                                case OP:
-                                case PR:
-                                case RP:
-                                case RD:
-                                case OW:
-                                case LO:
-                                case FD:
-                                case DA:
-                                case OD:
-                                case CO:
-                                    /* Should not reach here. But for safe condition taking care of it. */
-                                    LOG.error("Cannot cancel order state, payment via {} {}. Cannot cancel",
-                                        purchaseOrderBeforeCancel.getTransactionVia(), transactionId);
-                                    throw new PurchaseOrderCancelException("Cannot cancel this transaction");
-                            }
-                            break;
-                        case Q:
-                            LOG.warn("Queue Payment performed outside of NoQueue. " +
-                                "Cancel is prevented {} by client. Visit business as refund is due.", transactionId);
-                            throw new PurchaseOrderRefundExternalException("Refund failed when not paid through NoQueue");
-                    }
+                    isTransactionCancellationAllowed(purchaseOrderBeforeCancel);
+                    LOG.info("Cancel and process refund for {} {}", purchaseOrderBeforeCancel.orderPriceForTransaction(), transactionId);
                     break;
                 case U:
                     LOG.error("Payment via {} {}. Cannot cancel", purchaseOrderBeforeCancel.getTransactionVia(), transactionId);
                     throw new PurchaseOrderCancelException("Cannot cancel this transaction");
-                case I:
                 default:
                     LOG.info("Cancel and process refund for {} {}", purchaseOrderBeforeCancel.orderPriceForTransaction(), transactionId);
             }
@@ -297,6 +275,42 @@ public class TransactionService {
             throw new FailedTransactionException("Failed to complete transaction");
         } finally {
             session.close();
+        }
+    }
+
+    private void isTransactionCancellationAllowed(PurchaseOrderEntity purchaseOrder) {
+        switch (purchaseOrder.getBusinessType().getTransactionCancel()) {
+            case HTA:
+                //When less than 2 hours limit cancellation
+                long hours = DateUtil.getHoursBetween(DateUtil.asLocalDateTime(purchaseOrder.getExpectedServiceBegin()), LocalDateTime.now());
+                if (preventPaidAbortBeforeHours <= hours) {
+                    LOG.warn("Within hour limit, prevent cancellation");
+                    throw new QueueAbortPaidPastDurationException("Please contact business to cancel this transaction.");
+                }
+
+                break;
+            case MEA:
+                if (purchaseOrder.getOrderStates().contains(PurchaseOrderStateEnum.OP)) {
+                    throw new PurchaseOrderCancelException("Order is being prepared. Cannot be cancelled, contact business to cancel this transaction.");
+                }
+                break;
+            case TMA:
+                long minutes = DateUtil.getMinutesBetween(DateUtil.asLocalDateTime(purchaseOrder.getCreated()), LocalDateTime.now());
+                if (MINUTES_05 <= minutes) {
+                    LOG.warn("Within minute limit, prevent cancellation");
+                    throw new QueueAbortPaidPastDurationException("Please contact business to cancel this transaction.");
+                }
+
+                if (purchaseOrder.getOrderStates().contains(PurchaseOrderStateEnum.OP)) {
+                    LOG.warn("Business accepted order, prevent cancellation");
+                    throw new PurchaseOrderCancelException("Please contact business to cancel this transaction.");
+                }
+                break;
+            case TNS:
+                //Do nothing
+                break;
+            default:
+                //Do nothing
         }
     }
 

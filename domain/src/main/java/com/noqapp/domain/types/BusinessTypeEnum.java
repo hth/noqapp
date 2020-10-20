@@ -5,6 +5,10 @@ import static com.noqapp.domain.types.BusinessSupportEnum.OD;
 import static com.noqapp.domain.types.BusinessSupportEnum.QQ;
 import static com.noqapp.domain.types.MessageOriginEnum.O;
 import static com.noqapp.domain.types.MessageOriginEnum.Q;
+import static com.noqapp.domain.types.TransactionCancelEnum.MEA;
+import static com.noqapp.domain.types.TransactionCancelEnum.HTA;
+import static com.noqapp.domain.types.TransactionCancelEnum.TMA;
+import static com.noqapp.domain.types.TransactionCancelEnum.TNS;
 
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -17,47 +21,60 @@ import java.util.stream.Stream;
  * Date: 11/23/16 4:29 PM
  */
 public enum BusinessTypeEnum {
-    RS("RS", "Restaurant", O, "Store", OD),
-    RSQ("RSQ", "Restaurant (Queue Only)", Q, "Store", OQ),
+    RS("RS", "Restaurant", O, "Store", OD, TMA),
+    RSQ("RSQ", "Restaurant (Queue Only)", Q, "Store", OQ, TNS),
 
-    FT("FT", "Food Truck", O, "Store", OD),
-    FTQ("FTQ", "Food Truck (Queue Only)", Q, "Store", OQ),
+    FT("FT", "Food Truck", O, "Store", OD, TMA),
+    FTQ("FTQ", "Food Truck (Queue Only)", Q, "Store", OQ, TNS),
 
-    BA("BA", "Bar", O, "Store", OD),
-    BAQ("BAQ", "Bar (Queue Only)", Q, "Store", OQ),
+    BA("BA", "Bar", O, "Store", OD, TMA),
+    BAQ("BAQ", "Bar (Queue Only)", Q, "Store", OQ, TNS),
 
-    ST("ST", "Generic Store", O, "Store", OD),
-    STQ("STQ", "Generic Store (Queue Online)", Q, "Store", OQ),
+    ST("ST", "Generic Store", O, "Store", OD, MEA),
+    STQ("STQ", "Generic Store (Queue Online)", Q, "Store", OQ, TNS),
 
-    GS("GS", "Grocery Store", O, "Store", OD),
-    GSQ("GSQ", "Grocery Store (Queue Only)", Q, "Store", OQ),
+    GS("GS", "Grocery Store", O, "Store", OD, MEA),
+    GSQ("GSQ", "Grocery Store (Queue Only)", Q, "Store", OQ, TNS),
 
-    CF("CF", "Cafeteria", O, "Store", OD),
-    CFQ("CFQ", "Cafeteria (Queue Online)", Q, "Store", OQ),
+    CF("CF", "Cafeteria", O, "Store", OD, TMA),
+    CFQ("CFQ", "Cafeteria (Queue Online)", Q, "Store", OQ, TNS),
 
-    CD("CD", "CSD", O, "Store", OD),
-    CDQ("CDQ", "CSD (Queue Online)", Q, "Store", OQ),
+    CD("CD", "CSD", O, "Store", OD, MEA),
+    CDQ("CDQ", "CSD (Queue Online)", Q, "Store", OQ, TNS),
 
-    SM("SM", "Shopping Mall", Q, "Queue", QQ),
-    MT("MT", "Movie Theater", Q, "Queue", QQ),
-    SC("SC", "School", Q, "Queue", QQ),
-    DO("DO", "Hospital/Doctor", Q, "Queue", QQ),
-    HS("HS", "Health Care Services", O, "Store", OD),
-    PH("PH", "Pharmacy", O, "Store", OD),                //Users cannot directly order these, as these have to be prescribed
-    PW("PW", "Place of Worship", Q, "Queue", QQ),
-    MU("MU", "Museum", Q, "Queue", QQ),
-    TA("TA", "Tourist Attraction", Q, "Queue", QQ),
-    NC("NC", "Night Club", Q, "Queue", QQ),
-    BK("BK", "Bank", Q, "Queue", QQ),
-    PA("PA", "Park", Q, "Queue", QQ);
+    SM("SM", "Shopping Mall", Q, "Queue", QQ, TNS),
+    MT("MT", "Movie Theater", Q, "Queue", QQ, TNS),
+    SC("SC", "School", Q, "Queue", QQ, TNS),
+
+    //For health service
+    DO("DO", "Hospital/Doctor", Q, "Queue", QQ, HTA),
+    HS("HS", "Health Care Services", O, "Store", OD, HTA),
+    //Users cannot directly order these, as these have to be prescribed
+    PH("PH", "Pharmacy", O, "Store", OD, HTA),
+
+    //To be decided on supported TransactionCancel for all the below condition
+    PW("PW", "Place of Worship", Q, "Queue", QQ, TNS),
+    MU("MU", "Museum", Q, "Queue", QQ, TNS),
+    TA("TA", "Tourist Attraction", Q, "Queue", QQ, TNS),
+    NC("NC", "Night Club", Q, "Queue", QQ, TNS),
+    BK("BK", "Bank", Q, "Queue", QQ, TNS),
+    PA("PA", "Park", Q, "Queue", QQ, TNS);
 
     private final String description;
     private final String name;
     private final MessageOriginEnum messageOrigin;
     private final String classifierTitle;
     private final BusinessSupportEnum businessSupport;
+    private final TransactionCancelEnum transactionCancel;
 
-    BusinessTypeEnum(String name, String description, MessageOriginEnum messageOrigin, String classifierTitle, BusinessSupportEnum businessSupport) {
+    BusinessTypeEnum(
+        String name,
+        String description,
+        MessageOriginEnum messageOrigin,
+        String classifierTitle,
+        BusinessSupportEnum businessSupport,
+        TransactionCancelEnum transactionCancel
+    ) {
         this.name = name;
         this.description = description;
         switch (messageOrigin) {
@@ -70,6 +87,7 @@ public enum BusinessTypeEnum {
         }
         this.classifierTitle = classifierTitle;
         this.businessSupport = businessSupport;
+        this.transactionCancel = transactionCancel;
     }
 
     public String getName() {
@@ -90,6 +108,10 @@ public enum BusinessTypeEnum {
 
     public BusinessSupportEnum getBusinessSupport() {
         return businessSupport;
+    }
+
+    public TransactionCancelEnum getTransactionCancel() {
+        return transactionCancel;
     }
 
     public static List<BusinessTypeEnum> asList() {

@@ -66,6 +66,7 @@ import com.noqapp.service.exceptions.PurchaseOrderNegativeException;
 import com.noqapp.service.exceptions.PurchaseOrderProductNFException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundExternalException;
 import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
+import com.noqapp.service.exceptions.QueueAbortPaidPastDurationException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.StoreInActiveException;
 import com.noqapp.service.exceptions.StorePreventJoiningException;
@@ -263,7 +264,12 @@ public class PurchaseOrderService {
                 storeProductService.changeInventoryCount(purchaseOrderProduct.getProductId(), purchaseOrderProduct.getProductQuantity());
             }
             return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
-        } catch (PurchaseOrderRefundPartialException | PurchaseOrderRefundExternalException | PurchaseOrderCancelException e) {
+        } catch (
+            PurchaseOrderRefundPartialException |
+            PurchaseOrderRefundExternalException |
+            PurchaseOrderCancelException |
+            QueueAbortPaidPastDurationException e
+        ) {
             LOG.warn("Failed cancel order reason={}", e.getLocalizedMessage());
             throw e;
         } catch (Exception e) {
@@ -488,6 +494,7 @@ public class PurchaseOrderService {
                         new JsonPurchaseOrderProduct()
                             .setProductName("Follow-up discount before " + lastVisited + " days")
                             .setProductPrice(-bizStore.getProductPrice())
+                            .setTax(bizStore.getTax())
                             .setProductQuantity(1)
                     );
 
@@ -505,6 +512,7 @@ public class PurchaseOrderService {
                         new JsonPurchaseOrderProduct()
                             .setProductName("Follow-up discount within " + lastVisited + " days")
                             .setProductPrice(-bizStore.getDiscountedFollowupProductPrice())
+                            .setTax(bizStore.getTax())
                             .setProductQuantity(1)
                     );
 
@@ -609,7 +617,7 @@ public class PurchaseOrderService {
         /* Check only when order is not placed by the system or via merchant. Skip price check when placed by merchant. */
         if (TokenServiceEnum.M != tokenService) {
             /* Can be narrowed down to pharmacy, lab or other Medical Services like. */
-            if (Integer.parseInt(purchaseOrder.getOrderPrice()) <= 1) {
+            if (purchaseOrder.isTransactionNotSupported()) {
                 LOG.error("Computed order price is less than 1 {} and submitted order price {}", computedOrderPrice, purchaseOrder.getOrderPrice());
                 throw new PurchaseOrderNegativeException("Order price cannot be negative");
             }
