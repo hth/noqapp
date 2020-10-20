@@ -170,7 +170,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     @Override
     public List<ScheduleAppointmentEntity> findAllPastAppointments(String qid, int untilDaysInPast) {
         return mongoTemplate.find(
-            query(where("QID").is(qid).and("SD").lte(Formatter.toDefaultDateFormatAsString(DateUtil.nowMidnightDate())).gte(Formatter.toDefaultDateFormatAsString(DateUtil.minusDays(untilDaysInPast)))),
+            query(where("QID").is(qid).and("SD").lte(DateUtil.dateToString(DateUtil.nowMidnightDate())).gte(DateUtil.dateToString(DateUtil.minusDays(untilDaysInPast)))),
             ScheduleAppointmentEntity.class,
             TABLE);
     }
@@ -181,11 +181,11 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
         if (untilDaysInFuture > 0) {
             query = query(where("QID").is(qid)
                 .and("AS").nin(AppointmentStatusEnum.C, AppointmentStatusEnum.R, AppointmentStatusEnum.S, AppointmentStatusEnum.W)
-                .and("SD").gte(Formatter.toDefaultDateFormatAsString(DateUtil.nowMidnightDate())).lte(Formatter.toDefaultDateFormatAsString(DateUtil.plusDays(untilDaysInFuture))));
+                .and("SD").gte(DateUtil.dateToString(DateUtil.nowMidnightDate())).lte(DateUtil.dateToString(DateUtil.plusDays(untilDaysInFuture))));
         } else {
             query = query(where("QID").is(qid)
                 .and("AS").nin(AppointmentStatusEnum.C, AppointmentStatusEnum.R, AppointmentStatusEnum.S, AppointmentStatusEnum.W)
-                .and("SD").gte(Formatter.toDefaultDateFormatAsString(DateUtil.nowMidnightDate())));
+                .and("SD").gte(DateUtil.dateToString(DateUtil.nowMidnightDate())));
         }
         return mongoTemplate.find(query, ScheduleAppointmentEntity.class, TABLE);
     }

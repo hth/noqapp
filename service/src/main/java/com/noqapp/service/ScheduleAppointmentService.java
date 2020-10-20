@@ -370,8 +370,8 @@ public class ScheduleAppointmentService {
 
         List<ScheduleAppointmentEntity> scheduleAppointments = scheduleAppointmentManager.findBookedAppointmentsForMonth(
             codeQR,
-            Formatter.toDefaultDateFormatAsString(startOfMonth),
-            Formatter.toDefaultDateFormatAsString(endOfMonth));
+            DateUtil.dateToString(startOfMonth),
+            DateUtil.dateToString(endOfMonth));
 
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
@@ -652,7 +652,7 @@ public class ScheduleAppointmentService {
     public void findAllUpComingAppointmentsByBizName(String bizNameId) {
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizNameId);
         for (BizStoreEntity bizStore : bizStores) {
-            String day = Formatter.toDefaultDateFormatAsString(DateUtil.dateAtTimeZone(bizStore.getTimeZone()));
+            String day = DateUtil.dateToString(DateUtil.dateAtTimeZone(bizStore.getTimeZone()));
             try (Stream<ScheduleAppointmentEntity> stream = scheduleAppointmentManager.findAllUpComingAppointmentsByBizStore(bizStore.getCodeQR(), day)) {
                 stream.iterator().forEachRemaining(scheduleAppointment -> scheduleAction(
                     scheduleAppointment.getId(),
