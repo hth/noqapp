@@ -15,10 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -57,7 +55,6 @@ public final class Formatter {
 
     /* Defaults to US. */
     private static final String FORMAT_TO_US = "US";
-    private static final SimpleDateFormat SDF_SMALL = new SimpleDateFormat("MM-dd-yyyy");
 
     public static DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("HHmm");
     private static DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("hh:mm a");
@@ -105,10 +102,6 @@ public final class Formatter {
             LOG.error("Error parsing phone={} countryShortName={}", phone, countryShortName);
             return false;
         }
-    }
-
-    public static String toSmallDate(Date date) {
-        return SDF_SMALL.format(date);
     }
 
     /**
