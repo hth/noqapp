@@ -209,8 +209,11 @@ public final class DateUtil {
     }
 
     public static Date convertDateStringOf_YYYY_MM_DD_ToDate(String date) {
-        LocalDate localDate = LocalDate.from(DTF_YYYY_MM_DD.parse(date));
-        return DateUtil.asDate(localDate);
+        return DateUtil.asDate(convertDateStringOf_YYYY_MM_DD_ToLocalDate(date));
+    }
+
+    public static LocalDate convertDateStringOf_YYYY_MM_DD_ToLocalDate(String date) {
+        return LocalDate.from(DTF_YYYY_MM_DD.parse(date));
     }
 
     public static String dateToISO_8601(Date date) {
@@ -257,18 +260,16 @@ public final class DateUtil {
         return ChronoUnit.HOURS.between(start, end);
     }
 
-    public static int getYearsBetween(Date start, Date end) {
+    public static long getMonthsBetween(LocalDate start, LocalDate end) {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");
-        Interval interval = new Interval(start.getTime(), end.getTime());
-        return interval.toPeriod(PeriodType.years()).getYears();
+        return ChronoUnit.MONTHS.between(start, end);
     }
 
-    public static int getMonthsBetween(Date start, Date end) {
+    public static long getYearsBetween(LocalDate start, LocalDate end) {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");
-        Interval interval = new Interval(start.getTime(), end.getTime());
-        return interval.toPeriod(PeriodType.months()).getYears();
+        return ChronoUnit.YEARS.between(start, end);
     }
 
     @Deprecated
