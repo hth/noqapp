@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
@@ -195,9 +196,9 @@ public class JsonProfessionalProfile extends AbstractDomain {
     }
 
     @JsonIgnore
-    public int experienceDuration() {
+    public long experienceDuration() {
         if (StringUtils.isNotBlank(practiceStart)) {
-            return DateUtil.getYearsBetween(DateUtil.convertToDate(practiceStart, ZoneOffset.UTC), new Date());
+            return DateUtil.getYearsBetween(DateUtil.convertDateStringOf_YYYY_MM_DD_ToLocalDate(practiceStart), LocalDate.now());
         }
 
         return 0;
