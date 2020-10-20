@@ -71,7 +71,7 @@ public class ProfessionalProfileValidator implements Validator {
             errors.rejectValue("monthYear",
                 "field.invalid",
                 new Object[]{"Date Achieved", form.getMonthYear()},
-                "Date Achieved should be of format " + DateUtil.SDF_YYYY_MM_DD.toPattern());
+                "Date Achieved should be of format " + DateUtil.YYYY_MM_DD);
         }
     }
 
@@ -88,7 +88,7 @@ public class ProfessionalProfileValidator implements Validator {
             errors.rejectValue("practiceStart",
                 "field.invalid",
                 new Object[]{"Practicing Since", form.getPracticeStart()},
-                "Practicing Since should be of format " + DateUtil.SDF_YYYY_MM_DD.toPattern());
+                "Practicing Since should be of format " + DateUtil.YYYY_MM_DD);
         }
     }
 

@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.util.Assert;
 
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
@@ -50,14 +49,15 @@ public final class DateUtil {
     private static final int HOUR_IN_SECONDS = MINUTE_IN_SECONDS * MINUTE_IN_SECONDS;
     public static final int HOURS = 24;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
+
     public static final DateTimeFormatter DTF_ISO = DateTimeFormatter.ofPattern(ISO8601_FMT, Locale.US);
-    public static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.US);
+    public static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern(YYYY_MM_DD, Locale.US);
     public static final DateTimeFormatter DTF_DD_MMM_YYYY = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.US);
     public static final DateTimeFormatter DTF_DD_MMM_YYYY_HH_MM = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a", Locale.US);
     private static final DateTimeFormatter DTF_YYYY_MM_DD_KK_MM = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
     public static final DateTimeFormatter DTF_HH_MM_SS_SSS = DateTimeFormatter.ofPattern("HHmmssSSS", Locale.US);
 
-    public static final SimpleDateFormat SDF_YYYY_MM_DD = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
 
     public enum DAY {TODAY, TOMORROW}
