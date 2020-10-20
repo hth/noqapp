@@ -7,8 +7,6 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
-import org.joda.time.PeriodType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
