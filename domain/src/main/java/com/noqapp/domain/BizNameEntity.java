@@ -155,13 +155,13 @@ public class BizNameEntity extends BaseEntity {
     private OnOffEnum priorityAccess = OnOffEnum.F;
 
     @Field("DV")
-    private Map<String, DataVisibilityEnum> dataVisibilities = new HashMap<String, DataVisibilityEnum>() {{
+    private Map<String, DataVisibilityEnum> dataVisibilities = new HashMap<>() {{
         put(UserLevelEnum.S_MANAGER.name(), DataVisibilityEnum.H);
         put(UserLevelEnum.Q_SUPERVISOR.name(), DataVisibilityEnum.H);
     }};
 
     @Field("PP")
-    private Map<String, PaymentPermissionEnum> paymentPermissions = new HashMap<String, PaymentPermissionEnum>() {{
+    private Map<String, PaymentPermissionEnum> paymentPermissions = new HashMap<>() {{
         put(UserLevelEnum.S_MANAGER.name(), PaymentPermissionEnum.A);
         put(UserLevelEnum.Q_SUPERVISOR.name(), PaymentPermissionEnum.A);
     }};

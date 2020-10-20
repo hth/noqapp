@@ -123,8 +123,8 @@ public class CustomTextToSpeechController {
         }
 
         if (customTextToSpeech == null) {
-            Map<String, Set<TextToSpeechTemplate>> textToSpeechTemplates = new HashMap<String, Set<TextToSpeechTemplate>>() {{
-                put(customTextToSpeechForm.getTextToSpeechType().name(), new LinkedHashSet<TextToSpeechTemplate>() {{
+            Map<String, Set<TextToSpeechTemplate>> textToSpeechTemplates = new HashMap<>() {{
+                put(customTextToSpeechForm.getTextToSpeechType().name(), new LinkedHashSet<>() {{
                     add(new TextToSpeechTemplate()
                         .setTemplate(customTextToSpeechForm.getTemplate())
                         .setLanguageTag(customTextToSpeechForm.getLanguageTag()));

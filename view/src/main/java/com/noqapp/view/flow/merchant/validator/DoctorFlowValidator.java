@@ -90,7 +90,7 @@ public class DoctorFlowValidator {
                 new MessageBuilder()
                     .error()
                     .source("practiceStart")
-                    .defaultText("Practicing Since should be of format " + DateUtil.SDF_YYYY_MM_DD.toPattern())
+                    .defaultText("Practicing Since should be of format " + DateUtil.YYYY_MM_DD)
                     .build());
 
             status = "failure";

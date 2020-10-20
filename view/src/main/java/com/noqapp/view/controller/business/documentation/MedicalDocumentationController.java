@@ -323,19 +323,15 @@ public class MedicalDocumentationController {
 
         Map<String, List<JsonQueuedPerson>> jsonQueuedPersonMap = new HashMap<>();
         for (JsonQueuedPerson jsonQueuedPerson : queuedPeople) {
-            try {
-                Date date = DateUtil.SDF_YYYY_MM_DD.parse(jsonQueuedPerson.getCreated());
-                String dateToString = DateUtil.dateToString(date);
-                if (jsonQueuedPersonMap.containsKey(dateToString)) {
-                    List<JsonQueuedPerson> jsonQueuedPersons = jsonQueuedPersonMap.get(dateToString);
-                    jsonQueuedPersons.add(jsonQueuedPerson);
-                } else {
-                    jsonQueuedPersonMap.put(dateToString, new ArrayList<JsonQueuedPerson>() {{
-                        add(jsonQueuedPerson);
-                    }});
-                }
-            } catch (ParseException e) {
-                LOG.error("Failed parsing date created={} {}", jsonQueuedPerson.getCreated(), e.getLocalizedMessage(), e);
+            Date date = DateUtil.convertDateStringOf_YYYY_MM_DD_ToDate(jsonQueuedPerson.getCreated());
+            String dateToString = DateUtil.dateToString(date);
+            if (jsonQueuedPersonMap.containsKey(dateToString)) {
+                List<JsonQueuedPerson> jsonQueuedPersons = jsonQueuedPersonMap.get(dateToString);
+                jsonQueuedPersons.add(jsonQueuedPerson);
+            } else {
+                jsonQueuedPersonMap.put(dateToString, new ArrayList<>() {{
+                    add(jsonQueuedPerson);
+                }});
             }
         }
         medicalDocumentUploadListForm.setJsonQueuedPersonMap(jsonQueuedPersonMap);
