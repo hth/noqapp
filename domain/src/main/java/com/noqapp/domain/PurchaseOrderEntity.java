@@ -628,9 +628,22 @@ public class PurchaseOrderEntity extends BaseEntity {
 
         return "";
     }
+
     @Transient
     public int total() {
         return Integer.parseInt(orderPrice) + Integer.parseInt(StringUtils.isBlank(tax) ? "0" : tax);
+    }
+
+    @Transient
+    public boolean isTransactionNotSupported() {
+        BigDecimal computedPrice = new BigDecimal(orderPrice).movePointLeft(2);
+        if (computedPrice.compareTo(BigDecimal.ZERO) == 0) {
+            //Ignore transaction with zero value
+            return false;
+        }
+
+        //Do not support transaction less than 1
+        return computedPrice.compareTo(BigDecimal.ONE) < 0;
     }
 
     @Override
