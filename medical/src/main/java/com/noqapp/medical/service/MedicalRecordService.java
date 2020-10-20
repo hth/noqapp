@@ -1029,7 +1029,9 @@ public class MedicalRecordService {
             .setProvisionalDifferentialDiagnosis(medicalRecord.getProvisionalDifferentialDiagnosis())
             .setDiagnosis(medicalRecord.getDiagnosis())
             .setPlanToPatient(medicalRecord.getPlanToPatient())
-            .setFollowUpInDays(null == medicalRecord.getFollowUpDay() ? null : String.valueOf(DateUtil.getDaysBetween(medicalRecord.getCreated(), medicalRecord.getFollowUpDay())))
+            .setFollowUpInDays(null == medicalRecord.getFollowUpDay()
+                ? null
+                : String.valueOf(DateUtil.getDaysBetween(medicalRecord.getCreated(), medicalRecord.getFollowUpDay())))
             .setNoteForPatient(medicalRecord.getNoteForPatient())
             .setNoteToDiagnoser(medicalRecord.getNoteToDiagnoser())
             .setDiagnosedById(medicalRecord.getDiagnosedById())
