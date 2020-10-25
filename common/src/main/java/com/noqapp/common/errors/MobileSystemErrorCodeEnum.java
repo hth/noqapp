@@ -103,6 +103,7 @@ public enum MobileSystemErrorCodeEnum {
     APPOINTMENT_ACTION_NOT_PERMITTED("4720", ALERT),
 
     /** Authentication. */
+    BUSINESS_APP_ACCESS_DENIED("4901", ALERT),
     QRCODE_INVALID("4910", ALERT),
     QRCODE_DENIED_ACCESS("4911", ALERT),
 
