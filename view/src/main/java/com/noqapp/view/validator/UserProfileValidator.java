@@ -1,6 +1,7 @@
 package com.noqapp.view.validator;
 
 import com.noqapp.domain.flow.RegisterUser;
+import com.noqapp.view.form.UserProfileForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,9 @@ public class UserProfileValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
+        UserProfileForm form = (UserProfileForm) target;
+        LOG.info("Validate user profile before updating {} {}", form.getEmail(), form.getPhone());
+
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "field.required", new Object[]{"First Name"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "field.required", new Object[]{"Last Name"});
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "birthday", "field.required", new Object[]{"Date of Birth"});
