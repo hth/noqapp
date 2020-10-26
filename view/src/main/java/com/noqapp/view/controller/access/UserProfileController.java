@@ -24,6 +24,7 @@ import com.noqapp.view.form.ProfessionalProfileForm;
 import com.noqapp.view.form.UserProfileForm;
 import com.noqapp.view.validator.ImageValidator;
 import com.noqapp.view.validator.ProfessionalProfileValidator;
+import com.noqapp.view.validator.UserProfileValidator;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
@@ -80,6 +81,7 @@ public class UserProfileController {
 
     private ApiHealthService apiHealthService;
     private AccountService accountService;
+    private UserProfileValidator userProfileValidator;
     private ProfessionalProfileService professionalProfileService;
     private ProfessionalProfileValidator professionalProfileValidator;
     private FileService fileService;
@@ -99,6 +101,7 @@ public class UserProfileController {
 
         ApiHealthService apiHealthService,
         AccountService accountService,
+        UserProfileValidator userProfileValidator,
         ProfessionalProfileService professionalProfileService,
         ProfessionalProfileValidator professionalProfileValidator,
         FileService fileService,
@@ -111,6 +114,7 @@ public class UserProfileController {
 
         this.apiHealthService = apiHealthService;
         this.accountService = accountService;
+        this.userProfileValidator = userProfileValidator;
         this.professionalProfileService = professionalProfileService;
         this.professionalProfileValidator = professionalProfileValidator;
         this.fileService = fileService;
@@ -143,6 +147,11 @@ public class UserProfileController {
         /* Different binding for different form. */
         if (model.asMap().containsKey("resultImage")) {
             model.addAttribute("org.springframework.validation.BindingResult.fileUploadForm", model.asMap().get("resultImage"));
+        }
+
+        /* Different binding for different form. */
+        if (model.asMap().containsKey("result")) {
+            model.addAttribute("org.springframework.validation.BindingResult.userProfileForm", model.asMap().get("result"));
         }
 
         apiHealthService.insert(
@@ -232,12 +241,22 @@ public class UserProfileController {
     @PostMapping(value = "/updateProfile")
     public String updateProfile(
         @ModelAttribute("userProfileForm")
-        UserProfileForm userProfileForm
+        UserProfileForm userProfileForm,
+
+        BindingResult result,
+        RedirectAttributes redirectAttrs
     ) {
         Instant start = Instant.now();
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
+
+        userProfileValidator.validate(userProfileForm, result);
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
+            LOG.warn("Failed validation");
+            return "redirect:" + "/access/userProfile.htm";
+        }
 
         //TODO(hth) to support change of address, this will need to be changed to flow
         RegisterUser registerUser = new RegisterUser()

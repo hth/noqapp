@@ -27,11 +27,9 @@
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">
-                    <sec:authentication property="principal.userShortName"/></button>
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <div class="menu-top-arrow">
-                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">

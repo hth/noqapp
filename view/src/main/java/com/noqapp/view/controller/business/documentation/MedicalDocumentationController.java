@@ -170,7 +170,7 @@ public class MedicalDocumentationController {
             JsonQueuePersonList jsonQueuePersonList = queueService.findAllClient(codeQR);
             BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
             StoreHourEntity storeHour = bizService.getStoreHours(codeQR, bizStore);
-            bizStore.setStoreHours(new ArrayList<StoreHourEntity>() {{
+            bizStore.setStoreHours(new ArrayList<>() {{
                 add(storeHour);
             }});
             medicalDocumentUploadListForm.addMedicalDocumentUploadForms(
