@@ -67,9 +67,7 @@
                         </div>
                     </div>
 
-                    <form:form method="post"
-                               action="${pageContext.request.contextPath}/medical/record/add.htm"
-                               modelAttribute="medicalRecordForm">
+                    <form:form method="post" action="${pageContext.request.contextPath}/medical/record/add.htm" modelAttribute="medicalRecordForm">
                     <div class="add-new">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="token" value="${medicalRecordForm.token}"/>
@@ -94,7 +92,7 @@
                                     <c:if test="${!empty historicalMedicalRecordForms}">
                                         <span style="display:block; font-size:13px;">
                                         <c:forEach items="${historicalMedicalRecordForms}" var="medicalHistory" varStatus="status">
-                                            ${medicalHistory.chiefComplain},
+                                        ${medicalHistory.chiefComplain},
                                         </c:forEach>
                                         </span>
                                     </c:if>
