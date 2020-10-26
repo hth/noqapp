@@ -4,6 +4,7 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
+import com.noqapp.domain.types.TaxEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -41,6 +42,9 @@ public class JsonPurchaseOrderProductHistorical extends AbstractDomain {
 
     @JsonProperty("pp")
     private int productPrice;
+
+    @JsonProperty("ta")
+    private TaxEnum tax;
 
     @JsonProperty("pd")
     private int productDiscount;
@@ -88,6 +92,7 @@ public class JsonPurchaseOrderProductHistorical extends AbstractDomain {
         this.productId = purchaseOrderProduct.getProductId();
         this.productName = purchaseOrderProduct.getProductName();
         this.productPrice = purchaseOrderProduct.getProductPrice();
+        this.tax = purchaseOrderProduct.getTax();
         this.productDiscount = purchaseOrderProduct.getProductDiscount();
         this.productType = purchaseOrderProduct.getProductType();
         this.unitValue = purchaseOrderProduct.getUnitValue();

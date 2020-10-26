@@ -600,19 +600,19 @@ public class PurchaseOrderEntity extends BaseEntity {
     /** Shifting decimal point. */
     @Transient
     public String orderPriceForTransaction() {
-        BigDecimal transactionPrice = new BigDecimal(orderPrice);
+        BigDecimal transactionAmount = new BigDecimal(orderPrice).add(new BigDecimal(tax));
         if (StringUtils.isNotBlank(partialPayment)) {
-            transactionPrice = transactionPrice.subtract(new BigDecimal(partialPayment));
+            transactionAmount = transactionAmount.subtract(new BigDecimal(partialPayment));
         }
-        return correctPriceForTransaction(transactionPrice);
+        return correctPriceForTransaction(transactionAmount);
     }
 
     private static String correctPriceForTransaction(final BigDecimal transactionAmount) {
         return transactionAmount.scaleByPowerOfTen(-2).toString();
     }
 
-    public static String correctPriceForTransaction(final String transactionAmount) {
-        return correctPriceForTransaction(new BigDecimal(transactionAmount));
+    public static String correctPriceForTransaction(final String transactionOrderPrice, final String transactionTax) {
+        return correctPriceForTransaction(new BigDecimal(transactionOrderPrice).add(new BigDecimal(transactionTax)));
     }
 
     @Transient
