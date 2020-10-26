@@ -717,12 +717,12 @@
                                         </td>
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.displayPrice}</span>
-                                            <span style="display:block; font-size:13px;">Tax: ${storeProduct.tax.value}</span>
+                                            <span style="display:block; font-size:13px;">Tax: ${storeProduct.tax.value}%</span>
                                             <span style="display:block; font-size:13px;">Discount: ${storeProduct.displayDiscount}</span>
                                         </td>
                                         <td style="${storeProduct.displayCaseTurnedOn == true ? "background: lightpink" : ""}" nowrap>
                                             <span style="display:block; font-size:13px;">${storeProduct.productType.description}</span>
-                                            <span style="display:block; font-size:13px;">${!empty storeProduct.barCode ? storeProduct.barCode : "<br/>"}</span>
+                                            <span style="display:block; font-size:13px;"><i class="fas fa-barcode"></i>&nbsp; ${!empty storeProduct.barCode ? storeProduct.barCode : "<br/>"}</span>
                                             <span style="display:block; font-size:13px;">${storeProduct.displayCaseTurnedOn == true ? "Is on display" : ""}</span>
                                         </td>
                                         <td nowrap>
