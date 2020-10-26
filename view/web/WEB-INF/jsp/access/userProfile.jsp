@@ -29,8 +29,7 @@
             <div class="dropdown">
                 <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
-                    <div class="menu-top-arrow">
-                        <img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
+                    <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
                         <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
@@ -108,13 +107,17 @@
                 </div>
                 <div class="error-box">
                     <div class="error-txt">
-                        <%--<c:if test="${!empty flowRequestContext.messageContext.allMessages}">--%>
-                            <%--<ul>--%>
-                                <%--<c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">--%>
-                                    <%--<li>${message.text}</li>--%>
-                                <%--</c:forEach>--%>
-                            <%--</ul>--%>
-                        <%--</c:if>--%>
+                        <spring:hasBindErrors name="userProfileForm">
+                        <div class="error-box">
+                            <div class="error-txt">
+                                <ul>
+                                    <c:forEach items="${errors.allErrors}" var="message">
+                                    <li><spring:message message="${message}" /></li>
+                                    </c:forEach>
+                                </ul>
+                            </div>
+                        </div>
+                        </spring:hasBindErrors>
                     </div>
                 </div>
                 <div class="admin-content">
@@ -126,7 +129,7 @@
                         <ul class="list-form">
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="firstName" cssErrorClass="lb_error">First name</form:label>
+                                    <form:label path="firstName" cssErrorClass="lb_error">First Name</form:label>
                                 </div>
                                 <div class="col-fields">
                                     <form:input path="firstName" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
@@ -136,7 +139,7 @@
 
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="lastName" cssErrorClass="lb_error">Last name</form:label>
+                                    <form:label path="lastName" cssErrorClass="lb_error">Last Name</form:label>
                                 </div>
                                 <div class="col-fields">
                                     <form:input path="lastName" cssClass="form-field-admin" cssErorrClass="form-field-admin error-field"/>
