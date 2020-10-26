@@ -451,7 +451,7 @@ public class PurchaseOrderService {
         createOrder(jsonPurchaseOrder, qid, did, tokenService);
         jsonPurchaseOrder.setJsonResponseWithCFToken(
             createTokenForPurchaseOrder(
-                PurchaseOrderEntity.correctPriceForTransaction(jsonPurchaseOrder.getOrderPrice()),
+                PurchaseOrderEntity.correctPriceForTransaction(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()),
                 jsonPurchaseOrder.getTransactionId()));
     }
 
