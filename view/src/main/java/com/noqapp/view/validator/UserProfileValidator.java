@@ -1,8 +1,6 @@
 package com.noqapp.view.validator;
 
 import com.noqapp.domain.flow.RegisterUser;
-import com.noqapp.view.form.UserProfileForm;
-import com.noqapp.view.form.admin.SendNotificationForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
