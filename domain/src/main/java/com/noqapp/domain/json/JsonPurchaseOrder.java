@@ -505,6 +505,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.storeDiscount = purchaseOrder.getStoreDiscount();
         this.partialPayment = purchaseOrder.getPartialPayment();
         this.orderPrice = purchaseOrder.getOrderPrice();
+        this.tax = purchaseOrder.getTax();
         this.deliveryMode = purchaseOrder.getDeliveryMode();
         this.businessType = purchaseOrder.getBusinessType();
         this.couponId = purchaseOrder.getCouponId();
