@@ -624,9 +624,9 @@ public class PurchaseOrderEntity extends BaseEntity {
         return transactionAmount.scaleByPowerOfTen(-2).toString();
     }
 
-//    public static String correctPriceForTransaction(final String transactionOrderPrice, final String transactionTax) {
-//        return correctPriceForTransaction(new BigDecimal(transactionOrderPrice).add(new BigDecimal(transactionTax)));
-//    }
+    public static String correctPriceForTransaction(final String transactionGrandTotal) {
+        return correctPriceForTransaction(new BigDecimal(transactionGrandTotal));
+    }
 
     @Transient
     public String getOrderPriceForDisplay() {
