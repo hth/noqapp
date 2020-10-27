@@ -449,7 +449,10 @@ public class PurchaseOrderService {
     @Mobile
     public void createOrderWithCFToken(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
         createOrder(jsonPurchaseOrder, qid, did, tokenService);
-        jsonPurchaseOrder.setJsonResponseWithCFToken(createTokenForPurchaseOrder(jsonPurchaseOrder.getGrandTotal(), jsonPurchaseOrder.getTransactionId()));
+        jsonPurchaseOrder.setJsonResponseWithCFToken(
+            createTokenForPurchaseOrder(
+                PurchaseOrderEntity.correctPriceForTransaction(jsonPurchaseOrder.getGrandTotal()),
+                jsonPurchaseOrder.getTransactionId()));
     }
 
     /**
