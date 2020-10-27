@@ -529,6 +529,15 @@ public class PurchaseOrderService {
         if (null != jsonPurchaseOrder.getOrderPrice()) {
             receivedOrderPrice = Integer.parseInt(jsonPurchaseOrder.getOrderPrice()) - storeDiscount;
         }
+
+        String grandTotal;
+        if (null == jsonPurchaseOrder.getGrandTotal()) {
+            grandTotal = String.valueOf(receivedOrderPrice + (StringUtils.isNotBlank(jsonPurchaseOrder.getTax())
+                ? Integer.parseInt(jsonPurchaseOrder.getTax())
+                : 0));
+        } else {
+            grandTotal = jsonPurchaseOrder.getGrandTotal();
+        }
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
@@ -540,7 +549,7 @@ public class PurchaseOrderService {
             .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
             .setOrderPrice(String.valueOf(receivedOrderPrice))
             .setTax(StringUtils.isNotBlank(jsonPurchaseOrder.getTax()) ? String.valueOf(jsonPurchaseOrder.getTax()) : "0")
-            .setGrandTotal(jsonPurchaseOrder.getGrandTotal())
+            .setGrandTotal(grandTotal)
             .setDeliveryMode(jsonPurchaseOrder.getDeliveryMode())
             //.setPaymentMode(jsonPurchaseOrder.getPaymentMode())
             .setBusinessType(bizStore.getBusinessType())
