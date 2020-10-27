@@ -12,13 +12,13 @@ class PurchaseOrderEntityTest {
 
     @Test
     void orderPriceForTransaction() {
-        PurchaseOrderEntity purchaseOrderEntity = new PurchaseOrderEntity().setOrderPrice("11000").setTax("0");
+        PurchaseOrderEntity purchaseOrderEntity = new PurchaseOrderEntity().setOrderPrice("11000").setTax("0").setGrandTotal("11000");
         assertEquals("110.00", purchaseOrderEntity.orderPriceForTransaction());
     }
 
     @Test
     void orderPriceWithTaxForTransaction() {
-        PurchaseOrderEntity purchaseOrderEntity = new PurchaseOrderEntity().setOrderPrice("11000").setTax("50");
+        PurchaseOrderEntity purchaseOrderEntity = new PurchaseOrderEntity().setOrderPrice("11000").setTax("50").setGrandTotal("11050");
         assertEquals("110.50", purchaseOrderEntity.orderPriceForTransaction());
     }
 }

@@ -449,10 +449,7 @@ public class PurchaseOrderService {
     @Mobile
     public void createOrderWithCFToken(JsonPurchaseOrder jsonPurchaseOrder, String qid, String did, TokenServiceEnum tokenService) {
         createOrder(jsonPurchaseOrder, qid, did, tokenService);
-        jsonPurchaseOrder.setJsonResponseWithCFToken(
-            createTokenForPurchaseOrder(
-                PurchaseOrderEntity.correctPriceForTransaction(jsonPurchaseOrder.getOrderPrice(), jsonPurchaseOrder.getTax()),
-                jsonPurchaseOrder.getTransactionId()));
+        jsonPurchaseOrder.setJsonResponseWithCFToken(createTokenForPurchaseOrder(jsonPurchaseOrder.getGrandTotal(), jsonPurchaseOrder.getTransactionId()));
     }
 
     /**
@@ -540,6 +537,7 @@ public class PurchaseOrderService {
             .setPartialPayment(jsonPurchaseOrder.getPartialPayment())
             .setOrderPrice(String.valueOf(receivedOrderPrice))
             .setTax(StringUtils.isNotBlank(jsonPurchaseOrder.getTax()) ? String.valueOf(jsonPurchaseOrder.getTax()) : "0")
+            .setGrandTotal(jsonPurchaseOrder.getGrandTotal())
             .setDeliveryMode(jsonPurchaseOrder.getDeliveryMode())
             //.setPaymentMode(jsonPurchaseOrder.getPaymentMode())
             .setBusinessType(bizStore.getBusinessType())
@@ -608,9 +606,10 @@ public class PurchaseOrderService {
             purchaseOrder.setOrderPrice("0");
         }
 
-        /* Check if total price computed and submitted is same. */
-        if (computedOrderPrice + computedTax - storeDiscount != purchaseOrder.total() && !jsonPurchaseOrder.isCustomized()) {
-            LOG.error("Computed order price {} and submitted order price {}", computedOrderPrice, purchaseOrder.getOrderPrice());
+        /* Check if computed grand total and submitted is same. */
+        int computedGrandTotal = computedOrderPrice + computedTax - storeDiscount;
+        if (computedGrandTotal != Integer.parseInt(purchaseOrder.getGrandTotal()) && !jsonPurchaseOrder.isCustomized()) {
+            LOG.error("Computed grand total {} and submitted grand total {}", computedGrandTotal, purchaseOrder.getGrandTotal());
             throw new PriceMismatchException("Price sent and computed does not match");
         }
 
@@ -625,7 +624,7 @@ public class PurchaseOrderService {
 
         JsonToken jsonToken;
         try {
-            if (jsonPurchaseOrder.getDeliveryMode() != DeliveryModeEnum.QS) {
+            if (DeliveryModeEnum.QS != jsonPurchaseOrder.getDeliveryMode()) {
                 jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
             } else {
                 jsonToken = new JsonToken(jsonPurchaseOrder.getCodeQR(), jsonPurchaseOrder.getBusinessType());
@@ -894,10 +893,7 @@ public class PurchaseOrderService {
 
     @Mobile
     public void populateWithCFToken(JsonPurchaseOrder jsonPurchaseOrder, PurchaseOrderEntity purchaseOrder) {
-        jsonPurchaseOrder.setJsonResponseWithCFToken(
-            createTokenForPurchaseOrder(
-                purchaseOrder.orderPriceForTransaction(),
-                purchaseOrder.getTransactionId()));
+        jsonPurchaseOrder.setJsonResponseWithCFToken(createTokenForPurchaseOrder(purchaseOrder.orderPriceForTransaction(), purchaseOrder.getTransactionId()));
     }
 
     @Mobile

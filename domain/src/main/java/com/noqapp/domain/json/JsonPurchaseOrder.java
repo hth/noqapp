@@ -76,6 +76,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty ("ta")
     private String tax;
 
+    @JsonProperty ("gt")
+    private String grandTotal;
+
     @JsonProperty ("dm")
     private DeliveryModeEnum deliveryMode;
 
@@ -240,6 +243,15 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     public JsonPurchaseOrder setTax(String tax) {
         this.tax = tax;
+        return this;
+    }
+
+    public String getGrandTotal() {
+        return grandTotal;
+    }
+
+    public JsonPurchaseOrder setGrandTotal(String grandTotal) {
+        this.grandTotal = grandTotal;
         return this;
     }
 
@@ -468,6 +480,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setPartialPayment(po.getPartialPayment())
             .setOrderPrice(po.getOrderPrice())
             .setTax(po.getTax())
+            .setGrandTotal(po.getGrandTotal())
             .setDeliveryMode(po.getDeliveryMode())
             .setPaymentMode(po.getPaymentMode())
             .setPaymentStatus(po.getPaymentStatus())
@@ -506,6 +519,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.partialPayment = purchaseOrder.getPartialPayment();
         this.orderPrice = purchaseOrder.getOrderPrice();
         this.tax = purchaseOrder.getTax();
+        this.grandTotal = purchaseOrder.getGrandTotal();
         this.deliveryMode = purchaseOrder.getDeliveryMode();
         this.businessType = purchaseOrder.getBusinessType();
         this.couponId = purchaseOrder.getCouponId();

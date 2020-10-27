@@ -1,3 +1,16 @@
+### Changed Oct 30, 2020
+    
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+        ADD COLUMN `GT` VARCHAR(10) AFTER `TA`;
+        
+    SET SQL_SAFE_UPDATES = 0;
+    update `noqapp_test`.`PURCHASE_ORDER` as Q1,
+          (select Q2.ID, Q2.DT, Q2.TN, Q2.OP from `noqapp_test`.`PURCHASE_ORDER` as Q2 where Q2.GT is null) AS Q3 
+    set Q1.GT = Q3.OP
+    where
+     Q1.ID = Q3.ID;  
+    SET SQL_SAFE_UPDATES = 1;        
+
 ### Changed Oct 20, 2020
     
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
@@ -44,7 +57,7 @@
     set Q1.DT = Q3.TN
     where
      Q1.ID = Q3.ID; 
-     SET SQL_SAFE_UPDATES = 1;
+    SET SQL_SAFE_UPDATES = 1;
     
     ALTER TABLE `noqapp_test`.`QUEUE`
     MODIFY DT CHAR(10) NOT NULL;
@@ -55,7 +68,7 @@
     set Q1.DT = Q3.TN
     where
      Q1.ID = Q3.ID;  
-     SET SQL_SAFE_UPDATES = 1;
+    SET SQL_SAFE_UPDATES = 1;
     
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
     MODIFY DT CHAR(10) NOT NULL;   

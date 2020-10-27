@@ -238,6 +238,8 @@ public class PurchaseOrderProductEntity extends BaseEntity {
         if (taxCompute.intValue() <= 0) {
             return 0;
         }
-        return taxCompute.multiply(tax.getValue().movePointLeft(2)).intValue();
+        return taxCompute
+            .multiply(new BigDecimal(productQuantity))
+            .multiply(tax.getValue().movePointLeft(2)).intValue();
     }
 }
