@@ -246,6 +246,7 @@ public class JoinAbortService {
             .setBusinessType(bizStore.getBusinessType())
             .setOrderPrice(String.valueOf(bizStore.getProductPrice()))
             .setTax(String.valueOf(bizStore.getTax().getValue().intValue()))
+            .setGrandTotal(bizStore.computeGrandTotal())
             .setQueueUserId(purchaserQid)
             .setExpectedServiceBegin(jsonToken.getExpectedServiceBegin())
             .setToken(jsonToken.getToken())

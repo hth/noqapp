@@ -1012,4 +1012,9 @@ public class BizStoreEntity extends BaseEntity {
     public String getCodeQRInBase64() {
         return Base64.getEncoder().encodeToString(codeQR.getBytes());
     }
+
+    @Transient
+    public String computeGrandTotal() {
+        return String.valueOf(new BigDecimal(productPrice).add(new BigDecimal(productPrice).multiply(tax.getValue()).movePointLeft(2)).intValue());
+    }
 }
