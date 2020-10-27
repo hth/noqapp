@@ -61,6 +61,9 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     @JsonProperty ("ta")
     private String tax;
 
+    @JsonProperty ("gt")
+    private String grandTotal;
+
     @JsonProperty("dm")
     private DeliveryModeEnum deliveryMode;
 
@@ -138,6 +141,7 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
         this.storeDiscount = purchaseOrder.getStoreDiscount();
         this.orderPrice = purchaseOrder.getOrderPrice();
         this.tax = purchaseOrder.getTax();
+        this.grandTotal = purchaseOrder.getGrandTotal();
         this.deliveryMode = purchaseOrder.getDeliveryMode();
         this.paymentMode = purchaseOrder.getPaymentMode();
         this.paymentStatus = purchaseOrder.getPaymentStatus();

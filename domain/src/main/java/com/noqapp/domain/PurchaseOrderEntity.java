@@ -95,6 +95,10 @@ public class PurchaseOrderEntity extends BaseEntity {
     private String tax;
 
     @DBMapping
+    @Field("GT")
+    private String grandTotal;
+
+    @DBMapping
     @Field("DM")
     private DeliveryModeEnum deliveryMode;
 
@@ -314,6 +318,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setTax(String tax) {
         this.tax = tax;
+        return this;
+    }
+
+    public String getGrandTotal() {
+        return grandTotal;
+    }
+
+    public PurchaseOrderEntity setGrandTotal(String grandTotal) {
+        this.grandTotal = grandTotal;
         return this;
     }
 
@@ -600,7 +613,7 @@ public class PurchaseOrderEntity extends BaseEntity {
     /** Shifting decimal point. */
     @Transient
     public String orderPriceForTransaction() {
-        BigDecimal transactionAmount = new BigDecimal(orderPrice).add(new BigDecimal(tax));
+        BigDecimal transactionAmount = new BigDecimal(grandTotal);
         if (StringUtils.isNotBlank(partialPayment)) {
             transactionAmount = transactionAmount.subtract(new BigDecimal(partialPayment));
         }
@@ -611,9 +624,9 @@ public class PurchaseOrderEntity extends BaseEntity {
         return transactionAmount.scaleByPowerOfTen(-2).toString();
     }
 
-    public static String correctPriceForTransaction(final String transactionOrderPrice, final String transactionTax) {
-        return correctPriceForTransaction(new BigDecimal(transactionOrderPrice).add(new BigDecimal(transactionTax)));
-    }
+//    public static String correctPriceForTransaction(final String transactionOrderPrice, final String transactionTax) {
+//        return correctPriceForTransaction(new BigDecimal(transactionOrderPrice).add(new BigDecimal(transactionTax)));
+//    }
 
     @Transient
     public String getOrderPriceForDisplay() {
@@ -636,14 +649,14 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     @Transient
     public boolean isTransactionNotSupported() {
-        BigDecimal computedPrice = new BigDecimal(orderPrice).movePointLeft(2);
-        if (computedPrice.compareTo(BigDecimal.ZERO) == 0) {
+        BigDecimal computedGrandTotal = new BigDecimal(grandTotal).movePointLeft(2);
+        if (computedGrandTotal.compareTo(BigDecimal.ZERO) == 0) {
             //Ignore transaction with zero value
             return false;
         }
 
         //Do not support transaction less than 1
-        return computedPrice.compareTo(BigDecimal.ONE) < 0;
+        return computedGrandTotal.compareTo(BigDecimal.ONE) < 0;
     }
 
     @Override

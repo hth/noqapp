@@ -70,6 +70,7 @@ as a value, then it gets endless connections.
         PP VARCHAR(10),
         OP VARCHAR(10),
         TA VARCHAR(10),
+        GT VARCHAR(10),
         BT CHAR(3)          NOT NULL, 
         PQ VARCHAR(13),
         FQ VARCHAR(13),
