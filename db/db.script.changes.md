@@ -26,7 +26,7 @@
     
 ### Changed Oct 15, 2020
 
-    db.getCollection('BIZ_STORE').update({"TA" : {$exists : true}}, {$rename: {"TA":"SC"}}, false, true);          
+    db.getCollection('BIZ_STORE').update({"TA" : {$exists : true}}, {$rename: {"TA":"SC"}}, {multi: true});          
 
 ### Changed Sept 15, 2020
 
