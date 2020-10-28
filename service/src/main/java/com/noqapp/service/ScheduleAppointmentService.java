@@ -193,13 +193,31 @@ public class ScheduleAppointmentService {
         JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
 
         if (AppointmentStatusEnum.A == appointmentStatus) {
-            sendMessageToSelectedTokenUser(
-                scheduleAppointment.getCodeQR(),
-                jsonProfile.getQueueUserId(),
-                "Appointment Confirmed",
-                "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
-                    + "On Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
-                    + ". Please arrive 30 minutes before your appointment.");
+            switch (bizStore.getAppointmentState()) {
+                case S:
+                    sendMessageToSelectedTokenUser(
+                        scheduleAppointment.getCodeQR(),
+                        jsonProfile.getQueueUserId(),
+                        "Walkin Appointment Confirmed",
+                        "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
+                            + "On Date: " + scheduleAppointment.getScheduleDate() + ". A token number will be issued on this day. "
+                            + "You will be serviced based on your position in the queue. "
+                            + "Please arrive 30 minutes before your token number is called.");
+                    break;
+                case A:
+                case F:
+                    sendMessageToSelectedTokenUser(
+                        scheduleAppointment.getCodeQR(),
+                        jsonProfile.getQueueUserId(),
+                        "Appointment Confirmed",
+                        "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
+                            + "On Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
+                            + ". Please arrive 30 minutes before your appointment.");
+                    break;
+                case O:
+                    LOG.error("No appointment can be issued when the state is {} {}", bizStore.getAppointmentState(), jsonSchedule.getQueueUserId());
+                    break;
+            }
         } else {
             sendMessageToTopic(
                 jsonSchedule.getCodeQR(),
@@ -404,14 +422,31 @@ public class ScheduleAppointmentService {
 
         switch (appointmentStatus) {
             case A:
-                sendMessageToSelectedTokenUser(
-                    scheduleAppointment.getCodeQR(),
-                    jsonProfile.getQueueUserId(),
-                    "Appointment Confirmed",
-                    "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
-                        + "On Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
-                        + ". Please arrive 30 minutes before your appointment.");
-                break;
+                switch (bizStore.getAppointmentState()) {
+                    case S:
+                        sendMessageToSelectedTokenUser(
+                            scheduleAppointment.getCodeQR(),
+                            jsonProfile.getQueueUserId(),
+                            "Walkin Appointment Confirmed",
+                            "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
+                                + "On Date: " + scheduleAppointment.getScheduleDate() + ". A token number will be issued on this day. "
+                                + "You will be serviced based on your position in the queue. "
+                                + "Please arrive 30 minutes before your token number is called.");
+                        break;
+                    case A:
+                    case F:
+                        sendMessageToSelectedTokenUser(
+                            scheduleAppointment.getCodeQR(),
+                            jsonProfile.getQueueUserId(),
+                            "Appointment Confirmed",
+                            "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
+                                + "On Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime())
+                                + ". Please arrive 30 minutes before your appointment.");
+                        break;
+                    case O:
+                        LOG.error("No appointment can be issued when the state is {} {}", bizStore.getAppointmentState(), qid);
+                        break;
+                }
             case R:
                 sendMessageToSelectedTokenUser(
                     scheduleAppointment.getCodeQR(),
