@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
@@ -20,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.context.InvalidPersistentPropertyPath;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -89,7 +91,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
                     where("AS").in(AppointmentStatusEnum.A, AppointmentStatusEnum.U),
                     where("AS").ne(AppointmentStatusEnum.W)
                 )
-            ),
+            ).with(Sort.by(DESC, "ST")),
             ScheduleAppointmentEntity.class,
             TABLE
         );
