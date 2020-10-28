@@ -215,7 +215,7 @@ public class ScheduleAppointmentService {
                             + ". Please arrive 30 minutes before your appointment.");
                     break;
                 case O:
-                    LOG.error("No appointment can be issued when the state is {}", bizStore.getAppointmentState());
+                    LOG.error("No appointment can be issued when the state is {} {}", bizStore.getAppointmentState(), jsonSchedule.getQueueUserId());
                     break;
             }
         } else {
@@ -444,7 +444,7 @@ public class ScheduleAppointmentService {
                                 + ". Please arrive 30 minutes before your appointment.");
                         break;
                     case O:
-                        LOG.error("No appointment can be issued when the state is {}", bizStore.getAppointmentState());
+                        LOG.error("No appointment can be issued when the state is {} {}", bizStore.getAppointmentState(), qid);
                         break;
                 }
             case R:
