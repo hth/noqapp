@@ -28,7 +28,7 @@ public enum PaymentPermissionEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(A.name, A.description);
             put(D.name, D.description);
         }};

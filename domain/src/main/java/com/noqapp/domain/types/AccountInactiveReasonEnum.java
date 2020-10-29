@@ -36,7 +36,7 @@ public enum AccountInactiveReasonEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(ANV.name, ANV.description);
             put(BOC.name, BOC.description);
             put(BUP.name, BUP.description);

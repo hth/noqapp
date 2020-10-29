@@ -56,7 +56,7 @@ public class MasterLabDataPopulation {
         masterLabManager.deleteMatching(MRI);
         masterLabManager.deleteMatching(SCAN);
 
-        List<MasterLabEntity> masterRadiologies = new ArrayList<MasterLabEntity>() {{
+        List<MasterLabEntity> masterRadiologies = new ArrayList<>() {{
             add(new MasterLabEntity().setProductName("Abdomen & Pelvis").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Angio Brain").setHealthCareService(MRI));
             add(new MasterLabEntity().setProductName("Ankle").setHealthCareService(MRI));

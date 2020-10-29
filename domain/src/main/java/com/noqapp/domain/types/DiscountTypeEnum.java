@@ -28,7 +28,7 @@ public enum DiscountTypeEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(P.name, P.description);
             put(F.name, F.description);
         }};

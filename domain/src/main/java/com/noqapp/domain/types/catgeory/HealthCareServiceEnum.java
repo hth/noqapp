@@ -50,7 +50,7 @@ public enum HealthCareServiceEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(MRI.name, MRI.description);
             put(SCAN.name, SCAN.description);
             put(SONO.name, SONO.description);
@@ -62,7 +62,7 @@ public enum HealthCareServiceEnum {
     }
 
     public static Map<String, String> asMapWithDescriptionAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(MRI.description, MRI.name);
             put(SCAN.description, SCAN.name);
             put(SONO.description, SONO.name);

@@ -41,7 +41,7 @@ public enum AppointmentStateEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(O.name, O.description);
             put(A.name, A.description);
             put(S.name, S.description);

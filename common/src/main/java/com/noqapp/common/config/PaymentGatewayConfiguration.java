@@ -83,7 +83,7 @@ public class PaymentGatewayConfiguration {
 
     @Bean
     public Map<String, String> cashfreeGateway(Environment environment) {
-        return new HashMap<String, String>() {{
+        return new HashMap<>() {{
             put("api",  environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodCashfreeApiId : sandboxCashfreeApiId);
             put("secretKey",  environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodCashfreeSecretKey : sandboxCashfreeSecretKey);
         }};
@@ -91,7 +91,7 @@ public class PaymentGatewayConfiguration {
 
     @Bean
     public Map<String, String> cashfreePayoutGateway(Environment environment) {
-        return new HashMap<String, String>() {{
+        return new HashMap<>() {{
             put("clientId", environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodClientId : sandboxClientId);
             put("clientSecret", environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodClientSecret : sandboxClientSecret);
         }};

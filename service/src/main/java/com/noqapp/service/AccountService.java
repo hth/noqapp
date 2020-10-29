@@ -317,7 +317,7 @@ public class AccountService {
 
                 UserAuthenticationEntity userAuthentication = generateUserAuthentication(password);
                 userAccount.setUserAuthentication(userAuthentication);
-                userAccount.setRoles(new HashSet<RoleEnum>() {{add(RoleEnum.ROLE_Q_SUPERVISOR);}});
+                userAccount.setRoles(new HashSet<>() {{add(RoleEnum.ROLE_Q_SUPERVISOR);}});
                 userAccountManager.save(userAccount);
                 LOG.info("Created UserAccount={}", userAccount);
 

@@ -49,7 +49,7 @@ public enum UnitOfMeasurementEnum {
     }
 
     public static Map<String, String> getAsMap() {
-        return new HashMap<String, String>() {{
+        return new HashMap<>() {{
             put(CN.description, CN.name);
             put(HD.description, HD.name);
             put(DZ.description, DZ.name);
