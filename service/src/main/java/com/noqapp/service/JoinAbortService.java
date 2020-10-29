@@ -155,7 +155,8 @@ public class JoinAbortService {
                 case L:
                     throw new TokenAvailableLimitReachedException("Token limit reached");
                 default:
-                    //Do nothing
+                    LOG.error("Reached unsupported condition={}", jsonToken.getQueueJoinDenied());
+                    throw new UnsupportedOperationException("Reached unreachable condition");
             }
         }
     }

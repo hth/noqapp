@@ -359,6 +359,8 @@ public class WebJoinQueueController {
                         case L:
                             throw new TokenAvailableLimitReachedException("Token limit reached");
                         default:
+                            LOG.error("Reached unsupported condition={}", jsonToken.getQueueJoinDenied());
+                            throw new UnsupportedOperationException("Reached unreachable condition");
                     }
                 } catch (StoreDayClosedException e) {
                     LOG.error("Failed joining queue store closed Web Queue reason={}", e.getLocalizedMessage(), e);
