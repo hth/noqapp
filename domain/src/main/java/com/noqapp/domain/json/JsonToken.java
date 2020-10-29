@@ -61,9 +61,6 @@ public class JsonToken extends AbstractDomain {
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
 
-    @JsonProperty("qjd")
-    private QueueJoinDeniedEnum queueJoinDenied;
-
     @JsonProperty ("s")
     private int servingNumber;
 
@@ -91,6 +88,10 @@ public class JsonToken extends AbstractDomain {
 
     @JsonProperty("sl")
     private String timeSlotMessage;
+
+    @Transient
+    @JsonIgnore
+    private QueueJoinDeniedEnum queueJoinDenied;
 
     @Transient
     @JsonIgnore
@@ -191,15 +192,6 @@ public class JsonToken extends AbstractDomain {
         return this;
     }
 
-    public QueueJoinDeniedEnum getQueueJoinDenied() {
-        return queueJoinDenied;
-    }
-
-    public JsonToken setQueueJoinDenied(QueueJoinDeniedEnum queueJoinDenied) {
-        this.queueJoinDenied = queueJoinDenied;
-        return this;
-    }
-
     public String getCustomerName() {
         return customerName;
     }
@@ -254,6 +246,15 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken setTimeSlotMessage(String timeSlotMessage) {
         this.timeSlotMessage = timeSlotMessage;
+        return this;
+    }
+
+    public QueueJoinDeniedEnum getQueueJoinDenied() {
+        return queueJoinDenied;
+    }
+
+    public JsonToken setQueueJoinDenied(QueueJoinDeniedEnum queueJoinDenied) {
+        this.queueJoinDenied = queueJoinDenied;
         return this;
     }
 
