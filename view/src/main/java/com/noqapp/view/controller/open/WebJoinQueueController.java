@@ -345,21 +345,7 @@ public class WebJoinQueueController {
                 );
 
                 try {
-                    switch (jsonToken.getQueueJoinDenied()) {
-                        case A:
-                            throw new ExpectedServiceBeyondStoreClosingHour("Your service time exceeds store closing hour " + codeQRDecoded);
-                        case B:
-                            throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQRDecoded);
-                        case C:
-                            throw new StoreDayClosedException("Store is closed today codeQR " + codeQRDecoded);
-                        case T:
-                            throw new AlreadyServicedTodayException("You have been serviced today");
-                        case X:
-                            throw new LimitedPeriodException("Please wait until set number of days before using this service");
-                        case L:
-                            throw new TokenAvailableLimitReachedException("Token limit reached");
-                        default:
-                    }
+                    joinAbortService.checkLimitationEncountered(codeQRDecoded, jsonToken);
                 } catch (StoreDayClosedException e) {
                     LOG.error("Failed joining queue store closed Web Queue reason={}", e.getLocalizedMessage(), e);
                     return String.format("{ \"c\" : \"%s\" }", "closed");

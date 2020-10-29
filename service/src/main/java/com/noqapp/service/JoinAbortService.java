@@ -139,22 +139,25 @@ public class JoinAbortService {
         return jsonToken;
     }
 
-    private void checkLimitationEncountered(String codeQR, JsonToken jsonToken) {
-        switch (jsonToken.getQueueJoinDenied()) {
-            case A:
-                throw new ExpectedServiceBeyondStoreClosingHour("Your service time exceeds store closing hour " + codeQR);
-            case B:
-                throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
-            case C:
-                throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
-            case T:
-                throw new AlreadyServicedTodayException("You have been serviced today");
-            case X:
-                throw new LimitedPeriodException("Please wait until set number of days before using this service");
-            case L:
-                throw new TokenAvailableLimitReachedException("Token limit reached");
-            default:
-                //Do nothing
+    public void checkLimitationEncountered(String codeQR, JsonToken jsonToken) {
+        if (null != jsonToken.getQueueJoinDenied()) {
+            switch (jsonToken.getQueueJoinDenied()) {
+                case A:
+                    throw new ExpectedServiceBeyondStoreClosingHour("Your service time exceeds store closing hour " + codeQR);
+                case B:
+                    throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
+                case C:
+                    throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
+                case T:
+                    throw new AlreadyServicedTodayException("You have been serviced today");
+                case X:
+                    throw new LimitedPeriodException("Please wait until set number of days before using this service");
+                case L:
+                    throw new TokenAvailableLimitReachedException("Token limit reached");
+                default:
+                    LOG.error("Reached unsupported condition={}", jsonToken.getQueueJoinDenied());
+                    throw new UnsupportedOperationException("Reached unreachable condition");
+            }
         }
     }
 
