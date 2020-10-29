@@ -31,7 +31,7 @@ public enum QuestionTypeEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(B.name, B.description);
             put(S.name, S.description);
             put(M.name, M.description);

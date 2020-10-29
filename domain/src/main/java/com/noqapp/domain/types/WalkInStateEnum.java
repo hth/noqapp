@@ -24,7 +24,7 @@ public enum WalkInStateEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(E.name, E.description);
             put(D.name, D.description);
         }};

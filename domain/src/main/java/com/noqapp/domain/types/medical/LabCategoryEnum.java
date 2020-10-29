@@ -50,7 +50,7 @@ public enum LabCategoryEnum {
 
     @Deprecated
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(SCAN.name, SCAN.description);
             put(SONO.name, SONO.description);
             put(XRAY.name, XRAY.description);
@@ -61,7 +61,7 @@ public enum LabCategoryEnum {
 
     @Deprecated
     public static Map<String, String> asMapWithDescriptionAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(SCAN.description, SCAN.name);
             put(SONO.description, SONO.name);
             put(XRAY.description, XRAY.name);
@@ -71,13 +71,13 @@ public enum LabCategoryEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey_Self(LabCategoryEnum radiologyCategory) {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(radiologyCategory.name, radiologyCategory.description);
         }};
     }
 
     public static Map<String, String> asMapWithDescriptionAsKey_Self(LabCategoryEnum radiologyCategory) {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(radiologyCategory.description, radiologyCategory.name);
         }};
     }

@@ -127,7 +127,7 @@ public class CouponService {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
         List<String> dependents = userProfile.getQidOfDependents();
         if (null == dependents) {
-            dependents = new ArrayList<String>() {{
+            dependents = new ArrayList<>() {{
                 add(qid);
             }};
         } else {

@@ -51,7 +51,7 @@ public enum PharmacyCategoryEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(CA.name, CA.description);
             put(CR.name, CR.description);
             put(IH.name, IH.description);
@@ -64,7 +64,7 @@ public enum PharmacyCategoryEnum {
     }
 
     public static Map<String, String> asMapWithDescriptionAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(CA.description, CA.name);
             put(CR.description, CR.name);
             put(IH.description, IH.name);

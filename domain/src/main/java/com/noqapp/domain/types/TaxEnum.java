@@ -40,7 +40,7 @@ public enum TaxEnum {
     }
 
     public static Map<String, BigDecimal> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, BigDecimal>() {{
+        return new LinkedHashMap<>() {{
             put(ZE.name, ZE.value);
             put(PT.name, PT.value);
             put(TH.name, TH.value);

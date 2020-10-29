@@ -29,7 +29,7 @@ public enum DataVisibilityEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(L.name, L.description);
             put(M.name, M.description);
             put(H.name, H.description);

@@ -34,7 +34,7 @@ public enum LocaleEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(en_IN.name, en_IN.description);
             put(hi_IN.name, hi_IN.description);
             put(pa_IN.name, pa_IN.description);

@@ -28,7 +28,7 @@ public enum OnOffEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(O.name, O.description);
             put(F.name, F.description);
         }};

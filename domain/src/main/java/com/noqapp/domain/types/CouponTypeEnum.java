@@ -29,7 +29,7 @@ public enum CouponTypeEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(G.name, G.description);
             put(F.name, F.description);
             put(I.name, I.description);

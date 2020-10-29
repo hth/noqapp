@@ -38,7 +38,7 @@ public enum CustomerPriorityLevelEnum {
     }
 
     public static Map<String, String> asMapWithNameAsKey() {
-        return new LinkedHashMap<String, String>() {{
+        return new LinkedHashMap<>() {{
             put(S.name, S.description);
             put(G.name, G.description);
             put(P.name, P.description);
