@@ -981,9 +981,7 @@ public class TokenQueueService {
         }
     }
 
-    /**
-     * Formulates and send messages to FCM.
-     */
+    /** Formulates and send messages to FCM. */
     void invokeThreadSendMessageToTopic(
         String codeQR,
         QueueStatusEnum queueStatus,
