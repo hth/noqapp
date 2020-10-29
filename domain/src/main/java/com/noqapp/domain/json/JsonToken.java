@@ -4,6 +4,7 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.QueueJoinDeniedEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -59,6 +60,9 @@ public class JsonToken extends AbstractDomain {
 
     @JsonProperty ("q")
     private QueueStatusEnum queueStatus;
+
+    @JsonProperty("qjd")
+    private QueueJoinDeniedEnum queueJoinDenied;
 
     @JsonProperty ("s")
     private int servingNumber;
@@ -184,6 +188,15 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken setQueueStatus(QueueStatusEnum queueStatus) {
         this.queueStatus = queueStatus;
+        return this;
+    }
+
+    public QueueJoinDeniedEnum getQueueJoinDenied() {
+        return queueJoinDenied;
+    }
+
+    public JsonToken setQueueJoinDenied(QueueJoinDeniedEnum queueJoinDenied) {
+        this.queueJoinDenied = queueJoinDenied;
         return this;
     }
 

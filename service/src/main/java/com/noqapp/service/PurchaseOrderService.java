@@ -40,6 +40,7 @@ import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
+import com.noqapp.domain.types.QueueJoinDeniedEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
@@ -230,7 +231,7 @@ public class PurchaseOrderService {
         try {
             TokenQueueEntity tokenQueue = tokenQueueService.getNextToken(codeQR, bizStore.getAvailableTokenCount());
             if (tokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
-                return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.L, bizStore);
+                return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.L, bizStore);
             }
             LOG.info("Assigned order number with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
             ZonedDateTime expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue.getLastNumber());

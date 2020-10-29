@@ -27,6 +27,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.domain.types.QueueJoinDeniedEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
@@ -206,7 +207,7 @@ public class TokenQueueService {
                 if (0 < bizStore.getBizName().getLimitServiceByDays()
                     && StringUtils.isNotBlank(qid)
                     && queueManagerJDBC.hasServicedInPastXDays(codeQR, qid, bizStore.getBizName().getLimitServiceByDays())) {
-                    return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.X, bizStore);
+                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.X, bizStore);
                 }
 
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
@@ -215,7 +216,7 @@ public class TokenQueueService {
 
                 if (!bizStore.isActive() || storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
                     LOG.warn("When queue closed or prevent joining, attempting to create new token");
-                    return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.C, bizStore);
+                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.C, bizStore);
                 }
 
                 int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
@@ -224,12 +225,12 @@ public class TokenQueueService {
                     //Might need to add condition || requesterTime > storeHour.getEndHour() to prevent users from taking token after hours.
                     //This should be prevented on mobile front.
                     LOG.warn("Requester time qid={} tokenFrom={} requesterTime={} codeQR={}", qid, tokenFrom, requesterTime, codeQR);
-                    return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.B, bizStore);
+                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.B, bizStore);
                 } else if (requesterTime > storeHour.getEndHour()) {
                     /* When not added by merchant. */
                     if (tokenService != TokenServiceEnum.M) {
                         LOG.error("Requester token after hours qid={} tokenFrom={} requesterTime={} codeQR={}", qid, tokenFrom, requesterTime, codeQR);
-                        return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.A, bizStore);
+                        return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.A, bizStore);
                     } else {
                         LOG.error("{} added token after store hours {} {}", tokenService, qid, codeQR);
                     }
@@ -254,7 +255,7 @@ public class TokenQueueService {
                                     case S:
                                     default:
                                         /* Person already served or skipped. */
-                                        return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.T, bizStore)
+                                        return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.T, bizStore)
                                             .setTimeSlotMessage(queue.getTimeSlotMessage());
                                 }
                             }
@@ -271,7 +272,7 @@ public class TokenQueueService {
                     tokenQueue = getNextToken(codeQR, bizStore.getAvailableTokenCount());
                 }
                 if (tokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
-                    return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.L, bizStore);
+                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.L, bizStore);
                 }
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
@@ -322,7 +323,7 @@ public class TokenQueueService {
                     return new JsonToken(codeQR, tokenQueue.getBusinessType());
                 } catch (ExpectedServiceBeyondStoreClosingHour e) {
                     LOG.warn("Error serving to queue did={} qid={} codeQR={} reason={}", did, qid, codeQR, e.getLocalizedMessage());
-                    return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.A, bizStore);
+                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.A, bizStore);
                 }
 
                 return getJsonToken(codeQR, queue, tokenQueue);
@@ -378,7 +379,7 @@ public class TokenQueueService {
                 if (0 < bizStore.getBizName().getLimitServiceByDays()
                     && StringUtils.isNotBlank(qid) //Remove this condition when un-registered user is removed
                     && queueManagerJDBC.hasServicedInPastXDays(codeQR, qid, bizStore.getBizName().getLimitServiceByDays())) {
-                    return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.X, bizStore);
+                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.X, bizStore);
                 }
 
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
@@ -387,19 +388,19 @@ public class TokenQueueService {
 
                 if (!bizStore.isActive() || storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
                     LOG.warn("When queue closed or prevent joining, attempting to create new token");
-                    return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.C, bizStore);
+                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.C, bizStore);
                 }
 
                 int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
                 int tokenFrom = storeHour.getTokenAvailableFrom();
                 if (requesterTime < tokenFrom) {
-                    return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.B, bizStore);
+                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.B, bizStore);
                 }
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
                 TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
                 if (tokenQueue.getLastNumber() >= bizStore.getAvailableTokenCount() && bizStore.getAvailableTokenCount() > 0) {
-                    return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.L, bizStore);
+                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.L, bizStore);
                 }
                 /* Since its a dummy number set before purchase there is a possibility of having more numbers than limit set. */
                 tokenQueue.setLastNumber(Integer.parseInt(LocalDateTime.now().format(DateUtil.DTF_HH_MM_SS_SSS)));
@@ -480,7 +481,7 @@ public class TokenQueueService {
             //This means payment is being made when getting a new token.
             TokenQueueEntity newTokenQueue = getNextToken(codeQR, bizStore.getAvailableTokenCount());
             if (newTokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
-                return ServiceUtils.blankJsonToken(codeQR, QueueStatusEnum.L, bizStore);
+                return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.L, bizStore);
             }
 
             doActionBasedOnQueueStatus(codeQR, newTokenQueue);
