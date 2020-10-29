@@ -345,13 +345,13 @@ public class WebJoinQueueController {
                 );
 
                 try {
-                    switch (jsonToken.getQueueStatus()) {
-                        case C:
-                            throw new StoreDayClosedException("Store is closed today codeQR " + codeQRDecoded);
-                        case B:
-                            throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQRDecoded);
+                    switch (jsonToken.getQueueJoinDenied()) {
                         case A:
                             throw new ExpectedServiceBeyondStoreClosingHour("Your service time exceeds store closing hour " + codeQRDecoded);
+                        case B:
+                            throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQRDecoded);
+                        case C:
+                            throw new StoreDayClosedException("Store is closed today codeQR " + codeQRDecoded);
                         case T:
                             throw new AlreadyServicedTodayException("You have been serviced today");
                         case X:

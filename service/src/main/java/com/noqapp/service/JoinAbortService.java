@@ -140,13 +140,13 @@ public class JoinAbortService {
     }
 
     private void checkLimitationEncountered(String codeQR, JsonToken jsonToken) {
-        switch (jsonToken.getQueueStatus()) {
-            case C:
-                throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
-            case B:
-                throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
+        switch (jsonToken.getQueueJoinDenied()) {
             case A:
                 throw new ExpectedServiceBeyondStoreClosingHour("Your service time exceeds store closing hour " + codeQR);
+            case B:
+                throw new BeforeStartOfStoreException("Please correct your system time to match your timezone " + codeQR);
+            case C:
+                throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
             case T:
                 throw new AlreadyServicedTodayException("You have been serviced today");
             case X:

@@ -12,6 +12,7 @@ import com.noqapp.common.utils.GetTimeAgoUtils;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.json.JsonToken;
+import com.noqapp.domain.types.QueueJoinDeniedEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
 import org.slf4j.Logger;
@@ -118,14 +119,14 @@ public class ServiceUtils {
         }
     }
 
-    public static JsonToken blankJsonToken(String codeQR, QueueStatusEnum queueStatus, BizStoreEntity bizStore) {
+    public static JsonToken blankJsonToken(String codeQR, QueueJoinDeniedEnum queueJoinDenied, BizStoreEntity bizStore) {
         return new JsonToken(codeQR, bizStore.getBusinessType())
             .setToken(0)
             .setDisplayToken(String.valueOf(0))
             .setServingNumber(0)
             .setDisplayServingNumber(String.valueOf(0))
             .setDisplayName(bizStore.getDisplayName())
-            .setQueueStatus(queueStatus)
+            .setQueueJoinDenied(queueJoinDenied)
             .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
     }
 }

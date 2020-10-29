@@ -4,6 +4,7 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.QueueJoinDeniedEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -87,6 +88,10 @@ public class JsonToken extends AbstractDomain {
 
     @JsonProperty("sl")
     private String timeSlotMessage;
+
+    @Transient
+    @JsonIgnore
+    private QueueJoinDeniedEnum queueJoinDenied;
 
     @Transient
     @JsonIgnore
@@ -241,6 +246,15 @@ public class JsonToken extends AbstractDomain {
 
     public JsonToken setTimeSlotMessage(String timeSlotMessage) {
         this.timeSlotMessage = timeSlotMessage;
+        return this;
+    }
+
+    public QueueJoinDeniedEnum getQueueJoinDenied() {
+        return queueJoinDenied;
+    }
+
+    public JsonToken setQueueJoinDenied(QueueJoinDeniedEnum queueJoinDenied) {
+        this.queueJoinDenied = queueJoinDenied;
         return this;
     }
 

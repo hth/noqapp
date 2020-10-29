@@ -167,7 +167,7 @@ public class AppointmentFlexAndWalkin {
 
                 tokenQueueService.sendMessageToSpecificUser(
                     bizStore.getDisplayName() + ": Token not issued",
-                    jsonToken.getQueueStatus().friendlyDescription(),
+                    jsonToken.getQueueJoinDenied().friendlyDescription(),
                     scheduleAppointment.getQueueUserId(),
                     MessageOriginEnum.A);
             }
