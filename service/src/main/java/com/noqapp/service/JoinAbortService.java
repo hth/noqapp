@@ -139,7 +139,7 @@ public class JoinAbortService {
         return jsonToken;
     }
 
-    private void checkLimitationEncountered(String codeQR, JsonToken jsonToken) {
+    public void checkLimitationEncountered(String codeQR, JsonToken jsonToken) {
         if (null != jsonToken.getQueueJoinDenied()) {
             switch (jsonToken.getQueueJoinDenied()) {
                 case A:
