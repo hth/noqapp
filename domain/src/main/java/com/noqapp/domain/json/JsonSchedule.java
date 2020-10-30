@@ -2,12 +2,15 @@ package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.ScheduleAppointmentEntity;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.beans.Transient;
 import java.util.StringJoiner;
@@ -61,6 +64,9 @@ public class JsonSchedule extends AbstractDomain {
 
     @JsonProperty("cc")
     private String chiefComplain;
+
+    @JsonProperty("ps")
+    private AppointmentStateEnum appointmentState;
 
     @JsonProperty("jp")
     private JsonProfile jsonProfile;
@@ -158,6 +164,15 @@ public class JsonSchedule extends AbstractDomain {
         return this;
     }
 
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
+    }
+
+    public JsonSchedule setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
+        return this;
+    }
+
     public JsonProfile getJsonProfile() {
         return jsonProfile;
     }
@@ -188,6 +203,7 @@ public class JsonSchedule extends AbstractDomain {
             .setGuardianQid(scheduleAppointment.getGuardianQid())
             .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
             .setChiefComplain(scheduleAppointment.getChiefComplain())
+            .setAppointmentState(scheduleAppointment.getAppointmentState())
             .setJsonProfile(jsonProfile);
     }
 

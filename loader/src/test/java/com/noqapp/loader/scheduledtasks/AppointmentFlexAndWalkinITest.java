@@ -1,6 +1,5 @@
 package com.noqapp.loader.scheduledtasks;
 
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.noqapp.common.utils.DateUtil;
@@ -9,13 +8,11 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.json.JsonLatestAppVersion;
 import com.noqapp.domain.types.AppFlavorEnum;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.loader.ITest;
-import com.noqapp.repository.ScheduleAppointmentManager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +20,6 @@ import org.junit.jupiter.api.TestInstance;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.TemporalUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -75,6 +71,7 @@ class AppointmentFlexAndWalkinITest extends ITest {
 
         ScheduleAppointmentEntity updateAppointment1 = scheduleAppointmentManager.findAppointment(scheduleAppointment1.getId(), scheduleAppointment1.getQueueUserId(), scheduleAppointment1.getCodeQR());
         assertEquals(updateAppointment1.getAppointmentStatus(), AppointmentStatusEnum.W);
+        assertEquals(bizStore.getAppointmentState(), updateAppointment1.getAppointmentState());
 
         ScheduleAppointmentEntity updateAppointment2 = scheduleAppointmentManager.findAppointment(scheduleAppointment2.getId(), scheduleAppointment2.getQueueUserId(), scheduleAppointment2.getCodeQR());
         assertEquals(updateAppointment2.getAppointmentStatus(), AppointmentStatusEnum.C);
@@ -100,7 +97,8 @@ class AppointmentFlexAndWalkinITest extends ITest {
             .setQueueUserId(userProfile1.getQueueUserId())
             .setGuardianQid(null)
             .setAppointmentStatus(AppointmentStatusEnum.A)
-            .setChiefComplain(null);
+            .setChiefComplain(null)
+            .setAppointmentState(bizStore.getAppointmentState());
 
         scheduleAppointmentManager.save(scheduleAppointment);
         return scheduleAppointment;
