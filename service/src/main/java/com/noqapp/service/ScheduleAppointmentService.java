@@ -185,7 +185,8 @@ public class ScheduleAppointmentService {
             .setQueueUserId(jsonSchedule.getQueueUserId())
             .setGuardianQid(guardianQid)
             .setAppointmentStatus(appointmentStatus)
-            .setChiefComplain(jsonSchedule.getChiefComplain());
+            .setChiefComplain(jsonSchedule.getChiefComplain())
+            .setAppointmentState(bizStore.getAppointmentState());
         save(scheduleAppointment);
 
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());

@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
@@ -57,6 +58,9 @@ public class ScheduleAppointmentEntity extends BaseEntity {
 
     @Field("RS")
     private int rescheduleCount;
+
+    @Field("PS")
+    private AppointmentStateEnum appointmentState;
 
     public String getCodeQR() {
         return codeQR;
@@ -145,6 +149,15 @@ public class ScheduleAppointmentEntity extends BaseEntity {
 
     public ScheduleAppointmentEntity setRescheduleCount(int rescheduleCount) {
         this.rescheduleCount = rescheduleCount;
+        return this;
+    }
+
+    public AppointmentStateEnum getAppointmentState() {
+        return appointmentState;
+    }
+
+    public ScheduleAppointmentEntity setAppointmentState(AppointmentStateEnum appointmentState) {
+        this.appointmentState = appointmentState;
         return this;
     }
 
