@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
@@ -91,7 +92,7 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
                     where("AS").in(AppointmentStatusEnum.A, AppointmentStatusEnum.U),
                     where("AS").ne(AppointmentStatusEnum.W)
                 )
-            ).with(Sort.by(DESC, "ST")),
+            ).with(Sort.by(ASC, "ST")),
             ScheduleAppointmentEntity.class,
             TABLE
         );
