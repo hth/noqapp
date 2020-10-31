@@ -8,6 +8,7 @@ public enum MessageOriginEnum {
     Q,  //Queued                    (NOT In App DB)
     QA, //Queue Appointment         (In App DB)
     QR, //Queue Review              (In App DB)
+    QCT,//Queue Change in Time      (In App DB)
     O,  //Order                     (NOT In App DB)
     OR, //Order Review              (In App DB)
     D,  //Display                   (NOT In App DB)

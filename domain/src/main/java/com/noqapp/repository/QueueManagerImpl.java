@@ -89,6 +89,11 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
+    public QueueEntity findOneById(String id) {
+        return mongoTemplate.findById(id, QueueEntity.class, TABLE);
+    }
+
+    @Override
     public QueueEntity findQueuedOne(String codeQR, String did, String qid) {
         Query query;
         if (StringUtils.isNotBlank(qid)) {
@@ -726,5 +731,16 @@ public class QueueManagerImpl implements QueueManager {
                 QueueEntity.class,
                 TABLE);
         }
+    }
+
+    @Override
+    public List<QueueEntity> findInQueueBeginningFrom(String codeQR, int currentlyServing) {
+        return mongoTemplate.find(
+            query(where("QR").is(codeQR)
+                .and("TN").gt(currentlyServing)
+                .and("QS").is(QueueUserStateEnum.Q)
+            ).with(Sort.by(Sort.Direction.DESC, "TN")),
+            QueueEntity.class,
+            TABLE);
     }
 }
