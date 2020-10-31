@@ -23,6 +23,8 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     /** Abort queue. Set QueueUserState to Abort. */
     void abort(String id);
 
+    QueueEntity findOneById(String id);
+
     /** Find just the one with qid that has been queued. */
     QueueEntity findQueuedOne(String codeQR, String did, String qid);
 
@@ -179,4 +181,6 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
         CustomerPriorityLevelEnum customerPriorityLevel,
         BusinessCustomerAttributeEnum businessCustomerAttribute
     );
+
+    List<QueueEntity> findInQueueBeginningFrom(String codeQR, int currentlyServing);
 }

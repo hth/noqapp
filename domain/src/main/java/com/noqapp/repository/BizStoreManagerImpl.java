@@ -336,10 +336,12 @@ public class BizStoreManagerImpl implements BizStoreManager {
         Update update;
         if (rating == 0 && ratingCount == 0) {
             update = entityUpdate(update("TZ", zoneId)
-                .set("QH", archiveNextRun));
+                .set("QH", archiveNextRun))
+                .set("TC", 0);
         } else {
             update = entityUpdate(update("TZ", zoneId)
                 .set("QH", archiveNextRun)
+                .set("TC", 0)
                 .set("RC", ratingCount)
                 .set("RA", rating));
         }
@@ -593,6 +595,16 @@ public class BizStoreManagerImpl implements BizStoreManager {
         mongoTemplate.updateMulti(
             query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId))),
             update("PS", appointmentState),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void increaseTokenAfterCancellation(String codeQR) {
+        mongoTemplate.updateFirst(
+            query(where("QR").is(codeQR)),
+            new Update().inc("TC", 1),
             BizStoreEntity.class,
             TABLE
         );

@@ -128,6 +128,8 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     void updateStoreTokenAndServiceTime(String codeQR, long averageServiceTime, int availableTokenCount);
 
-    void updateAllAppointmentState(String bizNameId, AppointmentStateEnum o);
+    void updateAllAppointmentState(String bizNameId, AppointmentStateEnum appointmentState);
+
+    void increaseTokenAfterCancellation(String codeQR);
 }
 

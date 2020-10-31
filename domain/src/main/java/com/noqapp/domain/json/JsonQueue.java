@@ -160,6 +160,9 @@ public class JsonQueue extends AbstractDomain {
 
     @JsonProperty("at")
     private int availableTokenCount;
+
+    @JsonProperty("tc")
+    private int availableTokenAfterCancellation;
     //***************************/
     //*  Queue Settings Ends.   */
     //***************************/
@@ -558,6 +561,15 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setAvailableTokenCount(int availableTokenCount) {
         this.availableTokenCount = availableTokenCount;
+        return this;
+    }
+
+    public int getAvailableTokenAfterCancellation() {
+        return availableTokenAfterCancellation;
+    }
+
+    public JsonQueue setAvailableTokenAfterCancellation(int availableTokenAfterCancellation) {
+        this.availableTokenAfterCancellation = availableTokenAfterCancellation;
         return this;
     }
 

@@ -225,6 +225,9 @@ public class BizStoreEntity extends BaseEntity {
 
     @Field("AT")
     private int availableTokenCount;
+
+    @Field("TC")
+    private int availableTokenAfterCancellation;
     //***************************/
     //*  Queue Settings Ends.   */
     //***************************/
@@ -781,6 +784,15 @@ public class BizStoreEntity extends BaseEntity {
         return this;
     }
 
+    public int getAvailableTokenAfterCancellation() {
+        return availableTokenAfterCancellation;
+    }
+
+    public BizStoreEntity setAvailableTokenAfterCancellation(int availableTokenAfterCancellation) {
+        this.availableTokenAfterCancellation = availableTokenAfterCancellation;
+        return this;
+    }
+
     public boolean isEnabledPayment() {
         return enabledPayment;
     }
@@ -1016,5 +1028,11 @@ public class BizStoreEntity extends BaseEntity {
     @Transient
     public String computeGrandTotal() {
         return String.valueOf(new BigDecimal(productPrice).add(new BigDecimal(productPrice).multiply(tax.getValue()).movePointLeft(2)).intValue());
+    }
+
+    /** To be used when issuing new tokens. */
+    @Transient
+    public int realAvailableToken() {
+        return availableTokenCount + availableTokenAfterCancellation;
     }
 }

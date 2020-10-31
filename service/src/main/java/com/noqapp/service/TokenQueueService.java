@@ -18,8 +18,10 @@ import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.helper.CommonHelper;
+import com.noqapp.domain.json.JsonQueueChangeServiceTime;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.json.fcm.JsonMessage;
+import com.noqapp.domain.json.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
@@ -30,6 +32,7 @@ import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueJoinDeniedEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
+import com.noqapp.domain.types.ServiceTimeChangeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
@@ -70,6 +73,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -93,6 +98,7 @@ public class TokenQueueService {
     private ApiHealthService apiHealthService;
 
     private ExecutorService executorService;
+    private ScheduledExecutorService scheduledExecutorService;
 
     @Autowired
     public TokenQueueService(
@@ -121,6 +127,7 @@ public class TokenQueueService {
         this.apiHealthService = apiHealthService;
 
         this.executorService = newCachedThreadPool();
+        this.scheduledExecutorService = Executors.newScheduledThreadPool(2);
     }
 
     //TODO has to createUpdate by cron job
@@ -269,7 +276,7 @@ public class TokenQueueService {
                 if (tokenService == TokenServiceEnum.M) {
                     tokenQueue = getNextToken(codeQR, 0);
                 } else {
-                    tokenQueue = getNextToken(codeQR, bizStore.getAvailableTokenCount());
+                    tokenQueue = getNextToken(codeQR, bizStore.realAvailableToken());
                 }
                 if (tokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
                     return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.L, bizStore);
@@ -399,7 +406,7 @@ public class TokenQueueService {
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
                 TokenQueueEntity tokenQueue = findByCodeQR(codeQR);
-                if (tokenQueue.getLastNumber() >= bizStore.getAvailableTokenCount() && bizStore.getAvailableTokenCount() > 0) {
+                if (tokenQueue.getLastNumber() >= bizStore.realAvailableToken() && bizStore.getAvailableTokenCount() > 0) {
                     return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.L, bizStore);
                 }
                 /* Since its a dummy number set before purchase there is a possibility of having more numbers than limit set. */
@@ -479,7 +486,7 @@ public class TokenQueueService {
         TokenQueueEntity tokenQueue;
         if (queue.getTokenNumber() > existingStateOfTokenQueue.getLastNumber()) {
             //This means payment is being made when getting a new token.
-            TokenQueueEntity newTokenQueue = getNextToken(codeQR, bizStore.getAvailableTokenCount());
+            TokenQueueEntity newTokenQueue = getNextToken(codeQR, bizStore.realAvailableToken());
             if (newTokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
                 return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.L, bizStore);
             }
@@ -981,6 +988,31 @@ public class TokenQueueService {
         }
     }
 
+    void sendAllOnChangeInServiceTime(JsonChangeServiceTimeData jsonChangeServiceTimeData, TokenQueueEntity tokenQueue) {
+        LOG.debug("Sending message codeQR={} tokenQueue={} firebaseMessageType={}", jsonChangeServiceTimeData.getCodeQR(), tokenQueue, FirebaseMessageTypeEnum.P);
+        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+            LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(QueueStatusEnum.N) + UNDER_SCORE + deviceType.name());
+            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(QueueStatusEnum.N) + UNDER_SCORE + deviceType.name());
+            jsonMessage.setData(jsonChangeServiceTimeData);
+            if (DeviceTypeEnum.I == deviceType) {
+                jsonMessage.getNotification()
+                    .setBody("Modified time slot. You would be served little early than expected.")
+                    .setTitle(tokenQueue.getDisplayName() + " Queue");
+            } else {
+                jsonMessage.setNotification(null);
+                jsonChangeServiceTimeData.setBody("Modified time slot. You would be served little early than expected.")
+                    .setTitle(tokenQueue.getDisplayName() + " Queue");
+            }
+
+            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+            if (!fcmMessageBroadcast) {
+                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            } else {
+                LOG.debug("Sent topic={} message={}", tokenQueue.getTopic(), jsonMessage.asJson());
+            }
+        }
+    }
+
     /** Formulates and send messages to FCM. */
     void invokeThreadSendMessageToTopic(
         String codeQR,
@@ -1169,5 +1201,64 @@ public class TokenQueueService {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
         storeHourManager.resetQueueSettingWhenQueueStarts(bizStore.getId(), dayOfWeek);
+    }
+
+    /** When some one aborts inform all so that upon cancel time to service is re-computed. */
+    public void updateServingTimeForAllWhenAborted(String id) {
+        QueueEntity queue = queueManager.findOneById(id);
+        sendMessageToSpecificUser(
+            "Aborted " + queue.getDisplayName(),
+            "Aborted position in queue. If this was not intended behavior please re-join to retain your spot. " +
+                "After few minutes, spot will be assigned to another user and you would not be able to join the queue again today.",
+                StringUtils.isBlank(queue.getGuardianQid()) ? queue.getQueueUserId() : queue.getGuardianQid(),
+            MessageOriginEnum.A
+        );
+        scheduledExecutorService.schedule(() -> {
+            try {
+                QueueEntity queueAfterScheduledTime = queueManager.findOneById(id);
+                if (QueueUserStateEnum.A == queueAfterScheduledTime.getQueueUserState()) {
+                    /* First increase the available token. */
+                    bizStoreManager.increaseTokenAfterCancellation(queue.getCodeQR());
+
+                    BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
+                    ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
+                    DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
+                    StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
+
+                    TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queueAfterScheduledTime.getCodeQR());
+                    List<QueueEntity> queues = queueManager.findInQueueBeginningFrom(queue.getCodeQR(), tokenQueue.getCurrentlyServing());
+
+                    JsonChangeServiceTimeData jsonChangeServiceTimeData = new JsonChangeServiceTimeData(FirebaseMessageTypeEnum.C, MessageOriginEnum.QCT).setCodeQR(bizStore.getCodeQR());
+                    for (QueueEntity inQueue : queues) {
+                        ZonedDateTime expectedServiceBegin;
+                        if (bizStore.getAvailableTokenCount() > 0) {
+                            expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue.getLastNumber());
+                            String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour);
+                            if (!inQueue.getTimeSlotMessage().equalsIgnoreCase(timeSlot)) {
+                                JsonQueueChangeServiceTime jsonQueueChangeServiceTime = new JsonQueueChangeServiceTime()
+                                    .setToken(inQueue.getTokenNumber())
+                                    .setOldTimeSlotMessage(inQueue.getTimeSlotMessage())
+                                    .setUpdatedTimeSlotMessage(timeSlot)
+                                    .setServiceTimeChange(
+                                        ServiceTimeChangeEnum.compare(
+                                            inQueue.getExpectedServiceBegin(),
+                                            Date.from(expectedServiceBegin.toInstant())));
+                                jsonChangeServiceTimeData.addJsonQueueChangeServiceTimes(jsonQueueChangeServiceTime);
+
+                                inQueue.setExpectedServiceBegin(Date.from(expectedServiceBegin.toInstant())).setTimeSlotMessage(timeSlot);
+                            }
+                        } else {
+                            inQueue.setTimeSlotMessage("Not Assigned");
+                        }
+                        //Update using query instead of object
+                        //queueManager.save(inQueue);
+                    }
+
+                    sendAllOnChangeInServiceTime(jsonChangeServiceTimeData, tokenQueue);
+                }
+            } catch (Exception e) {
+                LOG.warn("Failed re-creating index reason={}", e.getLocalizedMessage(), e);
+            }
+        }, 1, TimeUnit.MINUTES);
     }
 }
