@@ -285,8 +285,10 @@ public class StoreProductEntity extends BaseEntity {
     public static StoreProductEntity parseJsonStoreProduct(JsonStoreProduct jsonStoreProduct) {
         StoreProductEntity storeProduct = new StoreProductEntity()
             //BizStoreId
+            .setBarCode(jsonStoreProduct.getBarCode())
             .setProductName(jsonStoreProduct.getProductName())
             .setProductPrice(jsonStoreProduct.getProductPrice())
+            .setTax(jsonStoreProduct.getTax())
             .setProductDiscount(jsonStoreProduct.getProductDiscount())
             .setProductInfo(jsonStoreProduct.getProductInfo())
             .setStoreCategoryId(jsonStoreProduct.getStoreCategoryId())
@@ -295,7 +297,8 @@ public class StoreProductEntity extends BaseEntity {
             .setUnitOfMeasurement(jsonStoreProduct.getUnitOfMeasurement())
             .setPackageSize(jsonStoreProduct.getPackageSize())
             .setInventoryCurrent(jsonStoreProduct.getInventoryCurrent())
-            .setInventoryLimit(jsonStoreProduct.getInventoryLimit());
+            .setInventoryLimit(jsonStoreProduct.getInventoryLimit())
+            .setDisplayCaseTurnedOn(jsonStoreProduct.isDisplayCaseTurnedOn());
 
         storeProduct.setId(jsonStoreProduct.getProductId());
         return storeProduct;
