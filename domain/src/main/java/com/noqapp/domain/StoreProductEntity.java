@@ -286,7 +286,6 @@ public class StoreProductEntity extends BaseEntity {
     public static StoreProductEntity parseJsonStoreProduct(JsonStoreProduct jsonStoreProduct) {
         StoreProductEntity storeProduct = new StoreProductEntity()
             //BizStoreId
-            .setBarCode(jsonStoreProduct.getBarCode())
             .setProductName(jsonStoreProduct.getProductName())
             .setProductPrice(jsonStoreProduct.getProductPrice())
             .setTax(jsonStoreProduct.getTax())
@@ -302,6 +301,9 @@ public class StoreProductEntity extends BaseEntity {
             .setAvailableDate(DateUtil.convertDateStringOf_YYYY_MM_DD_ToDate(jsonStoreProduct.getAvailableDate()))
             .setDisplayCaseTurnedOn(jsonStoreProduct.isDisplayCaseTurnedOn());
 
+        if (StringUtils.isNotBlank(jsonStoreProduct.getBarCode())) {
+            storeProduct.setBarCode(jsonStoreProduct.getBarCode());
+        }
         storeProduct.setId(jsonStoreProduct.getProductId());
         return storeProduct;
     }
