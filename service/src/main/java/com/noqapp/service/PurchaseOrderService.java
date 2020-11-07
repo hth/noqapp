@@ -337,6 +337,25 @@ public class PurchaseOrderService {
     }
 
     @Mobile
+    public JsonPurchaseOrder updateOnPaymentGatewayNotificationAsJsonPurchaseOrder(
+        String transactionId,
+        String transactionMessage,
+        String transactionReferenceId,
+        PaymentStatusEnum paymentStatus,
+        PurchaseOrderStateEnum purchaseOrderState,
+        PaymentModeEnum paymentMode
+    ) {
+        PurchaseOrderEntity purchaseOrder = updateOnPaymentGatewayNotification(transactionId, transactionMessage, transactionReferenceId, paymentStatus, purchaseOrderState, paymentMode);
+        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder);
+
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
+        jsonPurchaseOrder
+            .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayServingNumber(tokenQueue.generateDisplayServingNow());
+        return jsonPurchaseOrder;
+    }
+
+    @Mobile
     public PurchaseOrderEntity updateOnPaymentGatewayNotification(
         String transactionId,
         String transactionMessage,
