@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonStoreProduct;
 import com.noqapp.domain.types.ProductTypeEnum;
@@ -298,6 +299,7 @@ public class StoreProductEntity extends BaseEntity {
             .setPackageSize(jsonStoreProduct.getPackageSize())
             .setInventoryCurrent(jsonStoreProduct.getInventoryCurrent())
             .setInventoryLimit(jsonStoreProduct.getInventoryLimit())
+            .setAvailableDate(DateUtil.convertDateStringOf_YYYY_MM_DD_ToDate(jsonStoreProduct.getAvailableDate()))
             .setDisplayCaseTurnedOn(jsonStoreProduct.isDisplayCaseTurnedOn());
 
         storeProduct.setId(jsonStoreProduct.getProductId());
