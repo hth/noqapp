@@ -4,6 +4,7 @@ import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.NotificationMessageEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
@@ -75,11 +76,20 @@ public class MessageCustomerService {
             .setTitle(title)
             .setBody(body)
             .setQueueUserId(qid);
-        notificationMessageManager.save(notificationMessage);
 
+        int messageSendCount = 0;
         for (String codeQR : codeQRs) {
-            sendMessageToSubscriber(title, body, codeQR);
+            BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
+            messageSendCount =+ tokenQueue.getLastNumber();
+            sendMessageToSubscriber(
+                title,
+                body + "\n" + "Sender: " + bizStore.getBizName().getBusinessName(),
+                tokenQueue);
         }
+
+        notificationMessage.setMessageSendCount(messageSendCount);
+        notificationMessageManager.save(notificationMessage);
     }
 
     public void sendMessageToSubscriber(String title, String body, String codeQR, String qid) {
@@ -93,8 +103,7 @@ public class MessageCustomerService {
         tokenQueueService.sendAlertMessageToAllOnSpecificTopic(title, body, tokenQueue, QueueStatusEnum.C);
     }
 
-    private void sendMessageToSubscriber(String title, String body, String codeQR) {
-        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
+    private void sendMessageToSubscriber(String title, String body, TokenQueueEntity tokenQueue) {
         tokenQueueService.sendAlertMessageToAllOnSpecificTopic(title, body, tokenQueue, QueueStatusEnum.C);
     }
 
