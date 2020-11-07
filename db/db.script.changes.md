@@ -1,3 +1,7 @@
+### Changed Nov 06, 2020
+
+    db.getCollection('REGISTERED_DEVICE').remove({"U" : {$lte : ISODate("2020-01-01 03:55:25.151Z")}})
+
 ### Changed Oct 30, 2020
     
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
