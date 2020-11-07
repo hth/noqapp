@@ -306,4 +306,8 @@ public final class CommonUtil {
             .collect(Collectors.groupingBy(s -> counter.getAndIncrement() / size))
             .values();
     }
-}
+
+    public static String appendBusinessNameToNotificationMessage(String body, String businessName) {
+        return body + "\n" + "Sender: " + businessName;
+    }
+ }

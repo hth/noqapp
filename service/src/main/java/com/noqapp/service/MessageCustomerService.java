@@ -72,24 +72,29 @@ public class MessageCustomerService {
     @Mobile
     @Async
     public void sendMessageToSubscribers(String title, String body, List<String> codeQRs, String qid) {
-        NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
-            .setTitle(title)
-            .setBody(body)
-            .setQueueUserId(qid);
+        try {
+            NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
+                .setTitle(title)
+                .setBody(body)
+                .setQueueUserId(qid);
+            notificationMessageManager.save(notificationMessage);
 
-        int messageSendCount = 0;
-        for (String codeQR : codeQRs) {
-            BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
-            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
-            messageSendCount =+ tokenQueue.getLastNumber();
-            sendMessageToSubscriber(
-                title,
-                body + "\n" + "Sender: " + bizStore.getBizName().getBusinessName(),
-                tokenQueue);
+            int messageSendCount = 0;
+            for (String codeQR : codeQRs) {
+                BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+                TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
+                messageSendCount =+ tokenQueue.getLastNumber();
+                sendMessageToSubscriber(
+                    title,
+                    CommonUtil.appendBusinessNameToNotificationMessage(body, bizStore.getBizName().getBusinessName()),
+                    tokenQueue);
+            }
+
+            notificationMessage.setMessageSendCount(messageSendCount);
+            notificationMessageManager.save(notificationMessage);
+        } catch (Exception e) {
+            LOG.error("Failed sending message qid={} title=\"{}\" body=\"{}\"", qid, title, body);
         }
-
-        notificationMessage.setMessageSendCount(messageSendCount);
-        notificationMessageManager.save(notificationMessage);
     }
 
     public void sendMessageToSubscriber(String title, String body, String codeQR, String qid) {
@@ -124,7 +129,7 @@ public class MessageCustomerService {
             notificationMessageManager.save(notificationMessage);
 
             int sendMessageCount = sendMessageToPastClients(bizNameId);
-            LOG.info("Sending message by {} total send={} {} {} {}", qid, sendMessageCount, title, body, bizNameId);
+            LOG.info("Sending message by {} total send={} \"{}\" \"{}\" {}", qid, sendMessageCount, title, body, bizNameId);
 
             List<String> tokens_A = new ArrayList<>();
             List<String> tokens_I = new ArrayList<>();
