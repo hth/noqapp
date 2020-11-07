@@ -1,5 +1,6 @@
 package com.noqapp.view.controller.business.message;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.MessageCustomerService;
@@ -104,7 +105,7 @@ public class MessageCustomerController {
         try {
             int sendMessageCount = messageCustomerService.sendMessageToPastClients(
                 sendNotificationForm.getTitle().getText(),
-                sendNotificationForm.getBody().getText(),
+                CommonUtil.appendBusinessNameToNotificationMessage(sendNotificationForm.getBody().getText(), businessUser.getBizName().getBusinessName()),
                 businessUser.getBizName().getId(),
                 queueUser.getQueueUserId()
             );
