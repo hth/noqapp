@@ -51,8 +51,8 @@
                     <div class="qr-address">
                         <h3>${bizName}</h3>
                         <p>${storeAddress}</p>
-                        <p>&nbsp;</p>
-                        <p>${phone}</p>
+                        <#--<p>&nbsp;</p>-->
+                        <#--<p>${phone}</p>-->
                     </div>
                     <div class="qr-queue">
                         <h3>${displayName}</h3>
