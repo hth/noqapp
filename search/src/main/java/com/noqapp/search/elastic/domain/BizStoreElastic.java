@@ -1,6 +1,6 @@
 package com.noqapp.search.elastic.domain;
 
-import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
+import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.common.utils.FileUtil;

@@ -1,9 +1,8 @@
 package com.noqapp.view.controller.open;
 
-import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
+import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
 import com.noqapp.common.utils.DateFormatter;
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
@@ -54,10 +53,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
