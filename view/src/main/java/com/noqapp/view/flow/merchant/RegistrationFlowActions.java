@@ -442,7 +442,9 @@ class RegistrationFlowActions {
             .setAmenities(registerBusiness.getAmenitiesStore())
             .setAppointmentState(registerBusiness.getAppointmentState())
             .setAppointmentDuration(registerBusiness.getAppointmentDuration())
-            .setAppointmentOpenHowFar(registerBusiness.getAppointmentOpenHowFar());
+            .setAppointmentOpenHowFar(registerBusiness.getAppointmentOpenHowFar())
+            .setAcceptedPayments(registerBusiness.getAcceptedPayments())
+            .setAcceptedDeliveries(registerBusiness.getAcceptedDeliveries());
 
         /* If preferred Google Address then, do an update. Otherwise skip. */
         if (registerBusiness.isSelectFoundAddressStore()) {
