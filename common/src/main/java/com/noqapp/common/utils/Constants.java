@@ -17,6 +17,7 @@ public class Constants {
     public static final String MAX_Q_SEARCH_DISTANCE = "4000"; //Close to 93 Miles or 150 KM
     public static final String MAX_Q_SEARCH_DISTANCE_WITH_UNITS = MAX_Q_SEARCH_DISTANCE + "km"; //Close to 93 Miles
     public static final String FILE_SEPARATOR = System.getProperty("file.separator");
+    public static final String UNDER_SCORE = "_";
     public static final Charset CHAR_SET_UTF8 = StandardCharsets.UTF_8;
     public static final Pattern WORD_PATTERN = Pattern.compile("^[A-Za-z .-]+");
     public static final String WORD_PATTERN_TEXT = " words 'A-to-Z', spaces ' ' and/or dots/dash '.', '-";

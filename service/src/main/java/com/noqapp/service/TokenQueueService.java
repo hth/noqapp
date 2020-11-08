@@ -1,7 +1,7 @@
 package com.noqapp.service;
 
 import static com.noqapp.common.utils.Constants.PREVENT_JOINING_BEFORE_CLOSING;
-import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
+import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
 import com.noqapp.common.utils.CommonUtil;

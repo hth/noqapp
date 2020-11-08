@@ -1,6 +1,6 @@
 package com.noqapp.service;
 
-import static com.noqapp.domain.BizStoreEntity.UNDER_SCORE;
+import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BizNameEntity;
