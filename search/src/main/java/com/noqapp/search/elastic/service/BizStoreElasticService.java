@@ -53,7 +53,7 @@ public class BizStoreElasticService {
     static final long MINUTES = 10L;
 
     static String[] includeFields = new String[]{
-        "N", "BT", "BC", "BCI", "BID", "AD", "AR", "TO", "DT", "SH",
+        "N", "BT", "BC", "BCI", "BID", "SA", "AR", "TO", "DT", "SH",
         "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR",
         "GH", "WL", "FF", "DI"};
     static String[] excludeFields = new String[]{"_type"};
@@ -190,7 +190,7 @@ public class BizStoreElasticService {
                     .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ST)
                     .setBizCategoryName(map.containsKey("BC") ? map.get("BC").toString() : "")
                     .setBizCategoryId(map.containsKey("BCI") ? map.get("BCI").toString() : "")
-                    .setAddress(map.containsKey("AD") ? map.get("AD").toString() : "")
+                    .setAddress(map.containsKey("SA") ? map.get("SA").toString() : "")
                     .setArea(map.containsKey("AR") ? map.get("AR").toString() : "")
                     .setTown(map.containsKey("TO") ? map.get("TO").toString() : "")
                     .setDistrict(map.containsKey("DT") ? map.get("DT").toString() : "")

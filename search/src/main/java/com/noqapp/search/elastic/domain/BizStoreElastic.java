@@ -83,7 +83,7 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("BCI")
     String bizCategoryId;
 
-    @JsonProperty("AD")
+    @JsonProperty("SA")
     String address;
 
     @JsonProperty("AR")
