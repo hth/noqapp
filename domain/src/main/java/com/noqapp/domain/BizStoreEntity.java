@@ -80,7 +80,7 @@ public class BizStoreEntity extends BaseEntity {
     private String phoneNumberBlank;
 
     @NotNull
-    @Field("AD")
+    @Field("SA")
     private String address;
 
     @Field("AR")

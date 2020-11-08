@@ -108,7 +108,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     }
 
     public BizStoreEntity noStore() {
-        return mongoTemplate.findOne(query(where("AD").is("")), BizStoreEntity.class);
+        return mongoTemplate.findOne(query(where("SA").is("")), BizStoreEntity.class);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     ) {
         Criteria criteriaA = new Criteria();
         if (StringUtils.isNotBlank(bizAddress)) {
-            criteriaA.and("AD").regex(bizAddress, "i");
+            criteriaA.and("SA").regex(bizAddress, "i");
         }
         if (StringUtils.isNotBlank(bizPhone)) {
             criteriaA.and("PH").regex(bizPhone, "i");
@@ -149,11 +149,11 @@ public class BizStoreManagerImpl implements BizStoreManager {
         if (StringUtils.isNotBlank(bizAddress) && StringUtils.isNotBlank(bizPhone)) {
             query = query(
                 new Criteria().orOperator(
-                    where("AD").regex("^" + bizAddress, "i"),
+                    where("SA").regex("^" + bizAddress, "i"),
                     where("PH").regex("^" + bizPhone, "i"))
             );
         } else if (StringUtils.isNotBlank(bizAddress)) {
-            query = query(where("AD").regex("^" + bizAddress, "i"));
+            query = query(where("SA").regex("^" + bizAddress, "i"));
         } else if (StringUtils.isNotBlank(bizPhone)) {
             query = query(where("PH").regex("^" + bizPhone, "i"));
         }
@@ -182,7 +182,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
             Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizId));
             query = query(criteriaC);
         } else if (StringUtils.isNotBlank(bizAddress) && StringUtils.isBlank(bizPhone)) {
-            Criteria criteriaB = where("AD").regex("^" + bizAddress, "i");
+            Criteria criteriaB = where("SA").regex("^" + bizAddress, "i");
             Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizId));
 
             query = query(criteriaC).addCriteria(criteriaB);
@@ -193,7 +193,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
             query = query(criteriaC).addCriteria(criteriaA);
         } else {
             Criteria criteriaA = where("PH").regex("^" + bizPhone, "i");
-            Criteria criteriaB = where("AD").regex("^" + bizAddress, "i");
+            Criteria criteriaB = where("SA").regex("^" + bizAddress, "i");
             Criteria criteriaC = where("BIZ_NAME.$id").is(new ObjectId(bizId));
 
             query = query(criteriaC).addCriteria(criteriaB).addCriteria(criteriaA);
@@ -281,7 +281,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public List<BizStoreEntity> getAllBizStoresMatchingAddress(String bizStoreAddress, String bizNameId) {
         return mongoTemplate.find(
-            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("AD").is(bizStoreAddress).and("D").is(false)),
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId)).and("SA").is(bizStoreAddress).and("D").is(false)),
             BizStoreEntity.class,
             TABLE
         );
