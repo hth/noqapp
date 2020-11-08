@@ -11,6 +11,8 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
+import com.noqapp.domain.types.SupportedDeliveryEnum;
+import com.noqapp.domain.types.SupportedPaymentEnum;
 import com.noqapp.domain.types.TaxEnum;
 import com.noqapp.domain.types.WalkInStateEnum;
 
@@ -80,7 +82,7 @@ public class BizStoreEntity extends BaseEntity {
     private String phoneNumberBlank;
 
     @NotNull
-    @Field("AD")
+    @Field("SA")
     private String address;
 
     @Field("AR")
@@ -273,6 +275,24 @@ public class BizStoreEntity extends BaseEntity {
     //******************************************/
     //*  Queue Appointment Setting Ends.       */
     //******************************************/
+
+    //****************************************************/
+    //*  Business Payment & Delivery Setting Starts.     */
+    //****************************************************/
+    @Field("AP")
+    private Set<SupportedPaymentEnum> acceptedPayments = new LinkedHashSet<>() {{
+        add(SupportedPaymentEnum.COD);
+        add(SupportedPaymentEnum.ONP);
+    }};
+
+    @Field("AD")
+    private Set<SupportedDeliveryEnum> acceptedDeliveries = new LinkedHashSet<>() {{
+        add(SupportedDeliveryEnum.HOM);
+        add(SupportedDeliveryEnum.PIK);
+    }};
+    //****************************************************/
+    //* Business Payment & Delivery Setting Ends.        */
+    //****************************************************/
 
     /* Contains Id if a task is assigned. */
     @Field("SC")
@@ -880,6 +900,24 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setAppointmentOpenHowFar(int appointmentOpenHowFar) {
         this.appointmentOpenHowFar = appointmentOpenHowFar;
+        return this;
+    }
+
+    public Set<SupportedPaymentEnum> getAcceptedPayments() {
+        return acceptedPayments;
+    }
+
+    public BizStoreEntity setAcceptedPayments(Set<SupportedPaymentEnum> acceptedPayments) {
+        this.acceptedPayments = acceptedPayments;
+        return this;
+    }
+
+    public Set<SupportedDeliveryEnum> getAcceptedDeliveries() {
+        return acceptedDeliveries;
+    }
+
+    public BizStoreEntity setAcceptedDeliveries(Set<SupportedDeliveryEnum> acceptedDeliveries) {
+        this.acceptedDeliveries = acceptedDeliveries;
         return this;
     }
 

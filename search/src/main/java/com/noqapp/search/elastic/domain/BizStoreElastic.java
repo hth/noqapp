@@ -12,6 +12,8 @@ import com.noqapp.domain.types.AmenityEnum;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FacilityEnum;
+import com.noqapp.domain.types.SupportedDeliveryEnum;
+import com.noqapp.domain.types.SupportedPaymentEnum;
 import com.noqapp.domain.types.WalkInStateEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.helper.BusinessImageHolder;
@@ -83,7 +85,7 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("BCI")
     String bizCategoryId;
 
-    @JsonProperty("AD")
+    @JsonProperty("SA")
     String address;
 
     @JsonProperty("AR")
@@ -178,6 +180,14 @@ public class BizStoreElastic extends AbstractDomain {
 
     @JsonProperty("PF")
     private int appointmentOpenHowFar;
+
+    @Transient
+    @JsonProperty("AP")
+    private Set<SupportedPaymentEnum> acceptedPayments;
+
+    @Transient
+    @JsonProperty("AD")
+    private Set<SupportedDeliveryEnum> acceptedDeliveries;
 
     @Transient
     @JsonProperty("BI")
@@ -547,6 +557,24 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public Set<SupportedPaymentEnum> getAcceptedPayments() {
+        return acceptedPayments;
+    }
+
+    public BizStoreElastic setAcceptedPayments(Set<SupportedPaymentEnum> acceptedPayments) {
+        this.acceptedPayments = acceptedPayments;
+        return this;
+    }
+
+    public Set<SupportedDeliveryEnum> getAcceptedDeliveries() {
+        return acceptedDeliveries;
+    }
+
+    public BizStoreElastic setAcceptedDeliveries(Set<SupportedDeliveryEnum> acceptedDeliveries) {
+        this.acceptedDeliveries = acceptedDeliveries;
+        return this;
+    }
+
     public Set<String> getBizServiceImages() {
         return bizServiceImages;
     }
@@ -659,6 +687,8 @@ public class BizStoreElastic extends AbstractDomain {
             .setAppointmentState(bizStore.getAppointmentState())
             .setAppointmentDuration(bizStore.getAppointmentDuration())
             .setAppointmentOpenHowFar(bizStore.getAppointmentOpenHowFar())
+            .setAcceptedPayments(bizStore.getAcceptedPayments() == null ? SupportedPaymentEnum.all() : bizStore.getAcceptedPayments())
+            .setAcceptedDeliveries(bizStore.getAcceptedDeliveries() == null ? SupportedDeliveryEnum.all() : bizStore.getAcceptedDeliveries())
             .setCodeQR(bizStore.getCodeQR())
             .setTimeZone(bizStore.getTimeZone())
             .setGeoHash(bizStore.getGeoPoint().getGeohash())

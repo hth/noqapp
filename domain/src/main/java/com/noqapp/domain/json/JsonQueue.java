@@ -9,6 +9,8 @@ import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
+import com.noqapp.domain.types.SupportedDeliveryEnum;
+import com.noqapp.domain.types.SupportedPaymentEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -196,6 +198,18 @@ public class JsonQueue extends AbstractDomain {
     //******************************************/
     //*  Queue Appointment Setting Ends.       */
     //******************************************/
+
+    //****************************************************/
+    //*  Business Payment & Delivery Setting Starts.     */
+    //****************************************************/
+    @JsonProperty("ap")
+    private Set<SupportedPaymentEnum> acceptedPayments;
+
+    @JsonProperty("ad")
+    private Set<SupportedDeliveryEnum> acceptedDeliveries;
+    //****************************************************/
+    //* Business Payment & Delivery Setting Ends.        */
+    //****************************************************/
 
     @JsonProperty("bc")
     private String bizCategoryId;
@@ -624,6 +638,24 @@ public class JsonQueue extends AbstractDomain {
 
     public JsonQueue setAppointmentOpenHowFar(int appointmentOpenHowFar) {
         this.appointmentOpenHowFar = appointmentOpenHowFar;
+        return this;
+    }
+
+    public Set<SupportedPaymentEnum> getAcceptedPayments() {
+        return acceptedPayments;
+    }
+
+    public JsonQueue setAcceptedPayments(Set<SupportedPaymentEnum> acceptedPayments) {
+        this.acceptedPayments = acceptedPayments;
+        return this;
+    }
+
+    public Set<SupportedDeliveryEnum> getAcceptedDeliveries() {
+        return acceptedDeliveries;
+    }
+
+    public JsonQueue setAcceptedDeliveries(Set<SupportedDeliveryEnum> acceptedDeliveries) {
+        this.acceptedDeliveries = acceptedDeliveries;
         return this;
     }
 

@@ -1,3 +1,7 @@
+### Changed Nov 07, 2020
+
+    db.getCollection('BIZ_STORE').update({"AD" : {$exists : true}}, {$rename: {"AD":"SA"}}, {multi: true});
+
 ### Changed Nov 06, 2020
 
     db.getCollection('REGISTERED_DEVICE').remove({"U" : {$lte : ISODate("2020-01-01 03:55:25.151Z")}})
