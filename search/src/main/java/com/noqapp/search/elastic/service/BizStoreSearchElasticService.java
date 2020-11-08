@@ -141,7 +141,7 @@ public class BizStoreSearchElasticService {
         LOG.info("DSL dslQuery={}", dslQuery);
         String result = elasticAdministrationService.executeDSLQuerySearch(
             BizStoreElastic.INDEX
-                + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,AD,AR,TO,DT,SH,EP,PP,PS,PD,PF,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL,FF,DI",
+                + "/_search?pretty&filter_path=hits.hits._source&_source=N,BT,BC,BCI,BID,SA,AR,TO,DT,SH,EP,PP,PS,PD,PF,ST,SS,CC,CS,PH,PI,RA,RC,DN,QR,GH,WL,FF,DI",
             dslQuery
         );
 
