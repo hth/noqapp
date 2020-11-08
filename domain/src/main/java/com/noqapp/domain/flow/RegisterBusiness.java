@@ -18,6 +18,8 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.LocaleEnum;
+import com.noqapp.domain.types.SupportedDeliveryEnum;
+import com.noqapp.domain.types.SupportedPaymentEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.WalkInStateEnum;
 
@@ -99,6 +101,10 @@ public class RegisterBusiness implements Serializable {
     private AppointmentStateEnum appointmentState;
     private int appointmentDuration;
     private int appointmentOpenHowFar;
+
+    /* Business Payment and Delivery. */
+    private Set<SupportedPaymentEnum> acceptedPayments;
+    private Set<SupportedDeliveryEnum> acceptedDeliveries;
 
     /* Business User Registration Status. This help if editing un-approved business for approval again. */
     private BusinessUserRegistrationStatusEnum businessUserRegistrationStatus = BusinessUserRegistrationStatusEnum.I;
@@ -205,6 +211,12 @@ public class RegisterBusiness implements Serializable {
 
     @Transient
     private Set<FacilityEnum> facilitiesAvailable = new LinkedHashSet<>();
+
+    @Transient
+    private Set<SupportedDeliveryEnum> supportedDeliveries = SupportedDeliveryEnum.all();
+
+    @Transient
+    private Set<SupportedPaymentEnum> supportedPayments = SupportedPaymentEnum.all();
 
     @Transient
     private WalkInStateEnum walkInState = WalkInStateEnum.E;
@@ -700,6 +712,24 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
+    public Set<SupportedPaymentEnum> getAcceptedPayments() {
+        return acceptedPayments;
+    }
+
+    public RegisterBusiness setAcceptedPayments(Set<SupportedPaymentEnum> acceptedPayments) {
+        this.acceptedPayments = acceptedPayments;
+        return this;
+    }
+
+    public Set<SupportedDeliveryEnum> getAcceptedDeliveries() {
+        return acceptedDeliveries;
+    }
+
+    public RegisterBusiness setAcceptedDeliveries(Set<SupportedDeliveryEnum> acceptedDeliveries) {
+        this.acceptedDeliveries = acceptedDeliveries;
+        return this;
+    }
+
     public BusinessUserRegistrationStatusEnum getBusinessUserRegistrationStatus() {
         return businessUserRegistrationStatus;
     }
@@ -800,6 +830,24 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
+    public Set<SupportedDeliveryEnum> getSupportedDeliveries() {
+        return supportedDeliveries;
+    }
+
+    public RegisterBusiness setSupportedDeliveries(Set<SupportedDeliveryEnum> supportedDeliveries) {
+        this.supportedDeliveries = supportedDeliveries;
+        return this;
+    }
+
+    public Set<SupportedPaymentEnum> getSupportedPayments() {
+        return supportedPayments;
+    }
+
+    public RegisterBusiness setSupportedPayments(Set<SupportedPaymentEnum> supportedPayments) {
+        this.supportedPayments = supportedPayments;
+        return this;
+    }
+
     @Transient
     public void populateWithBizStore(BizStoreEntity bizStore, TokenQueueEntity tokenQueue) {
         this.bizStoreId = bizStore.getId();
@@ -826,6 +874,8 @@ public class RegisterBusiness implements Serializable {
         this.appointmentState = bizStore.getAppointmentState();
         this.appointmentDuration = bizStore.getAppointmentDuration();
         this.appointmentOpenHowFar = bizStore.getAppointmentOpenHowFar();
+        this.acceptedPayments = bizStore.getAcceptedPayments();
+        this.acceptedDeliveries = bizStore.getAcceptedDeliveries();
     }
 
     @Transient

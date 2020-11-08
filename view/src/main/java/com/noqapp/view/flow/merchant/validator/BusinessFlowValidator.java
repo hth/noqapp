@@ -487,6 +487,32 @@ public class BusinessFlowValidator {
         return validateBusinessHours(registerBusiness, "registerBusiness.", messageContext);
     }
 
+    @SuppressWarnings("unused")
+    public String validateAmenitiesAndFacilitiesSettings(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
+        String status = LandingController.SUCCESS;
+        if (registerBusiness.getAcceptedDeliveries() == null || registerBusiness.getAcceptedDeliveries().size() == 0) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source(source + "acceptedDeliveries")
+                    .defaultText("Select at least one option under Supported Delivery")
+                    .build());
+            status = "failure";
+        }
+
+        if (registerBusiness.getAcceptedPayments() == null || registerBusiness.getAcceptedPayments().size() == 0) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source(source + "acceptedPayments")
+                    .defaultText("Select at least one option under Accepted Payment")
+                    .build());
+            status = "failure";
+        }
+
+        return status;
+    }
+
     public String validateQueueSettings(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 

@@ -38,9 +38,15 @@
         <on-entry>
             <evaluate expression="migrateToBusinessRegistrationFlowActions.additionalAttributes(registerBusiness, 'bizStore')"/>
         </on-entry>
-        <transition on="continue" to="queueSettings"/>
+        <transition on="continue" to="validateAmenitiesAndFacilitiesSettings"/>
         <transition on="cancel" to="logout"/>
     </view-state>
+
+    <action-state id="validateAmenitiesAndFacilitiesSettings">
+        <evaluate expression="businessFlowValidator.validateAmenitiesAndFacilitiesSettings(registerBusiness, '', messageContext)"/>
+        <transition on="success" to="queueSettings"/>
+        <transition on="failure" to="additionalAttributes"/>
+    </action-state>
 
     <view-state id="queueSettings" model="registerBusiness">
         <transition on="submit" to="validateQueueSettings"/>

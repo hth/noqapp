@@ -112,6 +112,22 @@
                                     </c:choose>
                                     <div class="clearFix"></div>
                                 </ul>
+                                <ul class="col3-grid">
+                                    &nbsp;
+                                </ul>
+                                <ul class="col3-grid">
+                                    &nbsp;
+                                </ul>
+                                <ul class="col3-grid">
+                                    <h4><strong>Supported Delivery</strong></h4>
+                                    <form:checkboxes element="li" path="acceptedDeliveries" items="${registerBusiness.supportedDeliveries}"/>
+                                    <div class="clearFix"></div>
+                                </ul>
+                                <ul class="col3-grid">
+                                    <h4><strong>Accepted Payment</strong></h4>
+                                    <form:checkboxes element="li" path="acceptedPayments" items="${registerBusiness.supportedPayments}"/>
+                                    <div class="clearFix"></div>
+                                </ul>
 
                                 <div class="alert-info">
                                     <p>
