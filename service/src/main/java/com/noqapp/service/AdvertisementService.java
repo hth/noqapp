@@ -57,10 +57,6 @@ public class AdvertisementService {
         return advertisementManager.findApprovalPendingAdvertisementCount();
     }
 
-    public List<AdvertisementEntity> findAllMobileApprovedAdvertisements() {
-        return advertisementManager.findAllMobileClientApprovedAdvertisements(limit);
-    }
-
     public List<AdvertisementEntity> findAllMobileApprovedAdvertisements(Point point) {
         return advertisementManager.findAllMobileClientApprovedAdvertisements(point, 1000, limit);
     }
