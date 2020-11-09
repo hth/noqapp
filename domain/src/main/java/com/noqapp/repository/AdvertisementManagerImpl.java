@@ -95,23 +95,6 @@ public class AdvertisementManagerImpl implements AdvertisementManager {
     }
 
     @Override
-    public List<AdvertisementEntity> findAllMobileClientApprovedAdvertisements(int limit) {
-        Date now = new Date();
-        return mongoTemplate.find(
-            query(where("VS").is(ValidateStatusEnum.A)
-                .and("AD").is(AdvertisementDisplayEnum.MC)
-                .and("AT").is(AdvertisementTypeEnum.MA)
-                .and("PD").lte(now)
-                .and("ED").gte(now)
-                .and("D").is(false)
-                .and("A").is(true)
-            ).with(Sort.by(Sort.Direction.ASC, "C")).limit(limit),
-            AdvertisementEntity.class,
-            TABLE
-        );
-    }
-
-    @Override
     public List<AdvertisementEntity> findAllMobileClientApprovedAdvertisements(Point point, double maxDistance, int limit) {
         Date now = new Date();
         return mongoTemplate.find(
