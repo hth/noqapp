@@ -114,7 +114,8 @@ public class BusinessDetailController {
             .setPhone(bizStore.getPhoneFormatted())
             .setDisplayName(bizStore.getDisplayName())
             .setCategoryName(CommonHelper.findCategoryName(bizStore))
-            .setStoreHours(storeHours);
+            .setStoreHours(storeHours)
+            .setBusinessType(bizStore.getBusinessType());
 
         try {
             storeLandingForm.setQrFileName(codeQRGeneratorService.createQRImage(bizStore.getCodeQRInALink()));
