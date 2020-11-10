@@ -937,7 +937,13 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public String getCodeQRInALink() {
-        return "https://q.noqapp.com/" + codeQR + "/q.htm";
+        switch (businessType.getMessageOrigin()) {
+            case O:
+                return "https://q.noqapp.com/" + codeQR + "/o.htm";
+            case Q:
+            default:
+                return "https://q.noqapp.com/" + codeQR + "/q.htm";
+        }
     }
 
     @Transient
