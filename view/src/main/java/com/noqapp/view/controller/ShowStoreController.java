@@ -32,10 +32,10 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 1/16/17 8:12 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
 public class ShowStoreController {
@@ -106,14 +106,14 @@ public class ShowStoreController {
         LOG.info("Loading image on business page fileName={}", fileName.getText());
         InputStream inputStream = null;
         try {
-            WebUtil.setContentType(fileName.getText(), response);
+            WebUtil.setContentType(fileName.getText() + "." + FileExtensionTypeEnum.PNG.name().toLowerCase(), response);
             inputStream = new FileInputStream(FileUtil.getFileFromTmpDir(fileName.getText() + "." + FileExtensionTypeEnum.PNG.name().toLowerCase()));
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
             LOG.error("Failed PNG image retrieval error occurred for fileName={} reason={}",
-                    fileName.getText(),
-                    e.getLocalizedMessage(),
-                    e);
+                fileName.getText(),
+                e.getLocalizedMessage(),
+                e);
         } finally {
             if (inputStream != null) {
                 try {
