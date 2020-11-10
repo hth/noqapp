@@ -28,13 +28,6 @@ public enum SupportedDeliveryEnum {
         return description;
     }
 
-    public static Set<SupportedDeliveryEnum> all() {
-        return new LinkedHashSet<>() {{
-            add(HOM);
-            add(PIK);
-        }};
-    }
-
     @Override
     public String toString() {
         return description;

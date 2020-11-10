@@ -442,9 +442,17 @@ class RegistrationFlowActions {
             .setAmenities(registerBusiness.getAmenitiesStore())
             .setAppointmentState(registerBusiness.getAppointmentState())
             .setAppointmentDuration(registerBusiness.getAppointmentDuration())
-            .setAppointmentOpenHowFar(registerBusiness.getAppointmentOpenHowFar())
-            .setAcceptedPayments(registerBusiness.getAcceptedPayments())
-            .setAcceptedDeliveries(registerBusiness.getAcceptedDeliveries());
+            .setAppointmentOpenHowFar(registerBusiness.getAppointmentOpenHowFar());
+
+        /* Populate only when not empty. */
+        if (!registerBusiness.getAcceptedPayments().isEmpty()) {
+            bizStore.setAcceptedPayments(registerBusiness.getAcceptedPayments());
+        }
+
+        /* Populate only when not empty. */
+        if (!registerBusiness.getAcceptedDeliveries().isEmpty()) {
+            bizStore.setAcceptedDeliveries(registerBusiness.getAcceptedDeliveries());
+        }
 
         /* If preferred Google Address then, do an update. Otherwise skip. */
         if (registerBusiness.isSelectFoundAddressStore()) {

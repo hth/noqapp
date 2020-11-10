@@ -88,9 +88,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <div class="alert-info">
-                                            <p>
-                                                No individual amenity selection allowed
-                                            </p>
+                                            <p>No individual amenity selection allowed</p>
                                         </div>
                                     </c:otherwise>
                                     </c:choose>
@@ -104,9 +102,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <div class="alert-info">
-                                            <p>
-                                                No individual facility selection allowed
-                                            </p>
+                                            <p>No individual facility selection allowed</p>
                                         </div>
                                     </c:otherwise>
                                     </c:choose>
@@ -120,12 +116,30 @@
                                 </ul>
                                 <ul class="col3-grid">
                                     <h4><strong>Supported Delivery</strong></h4>
-                                    <form:checkboxes element="li" path="acceptedDeliveries" items="${registerBusiness.supportedDeliveries}"/>
+                                    <c:choose>
+                                    <c:when test="${!empty registerBusiness.supportedDeliveries}">
+                                        <form:checkboxes element="li" path="acceptedDeliveries" items="${registerBusiness.supportedDeliveries}"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert-info">
+                                            <p>Delivery options not supported</p>
+                                        </div>
+                                    </c:otherwise>
+                                    </c:choose>
                                     <div class="clearFix"></div>
                                 </ul>
                                 <ul class="col3-grid">
                                     <h4><strong>Accepted Payment</strong></h4>
-                                    <form:checkboxes element="li" path="acceptedPayments" items="${registerBusiness.supportedPayments}"/>
+                                    <c:choose>
+                                    <c:when test="${!empty registerBusiness.supportedPayments}">
+                                        <form:checkboxes element="li" path="acceptedPayments" items="${registerBusiness.supportedPayments}"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert-info">
+                                            <p>Payment options not supported</p>
+                                        </div>
+                                    </c:otherwise>
+                                    </c:choose>
                                     <div class="clearFix"></div>
                                 </ul>
 

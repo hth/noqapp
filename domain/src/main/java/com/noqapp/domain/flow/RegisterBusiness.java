@@ -103,8 +103,8 @@ public class RegisterBusiness implements Serializable {
     private int appointmentOpenHowFar;
 
     /* Business Payment and Delivery. */
-    private Set<SupportedPaymentEnum> acceptedPayments;
-    private Set<SupportedDeliveryEnum> acceptedDeliveries;
+    private Set<SupportedPaymentEnum> acceptedPayments = new LinkedHashSet<>();
+    private Set<SupportedDeliveryEnum> acceptedDeliveries = new LinkedHashSet<>();
 
     /* Business User Registration Status. This help if editing un-approved business for approval again. */
     private BusinessUserRegistrationStatusEnum businessUserRegistrationStatus = BusinessUserRegistrationStatusEnum.I;
@@ -213,10 +213,10 @@ public class RegisterBusiness implements Serializable {
     private Set<FacilityEnum> facilitiesAvailable = new LinkedHashSet<>();
 
     @Transient
-    private Set<SupportedDeliveryEnum> supportedDeliveries = SupportedDeliveryEnum.all();
+    private Set<SupportedDeliveryEnum> supportedDeliveries = new LinkedHashSet<>();
 
     @Transient
-    private Set<SupportedPaymentEnum> supportedPayments = SupportedPaymentEnum.all();
+    private Set<SupportedPaymentEnum> supportedPayments = new LinkedHashSet<>();
 
     @Transient
     private WalkInStateEnum walkInState = WalkInStateEnum.E;
@@ -839,12 +839,22 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
+    public RegisterBusiness addSupportedDeliveries(Set<SupportedDeliveryEnum> acceptedDeliveries) {
+        this.supportedDeliveries.addAll(acceptedDeliveries);
+        return this;
+    }
+
     public Set<SupportedPaymentEnum> getSupportedPayments() {
         return supportedPayments;
     }
 
     public RegisterBusiness setSupportedPayments(Set<SupportedPaymentEnum> supportedPayments) {
         this.supportedPayments = supportedPayments;
+        return this;
+    }
+
+    public RegisterBusiness addSupportedPayments(Set<SupportedPaymentEnum> acceptedPayments) {
+        this.supportedPayments.addAll(acceptedPayments);
         return this;
     }
 
