@@ -15,6 +15,8 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.RoleEnum;
+import com.noqapp.domain.types.SupportedDeliveryEnum;
+import com.noqapp.domain.types.SupportedPaymentEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.AccountService;
@@ -45,6 +47,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -180,6 +183,8 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             case "bizStore":
                 addAvailableAmenities(registerBusiness, registerBusiness.getStoreBusinessType(), modelType);
                 addAvailableFacilities(registerBusiness, registerBusiness.getStoreBusinessType(), modelType);
+                addSupportedDeliveries(registerBusiness, registerBusiness.getStoreBusinessType());
+                addSupportedPayments(registerBusiness, registerBusiness.getStoreBusinessType());
                 break;
             default:
                 throw new UnsupportedOperationException("Reached Unsupported Condition");
@@ -239,6 +244,64 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             default:
                 registerBusiness.addAmenitiesAvailable(AmenityEnum.ALL);
                 break;
+        }
+    }
+
+    private void addSupportedDeliveries(RegisterBusiness registerBusiness, BusinessTypeEnum businessType) {
+        switch (businessType) {
+            case RS:
+            case BA:
+            case ST:
+            case GS:
+            case CF:
+            case CD:
+                registerBusiness.addSupportedDeliveries(
+                    new LinkedHashSet<>() {{
+                        add(SupportedDeliveryEnum.HOM);
+                        add(SupportedDeliveryEnum.PIK);
+                    }}
+                );
+                break;
+            case FT:
+                registerBusiness.addSupportedDeliveries(
+                    new LinkedHashSet<>() {{
+                        add(SupportedDeliveryEnum.PIK);
+                    }}
+                );
+                break;
+            case HS:
+            case DO:
+            default:
+                //Do nothing
+        }
+    }
+
+    private void addSupportedPayments(RegisterBusiness registerBusiness, BusinessTypeEnum businessType) {
+        switch (businessType) {
+            case RS:
+            case BA:
+            case ST:
+            case GS:
+            case CF:
+            case CD:
+                registerBusiness.addSupportedPayments(
+                    new LinkedHashSet<>() {{
+                        add(SupportedPaymentEnum.COD);
+                        add(SupportedPaymentEnum.ONP);
+                    }}
+                );
+                break;
+            case FT:
+                registerBusiness.addSupportedPayments(
+                    new LinkedHashSet<>() {{
+                        add(SupportedPaymentEnum.ONP);
+                    }}
+                );
+                break;
+            case HS:
+            case DO:
+            default:
+                //Do nothing
         }
     }
 

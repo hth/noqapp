@@ -249,21 +249,39 @@
                                     </ul>
 
                                     <div class="admin-title pT30">
-                                        <h2>${registerBusiness.businessType.classifierTitle} Accepts Payment</h2>
-                                    </div>
-                                    <ul class="col3-grid">
-                                        <form:checkboxes element="li" path="acceptedPayments" items="${registerBusiness.acceptedPayments}" disabled="true"/>
-                                        <div class="clearFix"></div>
-                                    </ul>
-
-                                    <div class="admin-title pT30">
                                         <h2>${registerBusiness.businessType.classifierTitle} Supports Delivery Types</h2>
                                     </div>
                                     <ul class="col3-grid">
-                                        <form:checkboxes element="li" path="acceptedDeliveries" items="${registerBusiness.acceptedDeliveries}" disabled="true"/>
-                                        <div class="clearFix"></div>
+                                        <c:choose>
+                                        <c:when test="${!empty registerBusiness.acceptedDeliveries}">
+                                            <form:checkboxes element="li" path="acceptedDeliveries" items="${registerBusiness.acceptedDeliveries}" disabled="true"/>
+                                            <div class="clearFix"></div>
+                                        </c:when>
+                                            <c:otherwise>
+                                                <div class="alert-info">
+                                                    <p>Delivery options not supported</p>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </ul>
                                 </div>
+
+                                <div class="admin-title pT30">
+                                    <h2>${registerBusiness.businessType.classifierTitle} Accepts Payment</h2>
+                                </div>
+                                <ul class="col3-grid">
+                                    <c:choose>
+                                        <c:when test="${!empty registerBusiness.acceptedPayments}">
+                                            <form:checkboxes element="li" path="acceptedPayments" items="${registerBusiness.acceptedPayments}" disabled="true"/>
+                                            <div class="clearFix"></div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="alert-info">
+                                                <p>Payment options not supported</p>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </ul>
 
                                 <div>
                                     <div class="admin-title pT30">

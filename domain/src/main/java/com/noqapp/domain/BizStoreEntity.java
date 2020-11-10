@@ -276,16 +276,10 @@ public class BizStoreEntity extends BaseEntity {
     //*  Business Payment & Delivery Setting Starts.     */
     //****************************************************/
     @Field("AP")
-    private Set<SupportedPaymentEnum> acceptedPayments = new LinkedHashSet<>() {{
-        add(SupportedPaymentEnum.COD);
-        add(SupportedPaymentEnum.ONP);
-    }};
+    private Set<SupportedPaymentEnum> acceptedPayments;
 
     @Field("AD")
-    private Set<SupportedDeliveryEnum> acceptedDeliveries = new LinkedHashSet<>() {{
-        add(SupportedDeliveryEnum.HOM);
-        add(SupportedDeliveryEnum.PIK);
-    }};
+    private Set<SupportedDeliveryEnum> acceptedDeliveries;
     //****************************************************/
     //* Business Payment & Delivery Setting Ends.        */
     //****************************************************/

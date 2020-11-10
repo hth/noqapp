@@ -13,6 +13,8 @@ import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.domain.types.SupportedDeliveryEnum;
+import com.noqapp.domain.types.SupportedPaymentEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.view.controller.access.LandingController;
@@ -31,6 +33,7 @@ import org.springframework.binding.message.MessageContext;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.ValidationUtils;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -490,24 +493,39 @@ public class BusinessFlowValidator {
     @SuppressWarnings("unused")
     public String validateAmenitiesAndFacilitiesSettings(RegisterBusiness registerBusiness, String source, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
-        if (registerBusiness.getAcceptedDeliveries() == null || registerBusiness.getAcceptedDeliveries().size() == 0) {
-            messageContext.addMessage(
-                new MessageBuilder()
-                    .error()
-                    .source(source + "acceptedDeliveries")
-                    .defaultText("Select at least one option under Supported Delivery")
-                    .build());
-            status = "failure";
-        }
 
-        if (registerBusiness.getAcceptedPayments() == null || registerBusiness.getAcceptedPayments().size() == 0) {
-            messageContext.addMessage(
-                new MessageBuilder()
-                    .error()
-                    .source(source + "acceptedPayments")
-                    .defaultText("Select at least one option under Accepted Payment")
-                    .build());
-            status = "failure";
+        switch (registerBusiness.getBusinessType()) {
+            case RS:
+            case BA:
+            case ST:
+            case GS:
+            case CF:
+            case CD:
+            case FT:
+                if (registerBusiness.getAcceptedDeliveries() == null || registerBusiness.getAcceptedDeliveries().size() == 0) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "acceptedDeliveries")
+                            .defaultText("Select at least one option under Supported Delivery")
+                            .build());
+                    status = "failure";
+                }
+
+                if (registerBusiness.getAcceptedPayments() == null || registerBusiness.getAcceptedPayments().size() == 0) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "acceptedPayments")
+                            .defaultText("Select at least one option under Accepted Payment")
+                            .build());
+                    status = "failure";
+                }
+                break;
+            case HS:
+            case DO:
+            default:
+                //Do nothing
         }
 
         return status;

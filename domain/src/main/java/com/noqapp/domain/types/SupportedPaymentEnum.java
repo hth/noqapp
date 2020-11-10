@@ -34,13 +34,6 @@ public enum SupportedPaymentEnum {
         return friendlyDescription;
     }
 
-    public static Set<SupportedPaymentEnum> all() {
-        return new LinkedHashSet<>() {{
-            add(COD);
-            add(ONP);
-        }};
-    }
-
     @Override
     public String toString() {
         return description;
