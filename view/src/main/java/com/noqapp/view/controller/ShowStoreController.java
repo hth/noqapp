@@ -106,7 +106,7 @@ public class ShowStoreController {
         LOG.info("Loading image on business page fileName={}", fileName.getText());
         InputStream inputStream = null;
         try {
-            WebUtil.setContentType(fileName.getText(), response);
+            WebUtil.setContentType(fileName.getText() + "." + FileExtensionTypeEnum.PNG.name().toLowerCase(), response);
             inputStream = new FileInputStream(FileUtil.getFileFromTmpDir(fileName.getText() + "." + FileExtensionTypeEnum.PNG.name().toLowerCase()));
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
