@@ -54,8 +54,15 @@
                 <div class="admin-content">
                     <div class="store">
                         <div class="store-details-row">
-                            <div class="qr-store-box">
+                            <div class="qr-store-box" style="border:1px dotted black;">
                                 <img src="/i/${storeLandingForm.qrFileName}.htm"/>
+                                <br />
+                                <p style="font-weight: bold; color: #222; font-size: 16px">We are on NoQueue</p>
+                                <br />
+                                <br />
+                                <p style="color: #222; font-size: 20px;">${storeLandingForm.displayName}</p>
+                                <br />
+                                <br />
                             </div>
                             <div class="details-box">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
