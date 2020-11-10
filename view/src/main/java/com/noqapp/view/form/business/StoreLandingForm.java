@@ -1,6 +1,7 @@
 package com.noqapp.view.form.business;
 
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class StoreLandingForm {
     private String categoryName;
     private String qrFileName;
     private List<StoreHourEntity> storeHours;
+    private BusinessTypeEnum businessType;
 
     public String getBusinessName() {
         return businessName;
@@ -80,6 +82,15 @@ public class StoreLandingForm {
 
     public StoreLandingForm setStoreHours(List<StoreHourEntity> storeHours) {
         this.storeHours = storeHours;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public StoreLandingForm setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 }
