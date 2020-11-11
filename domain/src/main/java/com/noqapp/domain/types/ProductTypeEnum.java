@@ -15,6 +15,8 @@ public enum ProductTypeEnum {
     GM("GM", "GMO Produce"),
     VE("VE", "Vegetarian Food"),
     NV("NV", "Non-Vegetarian Food"),
+    AC("AC", "Alcoholic Beverage"),
+    NC("NC", "Non Alcoholic Beverage"),
     EL("EL", "Electronic"),
     PH("PH", "Pharmacy"),
     HS("HS", "Health Care Services");
@@ -23,10 +25,10 @@ public enum ProductTypeEnum {
     public static ProductTypeEnum[] PHARMACY_VALUES = {PH};
     public static EnumSet<ProductTypeEnum> HEALTH_CARE = EnumSet.of(HS);
     public static ProductTypeEnum[] HEALTH_CARE_VALUES = {HS};
-    public static EnumSet<ProductTypeEnum> GROCERY = EnumSet.of(GE, OR, FR);
-    public static ProductTypeEnum[] GROCERY_VALUES = {GE, OR, FR};
-    public static EnumSet<ProductTypeEnum> RESTAURANT = EnumSet.of(VE, NV);
-    public static ProductTypeEnum[] RESTAURANT_VALUES = {VE, NV};
+    public static EnumSet<ProductTypeEnum> GROCERY = EnumSet.of(GE, OR, FR, VE, NV, AC, NC);
+    public static ProductTypeEnum[] GROCERY_VALUES = {GE, OR, FR, VE, NV, AC, NC};
+    public static EnumSet<ProductTypeEnum> RESTAURANT = EnumSet.of(VE, NV, AC);
+    public static ProductTypeEnum[] RESTAURANT_VALUES = {VE, NV, AC, NC};
 
     private final String name;
     private final String description;
