@@ -182,7 +182,18 @@ public class LoginController {
             }
 
             LOG.info("Web login cookie={} ip={} country={} city=\"{}\" userAgent=\"{}\"", cookieId, ip, countryCode, city, userAgent);
-            loginService.saveUpdateBrowserInfo(cookieId, ip, countryCode, city, userAgent, browserName, browserVersion, device, deviceBrand, operatingSystem, operatingSystemVersion);
+            loginService.saveUpdateBrowserInfo(
+                cookieId,
+                ip,
+                countryCode,
+                city,
+                userAgent,
+                browserName,
+                browserVersion,
+                device,
+                deviceBrand,
+                operatingSystem,
+                operatingSystemVersion);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
