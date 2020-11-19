@@ -5,16 +5,16 @@ package com.noqapp.domain.types;
  * 10/18/20 7:32 PM
  */
 public enum TransactionCancelEnum {
-    //Hospital, Pharmacy, Health Services
+    /* Hospital, Pharmacy, Health Services. */
     HTA("HTA", "Health Time Action"),
 
-    //Restaurant or Food Truck
+    /* Restaurant or Food Truck */
     TMA("TMA", "Time Merchant Action"),
 
-    //Grocery
+    /* Grocery */
     MEA("MEA", "Merchant Action"),
 
-    //For just queues
+    /* For just queues */
     TNS("TNS", "Transaction Not Supported");
 
     private final String name;
