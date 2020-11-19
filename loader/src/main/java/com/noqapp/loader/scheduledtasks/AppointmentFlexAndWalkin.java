@@ -159,7 +159,7 @@ public class AppointmentFlexAndWalkin {
                 scheduleAppointment.setAppointmentStatus(AppointmentStatusEnum.W);
                 scheduleAppointmentManager.save(scheduleAppointment);
             } else {
-                LOG.error("Token not received for {} {} {} reason={}",
+                LOG.warn("Token not received for {} {} {} reason={}",
                     bizStore.getCodeQR(),
                     bizStore.getDisplayName(),
                     bizStore.getBizName().getBusinessName(),
