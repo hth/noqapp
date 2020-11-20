@@ -136,6 +136,7 @@ subprojects {
 
     dependencies {
         implementation files('../lib/user-agent-detector.jar')
+        implementation files('../lib/stanford-parser.jar')
 
         implementation 'org.apache.geronimo.specs:geronimo-j2ee-management_1.1_spec:1.0.1'
         implementation 'org.apache.geronimo.specs:geronimo-jms_1.1_spec:1.1.1'
@@ -200,7 +201,6 @@ subprojects {
 
         implementation "edu.stanford.nlp:stanford-corenlp:$corenlp"
         implementation "edu.stanford.nlp:stanford-corenlp:$corenlp:models"
-        implementation "edu.stanford.nlp:stanford-parser:3.9.2"
 
         implementation "com.google.cloud:google-cloud-texttospeech:$googleCloudTextToSpeech"
         implementation "com.google.code.gson:gson:$gson"
