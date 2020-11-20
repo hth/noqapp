@@ -445,12 +445,12 @@ class RegistrationFlowActions {
             .setAppointmentOpenHowFar(registerBusiness.getAppointmentOpenHowFar());
 
         /* Populate only when not empty. */
-        if (!registerBusiness.getAcceptedPayments().isEmpty()) {
+        if (null != registerBusiness.getAcceptedPayments() && !registerBusiness.getAcceptedPayments().isEmpty()) {
             bizStore.setAcceptedPayments(registerBusiness.getAcceptedPayments());
         }
 
         /* Populate only when not empty. */
-        if (!registerBusiness.getAcceptedDeliveries().isEmpty()) {
+        if (null != registerBusiness.getAcceptedDeliveries() && !registerBusiness.getAcceptedDeliveries().isEmpty()) {
             bizStore.setAcceptedDeliveries(registerBusiness.getAcceptedDeliveries());
         }
 
