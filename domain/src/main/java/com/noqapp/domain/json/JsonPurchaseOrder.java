@@ -31,17 +31,17 @@ import java.util.TimeZone;
  * hitender
  * 3/31/18 12:00 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -58,31 +58,31 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("qid")
     private String queueUserId;
 
-    @JsonProperty ("p")
+    @JsonProperty("p")
     private String customerPhone;
 
-    @JsonProperty ("da")
+    @JsonProperty("da")
     private String deliveryAddress;
 
-    @JsonProperty ("sd")
+    @JsonProperty("sd")
     private int storeDiscount;
 
     @JsonProperty("pp")
     private String partialPayment;
 
-    @JsonProperty ("op")
+    @JsonProperty("op")
     private String orderPrice;
 
-    @JsonProperty ("ta")
+    @JsonProperty("ta")
     private String tax;
 
-    @JsonProperty ("gt")
+    @JsonProperty("gt")
     private String grandTotal;
 
-    @JsonProperty ("dm")
+    @JsonProperty("dm")
     private DeliveryModeEnum deliveryMode;
 
-    @JsonProperty ("pm")
+    @JsonProperty("pm")
     private PaymentModeEnum paymentMode;
 
     @JsonProperty("py")
@@ -100,35 +100,35 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("dn")
     private String displayName;
 
-    @JsonProperty ("pop")
+    @JsonProperty("pop")
     private List<JsonPurchaseOrderProduct> jsonPurchaseOrderProducts = new LinkedList<>();
 
     /* Populated from TokenQueue. */
-    @JsonProperty ("s")
+    @JsonProperty("s")
     private int servingNumber;
 
     @JsonProperty("ds")
     private String displayServingNumber;
 
-    @JsonProperty ("t")
+    @JsonProperty("t")
     private int token;
 
-    @JsonProperty ("dt")
+    @JsonProperty("dt")
     private String displayToken;
 
-    @JsonProperty ("n")
+    @JsonProperty("n")
     private String customerName;
 
-    @JsonProperty ("e")
+    @JsonProperty("e")
     private String expectedServiceBegin;
 
-    @JsonProperty ("ti")
+    @JsonProperty("ti")
     private String transactionId;
 
-    @JsonProperty ("ps")
+    @JsonProperty("ps")
     private PurchaseOrderStateEnum presentOrderState;
 
-    @JsonProperty ("c")
+    @JsonProperty("c")
     private String created;
 
     @JsonProperty("an")
