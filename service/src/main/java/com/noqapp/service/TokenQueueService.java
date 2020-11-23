@@ -245,31 +245,27 @@ public class TokenQueueService {
                 }
 
                 /* This code finds if there is an existing token issued to the  user. Valid only for MessageOriginEnum.Q. */
-                switch (bizStore.getBusinessType()) {
-                    case PW:
-                    case CDQ:
-                        if (StringUtils.isNotBlank(qid)) {
-                            queue = queueManager.findOneWithoutState(qid, codeQR);
-                            if (null != queue) {
-                                switch (queue.getQueueUserState()) {
-                                    case A:
-                                        queue.setQueueUserState(QueueUserStateEnum.Q);
-                                        queue.active();
-                                        queueManager.save(queue);
-                                        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
-                                        doActionBasedOnQueueStatus(codeQR, tokenQueue);
-                                        return getJsonToken(codeQR, queue, tokenQueue);
-                                    case N:
-                                    case S:
-                                    default:
-                                        /* Person already served or skipped. */
-                                        return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.T, bizStore)
-                                            .setTimeSlotMessage(queue.getTimeSlotMessage());
-                                }
+                if (MessageOriginEnum.Q == bizStore.getBusinessType().getMessageOrigin()) {
+                    if (StringUtils.isNotBlank(qid)) {
+                        queue = queueManager.findOneWithoutState(qid, codeQR);
+                        if (null != queue) {
+                            switch (queue.getQueueUserState()) {
+                                case A:
+                                    queue.setQueueUserState(QueueUserStateEnum.Q);
+                                    queue.active();
+                                    queueManager.save(queue);
+                                    TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+                                    doActionBasedOnQueueStatus(codeQR, tokenQueue);
+                                    return getJsonToken(codeQR, queue, tokenQueue);
+                                case N:
+                                case S:
+                                default:
+                                    /* Person already served or skipped. */
+                                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.T, bizStore)
+                                        .setTimeSlotMessage(queue.getTimeSlotMessage());
                             }
                         }
-                    default:
-                        //Do nothing
+                    }
                 }
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
@@ -1220,8 +1216,8 @@ public class TokenQueueService {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), zonedDateTime.getDayOfWeek());
-        LOG.info("Time local={} start={} before={}", zonedDateTime.toLocalTime(), storeHour.startHour(), zonedDateTime.toLocalTime().isBefore(storeHour.startHour()));
-        if (zonedDateTime.toLocalTime().isBefore(storeHour.startHour())) {
+        LOG.info("Time local={} start={}", DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()), storeHour.startHour());
+        if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) > storeHour.getStartHour()) {
             sendMessageToSpecificUser(
                 "Aborted " + queue.getDisplayName(),
                 "Aborted position in queue. If this was not intended behavior please re-join to retain your spot. " +
