@@ -601,6 +601,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
+    @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
     public void increaseTokenAfterCancellation(String codeQR) {
         mongoTemplate.updateFirst(
             query(where("QR").is(codeQR)),

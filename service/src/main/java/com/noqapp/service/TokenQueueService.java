@@ -1216,7 +1216,7 @@ public class TokenQueueService {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), zonedDateTime.getDayOfWeek());
-        LOG.info("Time local={} start={}", DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()), storeHour.startHour());
+        LOG.info("Time local={} start={}", DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()), storeHour.getStartHour());
         if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) < storeHour.getStartHour()) {
             sendMessageToSpecificUser(
                 "Aborted " + queue.getDisplayName(),
@@ -1252,6 +1252,7 @@ public class TokenQueueService {
                         if (bizStore.getAvailableTokenCount() > 0) {
                             expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue.getLastNumber());
                             String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour);
+                            LOG.info("Expected Service {} {}", expectedServiceBegin, timeSlot);
                             if (!inQueue.getTimeSlotMessage().equalsIgnoreCase(timeSlot)) {
                                 JsonQueueChangeServiceTime jsonQueueChangeServiceTime = new JsonQueueChangeServiceTime()
                                     .setToken(inQueue.getTokenNumber())
@@ -1269,7 +1270,12 @@ public class TokenQueueService {
                         }
                     }
 
-                    sendAllOnChangeInServiceTime(jsonChangeServiceTimeData, tokenQueue);
+                    if (!queues.isEmpty()) {
+                        LOG.info("Send update on change in time-slot");
+                        sendAllOnChangeInServiceTime(jsonChangeServiceTimeData, tokenQueue);
+                    } else {
+                        LOG.info("Send no update on change in time-slot");
+                    }
                 }
             } catch (Exception e) {
                 LOG.warn("Failed re-creating index reason={}", e.getLocalizedMessage(), e);
