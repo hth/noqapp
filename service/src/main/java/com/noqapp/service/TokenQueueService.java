@@ -1206,27 +1206,38 @@ public class TokenQueueService {
     /** When some one aborts inform all so that upon cancel time to service is re-computed. */
     public void updateServingTimeForAllWhenAborted(String id) {
         QueueEntity queue = queueManager.findOneById(id);
-        sendMessageToSpecificUser(
-            "Aborted " + queue.getDisplayName(),
-            "Aborted position in queue. If this was not intended behavior please re-join to retain your spot. " +
-                "After few minutes, spot will be assigned to another user and you would not be able to join the queue again today.",
+        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+        StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), zonedDateTime.getDayOfWeek());
+        LOG.info("Time {} {}", zonedDateTime.toLocalTime(), storeHour.startHour());
+        if (zonedDateTime.toLocalTime().isBefore(storeHour.startHour())) {
+            sendMessageToSpecificUser(
+                "Aborted " + queue.getDisplayName(),
+                "Aborted position in queue. If this was not intended behavior please re-join to retain your spot. " +
+                    "After few minutes, spot will be assigned to another user and you would not be able to join the queue again today.",
                 StringUtils.isBlank(queue.getGuardianQid()) ? queue.getQueueUserId() : queue.getGuardianQid(),
-            MessageOriginEnum.A
-        );
+                MessageOriginEnum.A
+            );
+
+            updateSlotTimeForAll(id);
+        }
+    }
+
+    private void updateSlotTimeForAll(String id) {
         scheduledExecutorService.schedule(() -> {
             try {
                 QueueEntity queueAfterScheduledTime = queueManager.findOneById(id);
                 if (QueueUserStateEnum.A == queueAfterScheduledTime.getQueueUserState()) {
                     /* First increase the available token. */
-                    bizStoreManager.increaseTokenAfterCancellation(queue.getCodeQR());
+                    bizStoreManager.increaseTokenAfterCancellation(queueAfterScheduledTime.getCodeQR());
 
-                    BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
+                    BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queueAfterScheduledTime.getCodeQR());
                     ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
                     DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
                     StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
 
                     TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queueAfterScheduledTime.getCodeQR());
-                    List<QueueEntity> queues = queueManager.findInQueueBeginningFrom(queue.getCodeQR(), tokenQueue.getCurrentlyServing());
+                    List<QueueEntity> queues = queueManager.findInQueueBeginningFrom(queueAfterScheduledTime.getCodeQR(), tokenQueue.getCurrentlyServing());
 
                     JsonChangeServiceTimeData jsonChangeServiceTimeData = new JsonChangeServiceTimeData(FirebaseMessageTypeEnum.C, MessageOriginEnum.QCT).setCodeQR(bizStore.getCodeQR());
                     for (QueueEntity inQueue : queues) {
@@ -1244,14 +1255,11 @@ public class TokenQueueService {
                                             inQueue.getExpectedServiceBegin(),
                                             Date.from(expectedServiceBegin.toInstant())));
                                 jsonChangeServiceTimeData.addJsonQueueChangeServiceTimes(jsonQueueChangeServiceTime);
-
-                                inQueue.setExpectedServiceBegin(Date.from(expectedServiceBegin.toInstant())).setTimeSlotMessage(timeSlot);
+                                queueManager.updateServiceBeginTimeAfterCancellation(inQueue.getId(), Date.from(expectedServiceBegin.toInstant()), timeSlot);
                             }
                         } else {
-                            inQueue.setTimeSlotMessage("Not Assigned");
+                            queueManager.updateServiceBeginTimeAfterCancellation(inQueue.getId(), null, "Not Assigned");
                         }
-                        //Update using query instead of object
-                        //queueManager.save(inQueue);
                     }
 
                     sendAllOnChangeInServiceTime(jsonChangeServiceTimeData, tokenQueue);

@@ -618,6 +618,18 @@ public class QueueManagerImpl implements QueueManager {
     }
 
     @Override
+    public void updateServiceBeginTimeAfterCancellation(String id, Date expectedServiceBegin, String timeSlotMessage) {
+        Update update;
+        if (null == expectedServiceBegin) {
+            update = entityUpdate(update("SL", timeSlotMessage));
+        } else {
+            update = entityUpdate(update("SL", timeSlotMessage).set("EB", expectedServiceBegin));
+        }
+
+        mongoTemplate.updateFirst(query(where("id").is(id)), update, QueueEntity.class, TABLE);
+    }
+
+    @Override
     public QueueEntity changeUserInQueue(String codeQR, int tokenNumber, String existingQueueUserId, String changeToQueueUserId) {
         return mongoTemplate.findAndModify(
             query(where("QR").is(codeQR).and("TN").is(tokenNumber).and("QID").is(existingQueueUserId)),
