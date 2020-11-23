@@ -153,6 +153,8 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     void updateServiceBeginTime(String id);
 
+    void updateServiceBeginTimeAfterCancellation(String id, Date expectedServiceBegin, String timeSlotMessage);
+
     QueueEntity changeUserInQueue(String codeQR, int tokenNumber, String existingQueueUserId, String changeToQueueUserId);
 
     /* Limit to top 10. */
