@@ -989,7 +989,7 @@ public class TokenQueueService {
     }
 
     void sendAllOnChangeInServiceTime(JsonChangeServiceTimeData jsonChangeServiceTimeData, TokenQueueEntity tokenQueue) {
-        LOG.debug("Sending message codeQR={} tokenQueue={} firebaseMessageType={}", jsonChangeServiceTimeData.getCodeQR(), tokenQueue, FirebaseMessageTypeEnum.P);
+        LOG.info("Sending message codeQR={} tokenQueue={} firebaseMessageType={}", jsonChangeServiceTimeData.getCodeQR(), tokenQueue, FirebaseMessageTypeEnum.P);
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(QueueStatusEnum.N) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(QueueStatusEnum.N) + UNDER_SCORE + deviceType.name());
@@ -1209,7 +1209,7 @@ public class TokenQueueService {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), zonedDateTime.getDayOfWeek());
-        LOG.info("Time {} {}", zonedDateTime.toLocalTime(), storeHour.startHour());
+        LOG.info("Time local={} start={} before={}", zonedDateTime.toLocalTime(), storeHour.startHour(), zonedDateTime.toLocalTime().isBefore(storeHour.startHour()));
         if (zonedDateTime.toLocalTime().isBefore(storeHour.startHour())) {
             sendMessageToSpecificUser(
                 "Aborted " + queue.getDisplayName(),
