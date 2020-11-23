@@ -228,7 +228,8 @@ public class TokenQueueService {
 
                 int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
                 int tokenFrom = storeHour.getTokenAvailableFrom();
-                if (requesterTime < tokenFrom && tokenService != TokenServiceEnum.S) { //Ignore condition for walkin appointments
+                if (requesterTime < tokenFrom && tokenService != TokenServiceEnum.S) {
+                    //Ignore condition for walkin appointments
                     //Might need to add condition || requesterTime > storeHour.getEndHour() to prevent users from taking token after hours.
                     //This should be prevented on mobile front.
                     LOG.warn("Requester time qid={} tokenFrom={} requesterTime={} codeQR={}", qid, tokenFrom, requesterTime, codeQR);
@@ -243,32 +244,28 @@ public class TokenQueueService {
                     }
                 }
 
-                /* This code finds if there is an existing token issued to the  user. */
-                switch (bizStore.getBusinessType()) {
-                    case CD:
-                    case CDQ:
-                        if (StringUtils.isNotBlank(qid)) {
-                            queue = queueManager.findOneWithoutState(qid, codeQR);
-                            if (null != queue) {
-                                switch (queue.getQueueUserState()) {
-                                    case A:
-                                        queue.setQueueUserState(QueueUserStateEnum.Q);
-                                        queue.active();
-                                        queueManager.save(queue);
-                                        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
-                                        doActionBasedOnQueueStatus(codeQR, tokenQueue);
-                                        return getJsonToken(codeQR, queue, tokenQueue);
-                                    case N:
-                                    case S:
-                                    default:
-                                        /* Person already served or skipped. */
-                                        return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.T, bizStore)
-                                            .setTimeSlotMessage(queue.getTimeSlotMessage());
-                                }
+                /* This code finds if there is an existing token issued to the  user. Valid only for MessageOriginEnum.Q. */
+                if (MessageOriginEnum.Q == bizStore.getBusinessType().getMessageOrigin()) {
+                    if (StringUtils.isNotBlank(qid)) {
+                        queue = queueManager.findOneWithoutState(qid, codeQR);
+                        if (null != queue) {
+                            switch (queue.getQueueUserState()) {
+                                case A:
+                                    queue.setQueueUserState(QueueUserStateEnum.Q);
+                                    queue.active();
+                                    queueManager.save(queue);
+                                    TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+                                    doActionBasedOnQueueStatus(codeQR, tokenQueue);
+                                    return getJsonToken(codeQR, queue, tokenQueue);
+                                case N:
+                                case S:
+                                default:
+                                    /* Person already served or skipped. */
+                                    return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.T, bizStore)
+                                        .setTimeSlotMessage(queue.getTimeSlotMessage());
                             }
                         }
-                    default:
-                        //Do nothing
+                    }
                 }
 
                 Assertions.assertNotNull(tokenService, "TokenService cannot be null to generate new token");
@@ -989,7 +986,11 @@ public class TokenQueueService {
     }
 
     void sendAllOnChangeInServiceTime(JsonChangeServiceTimeData jsonChangeServiceTimeData, TokenQueueEntity tokenQueue) {
-        LOG.info("Sending message codeQR={} tokenQueue={} firebaseMessageType={}", jsonChangeServiceTimeData.getCodeQR(), tokenQueue, FirebaseMessageTypeEnum.P);
+        LOG.info("Sending message codeQR={} tokenQueue={} firebaseMessageType={}",
+            jsonChangeServiceTimeData.getCodeQR(),
+            tokenQueue,
+            FirebaseMessageTypeEnum.P);
+
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(QueueStatusEnum.N) + UNDER_SCORE + deviceType.name());
             JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(QueueStatusEnum.N) + UNDER_SCORE + deviceType.name());
@@ -1000,7 +1001,8 @@ public class TokenQueueService {
                     .setTitle(tokenQueue.getDisplayName() + " Queue");
             } else {
                 jsonMessage.setNotification(null);
-                jsonChangeServiceTimeData.setBody("Modified time slot. You would be served little early than expected.")
+                jsonChangeServiceTimeData
+                    .setBody("Modified time slot. You would be served little early than expected.")
                     .setTitle(tokenQueue.getDisplayName() + " Queue");
             }
 
@@ -1021,7 +1023,12 @@ public class TokenQueueService {
         String goTo,
         String displayToken
     ) {
-        LOG.debug("Sending message codeQR={} goTo={} tokenQueue={} firebaseMessageType={}", codeQR, goTo, tokenQueue, FirebaseMessageTypeEnum.P);
+        LOG.debug("Sending message codeQR={} goTo={} tokenQueue={} firebaseMessageType={}",
+            codeQR,
+            goTo,
+            tokenQueue,
+            FirebaseMessageTypeEnum.P);
+
         int timeout = 2;
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
@@ -1209,8 +1216,8 @@ public class TokenQueueService {
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), zonedDateTime.getDayOfWeek());
-        LOG.info("Time local={} start={} before={}", zonedDateTime.toLocalTime(), storeHour.startHour(), zonedDateTime.toLocalTime().isBefore(storeHour.startHour()));
-        if (zonedDateTime.toLocalTime().isBefore(storeHour.startHour())) {
+        LOG.info("Time local={} start={}", DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()), storeHour.startHour());
+        if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) > storeHour.getStartHour()) {
             sendMessageToSpecificUser(
                 "Aborted " + queue.getDisplayName(),
                 "Aborted position in queue. If this was not intended behavior please re-join to retain your spot. " +
