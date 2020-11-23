@@ -1217,7 +1217,7 @@ public class TokenQueueService {
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), zonedDateTime.getDayOfWeek());
         LOG.info("Time local={} start={}", DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()), storeHour.startHour());
-        if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) > storeHour.getStartHour()) {
+        if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) < storeHour.getStartHour()) {
             sendMessageToSpecificUser(
                 "Aborted " + queue.getDisplayName(),
                 "Aborted position in queue. If this was not intended behavior please re-join to retain your spot. " +
