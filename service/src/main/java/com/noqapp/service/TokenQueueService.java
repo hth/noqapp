@@ -251,12 +251,29 @@ public class TokenQueueService {
                         if (null != queue) {
                             switch (queue.getQueueUserState()) {
                                 case A:
-                                    queue.setQueueUserState(QueueUserStateEnum.Q);
-                                    queue.active();
-                                    queueManager.save(queue);
-                                    TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
-                                    doActionBasedOnQueueStatus(codeQR, tokenQueue);
-                                    return getJsonToken(codeQR, queue, tokenQueue);
+                                    ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
+                                    if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) < storeHour.getStartHour()) {
+                                        if (Constants.MINUTES_05 < Duration.between(queue.getUpdated().toInstant(), Instant.now()).toMinutes()) {
+                                            /* Prevent person from re-joining if duration greater than 5 minutes. Send for now person already served or skipped. */
+                                            return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.T, bizStore)
+                                                .setTimeSlotMessage(queue.getTimeSlotMessage());
+                                        }
+                                    }
+
+                                    /* After 5 minutes, allow re-join. This will rarely happen as the mobile button is disabled. */
+                                    /* After opening of the store allow re-joining. */
+                                    if (bizStoreManager.decreaseTokenAfterCancellation(codeQR)) {
+                                        queue.setQueueUserState(QueueUserStateEnum.Q);
+                                        queue.active();
+                                        queueManager.save(queue);
+                                        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
+                                        doActionBasedOnQueueStatus(codeQR, tokenQueue);
+                                        return getJsonToken(codeQR, queue, tokenQueue);
+                                    } else {
+                                        /* Prevent person from re-joining as the spot is gone. Send for now person already served or skipped. */
+                                        return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.T, bizStore)
+                                            .setTimeSlotMessage(queue.getTimeSlotMessage());
+                                    }
                                 case N:
                                 case S:
                                 default:
@@ -1286,6 +1303,6 @@ public class TokenQueueService {
             } catch (Exception e) {
                 LOG.warn("Failed re-creating index reason={}", e.getLocalizedMessage(), e);
             }
-        }, 1, TimeUnit.MINUTES);
+        }, Constants.MINUTES_05, TimeUnit.MINUTES);
     }
 }

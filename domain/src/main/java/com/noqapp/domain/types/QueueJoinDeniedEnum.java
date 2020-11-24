@@ -14,6 +14,7 @@ public enum QueueJoinDeniedEnum {
 
     /* When store is closed. */
     C("C", "Closed", "Store is closed"),
+
     X("X", "Business service limitation imposed" , "You have been serviced in past. Please wait until few days to issue tokens"),
     T("T", "You have been served today", "You have been served today"),
     L("L", "Reached available token", "Reached maximum number of token");
