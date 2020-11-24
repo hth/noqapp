@@ -17,6 +17,8 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PaginationEnum;
 
+import com.mongodb.client.result.UpdateResult;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.bson.types.ObjectId;
@@ -609,6 +611,19 @@ public class BizStoreManagerImpl implements BizStoreManager {
             BizStoreEntity.class,
             TABLE
         );
+    }
+
+    @Override
+    @CacheEvict(value = "bizStore-codeQR", key = "#codeQR")
+    public boolean decreaseTokenAfterCancellation(String codeQR) {
+        UpdateResult updateResult = mongoTemplate.updateFirst(
+            query(where("QR").is(codeQR).and("TC").gt(0)),
+            new Update().inc("TC", 1),
+            BizStoreEntity.class,
+            TABLE
+        );
+
+        return updateResult.wasAcknowledged();
     }
 
     //TODO add query to for near and for nearBy with distance
