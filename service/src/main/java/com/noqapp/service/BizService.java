@@ -35,6 +35,7 @@ import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.UserProfileManager;
+import com.noqapp.service.utils.ServiceUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -444,7 +445,8 @@ public class BizService {
         /* Avoid loading from cache as its being evicted. */
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
-        long averagesServiceTime = computeAverageServiceTime(dayOfWeek, availableTokenCount, bizStore.getId());
+        StoreHourEntity storeHour = findStoreHour(bizStore.getId(), dayOfWeek);
+        long averagesServiceTime = ServiceUtils.computeAverageServiceTime(storeHour, availableTokenCount);
         if (0 == averagesServiceTime) {
             averagesServiceTime = Constants.MINUTES_2_IN_MILLISECOND;
         }
@@ -747,21 +749,5 @@ public class BizService {
 
     public void updateStoreTokenAndServiceTime(String codeQR, long averageServiceTime, int availableTokenCount) {
         bizStoreManager.updateStoreTokenAndServiceTime(codeQR, averageServiceTime, availableTokenCount);
-    }
-
-    public long computeAverageServiceTime(DayOfWeek dayOfWeek, int availableTokenCount, String bizStoreId) {
-        if (0 == availableTokenCount) {
-            return 0;
-        }
-
-        StoreHourEntity storeHour = findStoreHour(bizStoreId, dayOfWeek);
-        long seconds = availableStoreOpenDurationInSeconds(storeHour);
-        return new BigDecimal(seconds)
-            .divide(new BigDecimal(availableTokenCount), MathContext.DECIMAL64)
-            .multiply(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS)).longValue();
-    }
-
-    public long availableStoreOpenDurationInSeconds(StoreHourEntity storeHour) {
-        return (storeHour.storeOpenDurationInMinutes() - PREVENT_JOINING_BEFORE_CLOSING) * DateUtil.MINUTE_IN_SECONDS;
     }
 }

@@ -1218,6 +1218,7 @@ public class TokenQueueService {
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), zonedDateTime.getDayOfWeek());
         LOG.info("Time local={} start={}", DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()), storeHour.getStartHour());
         if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) < storeHour.getStartHour()) {
+            /* Send message to the user who aborted the position in queue. */
             sendMessageToSpecificUser(
                 "Aborted " + queue.getDisplayName(),
                 "Aborted position in queue. If this was not intended behavior please re-join to retain your spot. " +
@@ -1226,6 +1227,7 @@ public class TokenQueueService {
                 MessageOriginEnum.A
             );
 
+            /* Now update time slot for all. */
             updateSlotTimeForAll(id);
         }
     }
@@ -1243,6 +1245,10 @@ public class TokenQueueService {
                     DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
                     StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
 
+                    /* Update Average Service Time as after cancellation number of token has increased. */
+                    long averageServiceTime = ServiceUtils.computeAverageServiceTime(storeHour, bizStore.realAvailableToken());
+                    bizStoreManager.updateStoreTokenAndServiceTime(bizStore.getCodeQR(), averageServiceTime, bizStore.getAvailableTokenCount());
+
                     TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queueAfterScheduledTime.getCodeQR());
                     List<QueueEntity> queues = queueManager.findInQueueBeginningFrom(queueAfterScheduledTime.getCodeQR(), tokenQueue.getCurrentlyServing());
 
@@ -1250,7 +1256,7 @@ public class TokenQueueService {
                     for (QueueEntity inQueue : queues) {
                         ZonedDateTime expectedServiceBegin;
                         if (bizStore.getAvailableTokenCount() > 0) {
-                            expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue.getLastNumber());
+                            expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue.getLastNumber());
                             String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour);
                             LOG.info("Expected Service {} {}", expectedServiceBegin, timeSlot);
                             if (!inQueue.getTimeSlotMessage().equalsIgnoreCase(timeSlot)) {

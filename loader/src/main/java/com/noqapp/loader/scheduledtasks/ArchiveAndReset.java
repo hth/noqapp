@@ -27,6 +27,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.utils.RandomBannerImage;
+import com.noqapp.service.utils.ServiceUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -368,7 +369,8 @@ public class ArchiveAndReset {
         StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
         /* In queue history, we set things for tomorrow. */
         ZonedDateTime archiveNextRun = computeNextRunService.setupStoreForTomorrow(bizStore);
-        long averageServiceTime = bizService.computeAverageServiceTime(archiveNextRun.getDayOfWeek(), bizStore.getAvailableTokenCount(), bizStore.getId());
+        StoreHourEntity storeHour = bizService.findStoreHour(bizStore.getId(), archiveNextRun.getDayOfWeek());
+        long averageServiceTime = ServiceUtils.computeAverageServiceTime(storeHour, bizStore.getAvailableTokenCount());
         LOG.info("AverageServiceTime in codeQR={} {} {} existing={} new={}",
             bizStore.getCodeQR(),
             bizStore.getDisplayName(),

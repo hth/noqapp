@@ -5,6 +5,7 @@ import static com.noqapp.common.utils.Constants.MINUTES_30;
 import static com.noqapp.common.utils.Constants.MINUTES_45;
 import static com.noqapp.common.utils.Constants.MINUTES_59;
 import static com.noqapp.common.utils.Constants.MINUTES_60;
+import static com.noqapp.common.utils.Constants.PREVENT_JOINING_BEFORE_CLOSING;
 
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
@@ -18,6 +19,9 @@ import com.noqapp.domain.types.QueueStatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -128,5 +132,20 @@ public class ServiceUtils {
             .setDisplayName(bizStore.getDisplayName())
             .setQueueJoinDenied(queueJoinDenied)
             .setExpectedServiceBegin(DateUtil.getZonedDateTimeAtUTC());
+    }
+
+    public static long computeAverageServiceTime(StoreHourEntity storeHour, int availableTokenCount) {
+        if (0 == availableTokenCount) {
+            return 0;
+        }
+
+        long seconds = availableStoreOpenDurationInSeconds(storeHour);
+        return new BigDecimal(seconds)
+            .divide(new BigDecimal(availableTokenCount), MathContext.DECIMAL64)
+            .multiply(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS)).longValue();
+    }
+
+    public static long availableStoreOpenDurationInSeconds(StoreHourEntity storeHour) {
+        return (storeHour.storeOpenDurationInMinutes() - PREVENT_JOINING_BEFORE_CLOSING) * DateUtil.MINUTE_IN_SECONDS;
     }
 }
