@@ -12,6 +12,7 @@ import com.noqapp.domain.helper.ExpectedServiceTime;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.utils.ServiceUtils;
 import com.noqapp.view.form.business.AverageHandlingForm;
 import com.noqapp.view.validator.AverageServiceTimeValidator;
 
@@ -37,7 +38,9 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.Duration;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -109,7 +112,7 @@ public class AverageHandlingController {
             .setAverageServiceTime(bizStore.getAverageServiceTime());
 
         for (StoreHourEntity storeHour : storeHours) {
-            Duration duration = Duration.ofSeconds(bizService.availableStoreOpenDurationInSeconds(storeHour));
+            Duration duration = Duration.ofSeconds(ServiceUtils.availableStoreOpenDurationInSeconds(storeHour));
 
             BigDecimal averageServiceTime = bizStore.getAvailableTokenCount() == 0
                 ? new BigDecimal(0)
@@ -168,10 +171,9 @@ public class AverageHandlingController {
         }
 
         BizStoreEntity bizStore = bizService.getByStoreId(averageHandlingForm.getBizStoreId());
-        long averagesServiceTime = bizService.computeAverageServiceTime(
-            averageHandlingForm.getSelectedDayOfWeek(),
-            averageHandlingForm.getAvailableTokenCount(),
-            bizStore.getId());
+        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
+        StoreHourEntity storeHour = bizService.findStoreHour(bizStore.getId(), dayOfWeek);
+        long averagesServiceTime = ServiceUtils.computeAverageServiceTime(storeHour, bizStore.getAvailableTokenCount());
 
         LOG.debug("ExistingToken={} NewToken={} ExistingAHT={} UpdatedAHT={}",
             bizStore.getAvailableTokenCount(),
