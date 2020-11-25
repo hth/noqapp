@@ -2,6 +2,7 @@ package com.noqapp.loader.scheduledtasks;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.TokenQueueEntity;
@@ -14,8 +15,11 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.DeviceService;
+import com.noqapp.service.NotifyMobileService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.TokenQueueService;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +55,7 @@ public class AppointmentFlexAndWalkin {
     private BizService bizService;
     private StatsCronService statsCronService;
     private ComputeNextRunService computeNextRunService;
+    private NotifyMobileService notifyMobileService;
 
     private String moveScheduledAppointmentToWalkin;
     private StatsCronEntity statsCron;
@@ -66,7 +71,8 @@ public class AppointmentFlexAndWalkin {
         DeviceService deviceService,
         BizService bizService,
         StatsCronService statsCronService,
-        ComputeNextRunService computeNextRunService
+        ComputeNextRunService computeNextRunService,
+        NotifyMobileService notifyMobileService
     ) {
         this.moveScheduledAppointmentToWalkin = moveScheduledAppointmentToWalkin;
 
@@ -77,6 +83,7 @@ public class AppointmentFlexAndWalkin {
         this.bizService = bizService;
         this.statsCronService = statsCronService;
         this.computeNextRunService = computeNextRunService;
+        this.notifyMobileService = notifyMobileService;
     }
 
     @Scheduled(fixedDelayString = "${loader.AppointmentFlexAndWalkin.scheduleToWalkin}")
@@ -158,6 +165,23 @@ public class AppointmentFlexAndWalkin {
             if (0 != jsonToken.getToken()) {
                 scheduleAppointment.setAppointmentStatus(AppointmentStatusEnum.W);
                 scheduleAppointmentManager.save(scheduleAppointment);
+
+                RegisteredDeviceEntity registeredDevice = deviceService.findRecentDevice(
+                    StringUtils.isBlank(scheduleAppointment.getQueueUserId())
+                        ? scheduleAppointment.getGuardianQid()
+                        : scheduleAppointment.getQueueUserId());
+                if (null != registeredDevice) {
+                    notifyMobileService.autoSubscribeClientToTopic(
+                        jsonToken.getCodeQR(),
+                        registeredDevice.getToken(),
+                        registeredDevice.getDeviceType());
+
+                    notifyMobileService.notifyClient(
+                        registeredDevice,
+                        "Joined " + bizStore.getDisplayName() + " Queue",
+                        "Your token number is " + jsonToken.getToken(),
+                        bizStore.getCodeQR());
+                }
             } else {
                 LOG.warn("Token not received for {} {} {} reason={}",
                     bizStore.getCodeQR(),
