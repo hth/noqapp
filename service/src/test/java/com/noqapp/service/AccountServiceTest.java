@@ -41,7 +41,7 @@ class AccountServiceTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         accountService = new AccountService(
             5,
             userAccountManager,

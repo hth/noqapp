@@ -133,6 +133,7 @@ public class ScheduleAppointmentService {
         this.bizService = bizService;
         this.firebaseMessageService = firebaseMessageService;
         this.mailService = mailService;
+        this.storeHourService = storeHourService;
 
         this.executorService = newCachedThreadPool();
     }

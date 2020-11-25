@@ -28,7 +28,7 @@ class ApiHealthServiceTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         apiHealthService = new ApiHealthService(
             apiHealthNowManager
         );

@@ -546,7 +546,8 @@ public class ITest extends RealMongoForITest {
             purchaseOrderProductService,
             bizService,
             businessCustomerService,
-            firebaseMessageService);
+            firebaseMessageService,
+            storeHourService);
 
         scheduleAppointmentService = new ScheduleAppointmentService(
             60,
@@ -563,7 +564,8 @@ public class ITest extends RealMongoForITest {
             scheduledTaskManager,
             bizService,
             firebaseMessageService,
-            mailService
+            mailService,
+            storeHourService
         );
 
         hospitalVisitScheduleManager = new HospitalVisitScheduleManagerImpl(getMongoTemplate());
