@@ -101,6 +101,7 @@ import com.noqapp.service.FtpService;
 import com.noqapp.service.GenerateUserIdService;
 import com.noqapp.service.InviteService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.nlp.NLPService;
 import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
@@ -155,6 +156,7 @@ public class ITest extends RealMongoForITest {
     protected FileService fileService;
     protected S3FileManager s3FileManager;
     protected ReviewService reviewService;
+    protected StoreHourService storeHourService;
     protected CouponService couponService;
     protected TextToSpeechService textToSpeechService;
     protected CustomTextToSpeechService customTextToSpeechService;
@@ -322,6 +324,8 @@ public class ITest extends RealMongoForITest {
             apiHealthService
         );
 
+        storeHourService = new StoreHourService(storeHourManager);
+
         queueService = new QueueService(
             30,
             userProfileManager,
@@ -334,7 +338,9 @@ public class ITest extends RealMongoForITest {
             statsBizStoreDailyManager,
             purchaseOrderManager,
             purchaseOrderManagerJDBC,
-            purchaseOrderProductService
+            purchaseOrderProductService,
+            storeHourService,
+            couponService
         );
 
         bizService = new BizService(
@@ -349,7 +355,8 @@ public class ITest extends RealMongoForITest {
             businessUserStoreManager,
             mailService,
             userProfileManager,
-            scheduledTaskManager
+            scheduledTaskManager,
+            storeHourService
         );
 
         fileService = new FileService(
