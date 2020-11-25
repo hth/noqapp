@@ -1,12 +1,8 @@
 package com.noqapp.service;
 
-import static com.noqapp.common.utils.Constants.PREVENT_JOINING_BEFORE_CLOSING;
-
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateFormatter;
-import com.noqapp.common.utils.DateUtil;
-import com.noqapp.common.utils.GetTimeAgoUtils;
 import com.noqapp.common.utils.MathUtil;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.Validate;
@@ -19,7 +15,6 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.json.JsonHour;
 import com.noqapp.domain.site.JsonBusiness;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.ActionTypeEnum;
@@ -50,8 +45,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -59,7 +52,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -96,6 +88,7 @@ public class BizService {
     private MailService mailService;
     private UserProfileManager userProfileManager;
     private ScheduledTaskManager scheduledTaskManager;
+    private StoreHourService storeHourService;
 
     private ScheduledExecutorService executorService;
 
@@ -116,7 +109,8 @@ public class BizService {
         BusinessUserStoreManager businessUserStoreManager,
         MailService mailService,
         UserProfileManager userProfileManager,
-        ScheduledTaskManager scheduledTaskManager
+        ScheduledTaskManager scheduledTaskManager,
+        StoreHourService storeHourService
     ) {
         this.degreeInMiles = degreeInMiles;
         this.degreeInKilometers = degreeInKilometers;
@@ -130,6 +124,7 @@ public class BizService {
         this.mailService = mailService;
         this.userProfileManager = userProfileManager;
         this.scheduledTaskManager = scheduledTaskManager;
+        this.storeHourService = storeHourService;
 
         this.executorService = Executors.newScheduledThreadPool(2);
     }
@@ -199,7 +194,7 @@ public class BizService {
     public void sendMailWhenStoreSettingHasChanged(BizStoreEntity bizStore, String changeInitiateReason) {
         try {
             /* Get all store hours. */
-            List<StoreHourEntity> storeHours = findAllStoreHours(bizStore.getId());
+            List<StoreHourEntity> storeHours = storeHourService.findAllStoreHours(bizStore.getId());
             bizStore.setStoreHours(storeHours);
 
             Map<String, Object> rootMap = new HashMap<>();
@@ -395,46 +390,6 @@ public class BizService {
         storeHourManager.removeAll(bizStoreId);
     }
 
-    @Mobile
-    public StoreHourEntity findStoreHour(String bizStoreId, int dayOfWeek) {
-        return storeHourManager.findOne(bizStoreId, dayOfWeek);
-    }
-
-    @Mobile
-    public StoreHourEntity findStoreHour(String bizStoreId, DayOfWeek dayOfWeek) {
-        return storeHourManager.findOne(bizStoreId, dayOfWeek);
-    }
-
-    public List<StoreHourEntity> findAllStoreHours(String bizStoreId) {
-        return storeHourManager.findAll(bizStoreId);
-    }
-
-    public List<JsonHour> findAllStoreHoursAsJson(BizStoreEntity bizStore) {
-        List<JsonHour> jsonHours = new LinkedList<>();
-
-        if (null != bizStore) {
-            List<StoreHourEntity> storeHours = findAllStoreHours(bizStore.getId());
-            for (StoreHourEntity storeHour : storeHours) {
-                JsonHour jsonHour = new JsonHour()
-                    .setDayOfWeek(storeHour.getDayOfWeek())
-                    .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())
-                    .setTokenNotAvailableFrom(storeHour.getTokenNotAvailableFrom())
-                    .setStartHour(storeHour.getStartHour())
-                    .setAppointmentStartHour(bizStore.getAppointmentState() == AppointmentStateEnum.O ? 0 : storeHour.getAppointmentStartHour())
-                    .setEndHour(storeHour.getEndHour())
-                    .setAppointmentEndHour(bizStore.getAppointmentState() == AppointmentStateEnum.O ? 0 : storeHour.getAppointmentEndHour())
-                    .setLunchTimeStart(storeHour.getLunchTimeStart())
-                    .setLunchTimeEnd(storeHour.getLunchTimeEnd())
-                    .setPreventJoining(storeHour.isPreventJoining())
-                    .setDayClosed(storeHour.isDayClosed() || storeHour.isTempDayClosed())
-                    .setDelayedInMinutes(storeHour.getDelayedInMinutes());
-                jsonHours.add(jsonHour);
-            }
-        }
-
-        return jsonHours;
-    }
-
     public List<BizNameEntity> findByInviteeCode(String inviteCode) {
         return bizNameManager.findByInviteeCode(inviteCode);
     }
@@ -445,7 +400,7 @@ public class BizService {
         /* Avoid loading from cache as its being evicted. */
         BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
         DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
-        StoreHourEntity storeHour = findStoreHour(bizStore.getId(), dayOfWeek);
+        StoreHourEntity storeHour = storeHourService.findStoreHour(bizStore.getId(), dayOfWeek);
         long averagesServiceTime = ServiceUtils.computeAverageServiceTime(storeHour, availableTokenCount);
         if (0 == averagesServiceTime) {
             averagesServiceTime = Constants.MINUTES_2_IN_MILLISECOND;
@@ -735,16 +690,6 @@ public class BizService {
 
     public long deleteAllManagingStore(String bizStoreId) {
         return businessUserStoreManager.deleteAllManagingStore(bizStoreId);
-    }
-
-    //TODO instead send all the hours of the store and let App figure out which one to show.
-    public StoreHourEntity getStoreHours(String codeQR, BizStoreEntity bizStore) {
-        DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
-        LOG.debug("codeQR={} dayOfWeek={}", codeQR, dayOfWeek);
-
-        StoreHourEntity storeHour = findStoreHour(bizStore.getId(), dayOfWeek);
-        LOG.debug("StoreHour={}", storeHour);
-        return storeHour;
     }
 
     public void updateStoreTokenAndServiceTime(String codeQR, long averageServiceTime, int availableTokenCount) {

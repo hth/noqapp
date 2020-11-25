@@ -26,6 +26,7 @@ import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.ProfessionalProfileService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
@@ -56,6 +57,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
     private BizStoreElasticService bizStoreElasticService;
     private BusinessUserStoreService businessUserStoreService;
     private ProfessionalProfileService professionalProfileService;
+    private StoreHourService storeHourService;
 
     @SuppressWarnings ("unused")
     @Autowired
@@ -71,6 +73,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         AccountService accountService,
         MailService mailService,
         StoreProductService storeProductService,
+        StoreHourService storeHourService,
         AddNewAgentFlowActions addNewAgentFlowActions
     ) {
         super(
@@ -84,6 +87,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
             storeProductService,
             businessUserService,
             businessUserStoreService,
+            storeHourService,
             addNewAgentFlowActions);
 
         this.businessUserService = businessUserService;
@@ -92,6 +96,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         this.bizStoreElasticService = bizStoreElasticService;
         this.businessUserStoreService = businessUserStoreService;
         this.professionalProfileService = professionalProfileService;
+        this.storeHourService = storeHourService;
     }
 
     @SuppressWarnings ("unused")
@@ -156,7 +161,7 @@ public class StoreFlowActions extends RegistrationFlowActions {
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
         registerBusiness.populateWithBizStore(bizStore, tokenQueue);
-        List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStoreId);
+        List<StoreHourEntity> storeHours = storeHourService.findAllStoreHours(bizStoreId);
         registerBusiness.convertToBusinessHours(storeHours);
         return registerBusiness;
     }

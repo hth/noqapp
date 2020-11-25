@@ -72,6 +72,7 @@ public class JoinAbortService {
     private BizService bizService;
     private BusinessCustomerService businessCustomerService;
     private FirebaseMessageService firebaseMessageService;
+    private StoreHourService storeHourService;
 
     private ExecutorService executorService;
 
@@ -87,7 +88,8 @@ public class JoinAbortService {
         PurchaseOrderProductService purchaseOrderProductService,
         BizService bizService,
         BusinessCustomerService businessCustomerService,
-        FirebaseMessageService firebaseMessageService
+        FirebaseMessageService firebaseMessageService,
+        StoreHourService storeHourService
     ) {
         this.preventPaidAbortBeforeHours = preventPaidAbortBeforeHours;
 
@@ -99,6 +101,7 @@ public class JoinAbortService {
         this.bizService = bizService;
         this.businessCustomerService = businessCustomerService;
         this.firebaseMessageService = firebaseMessageService;
+        this.storeHourService = storeHourService;
 
         /* For executing in order of sequence. */
         this.executorService = newSingleThreadExecutor();
@@ -191,7 +194,7 @@ public class JoinAbortService {
             if (StringUtils.isNotBlank(queue.getTransactionId())) {
                 BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
                 ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
-                StoreHourEntity storeHour = bizService.findStoreHour(bizStore.getId(), zonedDateTime.getDayOfWeek());
+                StoreHourEntity storeHour = storeHourService.findStoreHour(bizStore.getId(), zonedDateTime.getDayOfWeek());
                 LocalTime localTime = DateFormatter.addHours(DateFormatter.getLocalTime(requesterTime), preventPaidAbortBeforeHours);
                 if (DateFormatter.getTimeIn24HourFormat(localTime) > storeHour.getStartHour()) {
                     LOG.warn("Failed as aborting paid transaction within {} hrs duration", preventPaidAbortBeforeHours);

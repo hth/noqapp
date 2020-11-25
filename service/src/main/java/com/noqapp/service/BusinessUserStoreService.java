@@ -65,6 +65,7 @@ public class BusinessUserStoreService {
     private AccountService accountService;
     private BizService bizService;
     private ProfessionalProfileService professionalProfileService;
+    private StoreHourService storeHourService;
 
     @Autowired
     public BusinessUserStoreService(
@@ -77,7 +78,8 @@ public class BusinessUserStoreService {
         TokenQueueService tokenQueueService,
         AccountService accountService,
         BizService bizService,
-        ProfessionalProfileService professionalProfileService
+        ProfessionalProfileService professionalProfileService,
+        StoreHourService storeHourService
     ) {
         this.queueLimit = queueLimit;
         this.businessUserStoreManager = businessUserStoreManager;
@@ -87,6 +89,7 @@ public class BusinessUserStoreService {
         this.accountService = accountService;
         this.bizService = bizService;
         this.professionalProfileService = professionalProfileService;
+        this.storeHourService = storeHourService;
     }
 
     public void save(BusinessUserStoreEntity businessUserStore) {
@@ -169,7 +172,7 @@ public class BusinessUserStoreService {
     public JsonHour getJsonHour(String codeQR) {
         BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
         DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
-        StoreHourEntity storeHour = bizService.findStoreHour(bizStore.getId(), dayOfWeek);
+        StoreHourEntity storeHour = storeHourService.findStoreHour(bizStore.getId(), dayOfWeek);
         return new JsonHour()
             .setDayOfWeek(storeHour.getDayOfWeek())
             .setTokenAvailableFrom(storeHour.getTokenAvailableFrom())

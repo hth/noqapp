@@ -54,6 +54,7 @@ public class ShowHTMLService {
     private FreemarkerService freemarkerService;
     private TokenQueueService tokenQueueService;
     private CodeQRGeneratorService codeQRGeneratorService;
+    private StoreHourService storeHourService;
 
     private static String showStoreBlank;
     private static String showBusinessBlank;
@@ -78,7 +79,8 @@ public class ShowHTMLService {
         BizService bizService,
         FreemarkerService freemarkerService,
         TokenQueueService tokenQueueService,
-        CodeQRGeneratorService codeQRGeneratorService
+        CodeQRGeneratorService codeQRGeneratorService,
+        StoreHourService storeHourService
     ) {
         this.parentHost = parentHost;
         this.domain = domain;
@@ -90,6 +92,7 @@ public class ShowHTMLService {
         this.freemarkerService = freemarkerService;
         this.tokenQueueService = tokenQueueService;
         this.codeQRGeneratorService = codeQRGeneratorService;
+        this.storeHourService = storeHourService;
 
         try {
             Map<String, Object> rootMap = new HashMap<>();
@@ -167,7 +170,7 @@ public class ShowHTMLService {
             return false;
         }
 
-        bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
+        bizStore.setStoreHours(storeHourService.findAllStoreHours(bizStore.getId()));
         ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
 
         rootMap.put("parentHost", parentHost);

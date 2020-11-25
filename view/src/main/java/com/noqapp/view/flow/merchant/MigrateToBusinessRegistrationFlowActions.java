@@ -26,6 +26,7 @@ import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.FetcherService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.emp.EmpLandingService;
@@ -65,6 +66,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     private AccountService accountService;
     private BusinessUserService businessUserService;
     private EmpLandingService empLandingService;
+    private StoreHourService storeHourService;
 
     @SuppressWarnings("all")
     @Autowired
@@ -84,6 +86,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         EmpLandingService empLandingService,
         StoreProductService storeProductService,
         BusinessUserStoreService businessUserStoreService,
+        StoreHourService storeHourService,
         AddNewAgentFlowActions addNewAgentFlowActions
     ) {
         super(
@@ -97,6 +100,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
             storeProductService,
             businessUserService,
             businessUserStoreService,
+            storeHourService,
             addNewAgentFlowActions);
 
         this.autoApproveBusinessTurnedOn = autoApproveBusinessTurnedOn;

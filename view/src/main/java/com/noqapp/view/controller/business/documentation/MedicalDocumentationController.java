@@ -28,6 +28,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.QueueService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.form.business.MedicalDocumentUploadForm;
@@ -101,6 +102,7 @@ public class MedicalDocumentationController {
     private MedicalFileService medicalFileService;
     private ProfessionalProfileService professionalProfileService;
     private AccountService accountService;
+    private StoreHourService storeHourService;
     private ApiHealthService apiHealthService;
 
     @Autowired
@@ -126,6 +128,7 @@ public class MedicalDocumentationController {
         MedicalFileService medicalFileService,
         ProfessionalProfileService professionalProfileService,
         AccountService accountService,
+        StoreHourService storeHourService,
         ApiHealthService apiHealthService
     ) {
         this.limitedToDays = limitedToDays;
@@ -143,6 +146,7 @@ public class MedicalDocumentationController {
         this.medicalFileService = medicalFileService;
         this.professionalProfileService = professionalProfileService;
         this.accountService = accountService;
+        this.storeHourService = storeHourService;
         this.apiHealthService = apiHealthService;
     }
 
@@ -169,7 +173,7 @@ public class MedicalDocumentationController {
             String codeQR = businessUserStore.getCodeQR();
             JsonQueuePersonList jsonQueuePersonList = queueService.findAllClient(codeQR);
             BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
-            StoreHourEntity storeHour = bizService.getStoreHours(codeQR, bizStore);
+            StoreHourEntity storeHour = storeHourService.getStoreHours(codeQR, bizStore);
             bizStore.setStoreHours(new ArrayList<>() {{
                 add(storeHour);
             }});

@@ -153,6 +153,7 @@ import com.noqapp.service.ScheduleAppointmentService;
 import com.noqapp.service.SmsService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreCategoryService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TextToSpeechService;
 import com.noqapp.service.TokenQueueService;
@@ -207,7 +208,6 @@ public class ITest extends RealMongoForITest {
     protected MasterLabManager masterLabManager;
     /** Additional End. */
 
-
     protected AccountService accountService;
     protected UserProfilePreferenceService userProfilePreferenceService;
     protected InviteService inviteService;
@@ -234,6 +234,7 @@ public class ITest extends RealMongoForITest {
     protected DeviceService deviceService;
     protected TextToSpeechService textToSpeechService;
     protected CustomTextToSpeechService customTextToSpeechService;
+    protected StoreHourService storeHourService;
 
     protected MedicalRecordManager medicalRecordManager;
     protected MedicalPhysicalManager medicalPhysicalManager;
@@ -456,6 +457,7 @@ public class ITest extends RealMongoForITest {
             mongoHosts()
         );
 
+        storeHourService = new StoreHourService(storeHourManager);
         queueService = new QueueService(
             5,
             userProfileManager,
@@ -468,7 +470,9 @@ public class ITest extends RealMongoForITest {
             statsBizStoreDailyManager,
             purchaseOrderManager,
             purchaseOrderManagerJDBC,
-            purchaseOrderProductService
+            purchaseOrderProductService,
+            storeHourService,
+            couponService
         );
 
         bizService = new BizService(
@@ -483,7 +487,8 @@ public class ITest extends RealMongoForITest {
             businessUserStoreManager,
             mailService,
             userProfileManager,
-            scheduledTaskManager
+            scheduledTaskManager,
+            storeHourService
         );
 
         storeCategoryManager = new StoreCategoryManagerImpl(getMongoTemplate());
@@ -575,7 +580,8 @@ public class ITest extends RealMongoForITest {
             tokenQueueService,
             accountService,
             bizService,
-            professionalProfileService
+            professionalProfileService,
+            storeHourService
         );
 
         medicalRecordManager = new MedicalRecordManagerImpl(getMongoTemplate());
@@ -632,9 +638,7 @@ public class ITest extends RealMongoForITest {
             firebaseMessageService,
             firebaseService,
             tokenQueueService,
-            queueService,
-            couponService,
-            bizService
+            queueService
         );
 
         registerUser();

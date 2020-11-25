@@ -17,6 +17,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.QueueService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.report.pdf.PeopleInQueue;
 import com.noqapp.view.form.StoreManagerForm;
@@ -69,6 +70,7 @@ public class StoreManagerLandingController {
     private TokenQueueService tokenQueueService;
     private BusinessUserService businessUserService;
     private BizStoreElasticService bizStoreElasticService;
+    private StoreHourService storeHourService;
     private QueueService queueService;
 
     @Autowired
@@ -81,6 +83,7 @@ public class StoreManagerLandingController {
         TokenQueueService tokenQueueService,
         BusinessUserService businessUserService,
         BizStoreElasticService bizStoreElasticService,
+        StoreHourService storeHourService,
         QueueService queueService
     ) {
         this.nextPage = nextPage;
@@ -89,6 +92,7 @@ public class StoreManagerLandingController {
         this.tokenQueueService = tokenQueueService;
         this.businessUserService = businessUserService;
         this.bizStoreElasticService = bizStoreElasticService;
+        this.storeHourService = storeHourService;
         this.queueService = queueService;
     }
 
@@ -175,7 +179,7 @@ public class StoreManagerLandingController {
                 case ACTIVE:
                     bizStore.active();
                     bizService.saveStore(bizStore, "Store is now online");
-                    BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId()));
+                    BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, storeHourService.findAllStoreHours(bizStore.getId()));
                     bizStoreElasticService.save(bizStoreElastic);
                     bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
                     return String.format("{ \"storeId\" : \"%s\", \"action\" : \"%s\" }", storeId.getText(), ActionTypeEnum.INACTIVE.name());

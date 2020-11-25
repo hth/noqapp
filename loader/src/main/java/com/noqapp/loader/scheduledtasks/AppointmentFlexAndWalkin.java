@@ -17,6 +17,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.DeviceService;
 import com.noqapp.service.NotifyMobileService;
 import com.noqapp.service.StatsCronService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.TokenQueueService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -56,6 +57,7 @@ public class AppointmentFlexAndWalkin {
     private StatsCronService statsCronService;
     private ComputeNextRunService computeNextRunService;
     private NotifyMobileService notifyMobileService;
+    private StoreHourService storeHourService;
 
     private String moveScheduledAppointmentToWalkin;
     private StatsCronEntity statsCron;
@@ -72,7 +74,8 @@ public class AppointmentFlexAndWalkin {
         BizService bizService,
         StatsCronService statsCronService,
         ComputeNextRunService computeNextRunService,
-        NotifyMobileService notifyMobileService
+        NotifyMobileService notifyMobileService,
+        StoreHourService storeHourService
     ) {
         this.moveScheduledAppointmentToWalkin = moveScheduledAppointmentToWalkin;
 
@@ -84,6 +87,7 @@ public class AppointmentFlexAndWalkin {
         this.statsCronService = statsCronService;
         this.computeNextRunService = computeNextRunService;
         this.notifyMobileService = notifyMobileService;
+        this.storeHourService = storeHourService;
     }
 
     @Scheduled(fixedDelayString = "${loader.AppointmentFlexAndWalkin.scheduleToWalkin}")
@@ -115,7 +119,7 @@ public class AppointmentFlexAndWalkin {
             LOG.info("Stores accepting walkin found={} date={}", bizStores.size(), date);
             for (BizStoreEntity bizStore : bizStores) {
                 try {
-                    bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
+                    bizStore.setStoreHours(storeHourService.findAllStoreHours(bizStore.getId()));
                     moveFromAppointmentToWalkin(bizStore);
                     success++;
 
