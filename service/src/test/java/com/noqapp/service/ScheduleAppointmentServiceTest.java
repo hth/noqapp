@@ -50,6 +50,7 @@ class ScheduleAppointmentServiceTest {
     @Mock private BizService bizService;
     @Mock private FirebaseMessageService firebaseMessageService;
     @Mock private MailService mailService;
+    @Mock private StoreHourService storeHourService;
 
     private ExecutorService executorService;
     private ScheduleAppointmentService scheduleAppointmentService;
@@ -60,7 +61,7 @@ class ScheduleAppointmentServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         scheduleAppointmentService = new ScheduleAppointmentService(
             60,
             2,
@@ -76,7 +77,8 @@ class ScheduleAppointmentServiceTest {
             scheduledTaskManager,
             bizService,
             firebaseMessageService,
-            mailService
+            mailService,
+            storeHourService
         );
 
         jsonSchedule = new JsonSchedule()

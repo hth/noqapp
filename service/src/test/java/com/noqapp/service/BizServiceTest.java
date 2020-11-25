@@ -33,12 +33,13 @@ class BizServiceTest {
     @Mock private MailService mailService;
     @Mock private UserProfileManager userProfileManager;
     @Mock private ScheduledTaskManager scheduledTaskManager;
+    @Mock private StoreHourService storeHourService;
 
     private BizService bizService;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         bizService = new BizService(
             69.172,
             111.321,
@@ -51,7 +52,9 @@ class BizServiceTest {
             businessUserStoreManager,
             mailService,
             userProfileManager,
-            scheduledTaskManager);
+            scheduledTaskManager,
+            storeHourService
+        );
     }
 
     @Test

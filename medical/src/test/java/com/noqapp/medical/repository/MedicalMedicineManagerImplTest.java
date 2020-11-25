@@ -36,7 +36,7 @@ class MedicalMedicineManagerImplTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         this.medicalMedicineManager = new MedicalMedicineManagerImpl(mongoTemplate);
 
         when(medicalMedicine1.getName()).thenReturn("Medicine1");

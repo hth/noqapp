@@ -24,6 +24,7 @@ import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.StatsCronService;
+import com.noqapp.service.StoreHourService;
 
 import org.joda.time.DateTime;
 
@@ -61,6 +62,7 @@ class ArchiveAndResetTest {
     @Mock private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     @Mock private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
     @Mock private FileService fileService;
+    @Mock private StoreHourService storeHourService;
 
     private String codeQR = CommonUtil.generateHexFromObjectId();
     private String bizStoreId = CommonUtil.generateHexFromObjectId();
@@ -70,7 +72,7 @@ class ArchiveAndResetTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         archiveAndReset = new ArchiveAndReset(
             "OFF",
@@ -87,7 +89,8 @@ class ArchiveAndResetTest {
             purchaseOrderProductManager,
             purchaseOrderManagerJDBC,
             purchaseOrderProductManagerJDBC,
-            fileService
+            fileService,
+            storeHourService
         );
 
         QueueEntity a = new QueueEntity();

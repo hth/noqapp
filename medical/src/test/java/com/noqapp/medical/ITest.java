@@ -235,7 +235,7 @@ public class ITest extends RealMongoForITest {
 
     @BeforeAll
     public void globalISetup() throws IOException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         userAccountManager = new UserAccountManagerImpl(getMongoTemplate());
         userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
