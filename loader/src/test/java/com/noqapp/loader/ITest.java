@@ -1,5 +1,6 @@
 package com.noqapp.loader;
 
+import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.common.config.TextToSpeechConfiguration;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Constants;
@@ -22,19 +23,34 @@ import com.noqapp.health.repository.ApiHealthNowManager;
 import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.loader.service.ComputeNextRunService;
+
 import com.noqapp.medical.repository.MasterLabManager;
 import com.noqapp.medical.repository.MasterLabManagerImpl;
+
+import com.noqapp.medical.repository.HospitalVisitScheduleManager;
+import com.noqapp.medical.repository.HospitalVisitScheduleManagerImpl;
+import com.noqapp.medical.repository.MedicalMedicationManager;
+import com.noqapp.medical.repository.MedicalMedicationManagerImpl;
+import com.noqapp.medical.repository.MedicalMedicineManager;
+import com.noqapp.medical.repository.MedicalMedicineManagerImpl;
 import com.noqapp.medical.repository.MedicalPathologyManager;
 import com.noqapp.medical.repository.MedicalPathologyManagerImpl;
+import com.noqapp.medical.repository.MedicalPathologyTestManager;
+import com.noqapp.medical.repository.MedicalPathologyTestManagerImpl;
+import com.noqapp.medical.repository.MedicalPhysicalManager;
+import com.noqapp.medical.repository.MedicalPhysicalManagerImpl;
 import com.noqapp.medical.repository.MedicalRadiologyManager;
 import com.noqapp.medical.repository.MedicalRadiologyManagerImpl;
+import com.noqapp.medical.repository.MedicalRadiologyTestManager;
+import com.noqapp.medical.repository.MedicalRadiologyTestManagerImpl;
 import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.medical.repository.MedicalRecordManagerImpl;
 import com.noqapp.medical.repository.UserMedicalProfileHistoryManager;
-import com.noqapp.medical.repository.UserMedicalProfileHistoryManagerImpl;
 import com.noqapp.medical.repository.UserMedicalProfileManager;
 import com.noqapp.medical.repository.UserMedicalProfileManagerImpl;
+import com.noqapp.medical.service.HospitalVisitScheduleService;
 import com.noqapp.medical.service.MedicalFileService;
+import com.noqapp.medical.service.MedicalRecordService;
 import com.noqapp.medical.service.UserMedicalProfileService;
 import com.noqapp.medical.transaction.MedicalTransactionService;
 import com.noqapp.repository.AdvertisementManager;
@@ -54,7 +70,6 @@ import com.noqapp.repository.BusinessUserStoreManagerImpl;
 import com.noqapp.repository.CouponManager;
 import com.noqapp.repository.CouponManagerImpl;
 import com.noqapp.repository.CustomTextToSpeechManager;
-import com.noqapp.repository.CustomTextToSpeechManagerImpl;
 import com.noqapp.repository.EmailValidateManager;
 import com.noqapp.repository.EmailValidateManagerImpl;
 import com.noqapp.repository.ForgotRecoverManager;
@@ -64,6 +79,7 @@ import com.noqapp.repository.GenerateUserIdManagerImpl;
 import com.noqapp.repository.InviteManager;
 import com.noqapp.repository.InviteManagerImpl;
 import com.noqapp.repository.PreferredBusinessManager;
+import com.noqapp.repository.PreferredBusinessManagerImpl;
 import com.noqapp.repository.ProfessionalProfileManager;
 import com.noqapp.repository.ProfessionalProfileManagerImpl;
 import com.noqapp.repository.PublishArticleManager;
@@ -84,6 +100,7 @@ import com.noqapp.repository.S3FileManagerImpl;
 import com.noqapp.repository.ScheduleAppointmentManager;
 import com.noqapp.repository.ScheduleAppointmentManagerImpl;
 import com.noqapp.repository.ScheduledTaskManager;
+import com.noqapp.repository.ScheduledTaskManagerImpl;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.StatsBizStoreDailyManagerImpl;
 import com.noqapp.repository.StatsCronManager;
@@ -98,6 +115,8 @@ import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.TokenQueueManagerImpl;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAccountManagerImpl;
+import com.noqapp.repository.UserAddressManager;
+import com.noqapp.repository.UserAddressManagerImpl;
 import com.noqapp.repository.UserAuthenticationManager;
 import com.noqapp.repository.UserAuthenticationManagerImpl;
 import com.noqapp.repository.UserPreferenceManager;
@@ -106,6 +125,7 @@ import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.UserProfileManagerImpl;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
+import com.noqapp.service.BusinessCustomerPriorityService;
 import com.noqapp.service.BusinessCustomerService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
@@ -113,21 +133,35 @@ import com.noqapp.service.CouponService;
 import com.noqapp.service.CustomTextToSpeechService;
 import com.noqapp.service.DeviceService;
 import com.noqapp.service.EmailValidateService;
+import com.noqapp.service.ExternalService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FirebaseMessageService;
+import com.noqapp.service.FirebaseService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.GenerateUserIdService;
 import com.noqapp.service.InviteService;
+import com.noqapp.service.JoinAbortService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.NotifyMobileService;
 import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.PurchaseOrderProductService;
+import com.noqapp.service.PurchaseOrderService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.ReviewService;
+import com.noqapp.service.ScheduleAppointmentService;
+import com.noqapp.service.SmsService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreCategoryService;
+import com.noqapp.service.StoreHourService;
+import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TextToSpeechService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.service.UserAddressService;
+import com.noqapp.service.UserProfilePreferenceService;
+import com.noqapp.service.nlp.NLPService;
+import com.noqapp.service.payment.CashfreeService;
+import com.noqapp.service.transaction.TransactionService;
 
 import org.bson.types.ObjectId;
 
@@ -137,12 +171,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import okhttp3.OkHttpClient;
 
 import java.time.DayOfWeek;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.UUID;
 
 /**
@@ -151,98 +188,146 @@ import java.util.UUID;
  */
 public class ITest extends RealMongoForITest {
 
+    protected String did;
+    protected String didClient1;
+    protected String didClient2;
+    protected String didQueueSupervisor;
     protected String fcmToken;
     protected String model;
     protected String osVersion;
     protected String appVersion;
     protected String deviceType;
 
-    protected AccountService accountService;
-    protected InviteService inviteService;
-    protected FileService fileService;
-    protected BizService bizService;
-    protected StoreCategoryService storeCategoryService;
-    protected UserMedicalProfileService userMedicalProfileService;
-    protected TokenQueueService tokenQueueService;
-    protected BusinessCustomerService businessCustomerService;
-    protected BusinessCustomerPriorityManager businessCustomerPriorityManager;
-    protected ApiHealthService apiHealthService;
-    protected FirebaseMessageService firebaseMessageService;
-    protected BusinessUserService businessUserService;
-    protected BusinessUserStoreService businessUserStoreService;
-    protected PreferredBusinessService preferredBusinessService;
-    protected GenerateUserIdService generateUserIdService;
-    protected EmailValidateService emailValidateService;
-    protected QueueService queueService;
-    protected MedicalFileService medicalFileService;
+    /** Additional */
     protected MedicalTransactionService medicalTransactionService;
     protected StatsCronService statsCronService;
-    protected PurchaseOrderProductService purchaseOrderProductService;
-    protected CouponService couponService;
-    protected ReviewService reviewService;
+    protected ComputeNextRunService computeNextRunService;
+    protected NotifyMobileService notifyMobileService;
+
+    protected StatsCronManager statsCronManager;
+    protected MasterLabManager masterLabManager;
+    /** Additional End. */
+
+    protected AccountService accountService;
+    protected UserProfilePreferenceService userProfilePreferenceService;
+    protected InviteService inviteService;
+    protected TokenQueueService tokenQueueService;
+    protected BizService bizService;
+    protected QueueService queueService;
+    protected BusinessUserStoreService businessUserStoreService;
     protected ProfessionalProfileService professionalProfileService;
+    protected ScheduleAppointmentService scheduleAppointmentService;
+
+    protected UserAddressManager userAddressManager;
+    protected UserAddressService userAddressService;
+    protected StoreProductManager storeProductManager;
+    protected StoreProductService storeProductService;
+    protected PurchaseOrderManager purchaseOrderManager;
+    protected PurchaseOrderProductManager purchaseOrderProductManager;
+    protected PurchaseOrderService purchaseOrderService;
+    protected PurchaseOrderProductService purchaseOrderProductService;
+    protected FileService fileService;
+    protected S3FileManager s3FileManager;
+    protected ReviewService reviewService;
+    protected CouponService couponService;
+    protected JoinAbortService joinAbortService;
+    protected DeviceService deviceService;
     protected TextToSpeechService textToSpeechService;
     protected CustomTextToSpeechService customTextToSpeechService;
-    protected ComputeNextRunService computeNextRunService;
-    protected DeviceService deviceService;
+    protected StoreHourService storeHourService;
+
+    protected MedicalRecordManager medicalRecordManager;
+    protected MedicalPhysicalManager medicalPhysicalManager;
+    protected MedicalMedicationManager medicalMedicationManager;
+    protected MedicalMedicineManager medicalMedicineManager;
+    protected MedicalPathologyManager medicalPathologyManager;
+    protected MedicalPathologyTestManager medicalPathologyTestManager;
+    protected MedicalRadiologyManager medicalRadiologyManager;
+    protected MedicalRadiologyTestManager medicalRadiologyTestManager;
+    protected HospitalVisitScheduleManager hospitalVisitScheduleManager;
+    protected MedicalRecordService medicalRecordService;
+    protected MedicalFileService medicalFileService;
 
     protected TokenQueueManager tokenQueueManager;
+    protected FirebaseMessageService firebaseMessageService;
+    protected FirebaseService firebaseService;
     protected QueueManager queueManager;
+
     protected UserAccountManager userAccountManager;
     protected UserAuthenticationManager userAuthenticationManager;
     protected UserPreferenceManager userPreferenceManager;
     protected UserProfileManager userProfileManager;
+    protected GenerateUserIdService generateUserIdService;
     protected EmailValidateManager emailValidateManager;
+    protected EmailValidateService emailValidateService;
     protected ForgotRecoverManager forgotRecoverManager;
     protected InviteManager inviteManager;
     protected RegisteredDeviceManager registeredDeviceManager;
     protected BizNameManager bizNameManager;
+    protected BusinessCustomerPriorityManager businessCustomerPriorityManager;
     protected BizStoreManager bizStoreManager;
     protected StoreHourManager storeHourManager;
     protected BusinessUserStoreManager businessUserStoreManager;
+    protected BusinessUserService businessUserService;
     protected BusinessUserManager businessUserManager;
     protected ProfessionalProfileManager professionalProfileManager;
     protected UserMedicalProfileManager userMedicalProfileManager;
     protected UserMedicalProfileHistoryManager userMedicalProfileHistoryManager;
     protected StoreCategoryManager storeCategoryManager;
     protected PreferredBusinessManager preferredBusinessManager;
+    protected PreferredBusinessService preferredBusinessService;
     protected ScheduledTaskManager scheduledTaskManager;
-    protected GenerateUserIdManager generateUserIdManager;
-    protected BusinessCustomerManager businessCustomerManager;
-    protected ApiHealthNowManager apiHealthNowManager;
-    protected MasterLabManager masterLabManager;
     protected PublishArticleManager publishArticleManager;
-    protected MedicalRecordManager medicalRecordManager;
-    protected MedicalRadiologyManager medicalRadiologyManager;
-    protected MedicalPathologyManager medicalPathologyManager;
-    protected StatsBizStoreDailyManager statsBizStoreDailyManager;
-    protected StatsCronManager statsCronManager;
-    protected PurchaseOrderManager purchaseOrderManager;
-    protected PurchaseOrderProductManager purchaseOrderProductManager;
     protected AdvertisementManager advertisementManager;
+    protected ScheduleAppointmentManager scheduleAppointmentManager;
     protected CouponManager couponManager;
     protected CustomTextToSpeechManager customTextToSpeechManager;
-    protected ScheduleAppointmentManager scheduleAppointmentManager;
 
-    protected S3FileManager s3FileManager;
-    protected StoreProductManager storeProductManager;
+    protected BusinessCustomerManager businessCustomerManager;
+    protected BusinessCustomerService businessCustomerService;
+    protected UserMedicalProfileService userMedicalProfileService;
+    protected StoreCategoryService storeCategoryService;
+    protected TransactionService transactionService;
+    protected HospitalVisitScheduleService hospitalVisitScheduleService;
+    protected NLPService nlpService;
+    protected BusinessCustomerPriorityService businessCustomerPriorityService;
 
-    private MockEnvironment mockEnvironment;
+    protected ApiHealthService apiHealthService;
+    protected ApiHealthNowManager apiHealthNowManager;
+    protected StatsBizStoreDailyManager statsBizStoreDailyManager;
 
-    @Mock protected FtpService ftpService;
-    @Mock protected MailService mailService;
-    @Mock protected OkHttpClient okHttpClient;
+    protected GenerateUserIdManager generateUserIdManager;
+
+    private StanfordCoreNLP stanfordCoreNLP;
+    private MaxentTagger maxentTagger;
+    protected ExternalService externalService;
     @Mock protected QueueManagerJDBC queueManagerJDBC;
     @Mock protected PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     @Mock protected PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
+    @Mock protected FtpService ftpService;
+    @Mock protected MailService mailService;
+    @Mock protected OkHttpClient okHttpClient;
+    @Mock protected CashfreeService cashfreeService;
+    @Mock protected FirebaseConfig firebaseConfig;
     @Mock protected TextToSpeechConfiguration textToSpeechConfiguration;
+    @Mock protected SmsService smsService;
+
+    private MockEnvironment mockEnvironment;
 
     @BeforeAll
     public void globalISetup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
+        did = UUID.randomUUID().toString();
+        didClient1 = UUID.randomUUID().toString();
+        didClient2 = UUID.randomUUID().toString();
+        didQueueSupervisor = UUID.randomUUID().toString();
         mockEnvironment = new MockEnvironment();
         mockEnvironment.setProperty("build.env", "sandbox");
+
+        Properties nlpProperties = new Properties();
+        nlpProperties.setProperty("annotators", "tokenize, ssplit, pos, lemma, parse, sentiment");
+        stanfordCoreNLP = new StanfordCoreNLP(nlpProperties);
 
         fcmToken = UUID.randomUUID().toString();
         deviceType = DeviceTypeEnum.A.getName();
@@ -260,50 +345,27 @@ public class ITest extends RealMongoForITest {
         forgotRecoverManager = new ForgotRecoverManagerImpl(getMongoTemplate());
         registeredDeviceManager = new RegisteredDeviceManagerImpl(getMongoTemplate());
         userMedicalProfileManager = new UserMedicalProfileManagerImpl(getMongoTemplate());
-        userMedicalProfileHistoryManager = new UserMedicalProfileHistoryManagerImpl(getMongoTemplate());
         purchaseOrderManager = new PurchaseOrderManagerImpl(getMongoTemplate());
         purchaseOrderProductManager = new PurchaseOrderProductManagerImpl(getMongoTemplate());
-        s3FileManager = new S3FileManagerImpl(getMongoTemplate());
-        bizNameManager = new BizNameManagerImpl(getMongoTemplate());
-        bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
-        masterLabManager = new MasterLabManagerImpl(getMongoTemplate());
         storeProductManager = new StoreProductManagerImpl(getMongoTemplate());
-        storeCategoryManager = new StoreCategoryManagerImpl(getMongoTemplate());
-        tokenQueueManager = new TokenQueueManagerImpl(getMongoTemplate());
+        scheduledTaskManager = new ScheduledTaskManagerImpl(getMongoTemplate());
+        bizNameManager = new BizNameManagerImpl(getMongoTemplate());
+        businessCustomerPriorityManager = new BusinessCustomerPriorityManagerImpl(getMongoTemplate());
+        businessUserStoreManager = new BusinessUserStoreManagerImpl(getMongoTemplate());
         businessUserManager = new BusinessUserManagerImpl(getMongoTemplate());
         queueManager = new QueueManagerImpl(getMongoTemplate());
-        storeHourManager = new StoreHourManagerImpl(getMongoTemplate());
-        businessCustomerManager = new BusinessCustomerManagerImpl(getMongoTemplate());
-        apiHealthNowManager = new ApiHealthNowManagerImpl(getMongoTemplate());
-        businessUserStoreManager = new BusinessUserStoreManagerImpl(getMongoTemplate());
-        publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
-        advertisementManager = new AdvertisementManagerImpl(getMongoTemplate());
-        medicalRecordManager = new MedicalRecordManagerImpl(getMongoTemplate());
-        medicalRadiologyManager = new MedicalRadiologyManagerImpl(getMongoTemplate());
-        medicalPathologyManager = new MedicalPathologyManagerImpl(getMongoTemplate());
+        bizStoreManager = new BizStoreManagerImpl(getMongoTemplate());
         statsBizStoreDailyManager = new StatsBizStoreDailyManagerImpl(getMongoTemplate());
-        statsCronManager = new StatsCronManagerImpl(getMongoTemplate());
-        couponManager = new CouponManagerImpl(getMongoTemplate());
-        customTextToSpeechManager = new CustomTextToSpeechManagerImpl(getMongoTemplate());
         scheduleAppointmentManager = new ScheduleAppointmentManagerImpl(getMongoTemplate());
-        businessCustomerPriorityManager = new BusinessCustomerPriorityManagerImpl(getMongoTemplate());
+        couponManager = new CouponManagerImpl(getMongoTemplate());
+        apiHealthNowManager = new ApiHealthNowManagerImpl(getMongoTemplate());
 
-        userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
-        firebaseMessageService = new FirebaseMessageService("", okHttpClient);
-        inviteService = new InviteService(inviteManager);
-        emailValidateService = new EmailValidateService(emailValidateManager);
         generateUserIdService = new GenerateUserIdService(generateUserIdManager);
-        storeCategoryService = new StoreCategoryService(storeCategoryManager, storeProductManager);
-        businessCustomerService = new BusinessCustomerService(
-            businessCustomerManager,
-            userProfileManager,
-            queueManager,
-            bizNameManager,
-            businessCustomerPriorityManager
-        );
-        apiHealthService = new ApiHealthService(apiHealthNowManager);
-        couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
-        purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC);
+        emailValidateService = new EmailValidateService(emailValidateManager);
+        inviteService = new InviteService(inviteManager);
+        userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
+        nlpService = new NLPService(stanfordCoreNLP, maxentTagger);
+        businessCustomerPriorityService = new BusinessCustomerPriorityService(businessCustomerPriorityManager, bizNameManager, bizStoreManager);
 
         accountService = new AccountService(
             5,
@@ -334,6 +396,34 @@ public class ITest extends RealMongoForITest {
             businessUserStoreManager,
             bizStoreManager);
 
+        userAddressManager = new UserAddressManagerImpl(5, getMongoTemplate());
+        externalService = new ExternalService("AIzaSyDUM3yIIrwrx3ciwZ57O9YamC4uISWAlAk", 0, bizStoreManager);
+        userAddressService = new UserAddressService(userAddressManager, externalService);
+        userProfilePreferenceService = new UserProfilePreferenceService(
+            userProfileManager,
+            userPreferenceManager,
+            userAddressManager
+        );
+
+        deviceService = new DeviceService(registeredDeviceManager, userProfileManager);
+        apiHealthService = new ApiHealthService(apiHealthNowManager);
+        tokenQueueManager = new TokenQueueManagerImpl(getMongoTemplate());
+        storeHourManager = new StoreHourManagerImpl(getMongoTemplate());
+        businessCustomerManager = new BusinessCustomerManagerImpl(getMongoTemplate());
+        s3FileManager = new S3FileManagerImpl(getMongoTemplate());
+        firebaseMessageService = new FirebaseMessageService("", okHttpClient);
+        firebaseService = new FirebaseService(firebaseConfig, userProfilePreferenceService);
+        businessCustomerService = new BusinessCustomerService(
+            businessCustomerManager,
+            userProfileManager,
+            queueManager,
+            bizNameManager,
+            businessCustomerPriorityManager
+        );
+
+        couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
+        purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC);
+
         customTextToSpeechService = new CustomTextToSpeechService(customTextToSpeechManager);
         textToSpeechService = new TextToSpeechService(
             queueManager,
@@ -356,8 +446,20 @@ public class ITest extends RealMongoForITest {
             apiHealthService
         );
 
+        transactionService = new TransactionService(
+            2,
+            getMongoTemplate(),
+            transactionManager(),
+            purchaseOrderManager,
+            purchaseOrderProductManager,
+            storeProductManager,
+            cashfreeService,
+            mongoHosts()
+        );
+
+        storeHourService = new StoreHourService(storeHourManager);
         queueService = new QueueService(
-            30,
+            5,
             userProfileManager,
             businessCustomerService,
             bizStoreManager,
@@ -368,7 +470,9 @@ public class ITest extends RealMongoForITest {
             statsBizStoreDailyManager,
             purchaseOrderManager,
             purchaseOrderManagerJDBC,
-            purchaseOrderProductService
+            purchaseOrderProductService,
+            storeHourService,
+            couponService
         );
 
         bizService = new BizService(
@@ -383,8 +487,14 @@ public class ITest extends RealMongoForITest {
             businessUserStoreManager,
             mailService,
             userProfileManager,
-            scheduledTaskManager
+            scheduledTaskManager,
+            storeHourService
         );
+
+        storeCategoryManager = new StoreCategoryManagerImpl(getMongoTemplate());
+        storeCategoryService = new StoreCategoryService(storeCategoryManager, storeProductManager);
+        publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
+        advertisementManager = new AdvertisementManagerImpl(getMongoTemplate());
 
         fileService = new FileService(
             192, 192, 300, 150,
@@ -400,6 +510,67 @@ public class ITest extends RealMongoForITest {
             storeCategoryService
         );
 
+        storeProductService = new StoreProductService(storeProductManager, bizStoreManager, fileService, transactionService);
+        purchaseOrderService = new PurchaseOrderService(
+            5,
+            bizStoreManager,
+            businessUserManager,
+            storeHourManager,
+            purchaseOrderManager,
+            purchaseOrderManagerJDBC,
+            purchaseOrderProductManager,
+            purchaseOrderProductManagerJDBC,
+            queueManager,
+            queueManagerJDBC,
+            couponService,
+            userAddressService,
+            firebaseMessageService,
+            registeredDeviceManager,
+            tokenQueueManager,
+            storeProductService,
+            tokenQueueService,
+            accountService,
+            transactionService,
+            nlpService,
+            mailService,
+            cashfreeService,
+            purchaseOrderProductService
+        );
+
+        joinAbortService = new JoinAbortService(
+            2,
+            deviceService,
+            tokenQueueService,
+            purchaseOrderService,
+            queueManager,
+            purchaseOrderProductService,
+            bizService,
+            businessCustomerService,
+            firebaseMessageService);
+
+        scheduleAppointmentService = new ScheduleAppointmentService(
+            60,
+            2,
+            24,
+            "no-reply@noqapp.com",
+            "NoQueue",
+            scheduleAppointmentManager,
+            storeHourManager,
+            userProfileManager,
+            userAccountManager,
+            registeredDeviceManager,
+            tokenQueueManager,
+            scheduledTaskManager,
+            bizService,
+            firebaseMessageService,
+            mailService
+        );
+
+        hospitalVisitScheduleManager = new HospitalVisitScheduleManagerImpl(getMongoTemplate());
+        hospitalVisitScheduleService = new HospitalVisitScheduleService(hospitalVisitScheduleManager, userProfileManager);
+        preferredBusinessManager = new PreferredBusinessManagerImpl(getMongoTemplate());
+        preferredBusinessService = new PreferredBusinessService(preferredBusinessManager, bizStoreManager);
+
         businessUserService = new BusinessUserService(businessUserManager);
         businessUserStoreService = new BusinessUserStoreService(
             10,
@@ -409,10 +580,47 @@ public class ITest extends RealMongoForITest {
             tokenQueueService,
             accountService,
             bizService,
-            professionalProfileService
+            professionalProfileService,
+            storeHourService
         );
 
-        medicalFileService = new MedicalFileService(medicalRecordManager, medicalPathologyManager, medicalRadiologyManager, s3FileManager, fileService ,ftpService);
+        medicalRecordManager = new MedicalRecordManagerImpl(getMongoTemplate());
+        medicalPhysicalManager = new MedicalPhysicalManagerImpl(getMongoTemplate());
+        medicalMedicationManager = new MedicalMedicationManagerImpl(getMongoTemplate());
+        medicalMedicineManager = new MedicalMedicineManagerImpl(getMongoTemplate());
+        medicalPathologyManager = new MedicalPathologyManagerImpl(getMongoTemplate());
+        medicalPathologyTestManager = new MedicalPathologyTestManagerImpl(getMongoTemplate());
+        medicalRadiologyManager = new MedicalRadiologyManagerImpl(getMongoTemplate());
+        medicalRadiologyTestManager = new MedicalRadiologyTestManagerImpl(getMongoTemplate());
+        medicalRecordService = new MedicalRecordService(
+            10,
+            medicalRecordManager,
+            medicalPhysicalManager,
+            medicalMedicationManager,
+            medicalMedicineManager,
+            medicalPathologyManager,
+            medicalPathologyTestManager,
+            medicalRadiologyManager,
+            medicalRadiologyTestManager,
+            userProfileManager,
+            bizStoreManager,
+            queueManager,
+            registeredDeviceManager,
+            businessUserStoreService,
+            purchaseOrderService,
+            userMedicalProfileService
+        );
+
+        medicalFileService = new MedicalFileService(
+            medicalRecordManager,
+            medicalPathologyManager,
+            medicalRadiologyManager,
+            s3FileManager,
+            fileService,
+            ftpService
+        );
+
+        masterLabManager = new MasterLabManagerImpl(getMongoTemplate());
         medicalTransactionService = new MedicalTransactionService(
             getMongoTemplate(),
             transactionManager(),
@@ -420,9 +628,18 @@ public class ITest extends RealMongoForITest {
             mongoHosts()
         );
 
+        statsCronManager = new StatsCronManagerImpl(getMongoTemplate());
         statsCronService = new StatsCronService(statsCronManager);
         computeNextRunService = new ComputeNextRunService(scheduledTaskManager, bizService);
         deviceService = new DeviceService(registeredDeviceManager, userProfileManager);
+        notifyMobileService = new NotifyMobileService(
+            purchaseOrderService,
+            purchaseOrderProductService,
+            firebaseMessageService,
+            firebaseService,
+            tokenQueueService,
+            queueService
+        );
 
         registerUser();
         createBusinessCSD("9118000001100");

@@ -82,6 +82,7 @@ public class ScheduleAppointmentService {
     private BizService bizService;
     private FirebaseMessageService firebaseMessageService;
     private MailService mailService;
+    private StoreHourService storeHourService;
 
     private ExecutorService executorService;
 
@@ -112,7 +113,8 @@ public class ScheduleAppointmentService {
 
         BizService bizService,
         FirebaseMessageService firebaseMessageService,
-        MailService mailService
+        MailService mailService,
+        StoreHourService storeHourService
     ) {
         this.untilDaysInPast = untilDaysInPast;
         this.untilDaysInFuture = untilDaysInFuture;
@@ -402,7 +404,7 @@ public class ScheduleAppointmentService {
         }
 
         jsonScheduleList
-            .setJsonHours(bizService.findAllStoreHoursAsJson(bizStore))
+            .setJsonHours(storeHourService.findAllStoreHoursAsJson(bizStore))
             .setAppointmentDuration(bizStore.getAppointmentDuration())
             .setAppointmentState(bizStore.getAppointmentState())
             .setAppointmentOpenHowFar(bizStore.getAppointmentOpenHowFar());

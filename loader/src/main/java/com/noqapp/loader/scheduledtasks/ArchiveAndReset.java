@@ -26,6 +26,7 @@ import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.StatsCronService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.utils.RandomBannerImage;
 import com.noqapp.service.utils.ServiceUtils;
 
@@ -83,6 +84,7 @@ public class ArchiveAndReset {
     private PurchaseOrderManagerJDBC purchaseOrderManagerJDBC;
     private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
     private FileService fileService;
+    private StoreHourService storeHourService;
 
     private StatsCronEntity statsCron;
 
@@ -106,7 +108,8 @@ public class ArchiveAndReset {
         PurchaseOrderProductManager purchaseOrderProductManager,
         PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
         PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC,
-        FileService fileService
+        FileService fileService,
+        StoreHourService storeHourService
     ) {
         this.moveToRDBS = moveToRDBS;
         this.timeDelayInMinutes = timeDelayInMinutes;
@@ -124,6 +127,7 @@ public class ArchiveAndReset {
         this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
         this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
         this.fileService = fileService;
+        this.storeHourService = storeHourService;
     }
 
     @Scheduled(fixedDelayString = "${loader.ArchiveAndReset.queuePastData}")
@@ -264,7 +268,7 @@ public class ArchiveAndReset {
             throw e;
         }
 
-        bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
+        bizStore.setStoreHours(storeHourService.findAllStoreHours(bizStore.getId()));
         long numberOfRecordsToBeDeleted = queueManager.countByCodeQR(bizStore.getCodeQR());
         if (queues.size() == numberOfRecordsToBeDeleted) {
             queueManager.deleteByCodeQR(bizStore.getCodeQR());
@@ -336,7 +340,7 @@ public class ArchiveAndReset {
             throw e;
         }
 
-        bizStore.setStoreHours(bizService.findAllStoreHours(bizStore.getId()));
+        bizStore.setStoreHours(storeHourService.findAllStoreHours(bizStore.getId()));
         long deleted = purchaseOrderManager.deleteByCodeQR(bizStore.getCodeQR(), until);
         purchaseOrderProductManager.deleteByCodeQR(bizStore.getCodeQR(), until);
         if (purchaseOrders.size() == deleted) {
@@ -369,7 +373,7 @@ public class ArchiveAndReset {
         StatsBizStoreDailyEntity bizStoreRating = statsBizStoreDailyManager.computeRatingForEachQueue(bizStore.getId());
         /* In queue history, we set things for tomorrow. */
         ZonedDateTime archiveNextRun = computeNextRunService.setupStoreForTomorrow(bizStore);
-        StoreHourEntity storeHour = bizService.findStoreHour(bizStore.getId(), archiveNextRun.getDayOfWeek());
+        StoreHourEntity storeHour = storeHourService.findStoreHour(bizStore.getId(), archiveNextRun.getDayOfWeek());
         long averageServiceTime = ServiceUtils.computeAverageServiceTime(storeHour, bizStore.getAvailableTokenCount());
         LOG.info("AverageServiceTime in codeQR={} {} {} existing={} new={}",
             bizStore.getCodeQR(),

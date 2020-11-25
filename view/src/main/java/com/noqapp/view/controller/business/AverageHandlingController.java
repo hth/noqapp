@@ -12,6 +12,7 @@ import com.noqapp.domain.helper.ExpectedServiceTime;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.utils.ServiceUtils;
 import com.noqapp.view.form.business.AverageHandlingForm;
 import com.noqapp.view.validator.AverageServiceTimeValidator;
@@ -63,6 +64,7 @@ public class AverageHandlingController {
 
     private BizService bizService;
     private BusinessUserService businessUserService;
+    private StoreHourService storeHourService;
     private AverageServiceTimeValidator averageServiceTimeValidator;
 
     @Autowired
@@ -72,12 +74,14 @@ public class AverageHandlingController {
 
         BizService bizService,
         BusinessUserService businessUserService,
+        StoreHourService storeHourService,
         AverageServiceTimeValidator averageServiceTimeValidator
     ) {
         this.nextPage = nextPage;
 
         this.bizService = bizService;
         this.businessUserService = businessUserService;
+        this.storeHourService = storeHourService;
         this.averageServiceTimeValidator = averageServiceTimeValidator;
     }
 
@@ -104,7 +108,7 @@ public class AverageHandlingController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
-        List<StoreHourEntity> storeHours = bizService.findAllStoreHours(storeId.getText());
+        List<StoreHourEntity> storeHours = storeHourService.findAllStoreHours(storeId.getText());
 
         averageHandlingForm.setBizStoreId(storeId.getText())
             .setDisplayName(bizStore.getDisplayName())
@@ -172,7 +176,7 @@ public class AverageHandlingController {
 
         BizStoreEntity bizStore = bizService.getByStoreId(averageHandlingForm.getBizStoreId());
         DayOfWeek dayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
-        StoreHourEntity storeHour = bizService.findStoreHour(bizStore.getId(), dayOfWeek);
+        StoreHourEntity storeHour = storeHourService.findStoreHour(bizStore.getId(), dayOfWeek);
         long averagesServiceTime = ServiceUtils.computeAverageServiceTime(storeHour, bizStore.getAvailableTokenCount());
 
         LOG.debug("ExistingToken={} NewToken={} ExistingAHT={} UpdatedAHT={}",

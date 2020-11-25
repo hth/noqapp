@@ -16,6 +16,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.CodeQRGeneratorService;
 import com.noqapp.service.PdfGenerateService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.view.form.business.StoreLandingForm;
 import com.noqapp.view.helper.WebUtil;
 
@@ -63,6 +64,7 @@ public class BusinessDetailController {
     private CodeQRGeneratorService codeQRGeneratorService;
     private PdfGenerateService pdfGenerateService;
     private BusinessUserService businessUserService;
+    private StoreHourService storeHourService;
 
     @Autowired
     public BusinessDetailController(
@@ -72,7 +74,8 @@ public class BusinessDetailController {
         BizService bizService,
         CodeQRGeneratorService codeQRGeneratorService,
         PdfGenerateService pdfGenerateService,
-        BusinessUserService businessUserService
+        BusinessUserService businessUserService,
+        StoreHourService storeHourService
     ) {
         this.storeDetail = storeDetail;
 
@@ -80,6 +83,7 @@ public class BusinessDetailController {
         this.codeQRGeneratorService = codeQRGeneratorService;
         this.pdfGenerateService = pdfGenerateService;
         this.businessUserService = businessUserService;
+        this.storeHourService = storeHourService;
     }
 
     /**
@@ -106,7 +110,7 @@ public class BusinessDetailController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeId.getText());
-        List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
+        List<StoreHourEntity> storeHours = storeHourService.findAllStoreHours(bizStore.getId());
 
         storeLandingForm
             .setBusinessName(bizStore.getBizName().getBusinessName())

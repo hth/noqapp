@@ -16,6 +16,7 @@ import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.FileService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.controller.business.BusinessPhotoController;
 import com.noqapp.view.form.FileUploadForm;
@@ -72,6 +73,7 @@ public class StorePhotoController {
     private BizService bizService;
     private BusinessUserStoreService businessUserStoreService;
     private FileService fileService;
+    private StoreHourService storeHourService;
     private ApiHealthService apiHealthService;
     private ImageValidator imageValidator;
     private BizStoreElasticService bizStoreElasticService;
@@ -84,6 +86,7 @@ public class StorePhotoController {
         BizService bizService,
         BusinessUserStoreService businessUserStoreService,
         FileService fileService,
+        StoreHourService storeHourService,
         ApiHealthService apiHealthService,
         ImageValidator imageValidator,
         BizStoreElasticService bizStoreElasticService
@@ -93,6 +96,7 @@ public class StorePhotoController {
         this.bizService = bizService;
         this.businessUserStoreService = businessUserStoreService;
         this.fileService = fileService;
+        this.storeHourService = storeHourService;
         this.apiHealthService = apiHealthService;
         this.imageValidator = imageValidator;
         this.bizStoreElasticService = bizStoreElasticService;
@@ -202,7 +206,7 @@ public class StorePhotoController {
         Set<String> images = bizStore.getStoreServiceImages();
         images.remove(request.getParameter("storeServiceImage"));
         bizService.saveStore(bizStore, "Deleted Store Menu/Service Image");
-        bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId())));
+        bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore, storeHourService.findAllStoreHours(bizStore.getId())));
         bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
         redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Store service image deleted successfully"));
         return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
@@ -234,7 +238,7 @@ public class StorePhotoController {
         Set<String> images = bizStore.getStoreInteriorImages();
         images.remove(request.getParameter("storeInteriorImage"));
         bizService.saveStore(bizStore, "Delete Store Interior Image");
-        bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId())));
+        bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore, storeHourService.findAllStoreHours(bizStore.getId())));
         bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
         redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Store image deleted successfully"));
         return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
@@ -384,7 +388,7 @@ public class StorePhotoController {
         }
 
         if (null != bizStore) {
-            bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore, bizService.findAllStoreHours(bizStore.getId())));
+            bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore, storeHourService.findAllStoreHours(bizStore.getId())));
             bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
         }
     }

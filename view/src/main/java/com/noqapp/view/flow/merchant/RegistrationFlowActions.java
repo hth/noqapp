@@ -33,6 +33,7 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.form.MerchantRegistrationForm;
@@ -74,6 +75,7 @@ class RegistrationFlowActions {
     private StoreProductService storeProductService;
     private BusinessUserService businessUserService;
     private BusinessUserStoreService businessUserStoreService;
+    private StoreHourService storeHourService;
     private AddNewAgentFlowActions addNewAgentFlowActions;
 
     /** When in same thread use Executor and not @Async. */
@@ -90,6 +92,7 @@ class RegistrationFlowActions {
         StoreProductService storeProductService,
         BusinessUserService businessUserService,
         BusinessUserStoreService businessUserStoreService,
+        StoreHourService storeHourService,
         AddNewAgentFlowActions addNewAgentFlowActions
     ) {
         this.environment = environment;
@@ -102,6 +105,7 @@ class RegistrationFlowActions {
         this.storeProductService = storeProductService;
         this.businessUserService = businessUserService;
         this.businessUserStoreService = businessUserStoreService;
+        this.storeHourService = storeHourService;
         this.addNewAgentFlowActions = addNewAgentFlowActions;
 
         this.executorService = newCachedThreadPool();
@@ -376,7 +380,7 @@ class RegistrationFlowActions {
     private void updateAllStoresWhenBizNameUpdated(BizNameEntity bizName) {
         List<BizStoreEntity> bizStores = bizService.getAllBizStores(bizName.getId());
         for (BizStoreEntity bizStore : bizStores) {
-            List<StoreHourEntity> storeHours = bizService.findAllStoreHours(bizStore.getId());
+            List<StoreHourEntity> storeHours = storeHourService.findAllStoreHours(bizStore.getId());
             executorService.submit(() -> updateBizStoreElastic(bizStore, storeHours));
         }
     }
