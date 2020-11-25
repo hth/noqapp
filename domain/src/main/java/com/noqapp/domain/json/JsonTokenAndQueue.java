@@ -114,6 +114,9 @@ public class JsonTokenAndQueue extends AbstractDomain {
     @JsonProperty ("dt")
     private String displayToken;
 
+    @JsonProperty("sl")
+    private String timeSlotMessage;
+
     @JsonProperty ("qid")
     private String queueUserId;
 
@@ -174,6 +177,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.queueStatus = queueStatus;
         this.token = token;
         this.displayToken = displayToken;
+        this.timeSlotMessage = jsonQueue.getTimeSlotMessage();
         //Keeping purchaseOrderState for sake of Mobile DB as it does not accepts null or blank
         this.purchaseOrderState = jsonPurchaseOrder == null ? PurchaseOrderStateEnum.IN : jsonPurchaseOrder.getPresentOrderState();
         this.jsonPurchaseOrder = jsonPurchaseOrder;
@@ -214,6 +218,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         //Skipped queueStatus
         this.token = queue.getTokenNumber();
         this.displayToken = queue.getDisplayToken();
+        this.timeSlotMessage = queue.getTimeSlotMessage();
         //Keeping purchaseOrderState for sake of Mobile DB as it does not accepts null or blank
         this.purchaseOrderState = jsonPurchaseOrder == null ? PurchaseOrderStateEnum.IN : jsonPurchaseOrder.getPresentOrderState();
         this.jsonPurchaseOrder = jsonPurchaseOrder;
@@ -252,6 +257,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.queueStatus = QueueStatusEnum.S;
         this.token = purchaseOrder.getTokenNumber();
         this.displayToken = purchaseOrder.getDisplayToken();
+        this.timeSlotMessage = null;
         this.purchaseOrderState = purchaseOrder.getPresentOrderState();
         this.jsonPurchaseOrder = null;
     }
@@ -291,6 +297,7 @@ public class JsonTokenAndQueue extends AbstractDomain {
         this.queueStatus = QueueStatusEnum.S;
         this.token = purchaseOrder.getTokenNumber();
         this.displayToken = purchaseOrder.getDisplayToken();
+        this.timeSlotMessage = null;
         this.purchaseOrderState = purchaseOrder.getPresentOrderState();
         this.jsonPurchaseOrder = null;
     }
