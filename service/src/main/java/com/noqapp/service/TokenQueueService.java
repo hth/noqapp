@@ -105,8 +105,9 @@ public class TokenQueueService {
 
     @Autowired
     public TokenQueueService(
-        @Value("${allowJoinAfterMinutes:1}")
+        @Value("${TokenQueueService.allowJoinAfterMinutes:1}")
         int allowJoinAfterMinutes,
+
         TokenQueueManager tokenQueueManager,
         FirebaseMessageService firebaseMessageService,
         QueueManager queueManager,

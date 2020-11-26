@@ -89,7 +89,7 @@ class JoinAbortServiceITest extends ITest {
         BizNameEntity bizName = bizService.findByPhone("9118000000041");
         BizStoreEntity bizStore = bizService.findOneBizStore(bizName.getId());
         bizStore.setAverageServiceTime(600000).setAvailableTokenCount(20);
-        bizStore.setTimeZone("America/New_York");
+        bizStore.setTimeZone("Pacific/Honolulu");
         bizService.saveStore(bizStore, "Changed AST");
 
         StoreHourEntity storeHour = storeHourService.getStoreHours(bizStore.getCodeQR(), bizStore);
@@ -191,7 +191,7 @@ class JoinAbortServiceITest extends ITest {
         QueueEntity queue5 = queueManager.findOne(bizStore.getCodeQR(), 14);
         joinAbortService.abort(queue5.getId(), bizStore.getCodeQR());
 
-        await().atMost(2, MINUTES).until(isTheAvailableTokenIncreased(bizStore.getCodeQR()));
+        await().atMost(5, MINUTES).until(isTheAvailableTokenIncreased(bizStore.getCodeQR()));
 
         List<String> mailAdditional = new LinkedList<>();
         for (int i = 0; i < 4; i++) {
