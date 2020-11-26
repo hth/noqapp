@@ -25,7 +25,8 @@ public class Constants {
     public static final String appendPrefix = "Q";
     public static final String DIRTY = "Y";
     public static final int PREVENT_JOINING_BEFORE_CLOSING = 30; //Minutes
-    public static final int MINUTES_05 = 5;
+    public static final int MINUTES_01 = 1;
+    public static final int MINUTES_05 = MINUTES_01 * 5;
     public static final int MINUTES_15 = MINUTES_05 * 3;    //Minutes
     public static final int MINUTES_30 = MINUTES_15 * 2;    //Minutes
     public static final int MINUTES_45 = MINUTES_15 * 3;    //Minutes

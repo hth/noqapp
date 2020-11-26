@@ -748,10 +748,7 @@ public class QueueManagerImpl implements QueueManager {
     @Override
     public List<QueueEntity> findInQueueBeginningFrom(String codeQR, int currentlyServing) {
         return mongoTemplate.find(
-            query(where("QR").is(codeQR)
-                .and("TN").gt(currentlyServing)
-                .and("QS").is(QueueUserStateEnum.Q)
-            ).with(Sort.by(Sort.Direction.DESC, "TN")),
+            query(where("QR").is(codeQR).and("TN").gt(currentlyServing)).with(Sort.by(Sort.Direction.ASC, "TN")),
             QueueEntity.class,
             TABLE);
     }

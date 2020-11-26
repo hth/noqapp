@@ -51,6 +51,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -100,8 +101,12 @@ public class TokenQueueService {
     private ExecutorService executorService;
     private ScheduledExecutorService scheduledExecutorService;
 
+    private int allowJoinAfterMinutes;
+
     @Autowired
     public TokenQueueService(
+        @Value("${allowJoinAfterMinutes:1}")
+        int allowJoinAfterMinutes,
         TokenQueueManager tokenQueueManager,
         FirebaseMessageService firebaseMessageService,
         QueueManager queueManager,
@@ -114,6 +119,8 @@ public class TokenQueueService {
         TextToSpeechService textToSpeechService,
         ApiHealthService apiHealthService
     ) {
+        this.allowJoinAfterMinutes = allowJoinAfterMinutes;
+
         this.tokenQueueManager = tokenQueueManager;
         this.firebaseMessageService = firebaseMessageService;
         this.queueManager = queueManager;
@@ -253,14 +260,16 @@ public class TokenQueueService {
                                 case A:
                                     ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                                     if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) < storeHour.getStartHour()) {
-                                        if (Constants.MINUTES_05 < Duration.between(queue.getUpdated().toInstant(), Instant.now()).toMinutes()) {
-                                            /* Prevent person from re-joining if duration greater than 5 minutes. Send for now person already served or skipped. */
+                                        if (allowJoinAfterMinutes < Duration.between(queue.getUpdated().toInstant(), Instant.now()).toMinutes()) {
+                                            /* Prevent person from re-joining if duration greater than allowJoinAfterMinutes. Send for now person already served or skipped. */
+
+                                            //TODO instead send please until the service has started for you to join.
                                             return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.T, bizStore)
                                                 .setTimeSlotMessage(queue.getTimeSlotMessage());
                                         }
                                     }
 
-                                    /* After 5 minutes, allow re-join. This will rarely happen as the mobile button is disabled. */
+                                    /* After allowJoinAfterMinutes minutes, allow re-join. This will rarely happen as the mobile button is disabled. */
                                     /* After opening of the store allow re-joining. */
                                     if (bizStoreManager.decreaseTokenAfterCancellation(codeQR)) {
                                         queue.setQueueUserState(QueueUserStateEnum.Q);
@@ -322,13 +331,15 @@ public class TokenQueueService {
                                 averageServiceTime,
                                 zoneId,
                                 storeHour,
-                                tokenQueue.getLastNumber());
+                                /* Subtract cancelled token to improve computation on time slot. */
+                                tokenQueue.getLastNumber() - bizStore.getAvailableTokenAfterCancellation());
                         } else {
                             expectedServiceBegin = computeExpectedServiceBeginTime(
                                 averageServiceTime,
                                 zoneId,
                                 storeHour,
-                                tokenQueue.getLastNumber());
+                                /* Subtract cancelled token to improve computation on time slot. */
+                                tokenQueue.getLastNumber() - bizStore.getAvailableTokenAfterCancellation());
                         }
                         queue.setExpectedServiceBegin(Date.from(expectedServiceBegin.toInstant()))
                             .setBizNameId(bizStore.getBizName().getId())
@@ -1271,23 +1282,29 @@ public class TokenQueueService {
                     List<QueueEntity> queues = queueManager.findInQueueBeginningFrom(queueAfterScheduledTime.getCodeQR(), tokenQueue.getCurrentlyServing());
 
                     JsonChangeServiceTimeData jsonChangeServiceTimeData = new JsonChangeServiceTimeData(FirebaseMessageTypeEnum.C, MessageOriginEnum.QCT).setCodeQR(bizStore.getCodeQR());
+                    int abortCount = 0;
                     for (QueueEntity inQueue : queues) {
                         ZonedDateTime expectedServiceBegin;
+                        /* Only time slot for limited token. */
                         if (bizStore.getAvailableTokenCount() > 0) {
-                            expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue.getLastNumber());
-                            String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour);
-                            LOG.info("Expected Service {} {}", expectedServiceBegin, timeSlot);
-                            if (!inQueue.getTimeSlotMessage().equalsIgnoreCase(timeSlot)) {
-                                JsonQueueChangeServiceTime jsonQueueChangeServiceTime = new JsonQueueChangeServiceTime()
-                                    .setToken(inQueue.getTokenNumber())
-                                    .setOldTimeSlotMessage(inQueue.getTimeSlotMessage())
-                                    .setUpdatedTimeSlotMessage(timeSlot)
-                                    .setServiceTimeChange(
-                                        ServiceTimeChangeEnum.compare(
-                                            inQueue.getExpectedServiceBegin(),
-                                            Date.from(expectedServiceBegin.toInstant())));
-                                jsonChangeServiceTimeData.addJsonQueueChangeServiceTimes(jsonQueueChangeServiceTime);
-                                queueManager.updateServiceBeginTimeAfterCancellation(inQueue.getId(), Date.from(expectedServiceBegin.toInstant()), timeSlot);
+                            if (QueueUserStateEnum.A == inQueue.getQueueUserState()) {
+                                abortCount ++;
+                            } else {
+                                expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, inQueue.getTokenNumber() - abortCount);
+                                String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour);
+                                LOG.info("Expected Service {} {} {} {}", expectedServiceBegin, timeSlot, inQueue.getTokenNumber(), abortCount);
+                                if (!inQueue.getTimeSlotMessage().equalsIgnoreCase(timeSlot)) {
+                                    JsonQueueChangeServiceTime jsonQueueChangeServiceTime = new JsonQueueChangeServiceTime()
+                                        .setToken(inQueue.getTokenNumber())
+                                        .setOldTimeSlotMessage(inQueue.getTimeSlotMessage())
+                                        .setUpdatedTimeSlotMessage(timeSlot)
+                                        .setServiceTimeChange(
+                                            ServiceTimeChangeEnum.compare(
+                                                inQueue.getExpectedServiceBegin(),
+                                                Date.from(expectedServiceBegin.toInstant())));
+                                    jsonChangeServiceTimeData.addJsonQueueChangeServiceTimes(jsonQueueChangeServiceTime);
+                                    queueManager.updateServiceBeginTimeAfterCancellation(inQueue.getId(), Date.from(expectedServiceBegin.toInstant()), timeSlot);
+                                }
                             }
                         } else {
                             queueManager.updateServiceBeginTimeAfterCancellation(inQueue.getId(), null, "Not Assigned");
@@ -1304,6 +1321,6 @@ public class TokenQueueService {
             } catch (Exception e) {
                 LOG.warn("Failed re-creating index reason={}", e.getLocalizedMessage(), e);
             }
-        }, Constants.MINUTES_05, TimeUnit.MINUTES);
+        }, allowJoinAfterMinutes, TimeUnit.MINUTES);
     }
 }
