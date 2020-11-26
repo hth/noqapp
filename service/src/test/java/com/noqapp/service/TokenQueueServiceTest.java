@@ -53,7 +53,7 @@ class TokenQueueServiceTest {
 
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         tokenQueueService = new TokenQueueService(
             tokenQueueManager,
