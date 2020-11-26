@@ -262,10 +262,9 @@ public class TokenQueueService {
                                     ZonedDateTime zonedDateTime = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId());
                                     if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) < storeHour.getStartHour()) {
                                         if (allowJoinAfterMinutes < Duration.between(queue.getUpdated().toInstant(), Instant.now()).toMinutes()) {
-                                            /* Prevent person from re-joining if duration greater than allowJoinAfterMinutes. Send for now person already served or skipped. */
-
-                                            //TODO instead send please until the service has started for you to join.
-                                            return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.T, bizStore)
+                                            //Prevent person from re-joining if duration greater than allowJoinAfterMinutes.
+                                            //Ask person to wait until queue service has started.
+                                            return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.W, bizStore)
                                                 .setTimeSlotMessage(queue.getTimeSlotMessage());
                                         }
                                     }
@@ -1249,9 +1248,9 @@ public class TokenQueueService {
         if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) < storeHour.getStartHour()) {
             /* Send message to the user who aborted the position in queue. */
             sendMessageToSpecificUser(
-                "Aborted " + queue.getDisplayName(),
-                "Aborted position in queue. If this was not intended behavior please re-join to retain your spot. " +
-                    "After few minutes, spot will be assigned to another user and you would not be able to join the queue again today.",
+                "Cancelled " + queue.getDisplayName(),
+                "You have cancelled position in queue. If tokens are available, you have a short window to re-join to retain your spot. " +
+                    "After short window has elapsed, you would be able to join again if tokens are available after service has started.",
                 StringUtils.isBlank(queue.getGuardianQid()) ? queue.getQueueUserId() : queue.getGuardianQid(),
                 MessageOriginEnum.A
             );

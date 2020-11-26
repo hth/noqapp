@@ -39,6 +39,8 @@ var noQAuthentication = {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=a--#";
                 } else if (json['c'] === 'alreadyServiced') {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=as--#";
+                } else if (json['c'] === 'waitUntil') {
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=wu--#";
                 } else if (json['c'] === 'wait') {
                     window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=x--#";
                 } else if (json['c'] === 'limit') {

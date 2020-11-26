@@ -15,7 +15,8 @@ public enum QueueJoinDeniedEnum {
     /* When store is closed. */
     C("C", "Closed", "Store is closed"),
 
-    X("X", "Business service limitation imposed" , "You have been serviced in past. Please wait until few days to issue tokens"),
+    W("W", "Wait until service has begun", "Cancelled service. Please wait until service has begun to reclaim your spot if available."),
+    X("X", "Business service limitation imposed" , "You have been serviced in past. Please wait until few days to issue tokens."),
     T("T", "You have been served today", "You have been served today"),
     L("L", "Reached available token", "Reached maximum number of token");
 
@@ -44,6 +45,7 @@ public enum QueueJoinDeniedEnum {
             case A:
             case B:
             case C:
+            case W:
             case X:
             case L:
                 reason = this.friendlyDescription;

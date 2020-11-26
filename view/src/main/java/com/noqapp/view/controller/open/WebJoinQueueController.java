@@ -32,6 +32,7 @@ import com.noqapp.service.exceptions.JoiningQueuePreApprovedRequiredException;
 import com.noqapp.service.exceptions.LimitedPeriodException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.TokenAvailableLimitReachedException;
+import com.noqapp.service.exceptions.WaitUntilServiceBegunException;
 import com.noqapp.view.form.WebJoinQueueForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 
@@ -351,6 +352,9 @@ public class WebJoinQueueController {
                 } catch (AlreadyServicedTodayException e) {
                     LOG.warn("Failed joining queue as already service today reason={}", e.getLocalizedMessage());
                     return String.format("{ \"c\" : \"%s\" }", "alreadyServiced");
+                } catch (WaitUntilServiceBegunException e) {
+                    LOG.warn("Failed joining queue as abort position reason={}", e.getLocalizedMessage());
+                    return String.format("{ \"c\" : \"%s\" }", "waitUntil");
                 } catch (ExpectedServiceBeyondStoreClosingHour e) {
                     LOG.warn("Failed joining queue as service time is after store close reason={}", e.getLocalizedMessage());
                     return String.format("{ \"c\" : \"%s\" }", "after");
