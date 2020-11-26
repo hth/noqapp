@@ -38,6 +38,7 @@ import com.noqapp.service.exceptions.PurchaseOrderRefundPartialException;
 import com.noqapp.service.exceptions.QueueAbortPaidPastDurationException;
 import com.noqapp.service.exceptions.StoreDayClosedException;
 import com.noqapp.service.exceptions.TokenAvailableLimitReachedException;
+import com.noqapp.service.exceptions.WaitUntilServiceBegunException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -153,6 +154,8 @@ public class JoinAbortService {
                     throw new StoreDayClosedException("Store is closed today codeQR " + codeQR);
                 case T:
                     throw new AlreadyServicedTodayException("You have been serviced today");
+                case W:
+                    throw new WaitUntilServiceBegunException("Cancelled service. Please wait until service has begun to reclaim your spot if available.");
                 case X:
                     throw new LimitedPeriodException("Please wait until set number of days before using this service");
                 case L:

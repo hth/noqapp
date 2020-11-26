@@ -119,12 +119,12 @@
                         </c:if>
 
                         <c:if test="${!empty param.joinFailure and param.joinFailure eq 'djq--'}">
-                            <div class="error-box">
-                                <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                    Business has denied you from joining. Please contact business for approval.
-                                </div>
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Business has denied you from joining. Please contact business for approval.
                             </div>
-                            <c:set var="errorFound" value="${true}"/>
+                        </div>
+                        <c:set var="errorFound" value="${true}"/>
                         </c:if>
 
                         <c:if test="${!empty param.joinFailure and param.joinFailure eq 'c--'}">
@@ -149,6 +149,24 @@
                         <div class="error-box">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
                                 Service is after store hour. Please do not visit.
+                            </div>
+                        </div>
+                        <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'as--'}">
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                You have been serviced today.
+                            </div>
+                        </div>
+                        <c:set var="errorFound" value="${true}"/>
+                        </c:if>
+
+                        <c:if test="${!empty param.joinFailure and param.joinFailure eq 'wu--'}">
+                        <div class="error-box">
+                            <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
+                                Cancelled service. Please wait until service has begun to reclaim your spot if available.
                             </div>
                         </div>
                         <c:set var="errorFound" value="${true}"/>
