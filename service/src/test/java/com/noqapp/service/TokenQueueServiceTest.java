@@ -56,6 +56,7 @@ class TokenQueueServiceTest {
         MockitoAnnotations.openMocks(this);
 
         tokenQueueService = new TokenQueueService(
+            1,
             tokenQueueManager,
             firebaseMessageService,
             queueManager,

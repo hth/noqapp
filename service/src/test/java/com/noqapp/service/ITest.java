@@ -344,6 +344,7 @@ public class ITest extends RealMongoForITest {
         );
 
         tokenQueueService = new TokenQueueService(
+            1,
             tokenQueueManager,
             firebaseMessageService,
             queueManager,
