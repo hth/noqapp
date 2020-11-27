@@ -231,14 +231,14 @@ public class BizStoreElasticService {
     /** Deletes all stores from spatial index and adds all the active store back to spatial for that business. */
     public void updateSpatial(String bizNameId) {
         executorService.schedule(() -> {
-            List < BizStoreEntity > bizStores = bizStoreManager.getAllBizStores(bizNameId);
+            List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizNameId);
             for (BizStoreEntity bizStore : bizStores) {
                 bizStoreSpatialElasticService.delete(bizStore.getId());
             }
 
             List<BizStoreElastic> bizStoreActiveElastics = new ArrayList<>();
             bizStores.stream().iterator().forEachRemaining(bizStore -> {
-                if (bizStore.isActive()) {
+                if (bizStore.isActive() && bizStore.isRemoteJoin()) {
                     BizStoreElastic bizStoreElastic = null;
                     try {
                         bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, storeHourManager.findAll(bizStore.getId()));

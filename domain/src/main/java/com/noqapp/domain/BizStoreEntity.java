@@ -215,6 +215,7 @@ public class BizStoreEntity extends BaseEntity {
     @Field("WS")
     private WalkInStateEnum walkInState = WalkInStateEnum.E;
 
+    /** Do not show on client app when false. */
     @Field("RJ")
     private boolean remoteJoin = false;
 

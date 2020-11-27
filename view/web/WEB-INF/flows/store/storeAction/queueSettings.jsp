@@ -101,6 +101,7 @@
                                         <span class="tooltip" title="Allows customers to take walk-in appointments, join queue." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <div class="clearFix"></div>
                                     </li>
+                                    </c:if>
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
@@ -112,7 +113,6 @@
                                         <span class="tooltip" title="Remote join allows customers to join queue from home." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <div class="clearFix"></div>
                                     </li>
-                                    </c:if>
                                     <li>
                                         <div class="col-lable3">
                                             <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>

@@ -493,8 +493,14 @@ class RegistrationFlowActions {
 
             /* Add timezone later as its missing id of bizStore. */
             addTimezone(bizStore);
+
             /* Update Elastic. */
-            executorService.submit(() -> updateBizStoreElastic(bizStore, storeHours));
+            if (bizStore.isRemoteJoin()) {
+                executorService.submit(() -> updateBizStoreElastic(bizStore, storeHours));
+            } else {
+                executorService.submit(() -> bizStoreElasticService.delete(bizStore.getId()));
+            }
+            bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
             return bizStore;
         } catch (Exception e) {
             LOG.error("Error saving store for  bizName={} bizId={} reason={}",
