@@ -408,7 +408,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     @Override
     public Stream<BizStoreEntity> findAllWithStream() {
         return mongoTemplate.find(
-            query(where("A").is(true).and("D").is(false)),
+            query(where("RJ").is(true).and("A").is(true).and("D").is(false)),
             BizStoreEntity.class,
             TABLE
         ).stream();

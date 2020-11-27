@@ -149,6 +149,7 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
+                                        </c:if>
                                         <li>
                                             <div class="col-lable3">
                                                 <form:label path="remoteJoin" cssErrorClass="lb_error">Allow Remote Join</form:label>
@@ -159,7 +160,6 @@
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
-                                        </c:if>
                                         <li>
                                             <div class="col-lable3">
                                                 <form:label path="allowLoggedInUser" cssErrorClass="lb_error">Allow Registered User</form:label>

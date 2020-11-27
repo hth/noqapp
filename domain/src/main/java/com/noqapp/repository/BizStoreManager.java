@@ -89,7 +89,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     /** Even consider INACTIVE as store can be marked offline. */
     List<BizStoreEntity> findAllOrderEndedForTheDay(Date now);
 
-    /** Stream all documents. */
+    /** Stream all documents active and RemoteJoin is true. */
     Stream<BizStoreEntity> findAllWithStream();
 
     /** Counts number of times the category has been used. */
