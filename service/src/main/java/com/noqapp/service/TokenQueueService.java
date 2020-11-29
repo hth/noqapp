@@ -977,6 +977,31 @@ public class TokenQueueService {
         }
     }
 
+    public void sendBulkMessageToBusinessUser(String title, String body, String imageURL, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType) {
+        JsonMessage jsonMessage = new JsonMessage(topic);
+        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
+        jsonData.setImageURL(imageURL);
+
+        if (DeviceTypeEnum.I == deviceType) {
+            jsonMessage.getNotification()
+                .setTitle(title)
+                .setBody(body);
+        } else {
+            jsonMessage.setNotification(null);
+            jsonData.setTitle(title)
+                .setBody(body);
+        }
+
+        jsonMessage.setData(jsonData);
+        LOG.info("Specific Message={}", jsonMessage.asJson());
+        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+        if (!fcmMessageBroadcast) {
+            LOG.warn("Failed bulk message={}", jsonMessage.asJson());
+        } else {
+            LOG.info("Sent bulk message={}", jsonMessage.asJson());
+        }
+    }
+
     /**
      * Sends any message to all users subscribed to topic. This includes Client and Merchant.
      */
