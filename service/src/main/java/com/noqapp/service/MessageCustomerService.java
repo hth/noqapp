@@ -49,7 +49,7 @@ public class MessageCustomerService {
 
     @Autowired
     public MessageCustomerService(
-        @Value("${limitedToDays:60}")
+        @Value("${MessageCustomerService.limitedToDays:120}")
         int limitedToDays,
 
         QueueService queueService,

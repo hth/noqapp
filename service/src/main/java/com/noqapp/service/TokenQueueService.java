@@ -1260,7 +1260,7 @@ public class TokenQueueService {
         }
     }
 
-    /** Update time slot after 5 minute delay. */
+    /** Update time slot after allowJoinAfterMinutes delay. */
     private void updateSlotTimeForAll(String id) {
         scheduledExecutorService.schedule(() -> {
             try {
