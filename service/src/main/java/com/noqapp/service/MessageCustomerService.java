@@ -8,12 +8,16 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.NotificationMessageEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.NotificationMessageManager;
 import com.noqapp.repository.RegisteredDeviceManager;
+import com.noqapp.repository.UserProfileManager;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +30,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -41,6 +47,7 @@ public class MessageCustomerService {
     private RegisteredDeviceManager registeredDeviceManager;
     private FirebaseService firebaseService;
     private BizService bizService;
+    private UserProfileManager userProfileManager;
 
     private int limitedToDays;
 
@@ -49,7 +56,7 @@ public class MessageCustomerService {
 
     @Autowired
     public MessageCustomerService(
-        @Value("${limitedToDays:60}")
+        @Value("${MessageCustomerService.limitedToDays:120}")
         int limitedToDays,
 
         QueueService queueService,
@@ -57,7 +64,8 @@ public class MessageCustomerService {
         NotificationMessageManager notificationMessageManager,
         RegisteredDeviceManager registeredDeviceManager,
         FirebaseService firebaseService,
-        BizService bizService
+        BizService bizService,
+        UserProfileManager userProfileManager
     ) {
         this.limitedToDays = limitedToDays;
 
@@ -67,6 +75,7 @@ public class MessageCustomerService {
         this.registeredDeviceManager = registeredDeviceManager;
         this.firebaseService = firebaseService;
         this.bizService = bizService;
+        this.userProfileManager = userProfileManager;
     }
 
     @Mobile
@@ -118,6 +127,99 @@ public class MessageCustomerService {
 
     public int sendMessageToPastClients(String bizNameId, int days) {
         return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? limitedToDays : days);
+    }
+
+    public int sendMessageToAll(String title, String body, String imageURL, String qid, String subscribedTopic) {
+        try {
+            NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
+                .setTitle(title)
+                .setBody(body)
+                .setQueueUserId(qid);
+            notificationMessageManager.save(notificationMessage);
+
+            List<String> tokens_A = new ArrayList<>();
+            List<String> tokens_I = new ArrayList<>();
+
+            AtomicInteger sendMessageCount = new AtomicInteger();
+            try (Stream<UserProfileEntity> stream = userProfileManager.findAllPhoneOwners()) {
+                stream.iterator().forEachRemaining(userProfile ->
+                {
+                    RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(userProfile.getQueueUserId());
+                    try {
+                        switch (registeredDevice.getDeviceType()) {
+                            case A:
+                                sendMessageCount.getAndIncrement();
+                                tokens_A.add(registeredDevice.getToken());
+                                break;
+                            case I:
+                                sendMessageCount.getAndIncrement();
+                                tokens_I.add(registeredDevice.getToken());
+                                break;
+                            case W:
+                                //Do nothing
+                                break;
+                        }
+                    } catch (Exception e) {
+                        LOG.error("Failed adding token {} {}", userProfile.getQueueUserId(), e.getMessage());
+                    }
+                });
+            }
+
+            if (StringUtils.isBlank(imageURL)) {
+                sendBulkMessageToTopic(title, body, subscribedTopic, tokens_A, tokens_I);
+            } else {
+                sendBulkMessageToTopic(title, body, imageURL, subscribedTopic, tokens_A, tokens_I);
+            }
+
+            notificationMessage.setMessageSendCount(sendMessageCount.get());
+            notificationMessageManager.save(notificationMessage);
+            return sendMessageCount.get();
+        } catch (Exception e) {
+            LOG.error("Failed sending message to all {} {} {} reason={}", title, body, qid, e.getMessage(), e);
+            return 0;
+        }
+    }
+
+    private void sendBulkMessageToTopic(String title, String body, String subscribedTopic, List<String> tokens_A, List<String> tokens_I) {
+        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+            String topic = "/topics/" + subscribedTopic + UNDER_SCORE + deviceType.name();
+            switch (deviceType) {
+                case A:
+                    if (subscribeToTopic(tokens_A, topic)) {
+                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
+                    }
+                    break;
+                case I:
+                    if (subscribeToTopic(tokens_I, topic)) {
+                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
+                    }
+                    break;
+                case W:
+                    //Do nothing
+                    break;
+            }
+        }
+    }
+
+    private void sendBulkMessageToTopic(String title, String body, String imageURL, String subscribedTopic, List<String> tokens_A, List<String> tokens_I) {
+        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+            String topic = "/topics/" + subscribedTopic + UNDER_SCORE + deviceType.name();
+            switch (deviceType) {
+                case A:
+                    if (subscribeToTopic(tokens_A, topic)) {
+                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
+                    }
+                    break;
+                case I:
+                    if (subscribeToTopic(tokens_I, topic)) {
+                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
+                    }
+                    break;
+                case W:
+                    //Do nothing
+                    break;
+            }
+        }
     }
 
     public int sendMessageToPastClients(String title, String body, String bizNameId, String qid) {

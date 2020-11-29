@@ -1,11 +1,10 @@
 package com.noqapp.view.controller.admin;
 
-import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.MessageOriginEnum;
-import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.UserProfileManager;
+import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.form.admin.SendNotificationForm;
 import com.noqapp.view.validator.SendNotificationValidator;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
 
 /**
  * hitender
@@ -46,7 +44,7 @@ public class NotificationController {
     private SendNotificationValidator sendNotificationValidator;
     private TokenQueueService tokenQueueService;
     private UserProfileManager userProfileManager;
-    private RegisteredDeviceManager registeredDeviceManager;
+    private MessageCustomerService messageCustomerService;
 
     @Autowired
     public NotificationController(
@@ -57,7 +55,7 @@ public class NotificationController {
         SendNotificationValidator sendNotificationValidator,
         TokenQueueService tokenQueueService,
         UserProfileManager userProfileManager,
-        RegisteredDeviceManager registeredDeviceManager
+        MessageCustomerService messageCustomerService
     ) {
         this.nextPage = nextPage;
 
@@ -65,7 +63,7 @@ public class NotificationController {
         this.sendNotificationValidator = sendNotificationValidator;
         this.tokenQueueService = tokenQueueService;
         this.userProfileManager = userProfileManager;
-        this.registeredDeviceManager = registeredDeviceManager;
+        this.messageCustomerService = messageCustomerService;
     }
 
     /** Gymnastic for PRG. */
@@ -104,9 +102,11 @@ public class NotificationController {
         }
 
         try {
-            AtomicInteger sentCount = new AtomicInteger();
+            QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (StringUtils.isNotBlank(sendNotificationForm.getQid().getText())) {
                 UserProfileEntity userProfile = userProfileManager.findByQueueUserId(sendNotificationForm.getQid().getText());
+
+                AtomicInteger sentCount = new AtomicInteger();
                 sendMessageToUser(userProfile, sentCount, sendNotificationForm);
 
                 sendNotificationForm
@@ -120,36 +120,20 @@ public class NotificationController {
                     sendNotificationForm.getTitle(),
                     sendNotificationForm.getBody());
             } else {
-                try (Stream<UserProfileEntity> stream = userProfileManager.findAllPhoneOwners()) {
-                    stream.iterator().forEachRemaining(userProfile -> {
-                        sendMessageToUser(userProfile, sentCount, sendNotificationForm);
-                    });
-                }
-
-                try (Stream<RegisteredDeviceEntity> stream = registeredDeviceManager.findAllTokenWithoutQID(null)) {
-                    stream.iterator().forEachRemaining(registeredDevice -> {
-                        if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
-                            tokenQueueService.sendMessageToSpecificUser(
-                                sendNotificationForm.getTitle().getText(),
-                                sendNotificationForm.getBody().getText(),
-                                sendNotificationForm.getImageURL().getText(),
-                                registeredDevice,
-                                MessageOriginEnum.D);
-
-                            sentCount.getAndIncrement();
-                        }
-                    });
-                }
+                int sentCount = messageCustomerService.sendMessageToAll(
+                    sendNotificationForm.getTitle().getText(),
+                    sendNotificationForm.getBody().getText(),
+                    sendNotificationForm.getImageURL().getText(),
+                    queueUser.getQueueUserId(),
+                    "211"
+                );
 
                 sendNotificationForm
-                    .setSentCount(sentCount.get())
+                    .setSentCount(sentCount)
                     .setSuccess(true)
                     .setIgnoreSentiments(false);
                 redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
-                LOG.info("Sent global notification {} {} {}",
-                    sentCount.get(),
-                    sendNotificationForm.getTitle(),
-                    sendNotificationForm.getBody());
+                LOG.info("Sent global notification {} {} {}", sentCount, sendNotificationForm.getTitle(), sendNotificationForm.getBody());
             }
         } catch (Exception e) {
             LOG.error("Failed sending message reason={}", e.getLocalizedMessage(), e);
