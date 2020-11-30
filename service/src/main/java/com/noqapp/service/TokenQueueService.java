@@ -1306,7 +1306,10 @@ public class TokenQueueService {
                     TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(queueAfterScheduledTime.getCodeQR());
                     List<QueueEntity> queues = queueManager.findInQueueBeginningFrom(queueAfterScheduledTime.getCodeQR(), tokenQueue.getCurrentlyServing());
 
-                    JsonChangeServiceTimeData jsonChangeServiceTimeData = new JsonChangeServiceTimeData(FirebaseMessageTypeEnum.C, MessageOriginEnum.QCT).setCodeQR(bizStore.getCodeQR());
+                    JsonChangeServiceTimeData jsonChangeServiceTimeData = new JsonChangeServiceTimeData(FirebaseMessageTypeEnum.C, MessageOriginEnum.QCT)
+                        .setCodeQR(bizStore.getCodeQR())
+                        .setBusinessType(bizStore.getBusinessType());
+
                     int abortCount = 0;
                     for (QueueEntity inQueue : queues) {
                         ZonedDateTime expectedServiceBegin;
