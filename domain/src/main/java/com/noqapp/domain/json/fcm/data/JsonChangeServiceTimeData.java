@@ -1,6 +1,7 @@
 package com.noqapp.domain.json.fcm.data;
 
 import com.noqapp.domain.json.JsonQueueChangeServiceTime;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 
@@ -21,6 +22,9 @@ public class JsonChangeServiceTimeData extends JsonData {
     @JsonProperty("qr")
     private String codeQR;
 
+    @JsonProperty("bt")
+    private BusinessTypeEnum businessType;
+
     @JsonProperty("qcsts")
     private List<JsonQueueChangeServiceTime> jsonQueueChangeServiceTimes = new LinkedList<>();
 
@@ -35,6 +39,15 @@ public class JsonChangeServiceTimeData extends JsonData {
 
     public JsonChangeServiceTimeData setCodeQR(String codeQR) {
         this.codeQR = codeQR;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public JsonChangeServiceTimeData setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
         return this;
     }
 
