@@ -1321,6 +1321,7 @@ public class TokenQueueService {
                                 if (!inQueue.getTimeSlotMessage().equalsIgnoreCase(timeSlot)) {
                                     JsonQueueChangeServiceTime jsonQueueChangeServiceTime = new JsonQueueChangeServiceTime()
                                         .setToken(inQueue.getTokenNumber())
+                                        .setDisplayToken(inQueue.getDisplayToken())
                                         .setOldTimeSlotMessage(inQueue.getTimeSlotMessage())
                                         .setUpdatedTimeSlotMessage(timeSlot)
                                         .setServiceTimeChange(
