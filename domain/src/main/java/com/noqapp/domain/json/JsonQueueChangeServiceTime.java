@@ -31,6 +31,9 @@ public class JsonQueueChangeServiceTime extends AbstractDomain {
     @JsonProperty("t")
     private int token;
 
+    @JsonProperty("dt")
+    private String displayToken;
+
     @JsonProperty("osl")
     private String oldTimeSlotMessage;
 
@@ -46,6 +49,15 @@ public class JsonQueueChangeServiceTime extends AbstractDomain {
 
     public JsonQueueChangeServiceTime setToken(int token) {
         this.token = token;
+        return this;
+    }
+
+    public String getDisplayToken() {
+        return displayToken;
+    }
+
+    public JsonQueueChangeServiceTime setDisplayToken(String displayToken) {
+        this.displayToken = displayToken;
         return this;
     }
 
