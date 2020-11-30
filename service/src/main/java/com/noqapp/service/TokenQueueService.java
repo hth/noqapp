@@ -1274,7 +1274,7 @@ public class TokenQueueService {
             /* Send message to the user who aborted the position in queue. */
             sendMessageToSpecificUser(
                 "Cancelled " + queue.getDisplayName(),
-                "You have cancelled position in queue. If tokens are available, you have a short window to re-join to retain your spot. " +
+                "You have cancelled your position in queue. If tokens are available, you have a short window to re-join to retain your spot. " +
                     "After short window has elapsed, you would be able to join again if tokens are available after service has started.",
                 StringUtils.isBlank(queue.getGuardianQid()) ? queue.getQueueUserId() : queue.getGuardianQid(),
                 MessageOriginEnum.A
