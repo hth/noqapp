@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import org.springframework.util.Assert;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -131,6 +133,8 @@ public class MessageCustomerService {
 
     public int sendMessageToAll(String title, String body, String imageURL, String qid, String subscribedTopic) {
         try {
+            Assert.hasText(subscribedTopic, "Subscribed topic cannot be empty");
+
             NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
                 .setTitle(title)
                 .setBody(body)
