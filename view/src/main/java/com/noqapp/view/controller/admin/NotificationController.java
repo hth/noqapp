@@ -38,6 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class NotificationController {
     private static final Logger LOG = LoggerFactory.getLogger(NotificationController.class);
 
+    private String information;
     private String nextPage;
 
     private Environment environment;
@@ -48,6 +49,9 @@ public class NotificationController {
 
     @Autowired
     public NotificationController(
+        @Value("{subscribe.information}")
+        String information,
+
         @Value("${nextPage:/admin/notification}")
         String nextPage,
 
@@ -57,6 +61,7 @@ public class NotificationController {
         UserProfileManager userProfileManager,
         MessageCustomerService messageCustomerService
     ) {
+        this.information = information;
         this.nextPage = nextPage;
 
         this.environment = environment;
@@ -125,7 +130,7 @@ public class NotificationController {
                     sendNotificationForm.getBody().getText(),
                     sendNotificationForm.getImageURL().getText(),
                     queueUser.getQueueUserId(),
-                    "211"
+                    information
                 );
 
                 sendNotificationForm
