@@ -861,7 +861,7 @@ public class QueueService {
                         bizStore.getAverageServiceTime(),
                         TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId(),
                         storeHour,
-                        tokenQueue.getLastNumber());
+                        tokenQueue.getLastNumber() - bizStore.getAvailableTokenAfterCancellation());
                 } else {
                     timeSlotMessage = ServiceUtils.calculateEstimatedWaitTime(
                         bizStore.getAverageServiceTime(),

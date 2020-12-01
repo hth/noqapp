@@ -1,3 +1,17 @@
+### Changed Dec 01, 2020
+
+Added Payment settings for each store accepting order.  
+    
+    db.getCollection('BIZ_STORE').find({"BT" : "RS"})
+    db.getCollection('BIZ_STORE').find({"BT" : "ST"})
+    db.getCollection('BIZ_STORE').find({"BT" : "GS"})
+    db.getCollection('BIZ_STORE').find({"BT" : "CD"})
+
+    db.getCollection('BIZ_STORE').update({"BT" : "RS"}, {$set: {AP : ["COD", "ONP"], AD : ["HOM", "PIK"]}}, {multi: true});
+    db.getCollection('BIZ_STORE').update({"BT" : "ST"}, {$set: {AP : ["COD", "ONP"], AD : ["HOM", "PIK"]}}, {multi: true});
+    db.getCollection('BIZ_STORE').update({"BT" : "GS"}, {$set: {AP : ["COD", "ONP"], AD : ["HOM", "PIK"]}}, {multi: true});
+    db.getCollection('BIZ_STORE').update({"BT" : "CD"}, {$set: {AP : ["COD", "ONP"], AD : ["HOM", "PIK"]}}, {multi: true});
+
 ### Changed Nov 07, 2020
 
     db.getCollection('BIZ_STORE').update({"AD" : {$exists : true}}, {$rename: {"AD":"SA"}}, {multi: true});
