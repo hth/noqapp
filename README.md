@@ -20,3 +20,8 @@ How to remove specific file on Mac OS
 Flush Redis DB
 
     redis-cli FLUSHALL    
+    
+Cron Sample
+===========
+
+Link to follow [Cron Example](https://www.freeformatter.com/cron-expression-generator-quartz.html)        

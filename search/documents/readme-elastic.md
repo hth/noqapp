@@ -179,4 +179,82 @@ create new index by changing index version appended from v1 to v2.
         }
     }
     '    
-     
+
+#### More elastic query example
+
+    curl -XGET "http://10.0.0.74:9200/noqueue_v5_biz_store_spatial/_search" -H 'Content-Type: application/json' -d'{  "query": {    "match_all": {}  }}'
+    
+    curl -XGET "http://10.0.0.74:9200/noqueue_v5_biz_store_spatial/_search" -H 'Content-Type: application/json' -d
+    '
+    {
+      "query": {
+        "bool" : {
+          "should" : [
+            { "term" : { "BT.keyword": "GS" } },
+            { "term" : { "BT.keyword": "DO" } }
+          ],
+          "minimum_should_match" : 1,
+          "boost" : 1.0
+        }
+      }
+    }
+    '
+    
+    GET /noqueue_v5_biz_store_spatial/_search
+    {
+      "query": {
+        "bool" : {
+          "should" : [
+            { "term" : { "BT.keyword": "GS" } },
+            { "term" : { "BT.keyword": "DO" } }
+          ],
+          "minimum_should_match" : 1,
+          "boost" : 1.0
+        }
+      }
+    }
+    
+    
+    GET /noqueue_v5_biz_store_spatial/_search
+    {
+     "query": {
+       "bool" : {
+         "filter" : [
+           {
+             "geo_distance" : {
+               "GH" : [
+                 72.81469993293285,
+                 18.906699903309345
+               ],
+               "distance" : 4000000.0,
+               "distance_type" : "arc",
+               "validation_method" : "STRICT",
+               "ignore_unmapped" : false,
+               "boost" : 1.0
+             }
+           }
+         ],
+         "should" : [
+           {
+             "term" : {
+               "BT.keyword" : {
+                 "value" : "GS",
+                 "boost" : 1.0
+               }
+             }
+           },
+           {
+             "term" : {
+               "BT.keyword" : {
+                 "value" : "DO",
+                 "boost" : 1.0
+               }
+             }
+           }
+         ],
+         "adjust_pure_negative" : true,
+         "boost" : 1.0
+       }
+     }
+    }
+       
