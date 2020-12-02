@@ -191,7 +191,7 @@ public class AppointmentFlexAndWalkin {
                     bizStore.getCodeQR(),
                     bizStore.getDisplayName(),
                     bizStore.getBizName().getBusinessName(),
-                    jsonToken.getQueueStatus().getDescription());
+                    jsonToken.getQueueStatus() != null ? jsonToken.getQueueStatus().getDescription() : jsonToken.getQueueStatus());
 
                 tokenQueueService.sendMessageToSpecificUser(
                     bizStore.getDisplayName() + ": Token not issued",
