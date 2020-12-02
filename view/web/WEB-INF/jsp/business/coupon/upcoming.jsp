@@ -101,9 +101,9 @@
                                                         </c:choose>
                                                     </td>
                                                     <td nowrap>
-                                                        <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponStartDate}"/></span>
+                                                        <span style="display:block; font-size:13px;">${coupon.couponStartDate}</span>
                                                         <span style="display:block; font-size:13px;">-</span>
-                                                        <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy" value="${coupon.couponEndDate}"/></span>
+                                                        <span style="display:block; font-size:13px;">${coupon.couponEndDate}</span>
                                                     </td>
                                                     <td nowrap>
                                                         <span style="display:block; font-size:13px;">${coupon.issuedBy}</span>

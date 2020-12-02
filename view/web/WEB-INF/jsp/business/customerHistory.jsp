@@ -183,7 +183,7 @@
                                                                     </span>
                                                                 </td>
                                                                 <td nowrap>
-                                                                    <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${purchaseOrder.updated}"/></span>
+                                                                    <span style="display:block; font-size:13px;">${purchaseOrder.updated}</span>
                                                                 </td>
                                                             </tr>
                                                             </c:forEach>
@@ -243,7 +243,7 @@
                                                                     </span>
                                                                 </td>
                                                                 <td nowrap>
-                                                                    <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${purchaseOrder.updated}"/></span>
+                                                                    <span style="display:block; font-size:13px;">${purchaseOrder.updated}</span>
                                                                 </td>
                                                             </tr>
                                                             </c:forEach>
@@ -299,7 +299,7 @@
                                                                     </span>
                                                                 </td>
                                                                 <td nowrap>
-                                                                    <span style="display:block; font-size:13px;"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${queue.updated}"/></span>
+                                                                    <span style="display:block; font-size:13px;">${queue.updated}</span>
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>

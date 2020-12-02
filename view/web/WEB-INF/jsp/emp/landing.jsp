@@ -67,8 +67,9 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td><a href="/emp/landing/${businessUser.id}.htm">${businessUser.bizName.businessName}</a></td>
                                         <td>
-                                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${businessUser.updated}"/>
-                                            <span class="light-color">&nbsp;<fmt:formatDate value="${businessUser.updated}" type="time"/></span>
+<%--                                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${businessUser.updated}"/>--%>
+<%--                                            <span class="light-color">&nbsp;<fmt:formatDate value="${businessUser.updated}" type="time"/></span>--%>
+                                            ${businessUser.updated}
                                         </td>
                                     </tr>
                                     </c:forEach>
@@ -158,13 +159,13 @@
                                             <span style="display:block; font-size:13px;">${advertisement.advertisementDisplay.description}</span>
                                         </td>
                                         <td>
-                                            <span style="display:block; font-size:13px;"><fmt:formatDate value="${advertisement.publishDate}" pattern="yyyy-MM-dd"/></span>
+                                            <span style="display:block; font-size:13px;">${advertisement.publishDate}</span>
                                         </td>
                                         <td>
-                                            <span style="display:block; font-size:13px;"><fmt:formatDate value="${advertisement.endDate}" pattern="yyyy-MM-dd"/></span>
+                                            <span style="display:block; font-size:13px;">${advertisement.endDate}</span>
                                         </td>
                                         <td>
-                                            <span style="display:block; font-size:13px;"><fmt:formatDate value="${advertisement.created}" pattern="yyyy-MM-dd"/></span>
+                                            <span style="display:block; font-size:13px;">${advertisement.created}</span>
                                         </td>
                                         <td><a href="${pageContext.request.contextPath}/emp/advertisement/approval/${advertisement.id}/preview.htm" class="add-btn" style="margin: 0px;">Preview</a></td>
                                     </tr>

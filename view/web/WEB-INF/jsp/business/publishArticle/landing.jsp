@@ -136,7 +136,7 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${!empty item.publishDate}">
-                                                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${item.publishDate}"/>
+                                                            ${item.publishDate}
                                                         </c:when>
                                                         <c:otherwise>
                                                             N/A
