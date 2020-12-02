@@ -187,17 +187,17 @@ public class AppointmentFlexAndWalkin {
                         bizStore.getCodeQR());
                 }
             } else {
-                LOG.warn("Token not received for {} {} {} reason={}",
-                    bizStore.getCodeQR(),
-                    bizStore.getDisplayName(),
-                    bizStore.getBizName().getBusinessName(),
-                    jsonToken.getQueueStatus() != null ? jsonToken.getQueueStatus().getDescription() : jsonToken.getQueueStatus());
-
                 tokenQueueService.sendMessageToSpecificUser(
                     bizStore.getDisplayName() + ": Token not issued",
                     jsonToken.getQueueJoinDenied().friendlyDescription(),
                     scheduleAppointment.getQueueUserId(),
                     MessageOriginEnum.A);
+
+                LOG.warn("Token not received for {} {} {} reason={}",
+                    bizStore.getCodeQR(),
+                    bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName(),
+                    jsonToken.getQueueStatus() != null ? jsonToken.getQueueStatus().getDescription() : jsonToken.getQueueStatus());
             }
         }
 
