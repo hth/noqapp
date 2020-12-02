@@ -117,13 +117,13 @@
                                         <td>
                                             <span style="display:block; font-size:13px;">${advertisement.advertisementType.description} for ${advertisement.advertisementDisplay.description}</span>
                                             <br/>
-                                            <span style="display:block; font-size:13px;">From: <fmt:formatDate value="${advertisement.publishDate}" pattern="yyyy-MM-dd"/> Until:<fmt:formatDate value="${advertisement.endDate}" pattern="yyyy-MM-dd"/></span>
+                                            <span style="display:block; font-size:13px;">From: ${advertisement.publishDate} Until: ${advertisement.endDate}</span>
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">${advertisement.validateStatus.description}</span>
                                         </td>
                                         <td>
-                                            <span style="display:block; font-size:13px;"><fmt:formatDate value="${advertisement.created}" pattern="yyyy-MM-dd"/></span>
+                                            <span style="display:block; font-size:13px;">${advertisement.created}</span>
                                         </td>
                                         <td>
                                             <a href="${pageContext.request.contextPath}/business/advertisement/edit/${advertisement.id}.htm" class="add-btn" style="margin: 0px;">Edit</a>

@@ -78,7 +78,7 @@
                                         <td nowrap>${purchaseOrder.customerName}</td>
                                         <td nowrap>${purchaseOrder.tokenNumber}</td>
                                         <td nowrap align="center">${purchaseOrder.paymentStatus.description}</td>
-                                        <td nowrap align="left"><fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${purchaseOrder.created}"/></td>
+                                        <td nowrap align="left">${purchaseOrder.created}</td>
                                         <td>
                                             <c:choose>
                                             <c:when test="${BusinessTypeEnum.HS eq purchaseOrder.businessType}">

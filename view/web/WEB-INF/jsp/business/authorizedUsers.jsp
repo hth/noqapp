@@ -182,7 +182,7 @@
                                                 </c:choose>
                                                 </td>
                                                 <td nowrap>
-                                                    <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
+                                                    <span style="display:block; font-size:13px;">${queueSupervisor.created}</span>
                                                 </td>
                                                 <td class="Tleft" width="180px" nowrap>
                                                 <c:choose>
