@@ -37,8 +37,8 @@
         <div class="warp-inner">
             <!-- login-box -->
             <div class="login-box">
-                <h2><fmt:message key="account.recover.title"/></h2>
-                <p class="mB20 Tcenter"><fmt:message key="account.forgot.sub.title"/></p>
+                <h2>Forgot your password?</h2>
+                <p class="mB20 Tcenter">Provide your account email address and we'll send you a recovery link.</p>
                 <div class="form-style">
                     <form:form method="post" modelAttribute="forgotRecoverForm" action="password.htm">
                         <form:hidden path="origin" value="forgot"/>
