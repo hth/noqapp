@@ -12,17 +12,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * hitender
  * 11/22/17 4:39 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -36,18 +36,18 @@ public class QueryString extends AbstractDomain {
     /* Query on fields below when querying. */
     @JsonProperty("fields")
     private String[] fields = new String[]
-            {
-                    "AD", //Address
-                    "DN", //Display Name
-                    "BT", //Business Type
-                    "BC", //Business Category defined by businesses
-                    "DT", //District
-                    "N",  //BusinessName
-                    "ST", //State
-                    "AR", //Area is smaller than Town
-                    "TO", //Town
-                    "PH"  //Phone
-            };
+        {
+            "SA", //Store Address
+            "DN", //Display Name
+            "BT", //Business Type
+            "BC", //Business Category defined by businesses
+            "DT", //District
+            "N",  //BusinessName
+            "ST", //State
+            "AR", //Area is smaller than Town
+            "TO", //Town
+            "PH"  //Phone
+        };
 
     public String getQuery() {
         return query;
