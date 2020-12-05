@@ -80,4 +80,6 @@ public interface QueueManagerJDBC {
     int countDistinctQIDsInBiz(String bizNameId, int limitedToDays);
 
     List<String> distinctQIDsInBiz(String bizNameId, int limitedToDays);
+
+    int countNumberOfUserServiced(int limitedToDays);
 }
