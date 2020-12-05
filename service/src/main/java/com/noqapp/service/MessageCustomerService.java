@@ -131,6 +131,10 @@ public class MessageCustomerService {
         return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? limitedToDays : days);
     }
 
+    public int sendMessageToAll(String title, String body, String qid, String subscribedTopic) {
+        return sendMessageToAll(title, body, null, qid, subscribedTopic);
+    }
+
     public int sendMessageToAll(String title, String body, String imageURL, String qid, String subscribedTopic) {
         try {
             Assert.hasText(subscribedTopic, "Subscribed topic cannot be empty");

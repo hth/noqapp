@@ -437,4 +437,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             String.class
         );
     }
+
+    @Override
+    public int countNumberOfUserServiced(int limitedToDays) {
+        return jdbcTemplate.queryForObject(
+            "SELECT COUNT(*) FROM QUEUE WHERE QS != 'A' AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW()",
+            new Object[]{limitedToDays},
+            Integer.class);
+    }
 }
