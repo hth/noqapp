@@ -49,7 +49,7 @@ public class NotificationController {
 
     @Autowired
     public NotificationController(
-        @Value("{subscribe.information}")
+        @Value("${subscribe.information}")
         String information,
 
         @Value("${nextPage:/admin/notification}")
