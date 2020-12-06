@@ -182,6 +182,7 @@ public class BusinessStatsMail {
                                             + computeBeforeAfterSchedule(storeHour.getEndHour(), lastServicedOrSkipped, false));
                                 }
 
+                                /* Send mail to store manager if client served is more than 0. */
                                 if (storeTotalClient > 0) {
                                     Map<String, Object> rootMap = new HashMap<>();
                                     rootMap.put("day", DateUtil.dateToString_UTC(since, DateUtil.DTF_DD_MMM_YYYY));
@@ -273,22 +274,25 @@ public class BusinessStatsMail {
                             rootMap.put("totalHoursSaved", totalHoursSaved/(60 * 1000));
                             rootMap.put("timeOfServices", timeOfServices);
 
-                            List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
-                            for (BusinessUserEntity businessUser : businessUsers) {
-                                mailSentCount.getAndIncrement();
+                            /* Send mail to business admin if client served is more than 0. */
+                            if (totalClient > 0) {
+                                List<BusinessUserEntity> businessUsers = businessUserManager.getAllForBusiness(bizName.getId(), UserLevelEnum.M_ADMIN);
+                                for (BusinessUserEntity businessUser : businessUsers) {
+                                    mailSentCount.getAndIncrement();
 
-                                UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUser.getQueueUserId());
-                                switch (businessUser.getBizName().getBusinessType()) {
-                                    case DO:
-                                        //Do not send to doctor. Skipping hospital admin.
-                                        break;
-                                    default:
-                                        mailService.sendAnyMail(
-                                            userProfile.getEmail(),
-                                            userProfile.getName(),
-                                            businessName + " Daily Summary",
-                                            rootMap,
-                                            "stats/admin-overview.ftl");
+                                    UserProfileEntity userProfile = userProfileManager.findByQueueUserId(businessUser.getQueueUserId());
+                                    switch (businessUser.getBizName().getBusinessType()) {
+                                        case DO:
+                                            //Do not send to doctor. Skipping hospital admin.
+                                            break;
+                                        default:
+                                            mailService.sendAnyMail(
+                                                userProfile.getEmail(),
+                                                userProfile.getName(),
+                                                businessName + " Daily Summary",
+                                                rootMap,
+                                                "stats/admin-overview.ftl");
+                                    }
                                 }
                             }
                         } catch (Exception e) {
