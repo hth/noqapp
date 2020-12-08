@@ -19,6 +19,7 @@ public class StoreLandingForm {
     private String displayName;
     private String categoryName;
     private String qrFileName;
+    private String qrWebSite;
     private List<StoreHourEntity> storeHours;
     private BusinessTypeEnum businessType;
 
@@ -73,6 +74,15 @@ public class StoreLandingForm {
 
     public StoreLandingForm setQrFileName(String qrFileName) {
         this.qrFileName = qrFileName;
+        return this;
+    }
+
+    public String getQrWebSite() {
+        return qrWebSite;
+    }
+
+    public StoreLandingForm setQrWebSite(String qrWebSite) {
+        this.qrWebSite = qrWebSite;
         return this;
     }
 

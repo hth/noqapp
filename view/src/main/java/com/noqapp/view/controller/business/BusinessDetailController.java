@@ -123,6 +123,7 @@ public class BusinessDetailController {
 
         try {
             storeLandingForm.setQrFileName(codeQRGeneratorService.createQRImage(bizStore.getCodeQRInALink()));
+            storeLandingForm.setQrWebSite(codeQRGeneratorService.createQRImage(bizStore.getCodeQRLinkingToWebsite()));
         } catch (WriterException | IOException e) {
             LOG.error("Failed generating image for codeQR reason={}", e.getLocalizedMessage());
         }
