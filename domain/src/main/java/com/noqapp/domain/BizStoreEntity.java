@@ -948,6 +948,11 @@ public class BizStoreEntity extends BaseEntity {
     }
 
     @Transient
+    public String getCodeQRLinkingToWebsite() {
+        return "https://noqapp.com/b/s" + webLocation;
+    }
+
+    @Transient
     public LatLng getLatLng() {
         return CommonUtil.getLatLng(coordinate);
     }
