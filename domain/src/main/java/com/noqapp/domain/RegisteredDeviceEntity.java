@@ -80,6 +80,9 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field("IH")
     private Set<String> ipAddressHistorical = new HashSet<>();
 
+    @Field("ST")
+    private Set<String> subscriptionTopics = new HashSet<>();
+
     /** To keep bean happy. */
     public RegisteredDeviceEntity() {
         super();
@@ -271,6 +274,15 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     public Set<String> getIpAddressHistorical() {
         return ipAddressHistorical;
+    }
+
+    public Set<String> getSubscriptionTopics() {
+        return subscriptionTopics;
+    }
+
+    public RegisteredDeviceEntity addSubscriptionTopic(String subscriptionTopic) {
+        this.subscriptionTopics.add(subscriptionTopic);
+        return this;
     }
 
     @Transient
