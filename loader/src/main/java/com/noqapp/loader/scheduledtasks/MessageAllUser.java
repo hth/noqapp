@@ -39,7 +39,7 @@ public class MessageAllUser {
 
     @Autowired
     public MessageAllUser(
-        @Value("${makePreferredBusinessFiles:OFF}")
+        @Value("${MessageAllUser.makePreferredBusinessFiles}")
         String sendWeeklyInformation,
 
         QueueManagerJDBC queueManagerJDBC,
@@ -72,15 +72,31 @@ public class MessageAllUser {
         int weekYear = localDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
         OutGoingNotificationEntity outGoingNotification = outGoingNotificationManager.findToSend(weekYear);
 
-        LOG.info("Send message {} {} {}", outGoingNotification.getTitle(), outGoingNotification.getBody(), weekYear);
-        if ("OFF".equalsIgnoreCase(sendWeeklyInformation)) {
-            return;
-        }
+        if (null != outGoingNotification) {
+            LOG.info("Send message {} {} {}", outGoingNotification.getTitle(), outGoingNotification.getBody(), weekYear);
+            if ("OFF".equalsIgnoreCase(sendWeeklyInformation)) {
+                return;
+            }
 
-        messageCustomerService.sendMessageToAll(
-            outGoingNotification.getTitle(),
-            outGoingNotification.getBody(),
-            userProfileManager.findOneByMail("admin@noqapp.com").getQueueUserId(),
-            outGoingNotification.getTopic());
+            int sendCount = messageCustomerService.sendMessageToAll(
+                outGoingNotification.getTitle(),
+                outGoingNotification.getBody(),
+                userProfileManager.findByQueueUserId("100000000001").getQueueUserId(),
+                outGoingNotification.getTopic());
+
+            if (sendCount > 0) {
+                outGoingNotification.inActive();
+                outGoingNotification.setSent(true).inActive();
+            }
+        } else {
+            outGoingNotification = new OutGoingNotificationEntity()
+                .setTitle("Become Business Outreach Ambassador")
+                .setBody("Earn upto Rs 1,00,000 by bringing new businesses on NoQueue. Limited availability. For more information, send email with phone number to boa@noqapp.com")
+                .setTopic("i")
+                .setWeekYear(40)
+                .setSent(false);
+
+        }
+        outGoingNotificationManager.save(outGoingNotification);
     }
 }

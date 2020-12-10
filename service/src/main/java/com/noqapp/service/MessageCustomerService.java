@@ -153,25 +153,29 @@ public class MessageCustomerService {
                 stream.iterator().forEachRemaining(userProfile ->
                 {
                     RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDeviceNotSubscribedToTopic(userProfile.getQueueUserId(), subscribedTopic);
-                    registeredDevice.addSubscriptionTopic(subscribedTopic);
-                    registeredDeviceManager.save(registeredDevice);
+                    if (null != registeredDevice) {
+                        registeredDevice.addSubscriptionTopic(subscribedTopic);
+                        registeredDeviceManager.save(registeredDevice);
 
-                    try {
-                        switch (registeredDevice.getDeviceType()) {
-                            case A:
-                                sendMessageCount.getAndIncrement();
-                                tokens_A.add(registeredDevice.getToken());
-                                break;
-                            case I:
-                                sendMessageCount.getAndIncrement();
-                                tokens_I.add(registeredDevice.getToken());
-                                break;
-                            case W:
-                                //Do nothing
-                                break;
+                        try {
+                            switch (registeredDevice.getDeviceType()) {
+                                case A:
+                                    sendMessageCount.getAndIncrement();
+                                    tokens_A.add(registeredDevice.getToken());
+                                    break;
+                                case I:
+                                    sendMessageCount.getAndIncrement();
+                                    tokens_I.add(registeredDevice.getToken());
+                                    break;
+                                case W:
+                                    //Do nothing
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            LOG.error("Failed adding token {} {}", userProfile.getQueueUserId(), e.getMessage());
                         }
-                    } catch (Exception e) {
-                        LOG.error("Failed adding token {} {}", userProfile.getQueueUserId(), e.getMessage());
+                    } else {
+                        LOG.warn("Missing registered device for qid={}", userProfile.getQueueUserId());
                     }
                 });
             }
