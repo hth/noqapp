@@ -152,7 +152,10 @@ public class MessageCustomerService {
             try (Stream<UserProfileEntity> stream = userProfileManager.findAllPhoneOwners()) {
                 stream.iterator().forEachRemaining(userProfile ->
                 {
-                    RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(userProfile.getQueueUserId());
+                    RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDeviceNotSubscribedToTopic(userProfile.getQueueUserId(), subscribedTopic);
+                    registeredDevice.addSubscriptionTopic(subscribedTopic);
+                    registeredDeviceManager.save(registeredDevice);
+
                     try {
                         switch (registeredDevice.getDeviceType()) {
                             case A:
@@ -292,7 +295,7 @@ public class MessageCustomerService {
         }
     }
 
-    private boolean subscribeToTopic(List<String> tokens, String topic) {
+    public boolean subscribeToTopic(List<String> tokens, String topic) {
         int size = tokens.size();
         if (size == 0) {
             return false;

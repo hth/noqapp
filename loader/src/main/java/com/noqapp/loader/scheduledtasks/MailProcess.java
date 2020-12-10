@@ -223,7 +223,7 @@ public class MailProcess {
             mailManager.save(mail);
 
             /* Number of times send mail has to be tried. */
-            while (!noAuthenticationException && count < PaginationEnum.TWO.getLimit()) {
+            while (!noAuthenticationException && count < PaginationEnum.ONE.getLimit()) {
                 count++;
                 try {
                     MimeMessage dkimSignedMessage = dkimSignMessage(message, dkimPath, "noqapp.com", "noqapp");

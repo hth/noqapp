@@ -1,5 +1,8 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.common.utils.DateUtil;
+import com.noqapp.domain.OutGoingNotificationEntity;
+import com.noqapp.repository.OutGoingNotificationManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.MessageCustomerService;
@@ -14,6 +17,10 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
+import java.time.temporal.IsoFields;
 
 /**
  * hitender
@@ -23,50 +30,57 @@ import java.math.MathContext;
 public class MessageAllUser {
     private static final Logger LOG = LoggerFactory.getLogger(MessageAllUser.class);
 
-    private String information;
     private String sendWeeklyInformation;
 
     public QueueManagerJDBC queueManagerJDBC;
     public MessageCustomerService messageCustomerService;
     public UserProfileManager userProfileManager;
+    public OutGoingNotificationManager outGoingNotificationManager;
 
     @Autowired
     public MessageAllUser(
-        @Value("{subscribe.information}")
-        String information,
-
         @Value("${makePreferredBusinessFiles:OFF}")
         String sendWeeklyInformation,
 
         QueueManagerJDBC queueManagerJDBC,
         MessageCustomerService messageCustomerService,
-        UserProfileManager userProfileManager
+        UserProfileManager userProfileManager,
+        OutGoingNotificationManager outGoingNotificationManager
     ) {
-        this.information = information;
         this.sendWeeklyInformation = sendWeeklyInformation;
 
         this.queueManagerJDBC = queueManagerJDBC;
         this.messageCustomerService = messageCustomerService;
         this.userProfileManager = userProfileManager;
+        this.outGoingNotificationManager = outGoingNotificationManager;
     }
 
-    /** Create zip file of all the products for business store of Pharmacy Type. */
+    /** Send regular message to all users. */
     @Scheduled(cron = "${loader.MessageAllUser.toAll}")
     public void message() {
-        int count = queueManagerJDBC.countNumberOfUserServiced(7);
+//        int count = queueManagerJDBC.countNumberOfUserServiced(7);
         //People Count * 2 hours / 24 hours for day /
-        BigDecimal daysSaved = new BigDecimal(count)
-            .multiply(new BigDecimal(2), MathContext.DECIMAL64)
-            .divide(new BigDecimal(24), MathContext.DECIMAL64);
+//        BigDecimal daysSaved = new BigDecimal(count)
+//            .multiply(new BigDecimal(2), MathContext.DECIMAL64)
+//            .divide(new BigDecimal(24), MathContext.DECIMAL64)
+//            .setScale(2, RoundingMode.HALF_UP);
 
-        String title = "Total days saved: " + daysSaved;
-        String body = "NoQueue served " + count + " ESM in last 7 days. Man hours saved " + daysSaved + " days";
+//        String title = "Total days saved: " + daysSaved;
+//        String body = "In last 7 days, NoQueue has helped save " + daysSaved + " man days. Thank you for giving us the opportunity to save your time.";
 
-        LOG.info("Send message {} {} {}", title, body, sendWeeklyInformation);
+        LocalDate localDate = LocalDate.now();
+        int weekYear = localDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
+        OutGoingNotificationEntity outGoingNotification = outGoingNotificationManager.findToSend(weekYear);
+
+        LOG.info("Send message {} {} {}", outGoingNotification.getTitle(), outGoingNotification.getBody(), weekYear);
         if ("OFF".equalsIgnoreCase(sendWeeklyInformation)) {
             return;
         }
 
-        messageCustomerService.sendMessageToAll(title, body, userProfileManager.findOneByMail("admin@noqapp.com").getQueueUserId(), information);
+        messageCustomerService.sendMessageToAll(
+            outGoingNotification.getTitle(),
+            outGoingNotification.getBody(),
+            userProfileManager.findOneByMail("admin@noqapp.com").getQueueUserId(),
+            outGoingNotification.getTopic());
     }
 }

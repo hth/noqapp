@@ -73,24 +73,6 @@
                                         <h3><p style="font-weight: bold; color: #222; font-size: 16px">Join Queue</p></h3>
                                     </c:otherwise>
                                 </c:choose>
-                                
-                                <img src="/i/${storeLandingForm.qrWebSite}.htm"/>
-                                <br />
-                                <p style="font-weight: bold; color: #222; font-size: 16px">Download NoQueue</p>
-                                <br />
-                                <br />
-                                <p style="color: #222; font-size: 20px;">${storeLandingForm.displayName}</p>
-                                <br />
-                                <h3><span>&nbsp;</span></h3>
-                                <br />
-                                <c:choose>
-                                    <c:when test="${storeLandingForm.businessType.messageOrigin eq MessageOriginEnum.O}">
-                                        <h3><p style="font-weight: bold; color: #222; font-size: 16px">Order Here</p></h3>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h3><p style="font-weight: bold; color: #222; font-size: 16px">Join Queue</p></h3>
-                                    </c:otherwise>
-                                </c:choose>
                             </div>
                             <div class="details-box">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
