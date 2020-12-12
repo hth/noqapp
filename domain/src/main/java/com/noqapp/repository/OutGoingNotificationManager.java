@@ -8,5 +8,5 @@ import com.noqapp.domain.OutGoingNotificationEntity;
  */
 public interface OutGoingNotificationManager extends RepositoryManager<OutGoingNotificationEntity> {
 
-    OutGoingNotificationEntity findToSend(int weekYear);
+    OutGoingNotificationEntity findToSend(int weekYear, int year);
 }

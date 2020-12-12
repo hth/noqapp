@@ -70,7 +70,7 @@ public class MessageAllUser {
 
         LocalDate localDate = LocalDate.now();
         int weekYear = localDate.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
-        OutGoingNotificationEntity outGoingNotification = outGoingNotificationManager.findToSend(weekYear);
+        OutGoingNotificationEntity outGoingNotification = outGoingNotificationManager.findToSend(weekYear, localDate.getYear());
 
         if (null != outGoingNotification) {
             LOG.info("Send message {} {} {}", outGoingNotification.getTitle(), outGoingNotification.getBody(), weekYear);
@@ -93,9 +93,9 @@ public class MessageAllUser {
                 .setTitle("Become Business Outreach Ambassador")
                 .setBody("Earn upto Rs 1,00,000 by bringing new businesses on NoQueue. Limited availability. For more information, send email with phone number to boa@noqapp.com")
                 .setTopic("i")
+                .setYear(localDate.getYear() - 1)
                 .setWeekYear(40)
                 .setSent(false);
-
         }
         outGoingNotificationManager.save(outGoingNotification);
     }
