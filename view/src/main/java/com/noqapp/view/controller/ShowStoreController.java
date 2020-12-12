@@ -57,12 +57,13 @@ public class ShowStoreController {
      * {@link com.noqapp.domain.BizStoreEntity#getCodeQRInALink}
      * <p>
      * Do not change the mapping as it will break all QR Code Mapping.
+     * It supports for queue and order QR Code.
      *
      * @return
      */
-    @GetMapping(value = "/{codeQR}/q", produces = "text/html;charset=UTF-8")
+    @GetMapping(value = {"/{codeQR}/q", "/{codeQR}/o"}, produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String showStoreByCodeQR(@PathVariable("codeQR") ScrubbedInput codeQR) {
+    public String showQueueStoreByCodeQR(@PathVariable("codeQR") ScrubbedInput codeQR) {
         try {
             if (Validate.isValidObjectId(codeQR.getText())) {
                 BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
