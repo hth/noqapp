@@ -17,11 +17,7 @@ public final class UserLoginForm {
     private String emailId;
     private String password;
 
-    private UserLoginForm() {
-    }
-
-    public static UserLoginForm newInstance() {
-        return new UserLoginForm();
+    public UserLoginForm() {
     }
 
     public String getEmailId() {
