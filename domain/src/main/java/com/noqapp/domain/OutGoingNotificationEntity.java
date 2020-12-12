@@ -24,6 +24,9 @@ public class OutGoingNotificationEntity extends BaseEntity {
     @Field("TO")
     private String topic;
 
+    @Field("YR")
+    private int year;
+
     @Field("WY")
     private int weekYear;
 
@@ -45,6 +48,15 @@ public class OutGoingNotificationEntity extends BaseEntity {
 
     public OutGoingNotificationEntity setBody(String body) {
         this.body = body;
+        return this;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public OutGoingNotificationEntity setYear(int year) {
+        this.year = year;
         return this;
     }
 

@@ -54,9 +54,9 @@ public class OutGoingNotificationManagerImpl implements OutGoingNotificationMana
     }
 
     @Override
-    public OutGoingNotificationEntity findToSend(int weekYear) {
+    public OutGoingNotificationEntity findToSend(int weekYear, int year) {
         return mongoTemplate.findOne(
-            query(where("WY").is(weekYear).and("ST").is(false).and("A").is(true)),
+            query(where("WY").is(weekYear).and("YR").is(year).and("ST").is(false).and("A").is(true)),
             OutGoingNotificationEntity.class,
             TABLE
         );
