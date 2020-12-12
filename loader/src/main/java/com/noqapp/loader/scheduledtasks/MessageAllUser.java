@@ -39,7 +39,7 @@ public class MessageAllUser {
 
     @Autowired
     public MessageAllUser(
-        @Value("${MessageAllUser.makePreferredBusinessFiles}")
+        @Value("${MessageAllUser.sendWeeklyInformation}")
         String sendWeeklyInformation,
 
         QueueManagerJDBC queueManagerJDBC,
