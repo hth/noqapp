@@ -63,7 +63,7 @@ public class ShowStoreController {
      */
     @GetMapping(value = {"/{codeQR}/q", "/{codeQR}/o"}, produces = "text/html;charset=UTF-8")
     @ResponseBody
-    public String showQueueStoreByCodeQR(@PathVariable("codeQR") ScrubbedInput codeQR) {
+    public String showStoreByCodeQR(@PathVariable("codeQR") ScrubbedInput codeQR) {
         try {
             if (Validate.isValidObjectId(codeQR.getText())) {
                 BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
