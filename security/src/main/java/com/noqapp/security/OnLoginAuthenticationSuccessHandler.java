@@ -65,14 +65,23 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     @Value ("${businessAdminLanding:/business/landing.htm}")
     private String businessAdminLanding;
 
+    @Value ("${https}")
+    private String https;
+
+    @Value ("${port}")
+    private String port;
+
+    @Value ("${host}")
+    private String host;
+
     private final RequestCache requestCache = new HttpSessionRequestCache();
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void onAuthenticationSuccess(
-            final HttpServletRequest request,
-            final HttpServletResponse response,
-            final Authentication authentication
+        final HttpServletRequest request,
+        final HttpServletResponse response,
+        final Authentication authentication
     ) throws IOException {
         if (request.getHeader("cookie") != null) {
             handle(request, response, authentication);
@@ -122,7 +131,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             return;
         }
 
-        redirectStrategy.sendRedirect(req, res, targetUrl);
+        redirectStrategy.sendRedirect(req, res, https + "://" + host + (StringUtils.hasText(port) ? ":" + port : "") + targetUrl);
     }
 
     /**

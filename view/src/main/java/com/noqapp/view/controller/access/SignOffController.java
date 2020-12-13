@@ -6,10 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
@@ -34,6 +36,15 @@ import javax.servlet.http.HttpServletResponse;
 public class SignOffController extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(SignOffController.class);
 
+    @Value("${https}")
+    private String https;
+
+    @Value("${port}")
+    private String port;
+
+    @Value ("${host}")
+    private String host;
+
     @Override
     public void onLogoutSuccess(
         HttpServletRequest request,
@@ -51,7 +62,7 @@ public class SignOffController extends SimpleUrlLogoutSuccessHandler implements 
          * Even though it defaults to root as in secure.xml, need logoutSuccess to execute script to logout
          * from firebase authentication if any.
          */
-        response.sendRedirect("/open/login.htm?logoutSuccess=s--#");
+        response.sendRedirect(https + "://" + host + (StringUtils.hasText(port) ? ":" + port : "") + "/open/login.htm?logoutSuccess=s--#");
 
         LOG.info("Logout qid={} from={}", queueUserId, request.getServletPath());
         super.onLogoutSuccess(request, response, authentication);
