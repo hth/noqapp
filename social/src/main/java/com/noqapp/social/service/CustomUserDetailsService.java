@@ -43,18 +43,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserProfilePreferenceService userProfilePreferenceService;
     private AccountService accountService;
 
-    private String accountNotValidatedMessage;
-
     @Autowired
     public CustomUserDetailsService(
-        @Value("${CustomUserDetailsService.account.not.validated.message}")
-        String accountNotValidatedMessage,
-
         UserProfilePreferenceService userProfilePreferenceService,
         AccountService accountService
     ) {
-        this.accountNotValidatedMessage = accountNotValidatedMessage;
-
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.accountService = accountService;
     }
