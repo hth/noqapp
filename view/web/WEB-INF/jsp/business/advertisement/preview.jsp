@@ -220,7 +220,7 @@
         <div class="footer-dark">
             <div class="footer4">
                 <div class="warp-inner">
-                    <div class="f-left">&copy; 2020 NoQueue | <a href="https://noqapp.com/#/pages/privacy">Privacy</a> | <a href="https://noqapp.com/#/pages/terms">Terms</a></div>
+                    <div class="f-left">&copy; 2021 NoQueue | <a href="https://noqapp.com/#/pages/privacy">Privacy</a> | <a href="https://noqapp.com/#/pages/terms">Terms</a></div>
 
                     <div class="clearFix"></div>
                 </div>
