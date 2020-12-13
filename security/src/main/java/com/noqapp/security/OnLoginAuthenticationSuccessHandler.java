@@ -2,6 +2,8 @@ package com.noqapp.security;
 
 import com.noqapp.domain.types.RoleEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +16,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
-import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -114,7 +115,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             return;
         }
         final String targetUrlParameter = getTargetUrlParameter();
-        if (isAlwaysUseDefaultTargetUrl() || null != targetUrlParameter && StringUtils.hasText(request.getParameter(targetUrlParameter))) {
+        if (isAlwaysUseDefaultTargetUrl() || null != targetUrlParameter && StringUtils.isNotBlank(request.getParameter(targetUrlParameter))) {
             requestCache.removeRequest(request, response);
             clearAuthenticationAttributes(request);
             return;
@@ -131,7 +132,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             return;
         }
 
-        redirectStrategy.sendRedirect(req, res, https + "://" + host + (StringUtils.hasText(port) ? ":" + port : "") + targetUrl);
+        redirectStrategy.sendRedirect(req, res, https + "://" + host + (StringUtils.isNotBlank(port) ? ":" + port : "") + targetUrl);
     }
 
     /**
