@@ -46,7 +46,7 @@
             <!-- login-box -->
             <div class="login-box">
                 <div class="form-style">
-                    <h2>Business User Sign Up</h2>
+                    <h2><fmt:message key="account.register.title" /></h2>
                     <form:form modelAttribute="merchantRegistration">
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <input type="hidden" id="gender" name="gender" value="M"/>
