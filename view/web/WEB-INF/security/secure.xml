@@ -16,26 +16,6 @@
 
     <beans:bean id="requestCache" class="org.springframework.security.web.savedrequest.HttpSessionRequestCache" />
 
-    <http pattern="/webapi/mobile" auto-config="true" use-expressions="true" create-session="stateless">
-        <request-cache ref="requestCache" />
-
-        <intercept-url pattern="/**"
-                       access="hasIpAddress('10.0.0.0/24') or hasIpAddress('127.0.0.1')" />
-
-        <!--<intercept-url pattern="/**"-->
-                       <!--access="permitAll" />-->
-
-        <csrf />
-
-        <headers>
-            <cache-control />
-            <content-type-options />
-            <hsts />
-            <frame-options />
-            <xss-protection />
-        </headers>
-    </http>
-
     <!--Carved out specially for braintree webhook-->
     <http pattern="/webhooks/**" auto-config="true" use-expressions="true" create-session="stateless">
         <request-cache ref="requestCache" />
