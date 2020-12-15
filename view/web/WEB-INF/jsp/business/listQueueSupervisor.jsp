@@ -152,7 +152,7 @@
                                                 <span style="display:block; font-size:13px;">${queueSupervisor.userLevel.description}</span>
                                             </td>
                                             <td nowrap>
-                                                <span style="display:block; font-size:13px;">${queueSupervisor.created}</span>
+                                                <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
                                             </td>
                                             <td class="Tleft" nowrap>
                                                 <c:choose>
@@ -282,7 +282,7 @@
                                         </td>
                                         <td><span style="display:block; font-size:13px;">${queueSupervisor.userLevel.description}</span></td>
                                         <td nowrap>
-                                            <span style="display:block; font-size:13px;">${queueSupervisor.created}</span>
+                                            <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
                                         </td>
                                         <td class="Tleft" nowrap>
                                             <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">

@@ -44,8 +44,8 @@
         <div class="warp-inner">
             <!-- login-box -->
             <div class="login-box">
-                <h2>Forgot your password?</h2>
-                <p class="mB20 Tcenter">We'll send recovery link to the email address provided below.</p>
+                <h2><fmt:message key="account.recover.title"/></h2>
+                <p class="mB20 Tcenter"><fmt:message key="account.recover.sub.title"/></p>
                 <div class="form-style">
                     <form:form method="post" modelAttribute="merchantRegistration">
                         <form:hidden path="mail"/>

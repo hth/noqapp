@@ -40,7 +40,7 @@
                     <!-- login-box -->
                     <div class="login-box">
                         <div class="form-style">
-                            <h2>Reset Account Password</h2>
+                            <h2><fmt:message key="password.update.heading"/></h2>
                             <form:form method="post" modelAttribute="forgotAuthenticateForm" action="authenticate.htm">
                                 <form:hidden path="queueUserId"/>
                                 <form:hidden path="authenticationKey"/>

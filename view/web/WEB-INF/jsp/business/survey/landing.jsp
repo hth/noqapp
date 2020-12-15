@@ -98,10 +98,10 @@
                                                     <span style="display:block; font-size:13px;">${questionnaire.publishStatus.description}</span>
                                                     <c:choose>
                                                         <c:when test="${questionnaire.publishStatus == ValidateStatusEnum.A}">
-                                                            <span style="display:block; font-size:13px; font-weight: bold">Published: ${questionnaire.publishDate}</span>
+                                                            <span style="display:block; font-size:13px; font-weight: bold">Published: <fmt:formatDate pattern="MMM dd, yyyy hh:mm a" value="${questionnaire.publishDate}"/></span>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <span style="display:block; font-size:13px;">Created: ${questionnaire.created}</span>
+                                                            <span style="display:block; font-size:13px;">Created: <fmt:formatDate pattern="MMM dd, yyyy hh:mm a" value="${questionnaire.created}"/></span>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
