@@ -189,8 +189,8 @@
                                         </c:choose>
                                         <span style="display:block; font-size:13px;">${queue.displayName}</span>
                                         <div id="fine-uploader-manual-trigger"></div>
-<%--                                        <fmt:parseDate value="${jsonMedicalRecord.createDate}" var="parsedCurrentDate" pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ" />--%>
-                                        <span style="display:block; font-size:13px;">Medical Record Date: ${jsonMedicalRecord.createDate}</span>
+                                        <fmt:parseDate value="${jsonMedicalRecord.createDate}" var="parsedCurrentDate" pattern="yyyy-MM-dd'T'HH:mm:ss.SSSZ" />
+                                        <span style="display:block; font-size:13px;">Medical Record Date: <fmt:formatDate type="both" value="${parsedCurrentDate}"/></span>
                                     </c:otherwise>
                                 </c:choose>
                             </div>

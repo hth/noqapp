@@ -124,7 +124,7 @@
                                                     </c:choose>
                                                 </span>
                                                 <span style="display:block; font-size:13px;">
-                                                    &nbsp;Date Time: ${item.created}
+                                                    &nbsp;Date Time: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${item.created}"/>
                                                 </span>
                                             </td>
                                         </tr>
