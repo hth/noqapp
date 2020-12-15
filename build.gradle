@@ -449,7 +449,7 @@ project(':security') {
                 project(':domain')
 
         providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
-        runtime 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.2'
+        runtimeOnly 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.2'
     }
 }
 
@@ -508,7 +508,7 @@ project(':inventory') {
 project(':view') {
     apply plugin: 'war'
     jar.archiveBaseName = archiveName + '-view'
-    war.baseName = archiveName + '-view'
+    war.archiveBaseName = archiveName + '-view'
 
     repositories {
         mavenCentral()
@@ -527,7 +527,7 @@ project(':view') {
                 project(':loader')
 
         providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
-        runtime 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.2'
+        runtimeOnly 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.2'
     }
 }
 
