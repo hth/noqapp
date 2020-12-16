@@ -189,7 +189,7 @@ public class JoinAbortService {
         LOG.info("abortQueue codeQR={} did={} qid={}", codeQR, did, qid);
         QueueEntity queue = queueManager.findToAbort(codeQR, qid);
         if (queue == null) {
-            LOG.error("Not joined to queue qid={}, ignore abort", qid);
+            LOG.warn("Not joined to queue qid={}, ignore abort", qid);
             return new JsonResponse(false);
         }
 
