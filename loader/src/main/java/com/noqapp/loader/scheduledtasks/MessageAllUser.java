@@ -94,7 +94,7 @@ public class MessageAllUser {
                 .setBody("Earn upto Rs 1,00,000 by bringing new businesses on NoQueue. Limited availability. For more information, send email with phone number to boa@noqapp.com")
                 .setTopic("i")
                 .setYear(localDate.getYear() - 1)
-                .setWeekYear(40)
+                .setWeekYear(weekYear - 1)
                 .setSent(false);
         }
         outGoingNotificationManager.save(outGoingNotification);
