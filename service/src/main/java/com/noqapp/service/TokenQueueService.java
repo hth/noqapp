@@ -1320,15 +1320,15 @@ public class TokenQueueService {
                             } else {
                                 expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, inQueue.getTokenNumber() - abortCount);
                                 String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour);
-                                LOG.info("Changed Expected Service {} {} {} {} {} {}",
-                                    expectedServiceBegin,
-                                    inQueue.getTimeSlotMessage(),
-                                    timeSlot,
-                                    inQueue.getTokenNumber(),
-                                    abortCount,
-                                    queueAfterScheduledTime.getDisplayName());
-
                                 if (!inQueue.getTimeSlotMessage().equalsIgnoreCase(timeSlot)) {
+                                    LOG.info("Changed Expected Service {} {} {} {} {} {}",
+                                        expectedServiceBegin,
+                                        inQueue.getTimeSlotMessage(),
+                                        timeSlot,
+                                        inQueue.getTokenNumber(),
+                                        abortCount,
+                                        queueAfterScheduledTime.getDisplayName());
+
                                     JsonQueueChangeServiceTime jsonQueueChangeServiceTime = new JsonQueueChangeServiceTime()
                                         .setToken(inQueue.getTokenNumber())
                                         .setDisplayToken(inQueue.getDisplayToken())
