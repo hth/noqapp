@@ -4,8 +4,6 @@ import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
 import com.google.maps.model.LatLng;
 
-import net.pieroxy.ua.detection.DeviceType;
-
 import org.apache.commons.lang3.StringUtils;
 
 import org.bson.types.ObjectId;
