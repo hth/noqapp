@@ -1,7 +1,6 @@
 package com.noqapp.view.validator;
 
 import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.nlp.NLPService;
