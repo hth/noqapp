@@ -1,6 +1,10 @@
 package com.noqapp.common.utils;
 
+import static com.noqapp.common.utils.Constants.UNDER_SCORE;
+
 import com.google.maps.model.LatLng;
+
+import net.pieroxy.ua.detection.DeviceType;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -309,5 +313,9 @@ public final class CommonUtil {
 
     public static String appendBusinessNameToNotificationMessage(String body, String businessName) {
         return body + "\n" + "Sender: " + businessName;
+    }
+
+    public static String buildTopic(String topicName, String deviceType) {
+        return "/topics/" + topicName + UNDER_SCORE + deviceType;
     }
  }
