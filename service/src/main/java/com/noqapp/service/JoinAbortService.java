@@ -227,7 +227,7 @@ public class JoinAbortService {
     public void abort(String id, String codeQR) {
         queueManager.abort(id);
         /* Irrespective of Queue with order or without order, notify business of abort by just sending a refresh notification. */
-//        tokenQueueService.updateServingTimeForAllWhenAborted(id);
+        tokenQueueService.updateServingTimeForAllWhenAborted(id);
         tokenQueueService.forceRefreshOnSomeActivity(codeQR);
     }
 
