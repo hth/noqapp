@@ -181,7 +181,7 @@ public class MessageCustomerService {
 
             if (StringUtils.isBlank(imageURL)) {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-                    String topic = "/topics/" + subscribedTopic + UNDER_SCORE + deviceType.name();
+                    String topic = CommonUtil.buildTopic(subscribedTopic, deviceType.name());
                     switch (deviceType) {
                         case A:
                             subscribeToTopic(tokens_A, topic);
@@ -198,7 +198,7 @@ public class MessageCustomerService {
                 }
             } else {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-                    String topic = "/topics/" + subscribedTopic + UNDER_SCORE + deviceType.name();
+                    String topic = CommonUtil.buildTopic(subscribedTopic, deviceType.name());
                     switch (deviceType) {
                         case A:
                             subscribeToTopic(tokens_A, topic);
@@ -259,7 +259,7 @@ public class MessageCustomerService {
                 });
 
             for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-                String topic = "/topics/" + bizName.getCountryShortName() + UNDER_SCORE + bizNameId + UNDER_SCORE + deviceType.name();
+                String topic = CommonUtil.buildTopic(bizName.getCountryShortName() + UNDER_SCORE + bizNameId, deviceType.name());
                 switch (deviceType) {
                     case A:
                         if (subscribeToTopic(tokens_A, topic)) {
