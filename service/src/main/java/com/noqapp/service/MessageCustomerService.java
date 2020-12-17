@@ -152,6 +152,7 @@ public class MessageCustomerService {
             try (Stream<UserProfileEntity> stream = userProfileManager.findAllPhoneOwners()) {
                 stream.iterator().forEachRemaining(userProfile ->
                 {
+                    /* Finds devices that have not subscribed. */
                     RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDeviceNotSubscribedToTopic(userProfile.getQueueUserId(), subscribedTopic);
                     if (null != registeredDevice) {
                         registeredDevice.addSubscriptionTopic(subscribedTopic);
@@ -174,16 +175,44 @@ public class MessageCustomerService {
                         } catch (Exception e) {
                             LOG.error("Failed adding token {} {}", userProfile.getQueueUserId(), e.getMessage());
                         }
-                    } else {
-                        LOG.warn("Missing registered device for qid={}", userProfile.getQueueUserId());
                     }
                 });
             }
 
             if (StringUtils.isBlank(imageURL)) {
-                sendBulkMessageToTopic(title, body, subscribedTopic, tokens_A, tokens_I);
+                for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+                    String topic = "/topics/" + subscribedTopic + UNDER_SCORE + deviceType.name();
+                    switch (deviceType) {
+                        case A:
+                            subscribeToTopic(tokens_A, topic);
+                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
+                            break;
+                        case I:
+                            subscribeToTopic(tokens_I, topic);
+                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
+                            break;
+                        case W:
+                            //Do nothing
+                            break;
+                    }
+                }
             } else {
-                sendBulkMessageToTopic(title, body, imageURL, subscribedTopic, tokens_A, tokens_I);
+                for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+                    String topic = "/topics/" + subscribedTopic + UNDER_SCORE + deviceType.name();
+                    switch (deviceType) {
+                        case A:
+                            subscribeToTopic(tokens_A, topic);
+                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
+                            break;
+                        case I:
+                            subscribeToTopic(tokens_I, topic);
+                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
+                            break;
+                        case W:
+                            //Do nothing
+                            break;
+                    }
+                }
             }
 
             notificationMessage.setMessageSendCount(sendMessageCount.get());
@@ -192,48 +221,6 @@ public class MessageCustomerService {
         } catch (Exception e) {
             LOG.error("Failed sending message to all {} {} {} reason={}", title, body, qid, e.getMessage(), e);
             return 0;
-        }
-    }
-
-    private void sendBulkMessageToTopic(String title, String body, String subscribedTopic, List<String> tokens_A, List<String> tokens_I) {
-        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-            String topic = "/topics/" + subscribedTopic + UNDER_SCORE + deviceType.name();
-            switch (deviceType) {
-                case A:
-                    if (subscribeToTopic(tokens_A, topic)) {
-                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
-                    }
-                    break;
-                case I:
-                    if (subscribeToTopic(tokens_I, topic)) {
-                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
-                    }
-                    break;
-                case W:
-                    //Do nothing
-                    break;
-            }
-        }
-    }
-
-    private void sendBulkMessageToTopic(String title, String body, String imageURL, String subscribedTopic, List<String> tokens_A, List<String> tokens_I) {
-        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-            String topic = "/topics/" + subscribedTopic + UNDER_SCORE + deviceType.name();
-            switch (deviceType) {
-                case A:
-                    if (subscribeToTopic(tokens_A, topic)) {
-                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
-                    }
-                    break;
-                case I:
-                    if (subscribeToTopic(tokens_I, topic)) {
-                        tokenQueueService.sendBulkMessageToBusinessUser(title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
-                    }
-                    break;
-                case W:
-                    //Do nothing
-                    break;
-            }
         }
     }
 
