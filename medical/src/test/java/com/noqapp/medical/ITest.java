@@ -240,7 +240,7 @@ public class ITest extends RealMongoForITest {
     @Mock protected TextToSpeechConfiguration textToSpeechConfiguration;
 
     @BeforeAll
-    public void globalISetup() throws IOException {
+    public void globalISetup() {
         MockitoAnnotations.openMocks(this);
 
         userAccountManager = new UserAccountManagerImpl(getMongoTemplate());
