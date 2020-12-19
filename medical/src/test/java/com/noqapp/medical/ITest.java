@@ -1,5 +1,6 @@
 package com.noqapp.medical;
 
+import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.common.config.TextToSpeechConfiguration;
 import com.noqapp.health.repository.ApiHealthNowManager;
 import com.noqapp.health.repository.ApiHealthNowManagerImpl;
@@ -97,6 +98,7 @@ import com.noqapp.service.EmailValidateService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FirebaseMessageService;
+import com.noqapp.service.FirebaseService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.GenerateUserIdService;
 import com.noqapp.service.InviteService;
@@ -175,6 +177,7 @@ public class ITest extends RealMongoForITest {
 
     protected TokenQueueManager tokenQueueManager;
     protected FirebaseMessageService firebaseMessageService;
+    protected FirebaseService firebaseService;
     protected QueueManager queueManager;
 
     protected UserAccountManager userAccountManager;
@@ -233,6 +236,7 @@ public class ITest extends RealMongoForITest {
     @Mock protected MailService mailService;
     @Mock protected OkHttpClient okHttpClient;
     @Mock protected CashfreeService cashfreeService;
+    @Mock protected FirebaseConfig firebaseConfig;
     @Mock protected TextToSpeechConfiguration textToSpeechConfiguration;
 
     @BeforeAll
@@ -279,6 +283,7 @@ public class ITest extends RealMongoForITest {
         emailValidateService = new EmailValidateService(emailValidateManager);
         generateUserIdService = new GenerateUserIdService(generateUserIdManager);
         storeCategoryService = new StoreCategoryService(storeCategoryManager, storeProductManager);
+        firebaseService = new FirebaseService(firebaseConfig, userProfilePreferenceService);
         businessCustomerService = new BusinessCustomerService(
             businessCustomerManager,
             userProfileManager,
@@ -322,6 +327,7 @@ public class ITest extends RealMongoForITest {
             bizStoreManager,
             businessCustomerService,
             textToSpeechService,
+            firebaseService,
             apiHealthService
         );
 

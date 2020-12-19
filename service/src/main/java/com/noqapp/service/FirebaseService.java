@@ -5,7 +5,6 @@ import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.types.DeviceTypeEnum;
 
 import com.google.api.core.ApiFuture;
 import com.google.firebase.auth.FirebaseAuthException;
