@@ -75,10 +75,7 @@ public class NotifyMobileService {
     public void autoSubscribeClientToTopic(String codeQR, String token, DeviceTypeEnum deviceType) {
         if (StringUtils.isNotBlank(token)) {
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
-            List<String> registeredTokens = new ArrayList<>() {{
-                add(token);
-            }};
-            firebaseService.subscribeToTopic(registeredTokens, tokenQueue.getTopic() + "_" + deviceType.getName());
+            firebaseService.subscribeToTopic(new ArrayList<>() {{ add(token); }}, tokenQueue.getTopic() + "_" + deviceType.getName());
         }
     }
 }

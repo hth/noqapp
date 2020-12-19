@@ -1,8 +1,11 @@
 package com.noqapp.service;
 
 import com.noqapp.common.config.FirebaseConfig;
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.DeviceTypeEnum;
 
 import com.google.api.core.ApiFuture;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -18,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -93,5 +97,10 @@ public class FirebaseService {
         }
 
         return false;
+    }
+
+    public void subscribeToTopic(String subscribedTopic, RegisteredDeviceEntity registeredDevice) {
+        String topic = CommonUtil.buildTopic(subscribedTopic, registeredDevice.getDeviceType().name());
+        subscribeToTopic(new ArrayList<>() {{ add(registeredDevice.getToken()); }}, topic);
     }
 }
