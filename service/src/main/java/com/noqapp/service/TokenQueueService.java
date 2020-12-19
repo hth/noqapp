@@ -96,6 +96,7 @@ public class TokenQueueService {
     private BizStoreManager bizStoreManager;
     private BusinessCustomerService businessCustomerService;
     private TextToSpeechService textToSpeechService;
+    private FirebaseService firebaseService;
     private ApiHealthService apiHealthService;
 
     private ExecutorService executorService;
@@ -118,6 +119,7 @@ public class TokenQueueService {
         BizStoreManager bizStoreManager,
         BusinessCustomerService businessCustomerService,
         TextToSpeechService textToSpeechService,
+        FirebaseService firebaseService,
         ApiHealthService apiHealthService
     ) {
         this.allowJoinAfterMinutes = allowJoinAfterMinutes;
@@ -132,6 +134,7 @@ public class TokenQueueService {
         this.bizStoreManager = bizStoreManager;
         this.businessCustomerService = businessCustomerService;
         this.textToSpeechService = textToSpeechService;
+        this.firebaseService = firebaseService;
         this.apiHealthService = apiHealthService;
 
         this.executorService = newCachedThreadPool();
@@ -350,6 +353,14 @@ public class TokenQueueService {
                     }
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
+                    executorService.execute(() -> {
+                            RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
+                            String subscribedTopic = bizStore.getBusinessType().getName();
+                            firebaseService.subscribeToTopic(subscribedTopic, registeredDevice);
+                            registeredDevice.addSubscriptionTopic(subscribedTopic);
+                            registeredDeviceManager.save(registeredDevice);
+                        }
+                    );
                 } catch (DuplicateKeyException e) {
                     LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
                     return new JsonToken(codeQR, tokenQueue.getBusinessType());
