@@ -48,6 +48,7 @@ class TokenQueueServiceTest {
     @Mock private BusinessCustomerService businessCustomerService;
     @Mock private TextToSpeechService textToSpeechService;
     @Mock private FirebaseService firebaseService;
+    @Mock private UserProfilePreferenceService userProfilePreferenceService;
     @Mock private ApiHealthService apiHealthService;
 
     private TokenQueueService tokenQueueService;
@@ -69,6 +70,7 @@ class TokenQueueServiceTest {
             businessCustomerService,
             textToSpeechService,
             firebaseService,
+            userProfilePreferenceService,
             apiHealthService
         );
     }

@@ -9,6 +9,9 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * User: hitender
  * Date: 11/18/16 6:02 PM
@@ -42,6 +45,10 @@ public class UserPreferenceEntity extends BaseEntity {
 
     @Field("UAI")
     private String userAddressId;
+
+    /* For auto subscribing to these topics. */
+    @Field("ST")
+    private Set<String> subscriptionTopics = new HashSet<>();
 
     /**
      * To make bean happy
@@ -111,6 +118,15 @@ public class UserPreferenceEntity extends BaseEntity {
 
     public UserPreferenceEntity setUserAddressId(String userAddressId) {
         this.userAddressId = userAddressId;
+        return this;
+    }
+
+    public Set<String> getSubscriptionTopics() {
+        return subscriptionTopics;
+    }
+
+    public UserPreferenceEntity addSubscriptionTopic(String subscriptionTopic) {
+        this.subscriptionTopics.add(subscriptionTopic);
         return this;
     }
 }
