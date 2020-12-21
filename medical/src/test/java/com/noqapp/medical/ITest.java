@@ -328,6 +328,7 @@ public class ITest extends RealMongoForITest {
             businessCustomerService,
             textToSpeechService,
             firebaseService,
+            userProfilePreferenceService,
             apiHealthService
         );
 

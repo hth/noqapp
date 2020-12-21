@@ -130,11 +130,11 @@ public class MessageCustomerService {
         return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? limitedToDays : days);
     }
 
-    public int sendMessageToAll(String title, String body, String qid, String subscribedTopic) {
-        return sendMessageToAll(title, body, null, qid, subscribedTopic);
+    public void sendMessageToAll(String title, String body, String qid, String subscribedTopic) {
+        sendMessageToAll(title, body, null, qid, subscribedTopic);
     }
 
-    public int sendMessageToAll(String title, String body, String imageURL, String qid, String subscribedTopic) {
+    public void sendMessageToAll(String title, String body, String imageURL, String qid, String subscribedTopic) {
         try {
             Assert.hasText(subscribedTopic, "Subscribed topic cannot be empty");
 
@@ -144,82 +144,21 @@ public class MessageCustomerService {
                 .setQueueUserId(qid);
             notificationMessageManager.save(notificationMessage);
 
-            List<String> tokens_A = new ArrayList<>();
-            List<String> tokens_I = new ArrayList<>();
-
-            AtomicInteger sendMessageCount = new AtomicInteger();
-            try (Stream<UserProfileEntity> stream = userProfileManager.findAllPhoneOwners()) {
-                stream.iterator().forEachRemaining(userProfile ->
-                {
-                    /* Finds devices that have not subscribed. */
-                    RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDeviceNotSubscribedToTopic(userProfile.getQueueUserId(), subscribedTopic);
-                    if (null != registeredDevice) {
-                        registeredDevice.addSubscriptionTopic(subscribedTopic);
-                        registeredDeviceManager.save(registeredDevice);
-
-                        try {
-                            switch (registeredDevice.getDeviceType()) {
-                                case A:
-                                    sendMessageCount.getAndIncrement();
-                                    tokens_A.add(registeredDevice.getToken());
-                                    break;
-                                case I:
-                                    sendMessageCount.getAndIncrement();
-                                    tokens_I.add(registeredDevice.getToken());
-                                    break;
-                                case W:
-                                    //Do nothing
-                                    break;
-                            }
-                        } catch (Exception e) {
-                            LOG.error("Failed adding token {} {}", userProfile.getQueueUserId(), e.getMessage());
-                        }
-                    }
-                });
-            }
-
             if (StringUtils.isBlank(imageURL)) {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                     String topic = CommonUtil.buildTopic(subscribedTopic, deviceType.name());
-                    switch (deviceType) {
-                        case A:
-                            subscribeToTopic(tokens_A, topic);
-                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
-                            break;
-                        case I:
-                            subscribeToTopic(tokens_I, topic);
-                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
-                            break;
-                        case W:
-                            //Do nothing
-                            break;
-                    }
+                    tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
                 }
             } else {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                     String topic = CommonUtil.buildTopic(subscribedTopic, deviceType.name());
-                    switch (deviceType) {
-                        case A:
-                            subscribeToTopic(tokens_A, topic);
-                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
-                            break;
-                        case I:
-                            subscribeToTopic(tokens_I, topic);
-                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
-                            break;
-                        case W:
-                            //Do nothing
-                            break;
-                    }
+                    tokenQueueService.sendBulkMessageToBusinessUser(title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
                 }
             }
 
-            notificationMessage.setMessageSendCount(sendMessageCount.get());
             notificationMessageManager.save(notificationMessage);
-            return sendMessageCount.get();
         } catch (Exception e) {
             LOG.error("Failed sending message to all {} {} {} reason={}", title, body, qid, e.getMessage(), e);
-            return 0;
         }
     }
 

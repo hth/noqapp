@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -89,6 +90,16 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
             query(where("QID").is(qid)),
             entityUpdate(update("DM", deliveryMode).set("PM", paymentMethod).set("UAI", userAddressId)),
             FindAndModifyOptions.options().returnNew(true),
+            UserPreferenceEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void addTopic(String qid, String topic) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            entityUpdate(new Update().addToSet("ST", topic)),
             UserPreferenceEntity.class,
             TABLE
         );

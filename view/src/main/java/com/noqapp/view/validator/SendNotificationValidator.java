@@ -31,7 +31,7 @@ import java.util.Map;
 })
 @Component
 public class SendNotificationValidator implements Validator {
-    private static final Logger LOG = LoggerFactory.getLogger(StoreCategoryValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SendNotificationValidator.class);
     private static final int MAX_BODY_TEXT_LIMIT = 400;
     private static final int MIN_TITLE_TEXT_LIMIT = 3;
     private static final int MAX_TITLE_TEXT_LIMIT = 32;

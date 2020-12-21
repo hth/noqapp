@@ -97,6 +97,7 @@ public class TokenQueueService {
     private BusinessCustomerService businessCustomerService;
     private TextToSpeechService textToSpeechService;
     private FirebaseService firebaseService;
+    private UserProfilePreferenceService userProfilePreferenceService;
     private ApiHealthService apiHealthService;
 
     private ExecutorService executorService;
@@ -120,6 +121,7 @@ public class TokenQueueService {
         BusinessCustomerService businessCustomerService,
         TextToSpeechService textToSpeechService,
         FirebaseService firebaseService,
+        UserProfilePreferenceService userProfilePreferenceService,
         ApiHealthService apiHealthService
     ) {
         this.allowJoinAfterMinutes = allowJoinAfterMinutes;
@@ -135,6 +137,7 @@ public class TokenQueueService {
         this.businessCustomerService = businessCustomerService;
         this.textToSpeechService = textToSpeechService;
         this.firebaseService = firebaseService;
+        this.userProfilePreferenceService = userProfilePreferenceService;
         this.apiHealthService = apiHealthService;
 
         this.executorService = newCachedThreadPool();
@@ -353,14 +356,7 @@ public class TokenQueueService {
                     }
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
-                    executorService.execute(() -> {
-                            RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
-                            String subscribedTopic = bizStore.getBusinessType().getName();
-                            firebaseService.subscribeToTopic(subscribedTopic, registeredDevice);
-                            registeredDevice.addSubscriptionTopic(subscribedTopic);
-                            registeredDeviceManager.save(registeredDevice);
-                        }
-                    );
+                    executorService.execute(() -> addSubscribedTopic(qid, bizStore.getBusinessType()));
                 } catch (DuplicateKeyException e) {
                     LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
                     return new JsonToken(codeQR, tokenQueue.getBusinessType());
@@ -382,6 +378,13 @@ public class TokenQueueService {
             LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
         }
+    }
+
+    private void addSubscribedTopic(String qid, BusinessTypeEnum businessType) {
+        RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
+        String subscribedTopic = businessType.getName();
+        firebaseService.subscribeToTopic(subscribedTopic, registeredDevice);
+        userProfilePreferenceService.addSubscribedTopic(qid, subscribedTopic);
     }
 
     private JsonToken getJsonToken(String codeQR, QueueEntity queue, TokenQueueEntity tokenQueue) {
