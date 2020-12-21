@@ -8,7 +8,6 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.NotificationMessageEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
@@ -31,8 +30,6 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
 
 /**
  * hitender
@@ -57,7 +54,7 @@ public class MessageCustomerService {
 
     @Autowired
     public MessageCustomerService(
-        @Value("${MessageCustomerService.limitedToDays:120}")
+        @Value("${MessageCustomerService.limitedToDays}")
         int limitedToDays,
 
         QueueService queueService,
