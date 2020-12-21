@@ -384,9 +384,6 @@ public class TokenQueueService {
         RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
         String subscribedTopic = businessType.getName();
         firebaseService.subscribeToTopic(subscribedTopic, registeredDevice);
-        registeredDevice.addSubscriptionTopic(subscribedTopic);
-        registeredDeviceManager.save(registeredDevice);
-
         userProfilePreferenceService.addSubscribedTopic(qid, subscribedTopic);
     }
 

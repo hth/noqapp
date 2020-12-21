@@ -78,16 +78,14 @@ public class MessageAllUser {
                 return;
             }
 
-            int sendCount = messageCustomerService.sendMessageToAll(
+            messageCustomerService.sendMessageToAll(
                 outGoingNotification.getTitle(),
                 outGoingNotification.getBody(),
                 userProfileManager.findByQueueUserId("100000000001").getQueueUserId(),
                 outGoingNotification.getTopic());
 
-            if (sendCount > 0) {
-                outGoingNotification.inActive();
-                outGoingNotification.setSent(true).inActive();
-            }
+            outGoingNotification.inActive();
+            outGoingNotification.setSent(true).inActive();
         } else {
             outGoingNotification = new OutGoingNotificationEntity()
                 .setTitle("Become Business Outreach Ambassador")

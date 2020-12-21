@@ -125,7 +125,7 @@ public class NotificationController {
                     sendNotificationForm.getTitle(),
                     sendNotificationForm.getBody());
             } else {
-                int sentCount = messageCustomerService.sendMessageToAll(
+                messageCustomerService.sendMessageToAll(
                     sendNotificationForm.getTitle().getText(),
                     sendNotificationForm.getBody().getText(),
                     sendNotificationForm.getImageURL().getText(),
@@ -134,11 +134,15 @@ public class NotificationController {
                 );
 
                 sendNotificationForm
-                    .setSentCount(sentCount)
+                    /* Since all of them are already subscribed to hence difficult to compute sending to all count. */
+                    .setSentCount(0)
                     .setSuccess(true)
                     .setIgnoreSentiments(false);
                 redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
-                LOG.info("Sent global notification {} {} {}", sentCount, sendNotificationForm.getTitle(), sendNotificationForm.getBody());
+                LOG.info("Sent global notification to {} {} {}",
+                    sendNotificationForm.getSentCount() == 0 ? "all" : sendNotificationForm.getSentCount(),
+                    sendNotificationForm.getTitle(),
+                    sendNotificationForm.getBody());
             }
         } catch (Exception e) {
             LOG.error("Failed sending message reason={}", e.getLocalizedMessage(), e);
