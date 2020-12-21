@@ -1,3 +1,7 @@
+### Changed Dec 20, 2020
+    
+    db.getCollection('REGISTERED_DEVICE').update({ST: {$exists : true}}, {$unset: {ST : ""}}, {multi: true});
+
 ### Changed Dec 01, 2020
 
 Added Payment settings for each store accepting order.  
