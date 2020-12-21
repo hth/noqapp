@@ -284,9 +284,4 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.subscriptionTopics.add(subscriptionTopic);
         return this;
     }
-
-    @Transient
-    public String getTopic() {
-        return TOPICS + SEPARATOR + token;
-    }
 }
