@@ -133,7 +133,7 @@
                                             Message delivered successfully to ${sendNotificationForm.sentCount} people
                                         </c:when>
                                         <c:otherwise>
-                                            Your message will reach to ${sendNotificationForm.sentCount} people
+                                            Your message will reach to ${sendNotificationForm.sentCount} people. Your reach depends on daily usage.
                                         </c:otherwise>
                                     </c:choose>
                                     </p>

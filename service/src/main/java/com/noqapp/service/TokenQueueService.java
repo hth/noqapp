@@ -1335,13 +1335,13 @@ public class TokenQueueService {
                                 expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, inQueue.getTokenNumber() - abortCount);
                                 String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour);
                                 if (!inQueue.getTimeSlotMessage().equalsIgnoreCase(timeSlot)) {
-                                    LOG.info("Changed Expected Service {} {} {} {} {} {}",
-                                        expectedServiceBegin,
-                                        inQueue.getTimeSlotMessage(),
+                                    LOG.info("Changed Expected Service new={} previous={} {} {} {} {}",
                                         timeSlot,
+                                        inQueue.getTimeSlotMessage(),
                                         inQueue.getTokenNumber(),
                                         abortCount,
-                                        queueAfterScheduledTime.getDisplayName());
+                                        queueAfterScheduledTime.getDisplayName(),
+                                        expectedServiceBegin);
 
                                     JsonQueueChangeServiceTime jsonQueueChangeServiceTime = new JsonQueueChangeServiceTime()
                                         .setToken(inQueue.getTokenNumber())
