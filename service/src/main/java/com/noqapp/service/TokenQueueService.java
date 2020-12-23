@@ -15,6 +15,7 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.helper.CommonHelper;
@@ -356,7 +357,7 @@ public class TokenQueueService {
                     }
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
-                    executorService.execute(() -> addSubscribedTopic(qid, bizStore.getBusinessType()));
+                    executorService.execute(() -> addSubscribedTopic(qid, bizStore));
                 } catch (DuplicateKeyException e) {
                     LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
                     return new JsonToken(codeQR, tokenQueue.getBusinessType());
@@ -380,11 +381,26 @@ public class TokenQueueService {
         }
     }
 
-    private void addSubscribedTopic(String qid, BusinessTypeEnum businessType) {
-        RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
-        String subscribedTopic = businessType.getName();
-        firebaseService.subscribeToTopic(subscribedTopic, registeredDevice);
-        userProfilePreferenceService.addSubscribedTopic(qid, subscribedTopic);
+    private void addSubscribedTopic(String qid, BizStoreEntity bizStore) {
+        try {
+            RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
+            String subscribedTopic = bizStore.getBusinessType().getName();
+            firebaseService.subscribeToTopic(subscribedTopic, registeredDevice);
+            UserPreferenceEntity userPreference = userProfilePreferenceService.findByQueueUserId(qid);
+
+            /* If not tagged to favorite then add to suggestion. */
+            if (!userPreference.getFavoriteTagged().contains(bizStore.getBizName().getCodeQR())) {
+                userPreference.addFavoriteSuggested(bizStore.getBizName().getCodeQR());
+            }
+
+            /* When user signs up with new device or token, subscribe to these topics by default. */
+            userPreference.addSubscriptionTopic(subscribedTopic);
+
+            userProfilePreferenceService.save(userPreference);
+            LOG.info("Updated preference with subscription={} recommended={}", bizStore.getBusinessType().getName(), bizStore.getBizName().getBusinessName());
+        } catch (Exception e) {
+            LOG.error("Failed subscribing or adding to recommended {}", e.getLocalizedMessage(), e);
+        }
     }
 
     private JsonToken getJsonToken(String codeQR, QueueEntity queue, TokenQueueEntity tokenQueue) {

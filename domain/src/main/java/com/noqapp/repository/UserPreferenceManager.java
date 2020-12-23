@@ -20,7 +20,5 @@ public interface UserPreferenceManager extends RepositoryManager<UserPreferenceE
     UserPreferenceEntity changeFirebaseNotification(String qid, CommunicationModeEnum communicationMode);
 
     UserPreferenceEntity updateOrderPreference(String qid, DeliveryModeEnum deliveryMode, PaymentMethodEnum paymentMethod, String userAddressId);
-
-    void addTopic(String qid, String topic);
 }
 

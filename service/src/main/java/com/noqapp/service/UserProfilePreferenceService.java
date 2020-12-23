@@ -145,9 +145,4 @@ public class UserProfilePreferenceService {
             userPreference.getPaymentMethod(),
             userPreference.getUserAddressId());
     }
-
-    /* When user signs up with new device or token, subscribe to these topics by default. */
-    public void addSubscribedTopic(String qid, String topic) {
-        userPreferenceManager.addTopic(qid, topic);
-    }
 }
