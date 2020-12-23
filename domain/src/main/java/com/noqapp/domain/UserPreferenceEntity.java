@@ -50,6 +50,14 @@ public class UserPreferenceEntity extends BaseEntity {
     @Field("ST")
     private Set<String> subscriptionTopics = new HashSet<>();
 
+    /** BusinessName codeQR. */
+    @Field("FT")
+    private Set<String> favoriteTagged = new HashSet<>();
+
+    /** BusinessName codeQR. */
+    @Field("FS")
+    private Set<String> favoriteSuggested = new HashSet<>();
+
     /**
      * To make bean happy
      */
@@ -127,6 +135,24 @@ public class UserPreferenceEntity extends BaseEntity {
 
     public UserPreferenceEntity addSubscriptionTopic(String subscriptionTopic) {
         this.subscriptionTopics.add(subscriptionTopic);
+        return this;
+    }
+
+    public Set<String> getFavoriteTagged() {
+        return favoriteTagged;
+    }
+
+    public UserPreferenceEntity addFavoriteTagged(String favoriteTagged) {
+        this.favoriteTagged.add(favoriteTagged);
+        return this;
+    }
+
+    public Set<String> getFavoriteSuggested() {
+        return favoriteSuggested;
+    }
+
+    public UserPreferenceEntity addFavoriteSuggested(String favoriteSuggested) {
+        this.favoriteSuggested.add(favoriteSuggested);
         return this;
     }
 }

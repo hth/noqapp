@@ -96,16 +96,6 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     }
 
     @Override
-    public void addTopic(String qid, String topic) {
-        mongoTemplate.updateFirst(
-            query(where("QID").is(qid)),
-            entityUpdate(new Update().addToSet("ST", topic)),
-            UserPreferenceEntity.class,
-            TABLE
-        );
-    }
-
-    @Override
     public void deleteHard(UserPreferenceEntity object) {
         mongoTemplate.remove(object, TABLE);
     }
