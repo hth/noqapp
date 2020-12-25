@@ -41,6 +41,8 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -201,7 +203,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
             query = query(criteriaC).addCriteria(criteriaB).addCriteria(criteriaA);
         }
         query.fields().include(fieldName);
-        return mongoTemplate.find(query, BizStoreEntity.class);
+        return mongoTemplate.find(query, BizStoreEntity.class, TABLE);
     }
 
     @Override
@@ -219,6 +221,16 @@ public class BizStoreManagerImpl implements BizStoreManager {
     public BizStoreEntity findOne(String bizNameId) {
         return mongoTemplate.findOne(
             query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId))).with(Sort.by(Sort.Direction.DESC, "C")),
+            BizStoreEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<BizStoreEntity> findMany(Set<String> bizNameIds) {
+        List<ObjectId> converted = bizNameIds.stream().map(ObjectId::new).collect(Collectors.toList());
+        return mongoTemplate.find(
+            query(where("BIZ_NAME.$id").in(converted).and("A").is(true).and("D").is(false)),
             BizStoreEntity.class,
             TABLE
         );

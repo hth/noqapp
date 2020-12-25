@@ -13,6 +13,7 @@ import com.noqapp.domain.BusinessUserStoreEntity;
 import com.noqapp.domain.ScheduledTaskEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.site.JsonBusiness;
@@ -29,6 +30,7 @@ import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StoreHourManager;
+import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.utils.ServiceUtils;
 
@@ -87,6 +89,7 @@ public class BizService {
     private BusinessUserStoreManager businessUserStoreManager;
     private MailService mailService;
     private UserProfileManager userProfileManager;
+    private UserPreferenceManager userPreferenceManager;
     private ScheduledTaskManager scheduledTaskManager;
     private StoreHourService storeHourService;
 
@@ -109,6 +112,7 @@ public class BizService {
         BusinessUserStoreManager businessUserStoreManager,
         MailService mailService,
         UserProfileManager userProfileManager,
+        UserPreferenceManager userPreferenceManager,
         ScheduledTaskManager scheduledTaskManager,
         StoreHourService storeHourService
     ) {
@@ -123,6 +127,7 @@ public class BizService {
         this.businessUserStoreManager = businessUserStoreManager;
         this.mailService = mailService;
         this.userProfileManager = userProfileManager;
+        this.userPreferenceManager = userPreferenceManager;
         this.scheduledTaskManager = scheduledTaskManager;
         this.storeHourService = storeHourService;
 
@@ -694,5 +699,15 @@ public class BizService {
 
     public void updateStoreTokenAndServiceTime(String codeQR, long averageServiceTime, int availableTokenCount) {
         bizStoreManager.updateStoreTokenAndServiceTime(codeQR, averageServiceTime, availableTokenCount);
+    }
+
+    public List<BizStoreEntity> favoriteSuggested(String qid) {
+        UserPreferenceEntity userPreference = userPreferenceManager.favorite(qid);
+        return bizStoreManager.findMany(userPreference.getFavoriteSuggested());
+    }
+
+    public List<BizStoreEntity> favoriteTagged(String qid) {
+        UserPreferenceEntity userPreference = userPreferenceManager.favorite(qid);
+        return bizStoreManager.findMany(userPreference.getFavoriteTagged());
     }
 }
