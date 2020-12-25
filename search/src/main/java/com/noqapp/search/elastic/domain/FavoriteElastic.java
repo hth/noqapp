@@ -1,7 +1,6 @@
-package com.noqapp.search.elastic.json;
+package com.noqapp.search.elastic.domain;
 
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.search.elastic.domain.BizStoreElastic;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,7 +28,7 @@ import java.util.List;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ElasticFavorite extends AbstractDomain {
+public class FavoriteElastic extends AbstractDomain {
 
     @JsonProperty("fs")
     private List<BizStoreElastic> favoriteSuggested = new ArrayList<>();
@@ -41,7 +40,7 @@ public class ElasticFavorite extends AbstractDomain {
         return favoriteSuggested;
     }
 
-    public ElasticFavorite addFavoriteSuggested(BizStoreElastic favoriteSuggested) {
+    public FavoriteElastic addFavoriteSuggested(BizStoreElastic favoriteSuggested) {
         this.favoriteSuggested.add(favoriteSuggested);
         return this;
     }
@@ -50,7 +49,7 @@ public class ElasticFavorite extends AbstractDomain {
         return favoriteTagged;
     }
 
-    public ElasticFavorite addFavoriteTagged(BizStoreElastic favoriteTagged) {
+    public FavoriteElastic addFavoriteTagged(BizStoreElastic favoriteTagged) {
         this.favoriteTagged.add(favoriteTagged);
         return this;
     }
