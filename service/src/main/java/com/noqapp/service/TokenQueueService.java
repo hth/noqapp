@@ -308,8 +308,11 @@ public class TokenQueueService {
                 } else {
                     tokenQueue = getNextToken(codeQR, bizStore.realAvailableToken());
                 }
+
                 if (tokenQueue == null && bizStore.getAvailableTokenCount() > 0) {
                     return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.L, bizStore);
+                } else if (tokenQueue == null) {
+                    throw new RuntimeException("Failed to get token");
                 }
                 LOG.info("Assigned to queue with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
 
@@ -376,7 +379,7 @@ public class TokenQueueService {
             doActionBasedOnQueueStatus(codeQR, tokenQueue);
             return getJsonToken(codeQR, queue, tokenQueue);
         } catch (Exception e) {
-            LOG.error("Failed getting token reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed getting token qid={} codeQR={} reason={}", qid, codeQR, e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
         }
     }
