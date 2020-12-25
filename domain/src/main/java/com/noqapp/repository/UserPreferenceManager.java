@@ -24,5 +24,9 @@ public interface UserPreferenceManager extends RepositoryManager<UserPreferenceE
     UserPreferenceEntity updateOrderPreference(String qid, DeliveryModeEnum deliveryMode, PaymentMethodEnum paymentMethod, String userAddressId);
 
     UserPreferenceEntity favorite(String qid);
+
+    void addFavorite(String qid, String codeQR);
+
+    void removeFavorite(String qid, String codeQR);
 }
 

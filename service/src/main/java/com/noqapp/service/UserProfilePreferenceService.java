@@ -145,4 +145,14 @@ public class UserProfilePreferenceService {
             userPreference.getPaymentMethod(),
             userPreference.getUserAddressId());
     }
+
+    @Mobile
+    public void addFavorite(String qid, String codeQR) {
+        userPreferenceManager.addFavorite(qid, codeQR);
+    }
+
+    @Mobile
+    public void removeFavorite(String qid, String codeQR) {
+        userPreferenceManager.removeFavorite(qid, codeQR);
+    }
 }
