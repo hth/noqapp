@@ -1,6 +1,7 @@
 package com.noqapp.search.elastic.domain;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.domain.types.ActionTypeEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -36,6 +37,12 @@ public class FavoriteElastic extends AbstractDomain {
     @JsonProperty("ft")
     private List<BizStoreElastic> favoriteTagged = new ArrayList<>();
 
+    @JsonProperty("at")
+    private ActionTypeEnum actionType;
+
+    @JsonProperty("qr")
+    private String codeQR;
+
     public List<BizStoreElastic> getFavoriteSuggested() {
         return favoriteSuggested;
     }
@@ -51,6 +58,24 @@ public class FavoriteElastic extends AbstractDomain {
 
     public FavoriteElastic addFavoriteTagged(BizStoreElastic favoriteTagged) {
         this.favoriteTagged.add(favoriteTagged);
+        return this;
+    }
+
+    public ActionTypeEnum getActionType() {
+        return actionType;
+    }
+
+    public FavoriteElastic setActionType(ActionTypeEnum actionType) {
+        this.actionType = actionType;
+        return this;
+    }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public FavoriteElastic setCodeQR(String codeQR) {
+        this.codeQR = codeQR;
         return this;
     }
 }

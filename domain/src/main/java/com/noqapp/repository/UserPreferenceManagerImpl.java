@@ -106,6 +106,26 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     }
 
     @Override
+    public void addFavorite(String qid, String codeQR) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            entityUpdate(new Update().addToSet("FT", codeQR).pull("FS", codeQR)),
+            UserPreferenceEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void removeFavorite(String qid, String codeQR) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            entityUpdate(new Update().pull("FT", codeQR)),
+            UserPreferenceEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public void deleteHard(UserPreferenceEntity object) {
         mongoTemplate.remove(object, TABLE);
     }
