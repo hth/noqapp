@@ -9,6 +9,7 @@ import org.springframework.data.geo.Point;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -44,6 +45,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
 
     /** Find just one store with matching BizName Id. */
     BizStoreEntity findOne(String bizNameId);
+    List<BizStoreEntity> findMany(Set<String> bizNameIds);
 
     /** This is mostly being used when data is corrupted, like missing addresses or lat or lng. */
     List<BizStoreEntity> getAllActive(int skip, int limit);

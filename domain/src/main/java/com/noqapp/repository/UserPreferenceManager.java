@@ -5,6 +5,8 @@ import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentMethodEnum;
 
+import java.util.List;
+
 /**
  * User: hitender
  * Date: 11/19/16 1:54 AM
@@ -20,5 +22,7 @@ public interface UserPreferenceManager extends RepositoryManager<UserPreferenceE
     UserPreferenceEntity changeFirebaseNotification(String qid, CommunicationModeEnum communicationMode);
 
     UserPreferenceEntity updateOrderPreference(String qid, DeliveryModeEnum deliveryMode, PaymentMethodEnum paymentMethod, String userAddressId);
+
+    UserPreferenceEntity favorite(String qid);
 }
 

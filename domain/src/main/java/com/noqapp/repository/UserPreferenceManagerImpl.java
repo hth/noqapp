@@ -15,9 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * User: hitender
@@ -93,6 +96,13 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
             UserPreferenceEntity.class,
             TABLE
         );
+    }
+
+    @Override
+    public UserPreferenceEntity favorite(String qid) {
+        Query query = query(where("QID").is(qid));
+        query.fields().include("FT").include("FS");
+        return mongoTemplate.findOne(query, UserPreferenceEntity.class, TABLE);
     }
 
     @Override
