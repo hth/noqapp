@@ -6,6 +6,7 @@ import com.noqapp.repository.BusinessUserManager;
 import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StoreHourManager;
+import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
 
 import org.junit.jupiter.api.Assertions;
@@ -32,6 +33,7 @@ class BizServiceTest {
     @Mock private BusinessUserStoreManager businessUserStoreManager;
     @Mock private MailService mailService;
     @Mock private UserProfileManager userProfileManager;
+    @Mock private UserPreferenceManager userPreferenceManager;
     @Mock private ScheduledTaskManager scheduledTaskManager;
     @Mock private StoreHourService storeHourService;
 
@@ -52,6 +54,7 @@ class BizServiceTest {
             businessUserStoreManager,
             mailService,
             userProfileManager,
+            userPreferenceManager,
             scheduledTaskManager,
             storeHourService
         );
