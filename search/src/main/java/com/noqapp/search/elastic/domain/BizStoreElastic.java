@@ -203,16 +203,16 @@ public class BizStoreElastic extends AbstractDomain {
     private List<FacilityEnum> facilities = new LinkedList<>();
 
     @Transient
-    @JsonProperty("FS")
-    private Date freshStockArrivalDate;
-
-    @Transient
     @JsonProperty("AC")
     private List<AccreditationEnum> accreditation = new LinkedList<>() {{
         if (BusinessTypeEnum.DO == businessType) {
             add(AccreditationEnum.NABHP);
         }
     }};
+
+    @Transient
+    @JsonProperty("FS")
+    private Date freshStockArrivalDate;
 
     /** WP is populated when the BT is of type BusinessTypeEnum.DO. */
     @Transient
@@ -607,21 +607,21 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
-    public Date getFreshStockArrivalDate() {
-        return freshStockArrivalDate;
-    }
-
-    public BizStoreElastic setFreshStockArrivalDate(Date freshStockArrivalDate) {
-        this.freshStockArrivalDate = freshStockArrivalDate;
-        return this;
-    }
-
     public List<AccreditationEnum> getAccreditation() {
         return accreditation;
     }
 
     public BizStoreElastic setAccreditation(List<AccreditationEnum> accreditation) {
         this.accreditation = accreditation;
+        return this;
+    }
+    
+    public Date getFreshStockArrivalDate() {
+        return freshStockArrivalDate;
+    }
+
+    public BizStoreElastic setFreshStockArrivalDate(Date freshStockArrivalDate) {
+        this.freshStockArrivalDate = freshStockArrivalDate;
         return this;
     }
 
