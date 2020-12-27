@@ -134,8 +134,8 @@ public class BizService {
         this.executorService = Executors.newScheduledThreadPool(2);
     }
 
-    public BizNameEntity getByBizNameId(String bizId) {
-        return bizNameManager.getById(bizId);
+    public BizNameEntity getByBizNameId(String bizNameId) {
+        return bizNameManager.getById(bizNameId);
     }
 
     public void saveName(BizNameEntity bizName) {
@@ -701,13 +701,25 @@ public class BizService {
         bizStoreManager.updateStoreTokenAndServiceTime(codeQR, averageServiceTime, availableTokenCount);
     }
 
+    @Mobile
     public List<BizStoreEntity> favoriteSuggested(String qid) {
         UserPreferenceEntity userPreference = userPreferenceManager.favorite(qid);
         return bizStoreManager.findMany(userPreference.getFavoriteSuggested());
     }
 
+    @Mobile
     public List<BizStoreEntity> favoriteTagged(String qid) {
         UserPreferenceEntity userPreference = userPreferenceManager.favorite(qid);
         return bizStoreManager.findMany(userPreference.getFavoriteTagged());
+    }
+
+    @Mobile
+    public boolean notifyFreshStockArrival(String qid, String bizNameId) {
+        boolean status = false;
+        if (businessUserManager.hasAccess(qid, bizNameId)) {
+            status = bizStoreManager.updateWithFreshStockArrivalDate(bizNameId);
+        }
+
+        return status;
     }
 }

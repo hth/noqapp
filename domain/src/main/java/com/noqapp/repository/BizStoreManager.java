@@ -135,5 +135,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     void increaseTokenAfterCancellation(String codeQR);
 
     boolean decreaseTokenAfterCancellation(String codeQR);
+
+    boolean updateWithFreshStockArrivalDate(String bizNameId);
 }
 
