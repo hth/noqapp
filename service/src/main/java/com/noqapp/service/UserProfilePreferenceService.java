@@ -140,7 +140,8 @@ public class UserProfilePreferenceService {
             }
         }
 
-        return userPreferenceManager.updateOrderPreference(qid,
+        return userPreferenceManager.updateOrderPreference(
+            qid,
             userPreference.getDeliveryMode(),
             userPreference.getPaymentMethod(),
             userPreference.getUserAddressId());
