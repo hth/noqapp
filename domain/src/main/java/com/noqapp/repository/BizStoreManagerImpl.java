@@ -638,6 +638,18 @@ public class BizStoreManagerImpl implements BizStoreManager {
         return updateResult.wasAcknowledged();
     }
 
+    @Override
+    public boolean updateWithFreshStockArrivalDate(String bizNameId) {
+        UpdateResult updateResult = mongoTemplate.updateMulti(
+            query(where("BIZ_NAME.$id").is(new ObjectId(bizNameId))),
+            new Update().set("FS", new Date()),
+            BizStoreEntity.class,
+            TABLE
+        );
+
+        return updateResult.wasAcknowledged();
+    }
+
     //TODO add query to for near and for nearBy with distance
     //db.getCollection('BIZ_STORE').find({COR : {$near : [27.70,74.46] }})
     //KM

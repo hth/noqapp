@@ -64,11 +64,11 @@ import javax.validation.constraints.NotNull;
 })
 @Document(collection = "BIZ_STORE")
 @CompoundIndexes(value = {
-        /* Business name with address and phone makes it a unique store. */
-        @CompoundIndex(name = "biz_store_ph_idx", def = "{'PH': 1}", unique = false),
-        @CompoundIndex(name = "biz_store_qr_idx", def = "{'QR': 1}", unique = true),
-        @CompoundIndex(name = "biz_store_wl_idx", def = "{'WL': 1}", unique = true),
-        @CompoundIndex(name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}"),
+    /* Business name with address and phone makes it a unique store. */
+    @CompoundIndex(name = "biz_store_ph_idx", def = "{'PH': 1}", unique = false),
+    @CompoundIndex(name = "biz_store_qr_idx", def = "{'QR': 1}", unique = true),
+    @CompoundIndex(name = "biz_store_wl_idx", def = "{'WL': 1}", unique = true),
+    @CompoundIndex(name = "biz_store_cor_cs_idx", def = "{'COR': '2d', 'CS': 1}"),
 })
 public class BizStoreEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreEntity.class);
@@ -208,6 +208,9 @@ public class BizStoreEntity extends BaseEntity {
 
     @Field("FA")
     private List<FacilityEnum> facilities = new LinkedList<>();
+
+    @Field("FS")
+    private Date freshStockArrivalDate;
 
     //***************************/
     //*  Queue Settings Starts. */
@@ -756,6 +759,15 @@ public class BizStoreEntity extends BaseEntity {
 
     public BizStoreEntity setFacilities(List<FacilityEnum> facilities) {
         this.facilities = facilities;
+        return this;
+    }
+
+    public Date getFreshStockArrivalDate() {
+        return freshStockArrivalDate;
+    }
+
+    public BizStoreEntity setFreshStockArrivalDate(Date freshStockArrivalDate) {
+        this.freshStockArrivalDate = freshStockArrivalDate;
         return this;
     }
 

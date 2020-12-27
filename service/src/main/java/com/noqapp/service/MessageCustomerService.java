@@ -45,7 +45,6 @@ public class MessageCustomerService {
     private RegisteredDeviceManager registeredDeviceManager;
     private FirebaseService firebaseService;
     private BizService bizService;
-    private UserProfileManager userProfileManager;
 
     private int limitedToDays;
 
@@ -62,8 +61,7 @@ public class MessageCustomerService {
         NotificationMessageManager notificationMessageManager,
         RegisteredDeviceManager registeredDeviceManager,
         FirebaseService firebaseService,
-        BizService bizService,
-        UserProfileManager userProfileManager
+        BizService bizService
     ) {
         this.limitedToDays = limitedToDays;
 
@@ -73,7 +71,6 @@ public class MessageCustomerService {
         this.registeredDeviceManager = registeredDeviceManager;
         this.firebaseService = firebaseService;
         this.bizService = bizService;
-        this.userProfileManager = userProfileManager;
     }
 
     @Mobile

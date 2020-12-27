@@ -33,6 +33,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -202,9 +203,13 @@ public class BizStoreElastic extends AbstractDomain {
     private List<FacilityEnum> facilities = new LinkedList<>();
 
     @Transient
+    @JsonProperty("FS")
+    private Date freshStockArrivalDate;
+
+    @Transient
     @JsonProperty("AC")
     private List<AccreditationEnum> accreditation = new LinkedList<>() {{
-        if (businessType == BusinessTypeEnum.DO) {
+        if (BusinessTypeEnum.DO == businessType) {
             add(AccreditationEnum.NABHP);
         }
     }};
@@ -602,6 +607,15 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public Date getFreshStockArrivalDate() {
+        return freshStockArrivalDate;
+    }
+
+    public BizStoreElastic setFreshStockArrivalDate(Date freshStockArrivalDate) {
+        this.freshStockArrivalDate = freshStockArrivalDate;
+        return this;
+    }
+
     public List<AccreditationEnum> getAccreditation() {
         return accreditation;
     }
@@ -698,6 +712,7 @@ public class BizStoreElastic extends AbstractDomain {
             .setBizServiceImages(businessImageHolder.getServiceImages())
             .setAmenities(bizStore.getAmenities())
             .setFacilities(bizStore.getFacilities())
+            .setFreshStockArrivalDate(bizStore.getFreshStockArrivalDate())
             .setActive(bizStore.isActive());
 
         switch (bizStore.getBusinessType()) {
