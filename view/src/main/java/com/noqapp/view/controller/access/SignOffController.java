@@ -37,15 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 public class SignOffController extends SimpleUrlLogoutSuccessHandler implements LogoutSuccessHandler {
     private static final Logger LOG = LoggerFactory.getLogger(SignOffController.class);
 
-    @Value("${https}")
-    private String https;
-
-    @Value("${port}")
-    private String port;
-
-    @Value ("${host}")
-    private String host;
-
     @Override
     public void onLogoutSuccess(
         HttpServletRequest request,
@@ -63,7 +54,7 @@ public class SignOffController extends SimpleUrlLogoutSuccessHandler implements 
          * Even though it defaults to root as in secure.xml, need logoutSuccess to execute script to logout
          * from firebase authentication if any.
          */
-        response.sendRedirect(https + "://" + host + (StringUtils.isNotBlank(port) ? ":" + port : "") + "/open/login.htm?logoutSuccess=s--#");
+        response.sendRedirect("/open/login.htm?logoutSuccess=s--#");
 
         LOG.info("Logout qid={} from={}", queueUserId, request.getServletPath());
         super.onLogoutSuccess(request, response, authentication);

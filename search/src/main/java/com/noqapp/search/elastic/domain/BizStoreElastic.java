@@ -615,7 +615,7 @@ public class BizStoreElastic extends AbstractDomain {
         this.accreditation = accreditation;
         return this;
     }
-    
+
     public Date getFreshStockArrivalDate() {
         return freshStockArrivalDate;
     }
