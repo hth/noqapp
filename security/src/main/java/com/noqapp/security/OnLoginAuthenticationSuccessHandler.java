@@ -66,15 +66,6 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     @Value ("${businessAdminLanding:/business/landing.htm}")
     private String businessAdminLanding;
 
-    @Value ("${https}")
-    private String https;
-
-    @Value ("${port}")
-    private String port;
-
-    @Value ("${host}")
-    private String host;
-
     private final RequestCache requestCache = new HttpSessionRequestCache();
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -132,7 +123,7 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
             return;
         }
 
-        redirectStrategy.sendRedirect(req, res, https + "://" + host + (StringUtils.isNotBlank(port) ? ":" + port : "") + targetUrl);
+        redirectStrategy.sendRedirect(req, res, targetUrl);
     }
 
     /**
