@@ -27,8 +27,6 @@ public class ImageAndPDFValidator implements Validator {
     private String[] supportedFormat = new String[]{"image/jpg", "image/jpeg", "image/png"};
     private String[] supportedPDFFormat = new String[]{"image/jpg", "image/jpeg", "image/png", "application/pdf"};
 
-    public enum SUPPORTED_FILE {IMAGE, IMAGE_AND_PDF}
-
     @Override
     public boolean supports(Class<?> clazz) {
         return false;
