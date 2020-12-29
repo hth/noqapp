@@ -40,7 +40,7 @@ public class PublishJobValidator {
                 new MessageBuilder()
                     .error()
                     .source("description")
-                    .defaultText("Content cannot be empty")
+                    .defaultText("Description cannot be empty")
                     .build());
             status = "failure";
         } else if (publishJobForm.getDescription().length() < 200) {
@@ -48,7 +48,7 @@ public class PublishJobValidator {
                 new MessageBuilder()
                     .error()
                     .source("description")
-                    .defaultText("Content length minimum 200 characters")
+                    .defaultText("Description length minimum 200 characters")
                     .build());
             status = "failure";
         }

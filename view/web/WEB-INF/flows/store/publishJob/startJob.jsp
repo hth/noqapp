@@ -70,7 +70,7 @@
                                     </div>
                                 </div>
 
-                                <div class="add-new">
+                                <div class="add-new" style="padding-top: 10px;">
                                     <ul class="list-form">
                                             <%--<li>--%>
                                             <%--<div class="col-lable3" style="padding-top: 30px;">--%>

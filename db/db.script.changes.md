@@ -1,3 +1,7 @@
+### Changed Dec 29, 2020
+
+    db.getCollection('PUBLISH_ARTICLE').update({"CO" : {$exists : true}}, {$rename: {"CO":"DS"}}, {multi: true});
+
 ### Changed Dec 20, 2020
     
     db.getCollection('REGISTERED_DEVICE').update({ST: {$exists : true}}, {$unset: {ST : ""}}, {multi: true});

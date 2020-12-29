@@ -62,8 +62,8 @@ public class PublishArticleFlowActions {
         } else {
             PublishArticleEntity publishArticle = publishArticleService.findOne(publishId);
             return PublishArticleForm.newInstance()
-                .setArticleTitle(new ScrubbedInput(publishArticle.getTitle()))
-                .setArticle(publishArticle.getContent())
+                .setTitle(new ScrubbedInput(publishArticle.getTitle()))
+                .setDescription(publishArticle.getDescription())
                 .setPublishId(new ScrubbedInput(publishId))
                 .setBannerImage(publishArticle.getBannerImage());
         }
@@ -89,19 +89,19 @@ public class PublishArticleFlowActions {
 
             PublishArticleEntity publishArticle = new PublishArticleEntity()
                 .setQueueUserId(queueUser.getQueueUserId())
-                .setTitle(publishArticleForm.getArticleTitle().getText())
+                .setTitle(publishArticleForm.getTitle().getText())
                 .setBusinessType(businessUser.getBizName().getBusinessType())
                 .setBizCategoryId(businessCategoryId)
                 .setValidateStatus(publishArticleForm.getValidateStatus())
-                .setContent(publishArticleForm.getArticle());
+                .setDescription(publishArticleForm.getDescription());
 
             publishArticleService.save(publishArticle);
         } else {
             PublishArticleEntity publishArticle = publishArticleService.findOne(publishArticleForm.getPublishId().getText());
             publishArticle
-                .setTitle(publishArticleForm.getArticleTitle().getText())
+                .setTitle(publishArticleForm.getTitle().getText())
                 .setValidateStatus(StringUtils.isBlank(publishArticle.getBannerImage()) ? ValidateStatusEnum.I : ValidateStatusEnum.P)
-                .setContent(publishArticleForm.getArticle());
+                .setDescription(publishArticleForm.getDescription());
 
             publishArticleService.save(publishArticle);
         }
