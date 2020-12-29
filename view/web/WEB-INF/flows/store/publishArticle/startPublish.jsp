@@ -70,7 +70,7 @@
                                 </div>
                             </div>
 
-                            <div class="add-new">
+                            <div class="add-new" style="padding-top: 10px;">
                                 <ul class="list-form">
                                     <%--<li>--%>
                                         <%--<div class="col-lable3" style="padding-top: 30px;">--%>
@@ -83,16 +83,16 @@
                                     <%--</li>--%>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="articleTitle" cssErrorClass="lb_error">Title</form:label>
+                                            <form:label path="title" cssErrorClass="lb_error">Title</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="articleTitle" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            <form:input path="title" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
                                 </ul>
 
-                                <form:textarea path="article" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
+                                <form:textarea path="description" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
                                 <span style="display:block; font-size:13px; padding-top: 5px; text-align: right;">minimum 1000 characters</span>
                             </div>
 
@@ -142,7 +142,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/editor/ck/js/ckeditor.js"></script>
 <script>
-    CKEDITOR.replace('article');
+    CKEDITOR.replace('description');
 </script>
 <script>
     (function(w, u, d){var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};var l = function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://code.upscope.io/F3TE6jAMct.js';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(typeof u!=="function"){w.Upscope=i;l();}})(window, window.Upscope, document);

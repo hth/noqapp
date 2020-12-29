@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public class PublishArticleForm extends FileUploadForm implements Serializable {
 
-    private ScrubbedInput articleTitle;
-    private String article;
+    private ScrubbedInput title;
+    private String description;
     private String bannerImage;
 
     private Date publishDate;
@@ -31,21 +31,21 @@ public class PublishArticleForm extends FileUploadForm implements Serializable {
         return new PublishArticleForm();
     }
 
-    public ScrubbedInput getArticleTitle() {
-        return articleTitle;
+    public ScrubbedInput getTitle() {
+        return title;
     }
 
-    public PublishArticleForm setArticleTitle(ScrubbedInput articleTitle) {
-        this.articleTitle = articleTitle;
+    public PublishArticleForm setTitle(ScrubbedInput title) {
+        this.title = title;
         return this;
     }
 
-    public String getArticle() {
-        return article;
+    public String getDescription() {
+        return description;
     }
 
-    public PublishArticleForm setArticle(String article) {
-        this.article = article;
+    public PublishArticleForm setDescription(String description) {
+        this.description = description;
         return this;
     }
 

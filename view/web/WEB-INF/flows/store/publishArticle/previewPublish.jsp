@@ -61,19 +61,19 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="articleTitle" cssErrorClass="lb_error">Title</form:label>
+                                            <form:label path="title" cssErrorClass="lb_error">Title</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="articleTitle" cssClass="form-field-admin" cssErrorClass="form-field-admin lb_error" readonly="true"/>
+                                            <form:input path="title" cssClass="form-field-admin" cssErrorClass="form-field-admin lb_error" readonly="true"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="article" cssErrorClass="lb_error">Content</form:label>
+                                            <form:label path="description" cssErrorClass="lb_error">Content</form:label>
                                         </div>
                                         <div class="col-fields" style="margin-top: 10px;">
-                                            <c:out value="${publishArticleForm.article}" escapeXml="false"/>
+                                            <c:out value="${publishArticleForm.description}" escapeXml="false"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>

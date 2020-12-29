@@ -77,7 +77,7 @@
                                             <tr>
                                                 <td>${status.count}&nbsp;</td>
                                                 <td nowrap>
-                                                    ${item.articleTitle}
+                                                    ${item.title}
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0">
                                                         <tr>
                                                             <td style="border: 0; padding: 1px;">

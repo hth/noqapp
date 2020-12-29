@@ -21,10 +21,10 @@ public class PublishArticleValidator {
     private static final Logger LOG = LoggerFactory.getLogger(PublishArticleValidator.class);
 
     public String validate(PublishArticleForm publishArticleForm, MessageContext messageContext) {
-        LOG.info("Validate article title={}", publishArticleForm.getArticleTitle());
+        LOG.info("Validate article title={}", publishArticleForm.getTitle());
         String status = LandingController.SUCCESS;
 
-        if (null == publishArticleForm.getArticleTitle() || StringUtils.isBlank(publishArticleForm.getArticleTitle().getText())) {
+        if (null == publishArticleForm.getTitle() || StringUtils.isBlank(publishArticleForm.getTitle().getText())) {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
@@ -34,20 +34,20 @@ public class PublishArticleValidator {
             status = "failure";
         }
 
-        if (null == publishArticleForm.getArticle() || StringUtils.isBlank(publishArticleForm.getArticle())) {
+        if (null == publishArticleForm.getDescription() || StringUtils.isBlank(publishArticleForm.getDescription())) {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
                     .source("article")
-                    .defaultText("Content cannot be empty")
+                    .defaultText("Description cannot be empty")
                     .build());
             status = "failure";
-        } else if (publishArticleForm.getArticle().length() < 1000) {
+        } else if (publishArticleForm.getDescription().length() < 1000) {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()
                     .source("article")
-                    .defaultText("Content length minimum 1000 characters")
+                    .defaultText("Description length minimum 1000 characters")
                     .build());
             status = "failure";
         }

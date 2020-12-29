@@ -45,8 +45,8 @@ public class PublishArticleEntity extends BaseEntity {
     @Field ("VS")
     private ValidateStatusEnum validateStatus;
 
-    @Field("CO")
-    private String content;
+    @Field("DS")
+    private String description;
 
     @Field("BI")
     private String bannerImage;
@@ -128,12 +128,12 @@ public class PublishArticleEntity extends BaseEntity {
         return this;
     }
 
-    public String getContent() {
-        return content;
+    public String getDescription() {
+        return description;
     }
 
-    public PublishArticleEntity setContent(String content) {
-        this.content = content;
+    public PublishArticleEntity setDescription(String description) {
+        this.description = description;
         return this;
     }
 
