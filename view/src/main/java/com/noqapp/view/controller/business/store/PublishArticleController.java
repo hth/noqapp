@@ -149,6 +149,7 @@ public class PublishArticleController {
             case "DELETE":
                 PublishArticleEntity publishArticle = publishArticleService.findOne(publishArticleForm.getPublishId().getText());
                 publishArticle.markAsDeleted();
+                publishArticle.inActive();
                 publishArticleService.save(publishArticle);
                 break;
             default:

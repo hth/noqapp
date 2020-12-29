@@ -50,30 +50,30 @@
     <div class="content">
         <div class="warp-inner">
             <!-- Add New Supervisor -->
-            <sec:authorize access="hasAnyRole('ROLE_S_MANAGER')">
+            <sec:authorize access="hasAnyRole('ROLE_M_ADMIN')">
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
                         <h3>Publish Article</h3>
-                        <form:form modelAttribute="publishArticleForm" enctype="multipart/form-data">
+                        <form:form modelAttribute="publishJobForm" enctype="multipart/form-data">
                             <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                             <div class="add-new" style="padding-top: 30px;">
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="articleTitle" cssErrorClass="lb_error">Title</form:label>
+                                            <form:label path="title" cssErrorClass="lb_error">Title</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="articleTitle" cssClass="form-field-admin" cssErrorClass="form-field-admin lb_error" readonly="true"/>
+                                            <form:input path="title" cssClass="form-field-admin" cssErrorClass="form-field-admin lb_error" readonly="true"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="article" cssErrorClass="lb_error">Content</form:label>
+                                            <form:label path="description" cssErrorClass="lb_error">Description</form:label>
                                         </div>
                                         <div class="col-fields" style="margin-top: 10px;">
-                                            <c:out value="${publishArticleForm.article}" escapeXml="false"/>
+                                            <c:out value="${publishJobForm.description}" escapeXml="false"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -98,7 +98,7 @@
                 </div>
             </div>
             <!-- Add New Supervisor -->
-            </sec:authorize>
+        </sec:authorize>
         </div>
     </div>
     <!-- content end -->

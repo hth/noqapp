@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+    <secured attributes="ROLE_M_ADMIN" match="any"/>
+
+    <on-start>
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'publishId')"
+                  result="conversationScope.publishId"/>
+
+        <evaluate expression="publishJobFlowActions.initiatePublishJob(publishId)"
+                  result="flowScope.publishJobForm"/>
+    </on-start>
+
+    <view-state id="startJob" model="publishJobForm">
+        <transition on="preview" to="validate"/>
+        <transition on="cancelPublish" to="cancelPublish"/>
+    </view-state>
+
+    <action-state id="validate">
+        <evaluate expression="publishJobValidator.validate(publishJobForm, messageContext)"/>
+        <transition on="success" to="previewJob"/>
+        <transition on="failure" to="startJob"/>
+    </action-state>
+
+    <view-state id="previewJob" model="publishJobForm">
+        <transition on="confirm" to="confirm"/>
+        <transition on="revise" to="startJob"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="confirm">
+        <evaluate expression="publishJobFlowActions.confirm(publishJobForm)"/>
+        <transition on="success" to="home"/>
+        <transition on="failure" to="startJob"/>
+    </action-state>
+
+    <end-state id="home"
+               view="externalRedirect:contextRelative:/business/store/publishJob/landing.htm"/>
+
+    <view-state id="cancelPublish"
+                view="externalRedirect:contextRelative:/business/store/publishJob/landing.htm"/>
+
+    <global-transitions>
+        <transition on="cancel" to="home"/>
+    </global-transitions>
+</flow>
