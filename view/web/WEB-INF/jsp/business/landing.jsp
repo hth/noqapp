@@ -42,6 +42,7 @@
                         <a href="${pageContext.request.contextPath}/business/survey/landing.htm">Survey</a>
                         <a href="${pageContext.request.contextPath}/business/paymentConfiguration/landing.htm">Payment Permission</a>
                         <a href="${pageContext.request.contextPath}/business/advertisement/landing.htm">Advertisement</a>
+                        <a href="${pageContext.request.contextPath}/business/store/publishJob/landing.htm">Post Job</a>
                         <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
                         <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
                         <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
