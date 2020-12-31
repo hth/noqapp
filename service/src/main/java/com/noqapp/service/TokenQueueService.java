@@ -986,9 +986,10 @@ public class TokenQueueService {
         }
     }
 
-    public void sendBulkMessageToBusinessUser(String title, String body, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType) {
+    public void sendBulkMessageToBusinessUser(String id, String title, String body, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType) {
         JsonMessage jsonMessage = new JsonMessage(topic);
         JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
+        jsonData.setId(id);
 
         if (DeviceTypeEnum.I == deviceType) {
             jsonMessage.getNotification()
@@ -1010,10 +1011,12 @@ public class TokenQueueService {
         }
     }
 
-    public void sendBulkMessageToBusinessUser(String title, String body, String imageURL, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType) {
+    public void sendBulkMessageToBusinessUser(String id, String title, String body, String imageURL, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType) {
         JsonMessage jsonMessage = new JsonMessage(topic);
         JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
-        jsonData.setImageURL(imageURL);
+        jsonData
+            .setId(id)
+            .setImageURL(imageURL);
 
         if (DeviceTypeEnum.I == deviceType) {
             jsonMessage.getNotification()

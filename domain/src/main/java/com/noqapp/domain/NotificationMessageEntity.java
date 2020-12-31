@@ -28,6 +28,15 @@ public class NotificationMessageEntity extends BaseEntity {
     @Field("MC")
     private int messageSendCount;
 
+    @Field("VC")
+    private int viewClientCount;
+
+    @Field("VU")
+    private int viewUnregisteredCount;
+
+    @Field("VB")
+    private int viewBusinessCount;
+
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -61,6 +70,33 @@ public class NotificationMessageEntity extends BaseEntity {
 
     public NotificationMessageEntity setMessageSendCount(int messageSendCount) {
         this.messageSendCount = messageSendCount;
+        return this;
+    }
+
+    public int getViewClientCount() {
+        return viewClientCount;
+    }
+
+    public NotificationMessageEntity setViewClientCount(int viewClientCount) {
+        this.viewClientCount = viewClientCount;
+        return this;
+    }
+
+    public int getViewUnregisteredCount() {
+        return viewUnregisteredCount;
+    }
+
+    public NotificationMessageEntity setViewUnregisteredCount(int viewUnregisteredCount) {
+        this.viewUnregisteredCount = viewUnregisteredCount;
+        return this;
+    }
+
+    public int getViewBusinessCount() {
+        return viewBusinessCount;
+    }
+
+    public NotificationMessageEntity setViewBusinessCount(int viewBusinessCount) {
+        this.viewBusinessCount = viewBusinessCount;
         return this;
     }
 }
