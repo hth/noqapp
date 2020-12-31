@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -77,7 +77,7 @@ public class ProfessionalProfileManagerImpl implements ProfessionalProfileManage
     public ProfessionalProfileEntity removeMarkedAsDeleted(String qid) {
         return mongoTemplate.findAndModify(
             query(where("QID").is(qid).and("D").is(true)),
-            entityUpdate(Update.update("D", false)),
+            entityUpdate(update("D", false)),
             FindAndModifyOptions.options().returnNew(true),
             ProfessionalProfileEntity.class,
             TABLE

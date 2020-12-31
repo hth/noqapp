@@ -35,6 +35,10 @@ public abstract class JsonData {
     @JsonProperty("f")
     private FirebaseMessageTypeEnum firebaseMessageType;
 
+    /* For reference to message id. */
+    @JsonProperty("id")
+    private String id;
+
     @JsonProperty("title")
     private String title;
 
@@ -49,6 +53,15 @@ public abstract class JsonData {
 
     JsonData(FirebaseMessageTypeEnum firebaseMessageType) {
         this.firebaseMessageType = firebaseMessageType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public JsonData setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public String getTitle() {

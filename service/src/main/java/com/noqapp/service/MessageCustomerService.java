@@ -14,7 +14,6 @@ import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.NotificationMessageManager;
 import com.noqapp.repository.RegisteredDeviceManager;
-import com.noqapp.repository.UserProfileManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -141,12 +140,12 @@ public class MessageCustomerService {
             if (StringUtils.isBlank(imageURL)) {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                     String topic = CommonUtil.buildTopic(subscribedTopic, deviceType.name());
-                    tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
+                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType);
                 }
             } else {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                     String topic = CommonUtil.buildTopic(subscribedTopic, deviceType.name());
-                    tokenQueueService.sendBulkMessageToBusinessUser(title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
+                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
                 }
             }
 
@@ -195,12 +194,12 @@ public class MessageCustomerService {
                 switch (deviceType) {
                     case A:
                         if (subscribeToTopic(tokens_A, topic)) {
-                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
+                            tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType);
                         }
                         break;
                     case I:
                         if (subscribeToTopic(tokens_I, topic)) {
-                            tokenQueueService.sendBulkMessageToBusinessUser(title, body, topic, MessageOriginEnum.A, deviceType);
+                            tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType);
                         }
                         break;
                     case W:
@@ -234,5 +233,17 @@ public class MessageCustomerService {
         }
 
         return true;
+    }
+
+    public boolean increaseViewCount(String id) {
+        return notificationMessageManager.increaseViewClientCount(id);
+    }
+
+    public boolean increaseViewUnregisteredCount(String id) {
+        return notificationMessageManager.increaseViewUnregisteredCount(id);
+    }
+
+    public boolean increaseViewBusinessCount(String id) {
+        return notificationMessageManager.increaseViewBusinessCount(id);
     }
 }

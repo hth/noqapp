@@ -1,7 +1,12 @@
 package com.noqapp.repository;
 
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.NotificationMessageEntity;
+
+import com.mongodb.client.result.UpdateResult;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -47,5 +53,38 @@ public class NotificationMessageManagerImpl implements NotificationMessageManage
     @Override
     public void deleteHard(NotificationMessageEntity object) {
         throw new UnsupportedOperationException("This method is not supported");
+    }
+
+    public boolean increaseViewClientCount(String id) {
+        UpdateResult updateFirst = mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            new Update().inc("VC", 1),
+            NotificationMessageEntity.class,
+            TABLE
+        );
+
+        return updateFirst.wasAcknowledged();
+    }
+
+    public boolean increaseViewUnregisteredCount(String id) {
+        UpdateResult updateFirst = mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            new Update().inc("VU", 1),
+            NotificationMessageEntity.class,
+            TABLE
+        );
+
+        return updateFirst.wasAcknowledged();
+    }
+
+    public boolean increaseViewBusinessCount(String id) {
+        UpdateResult updateFirst = mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            new Update().inc("VB", 1),
+            NotificationMessageEntity.class,
+            TABLE
+        );
+
+        return updateFirst.wasAcknowledged();
     }
 }
