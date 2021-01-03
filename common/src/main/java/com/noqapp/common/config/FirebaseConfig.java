@@ -51,7 +51,7 @@ public class FirebaseConfig {
             InputStream credentialsStream = getClass().getClassLoader().getResourceAsStream(adminSdk);
             try {
                 GoogleCredentials googleCredentials = GoogleCredentials.fromStream(credentialsStream);
-                options = new FirebaseOptions.Builder()
+                options = FirebaseOptions.builder()
                         .setCredentials(googleCredentials)
                         .setDatabaseUrl(environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodDB : sandboxDB)
                         .build();
