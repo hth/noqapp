@@ -141,6 +141,7 @@ import com.noqapp.service.FtpService;
 import com.noqapp.service.GenerateUserIdService;
 import com.noqapp.service.InviteService;
 import com.noqapp.service.JoinAbortService;
+import com.noqapp.service.LanguageTranslationService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.NotifyMobileService;
 import com.noqapp.service.PreferredBusinessService;
@@ -311,6 +312,7 @@ public class ITest extends RealMongoForITest {
     @Mock protected FirebaseConfig firebaseConfig;
     @Mock protected TextToSpeechConfiguration textToSpeechConfiguration;
     @Mock protected SmsService smsService;
+    @Mock protected LanguageTranslationService languageTranslationService;
 
     private MockEnvironment mockEnvironment;
 
@@ -446,6 +448,7 @@ public class ITest extends RealMongoForITest {
             textToSpeechService,
             firebaseService,
             userProfilePreferenceService,
+            languageTranslationService,
             apiHealthService
         );
 

@@ -99,6 +99,7 @@ public class TokenQueueService {
     private TextToSpeechService textToSpeechService;
     private FirebaseService firebaseService;
     private UserProfilePreferenceService userProfilePreferenceService;
+    private LanguageTranslationService languageTranslationService;
     private ApiHealthService apiHealthService;
 
     private ExecutorService executorService;
@@ -123,6 +124,7 @@ public class TokenQueueService {
         TextToSpeechService textToSpeechService,
         FirebaseService firebaseService,
         UserProfilePreferenceService userProfilePreferenceService,
+        LanguageTranslationService languageTranslationService,
         ApiHealthService apiHealthService
     ) {
         this.allowJoinAfterMinutes = allowJoinAfterMinutes;
@@ -139,6 +141,7 @@ public class TokenQueueService {
         this.textToSpeechService = textToSpeechService;
         this.firebaseService = firebaseService;
         this.userProfilePreferenceService = userProfilePreferenceService;
+        this.languageTranslationService = languageTranslationService;
         this.apiHealthService = apiHealthService;
 
         this.executorService = newCachedThreadPool();
@@ -998,7 +1001,8 @@ public class TokenQueueService {
         } else {
             jsonMessage.setNotification(null);
             jsonData.setTitle(title)
-                .setBody(body);
+                .setBody(body)
+                .setTranslatedBody(languageTranslationService.translateText(body));
         }
 
         jsonMessage.setData(jsonData);

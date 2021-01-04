@@ -26,9 +26,9 @@ import java.util.Locale;
 public class SampleTextToSpeech {
 
     public static void main(String[] args) throws Exception {
-        new SampleTextToSpeech().synthesizeSsml("No Queue Token number 5 Mr Durga, please visit Dr Vaswani OPD 5");
-        new SampleTextToSpeech().synthesizeSsml("No Queue Token संख्या 5 Mr Durga, कृप्या Dr Vaswani ओपीडी 5 पर जाएं");
-        List<Voice> voices = new SampleTextToSpeech().listAllSupportedVoices();
+        synthesizeSsml("No Queue Token number 5 Mr Durga, please visit Dr Vaswani OPD 5");
+        synthesizeSsml("No Queue Token संख्या 5 Mr Durga, कृप्या Dr Vaswani ओपीडी 5 पर जाएं");
+        List<Voice> voices = listAllSupportedVoices();
         for (Voice voice : voices) {
             ProtocolStringList protocolStringList = voice.getLanguageCodesList();
             for (ByteString byteString : protocolStringList.asByteStringList()) {
@@ -111,8 +111,7 @@ public class SampleTextToSpeech {
                 System.out.format("SSML Voice Gender: %s\n", voice.getSsmlGender());
 
                 // Display the natural sample rate hertz for this voice. Example: 24000
-                System.out.format("Natural Sample Rate Hertz: %s\n\n",
-                    voice.getNaturalSampleRateHertz());
+                System.out.format("Natural Sample Rate Hertz: %s\n\n", voice.getNaturalSampleRateHertz());
             }
             return voices;
         }

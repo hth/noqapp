@@ -235,14 +235,17 @@ public class MessageCustomerService {
         return true;
     }
 
+    @Mobile
     public boolean increaseViewCount(String id) {
         return notificationMessageManager.increaseViewClientCount(id);
     }
 
+    @Mobile
     public boolean increaseViewUnregisteredCount(String id) {
         return notificationMessageManager.increaseViewUnregisteredCount(id);
     }
 
+    @Mobile
     public boolean increaseViewBusinessCount(String id) {
         return notificationMessageManager.increaseViewBusinessCount(id);
     }

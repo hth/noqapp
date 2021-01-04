@@ -223,6 +223,7 @@ public class ITest extends RealMongoForITest {
     @Mock protected CashfreeService cashfreeService;
     @Mock protected FirebaseConfig firebaseConfig;
     @Mock protected TextToSpeechConfiguration textToSpeechConfiguration;
+    @Mock protected LanguageTranslationService languageTranslationService;
 
     private MockEnvironment mockEnvironment;
 
@@ -356,6 +357,7 @@ public class ITest extends RealMongoForITest {
             textToSpeechService,
             firebaseService,
             userProfilePreferenceService,
+            languageTranslationService,
             apiHealthService
         );
 

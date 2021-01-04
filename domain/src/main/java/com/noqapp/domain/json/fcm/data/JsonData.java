@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -45,6 +47,9 @@ public abstract class JsonData {
     @JsonProperty("body")
     private String body;
 
+    @JsonProperty("translatedBody")
+    private Map<String, String> translatedBody = new HashMap<>();
+
     @JsonProperty("imageURL")
     private String imageURL;
 
@@ -79,6 +84,20 @@ public abstract class JsonData {
 
     public JsonData setBody(String body) {
         this.body = body;
+        return this;
+    }
+
+    public Map<String, String> getTranslatedBody() {
+        return translatedBody;
+    }
+
+    public JsonData setTranslatedBody(Map<String, String> translatedBody) {
+        this.translatedBody = translatedBody;
+        return this;
+    }
+
+    public JsonData addTranslatedBody(String targetLanguage, String text) {
+        this.translatedBody.put(targetLanguage, text);
         return this;
     }
 
