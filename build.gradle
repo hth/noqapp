@@ -623,7 +623,7 @@ task setUpProfileForJunit() {
         }
 
         copy {
-            from "view/environment/$env/noqapp-servlet.xml"
+            from "view/environment/$env/noqueue-servlet.xml"
             into activeProfilewarWebInfDir
         }
 
@@ -850,7 +850,7 @@ task prepWar(dependsOn: [
         }
 
         copy {
-            from "view/environment/$env/noqapp-servlet.xml"
+            from "view/environment/$env/noqueue-servlet.xml"
             into warWebInfDir
         }
 
