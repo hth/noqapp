@@ -11,7 +11,7 @@
         <param-value>
             /WEB-INF/flow/flow.xml
             /WEB-INF/security/secure.xml
-            /WEB-INF/noqapp-servlet.xml
+            /WEB-INF/noqueue-servlet.xml
         </param-value>
     </context-param>
 
