@@ -115,7 +115,7 @@ subprojects {
                     'Implementation-Title': rootProject.name,
                     'Implementation-Version': allprojects.version + " $env",
                     'Build-Time': "${new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")}",
-                    'Copyright': '2016-2020, NoQueue'
+                    'Copyright': '2016-2021, NoQueue'
             )
         }
     }
@@ -922,9 +922,9 @@ publishing {
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2016-2020. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2016-2021. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
-                license.appendNode('distribution', 'NoQApp private repository')
+                license.appendNode('distribution', 'NoQueue private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
@@ -944,9 +944,9 @@ publishing {
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2016-2020. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2016-2021. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
-                license.appendNode('distribution', 'NoQApp private repository')
+                license.appendNode('distribution', 'NoQueue private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
@@ -966,9 +966,9 @@ publishing {
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2016-2020. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2016-2021. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
-                license.appendNode('distribution', 'NoQApp private repository')
+                license.appendNode('distribution', 'NoQueue private repository')
 
                 def developer = root.appendNode('developers').appendNode('developer')
                 developer.appendNode('id', 'NoQueue')
@@ -988,7 +988,7 @@ publishing {
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2016-2020. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2016-2021. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
                 license.appendNode('distribution', 'NoQueue private repository')
 
@@ -1010,7 +1010,7 @@ publishing {
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2016-2020. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2016-2021. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
                 license.appendNode('distribution', 'NoQueue private repository')
 
@@ -1032,7 +1032,7 @@ publishing {
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2016-2020. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2016-2021. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
                 license.appendNode('distribution', 'NoQueue private repository')
 
@@ -1054,7 +1054,7 @@ publishing {
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2016-2020. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2016-2021. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
                 license.appendNode('distribution', 'NoQueue private repository')
 
@@ -1076,7 +1076,7 @@ publishing {
                 root.appendNode('inceptionYear', '2016')
 
                 def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'Private. Copyright 2016-2020. All rights reserved.')
+                license.appendNode('name', 'Private. Copyright 2016-2021. All rights reserved.')
                 license.appendNode('url', 'https://www.noqapp.com/licenses/private.txt')
                 license.appendNode('distribution', 'NoQueue private repository')
 
