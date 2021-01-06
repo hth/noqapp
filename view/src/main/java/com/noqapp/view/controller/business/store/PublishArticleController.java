@@ -110,7 +110,7 @@ public class PublishArticleController {
         for (PublishArticleEntity publishArticle : publishArticles) {
             publishArticleForms.add(
                 PublishArticleForm.newInstance()
-                    .setTitle(new ScrubbedInput(publishArticle.getTitle()))
+                    .setTitle(publishArticle.getTitle())
                     .setBannerImage(publishArticle.getBannerImage())
                     .setPublishId(new ScrubbedInput(publishArticle.getId()))
                     .setActive(publishArticle.isActive())

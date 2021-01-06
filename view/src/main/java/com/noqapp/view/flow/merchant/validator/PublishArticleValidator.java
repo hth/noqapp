@@ -24,7 +24,7 @@ public class PublishArticleValidator {
         LOG.info("Validate article title={}", publishArticleForm.getTitle());
         String status = LandingController.SUCCESS;
 
-        if (null == publishArticleForm.getTitle() || StringUtils.isBlank(publishArticleForm.getTitle().getText())) {
+        if (null == publishArticleForm.getTitle() || StringUtils.isBlank(publishArticleForm.getTitle())) {
             messageContext.addMessage(
                 new MessageBuilder()
                     .error()

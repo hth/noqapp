@@ -82,7 +82,7 @@ public class PublishJobController {
         for (PublishJobEntity publishJob : publishJobs) {
             publishJobForms.add(
                 PublishJobForm.newInstance()
-                    .setTitle(new ScrubbedInput(publishJob.getTitle()))
+                    .setTitle(publishJob.getTitle())
                     .setPublishId(new ScrubbedInput(publishJob.getId()))
                     .setActive(publishJob.isActive())
                     .setPublishDate(publishJob.getPublishDate()));

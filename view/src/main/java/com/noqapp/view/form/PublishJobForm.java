@@ -16,7 +16,7 @@ import java.util.Date;
 public class PublishJobForm implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(PublishJobForm.class);
 
-    private ScrubbedInput title;
+    private String title;
     private String description;
 
     private Date publishDate = new Date();
@@ -34,11 +34,11 @@ public class PublishJobForm implements Serializable {
         return new PublishJobForm();
     }
 
-    public ScrubbedInput getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public PublishJobForm setTitle(ScrubbedInput title) {
+    public PublishJobForm setTitle(String title) {
         this.title = title;
         return this;
     }
