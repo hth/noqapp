@@ -81,7 +81,7 @@ public class FirebaseService {
             TopicManagementResponse response = firebaseConfig.getFirebaseMessaging().subscribeToTopic(registrationTokens, topic);
             LOG.info("Subscribed successCount={} topic={}", response.getSuccessCount(), topic);
         } catch (FirebaseMessagingException e) {
-            LOG.error("Failed subscribing reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed subscribing {} {} reason={}", topic, registrationTokens, e.getLocalizedMessage(), e);
         }
     }
 
