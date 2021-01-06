@@ -52,7 +52,7 @@ public class PublishJobFlowActions {
         } else {
             PublishJobEntity jobPost = publishJobService.findOne(publishId);
             return PublishJobForm.newInstance()
-                .setTitle(new ScrubbedInput(jobPost.getTitle()))
+                .setTitle(jobPost.getTitle())
                 .setDescription(jobPost.getDescription())
                 .setPublishId(new ScrubbedInput(publishId));
         }
@@ -72,7 +72,7 @@ public class PublishJobFlowActions {
         if (publishJobForm.getPublishId() == null) {
             publishJob = new PublishJobEntity()
                 .setQueueUserId(queueUser.getQueueUserId())
-                .setTitle(publishJobForm.getTitle().getText())
+                .setTitle(publishJobForm.getTitle())
                 .setBusinessType(businessUser.getBizName().getBusinessType())
                 .setBizNameId(businessUser.getBizName().getId())
                 .setValidateStatus(publishJobForm.getValidateStatus())
@@ -81,7 +81,7 @@ public class PublishJobFlowActions {
         } else {
             publishJob = publishJobService.findOne(publishJobForm.getPublishId().getText());
             publishJob
-                .setTitle(publishJobForm.getTitle().getText())
+                .setTitle(publishJobForm.getTitle())
                 //TODO(hth) Mark as not validated in future to validating text
                 .setValidateStatus(ValidateStatusEnum.A)
                 .setDescription(publishJobForm.getDescription());

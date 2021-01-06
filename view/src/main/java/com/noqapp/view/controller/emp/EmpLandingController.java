@@ -178,7 +178,7 @@ public class EmpLandingController {
 
         publishArticleForm
             .setBannerImage(publishArticle.getBannerImage())
-            .setTitle(new ScrubbedInput(publishArticle.getTitle()))
+            .setTitle(publishArticle.getTitle())
             .setDescription(publishArticle.getDescription())
             .setPublishId(new ScrubbedInput(publishArticle.getId()));
         model.addAttribute("bucketName", bucketName);

@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class PublishArticleForm extends FileUploadForm implements Serializable {
 
-    private ScrubbedInput title;
+    private String title;
     private String description;
     private String bannerImage;
 
@@ -31,11 +31,11 @@ public class PublishArticleForm extends FileUploadForm implements Serializable {
         return new PublishArticleForm();
     }
 
-    public ScrubbedInput getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public PublishArticleForm setTitle(ScrubbedInput title) {
+    public PublishArticleForm setTitle(String title) {
         this.title = title;
         return this;
     }
