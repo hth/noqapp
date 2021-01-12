@@ -55,7 +55,7 @@
                     <div class="admin-content">
                         <div class="store">
                             <h3>Publish Job</h3>
-                            <form:form modelAttribute="publishJobForm" enctype="multipart/form-data">
+                            <form:form modelAttribute="publishJobForm">
                                 <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
 
                                 <div class="error-box">

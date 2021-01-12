@@ -258,6 +258,10 @@ public final class CommonUtil {
         return currencyLocal(countryCode) + orderPrice;
     }
 
+    public static String displayWithCurrencyCode(int orderPrice, String countryCode) {
+        return currencyLocal(countryCode) + orderPrice;
+    }
+
     public static Map<String, String> getLanguages() {
         return languages;
     }
