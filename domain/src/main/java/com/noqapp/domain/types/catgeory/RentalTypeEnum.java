@@ -1,7 +1,5 @@
 package com.noqapp.domain.types.catgeory;
 
-import com.noqapp.domain.types.AdvertisementTypeEnum;
-
 import java.util.EnumSet;
 
 /**
