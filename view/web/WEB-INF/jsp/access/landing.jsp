@@ -10,6 +10,17 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+
+    <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/brands.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/solid.css" rel="stylesheet">
+
+    <!-- custom styling for all icons -->
+    i.fas,
+    i.fab {
+    border: 1px solid red;
+    }
 </head>
 
 <body>
@@ -77,6 +88,14 @@
                     </c:if>
 
                     <div class="store">
+                        <div class="add-store">
+                            <div class="store-table">
+                                Post on Marketplace: <a href="/access/marketplace/post.htm" class="add-btn">Start Here</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="store">
                         <c:if test="${!empty landingForm.minorUserProfiles}">
                             <h3>Guardian</h3>
 
@@ -109,7 +128,6 @@
                         </c:if>
 
                         <h3>Current Queue</h3>
-
                         <div class="add-store">
                             <div class="store-table">
                                 <c:choose>
@@ -142,10 +160,54 @@
                                     </c:otherwise>
                                 </c:choose>
                             </div>
+                        </div>
+
+                        <h3>Listed on Marketplace</h3>
+                        <div class="add-store">
+                            <div class="store-table">
+                                <c:choose>
+                                    <c:when test="${!empty landingForm.properties}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>Name</th>
+                                                <th>Posted For</th>
+                                                <th>Listed For</th>
+                                                <th>City/Area</th>
+                                                <th>Not Visible After</th>
+                                                <th>Stats</th>
+                                                <th></th>
+                                            </tr>
+                                            <c:forEach items="${landingForm.properties}" var="property" varStatus="status">
+                                                <tr>
+                                                    <td>${status.count}&nbsp;</td>
+                                                    <td><a href="/access/marketplace/edit/${property.businessType.name}/${property.id}.htm" target="_blank">${property.title}</a></td>
+                                                    <td>${property.businessType.description} (${property.rentalType.description})</td>
+                                                    <td>${property.priceForDisplay}</td>
+                                                    <td>${property.city}</td>
+                                                    <td><fmt:formatDate pattern="MMMM dd, yyyy" value="${property.publishUntil}"/></td>
+                                                    <td>Likes: ${property.likeCount} Interests: ${property.expressedInterestCount}</td>
+                                                    <c:choose>
+                                                        <c:when test="${empty property.postImages}">
+                                                            <td><i class="fas fa-images" style="color:#ff217c;"></i></td>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <td><i class="fas fa-images" style="color:#4e4d4d;"></i></td>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        No posting on marketplace.
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
 
                         </div>
-                        <h3>Historical Queue</h3>
 
+                        <h3>Historical Queue</h3>
                         <div class="add-store">
                             <div class="store-table">
                                 <c:choose>

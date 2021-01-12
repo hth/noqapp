@@ -7,7 +7,8 @@ package com.noqapp.domain.types;
 public enum BusinessSupportEnum {
     OD("OD", "Order"),
     OQ("OQ", "Order but Queue"),
-    QQ("QQ", "Queue");
+    QQ("QQ", "Queue"),
+    MP("MP", "Marketplace");
 
     private String name;
     private String description;

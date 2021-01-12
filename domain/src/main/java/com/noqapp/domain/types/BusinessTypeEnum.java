@@ -1,17 +1,21 @@
 package com.noqapp.domain.types;
 
+import static com.noqapp.domain.types.BusinessSupportEnum.MP;
 import static com.noqapp.domain.types.BusinessSupportEnum.OQ;
 import static com.noqapp.domain.types.BusinessSupportEnum.OD;
 import static com.noqapp.domain.types.BusinessSupportEnum.QQ;
 import static com.noqapp.domain.types.MessageOriginEnum.O;
 import static com.noqapp.domain.types.MessageOriginEnum.Q;
+import static com.noqapp.domain.types.MessageOriginEnum.M;
 import static com.noqapp.domain.types.TransactionCancelEnum.MEA;
 import static com.noqapp.domain.types.TransactionCancelEnum.HTA;
 import static com.noqapp.domain.types.TransactionCancelEnum.TMA;
 import static com.noqapp.domain.types.TransactionCancelEnum.TNS;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -58,7 +62,10 @@ public enum BusinessTypeEnum {
     TA("TA", "Tourist Attraction", Q, "Queue", QQ, TNS),
     NC("NC", "Night Club", Q, "Queue", QQ, TNS),
     BK("BK", "Bank", Q, "Queue", QQ, TNS),
-    PA("PA", "Park", Q, "Queue", QQ, TNS);
+    PA("PA", "Park", Q, "Queue", QQ, TNS),
+
+    //For Marketplace
+    PR("PR", "Property Rental", M, "Marketplace", MP, TNS);
 
     private final String description;
     private final String name;
@@ -80,6 +87,7 @@ public enum BusinessTypeEnum {
         switch (messageOrigin) {
             case O:
             case Q:
+            case M:
                 this.messageOrigin = messageOrigin;
                 break;
             default:
@@ -151,6 +159,12 @@ public enum BusinessTypeEnum {
         List<BusinessTypeEnum> list = Stream.of(BusinessTypeEnum.values()).collect(Collectors.toList());
         list.remove(PW);
         return list;
+    }
+
+    public static List<BusinessTypeEnum> marketPlaces() {
+        return new ArrayList<>() {{
+            add(PR);
+        }};
     }
 
     @Override

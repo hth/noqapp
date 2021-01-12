@@ -8,6 +8,7 @@ import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.QueueService;
+import com.noqapp.service.market.PropertyService;
 import com.noqapp.view.form.LandingForm;
 
 import org.slf4j.Logger;
@@ -19,7 +20,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -48,6 +51,7 @@ public class LandingController {
     private QueueService queueService;
     private ApiHealthService apiHealthService;
     private AccountService accountService;
+    private PropertyService propertyService;
 
     @Autowired
     public LandingController(
@@ -60,7 +64,8 @@ public class LandingController {
         BusinessUserService businessUserService,
         QueueService queueService,
         ApiHealthService apiHealthService,
-        AccountService accountService
+        AccountService accountService,
+        PropertyService propertyService
     ) {
         this.nextPage = nextPage;
         this.migrateToBusinessRegistrationFlowActions = migrateToBusinessRegistrationFlowActions;
@@ -69,6 +74,7 @@ public class LandingController {
         this.queueService = queueService;
         this.apiHealthService = apiHealthService;
         this.accountService = accountService;
+        this.propertyService = propertyService;
     }
 
     @GetMapping(value = "/landing")
@@ -90,7 +96,8 @@ public class LandingController {
             landingForm
                 .setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
                 .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()))
-                .setMinorUserProfiles(accountService.findDependentProfiles(queueUser.getQueueUserId()));
+                .setMinorUserProfiles(accountService.findDependentProfiles(queueUser.getQueueUserId()))
+                .setProperties(propertyService.findPostedProperties(queueUser.getQueueUserId()));
 
             LOG.info("Current size={} and Historical size={}",
                 landingForm.getCurrentQueues().size(),

@@ -16,4 +16,5 @@ public enum MessageOriginEnum {
     MF, //Medical Follow Up         (In App DB)
     CQO,//Current Queue And Order   (In App DB)
     AU, //Auth                      (NOT In App DB)
+    M,  //Marketplace               (In App DB)
 }
