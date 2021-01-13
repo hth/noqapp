@@ -13,7 +13,6 @@ import java.util.EnumSet;
     "PMD.LongVariable"
 })
 public enum RentalTypeEnum {
-
     A("A", "Apartment"),
     H("H", "House"),
     R("R", "Room"),
