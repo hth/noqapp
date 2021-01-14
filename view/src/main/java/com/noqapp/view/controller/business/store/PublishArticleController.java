@@ -253,7 +253,7 @@ public class PublishArticleController {
         return "redirect:/business/store/publishArticle/" + publishArticleForm.getPublishId() + "/upload";
     }
 
-    /** For uploading service image. */
+    /** For cancelling uploading service image. */
     @PostMapping (value = "/upload", params = {"cancel_Upload"})
     public String upload() {
         return "redirect:/business/store/publishArticle/landing.htm";
