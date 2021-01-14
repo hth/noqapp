@@ -34,8 +34,7 @@
         </div>
         <div class="top-menu-right2">
             <div class="dropdown">
-                <button onclick="myFunction()" class="dropbtn">
-                    <sec:authentication property="principal.userShortName"/></button>
+                <button onclick="myFunction()" class="dropbtn"><sec:authentication property="principal.userShortName"/></button>
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static2/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
@@ -140,18 +139,18 @@
                                                 <th>Token Number</th>
                                             </tr>
                                             <c:forEach items="${landingForm.currentQueues}" var="store" varStatus="status">
-                                                <tr>
-                                                    <td>${status.count}&nbsp;</td>
-                                                    <td>
-                                                        <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
-                                                    </td>
-                                                    <td>
-                                                        ${store.queueUserState.description}
-                                                    </td>
-                                                    <td>
-                                                        ${store.tokenNumber}
-                                                    </td>
-                                                </tr>
+                                            <tr>
+                                                <td>${status.count}&nbsp;</td>
+                                                <td>
+                                                    <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                                </td>
+                                                <td>
+                                                    ${store.queueUserState.description}
+                                                </td>
+                                                <td>
+                                                    ${store.tokenNumber}
+                                                </td>
+                                            </tr>
                                             </c:forEach>
                                         </table>
                                     </c:when>
@@ -179,23 +178,23 @@
                                                 <th></th>
                                             </tr>
                                             <c:forEach items="${landingForm.properties}" var="property" varStatus="status">
-                                                <tr>
-                                                    <td>${status.count}&nbsp;</td>
-                                                    <td><a href="/access/marketplace/edit/${property.businessType.name}/${property.id}.htm" target="_blank">${property.title}</a></td>
-                                                    <td>${property.businessType.description} (${property.rentalType.description})</td>
-                                                    <td>${property.priceForDisplay}</td>
-                                                    <td>${property.city}</td>
-                                                    <td><fmt:formatDate pattern="MMMM dd, yyyy" value="${property.publishUntil}"/></td>
-                                                    <td>Likes: ${property.likeCount} Interests: ${property.expressedInterestCount}</td>
-                                                    <c:choose>
-                                                        <c:when test="${empty property.postImages}">
-                                                            <td><i class="fas fa-images" style="color:#ff217c;"></i></td>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <td><i class="fas fa-images" style="color:#4e4d4d;"></i></td>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </tr>
+                                            <tr>
+                                                <td>${status.count}&nbsp;</td>
+                                                <td><a href="/access/marketplace/edit/${property.businessType.name}/${property.id}.htm" target="_blank">${property.title}</a></td>
+                                                <td>${property.businessType.description} (${property.rentalType.description})</td>
+                                                <td>${property.priceForDisplay}</td>
+                                                <td>${property.city}</td>
+                                                <td><fmt:formatDate pattern="MMMM dd, yyyy" value="${property.publishUntil}"/></td>
+                                                <td>Likes: ${property.likeCount} Interests: ${property.expressedInterestCount}</td>
+                                                <c:choose>
+                                                    <c:when test="${empty property.postImages}">
+                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/upload.htm"><i class="fas fa-images" style="color:#ff217c;"></i></a></td>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/upload.htm"><i class="fas fa-images" style="color:#4e4d4d;"></i></a></td>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </tr>
                                             </c:forEach>
                                         </table>
                                     </c:when>

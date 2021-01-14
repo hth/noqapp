@@ -44,6 +44,8 @@ public class PostOnMarketplaceForm implements Serializable {
     @Transient
     private List<RentalTypeEnum> rentalTypes = new ArrayList<>(RentalTypeEnum.rentalTypes);
 
+    private boolean postingAllowed;
+
     public String getIp() {
         return ip;
     }
@@ -122,6 +124,15 @@ public class PostOnMarketplaceForm implements Serializable {
 
     public PostOnMarketplaceForm setRentalTypes(List<RentalTypeEnum> rentalTypes) {
         this.rentalTypes = rentalTypes;
+        return this;
+    }
+
+    public boolean isPostingAllowed() {
+        return postingAllowed;
+    }
+
+    public PostOnMarketplaceForm setPostingAllowed(boolean postingAllowed) {
+        this.postingAllowed = postingAllowed;
         return this;
     }
 }

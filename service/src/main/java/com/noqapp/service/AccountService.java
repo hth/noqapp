@@ -2,6 +2,7 @@ package com.noqapp.service;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.HashText;
 import com.noqapp.common.utils.RandomString;
@@ -818,5 +819,14 @@ public class AccountService {
 
     public void resetOTPCount(String qid) {
         userAccountManager.resetOTPCount(qid);
+    }
+
+    public boolean accountOpenedInLast10Days(String qid) {
+        UserAccountEntity userAccount = userAccountManager.findByQueueUserId(qid);
+        if (!userAccount.isAccountValidated()) {
+            return false;
+        }
+
+        return DateUtil.getDaysBetween(userAccount.getCreated()) >= 10;
     }
 }

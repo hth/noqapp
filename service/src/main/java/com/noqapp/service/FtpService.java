@@ -1,6 +1,8 @@
 package com.noqapp.service;
 
 import com.noqapp.common.utils.FileUtil;
+import com.noqapp.domain.market.MarketplaceEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,12 +47,17 @@ public class FtpService {
     static String ARTICLE_AWS = "article";
     static String VIGYAPAN_AWS = "vigyapan";
 
+    /** Marketplace. */
+    static String MARKETPLACE_AWS = "marketplace";
+    static String MARKETPLACE_PROPERTY_AWS = MARKETPLACE_AWS + FileUtil.getFileSeparator() + "property";
+
     /** FTP needs with file separator. */
     public static String PROFILE = FileUtil.getFileSeparator() + PROFILE_AWS;
     public static String SERVICE = FileUtil.getFileSeparator() + SERVICE_AWS;
     public static String PRODUCT = FileUtil.getFileSeparator() + PRODUCT_AWS;
     public static String ARTICLE = FileUtil.getFileSeparator() + ARTICLE_AWS;
     public static String VIGYAPAN = FileUtil.getFileSeparator() + VIGYAPAN_AWS;
+    public static String MARKETPLACE_PROPERTY = FileUtil.getFileSeparator() + MARKETPLACE_PROPERTY_AWS;
 
     /** TODO(hth) Medical stores all medical record related images. */
     public static String MEDICAL = FileUtil.getFileSeparator() + MEDICAL_AWS;
@@ -60,7 +67,8 @@ public class FtpService {
         FtpService.PRODUCT,
         FtpService.MEDICAL,
         FtpService.ARTICLE,
-        FtpService.VIGYAPAN};
+        FtpService.VIGYAPAN,
+        FtpService.MARKETPLACE_PROPERTY};
 
     public static String PREFERRED_STORE = FileUtil.getFileSeparator() + "preferredStore";
     public static String MASTER_MEDICAL = FileUtil.getFileSeparator() + "masterMedical";
@@ -280,5 +288,15 @@ public class FtpService {
     private String createConnectionString(String filePath) {
         LOG.info("FTP Filepath {}", filePath);
         return "sftp://" + ftpUser + ":" + ftpPassword + "@" + host + "/" + filePath;
+    }
+
+    public static String marketBucketName(String bucketName, BusinessTypeEnum businessType) {
+        switch (businessType) {
+            case PR:
+                return bucketName + FtpService.MARKETPLACE_PROPERTY;
+            default:
+                //
+        }
+        return null;
     }
 }

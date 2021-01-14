@@ -1,6 +1,7 @@
 package com.noqapp.loader.scheduledtasks;
 
 import static com.noqapp.service.FtpService.ARTICLE;
+import static com.noqapp.service.FtpService.MARKETPLACE_PROPERTY;
 import static com.noqapp.service.FtpService.MEDICAL;
 import static com.noqapp.service.FtpService.PROFILE;
 import static com.noqapp.service.FtpService.SERVICE;
@@ -229,7 +230,7 @@ public class FileOperationOnS3 {
             return;
         }
 
-        String[] locations = {SERVICE, PRODUCT, ARTICLE, MEDICAL, VIGYAPAN};
+        String[] locations = {SERVICE, PRODUCT, ARTICLE, MEDICAL, VIGYAPAN, MARKETPLACE_PROPERTY};
         for (String location : locations) {
             processUploadToS3(location);
         }
