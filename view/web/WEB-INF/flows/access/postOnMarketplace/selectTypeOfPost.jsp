@@ -126,7 +126,14 @@
                                         </c:when>
                                         <c:otherwise>
                                             <div class="button-btn">
-                                                <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
+                                                <c:choose>
+                                                    <c:when test="${postingAllowed}">
+                                                        <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        Validate your email account and wait for at least 10 days before posting.
+                                                    </c:otherwise>
+                                                </c:choose>
                                                 <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                             </div>
                                         </c:otherwise>

@@ -58,7 +58,7 @@ public class PostOnMarketplaceFlowActions {
     }
 
     @SuppressWarnings("unused")
-    public PostOnMarketplaceForm startOfNewPost(String postId, String businessTypeAsString, ExternalContext externalContext) {
+    public PostOnMarketplaceForm startOfNewPost(String postId, String businessTypeAsString, boolean postingAllowed, ExternalContext externalContext) {
         HttpServletRequest httpServletRequest = (HttpServletRequest)externalContext.getNativeRequest();
         String ip = HttpRequestResponseParser.getClientIpAddress(httpServletRequest);
 
@@ -85,7 +85,8 @@ public class PostOnMarketplaceFlowActions {
         PostOnMarketplaceForm postOnMarketplaceForm = new PostOnMarketplaceForm()
             .setIp(ip)
             .setCountryCode(countryCode)
-            .setCity(city);
+            .setCity(city)
+            .setPostingAllowed(postingAllowed);
 
         if (null != location) {
             postOnMarketplaceForm.setCoordinate(new double[]{location.getLongitude(), location.getLatitude()});

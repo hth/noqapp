@@ -9,7 +9,9 @@
     <on-start>
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'postId')" result="conversationScope.postId" />
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'businessTypeAsString')" result="conversationScope.businessTypeAsString" />
-        <evaluate expression="postOnMarketplaceFlowActions.startOfNewPost(postId, businessTypeAsString, externalContext)" result="flowScope.postOnMarketplaceForm"/>
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'postingAllowed')" result="conversationScope.postingAllowed" />
+        <evaluate expression="postOnMarketplaceFlowActions.startOfNewPost(postId, businessTypeAsString, postingAllowed, externalContext)"
+                  result="flowScope.postOnMarketplaceForm"/>
     </on-start>
 
     <view-state id="selectTypeOfPost" model="postOnMarketplaceForm">

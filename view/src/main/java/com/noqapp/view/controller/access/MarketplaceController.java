@@ -1,5 +1,8 @@
 package com.noqapp.view.controller.access;
 
+import com.noqapp.domain.site.QueueUser;
+import com.noqapp.service.AccountService;
+import com.noqapp.service.UserProfilePreferenceService;
 import com.noqapp.service.market.PropertyService;
 
 import org.slf4j.Logger;
@@ -7,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,22 +34,29 @@ public class MarketplaceController {
 
     private String postOnMarketplaceFlowActions;
 
-    private PropertyService propertyService;
+    private AccountService accountService;
 
     @Autowired
     public MarketplaceController(
         @Value("${postOnMarketplaceFlowActions:redirect:/access/postOnMarketplace.htm}")
         String postOnMarketplaceFlowActions,
 
-        PropertyService propertyService
+        AccountService accountService
     ) {
         this.postOnMarketplaceFlowActions = postOnMarketplaceFlowActions;
-        this.propertyService = propertyService;
+        this.accountService = accountService;
     }
 
     @GetMapping(value = "/post")
-    public String postOnMarketplace() {
-        LOG.info("Requested post on marketplace {}", postOnMarketplaceFlowActions);
+    public String postOnMarketplace(RedirectAttributes redirectAttributes) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Requested post on marketplace {}", queueUser.getQueueUserId());
+        if (accountService.accountOpenedInLast10Days(queueUser.getQueueUserId())) {
+            redirectAttributes.addFlashAttribute("postingAllowed", true);
+        } else {
+            LOG.error("Cannot post to market place {}", queueUser.getQueueUserId());
+            redirectAttributes.addFlashAttribute("postingAllowed", false);
+        }
         return postOnMarketplaceFlowActions;
     }
 

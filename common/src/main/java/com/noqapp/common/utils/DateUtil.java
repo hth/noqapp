@@ -226,6 +226,11 @@ public final class DateUtil {
         return DTF_DD_MMM_YYYY.format(date.toInstant().atZone(ZoneId.of(timeZone)));
     }
 
+    public static long getDaysBetween(Date start) {
+        Assert.notNull(start, "Start date is null");
+        return getDaysBetween(DateUtil.asLocalDate(start), DateUtil.asLocalDate(new Date()));
+    }
+
     /**
      * Inclusive of the days the campaign is going to run.
      *
