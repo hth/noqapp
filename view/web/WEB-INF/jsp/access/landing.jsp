@@ -188,10 +188,10 @@
                                                 <td>Likes: ${property.likeCount} Interests: ${property.expressedInterestCount}</td>
                                                 <c:choose>
                                                     <c:when test="${empty property.postImages}">
-                                                        <td><i class="fas fa-images" style="color:#ff217c;"></i></td>
+                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/upload.htm"><i class="fas fa-images" style="color:#ff217c;"></i></a></td>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <td><i class="fas fa-images" style="color:#4e4d4d;"></i></td>
+                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/upload.htm"><i class="fas fa-images" style="color:#4e4d4d;"></i></a></td>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </tr>

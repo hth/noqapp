@@ -33,4 +33,8 @@ public class PropertyService {
     public List<PropertyEntity> findPostedProperties(String queueUserId) {
         return propertyManager.findByQid(queueUserId);
     }
+
+    public PropertyEntity findOneById(String postId) {
+        return propertyManager.findOneById(postId);
+    }
 }

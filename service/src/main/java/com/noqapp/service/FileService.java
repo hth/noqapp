@@ -23,6 +23,7 @@ import com.noqapp.domain.StoreCategoryEntity;
 import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
@@ -36,6 +37,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PublishArticleManager;
 import com.noqapp.repository.S3FileManager;
 import com.noqapp.repository.StoreProductManager;
+import com.noqapp.repository.market.PropertyManager;
 import com.noqapp.service.exceptions.CSVParsingException;
 import com.noqapp.service.exceptions.CSVProcessingException;
 
@@ -150,6 +152,7 @@ public class FileService {
     private StoreProductManager storeProductManager;
     private PublishArticleManager publishArticleManager;
     private AdvertisementManager advertisementManager;
+    private PropertyManager propertyManager;
     private BizService bizService;
     private StoreCategoryService storeCategoryService;
 
@@ -175,6 +178,7 @@ public class FileService {
         StoreProductManager storeProductManager,
         PublishArticleManager publishArticleManager,
         AdvertisementManager advertisementManager,
+        PropertyManager propertyManager,
         BizService bizService,
         StoreCategoryService storeCategoryService
     ) {
@@ -191,6 +195,7 @@ public class FileService {
         this.storeProductManager = storeProductManager;
         this.publishArticleManager = publishArticleManager;
         this.advertisementManager = advertisementManager;
+        this.propertyManager = propertyManager;
         this.bizService = bizService;
         this.storeCategoryService = storeCategoryService;
     }
@@ -467,6 +472,53 @@ public class FileService {
         }
     }
 
+    @Async
+    public void addPropertyImage(String qid, String postId, String filename, BufferedImage bufferedImage) {
+        File toFile = null;
+        File decreaseResolution = null;
+        File tempFile = null;
+
+        try {
+            PropertyEntity property = propertyManager.findOneById(postId);
+            Set<String> images = property.getPostImages();
+
+            while (images.size() >= 10) {
+                String lastImage = images.stream().findFirst().get();
+                deleteMarketImage(qid, lastImage, postId, property.getBusinessType());
+                /* Delete local reference. */
+                images.remove(lastImage);
+            }
+
+            toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
+            decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
+
+            // /java/temp/directory/filename.extension
+            String toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
+            tempFile = new File(toFileAbsolutePath);
+            writeToFile(tempFile, ImageIO.read(decreaseResolution));
+            ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY);
+
+            images.add(filename);
+            propertyManager.save(property);
+
+            LOG.debug("Uploaded store service file={}", toFileAbsolutePath);
+        } catch (IOException e) {
+            LOG.error("Failed adding store image={} reason={}", filename, e.getLocalizedMessage(), e);
+        } finally {
+            if (null != toFile) {
+                toFile.delete();
+            }
+
+            if (null != decreaseResolution) {
+                decreaseResolution.delete();
+            }
+
+            if (null != tempFile) {
+                tempFile.delete();
+            }
+        }
+    }
+
     public BizStoreEntity addStoreImage(String qid, String codeQR, String filename, BufferedImage bufferedImage, boolean service) {
         File toFile = null;
         File decreaseResolution = null;
@@ -542,6 +594,21 @@ public class FileService {
         /* Delete from S3. */
         S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.PRODUCT_AWS).setCodeQR(bizStoreId);
         s3FileManager.save(s3File);
+    }
+
+    public void deleteMarketImage(String qid, String imageName, String postId, BusinessTypeEnum businessType) {
+        switch (businessType) {
+            case PR:
+                /* Delete existing file business service image before the upload process began. */
+                ftpService.delete(imageName, postId, FtpService.MARKETPLACE_PROPERTY);
+
+                /* Delete from S3. */
+                S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.MARKETPLACE_PROPERTY_AWS).setCodeQR(postId);
+                s3FileManager.save(s3File);
+                break;
+            default:
+                //
+        }
     }
 
     /**
