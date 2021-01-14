@@ -87,6 +87,8 @@ import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserPreferenceManagerImpl;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.UserProfileManagerImpl;
+import com.noqapp.repository.market.PropertyManager;
+import com.noqapp.repository.market.PropertyManagerImpl;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessCustomerService;
@@ -208,6 +210,7 @@ public class ITest extends RealMongoForITest {
     protected PublishArticleManager publishArticleManager;
     protected MasterLabManager masterLabManager;
     protected AdvertisementManager advertisementManager;
+    protected PropertyManager propertyManager;
     protected CouponManager couponManager;
     protected CustomTextToSpeechManager customTextToSpeechManager;
 
@@ -272,6 +275,8 @@ public class ITest extends RealMongoForITest {
         businessUserStoreManager = new BusinessUserStoreManagerImpl(getMongoTemplate());
         publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
         advertisementManager = new AdvertisementManagerImpl(getMongoTemplate());
+        propertyManager = new PropertyManagerImpl(getMongoTemplate());
+
         medicalRecordManager = new MedicalRecordManagerImpl(getMongoTemplate());
         medicalRadiologyManager = new MedicalRadiologyManagerImpl(getMongoTemplate());
         medicalPathologyManager = new MedicalPathologyManagerImpl(getMongoTemplate());
@@ -381,6 +386,7 @@ public class ITest extends RealMongoForITest {
             storeProductManager,
             publishArticleManager,
             advertisementManager,
+            propertyManager,
             bizService,
             storeCategoryService
         );
