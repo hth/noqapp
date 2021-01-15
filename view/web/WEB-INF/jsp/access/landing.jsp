@@ -141,15 +141,9 @@
                                             <c:forEach items="${landingForm.currentQueues}" var="store" varStatus="status">
                                             <tr>
                                                 <td>${status.count}&nbsp;</td>
-                                                <td>
-                                                    <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
-                                                </td>
-                                                <td>
-                                                    ${store.queueUserState.description}
-                                                </td>
-                                                <td>
-                                                    ${store.tokenNumber}
-                                                </td>
+                                                <td><a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a></td>
+                                                <td>${store.queueUserState.description}</td>
+                                                <td>${store.tokenNumber}</td>
                                             </tr>
                                             </c:forEach>
                                         </table>
@@ -185,13 +179,30 @@
                                                 <td>${property.priceForDisplay}</td>
                                                 <td>${property.city}</td>
                                                 <td><fmt:formatDate pattern="MMMM dd, yyyy" value="${property.publishUntil}"/></td>
-                                                <td>Likes: ${property.likeCount} Interests: ${property.expressedInterestCount}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${property.likeCount == 0}">
+                                                            <i class="fas fa-heart" style="color:#4e4d4d;"></i> ${property.likeCount}
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <i class="fas fa-heart" style="color:#ff217c;"></i> ${property.likeCount}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <c:choose>
+                                                        <c:when test="${property.expressedInterestCount == 0}">
+                                                            <i class="fas fa-fire" style="color:#4e4d4d;"></i> ${property.expressedInterestCount}
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <i class="fas fa-fire" style="color:#ff217c;"></i> ${property.expressedInterestCount}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
                                                 <c:choose>
                                                     <c:when test="${empty property.postImages}">
-                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/upload.htm"><i class="fas fa-images" style="color:#ff217c;"></i></a></td>
+                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/upload.htm">0 <i class="fas fa-images" style="color:#4e4d4d;"></i></a></td>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/upload.htm"><i class="fas fa-images" style="color:#4e4d4d;"></i></a></td>
+                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/upload.htm">${property.postImages.size()} <i class="fas fa-images" style="color:#ff217c;"></i></a></td>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </tr>
