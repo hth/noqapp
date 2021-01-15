@@ -127,7 +127,7 @@ public class MarketplaceController {
     }
 
     /** For uploading article image. */
-    @GetMapping(value = "/{businessTypeAsString}/{postId}/upload")
+    @GetMapping(value = "/{businessTypeAsString}/{postId}/uploadImage")
     public String upload(
         @PathVariable("businessTypeAsString")
         String businessTypeAsString,
@@ -139,6 +139,7 @@ public class MarketplaceController {
         FileUploadForm fileUploadForm,
 
         Model model,
+        RedirectAttributes redirectAttrs,
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -158,6 +159,16 @@ public class MarketplaceController {
                 LOG.error("Reached unsupported condition={}", businessTypeAsString);
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessTypeAsString);
         }
+
+        /* Different binding for different form. */
+        if (model.asMap().containsKey("resultImage")) {
+            model.addAttribute(
+                "org.springframework.validation.BindingResult.fileUploadForm",
+                model.asMap().get("resultImage"));
+        } else {
+            redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm);
+        }
+
         model.addAttribute("bucketName", FtpService.marketBucketName(bucketName, marketplace.getBusinessType()));
         model.addAttribute("images", marketplace.getPostImages());
         model.addAttribute("postId", marketplace.getId());

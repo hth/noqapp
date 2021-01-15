@@ -182,27 +182,27 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${property.likeCount == 0}">
-                                                            <i class="fas fa-heart" style="color:#4e4d4d;"></i> ${property.likeCount}
+                                                            <i class="fas fa-heart" style="color:#4e4d4d;" title="Liked"></i> ${property.likeCount}
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <i class="fas fa-heart" style="color:#ff217c;"></i> ${property.likeCount}
+                                                            <i class="fas fa-heart" style="color:#ff217c;" title="Liked"></i> ${property.likeCount}
                                                         </c:otherwise>
                                                     </c:choose>
                                                     <c:choose>
                                                         <c:when test="${property.expressedInterestCount == 0}">
-                                                            <i class="fas fa-fire" style="color:#4e4d4d;"></i> ${property.expressedInterestCount}
+                                                            <i class="fas fa-fire" style="color:#4e4d4d;" title="Interest"></i> ${property.expressedInterestCount}
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <i class="fas fa-fire" style="color:#ff217c;"></i> ${property.expressedInterestCount}
+                                                            <i class="fas fa-fire" style="color:#ff217c;" title="Interest"></i> ${property.expressedInterestCount}
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
                                                 <c:choose>
                                                     <c:when test="${empty property.postImages}">
-                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/upload.htm">0 <i class="fas fa-images" style="color:#4e4d4d;"></i></a></td>
+                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/uploadImage.htm">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Images"></i></a></td>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/upload.htm">${property.postImages.size()} <i class="fas fa-images" style="color:#ff217c;"></i></a></td>
+                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/uploadImage.htm">${property.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Images"></i></a></td>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </tr>
