@@ -178,7 +178,11 @@
                                                 <td>${property.businessType.description} (${property.rentalType.description})</td>
                                                 <td>${property.priceForDisplay}</td>
                                                 <td>${property.city}</td>
-                                                <td><fmt:formatDate pattern="MMMM dd, yyyy" value="${property.publishUntil}"/></td>
+                                                <td>
+                                                    <a href="/access/marketplace/${property.businessType.name}/${property.id}/boost.htm">
+                                                    <fmt:formatDate pattern="MMMM dd, yyyy" value="${property.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
+                                                    </a>
+                                                </td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${property.likeCount == 0}">
