@@ -3,6 +3,7 @@ package com.noqapp.view.controller.access;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.FileUtil;
+import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.domain.site.QueueUser;
@@ -143,7 +144,7 @@ public class MarketplaceController {
         HttpServletResponse response
     ) throws IOException {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (StringUtils.isBlank(postId)) {
+        if (StringUtils.isBlank(postId) || !Validate.isValidObjectId(postId)) {
             LOG.warn("Could not find postId={}", queueUser.getQueueUserId());
             response.sendError(SC_NOT_FOUND, "Could not find");
             return null;
@@ -151,13 +152,25 @@ public class MarketplaceController {
         LOG.info("Landing page to load store images qid={}", queueUser.getQueueUserId());
 
         MarketplaceEntity marketplace;
-        switch (BusinessTypeEnum.valueOf(businessTypeAsString)) {
-            case PR:
-                marketplace = propertyService.findOneById(postId);
-                break;
-            default:
-                LOG.error("Reached unsupported condition={}", businessTypeAsString);
-                throw new UnsupportedOperationException("Reached unsupported condition " + businessTypeAsString);
+        try {
+            switch (BusinessTypeEnum.valueOf(businessTypeAsString)) {
+                case PR:
+                    marketplace = propertyService.findOneById(postId);
+                    break;
+                default:
+                    LOG.error("Reached unsupported condition={}", businessTypeAsString);
+                    throw new UnsupportedOperationException("Reached unsupported condition " + businessTypeAsString);
+            }
+
+            if (null == marketplace) {
+                LOG.warn("Could not find postId={}", queueUser.getQueueUserId());
+                response.sendError(SC_NOT_FOUND, "Could not find");
+                return null;
+            }
+        } catch (RuntimeException e) {
+            LOG.warn("Could not find postId={}", queueUser.getQueueUserId());
+            response.sendError(SC_NOT_FOUND, "Could not find");
+            return null;
         }
 
         /* Different binding for different form. */
@@ -273,5 +286,20 @@ public class MarketplaceController {
                 FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType),
                 bufferedImage);
         }
+    }
+
+    @GetMapping(value = "/{businessTypeAsString}/{postId}/boost")
+    public String boostYourPost(
+        @PathVariable("businessTypeAsString")
+        String businessTypeAsString,
+
+        @PathVariable("postId")
+        String postId,
+
+        Model model,
+        RedirectAttributes redirectAttrs,
+        HttpServletResponse response
+    ) {
+        return "";
     }
 }

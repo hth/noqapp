@@ -16,6 +16,8 @@ public class StoreManagerForm {
     private Map<BusinessTypeEnum, BusinessTypeEnum> businessTypeMap = new HashMap<>();
     private List<BizStoreEntity> bizStores = new ArrayList<>();
     private Map<String, TokenQueueEntity> tokenQueues = new HashMap<>();
+    private Map<String, Long> productListCount = new HashMap<>();
+    private Map<String, Long> storeCategoryListCount = new HashMap<>();
 
     public String getBizName() {
         return bizName;
@@ -67,6 +69,24 @@ public class StoreManagerForm {
 
     public StoreManagerForm addTokenQueue(String codeQR, TokenQueueEntity tokenQueue) {
         this.tokenQueues.put(codeQR, tokenQueue);
+        return this;
+    }
+
+    public Map<String, Long> getProductListCount() {
+        return productListCount;
+    }
+
+    public StoreManagerForm addProductListCount(String id, Long count) {
+        this.productListCount.put(id, count);
+        return this;
+    }
+
+    public Map<String, Long> getStoreCategoryListCount() {
+        return storeCategoryListCount;
+    }
+
+    public StoreManagerForm addStoreCategoryListCount(String id, Long count) {
+        this.storeCategoryListCount.put(id, count);
         return this;
     }
 }
