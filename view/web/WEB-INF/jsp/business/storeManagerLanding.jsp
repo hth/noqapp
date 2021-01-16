@@ -128,9 +128,9 @@
                                                 || BusinessTypeEnum.CDQ eq store.businessType
                                                 }">
                                                     <span style="display:block; font-size:13px;">
-                                                        <a href="/business/store/product/${store.id}.htm" style="color: #0000FF;"><i class="fas fa-th-large"></i> Product List</a>
+                                                        <a href="/business/store/product/${store.id}.htm" style="color: #0000FF;"><i class="fas fa-th-large"></i> Products (${storeManagerForm.productListCount.get(store.id)})</a>
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
-                                                        <a href="/business/store/category/${store.id}.htm" style="color: #0000FF;"><i class="fas fa-list"></i> Store Category</a>
+                                                        <a href="/business/store/category/${store.id}.htm" style="color: #0000FF;"><i class="fas fa-list"></i> Store Category (${storeManagerForm.storeCategoryListCount.get(store.id)})</a>
                                                     </span>
                                                     <span style="display:block; font-size:13px;">
                                                         <c:choose>

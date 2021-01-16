@@ -72,4 +72,8 @@ public class StoreCategoryService {
         storeProductManager.removeStoreCategoryReference(storeCategory.getId());
         storeCategoryManager.deleteHard(storeCategory);
     }
+
+    public long countOfCategory(String storeId) {
+        return storeCategoryManager.countOfCategory(storeId);
+    }
 }

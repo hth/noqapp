@@ -17,7 +17,9 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.QueueService;
+import com.noqapp.service.StoreCategoryService;
 import com.noqapp.service.StoreHourService;
+import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.report.pdf.PeopleInQueue;
 import com.noqapp.view.form.StoreManagerForm;
@@ -72,6 +74,8 @@ public class StoreManagerLandingController {
     private BizStoreElasticService bizStoreElasticService;
     private StoreHourService storeHourService;
     private QueueService queueService;
+    private StoreCategoryService storeCategoryService;
+    private StoreProductService storeProductService;
 
     @Autowired
     public StoreManagerLandingController(
@@ -84,7 +88,9 @@ public class StoreManagerLandingController {
         BusinessUserService businessUserService,
         BizStoreElasticService bizStoreElasticService,
         StoreHourService storeHourService,
-        QueueService queueService
+        QueueService queueService,
+        StoreCategoryService storeCategoryService,
+        StoreProductService storeProductService
     ) {
         this.nextPage = nextPage;
         this.bizService = bizService;
@@ -94,6 +100,8 @@ public class StoreManagerLandingController {
         this.bizStoreElasticService = bizStoreElasticService;
         this.storeHourService = storeHourService;
         this.queueService = queueService;
+        this.storeCategoryService = storeCategoryService;
+        this.storeProductService = storeProductService;
     }
 
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
@@ -121,12 +129,17 @@ public class StoreManagerLandingController {
             BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
 
+            long productCount = storeProductService.countOfProduct(bizStore.getId());
+            long categoryCount = storeCategoryService.countOfCategory(bizStore.getId());
+
             storeManagerForm
                 //TODO(hth) added biz name multiple times
                 .setBizName(bizStore.getBizName().getBusinessName())
                 .setBusinessType(bizStore.getBizName().getBusinessType())
                 .addBizStore(bizStore)
-                .addTokenQueue(codeQR, tokenQueue);
+                .addTokenQueue(codeQR, tokenQueue)
+                .addStoreCategoryListCount(bizStore.getId(), categoryCount)
+                .addProductListCount(bizStore.getId(), productCount);
             //TODO(hth) can add current average time by calculating serviced clients in queue.
         }
 
