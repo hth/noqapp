@@ -14,6 +14,17 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+
+    <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/brands.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/solid.css" rel="stylesheet">
+
+    <!-- custom styling for all icons -->
+    i.fas,
+    i.fab {
+        border: 1px solid red;
+    }
 </head>
 
 <body>
@@ -117,9 +128,9 @@
                                                 || BusinessTypeEnum.CDQ eq store.businessType
                                                 }">
                                                     <span style="display:block; font-size:13px;">
-                                                        <a href="/business/store/product/${store.id}.htm" style="color: #0000FF;">Product List</a>
+                                                        <a href="/business/store/product/${store.id}.htm" style="color: #0000FF;"><i class="fas fa-th-large"></i> Product List</a>
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
-                                                        <a href="/business/store/category/${store.id}.htm" style="color: #0000FF;">Store Category</a>
+                                                        <a href="/business/store/category/${store.id}.htm" style="color: #0000FF;"><i class="fas fa-list"></i> Store Category</a>
                                                     </span>
                                                     <span style="display:block; font-size:13px;">
                                                         <c:choose>
