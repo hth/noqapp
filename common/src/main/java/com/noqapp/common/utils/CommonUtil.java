@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.NumberFormat;
 import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -252,6 +253,11 @@ public final class CommonUtil {
     public static String currencyLocal(String countryCode) {
         Assert.hasText(countryCode, "Country code cannot be empty");
         return currencyLocal(new Locale("en", countryCode));
+    }
+
+    /** Converts 10000 to ₹10,000 value where defaults to India. */
+    public static String displayWithCurrencyCode(long orderPrice) {
+        return currencyLocal("IN") + NumberFormat.getInstance(new Locale("en", "IN")).format(orderPrice);
     }
     
     public static String displayWithCurrencyCode(String orderPrice, String countryCode) {

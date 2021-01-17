@@ -1,6 +1,8 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonStoreProduct;
 import com.noqapp.domain.types.ProductTypeEnum;
@@ -259,20 +261,20 @@ public class StoreProductEntity extends BaseEntity {
     @SuppressWarnings("unused")
     @Transient
     public String getDisplayPrice() {
-        return new BigDecimal(productPrice).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
+        return CommonUtil.displayWithCurrencyCode(new BigDecimal(productPrice).divide(new BigDecimal(100), MathContext.DECIMAL64).longValue());
     }
 
     /* On Web. */
     @SuppressWarnings("unused")
     @Transient
     public String getDisplayDiscount() {
-        return new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).toString();
+        return CommonUtil.displayWithCurrencyCode(new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).longValue());
     }
 
     @Transient
     public String toCommaSeparatedString() {
         return id + "," + bizStoreId + ","
-            + getDisplayPrice() + ","
+            + new BigDecimal(productPrice).divide(new BigDecimal(100), MathContext.DECIMAL64).toString() + ","
             + productName + ","
             + (StringUtils.isBlank(productInfo) ? "" : productInfo) + ","
             + (StringUtils.isBlank(storeCategoryId) ? "" : storeCategoryId) + ","
