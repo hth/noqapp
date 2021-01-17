@@ -86,13 +86,13 @@
                     <p>&nbsp;</p>
                     </c:if>
 
-<%--                    <div class="store">--%>
-<%--                        <div class="add-store">--%>
-<%--                            <div class="store-table">--%>
-<%--                                Post on Marketplace: <a href="/access/marketplace/post.htm" class="add-btn">Start Here</a>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
+                    <div class="store">
+                        <div class="add-store">
+                            <div class="store-table">
+                                Post on Marketplace: <a href="/access/marketplace/post.htm" class="add-btn">Start Here</a>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="store">
                         <c:if test="${!empty landingForm.minorUserProfiles}">
