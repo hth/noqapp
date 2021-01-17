@@ -710,8 +710,15 @@
                                         <td nowrap>
                                             <span style="display:block; font-size:13px;">${storeProductForm.categories.get(storeProduct.storeCategoryId)}</span>
                                         </td>
-                                        <td style="${storeProduct.displayCaseTurnedOn == true ? "background: lightpink" : ""}">
-                                            <span style="display:block; font-size:13px;">${storeProduct.productName}</span>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${!empty storeProduct.productImage}">
+                                                    <span style="display:block; font-size:13px;"><a href="https://s3.ap-south-1.amazonaws.com/${storeProductForm.bucketName}/product/${storeProduct.bizStoreId}/${storeProduct.productImage}" target="_blank" style="color: #0000FF;"><b>${storeProduct.productName}</b></a></span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span style="display:block; font-size:13px;"><b>${storeProduct.productName}</b></span>
+                                                </c:otherwise>
+                                            </c:choose>
                                             <span style="display:block; font-size:13px;">Inventory: ${storeProduct.inventoryCurrent} out of ${storeProduct.inventoryLimit}</span>
                                             <span style="font-size:13px;">Description: ${storeProduct.productInfo}</span>
                                         </td>

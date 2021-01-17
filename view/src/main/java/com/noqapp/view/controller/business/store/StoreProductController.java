@@ -82,6 +82,7 @@ import javax.servlet.http.HttpServletResponse;
 public class StoreProductController {
     private static final Logger LOG = LoggerFactory.getLogger(StoreProductController.class);
 
+    private String bucketName;
     private String nextPage;
 
     private ApiHealthService apiHealthService;
@@ -95,6 +96,9 @@ public class StoreProductController {
 
     @Autowired
     public StoreProductController(
+        @Value("${aws.s3.bucketName}")
+        String bucketName,
+
         @Value("${nextPage:/business/storeProductLanding}")
         String nextPage,
 
@@ -107,6 +111,7 @@ public class StoreProductController {
         FileService fileService,
         CSVFileValidator csvFileValidator
     ) {
+        this.bucketName = bucketName;
         this.nextPage = nextPage;
 
         this.apiHealthService = apiHealthService;
@@ -243,7 +248,8 @@ public class StoreProductController {
             .setCategories(categories)
             .setProductTypes(productTypes)
             .setUnitOfMeasurements(unitOfMeasurements)
-            .setBusinessType(bizStore.getBusinessType());
+            .setBusinessType(bizStore.getBusinessType())
+            .setBucketName(bucketName);
         return nextPage;
     }
 

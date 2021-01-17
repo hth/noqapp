@@ -41,6 +41,7 @@ public class StoreProductForm {
     private ScrubbedInput productType;
     private ScrubbedInput availableDate;
     private boolean displayCaseTurnedOn;
+    private String bucketName;
 
     private Map<String, String> categories;
     private List<StoreProductEntity> storeProducts;
@@ -211,6 +212,15 @@ public class StoreProductForm {
 
     public StoreProductForm setDisplayCaseTurnedOn(boolean displayCaseTurnedOn) {
         this.displayCaseTurnedOn = displayCaseTurnedOn;
+        return this;
+    }
+
+    public String getBucketName() {
+        return bucketName;
+    }
+
+    public StoreProductForm setBucketName(String bucketName) {
+        this.bucketName = bucketName;
         return this;
     }
 
