@@ -218,6 +218,7 @@
 <%--                                    </c:otherwise>--%>
 <%--                                </c:choose>--%>
 <%--                            </div>--%>
+
 <%--                        </div>--%>
 
                         <h3>Historical Queue</h3>
