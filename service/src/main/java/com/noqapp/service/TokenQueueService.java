@@ -354,9 +354,11 @@ public class TokenQueueService {
                                 /* Subtract cancelled token to improve computation on time slot. */
                                 tokenQueue.getLastNumber() - bizStore.getAvailableTokenAfterCancellation());
                         }
+                        String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour);
                         queue.setExpectedServiceBegin(Date.from(expectedServiceBegin.toInstant()))
                             .setBizNameId(bizStore.getBizName().getId())
-                            .setTimeSlotMessage(ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour));
+                            .setTimeSlotMessage(timeSlot)
+                            .setOriginalTimeSlotMessage(timeSlot);
                     } else {
                         queue.setBizNameId(bizStore.getBizName().getId())
                             .setTimeSlotMessage("Not Assigned");

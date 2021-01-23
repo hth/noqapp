@@ -150,6 +150,9 @@ public class QueueEntity extends BaseEntity {
     @Field("SL")
     private String timeSlotMessage;
 
+    @Field("OSL")
+    private String originalTimeSlotMessage;
+
     @SuppressWarnings("unused")
     public QueueEntity() {
         //Default constructor, required to keep bean happy
@@ -458,6 +461,15 @@ public class QueueEntity extends BaseEntity {
 
     public QueueEntity setTimeSlotMessage(String timeSlotMessage) {
         this.timeSlotMessage = timeSlotMessage;
+        return this;
+    }
+
+    public String getOriginalTimeSlotMessage() {
+        return originalTimeSlotMessage;
+    }
+
+    public QueueEntity setOriginalTimeSlotMessage(String originalTimeSlotMessage) {
+        this.originalTimeSlotMessage = originalTimeSlotMessage;
         return this;
     }
 
