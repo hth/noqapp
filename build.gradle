@@ -570,6 +570,11 @@ task setUpProfileForJunit() {
         }
 
         copy {
+            from file("view/environment/$env/ogm" + ".properties")
+            into activeProfilewarConfDir
+        }
+
+        copy {
             from 'view/resources/conf/application-messages.properties'
             from 'view/resources/conf/communication.properties'
             from 'view/resources/conf/config.properties'
@@ -708,6 +713,11 @@ task prepWar(dependsOn: [
 
         copy {
             from file("view/environment/$env/$env" + ".properties")
+            into warConfDir
+        }
+
+        copy {
+            from file("view/environment/$env/ogm" + ".properties")
             into warConfDir
         }
 
