@@ -259,7 +259,6 @@ public class NoQueueInitializationCheckBean {
     @PostConstruct
     public void checkNeo4j() {
         LOG.info("Neo4j strictQuery={}", neo4jTransactionManager.getSessionFactory().isUseStrictQuerying());
-        graphDetailOfPerson.graphAllPerson();
     }
 
     @PostConstruct
