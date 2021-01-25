@@ -22,6 +22,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * hitender
@@ -136,6 +137,15 @@ public class BusinessCustomerManagerImpl implements BusinessCustomerManager {
         mongoTemplate.updateFirst(
             query(where("id").is(businessCustomerId)),
             entityUpdate(update),
+            BusinessCustomerEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<BusinessCustomerEntity> findAll(String qid) {
+        return mongoTemplate.find(
+            query(where("QID").is(qid)),
             BusinessCustomerEntity.class,
             TABLE
         );

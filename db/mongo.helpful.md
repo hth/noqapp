@@ -63,3 +63,8 @@ Queue Sort with selective columns
 Regex NOT
 
     db.getCollection('EMAIL_VALIDATE').find({ QID: { $not: /^1.*/ } }).count()    
+
+Compare columns within same collection
+
+    db.getCollection('QUEUE').find( { $where: "this.SL != this.OSL" } )
+

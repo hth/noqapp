@@ -7,6 +7,7 @@ import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.SmsService;
+import com.noqapp.service.graph.GraphDetailOfPerson;
 import com.noqapp.service.payment.PaymentGatewayService;
 
 import com.maxmind.geoip2.DatabaseReader;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.neo4j.transaction.Neo4jTransactionManager;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
@@ -72,8 +74,10 @@ public class NoQueueInitializationCheckBean {
     private FtpService ftpService;
     private PaymentGatewayService paymentGatewayService;
     private StanfordCoreNLP stanfordCoreNLP;
+    private Neo4jTransactionManager neo4jTransactionManager;
     private SmsService smsService;
     private LettuceConnectionFactory lettuceConnectionFactory;
+    private GraphDetailOfPerson graphDetailOfPerson;
 
     private String buildEnvironment;
     private String thisIs;
@@ -93,8 +97,10 @@ public class NoQueueInitializationCheckBean {
         FtpService ftpService,
         PaymentGatewayService paymentGatewayService,
         StanfordCoreNLP stanfordCoreNLP,
+        Neo4jTransactionManager neo4jTransactionManager,
         SmsService smsService,
-        LettuceConnectionFactory lettuceConnectionFactory
+        LettuceConnectionFactory lettuceConnectionFactory,
+        GraphDetailOfPerson graphDetailOfPerson
     ) {
         this.buildEnvironment = environment.getProperty("build.env");
         this.thisIs = environment.getProperty("thisis");
@@ -109,8 +115,10 @@ public class NoQueueInitializationCheckBean {
         this.ftpService = ftpService;
         this.paymentGatewayService = paymentGatewayService;
         this.stanfordCoreNLP = stanfordCoreNLP;
+        this.neo4jTransactionManager = neo4jTransactionManager;
         this.smsService = smsService;
         this.lettuceConnectionFactory = lettuceConnectionFactory;
+        this.graphDetailOfPerson = graphDetailOfPerson;
     }
 
     @PostConstruct
@@ -246,6 +254,12 @@ public class NoQueueInitializationCheckBean {
             String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
             LOG.info("{} {}", sentence, sentiment);
         }
+    }
+
+    @PostConstruct
+    public void checkNeo4j() {
+        LOG.info("Neo4j strictQuery={}", neo4jTransactionManager.getSessionFactory().isUseStrictQuerying());
+        graphDetailOfPerson.graphAllPerson();
     }
 
     @PostConstruct
