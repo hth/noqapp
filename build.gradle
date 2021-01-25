@@ -160,6 +160,7 @@ subprojects {
         implementation "$springSecurityGroup:spring-security-taglibs:$springSecurityVersion"
         implementation "$springSecurityGroup:spring-security-web:$springSecurityVersion"
 
+        implementation "$springDataGroup:spring-data-neo4j:$springDataNeo4j"
         implementation "$springDataGroup:spring-data-mongodb:$springDataMongo"
         implementation "$springDataGroup:spring-data-commons:$springDataCommon"
         implementation "org.mongodb:mongo-java-driver:$mongoJavaDriver"
@@ -408,22 +409,11 @@ project(':common') {
     jar.archiveBaseName = archiveName + '-common'
 }
 
-project(':loader') {
-    apply plugin: 'war'
-    jar.archiveBaseName = archiveName + '-loader'
-
-    dependencies {
-        compile project(':medical')
-
-        providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
-    }
-}
-
 project(':domain') {
     jar.archiveBaseName = archiveName + '-domain'
 
     dependencies {
-        compile project(':common')
+        implementation project(':common')
     }
 }
 
@@ -431,7 +421,7 @@ project(':health') {
     jar.archiveBaseName = archiveName + '-health'
 
     dependencies {
-        compile project(':common'),
+        implementation project(':common'),
                 project(':domain')
     }
 }
@@ -445,7 +435,7 @@ project(':security') {
     }
 
     dependencies {
-        compile project(':common'),
+        implementation project(':common'),
                 project(':domain')
 
         providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
@@ -456,7 +446,7 @@ project(':service') {
     jar.archiveBaseName = archiveName + '-service'
 
     dependencies {
-        compile project(':common'),
+        implementation project(':common'),
                 project(':domain'),
                 project(':health')
     }
@@ -466,7 +456,7 @@ project(':search') {
     jar.archiveBaseName = archiveName + '-search'
 
     dependencies {
-        compile project(':common'),
+        implementation project(':common'),
                 project(':domain'),
                 project(':health')
     }
@@ -476,7 +466,7 @@ project(':social') {
     jar.archiveBaseName = archiveName + '-social'
 
     dependencies {
-        compile project(':common'),
+        implementation project(':common'),
                 project(':domain'),
                 project(':service')
     }
@@ -486,7 +476,7 @@ project(':medical') {
     jar.archiveBaseName = archiveName + '-medical'
 
     dependencies {
-        compile project(':common'),
+        implementation project(':common'),
                 project(':domain'),
                 project(':health'),
                 project(':service')
@@ -497,7 +487,7 @@ project(':inventory') {
     jar.archiveBaseName = archiveName + '-inventory'
 
     dependencies {
-        compile project(':common'),
+        implementation project(':common'),
                 project(':domain'),
                 project(':health'),
                 project(':service')
@@ -514,7 +504,7 @@ project(':view') {
     }
 
     dependencies {
-        compile project(':common'),
+        implementation project(':common'),
                 project(':domain'),
                 project(':health'),
                 project(':security'),
@@ -524,6 +514,21 @@ project(':view') {
                 project(':service'),
                 project(':search'),
                 project(':loader')
+
+        providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+    }
+}
+
+project(':loader') {
+    apply plugin: 'war'
+    jar.archiveBaseName = archiveName + '-loader'
+
+    dependencies {
+        implementation project(':common'),
+                project(':domain'),
+                project(':health'),
+                project(':service'),
+                project(':medical')
 
         providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
     }

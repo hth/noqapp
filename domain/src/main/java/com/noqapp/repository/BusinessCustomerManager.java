@@ -5,6 +5,7 @@ import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
 import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * hitender
@@ -27,4 +28,6 @@ public interface BusinessCustomerManager extends RepositoryManager<BusinessCusto
         LinkedHashSet<BusinessCustomerAttributeEnum> businessCustomerAttributes,
         CustomerPriorityLevelEnum customerPriorityLevel,
         String limitBusinessCategory);
+
+    List<BusinessCustomerEntity> findAll(String qid);
 }
