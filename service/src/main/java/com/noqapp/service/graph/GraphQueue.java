@@ -50,7 +50,7 @@ public class GraphQueue {
         this.bizStoreManager = bizStoreManager;
     }
 
-    public void a(String qid) {
+    public void graphUser(String qid) {
         List<QueueEntity> queues = queueManager.findAllQueuedByQid(qid);
         List<QueueEntity> queueHistory = queueManagerJDBC.getByQid(qid);
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);

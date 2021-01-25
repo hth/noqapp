@@ -57,7 +57,7 @@ public class GraphBusinessCustomer {
     }
 
     @Async
-    public void graphBusinessCustomer(String qid) {
+    void graphBusinessCustomer(String qid) {
         List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(qid);
         for (BusinessCustomerEntity businessCustomer : businessCustomers) {
             BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
@@ -79,7 +79,7 @@ public class GraphBusinessCustomer {
     }
 
     /** Logs specific anomaly associated to business type. */
-    public boolean hadDataAnomaly(String qid) {
+    public boolean hasDataAnomaly(String qid) {
         Map<BusinessTypeEnum, Set<String>> numberOfCustomerIds = changeBusinessCustomerToMap(businessCustomerN4jManager.findCustomerRegisteredToAllBusiness(qid));
 
         for (BusinessTypeEnum businessType : numberOfCustomerIds.keySet()) {
@@ -133,10 +133,5 @@ public class GraphBusinessCustomer {
                 Collectors.groupingBy(
                     businessCustomerN4j -> businessCustomerN4j.getBizNameN4j().getBusinessType(),
                     HashMap::new, Collectors.mapping(BusinessCustomerN4j::getBusinessCustomerId, Collectors.toSet())));
-    }
-
-    public void init() {
-        this.bizNameN4jManager.deleteAll();
-        this.businessCustomerN4jManager.deleteAll();
     }
 }

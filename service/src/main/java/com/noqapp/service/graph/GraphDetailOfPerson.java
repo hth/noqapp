@@ -1,6 +1,6 @@
 package com.noqapp.service.graph;
 
-import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.neo4j.BusinessCustomerN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.neo4j.StoreN4j;
@@ -51,32 +51,19 @@ public class GraphDetailOfPerson {
         this.userProfileManager = userProfileManager;
     }
 
+    @Mobile
     @Async
     public void graphPerson(String qid) {
-        graphQueue.a(qid);
+        graphQueue.graphUser(qid);
         graphBusinessCustomer.graphBusinessCustomer(qid);
 
         showResultFromGraphedPerson(qid);
     }
 
-    //Temp Code
-    public void graphAllPerson() {
-        graphQueue.init();
-        graphBusinessCustomer.init();
-
-        List<UserProfileEntity> userProfiles = userProfileManager.findAll();
-        for (UserProfileEntity userProfile : userProfiles) {
-            graphPerson(userProfile.getQueueUserId());
-        }
-
-        String qid = "100000000205";
-        showResultFromGraphedPerson(qid);
-    }
-
-    public void showResultFromGraphedPerson(String qid) {
+    private void showResultFromGraphedPerson(String qid) {
         PersonN4j personN4j = personN4jManager.findByQidWithQuery(qid);
         if (null == personN4j) {
-            LOG.error("No history found for qid={}", qid);
+            LOG.warn("No history found for qid={}", qid);
             return;
         }
 
