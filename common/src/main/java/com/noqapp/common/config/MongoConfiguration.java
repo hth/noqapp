@@ -1,10 +1,10 @@
 package com.noqapp.common.config;
 
 import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClient;
 import com.mongodb.ReadPreference;
 import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
+import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 
 import org.apache.commons.lang3.StringUtils;

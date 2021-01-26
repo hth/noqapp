@@ -44,7 +44,6 @@ import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.StatsBizStoreDailyManager;
-import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.exceptions.StoreNoLongerExistsException;
 import com.noqapp.service.utils.ServiceUtils;

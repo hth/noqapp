@@ -1,21 +1,20 @@
 package com.noqapp.domain.types;
 
 import static com.noqapp.domain.types.BusinessSupportEnum.MP;
-import static com.noqapp.domain.types.BusinessSupportEnum.OQ;
 import static com.noqapp.domain.types.BusinessSupportEnum.OD;
+import static com.noqapp.domain.types.BusinessSupportEnum.OQ;
 import static com.noqapp.domain.types.BusinessSupportEnum.QQ;
+import static com.noqapp.domain.types.MessageOriginEnum.M;
 import static com.noqapp.domain.types.MessageOriginEnum.O;
 import static com.noqapp.domain.types.MessageOriginEnum.Q;
-import static com.noqapp.domain.types.MessageOriginEnum.M;
-import static com.noqapp.domain.types.TransactionCancelEnum.MEA;
 import static com.noqapp.domain.types.TransactionCancelEnum.HTA;
+import static com.noqapp.domain.types.TransactionCancelEnum.MEA;
 import static com.noqapp.domain.types.TransactionCancelEnum.TMA;
 import static com.noqapp.domain.types.TransactionCancelEnum.TNS;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

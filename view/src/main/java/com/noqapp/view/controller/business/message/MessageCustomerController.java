@@ -3,8 +3,8 @@ package com.noqapp.view.controller.business.message;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
-import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.BusinessUserService;
+import com.noqapp.service.MessageCustomerService;
 import com.noqapp.view.form.admin.SendNotificationForm;
 import com.noqapp.view.validator.SendNotificationValidator;
 

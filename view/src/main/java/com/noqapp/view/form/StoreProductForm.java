@@ -5,15 +5,11 @@ import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.TaxEnum;
-import com.noqapp.domain.types.TextToSpeechTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import org.apache.commons.text.WordUtils;
 
-import org.springframework.data.mongodb.core.mapping.Field;
-
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

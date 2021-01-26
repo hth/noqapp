@@ -4,7 +4,6 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreHourManager;
-import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;

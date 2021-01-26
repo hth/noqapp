@@ -1,7 +1,6 @@
 package com.noqapp.service;
 
 import com.noqapp.common.utils.FileUtil;
-import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.apache.commons.io.FileUtils;

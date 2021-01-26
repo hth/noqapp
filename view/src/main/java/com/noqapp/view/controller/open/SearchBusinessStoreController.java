@@ -1,8 +1,8 @@
 package com.noqapp.view.controller.open;
 
 import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.search.elastic.service.GeoIPLocationService;
 import com.noqapp.search.elastic.service.BizStoreSearchElasticService;
+import com.noqapp.search.elastic.service.GeoIPLocationService;
 import com.noqapp.view.form.SearchForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 import com.noqapp.view.validator.SearchValidator;

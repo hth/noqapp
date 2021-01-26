@@ -14,7 +14,6 @@ import com.noqapp.repository.SurveyManager;
 import com.noqapp.service.nlp.NLPService;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

@@ -1,7 +1,6 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.PublishJobEntity;
-import com.noqapp.repository.BusinessUserStoreManager;
 import com.noqapp.repository.PublishJobManager;
 
 import org.slf4j.Logger;

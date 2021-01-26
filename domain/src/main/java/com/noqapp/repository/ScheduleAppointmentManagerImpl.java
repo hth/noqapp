@@ -2,7 +2,6 @@ package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.domain.Sort.Direction.ASC;
-import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.group;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.match;
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation;
@@ -11,7 +10,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.common.utils.DateUtil;
-import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStatusEnum;

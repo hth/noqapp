@@ -6,7 +6,6 @@ import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 import com.noqapp.domain.types.OnOffEnum;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

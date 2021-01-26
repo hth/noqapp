@@ -1,8 +1,5 @@
 package com.noqapp.domain.types;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 /**
  * Store accepted delivery.
  * hitender

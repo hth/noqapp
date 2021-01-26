@@ -3,27 +3,20 @@ package com.noqapp.service;
 import static com.noqapp.common.utils.DateUtil.MINUTES_IN_MILLISECONDS;
 import static java.util.Comparator.comparing;
 import static java.util.concurrent.TimeUnit.MINUTES;
-import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.noqapp.common.utils.RandomString;
-import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.UserAccountEntity;
-import com.noqapp.domain.flow.Register;
-import com.noqapp.domain.flow.RegisterUser;
-import com.noqapp.domain.helper.QueueSupervisor;
 import com.noqapp.domain.json.JsonQueuePersonList;
 import com.noqapp.domain.json.JsonQueuedPerson;
 import com.noqapp.domain.json.JsonToken;
-import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
-import com.noqapp.repository.QueueManager;
 import com.noqapp.service.utils.ServiceUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,9 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mock;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -51,8 +42,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-
-import javax.servlet.Registration;
 
 /**
  * hitender

@@ -1,7 +1,7 @@
 package com.noqapp.common.errors;
 
-import static com.noqapp.common.errors.ErrorTypeEnum.ERROR;
 import static com.noqapp.common.errors.ErrorTypeEnum.ALERT;
+import static com.noqapp.common.errors.ErrorTypeEnum.ERROR;
 import static com.noqapp.common.errors.ErrorTypeEnum.INFO;
 
 /**

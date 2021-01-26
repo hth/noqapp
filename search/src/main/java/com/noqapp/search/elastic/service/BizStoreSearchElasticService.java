@@ -1,8 +1,8 @@
 package com.noqapp.search.elastic.service;
 
 import static com.noqapp.search.elastic.service.BizStoreElasticService.MINUTES;
-import static com.noqapp.search.elastic.service.BizStoreElasticService.includeFields;
 import static com.noqapp.search.elastic.service.BizStoreElasticService.excludeFields;
+import static com.noqapp.search.elastic.service.BizStoreElasticService.includeFields;
 import static com.noqapp.search.elastic.service.BizStoreElasticService.populateSearchData;
 import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
 

@@ -10,7 +10,6 @@ import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 
-import com.mongodb.WriteConcern;
 import com.mongodb.client.result.UpdateResult;
 
 import org.apache.commons.lang3.StringUtils;

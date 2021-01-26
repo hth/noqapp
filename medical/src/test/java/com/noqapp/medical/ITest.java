@@ -106,8 +106,6 @@ import com.noqapp.service.GenerateUserIdService;
 import com.noqapp.service.InviteService;
 import com.noqapp.service.LanguageTranslationService;
 import com.noqapp.service.MailService;
-import com.noqapp.service.StoreHourService;
-import com.noqapp.service.nlp.NLPService;
 import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.PurchaseOrderProductService;
@@ -115,11 +113,13 @@ import com.noqapp.service.PurchaseOrderService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.ReviewService;
 import com.noqapp.service.StoreCategoryService;
+import com.noqapp.service.StoreHourService;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TextToSpeechService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserAddressService;
 import com.noqapp.service.UserProfilePreferenceService;
+import com.noqapp.service.nlp.NLPService;
 import com.noqapp.service.payment.CashfreeService;
 import com.noqapp.service.transaction.TransactionService;
 
@@ -131,8 +131,6 @@ import org.mockito.MockitoAnnotations;
 
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import okhttp3.OkHttpClient;
-
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
 

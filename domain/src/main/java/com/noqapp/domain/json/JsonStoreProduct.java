@@ -10,15 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.annotation.Transient;
-
-import java.util.Date;
-import java.util.TimeZone;
 
 /**
  * hitender
