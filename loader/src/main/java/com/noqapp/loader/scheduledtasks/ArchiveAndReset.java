@@ -235,12 +235,17 @@ public class ArchiveAndReset {
                         bizStore.setQueueHistory(Date.from(nextRun.toInstant()));
                         bizStoreManager.save(bizStore);
 
-                        LOG.error("Archive history date re-computed {} {} {} expected={} newArchiveTime={}",
+                        long delayedArchiveBy = DateUtil.getHoursBetween(
+                            DateUtil.asLocalDateTime(Date.from(nextRun.toInstant())),
+                            DateUtil.asLocalDateTime(wasExpectedToRun));
+
+                        LOG.error("Archive history date re-computed {} {} {} expected={} newArchiveTime={} delayedArchiveBy={}",
                             bizStore.getId(),
                             bizStore.getBizName().getBusinessName(),
                             bizStore.getDisplayName(),
                             wasExpectedToRun,
-                            nextRun);
+                            nextRun,
+                            delayedArchiveBy);
                     } catch (Exception e) {
                         LOG.warn("Skipped bizStore {} {}", bizStore.getId(), e.getLocalizedMessage(), e);
                     }
