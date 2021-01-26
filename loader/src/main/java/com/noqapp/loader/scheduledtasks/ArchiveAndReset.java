@@ -219,33 +219,32 @@ public class ArchiveAndReset {
             StoreHourEntity storeHour = storeHourService.findStoreHour(bizStore.getId(), nowDayOfWeek);
             if (storeHour.isDayClosed() || storeHour.isTempDayClosed()) {
                 readyForArchive.add(bizStore);
-                break;
-            }
-
-            LocalTime endHour = storeHour.endHour();
-            LocalTime now = DateUtil.getTimeAtTimeZone(bizStore.getTimeZone());
-            if (now.isBefore(endHour)) {
-                try {
-                    Date wasExpectedToRun = bizStore.getQueueHistory();
-                    ZonedDateTime nextRun = DateUtil.computeNextRunTimeAtUTC(
-                        TimeZone.getTimeZone(bizStore.getTimeZone()),
-                        storeHour.storeClosingHourOfDay(),
-                        storeHour.storeClosingMinuteOfDay(),
-                        TODAY);
-                    bizStore.setQueueHistory(Date.from(nextRun.toInstant()));
-                    bizStoreManager.save(bizStore);
-
-                    LOG.error("Archive history date re-computed {} {} {} expected={} newArchiveTime={}",
-                        bizStore.getId(),
-                        bizStore.getBizName().getBusinessName(),
-                        bizStore.getDisplayName(),
-                        wasExpectedToRun,
-                        nextRun);
-                } catch (Exception e) {
-                    LOG.warn("Skipped bizStore {} {}", bizStore.getId(), e.getLocalizedMessage(), e);
-                }
             } else {
-                readyForArchive.add(bizStore);
+                LocalTime now = DateUtil.getTimeAtTimeZone(bizStore.getTimeZone());
+                LocalTime endHour = storeHour.endHour();
+                if (now.isAfter(endHour)) {
+                    readyForArchive.add(bizStore);
+                } else {
+                    try {
+                        Date wasExpectedToRun = bizStore.getQueueHistory();
+                        ZonedDateTime nextRun = DateUtil.computeNextRunTimeAtUTC(
+                            TimeZone.getTimeZone(bizStore.getTimeZone()),
+                            storeHour.storeClosingHourOfDay(),
+                            storeHour.storeClosingMinuteOfDay(),
+                            TODAY);
+                        bizStore.setQueueHistory(Date.from(nextRun.toInstant()));
+                        bizStoreManager.save(bizStore);
+
+                        LOG.error("Archive history date re-computed {} {} {} expected={} newArchiveTime={}",
+                            bizStore.getId(),
+                            bizStore.getBizName().getBusinessName(),
+                            bizStore.getDisplayName(),
+                            wasExpectedToRun,
+                            nextRun);
+                    } catch (Exception e) {
+                        LOG.warn("Skipped bizStore {} {}", bizStore.getId(), e.getLocalizedMessage(), e);
+                    }
+                }
             }
         }
 
