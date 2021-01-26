@@ -2,9 +2,6 @@ package com.noqapp.domain.types.catgeory;
 
 import static java.util.stream.Collectors.toMap;
 
-import com.noqapp.domain.types.BusinessTypeEnum;
-
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;

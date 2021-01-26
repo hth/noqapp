@@ -5,8 +5,6 @@ import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentMethodEnum;
 
-import java.util.List;
-
 /**
  * User: hitender
  * Date: 11/19/16 1:54 AM

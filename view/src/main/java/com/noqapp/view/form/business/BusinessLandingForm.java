@@ -5,8 +5,6 @@ import com.noqapp.domain.helper.QueueDetail;
 import com.noqapp.domain.json.JsonTopic;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
-import org.springframework.data.annotation.Transient;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

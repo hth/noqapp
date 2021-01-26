@@ -20,8 +20,6 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
-import java.util.List;
-
 /**
  * User: hitender
  * Date: 11/19/16 1:55 AM

@@ -7,8 +7,8 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
 import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 import com.noqapp.repository.BizNameManager;
-import com.noqapp.repository.BusinessCustomerPriorityManager;
 import com.noqapp.repository.BusinessCustomerManager;
+import com.noqapp.repository.BusinessCustomerPriorityManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.UserProfileManager;
 

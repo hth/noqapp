@@ -1,8 +1,5 @@
 package com.noqapp.view.flow.merchant.validator;
 
-import static com.noqapp.common.errors.MobileSystemErrorCodeEnum.USER_INPUT;
-
-import com.noqapp.common.errors.ErrorEncounteredJson;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;

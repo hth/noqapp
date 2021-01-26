@@ -2,12 +2,10 @@ package com.noqapp.view.controller.business.store;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BusinessUserEntity;
-import com.noqapp.domain.PublishArticleEntity;
 import com.noqapp.domain.PublishJobEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.PublishJobService;
-import com.noqapp.view.form.PublishArticleForm;
 import com.noqapp.view.form.PublishJobForm;
 
 import org.slf4j.Logger;

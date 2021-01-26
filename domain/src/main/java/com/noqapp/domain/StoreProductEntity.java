@@ -2,7 +2,6 @@ package com.noqapp.domain;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
-import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonStoreProduct;
 import com.noqapp.domain.types.ProductTypeEnum;

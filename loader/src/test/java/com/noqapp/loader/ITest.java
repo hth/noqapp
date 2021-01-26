@@ -23,12 +23,10 @@ import com.noqapp.health.repository.ApiHealthNowManager;
 import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.loader.service.ComputeNextRunService;
-
-import com.noqapp.medical.repository.MasterLabManager;
-import com.noqapp.medical.repository.MasterLabManagerImpl;
-
 import com.noqapp.medical.repository.HospitalVisitScheduleManager;
 import com.noqapp.medical.repository.HospitalVisitScheduleManagerImpl;
+import com.noqapp.medical.repository.MasterLabManager;
+import com.noqapp.medical.repository.MasterLabManagerImpl;
 import com.noqapp.medical.repository.MedicalMedicationManager;
 import com.noqapp.medical.repository.MedicalMedicationManagerImpl;
 import com.noqapp.medical.repository.MedicalMedicineManager;

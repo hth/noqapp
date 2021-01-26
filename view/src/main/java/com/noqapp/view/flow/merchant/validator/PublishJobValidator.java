@@ -1,8 +1,6 @@
 package com.noqapp.view.flow.merchant.validator;
 
-import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.view.controller.access.LandingController;
-import com.noqapp.view.form.PublishArticleForm;
 import com.noqapp.view.form.PublishJobForm;
 
 import org.apache.commons.lang3.StringUtils;

@@ -3,9 +3,9 @@ package com.noqapp.loader.scheduledtasks;
 import static com.noqapp.service.FtpService.ARTICLE;
 import static com.noqapp.service.FtpService.MARKETPLACE_PROPERTY;
 import static com.noqapp.service.FtpService.MEDICAL;
+import static com.noqapp.service.FtpService.PRODUCT;
 import static com.noqapp.service.FtpService.PROFILE;
 import static com.noqapp.service.FtpService.SERVICE;
-import static com.noqapp.service.FtpService.PRODUCT;
 import static com.noqapp.service.FtpService.VIGYAPAN;
 
 import com.noqapp.common.utils.FileUtil;

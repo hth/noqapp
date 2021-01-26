@@ -1,6 +1,5 @@
 package com.noqapp.loader.scheduledtasks;
 
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.OutGoingNotificationEntity;
 import com.noqapp.repository.OutGoingNotificationManager;
 import com.noqapp.repository.QueueManagerJDBC;
@@ -15,12 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
-import java.time.temporal.IsoFields;
 
 /**
  * hitender

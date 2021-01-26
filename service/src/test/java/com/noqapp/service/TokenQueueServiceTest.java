@@ -2,12 +2,10 @@ package com.noqapp.service;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.any;
 
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
-import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
