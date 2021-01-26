@@ -49,11 +49,6 @@ public class GraphDBCleanup {
     public void cleanupSinceNotAccessed() {
         long countBusinessCustomer = businessCustomerN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
         long countPerson = personN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
-
-        businessCustomerN4jManager.deleteAll();
-        personN4jManager.deleteAll();
-        storeN4jManager.deleteAll();
-        bizNameN4jManager.deleteAll();
         LOG.info("Deleted non accessed GraphDB {} {}", countBusinessCustomer, countPerson);
     }
 
