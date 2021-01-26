@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public class GraphDetailOfPerson {
     }
 
     private void showResultFromGraphedPerson(String qid) {
-        PersonN4j personN4j = personN4jManager.findByQidWithQuery(qid);
+        PersonN4j personN4j = personN4jManager.findByQidWithQuery(qid, new Date());
         if (null == personN4j) {
             LOG.warn("No history found for qid={}", qid);
             return;
@@ -72,13 +73,16 @@ public class GraphDetailOfPerson {
         Collection<BusinessCustomerN4j> customerAssociatedToBusinesses = businessCustomerN4jManager.findCustomerRegisteredToAllBusiness(qid);
         boolean hasAnomaly = graphBusinessCustomer.hasDataAnomaly(qid, BusinessTypeEnum.CDQ);
 
-        LOG.info("Person={} visits={} different stores " +
-                "\n that are owned by business={}" +
-                "\n of which customer is registered in business={}" +
-                "\n found any data anomaly {}",
-            personN4j.getQid(), storeN4js.size(),
-            bizNameIds.size(),
-            customerAssociatedToBusinesses.size(),
-            hasAnomaly);
+        if (hasAnomaly) {
+            LOG.error("Data anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={}",
+                personN4j.getQid(), storeN4js.size(),
+                bizNameIds.size(),
+                customerAssociatedToBusinesses.size());
+        } else {
+            LOG.info("Person={} visits={} different stores that are owned by business={} of which customer is registered in business={}",
+                personN4j.getQid(), storeN4js.size(),
+                bizNameIds.size(),
+                customerAssociatedToBusinesses.size());
+        }
     }
 }
