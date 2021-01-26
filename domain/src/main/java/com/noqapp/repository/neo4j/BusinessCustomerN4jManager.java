@@ -8,6 +8,7 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * hitender
@@ -21,4 +22,7 @@ public interface BusinessCustomerN4jManager extends Neo4jRepository<BusinessCust
 
     @Query("MATCH (c:BusinessCustomer)-[r:CUSTOMER_ID]->(b:BizName) where c.qid = $0 and b.businessType = $1 RETURN c, r, b")
     Collection<BusinessCustomerN4j> findCustomerRegisteredToSpecificBusinessType(String qid, BusinessTypeEnum businessType);
+
+    @Query("MATCH (c:BusinessCustomer) WHERE c.lastAccessed < $0 DELETE c RETURN count(*)")
+    long deleteNotAccessedSince(Date since);
 }

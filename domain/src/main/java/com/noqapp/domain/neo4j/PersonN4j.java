@@ -10,6 +10,7 @@ import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
+import java.util.Date;
 import java.util.StringJoiner;
 
 /**
@@ -28,6 +29,9 @@ public class PersonN4j {
 
     @Relationship(type = "VISITED_TO", direction = Relationship.OUTGOING)
     private StoreN4j storeN4j;
+
+    @Property("lastAccessed")
+    private Date lastAccessed;
 
     public String getQid() {
         return qid;
@@ -56,11 +60,21 @@ public class PersonN4j {
         return this;
     }
 
+    public Date getLastAccessed() {
+        return lastAccessed;
+    }
+
+    public PersonN4j setLastAccessed(Date lastAccessed) {
+        this.lastAccessed = lastAccessed;
+        return this;
+    }
+
     public static PersonN4j populate(QueueEntity queue, StoreN4j storeN4j) {
         return new PersonN4j()
             .setStoreN4j(storeN4j)
             .setQid(queue.getQueueUserId())
-            .setName(queue.getCustomerName());
+            .setName(queue.getCustomerName())
+            .setLastAccessed(new Date());
     }
 
     @Override

@@ -20,6 +20,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +74,8 @@ public class GraphBusinessCustomer {
                 .setBizNameN4j(bizNameN4j)
                 .setName(userProfile.getName())
                 .setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
-                .setQid(businessCustomer.getQueueUserId());
+                .setQid(businessCustomer.getQueueUserId())
+                .setLastAccessed(new Date());
             businessCustomerN4jManager.save(businessCustomerN4j);
         }
     }
