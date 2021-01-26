@@ -1,5 +1,7 @@
 package com.noqapp.loader.scheduledtasks;
 
+import static com.noqapp.common.utils.DateUtil.DAY.TODAY;
+
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
@@ -44,9 +46,11 @@ import java.io.File;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -150,7 +154,7 @@ public class ArchiveAndReset {
              * Order stores are delayed by 5 minutes.
              */
             Date date = Date.from(Instant.now().minus(1, ChronoUnit.MINUTES));
-            List<BizStoreEntity> bizOrderStores = bizStoreManager.findAllOrderEndedForTheDay(date);
+            List<BizStoreEntity> bizOrderStores = archiveOnlyStoreClosedForTheDay(bizStoreManager.findAllOrderEndedForTheDay(date));
             found = bizOrderStores.size();
             LOG.info("Order Stores found={} date={}", found, date);
             for (BizStoreEntity bizStore : bizOrderStores) {
@@ -202,6 +206,50 @@ public class ArchiveAndReset {
                 LOG.info("Complete found={} failure={} success={}", found, failure, success);
             }
         }
+    }
+
+    /**
+     * Prevents reset when store not closed for the day. This is to prevent running of archive when store is open and running.
+     * Just delay the reset to today's end of day.
+     */
+    private List<BizStoreEntity> archiveOnlyStoreClosedForTheDay(List<BizStoreEntity> bizOrderStores) {
+        List<BizStoreEntity> readyForArchive = new LinkedList<>();
+        for (BizStoreEntity bizStore : bizOrderStores) {
+            DayOfWeek nowDayOfWeek = ZonedDateTime.now(TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId()).getDayOfWeek();
+            StoreHourEntity storeHour = storeHourService.findStoreHour(bizStore.getId(), nowDayOfWeek);
+            if (storeHour.isDayClosed() || storeHour.isTempDayClosed()) {
+                readyForArchive.add(bizStore);
+                break;
+            }
+
+            LocalTime endHour = storeHour.endHour();
+            LocalTime now = DateUtil.getTimeAtTimeZone(bizStore.getTimeZone());
+            if (now.isBefore(endHour)) {
+                try {
+                    Date wasExpectedToRun = bizStore.getQueueHistory();
+                    ZonedDateTime nextRun = DateUtil.computeNextRunTimeAtUTC(
+                        TimeZone.getTimeZone(bizStore.getTimeZone()),
+                        storeHour.storeClosingHourOfDay(),
+                        storeHour.storeClosingMinuteOfDay(),
+                        TODAY);
+                    bizStore.setQueueHistory(Date.from(nextRun.toInstant()));
+                    bizStoreManager.save(bizStore);
+
+                    LOG.error("Archive history date re-computed {} {} {} expected={} newArchiveTime={}",
+                        bizStore.getId(),
+                        bizStore.getBizName().getBusinessName(),
+                        bizStore.getDisplayName(),
+                        wasExpectedToRun,
+                        nextRun);
+                } catch (Exception e) {
+                    LOG.warn("Skipped bizStore {} {}", bizStore.getId(), e.getLocalizedMessage(), e);
+                }
+            } else {
+                readyForArchive.add(bizStore);
+            }
+        }
+
+        return readyForArchive;
     }
 
     private void runSelectiveArchiveBasedOnBusinessType(BizStoreEntity bizStore) {
