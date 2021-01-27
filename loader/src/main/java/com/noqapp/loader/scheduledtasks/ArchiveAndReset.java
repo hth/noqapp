@@ -226,6 +226,7 @@ public class ArchiveAndReset {
                     readyForArchive.add(bizStore);
                 } else {
                     try {
+                        /* Expected to run at UTC. */
                         Date wasExpectedToRun = bizStore.getQueueHistory();
                         ZonedDateTime nextRun = DateUtil.computeNextRunTimeAtUTC(
                             TimeZone.getTimeZone(bizStore.getTimeZone()),
@@ -236,16 +237,19 @@ public class ArchiveAndReset {
                         bizStoreManager.save(bizStore);
 
                         long delayedArchiveBy = DateUtil.getHoursBetween(
-                            DateUtil.asLocalDateTime(Date.from(nextRun.toInstant())),
-                            DateUtil.asLocalDateTime(wasExpectedToRun));
+                            DateUtil.asLocalDateTime(wasExpectedToRun),
+                            DateUtil.asLocalDateTime(Date.from(nextRun.toInstant())));
 
-                        LOG.error("Archive history date re-computed {} {} {} expected={} newArchiveTime={} delayedArchiveBy={}",
+                        LOG.error("Archive history date re-computed {} store={} biz={} expected={} newArchiveTime={} delayedArchiveBy={} now={} endHour={} nowDayOfWeek={}",
                             bizStore.getId(),
                             bizStore.getBizName().getBusinessName(),
                             bizStore.getDisplayName(),
                             wasExpectedToRun,
-                            nextRun,
-                            delayedArchiveBy);
+                            Date.from(nextRun.toInstant()),
+                            delayedArchiveBy,
+                            now,
+                            endHour,
+                            nowDayOfWeek);
                     } catch (Exception e) {
                         LOG.warn("Skipped bizStore {} {}", bizStore.getId(), e.getLocalizedMessage(), e);
                     }
@@ -253,7 +257,7 @@ public class ArchiveAndReset {
             }
         }
 
-        return readyForArchive;
+        return bizOrderStores;
     }
 
     private void runSelectiveArchiveBasedOnBusinessType(BizStoreEntity bizStore) {
