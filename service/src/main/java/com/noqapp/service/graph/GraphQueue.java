@@ -70,9 +70,4 @@ public class GraphQueue {
             }
         }
     }
-
-    public void init() {
-        personN4jManager.deleteAll();
-        storeN4jManager.deleteAll();
-    }
 }

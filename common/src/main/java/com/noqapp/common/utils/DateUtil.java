@@ -108,6 +108,10 @@ public final class DateUtil {
         return Duration.between(begin.toInstant(), end.toInstant()).getSeconds();
     }
 
+    ublic static long getDurationInHours(Date begin, Date end) {
+        return Duration.between(begin.toInstant(), end.toInstant()).getSeconds();
+    }
+
     public static Date getDateMinusMinutes(int minutes) {
         LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(minutes);
         Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
@@ -260,6 +264,11 @@ public final class DateUtil {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");
         return ChronoUnit.HOURS.between(start, end);
+    }
+
+    public static long getHoursBetween(LocalDateTime start) {
+        Assert.notNull(start, "Start date is null");
+        return ChronoUnit.HOURS.between(start, LocalDateTime.now());
     }
 
     public static long getMonthsBetween(LocalDate start, LocalDate end) {

@@ -1,11 +1,11 @@
 package com.noqapp.service.graph;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.neo4j.BusinessCustomerN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.neo4j.StoreN4j;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.neo4j.BusinessCustomerN4jManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
 
@@ -34,27 +34,36 @@ public class GraphDetailOfPerson {
     private GraphQueue graphQueue;
     private GraphBusinessCustomer graphBusinessCustomer;
 
-    private UserProfileManager userProfileManager;
-
     public GraphDetailOfPerson(
         PersonN4jManager personN4jManager,
         BusinessCustomerN4jManager businessCustomerN4jManager,
 
         GraphQueue graphQueue,
-        GraphBusinessCustomer graphBusinessCustomer,
-
-        UserProfileManager userProfileManager
+        GraphBusinessCustomer graphBusinessCustomer
     ) {
         this.personN4jManager = personN4jManager;
         this.businessCustomerN4jManager = businessCustomerN4jManager;
+
         this.graphQueue = graphQueue;
         this.graphBusinessCustomer = graphBusinessCustomer;
-        this.userProfileManager = userProfileManager;
     }
 
     @Mobile
     @Async
     public void graphPerson(String qid) {
+        PersonN4j personN4j = personN4jManager.findByQid(qid);
+        if (personN4j == null) {
+            populateForQid(qid);
+        } else if (24 < DateUtil.getHoursBetween(DateUtil.asLocalDateTime(personN4j.getLastAccessed()))) {
+            personN4jManager.delete(personN4j);
+            long deletedBusinessCustomerCount = businessCustomerN4jManager.deleteByQid(qid);
+            LOG.info("Graph obsolete for qid={} deleted before re-creating {}", qid, deletedBusinessCustomerCount);
+
+            populateForQid(qid);
+        }
+    }
+
+    private void populateForQid(String qid) {
         graphQueue.graphUser(qid);
         graphBusinessCustomer.graphBusinessCustomer(qid);
 
