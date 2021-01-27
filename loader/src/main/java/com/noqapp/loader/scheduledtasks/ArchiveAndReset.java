@@ -3,6 +3,7 @@ package com.noqapp.loader.scheduledtasks;
 import static com.noqapp.common.utils.DateUtil.DAY.TODAY;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.BizStoreEntity;
@@ -233,23 +234,35 @@ public class ArchiveAndReset {
                             storeHour.storeClosingHourOfDay(),
                             storeHour.storeClosingMinuteOfDay(),
                             TODAY);
-                        bizStore.setQueueHistory(Date.from(nextRun.toInstant()));
-                        bizStoreManager.save(bizStore);
 
-                        long delayedArchiveBy = DateUtil.getHoursBetween(
-                            DateUtil.asLocalDateTime(wasExpectedToRun),
-                            DateUtil.asLocalDateTime(Date.from(nextRun.toInstant())));
+                        /* Delay archive when difference is greater than 30 minutes. */
+                        if (Constants.MINUTES_30 < DateUtil.getMinutesBetween(DateUtil.asLocalDateTime(wasExpectedToRun), DateUtil.asLocalDateTime(Date.from(nextRun.toInstant())))) {
+                            long delayedArchiveByHours = DateUtil.getHoursBetween(
+                                DateUtil.asLocalDateTime(wasExpectedToRun),
+                                DateUtil.asLocalDateTime(Date.from(nextRun.toInstant())));
 
-                        LOG.error("Archive history date re-computed {} store={} biz={} expected={} newArchiveTime={} delayedArchiveBy={} now={} endHour={} nowDayOfWeek={}",
-                            bizStore.getId(),
-                            bizStore.getBizName().getBusinessName(),
-                            bizStore.getDisplayName(),
-                            wasExpectedToRun,
-                            Date.from(nextRun.toInstant()),
-                            delayedArchiveBy,
-                            now,
-                            endHour,
-                            nowDayOfWeek);
+                            long delayedArchiveByMinutes = DateUtil.getMinutesBetween(
+                                DateUtil.asLocalDateTime(wasExpectedToRun),
+                                DateUtil.asLocalDateTime(Date.from(nextRun.toInstant())));
+
+                            LOG.error("Archive history date re-computed {} store={} biz={} expected={} newArchiveTime={} delayedArchiveByHours={} delayedArchiveByMinutes={} now={} endHour={} nowDayOfWeek={}",
+                                bizStore.getId(),
+                                bizStore.getBizName().getBusinessName(),
+                                bizStore.getDisplayName(),
+                                wasExpectedToRun,
+                                Date.from(nextRun.toInstant()),
+                                delayedArchiveByHours,
+                                delayedArchiveByMinutes,
+                                now,
+                                endHour,
+                                nowDayOfWeek);
+
+                            bizStore.setQueueHistory(Date.from(nextRun.toInstant()));
+                            bizStoreManager.save(bizStore);
+                        } else {
+                            LOG.info("Archiving ready store={} biz={}", bizStore.getId(), bizStore.getBizName().getId());
+                            readyForArchive.add(bizStore);
+                        }
                     } catch (Exception e) {
                         LOG.warn("Skipped bizStore {} {}", bizStore.getId(), e.getLocalizedMessage(), e);
                     }
