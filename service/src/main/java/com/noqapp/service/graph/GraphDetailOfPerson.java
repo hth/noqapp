@@ -52,7 +52,7 @@ public class GraphDetailOfPerson {
     @Async
     public void graphPerson(String qid) {
         PersonN4j personN4j = personN4jManager.findByQid(qid);
-        if (personN4j == null) {
+        if (null == personN4j) {
             populateForQid(qid);
         } else if (24 < DateUtil.getHoursBetween(DateUtil.asLocalDateTime(personN4j.getLastAccessed()))) {
             personN4jManager.delete(personN4j);
