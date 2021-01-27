@@ -253,7 +253,7 @@ public class ArchiveAndReset {
             }
         }
 
-        return readyForArchive;
+        return bizOrderStores;
     }
 
     private void runSelectiveArchiveBasedOnBusinessType(BizStoreEntity bizStore) {
