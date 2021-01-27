@@ -108,7 +108,7 @@ public final class DateUtil {
         return Duration.between(begin.toInstant(), end.toInstant()).getSeconds();
     }
 
-    ublic static long getDurationInHours(Date begin, Date end) {
+    public static long getDurationInHours(Date begin, Date end) {
         return Duration.between(begin.toInstant(), end.toInstant()).getSeconds();
     }
 
