@@ -114,17 +114,25 @@ public class GraphBusinessCustomer {
         }
 
         if (ids.size() > 2) {
-            LOG.warn("Data anomaly in businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
+            LOG.error("Data anomaly in businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
             return true;
         }
 
         long liquorCard = ids.stream().filter(id -> id.startsWith("L")).count();
         long groceryCard = ids.stream().filter(id -> id.startsWith("G")).count();
 
-        if (ids.size() == liquorCard || ids.size() == groceryCard) {
-            LOG.warn("Data anomaly in size businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
+        /* Not more than one liquor card per account. */
+        if (liquorCard > 1) {
+            LOG.error("Data anomaly in size businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
             return true;
         }
+
+        /* Not more than one grocery card per account. */
+        if (groceryCard > 1) {
+            LOG.error("Data anomaly in size businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
+            return true;
+        }
+
         return false;
     }
 
