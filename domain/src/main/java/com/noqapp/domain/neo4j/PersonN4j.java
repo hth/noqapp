@@ -27,7 +27,7 @@ public class PersonN4j {
     @Property("name")
     private String name;
 
-    @Relationship(type = "VISITED_TO", direction = Relationship.OUTGOING)
+    @Relationship(type = "VISITS_TO", direction = Relationship.OUTGOING)
     private StoreN4j storeN4j;
 
     @Relationship(type = "HAS_ANOMALY", direction = Relationship.OUTGOING)
