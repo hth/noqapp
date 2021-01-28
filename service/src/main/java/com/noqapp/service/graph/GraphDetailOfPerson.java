@@ -82,7 +82,7 @@ public class GraphDetailOfPerson {
     private void showResultFromGraphedPerson(String qid) {
         PersonN4j personN4j = personN4jManager.findByQidWithQuery(qid, new Date());
         if (null == personN4j) {
-            LOG.warn("No history found for qid={}", qid);
+            LOG.debug("No history found for qid={}", qid);
             return;
         }
 
@@ -107,7 +107,7 @@ public class GraphDetailOfPerson {
             personN4j.setAnomalyN4j(anomalyN4j);
             personN4jManager.save(personN4j);
         } else {
-            LOG.info("Person={} visits={} different stores that are owned by business={} of which customer is registered in business={}",
+            LOG.info("No anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={}",
                 personN4j.getQid(), storeN4js.size(),
                 bizNameIds.size(),
                 customerAssociatedToBusinesses.size());
