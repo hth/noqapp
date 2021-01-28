@@ -1,6 +1,7 @@
 package com.noqapp.loader.scheduledtasks;
 
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.repository.neo4j.AnomalyN4jManager;
 import com.noqapp.repository.neo4j.BizNameN4jManager;
 import com.noqapp.repository.neo4j.BusinessCustomerN4jManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
@@ -31,25 +32,29 @@ public class GraphDBCleanup {
     private BizNameN4jManager bizNameN4jManager;
     private StoreN4jManager storeN4jManager;
     private BusinessCustomerN4jManager businessCustomerN4jManager;
+    private AnomalyN4jManager anomalyN4jManager;
 
     @Autowired
     public GraphDBCleanup(
         PersonN4jManager personN4jManager,
         BizNameN4jManager bizNameN4jManager,
         StoreN4jManager storeN4jManager,
-        BusinessCustomerN4jManager businessCustomerN4jManager
+        BusinessCustomerN4jManager businessCustomerN4jManager,
+        AnomalyN4jManager anomalyN4jManager
     ) {
         this.personN4jManager = personN4jManager;
         this.bizNameN4jManager = bizNameN4jManager;
         this.storeN4jManager = storeN4jManager;
         this.businessCustomerN4jManager = businessCustomerN4jManager;
+        this.anomalyN4jManager = anomalyN4jManager;
     }
 
     @Scheduled(cron = "${loader.GraphDBCleanup.cleanupSinceNotAccessed}")
     public void cleanupSinceNotAccessed() {
         long countBusinessCustomer = businessCustomerN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
         long countPerson = personN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
-        LOG.info("Deleted non accessed GraphDB {} {}", countBusinessCustomer, countPerson);
+        long countAnomaly = anomalyN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
+        LOG.info("Deleted non accessed GraphDB {} {} {}", countBusinessCustomer, countPerson, countAnomaly);
     }
 
     @Scheduled(cron = "${loader.GraphDBCleanup.deleteAll}")
@@ -58,6 +63,7 @@ public class GraphDBCleanup {
         personN4jManager.deleteAll();
         storeN4jManager.deleteAll();
         bizNameN4jManager.deleteAll();
+        anomalyN4jManager.deleteAll();
         LOG.info("Deleted all from GraphDB");
     }
 }

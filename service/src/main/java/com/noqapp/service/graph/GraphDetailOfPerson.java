@@ -2,10 +2,12 @@ package com.noqapp.service.graph;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.neo4j.AnomalyN4j;
 import com.noqapp.domain.neo4j.BusinessCustomerN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.neo4j.StoreN4j;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.repository.neo4j.AnomalyN4jManager;
 import com.noqapp.repository.neo4j.BusinessCustomerN4jManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
 
@@ -30,6 +32,7 @@ public class GraphDetailOfPerson {
 
     private PersonN4jManager personN4jManager;
     private BusinessCustomerN4jManager businessCustomerN4jManager;
+    private AnomalyN4jManager anomalyN4jManager;
 
     private GraphQueue graphQueue;
     private GraphBusinessCustomer graphBusinessCustomer;
@@ -37,12 +40,14 @@ public class GraphDetailOfPerson {
     public GraphDetailOfPerson(
         PersonN4jManager personN4jManager,
         BusinessCustomerN4jManager businessCustomerN4jManager,
+        AnomalyN4jManager anomalyN4jManager,
 
         GraphQueue graphQueue,
         GraphBusinessCustomer graphBusinessCustomer
     ) {
         this.personN4jManager = personN4jManager;
         this.businessCustomerN4jManager = businessCustomerN4jManager;
+        this.anomalyN4jManager = anomalyN4jManager;
 
         this.graphQueue = graphQueue;
         this.graphBusinessCustomer = graphBusinessCustomer;
@@ -57,7 +62,8 @@ public class GraphDetailOfPerson {
         } else if (24 < DateUtil.getHoursBetween(DateUtil.asLocalDateTime(personN4j.getLastAccessed()))) {
             personN4jManager.delete(personN4j);
             long deletedBusinessCustomerCount = businessCustomerN4jManager.deleteByQid(qid);
-            LOG.info("Graph obsolete for qid={} deleted before re-creating {}", qid, deletedBusinessCustomerCount);
+            long deleteAnomalyCount = anomalyN4jManager.deleteByQid(qid);
+            LOG.info("Graph obsolete for qid={} deleted before re-creating {} {}", qid, deletedBusinessCustomerCount, deleteAnomalyCount);
 
             populateForQid(qid);
         }
@@ -83,10 +89,19 @@ public class GraphDetailOfPerson {
         boolean hasAnomaly = graphBusinessCustomer.hasDataAnomaly(qid, BusinessTypeEnum.CDQ);
 
         if (hasAnomaly) {
-            LOG.warn("Data anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={}",
+            LOG.warn("Data anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={} [{}]",
                 personN4j.getQid(), storeN4js.size(),
                 bizNameIds.size(),
-                customerAssociatedToBusinesses.size());
+                customerAssociatedToBusinesses.size(),
+                customerAssociatedToBusinesses);
+
+            anomalyN4jManager.save(
+                new AnomalyN4j()
+                    .setQid(qid)
+                    .setPersonN4j(personN4j)
+                    .addBusinessType(BusinessTypeEnum.CDQ)
+                    .setLastAccessed(new Date())
+            );
         } else {
             LOG.info("Person={} visits={} different stores that are owned by business={} of which customer is registered in business={}",
                 personN4j.getQid(), storeN4js.size(),
