@@ -4,6 +4,10 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Property;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * hitender
@@ -15,7 +19,11 @@ public class AnomalyN4j {
     @Id
     private String qid;
 
+    @Property("businessType")
     private BusinessTypeEnum businessType;
+
+    @Property("businessCustomerIds")
+    private List<String> businessCustomerIds = new ArrayList<>();
 
     public String getQid() {
         return qid;
@@ -32,6 +40,15 @@ public class AnomalyN4j {
 
     public AnomalyN4j setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public List<String> getBusinessCustomerIds() {
+        return businessCustomerIds;
+    }
+
+    public AnomalyN4j setBusinessCustomerIds(List<String> businessCustomerIds) {
+        this.businessCustomerIds = businessCustomerIds;
         return this;
     }
 }

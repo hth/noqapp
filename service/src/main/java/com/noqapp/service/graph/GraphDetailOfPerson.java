@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * hitender
@@ -91,7 +92,7 @@ public class GraphDetailOfPerson {
         boolean hasAnomaly = graphBusinessCustomer.hasDataAnomaly(qid, BusinessTypeEnum.CDQ);
 
         if (hasAnomaly) {
-            LOG.warn("Data anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={} [{}]",
+            LOG.warn("Data anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={} {}",
                 personN4j.getQid(), storeN4js.size(),
                 bizNameIds.size(),
                 customerAssociatedToBusinesses.size(),
@@ -99,7 +100,8 @@ public class GraphDetailOfPerson {
 
             AnomalyN4j anomalyN4j = new AnomalyN4j()
                 .setQid(qid)
-                .setBusinessType(BusinessTypeEnum.CDQ);
+                .setBusinessType(BusinessTypeEnum.CDQ)
+                .setBusinessCustomerIds(customerAssociatedToBusinesses.stream().map(BusinessCustomerN4j::getBusinessCustomerId).collect(Collectors.toList()));
             anomalyN4jManager.save(anomalyN4j);
 
             personN4j.setAnomalyN4j(anomalyN4j);
