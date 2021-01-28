@@ -30,6 +30,9 @@ public class PersonN4j {
     @Relationship(type = "VISITED_TO", direction = Relationship.OUTGOING)
     private StoreN4j storeN4j;
 
+    @Relationship(type = "HAS_ANOMALY", direction = Relationship.OUTGOING)
+    private AnomalyN4j anomalyN4j;
+
     @Property("lastAccessed")
     private Date lastAccessed;
 
@@ -57,6 +60,15 @@ public class PersonN4j {
 
     public PersonN4j setStoreN4j(StoreN4j storeN4j) {
         this.storeN4j = storeN4j;
+        return this;
+    }
+
+    public AnomalyN4j getAnomalyN4j() {
+        return anomalyN4j;
+    }
+
+    public PersonN4j setAnomalyN4j(AnomalyN4j anomalyN4j) {
+        this.anomalyN4j = anomalyN4j;
         return this;
     }
 
