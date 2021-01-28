@@ -73,4 +73,9 @@ public class BusinessCustomerN4j {
         this.lastAccessed = lastAccessed;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return businessCustomerId + ", ";
+    }
 }
