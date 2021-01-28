@@ -23,14 +23,13 @@ public interface PersonN4jManager extends Neo4jRepository<PersonN4j, Long> {
     //@Query("MATCH (p:Person) WHERE p.qid = $qid RETURN p")
     PersonN4j findByQid(@Param("qid") String qid);
 
-    /** $0 represents the first parameter. */
     @Query("MATCH (p:Person) WHERE p.qid = $0 SET p.lastAccessed = $1 RETURN p")
     PersonN4j findByQidWithQuery(String qid, Date now);
 
-    @Query("MATCH (p:Person)-[:VISITED_TO]->(s:Store) where p.qid = $0 RETURN s")
+    @Query("MATCH (p:Person)-[:VISITS_TO]->(s:Store) where p.qid = $0 RETURN s")
     List<StoreN4j> findAllStoreVisitedByQid(String qid);
 
-    @Query("MATCH (p:Person)-[:VISITED_TO]->(s:Store) where p.qid = $0 RETURN s.bizNameId")
+    @Query("MATCH (p:Person)-[:VISITS_TO]->(s:Store) where p.qid = $0 RETURN s.bizNameId")
     Set<String> findAllBusinessVisitedByQid(String qid);
 
     @Query("MATCH (p:Person) WHERE p.lastAccessed < $0 DELETE p RETURN count(*)")
