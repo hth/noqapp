@@ -91,7 +91,7 @@ public class GraphDetailOfPerson {
         boolean hasAnomaly = graphBusinessCustomer.hasDataAnomaly(qid, BusinessTypeEnum.CDQ);
 
         if (hasAnomaly) {
-            LOG.warn("Data anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={} [{}]",
+            LOG.warn("Data anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={} {}",
                 personN4j.getQid(), storeN4js.size(),
                 bizNameIds.size(),
                 customerAssociatedToBusinesses.size(),
