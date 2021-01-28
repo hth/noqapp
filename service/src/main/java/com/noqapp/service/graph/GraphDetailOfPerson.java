@@ -60,10 +60,12 @@ public class GraphDetailOfPerson {
         if (null == personN4j) {
             populateForQid(qid);
         } else if (24 < DateUtil.getHoursBetween(DateUtil.asLocalDateTime(personN4j.getLastAccessed()))) {
+            if (null != personN4j.getAnomalyN4j()) {
+                anomalyN4jManager.delete(personN4j.getAnomalyN4j());
+            }
             personN4jManager.delete(personN4j);
             long deletedBusinessCustomerCount = businessCustomerN4jManager.deleteByQid(qid);
-            long deleteAnomalyCount = anomalyN4jManager.deleteByQid(qid);
-            LOG.info("Graph obsolete for qid={} deleted before re-creating {} {}", qid, deletedBusinessCustomerCount, deleteAnomalyCount);
+            LOG.info("Graph obsolete for qid={} deleted before re-creating {}", qid, deletedBusinessCustomerCount);
 
             populateForQid(qid);
         }
@@ -95,13 +97,13 @@ public class GraphDetailOfPerson {
                 customerAssociatedToBusinesses.size(),
                 customerAssociatedToBusinesses);
 
-            anomalyN4jManager.save(
-                new AnomalyN4j()
-                    .setQid(qid)
-                    .setPersonN4j(personN4j)
-                    .addBusinessType(BusinessTypeEnum.CDQ)
-                    .setLastAccessed(new Date())
-            );
+            AnomalyN4j anomalyN4j = new AnomalyN4j()
+                .setQid(qid)
+                .setBusinessType(BusinessTypeEnum.CDQ);
+            anomalyN4jManager.save(anomalyN4j);
+
+            personN4j.setAnomalyN4j(anomalyN4j);
+            personN4jManager.save(personN4j);
         } else {
             LOG.info("Person={} visits={} different stores that are owned by business={} of which customer is registered in business={}",
                 personN4j.getQid(), storeN4js.size(),
