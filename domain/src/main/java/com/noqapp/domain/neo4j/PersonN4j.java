@@ -33,6 +33,9 @@ public class PersonN4j {
     @Relationship(type = "HAS_ANOMALY", direction = Relationship.OUTGOING)
     private AnomalyN4j anomalyN4j;
 
+    @Relationship(type = "CUSTOMER_ID", direction = Relationship.OUTGOING)
+    private BusinessCustomerN4j businessCustomerN4j;
+
     @Property("lastAccessed")
     private Date lastAccessed;
 
@@ -69,6 +72,15 @@ public class PersonN4j {
 
     public PersonN4j setAnomalyN4j(AnomalyN4j anomalyN4j) {
         this.anomalyN4j = anomalyN4j;
+        return this;
+    }
+
+    public BusinessCustomerN4j getBusinessCustomerN4j() {
+        return businessCustomerN4j;
+    }
+
+    public PersonN4j setBusinessCustomerN4j(BusinessCustomerN4j businessCustomerN4j) {
+        this.businessCustomerN4j = businessCustomerN4j;
         return this;
     }
 

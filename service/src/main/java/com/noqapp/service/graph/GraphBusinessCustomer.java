@@ -5,12 +5,14 @@ import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.neo4j.BizNameN4j;
 import com.noqapp.domain.neo4j.BusinessCustomerN4j;
+import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BusinessCustomerManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.neo4j.BizNameN4jManager;
 import com.noqapp.repository.neo4j.BusinessCustomerN4jManager;
+import com.noqapp.repository.neo4j.PersonN4jManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +37,7 @@ import java.util.stream.Collectors;
 public class GraphBusinessCustomer {
     private static final Logger LOG = LoggerFactory.getLogger(GraphBusinessCustomer.class);
 
+    private PersonN4jManager personN4jManager;
     private BizNameN4jManager bizNameN4jManager;
     private BusinessCustomerN4jManager businessCustomerN4jManager;
 
@@ -44,14 +47,18 @@ public class GraphBusinessCustomer {
 
     @Autowired
     public GraphBusinessCustomer(
+        PersonN4jManager personN4jManager,
         BizNameN4jManager bizNameN4jManager,
         BusinessCustomerN4jManager businessCustomerN4jManager,
+
         BusinessCustomerManager businessCustomerManager,
         BizNameManager bizNameManager,
         UserProfileManager userProfileManager
     ) {
+        this.personN4jManager = personN4jManager;
         this.bizNameN4jManager = bizNameN4jManager;
         this.businessCustomerN4jManager = businessCustomerN4jManager;
+
         this.businessCustomerManager = businessCustomerManager;
         this.bizNameManager = bizNameManager;
         this.userProfileManager = userProfileManager;
@@ -59,6 +66,7 @@ public class GraphBusinessCustomer {
 
     @Async
     void graphBusinessCustomer(String qid) {
+        PersonN4j personN4j = personN4jManager.findByQid(qid);
         List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(qid);
         for (BusinessCustomerEntity businessCustomer : businessCustomers) {
             BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
@@ -77,6 +85,9 @@ public class GraphBusinessCustomer {
                 .setQid(businessCustomer.getQueueUserId())
                 .setLastAccessed(new Date());
             businessCustomerN4jManager.save(businessCustomerN4j);
+
+            personN4j.setBusinessCustomerN4j(businessCustomerN4j);
+            personN4jManager.save(personN4j);
         }
     }
 
