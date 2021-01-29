@@ -126,7 +126,7 @@ public class GraphBusinessCustomer {
             return false;
         }
 
-        if (ids.size() > 2) {
+        if (2 < ids.size()) {
             LOG.error("Data anomaly in businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
             return true;
         }
@@ -135,14 +135,14 @@ public class GraphBusinessCustomer {
         long groceryCard = ids.stream().filter(id -> id.startsWith("G")).count();
 
         /* Not more than one liquor card per account. */
-        if (liquorCard > 1) {
-            LOG.error("Data anomaly in size businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
+        if (1 < liquorCard) {
+            LOG.warn("Data anomaly in size businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
             return true;
         }
 
         /* Not more than one grocery card per account. */
-        if (groceryCard > 1) {
-            LOG.error("Data anomaly in size businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
+        if (1 < groceryCard) {
+            LOG.warn("Data anomaly in size businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
             return true;
         }
 
