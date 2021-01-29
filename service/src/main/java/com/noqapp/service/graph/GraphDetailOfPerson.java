@@ -57,7 +57,7 @@ public class GraphDetailOfPerson {
     @Mobile
     @Async
     public void graphPerson(String qid) {
-        PersonN4j personN4j = personN4jManager.findByQid(qid);
+        PersonN4j personN4j = personN4jManager.findByQidWithQuery(qid, new Date());
         if (null == personN4j) {
             populateForQid(qid);
         } else if (24 < DateUtil.getHoursBetween(DateUtil.asLocalDateTime(personN4j.getLastAccessed()))) {
@@ -73,23 +73,22 @@ public class GraphDetailOfPerson {
     }
 
     private void populateForQid(String qid) {
-        graphQueue.graphUser(qid);
-        graphBusinessCustomer.graphBusinessCustomer(qid);
+        PersonN4j personN4j = graphQueue.graphUser(qid);
+        graphBusinessCustomer.graphBusinessCustomer(personN4j);
 
-        showResultFromGraphedPerson(qid);
+        showResultFromGraphedPerson(personN4j);
     }
 
-    private void showResultFromGraphedPerson(String qid) {
-        PersonN4j personN4j = personN4jManager.findByQidWithQuery(qid, new Date());
-        if (null == personN4j) {
-            LOG.debug("No history found for qid={}", qid);
+    private void showResultFromGraphedPerson(PersonN4j personN4j) {
+        if (null == personN4j.getStoreN4j()) {
+            LOG.debug("No history found for qid={}", personN4j.getQid());
             return;
         }
 
-        List<StoreN4j> storeN4js = personN4jManager.findAllStoreVisitedByQid(qid);
-        Set<String> bizNameIds = personN4jManager.findAllBusinessVisitedByQid(qid);
-        Collection<BusinessCustomerN4j> customerAssociatedToBusinesses = businessCustomerN4jManager.findCustomerRegisteredToAllBusiness(qid);
-        boolean hasAnomaly = graphBusinessCustomer.hasDataAnomaly(qid, BusinessTypeEnum.CDQ);
+        List<StoreN4j> storeN4js = personN4jManager.findAllStoreVisitedByQid(personN4j.getQid());
+        Set<String> bizNameIds = personN4jManager.findAllBusinessVisitedByQid(personN4j.getQid());
+        Collection<BusinessCustomerN4j> customerAssociatedToBusinesses = businessCustomerN4jManager.findCustomerRegisteredToAllBusiness(personN4j.getQid());
+        boolean hasAnomaly = graphBusinessCustomer.hasDataAnomaly(personN4j.getQid(), BusinessTypeEnum.CDQ);
 
         if (hasAnomaly) {
             LOG.warn("Data anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={} {}",
@@ -99,7 +98,7 @@ public class GraphDetailOfPerson {
                 customerAssociatedToBusinesses);
 
             AnomalyN4j anomalyN4j = new AnomalyN4j()
-                .setQid(qid)
+                .setQid(personN4j.getQid())
                 .setBusinessType(BusinessTypeEnum.CDQ)
                 .setBusinessCustomerIds(customerAssociatedToBusinesses.stream().map(BusinessCustomerN4j::getBusinessCustomerId).collect(Collectors.toList()));
             anomalyN4jManager.save(anomalyN4j);

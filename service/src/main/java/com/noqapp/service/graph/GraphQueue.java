@@ -15,6 +15,7 @@ import com.noqapp.repository.neo4j.StoreN4jManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,23 +51,33 @@ public class GraphQueue {
         this.bizStoreManager = bizStoreManager;
     }
 
-    public void graphUser(String qid) {
+    public PersonN4j graphUser(String qid) {
         List<QueueEntity> queues = queueManager.findAllQueuedByQid(qid);
         List<QueueEntity> queueHistory = queueManagerJDBC.getByQid(qid);
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
 
-        graphQueue(queues, userProfile);
-        graphQueue(queueHistory, userProfile);
+        PersonN4j personN4j = new PersonN4j()
+            .setQid(qid)
+            .setName(userProfile.getName())
+            .setLastAccessed(new Date());
+        personN4jManager.save(personN4j);
+
+        graphQueue(queues, personN4j);
+        graphQueue(queueHistory, personN4j);
+
+        return personN4j;
     }
 
-    private void graphQueue(List<QueueEntity> queues, UserProfileEntity userProfile) {
+    private void graphQueue(List<QueueEntity> queues, PersonN4j personN4j) {
         for (QueueEntity queue : queues) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(queue.getCodeQR());
             if (null != bizStore) {
                 StoreN4j storeN4j = StoreN4j.populate(bizStore);
                 storeN4jManager.save(storeN4j);
-                queue.setCustomerName(userProfile.getName());
-                personN4jManager.save(PersonN4j.populate(queue, storeN4j));
+
+                /* Adding each store person has visited. */
+                personN4j.setStoreN4j(storeN4j);
+                personN4jManager.save(personN4j);
             }
         }
     }
