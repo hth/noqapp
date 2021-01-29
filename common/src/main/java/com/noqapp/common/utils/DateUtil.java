@@ -283,9 +283,6 @@ public final class DateUtil {
         return ChronoUnit.YEARS.between(start, end);
     }
 
-    @Deprecated
-    public static Date plusDays_old(int days) {
-        return Date.from(LocalDate.now().plusDays(days).atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
     public static Date minusDays(long days) {
