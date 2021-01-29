@@ -125,7 +125,7 @@ public class GraphBusinessCustomer {
         }
 
         if (2 < ids.size()) {
-            LOG.error("Data anomaly in businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
+            LOG.warn("Data anomaly in businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
             return true;
         }
 
