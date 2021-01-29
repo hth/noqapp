@@ -57,6 +57,7 @@ public class GraphDetailOfPerson {
     @Mobile
     @Async
     public void graphPerson(String qid) {
+        LOG.info("Graphing for qid={}", qid);
         PersonN4j personN4j = personN4jManager.findByQidWithQuery(qid, new Date());
         if (null == personN4j) {
             populateForQid(qid);

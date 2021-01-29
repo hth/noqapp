@@ -283,6 +283,9 @@ public final class DateUtil {
         return ChronoUnit.YEARS.between(start, end);
     }
 
+    public static Date minusHours(long hours) {
+        Instant instant = new Date().toInstant().minus(hours, ChronoUnit.HOURS).atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
     }
 
     public static Date minusDays(long days) {

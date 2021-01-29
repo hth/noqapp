@@ -74,7 +74,7 @@ public class PersonN4j {
         this.businessCustomerN4j = businessCustomerN4j;
         return this;
     }
-    
+
     public AnomalyN4j getAnomalyN4j() {
         return anomalyN4j;
     }

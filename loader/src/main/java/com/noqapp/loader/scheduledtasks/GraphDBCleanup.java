@@ -51,8 +51,8 @@ public class GraphDBCleanup {
 
     @Scheduled(cron = "${loader.GraphDBCleanup.cleanupSinceNotAccessed}")
     public void cleanupSinceNotAccessed() {
-        long countBusinessCustomer = businessCustomerN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
-        long countPerson = personN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
+        long countBusinessCustomer = businessCustomerN4jManager.deleteNotAccessedSince(DateUtil.minusHours(6));
+        long countPerson = personN4jManager.deleteNotAccessedSince(DateUtil.minusHours(6));
         LOG.info("Deleted non accessed GraphDB {} {}", countBusinessCustomer, countPerson);
     }
 
