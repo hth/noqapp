@@ -86,8 +86,10 @@ public class GraphBusinessCustomer {
                 .setLastAccessed(new Date());
             businessCustomerN4jManager.save(businessCustomerN4j);
 
-            personN4j.setBusinessCustomerN4j(businessCustomerN4j);
-            personN4jManager.save(personN4j);
+            if (null != personN4j) {
+                personN4j.setBusinessCustomerN4j(businessCustomerN4j);
+                personN4jManager.save(personN4j);
+            }
         }
     }
 
