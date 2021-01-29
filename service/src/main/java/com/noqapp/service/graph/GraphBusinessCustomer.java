@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -65,9 +66,8 @@ public class GraphBusinessCustomer {
     }
 
     @Async
-    void graphBusinessCustomer(String qid) {
-        PersonN4j personN4j = personN4jManager.findByQid(qid);
-        List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(qid);
+    void graphBusinessCustomer(PersonN4j personN4j) {
+        List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(personN4j.getQid());
         for (BusinessCustomerEntity businessCustomer : businessCustomers) {
             BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
             BizNameN4j bizNameN4j = new BizNameN4j()
@@ -77,7 +77,7 @@ public class GraphBusinessCustomer {
                 .setBusinessType(bizName.getBusinessType());
             bizNameN4jManager.save(bizNameN4j);
 
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
             BusinessCustomerN4j businessCustomerN4j = new BusinessCustomerN4j()
                 .setBizNameN4j(bizNameN4j)
                 .setName(userProfile.getName())
@@ -86,10 +86,8 @@ public class GraphBusinessCustomer {
                 .setLastAccessed(new Date());
             businessCustomerN4jManager.save(businessCustomerN4j);
 
-            if (null != personN4j) {
-                personN4j.setBusinessCustomerN4j(businessCustomerN4j);
-                personN4jManager.save(personN4j);
-            }
+            personN4j.setBusinessCustomerN4j(businessCustomerN4j);
+            personN4jManager.save(personN4j);
         }
     }
 
