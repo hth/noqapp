@@ -84,7 +84,7 @@ public class GraphDetailOfPerson {
     }
 
     private void showResultFromGraphedPerson(PersonN4j personN4j) {
-        if (null == personN4j.getStoreN4j()) {
+        if (personN4j.getStoreN4js().isEmpty()) {
             LOG.debug("No history found for qid={}", personN4j.getQid());
             return;
         }

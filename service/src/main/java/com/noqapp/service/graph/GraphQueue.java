@@ -15,6 +15,7 @@ import com.noqapp.repository.neo4j.StoreN4jManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,10 +76,12 @@ public class GraphQueue {
                 StoreN4j storeN4j = StoreN4j.populate(bizStore);
                 storeN4jManager.save(storeN4j);
 
-                /* Adding each store person has visited. */
-                personN4j.setStoreN4j(storeN4j);
-                personN4jManager.save(personN4j);
+                personN4j.addStoreN4j(storeN4j);
             }
+        }
+
+        if (!queues.isEmpty()) {
+            personN4jManager.save(personN4j);
         }
     }
 }

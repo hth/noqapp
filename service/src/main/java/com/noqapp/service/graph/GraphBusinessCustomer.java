@@ -85,8 +85,10 @@ public class GraphBusinessCustomer {
                 .setQid(businessCustomer.getQueueUserId())
                 .setLastAccessed(new Date());
             businessCustomerN4jManager.save(businessCustomerN4j);
+            personN4j.addBusinessCustomerN4j(businessCustomerN4j);
+        }
 
-            personN4j.setBusinessCustomerN4j(businessCustomerN4j);
+        if (!businessCustomers.isEmpty()) {
             personN4jManager.save(personN4j);
         }
     }
