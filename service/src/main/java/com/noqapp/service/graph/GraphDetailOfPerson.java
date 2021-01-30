@@ -57,19 +57,23 @@ public class GraphDetailOfPerson {
     @Mobile
     @Async
     public void graphPerson(String qid) {
-        LOG.info("Graphing for qid={}", qid);
-        PersonN4j personN4j = personN4jManager.findByQidWithQuery(qid, new Date());
-        if (null == personN4j) {
-            populateForQid(qid);
-        } else if (24 < DateUtil.getHoursBetween(DateUtil.asLocalDateTime(personN4j.getLastAccessed()))) {
-            if (null != personN4j.getAnomalyN4j()) {
-                anomalyN4jManager.delete(personN4j.getAnomalyN4j());
-            }
-            personN4jManager.delete(personN4j);
-            long deletedBusinessCustomerCount = businessCustomerN4jManager.deleteByQid(qid);
-            LOG.info("Graph obsolete for qid={} deleted before re-creating {}", qid, deletedBusinessCustomerCount);
+        try {
+            LOG.info("Graphing for qid={}", qid);
+            PersonN4j personN4j = personN4jManager.findByQidWithQuery(qid, new Date());
+            if (null == personN4j) {
+                populateForQid(qid);
+            } else if (24 < DateUtil.getHoursBetween(DateUtil.asLocalDateTime(personN4j.getLastAccessed()))) {
+                if (null != personN4j.getAnomalyN4j()) {
+                    anomalyN4jManager.delete(personN4j.getAnomalyN4j());
+                }
+                personN4jManager.delete(personN4j);
+                long deletedBusinessCustomerCount = businessCustomerN4jManager.deleteByQid(qid);
+                LOG.info("Graph obsolete for qid={} deleted before re-creating {}", qid, deletedBusinessCustomerCount);
 
-            populateForQid(qid);
+                populateForQid(qid);
+            }
+        } catch (Exception e) {
+            LOG.error("Failed graphing qid={} reason={}", qid, e.getLocalizedMessage(), e);
         }
     }
 
