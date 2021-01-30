@@ -7,7 +7,6 @@ import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.Date;
-import java.util.StringJoiner;
 
 /**
  * hitender
