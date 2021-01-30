@@ -110,6 +110,8 @@ public class LoaderInitializationBean {
 
     @PostConstruct
     public void checkNeo4j() {
+        LOG.info("Neo4j strictQuery={}", neo4jTransactionManager.getSessionFactory().isUseStrictQuerying());
+
         try {
             Session session = neo4jTransactionManager.getSessionFactory().openSession();
             Result resultOnConstraints = session.query("CALL db.constraints", Collections.EMPTY_MAP);

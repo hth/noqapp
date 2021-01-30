@@ -83,7 +83,6 @@ public class NoQueueInitializationCheckBean {
     private Neo4jTransactionManager neo4jTransactionManager;
     private SmsService smsService;
     private LettuceConnectionFactory lettuceConnectionFactory;
-    private GraphDetailOfPerson graphDetailOfPerson;
 
     private String buildEnvironment;
     private String thisIs;
@@ -105,8 +104,7 @@ public class NoQueueInitializationCheckBean {
         StanfordCoreNLP stanfordCoreNLP,
         Neo4jTransactionManager neo4jTransactionManager,
         SmsService smsService,
-        LettuceConnectionFactory lettuceConnectionFactory,
-        GraphDetailOfPerson graphDetailOfPerson
+        LettuceConnectionFactory lettuceConnectionFactory
     ) {
         this.buildEnvironment = environment.getProperty("build.env");
         this.thisIs = environment.getProperty("thisis");
@@ -124,7 +122,6 @@ public class NoQueueInitializationCheckBean {
         this.neo4jTransactionManager = neo4jTransactionManager;
         this.smsService = smsService;
         this.lettuceConnectionFactory = lettuceConnectionFactory;
-        this.graphDetailOfPerson = graphDetailOfPerson;
     }
 
     @PostConstruct
@@ -260,12 +257,6 @@ public class NoQueueInitializationCheckBean {
             String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
             LOG.info("{} {}", sentence, sentiment);
         }
-    }
-
-    @PostConstruct
-    public void checkNeo4j() {
-        LOG.info("Neo4j strictQuery={}", neo4jTransactionManager.getSessionFactory().isUseStrictQuerying());
-
     }
 
     @PostConstruct
