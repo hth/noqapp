@@ -1,6 +1,7 @@
 package com.noqapp.domain.neo4j;
 
 import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
@@ -14,7 +15,8 @@ import java.util.Date;
 @NodeEntity(label = "BusinessCustomer")
 public class BusinessCustomerN4j {
 
-    @Id
+    /* A unique constraint exists on codeQR. */
+    @Id @Index(unique = true)
     private String businessCustomerId;
 
     @Property("name")

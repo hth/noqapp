@@ -5,7 +5,9 @@ import com.noqapp.domain.QueueEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 import org.neo4j.ogm.annotation.Relationship;
@@ -21,7 +23,8 @@ import java.util.StringJoiner;
 public class PersonN4j {
     private static final Logger LOG = LoggerFactory.getLogger(PersonN4j.class);
 
-    @Id
+    /* A unique constraint exists on QID. */
+    @Id @Index(unique = true)
     private String qid;
 
     @Property("name")
