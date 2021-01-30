@@ -1,10 +1,8 @@
 package com.noqapp.domain.neo4j;
 
-import com.noqapp.domain.types.BusinessTypeEnum;
-
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
+import org.neo4j.ogm.annotation.Relationship;
 
 /**
  * hitender
@@ -16,7 +14,7 @@ public class AnomalyN4j {
     @Id
     private String qid;
 
-    @Property("businessCustomer")
+    @Relationship(type = "CUSTOMER_ID", direction = Relationship.OUTGOING)
     private BusinessCustomerN4j businessCustomerN4j;
 
     public String getQid() {
