@@ -23,9 +23,9 @@ public interface BusinessCustomerN4jManager extends Neo4jRepository<BusinessCust
     @Query("MATCH (c:BusinessCustomer)-[r:CUSTOMER_ID]->(b:BizName) where c.qid = $0 and b.businessType = $1 RETURN c, r, b")
     Collection<BusinessCustomerN4j> findCustomerRegisteredToSpecificBusinessType(String qid, BusinessTypeEnum businessType);
 
-    @Query("MATCH (c:BusinessCustomer) WHERE c.lastAccessed < $0 DELETE c RETURN count(*)")
+    @Query("MATCH (c:BusinessCustomer) WHERE c.lastAccessed < $0 DETACH DELETE c RETURN count(*)")
     long deleteNotAccessedSince(Date since);
 
-    @Query("MATCH (c:BusinessCustomer) WHERE c.qid = $0 DELETE c RETURN count(*)")
+    @Query("MATCH (c:BusinessCustomer) WHERE c.qid = $0 DETACH DELETE c RETURN count(*)")
     long deleteByQid(String qid);
 }
