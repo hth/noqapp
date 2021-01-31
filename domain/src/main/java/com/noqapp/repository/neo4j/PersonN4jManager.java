@@ -32,6 +32,6 @@ public interface PersonN4jManager extends Neo4jRepository<PersonN4j, Long> {
     @Query("MATCH (p:Person)-[:VISITS_TO]->(s:Store) where p.qid = $0 RETURN s.bizNameId")
     Set<String> findAllBusinessVisitedByQid(String qid);
 
-    @Query("MATCH (p:Person) WHERE p.lastAccessed < $0 DELETE p RETURN count(*)")
+    @Query("MATCH (p:Person) WHERE p.lastAccessed < $0 DETACH DELETE p RETURN count(*)")
     long deleteNotAccessedSince(Date since);
 }
