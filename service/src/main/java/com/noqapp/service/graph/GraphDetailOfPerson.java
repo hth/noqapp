@@ -101,15 +101,11 @@ public class GraphDetailOfPerson {
                 customerAssociatedToBusinesses.size(),
                 customerAssociatedToBusinesses);
 
-            for (BusinessCustomerN4j businessCustomerN4j : customerAssociatedToBusinesses) {
-                AnomalyN4j anomalyN4j = new AnomalyN4j()
-                    .setQid(personN4j.getQid())
-                    .setBusinessCustomerN4j(businessCustomerN4j);
-                anomalyN4jManager.save(anomalyN4j);
+            AnomalyN4j anomalyN4j = new AnomalyN4j().setQid(personN4j.getQid());
+            anomalyN4jManager.save(anomalyN4j);
 
-                personN4j.setAnomalyN4j(anomalyN4j);
-                personN4jManager.save(personN4j);
-            }
+            personN4j.setAnomalyN4j(anomalyN4j);
+            personN4jManager.save(personN4j);
         } else {
             LOG.info("No anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={}",
                 personN4j.getQid(), storeN4js.size(),
