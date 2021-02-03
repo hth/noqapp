@@ -54,7 +54,11 @@ public class GraphDBCleanup {
         try {
             long countPerson = personN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
             long countBusinessCustomer = businessCustomerN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
-            LOG.info("Deleted non accessed GraphDB person={} businessCustomer={}", countPerson, countBusinessCustomer);
+            long countDeletedOrphanNodes = personN4jManager.deleteOrphanNodes();
+            LOG.info("Deleted non accessed GraphDB person={} businessCustomer={} countDeletedOrphanNodes={}",
+                countPerson,
+                countBusinessCustomer,
+                countDeletedOrphanNodes);
         } catch (Exception e) {
             LOG.error("Failed to delete reason={}", e.getLocalizedMessage(), e);
         }
