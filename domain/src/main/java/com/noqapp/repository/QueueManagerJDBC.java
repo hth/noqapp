@@ -82,4 +82,6 @@ public interface QueueManagerJDBC {
     List<String> distinctQIDsInBiz(String bizNameId, int limitedToDays);
 
     int countNumberOfUserServiced(int limitedToDays);
+
+    QueueEntity clientLatestVisit(String qid);
 }

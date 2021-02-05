@@ -34,6 +34,7 @@ public class Constants {
     public static final int MINUTES_59 = MINUTES_60 - 1;    //Minutes
     public static final int MINUTES_IN_MILLISECOND = 60_000;      //1 minutes in milliseconds
     public static final int MINUTES_2_IN_MILLISECOND = MINUTES_IN_MILLISECOND * 2;
+    public static final int SRID = 4326;
 
     private Constants() {
     }

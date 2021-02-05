@@ -167,6 +167,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             " FROM " +
             "QUEUE WHERE BN = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW()";
 
+
+    private static final String clientLatestVisit =
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE QID = ? ORDER BY C DESC LIMIT 1";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
 
@@ -444,5 +450,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "SELECT COUNT(*) FROM QUEUE WHERE QS != 'A' AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW()",
             new Object[]{limitedToDays},
             Integer.class);
+    }
+
+    @Override
+    public QueueEntity clientLatestVisit(String qid) {
+        return jdbcTemplate.queryForObject(
+            clientLatestVisit,
+            new Object[]{qid},
+            new QueueRowMapper()
+        );
     }
 }
