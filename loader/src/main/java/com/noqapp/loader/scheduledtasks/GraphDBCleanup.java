@@ -55,7 +55,7 @@ public class GraphDBCleanup {
             long countPerson = personN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
             long countBusinessCustomer = businessCustomerN4jManager.deleteNotAccessedSince(DateUtil.minusDays(1));
             long countDeletedOrphanNodes = personN4jManager.deleteOrphanNodes();
-            LOG.info("Deleted non accessed GraphDB person={} businessCustomer={} countDeletedOrphanNodes={}",
+            LOG.info("Deleted non accessed GraphDB person={} businessCustomer={} orphanNodes={}",
                 countPerson,
                 countBusinessCustomer,
                 countDeletedOrphanNodes);
