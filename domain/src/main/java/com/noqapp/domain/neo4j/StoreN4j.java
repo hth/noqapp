@@ -1,11 +1,14 @@
 package com.noqapp.domain.neo4j;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.neo4j.driver.internal.InternalPoint2D;
+import org.neo4j.driver.types.Point;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -31,6 +34,9 @@ public class StoreN4j {
 
     @Property("businessType")
     private BusinessTypeEnum businessType;
+
+    @Property("location")
+    private Point location;
 
     public String getCodeQR() {
         return codeQR;
@@ -68,11 +74,21 @@ public class StoreN4j {
         return this;
     }
 
+    public Point getLocation() {
+        return location;
+    }
+
+    public StoreN4j setLocation(Point location) {
+        this.location = location;
+        return this;
+    }
+
     public static StoreN4j populate(BizStoreEntity bizStore) {
         return new StoreN4j()
             .setCodeQR(bizStore.getCodeQR())
             .setStoreName(bizStore.getDisplayName())
             .setBizNameId(bizStore.getBizName().getId())
-            .setBusinessType(bizStore.getBusinessType());
+            .setBusinessType(bizStore.getBusinessType())
+            .setLocation(new InternalPoint2D(Constants.SRID, bizStore.getCoordinate()[0], bizStore.getCoordinate()[1]));
     }
 }
