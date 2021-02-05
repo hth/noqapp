@@ -62,13 +62,8 @@ public class GraphDetailOfPerson {
             if (null == personN4j) {
                 populateForQid(qid);
             } else if (24 < DateUtil.getHoursBetween(DateUtil.asLocalDateTime(personN4j.getLastAccessed()))) {
-                if (null != personN4j.getAnomalyN4j()) {
-                    anomalyN4jManager.delete(personN4j.getAnomalyN4j());
-                }
-                personN4jManager.delete(personN4j);
-                long deletedBusinessCustomerCount = businessCustomerN4jManager.deleteByQid(qid);
-                LOG.info("Graph obsolete for qid={} deleted before re-creating {}", qid, deletedBusinessCustomerCount);
-
+                long count = personN4jManager.detachAndDelete(qid);
+                LOG.info("Graph obsolete for qid={} deleted {} before re-creating", qid, count);
                 populateForQid(qid);
             }
         } catch (Exception e) {

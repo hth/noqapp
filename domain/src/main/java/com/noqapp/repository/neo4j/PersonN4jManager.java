@@ -37,4 +37,7 @@ public interface PersonN4jManager extends Neo4jRepository<PersonN4j, Long> {
 
     @Query("MATCH (n) WHERE NOT (n)--() DELETE n return count(*)")
     long deleteOrphanNodes();
+
+    @Query("MATCH (p:Person) WHERE p.qid = $0 DETACH DELETE p RETURN count(*)")
+    long detachAndDelete(String qid);
 }
