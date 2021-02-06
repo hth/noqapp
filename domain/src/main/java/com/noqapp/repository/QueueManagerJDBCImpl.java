@@ -450,9 +450,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     @Override
     public String clientLatestVisit(String qid) {
-        return jdbcTemplate.queryForObject(
-            clientLatestVisit,
-            new Object[]{qid},
-            String.class);
+        try {
+            return jdbcTemplate.queryForObject(
+                clientLatestVisit,
+                new Object[]{qid},
+                String.class);
+        } catch (EmptyResultDataAccessException e) {
+            LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
+            return null;
+        }
     }
 }
