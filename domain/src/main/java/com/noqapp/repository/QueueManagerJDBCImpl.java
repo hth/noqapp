@@ -167,11 +167,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             " FROM " +
             "QUEUE WHERE BN = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW()";
 
-
-    private static final String clientLatestVisit =
-        "SELECT QR " +
-            " FROM " +
-            "QUEUE WHERE QID = ? ORDER BY C DESC LIMIT 1";
+    private static final String clientLatestVisit = "SELECT QR FROM QUEUE WHERE QID = ? ORDER BY C DESC LIMIT 1";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
