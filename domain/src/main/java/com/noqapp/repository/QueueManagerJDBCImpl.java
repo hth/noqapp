@@ -457,7 +457,6 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         return jdbcTemplate.queryForObject(
             clientLatestVisit,
             new Object[]{qid},
-            String.class
-        );
+            String.class);
     }
 }
