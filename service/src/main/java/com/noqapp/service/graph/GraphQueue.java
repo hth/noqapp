@@ -1,6 +1,5 @@
 package com.noqapp.service.graph;
 
-import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -14,9 +13,8 @@ import com.noqapp.repository.neo4j.PersonN4jManager;
 import com.noqapp.repository.neo4j.StoreN4jManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
-
-import org.neo4j.driver.internal.InternalPoint2D;
 
 import java.util.Date;
 import java.util.List;
@@ -68,7 +66,7 @@ public class GraphQueue {
         if (null != latestVisit) {
             String codeQR = latestVisit.getCodeQR();
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-            personN4j.setLocation(new InternalPoint2D(Constants.SRID, bizStore.getCoordinate()[0], bizStore.getCoordinate()[1]))
+            personN4j.setLocation(new Point(bizStore.getCoordinate()[0], bizStore.getCoordinate()[1]))
                 .setBizNameId(bizStore.getBizName().getId())
                 .setStoreCodeQR(bizStore.getCodeQR());
         }

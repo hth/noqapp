@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Point;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +79,7 @@ public class GraphBusinessCustomer {
                 .setCodeQR(bizName.getCodeQR())
                 .setBusinessType(bizName.getBusinessType())
                 .setBusinessName(bizName.getBusinessName())
-                .setLocation(new InternalPoint2D(Constants.SRID, bizName.getCoordinate()[0], bizName.getCoordinate()[1]));
+                .setLocation(new Point(bizName.getCoordinate()[0], bizName.getCoordinate()[1]));
             bizNameN4jManager.save(bizNameN4j);
 
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
