@@ -146,6 +146,13 @@ public class LoaderInitializationBean {
             } else {
                 LOG.info("Constraint found biz_name_unique_id");
             }
+
+            if (!constraintIds.contains("location_geo_point")) {
+                Result result = session.query("CREATE CONSTRAINT location_geo_point ON (l:Location) ASSERT l.geoPoint IS UNIQUE;", Collections.EMPTY_MAP);
+                LOG.info("Constraint on geoPoint in Location added={}", result.queryStatistics().containsUpdates());
+            } else {
+                LOG.info("Constraint found location_geo_point");
+            }
         } catch (ClientException ex) {
             LOG.error("Failed creating constraint reason={}", ex.getLocalizedMessage(), ex);
         }
