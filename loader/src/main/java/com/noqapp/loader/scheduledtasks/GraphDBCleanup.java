@@ -4,6 +4,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.repository.neo4j.AnomalyN4jManager;
 import com.noqapp.repository.neo4j.BizNameN4jManager;
 import com.noqapp.repository.neo4j.BusinessCustomerN4jManager;
+import com.noqapp.repository.neo4j.LocationN4jManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
 import com.noqapp.repository.neo4j.StoreN4jManager;
 
@@ -33,6 +34,7 @@ public class GraphDBCleanup {
     private StoreN4jManager storeN4jManager;
     private BusinessCustomerN4jManager businessCustomerN4jManager;
     private AnomalyN4jManager anomalyN4jManager;
+    private LocationN4jManager locationN4jManager;
 
     @Autowired
     public GraphDBCleanup(
@@ -40,13 +42,15 @@ public class GraphDBCleanup {
         BizNameN4jManager bizNameN4jManager,
         StoreN4jManager storeN4jManager,
         BusinessCustomerN4jManager businessCustomerN4jManager,
-        AnomalyN4jManager anomalyN4jManager
+        AnomalyN4jManager anomalyN4jManager,
+        LocationN4jManager locationN4jManager
     ) {
         this.personN4jManager = personN4jManager;
         this.bizNameN4jManager = bizNameN4jManager;
         this.storeN4jManager = storeN4jManager;
         this.businessCustomerN4jManager = businessCustomerN4jManager;
         this.anomalyN4jManager = anomalyN4jManager;
+        this.locationN4jManager = locationN4jManager;
     }
 
     @Scheduled(cron = "${loader.GraphDBCleanup.cleanupSinceNotAccessed}")
@@ -72,6 +76,7 @@ public class GraphDBCleanup {
             storeN4jManager.deleteAll();
             bizNameN4jManager.deleteAll();
             anomalyN4jManager.deleteAll();
+            locationN4jManager.deleteAll();
             LOG.info("Deleted all from GraphDB");
         } catch (Exception e) {
             LOG.error("Failed to clean reason={}", e.getLocalizedMessage(), e);
