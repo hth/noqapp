@@ -83,5 +83,5 @@ public interface QueueManagerJDBC {
 
     int countNumberOfUserServiced(int limitedToDays);
 
-    QueueEntity clientLatestVisit(String qid);
+    String clientLatestVisit(String qid);
 }
