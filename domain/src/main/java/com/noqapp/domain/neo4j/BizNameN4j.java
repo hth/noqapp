@@ -2,8 +2,6 @@ package com.noqapp.domain.neo4j;
 
 import com.noqapp.domain.types.BusinessTypeEnum;
 
-import org.springframework.data.geo.Point;
-
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -28,6 +26,8 @@ public class BizNameN4j {
 
     @Property("businessName")
     private String businessName;
+
+    private LocationN4j location;
 
     public String getId() {
         return id;
@@ -62,6 +62,15 @@ public class BizNameN4j {
 
     public BizNameN4j setBusinessName(String businessName) {
         this.businessName = businessName;
+        return this;
+    }
+
+    public LocationN4j getLocation() {
+        return location;
+    }
+
+    public BizNameN4j setLocation(LocationN4j location) {
+        this.location = location;
         return this;
     }
 }
