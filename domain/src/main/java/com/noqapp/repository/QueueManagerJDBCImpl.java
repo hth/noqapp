@@ -331,7 +331,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
         try {
             return jdbcTemplate.queryForObject(clientVisitedStoreDate, new Object[]{codeQR, qid, QueueUserStateEnum.S.getName()}, Date.class);
         } catch (EmptyResultDataAccessException e) {
-            //TODO fix this error or query
+            //TODO fix this error or query for Incorrect result size: expected 1, actual 0
             return null;
         }
     }
@@ -451,12 +451,9 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     @Override
     public String clientLatestVisit(String qid) {
         try {
-            return jdbcTemplate.queryForObject(
-                clientLatestVisit,
-                new Object[]{qid},
-                String.class);
+            return jdbcTemplate.queryForObject(clientLatestVisit, new Object[]{qid}, String.class);
         } catch (EmptyResultDataAccessException e) {
-            LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
+            //TODO fix this error or query for Incorrect result size: expected 1, actual 0
             return null;
         }
     }
