@@ -1,11 +1,11 @@
 package com.noqapp.service.graph;
 
-import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.neo4j.BizNameN4j;
 import com.noqapp.domain.neo4j.BusinessCustomerN4j;
+import com.noqapp.domain.neo4j.LocationN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.BizNameManager;
@@ -19,13 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Point;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import org.neo4j.driver.internal.InternalPoint2D;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -78,7 +74,8 @@ public class GraphBusinessCustomer {
                 .setId(bizName.getId())
                 .setCodeQR(bizName.getCodeQR())
                 .setBusinessType(bizName.getBusinessType())
-                .setBusinessName(bizName.getBusinessName());
+                .setBusinessName(bizName.getBusinessName())
+                .setLocation(LocationN4j.newInstance(bizName.getCoordinate()[0], bizName.getCoordinate()[1]));
             bizNameN4jManager.save(bizNameN4j);
 
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
