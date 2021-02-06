@@ -1,14 +1,13 @@
 package com.noqapp.domain.neo4j;
 
-import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.neo4j.driver.internal.InternalPoint2D;
-import org.neo4j.driver.types.Point;
+import org.springframework.data.geo.Point;
+
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -89,6 +88,6 @@ public class StoreN4j {
             .setStoreName(bizStore.getDisplayName())
             .setBizNameId(bizStore.getBizName().getId())
             .setBusinessType(bizStore.getBusinessType())
-            .setLocation(new InternalPoint2D(Constants.SRID, bizStore.getCoordinate()[0], bizStore.getCoordinate()[1]));
+            .setLocation(new Point(bizStore.getCoordinate()[0], bizStore.getCoordinate()[1]));
     }
 }
