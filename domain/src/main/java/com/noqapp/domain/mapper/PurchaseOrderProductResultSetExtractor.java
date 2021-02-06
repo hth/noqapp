@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * User: hitender
  * Date: 10/5/18 8:17 PM
  */
-public class PurchaseOrderProductResultSetExtractor implements ResultSetExtractor {
+public class PurchaseOrderProductResultSetExtractor implements ResultSetExtractor<PurchaseOrderProductEntity> {
 
     private static final int ID = 1;
     private static final int PN = 2;
