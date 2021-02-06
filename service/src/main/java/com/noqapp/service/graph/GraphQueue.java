@@ -10,6 +10,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.UserProfileManager;
+import com.noqapp.repository.neo4j.LocationN4jManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
 import com.noqapp.repository.neo4j.StoreN4jManager;
 
@@ -30,6 +31,7 @@ public class GraphQueue {
 
     private StoreN4jManager storeN4jManager;
     private PersonN4jManager personN4jManager;
+    private LocationN4jManager locationN4jManager;
 
     private QueueManager queueManager;
     private QueueManagerJDBC queueManagerJDBC;
@@ -40,6 +42,7 @@ public class GraphQueue {
     public GraphQueue(
         StoreN4jManager storeN4jManager,
         PersonN4jManager personN4jManager,
+        LocationN4jManager locationN4jManager,
 
         QueueManager queueManager,
         QueueManagerJDBC queueManagerJDBC,
@@ -48,6 +51,8 @@ public class GraphQueue {
     ) {
         this.storeN4jManager = storeN4jManager;
         this.personN4jManager = personN4jManager;
+        this.locationN4jManager = locationN4jManager;
+
         this.queueManager = queueManager;
         this.queueManagerJDBC = queueManagerJDBC;
         this.userProfileManager = userProfileManager;
@@ -67,8 +72,11 @@ public class GraphQueue {
         String codeQR = queueManagerJDBC.clientLatestVisit(qid);
         if (StringUtils.isNotBlank(codeQR)) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+            LocationN4j locationN4j = LocationN4j.newInstance(bizStore.getCoordinate()[0], bizStore.getCoordinate()[1]);
+            locationN4jManager.save(locationN4j);
+
             personN4j
-                .setLocation(LocationN4j.newInstance(bizStore.getCoordinate()[0], bizStore.getCoordinate()[1]))
+                .setLocation(locationN4j)
                 .setBizNameId(bizStore.getBizName().getId())
                 .setStoreCodeQR(bizStore.getCodeQR());
         }
