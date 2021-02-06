@@ -13,6 +13,8 @@ import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
 import com.noqapp.repository.neo4j.StoreN4jManager;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,9 +64,8 @@ public class GraphQueue {
             .setName(userProfile.getName())
             .setLastAccessed(new Date());
 
-        QueueEntity latestVisit = queueManagerJDBC.clientLatestVisit(qid);
-        if (null != latestVisit) {
-            String codeQR = latestVisit.getCodeQR();
+        String codeQR = queueManagerJDBC.clientLatestVisit(qid);
+        if (StringUtils.isNotBlank(codeQR)) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
             personN4j
                 .setLocation(LocationN4j.newInstance(bizStore.getCoordinate()[0], bizStore.getCoordinate()[1]))

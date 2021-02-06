@@ -169,7 +169,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
 
     private static final String clientLatestVisit =
-        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+        "SELECT QR " +
             " FROM " +
             "QUEUE WHERE QID = ? ORDER BY C DESC LIMIT 1";
 
@@ -453,11 +453,11 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     }
 
     @Override
-    public QueueEntity clientLatestVisit(String qid) {
+    public String clientLatestVisit(String qid) {
         return jdbcTemplate.queryForObject(
             clientLatestVisit,
             new Object[]{qid},
-            new QueueRowMapper()
+            String.class
         );
     }
 }
