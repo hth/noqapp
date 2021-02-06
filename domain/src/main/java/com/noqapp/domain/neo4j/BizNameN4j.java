@@ -29,9 +29,6 @@ public class BizNameN4j {
     @Property("businessName")
     private String businessName;
 
-    @Property("location")
-    private Point location;
-
     public String getId() {
         return id;
     }
@@ -65,15 +62,6 @@ public class BizNameN4j {
 
     public BizNameN4j setBusinessName(String businessName) {
         this.businessName = businessName;
-        return this;
-    }
-
-    public Point getLocation() {
-        return location;
-    }
-
-    public BizNameN4j setLocation(Point location) {
-        this.location = location;
         return this;
     }
 }

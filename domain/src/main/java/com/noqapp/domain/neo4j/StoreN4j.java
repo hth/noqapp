@@ -34,9 +34,6 @@ public class StoreN4j {
     @Property("businessType")
     private BusinessTypeEnum businessType;
 
-    @Property("location")
-    private Point location;
-
     public String getCodeQR() {
         return codeQR;
     }
@@ -73,21 +70,11 @@ public class StoreN4j {
         return this;
     }
 
-    public Point getLocation() {
-        return location;
-    }
-
-    public StoreN4j setLocation(Point location) {
-        this.location = location;
-        return this;
-    }
-
     public static StoreN4j populate(BizStoreEntity bizStore) {
         return new StoreN4j()
             .setCodeQR(bizStore.getCodeQR())
             .setStoreName(bizStore.getDisplayName())
             .setBizNameId(bizStore.getBizName().getId())
-            .setBusinessType(bizStore.getBusinessType())
-            .setLocation(new Point(bizStore.getCoordinate()[0], bizStore.getCoordinate()[1]));
+            .setBusinessType(bizStore.getBusinessType());
     }
 }

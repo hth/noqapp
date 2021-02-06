@@ -40,9 +40,6 @@ public class PersonN4j {
     @Relationship(type = "HAS_ANOMALY", direction = Relationship.OUTGOING)
     private AnomalyN4j anomalyN4j;
 
-    @Property("location")
-    private Point location;
-
     @Property("bizNameId")
     private String bizNameId;
 
@@ -104,15 +101,6 @@ public class PersonN4j {
 
     public PersonN4j setAnomalyN4j(AnomalyN4j anomalyN4j) {
         this.anomalyN4j = anomalyN4j;
-        return this;
-    }
-
-    public Point getLocation() {
-        return location;
-    }
-
-    public PersonN4j setLocation(Point location) {
-        this.location = location;
         return this;
     }
 

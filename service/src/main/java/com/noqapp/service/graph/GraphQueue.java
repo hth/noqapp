@@ -66,8 +66,7 @@ public class GraphQueue {
         if (null != latestVisit) {
             String codeQR = latestVisit.getCodeQR();
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-            personN4j.setLocation(new Point(bizStore.getCoordinate()[0], bizStore.getCoordinate()[1]))
-                .setBizNameId(bizStore.getBizName().getId())
+            personN4j.setBizNameId(bizStore.getBizName().getId())
                 .setStoreCodeQR(bizStore.getCodeQR());
         }
         personN4jManager.save(personN4j);
