@@ -74,14 +74,15 @@ public class GraphBusinessCustomer {
 
     @Async
     void graphBusinessCustomer(PersonN4j personN4j) {
-        try {
-            List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(personN4j.getQid());
-            for (BusinessCustomerEntity businessCustomer : businessCustomers) {
+        List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(personN4j.getQid());
+        for (BusinessCustomerEntity businessCustomer : businessCustomers) {
+            double lng = 0, lat = 0;
+            try {
                 BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
-
-                LocationN4j locationN4j = LocationN4j.newInstance(bizName.getCoordinate()[0], bizName.getCoordinate()[1]);
+                lng = bizName.getCoordinate()[0];
+                lat = bizName.getCoordinate()[1];
+                LocationN4j locationN4j = LocationN4j.newInstance(lng, lat);
                 LocationN4j found = locationN4jManager.findById(locationN4j.getId());
-                LOG.info("Found {}", found);
                 if (null == found) {
                     locationN4jManager.save(locationN4j);
                 }
@@ -103,13 +104,13 @@ public class GraphBusinessCustomer {
                     .setLastAccessed(new Date());
                 businessCustomerN4jManager.save(businessCustomerN4j);
                 personN4j.addBusinessCustomerN4j(businessCustomerN4j);
+            } catch (MappingException | InvalidDataAccessApiUsageException e) {
+                LOG.error("Failed {} {} {} reason={}", lng, lat, businessCustomer.getBizNameId(), e.getLocalizedMessage());
             }
+        }
 
-            if (!businessCustomers.isEmpty()) {
-                personN4jManager.save(personN4j);
-            }
-        } catch (MappingException | InvalidDataAccessApiUsageException e) {
-            LOG.error("Failed reason={}", e.getLocalizedMessage());
+        if (!businessCustomers.isEmpty()) {
+            personN4jManager.save(personN4j);
         }
     }
 
