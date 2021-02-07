@@ -6,6 +6,7 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
+import org.neo4j.ogm.annotation.Relationship;
 
 /**
  * hitender
@@ -27,6 +28,7 @@ public class BizNameN4j {
     @Property("businessName")
     private String businessName;
 
+    @Relationship(type = "LOCATION", direction = Relationship.OUTGOING)
     private LocationN4j location;
 
     public String getId() {
