@@ -86,7 +86,7 @@ public class GraphBusinessCustomer {
                 .setCodeQR(bizName.getCodeQR())
                 .setBusinessType(bizName.getBusinessType())
                 .setBusinessName(bizName.getBusinessName())
-                .setLocation(locationN4j);
+                .setLocation(null == found ? locationN4j : found);
             bizNameN4jManager.save(bizNameN4j);
 
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
