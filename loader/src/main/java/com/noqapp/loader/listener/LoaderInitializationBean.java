@@ -148,7 +148,7 @@ public class LoaderInitializationBean {
             }
 
             if (!constraintIds.contains("location_id")) {
-                Result result = session.query("CREATE CONSTRAINT location_id (l:Location) ASSERT l.id IS UNIQUE;", Collections.EMPTY_MAP);
+                Result result = session.query("CREATE CONSTRAINT location_id ON (l:Location) ASSERT l.id IS UNIQUE;", Collections.EMPTY_MAP);
                 LOG.info("Constraint on geoPoint in Location added={}", result.queryStatistics().containsUpdates());
             } else {
                 LOG.info("Constraint found location_id");
