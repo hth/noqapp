@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import org.neo4j.ogm.exception.core.MappingException;
+
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -71,37 +73,42 @@ public class GraphBusinessCustomer {
 
     @Async
     void graphBusinessCustomer(PersonN4j personN4j) {
-        List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(personN4j.getQid());
-        for (BusinessCustomerEntity businessCustomer : businessCustomers) {
-            BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
+        try {
+            List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(personN4j.getQid());
+            for (BusinessCustomerEntity businessCustomer : businessCustomers) {
+                BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
 
-            LocationN4j locationN4j = LocationN4j.newInstance(bizName.getCoordinate()[0], bizName.getCoordinate()[1]);
-            LocationN4j found = locationN4jManager.findByGeoPoint(locationN4j.getGeoPoint());
-            if (null == found) {
-                locationN4jManager.save(locationN4j);
+                LocationN4j locationN4j = LocationN4j.newInstance(bizName.getCoordinate()[0], bizName.getCoordinate()[1]);
+                LocationN4j found = locationN4jManager.findById(locationN4j.getId());
+                LOG.info("Found {}", found);
+                if (null == found) {
+                    locationN4jManager.save(locationN4j);
+                }
+
+                BizNameN4j bizNameN4j = new BizNameN4j()
+                    .setId(bizName.getId())
+                    .setCodeQR(bizName.getCodeQR())
+                    .setBusinessType(bizName.getBusinessType())
+                    .setBusinessName(bizName.getBusinessName())
+                    .setLocation(null == found ? locationN4j : found);
+                bizNameN4jManager.save(bizNameN4j);
+
+                UserProfileEntity userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
+                BusinessCustomerN4j businessCustomerN4j = new BusinessCustomerN4j()
+                    .setBizNameN4j(bizNameN4j)
+                    .setName(userProfile.getName())
+                    .setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
+                    .setQid(businessCustomer.getQueueUserId())
+                    .setLastAccessed(new Date());
+                businessCustomerN4jManager.save(businessCustomerN4j);
+                personN4j.addBusinessCustomerN4j(businessCustomerN4j);
             }
 
-            BizNameN4j bizNameN4j = new BizNameN4j()
-                .setId(bizName.getId())
-                .setCodeQR(bizName.getCodeQR())
-                .setBusinessType(bizName.getBusinessType())
-                .setBusinessName(bizName.getBusinessName())
-                .setLocation(null == found ? locationN4j : found);
-            bizNameN4jManager.save(bizNameN4j);
-
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
-            BusinessCustomerN4j businessCustomerN4j = new BusinessCustomerN4j()
-                .setBizNameN4j(bizNameN4j)
-                .setName(userProfile.getName())
-                .setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
-                .setQid(businessCustomer.getQueueUserId())
-                .setLastAccessed(new Date());
-            businessCustomerN4jManager.save(businessCustomerN4j);
-            personN4j.addBusinessCustomerN4j(businessCustomerN4j);
-        }
-
-        if (!businessCustomers.isEmpty()) {
-            personN4jManager.save(personN4j);
+            if (!businessCustomers.isEmpty()) {
+                personN4jManager.save(personN4j);
+            }
+        } catch (MappingException e) {
+            LOG.error("Failed reason={}", e.getLocalizedMessage());
         }
     }
 
