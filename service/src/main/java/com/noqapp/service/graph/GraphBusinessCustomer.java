@@ -76,7 +76,10 @@ public class GraphBusinessCustomer {
             BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
 
             LocationN4j locationN4j = LocationN4j.newInstance(bizName.getCoordinate()[0], bizName.getCoordinate()[1]);
-            locationN4jManager.save(locationN4j);
+            LocationN4j found = locationN4jManager.findByGeoPoint(locationN4j.getGeoPoint());
+            if (null == found) {
+                locationN4jManager.save(locationN4j);
+            }
 
             BizNameN4j bizNameN4j = new BizNameN4j()
                 .setId(bizName.getId())
