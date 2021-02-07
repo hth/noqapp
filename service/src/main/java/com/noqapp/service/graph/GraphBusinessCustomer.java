@@ -105,7 +105,7 @@ public class GraphBusinessCustomer {
                 businessCustomerN4jManager.save(businessCustomerN4j);
                 personN4j.addBusinessCustomerN4j(businessCustomerN4j);
             } catch (MappingException | InvalidDataAccessApiUsageException e) {
-                LOG.error("Failed {} {} {} reason={}", lng, lat, businessCustomer.getBizNameId(), e.getLocalizedMessage());
+                LOG.error("Failed {} {} {} reason={}", lng, lat, businessCustomer.getBizNameId(), e.getLocalizedMessage(), e);
             }
         }
 
