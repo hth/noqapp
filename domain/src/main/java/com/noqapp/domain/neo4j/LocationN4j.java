@@ -23,7 +23,7 @@ public class LocationN4j {
     @Property("lat")
     private double latitude;
 
-    private LocationN4j() {
+    public LocationN4j() {
         //Default constructor
     }
 
