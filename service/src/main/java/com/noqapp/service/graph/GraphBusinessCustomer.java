@@ -76,37 +76,31 @@ public class GraphBusinessCustomer {
     void graphBusinessCustomer(PersonN4j personN4j) {
         List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(personN4j.getQid());
         for (BusinessCustomerEntity businessCustomer : businessCustomers) {
-            double lng = 0, lat = 0;
-            try {
-                BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
-                lng = bizName.getCoordinate()[0];
-                lat = bizName.getCoordinate()[1];
-                LocationN4j locationN4j = LocationN4j.newInstance(lng, lat);
-                LocationN4j found = locationN4jManager.searchByGeoPoint(locationN4j.getId());
-                if (null == found) {
-                    locationN4jManager.save(locationN4j);
-                }
+            BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
 
-                BizNameN4j bizNameN4j = new BizNameN4j()
-                    .setId(bizName.getId())
-                    .setCodeQR(bizName.getCodeQR())
-                    .setBusinessType(bizName.getBusinessType())
-                    .setBusinessName(bizName.getBusinessName())
-                    .setLocation(null == found ? locationN4j : found);
-                bizNameN4jManager.save(bizNameN4j);
-
-                UserProfileEntity userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
-                BusinessCustomerN4j businessCustomerN4j = new BusinessCustomerN4j()
-                    .setBizNameN4j(bizNameN4j)
-                    .setName(userProfile.getName())
-                    .setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
-                    .setQid(businessCustomer.getQueueUserId())
-                    .setLastAccessed(new Date());
-                businessCustomerN4jManager.save(businessCustomerN4j);
-                personN4j.addBusinessCustomerN4j(businessCustomerN4j);
-            } catch (MappingException | InvalidDataAccessApiUsageException e) {
-                LOG.error("Failed {} {} {} reason={}", lng, lat, businessCustomer.getBizNameId(), e.getLocalizedMessage(), e);
+            LocationN4j locationN4j = LocationN4j.newInstance(bizName.getCoordinate()[0], bizName.getCoordinate()[1]);
+            LocationN4j found = locationN4jManager.searchByGeoPoint(locationN4j.getId());
+            if (null == found) {
+                locationN4jManager.save(locationN4j);
             }
+
+            BizNameN4j bizNameN4j = new BizNameN4j()
+                .setId(bizName.getId())
+                .setCodeQR(bizName.getCodeQR())
+                .setBusinessType(bizName.getBusinessType())
+                .setBusinessName(bizName.getBusinessName())
+                .setLocation(null == found ? locationN4j : found);
+            bizNameN4jManager.save(bizNameN4j);
+
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
+            BusinessCustomerN4j businessCustomerN4j = new BusinessCustomerN4j()
+                .setBizNameN4j(bizNameN4j)
+                .setName(userProfile.getName())
+                .setBusinessCustomerId(businessCustomer.getBusinessCustomerId())
+                .setQid(businessCustomer.getQueueUserId())
+                .setLastAccessed(new Date());
+            businessCustomerN4jManager.save(businessCustomerN4j);
+            personN4j.addBusinessCustomerN4j(businessCustomerN4j);
         }
 
         if (!businessCustomers.isEmpty()) {
