@@ -78,7 +78,10 @@ public class GraphDetailOfPerson {
         graphBusinessCustomer.graphBusinessCustomer(personN4j);
 
         checkForAnomaly(personN4j);
-        LOG.info("Has qid={} moved {} {} {}", personN4j.getQid(), hasUserMoved(personN4j), personN4j.getLongitude(), personN4j.getLatitude());
+        BusinessDistanceFromUserLocation businessDistanceFromUserLocation = findBusinessVisitedThatIsDeemedTooFar(personN4j);
+        if (null != businessDistanceFromUserLocation) {
+            LOG.info("Moved qid={} found bizNameId={} {} {}", personN4j.getQid(), personN4j.getBizNameId(), personN4j.getLongitude(), personN4j.getLatitude());
+        }
     }
 
     /** Check anomaly in data created by user which has broken business rule. */
@@ -114,8 +117,8 @@ public class GraphDetailOfPerson {
     }
 
     /** Figures out if user has moved. */
-    private boolean hasUserMoved(PersonN4j personN4j) {
+    private BusinessDistanceFromUserLocation findBusinessVisitedThatIsDeemedTooFar(PersonN4j personN4j) {
         Set<BusinessDistanceFromUserLocation> businessDistanceFromUserLocations = personN4jManager.visitedBusinessDistance(personN4j.getQid());
-        return businessDistanceFromUserLocations.stream().anyMatch(x -> x.getTravelDistance() > Constants.HUNDRED_KMS_IN_METERS);
+        return businessDistanceFromUserLocations.stream().filter(x -> x.getTravelDistance() > Constants.HUNDRED_KMS_IN_METERS).findAny().orElse(null);
     }
 }
