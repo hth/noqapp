@@ -114,7 +114,6 @@ public class GraphDetailOfPerson {
 
     /** Figures out if user has moved. */
     private void hasUserMoved(PersonN4j personN4j) {
-        LocationN4j locationN4j = personN4j.getLocationN4j();
         String bizNameId = personN4j.getBizNameId();
     }
 }
