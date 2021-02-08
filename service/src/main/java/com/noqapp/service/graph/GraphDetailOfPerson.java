@@ -2,6 +2,8 @@ package com.noqapp.service.graph;
 
 import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.domain.BizNameEntity;
+import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.neo4j.AnomalyN4j;
 import com.noqapp.domain.neo4j.BusinessCustomerN4j;
@@ -9,9 +11,11 @@ import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.neo4j.StoreN4j;
 import com.noqapp.domain.neo4j.queryresult.BusinessDistanceFromUserLocation;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.neo4j.AnomalyN4jManager;
 import com.noqapp.repository.neo4j.BusinessCustomerN4jManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
+import com.noqapp.service.BizService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,13 +43,19 @@ public class GraphDetailOfPerson {
     private GraphQueue graphQueue;
     private GraphBusinessCustomer graphBusinessCustomer;
 
+    private BizService bizService;
+    private QueueManagerJDBC queueManagerJDBC;
+
     public GraphDetailOfPerson(
         PersonN4jManager personN4jManager,
         BusinessCustomerN4jManager businessCustomerN4jManager,
         AnomalyN4jManager anomalyN4jManager,
 
         GraphQueue graphQueue,
-        GraphBusinessCustomer graphBusinessCustomer
+        GraphBusinessCustomer graphBusinessCustomer,
+
+        BizService bizService,
+        QueueManagerJDBC queueManagerJDBC
     ) {
         this.personN4jManager = personN4jManager;
         this.businessCustomerN4jManager = businessCustomerN4jManager;
@@ -53,6 +63,9 @@ public class GraphDetailOfPerson {
 
         this.graphQueue = graphQueue;
         this.graphBusinessCustomer = graphBusinessCustomer;
+
+        this.bizService = bizService;
+        this.queueManagerJDBC = queueManagerJDBC;
     }
 
     @Mobile
@@ -89,7 +102,9 @@ public class GraphDetailOfPerson {
         String logMe = checkForAnomaly(personN4j);
         BusinessDistanceFromUserLocation businessDistanceFromUserLocation = findBusinessVisitedThatIsDeemedTooFar(personN4j);
         if (null != businessDistanceFromUserLocation) {
-            logMe += String.format("Moved qid=%s found bizNameId=%s %s %s", personN4j.getQid(), personN4j.getBizNameId(), personN4j.getLongitude(), personN4j.getLatitude());
+            BizNameEntity bizName = bizService.getByBizNameId(businessDistanceFromUserLocation.getBizNameId());
+            QueueEntity queue = queueManagerJDBC.findQueueClientVisitedBusiness(personN4j.getBizNameId(), personN4j.getQid());
+            logMe += String.format("Moved qid=%s found bizNameId=%s bizName=%s lastVisited=%s", personN4j.getQid(), personN4j.getBizNameId(), bizName.getBusinessName(), queue.getCreated());
         }
 
         LOG.info("{}", logMe);

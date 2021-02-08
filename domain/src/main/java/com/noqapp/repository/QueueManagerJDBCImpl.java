@@ -142,6 +142,11 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String checkIfClientVisitedBusiness =
         "SELECT EXISTS(SELECT 1 FROM QUEUE WHERE BN = ? AND QID = ? LIMIT 1)";
 
+    private static final String findQueueClientVisitedBusiness =
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
+            " FROM " +
+            "QUEUE WHERE BN = ? AND QID = ? ORDER BY C DESC";
+
     private static final String findByCodeQR_Qid_Token =
         "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
@@ -346,6 +351,12 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     public boolean hasClientVisitedThisBusiness(String bizNameId, String qid) {
         LOG.info("Fetch history by bizNameId={} qid={}", bizNameId, qid);
         return jdbcTemplate.queryForObject(checkIfClientVisitedBusiness, new Object[]{bizNameId, qid}, Boolean.class);
+    }
+
+    @Override
+    public QueueEntity findQueueClientVisitedBusiness(String bizNameId, String qid) {
+        LOG.info("Fetch last visited bizNameId={} qid={}", bizNameId, qid);
+        return jdbcTemplate.queryForObject(findQueueClientVisitedBusiness, new Object[]{bizNameId, qid}, new QueueRowMapper());
     }
 
     @Override
