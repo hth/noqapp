@@ -4,6 +4,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.neo4j.AnomalyN4j;
 import com.noqapp.domain.neo4j.BusinessCustomerN4j;
+import com.noqapp.domain.neo4j.LocationN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.neo4j.StoreN4j;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -75,10 +76,12 @@ public class GraphDetailOfPerson {
         PersonN4j personN4j = graphQueue.graphUser(qid);
         graphBusinessCustomer.graphBusinessCustomer(personN4j);
 
-        showResultFromGraphedPerson(personN4j);
+        checkForAnomaly(personN4j);
+        hasUserMoved(personN4j);
     }
 
-    private void showResultFromGraphedPerson(PersonN4j personN4j) {
+    /** Check anomaly in data created by user which has broken business rule. */
+    private void checkForAnomaly(PersonN4j personN4j) {
         if (personN4j.getStoreN4js().isEmpty()) {
             LOG.debug("No history found for qid={}", personN4j.getQid());
             return;
@@ -107,5 +110,11 @@ public class GraphDetailOfPerson {
                 bizNameIds.size(),
                 customerAssociatedToBusinesses.size());
         }
+    }
+
+    /** Figures out if user has moved. */
+    private void hasUserMoved(PersonN4j personN4j) {
+        LocationN4j locationN4j = personN4j.getLocationN4j();
+        String bizNameId = personN4j.getBizNameId();
     }
 }

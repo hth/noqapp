@@ -10,7 +10,6 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.UserProfileManager;
-import com.noqapp.repository.neo4j.LocationN4jManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
 import com.noqapp.repository.neo4j.StoreN4jManager;
 
@@ -69,10 +68,11 @@ public class GraphQueue {
         String codeQR = queueManagerJDBC.clientLatestVisit(qid);
         if (StringUtils.isNotBlank(codeQR)) {
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-
             personN4j
                 .setBizNameId(bizStore.getBizName().getId())
-                .setStoreCodeQR(bizStore.getCodeQR());
+                .setStoreCodeQR(bizStore.getCodeQR())
+                .setLongitude(bizStore.getCoordinate()[0])
+                .setLatitude(bizStore.getCoordinate()[1]);
         }
         personN4jManager.save(personN4j);
 
