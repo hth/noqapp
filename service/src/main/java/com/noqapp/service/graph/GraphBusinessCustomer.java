@@ -72,7 +72,6 @@ public class GraphBusinessCustomer {
         this.userProfileManager = userProfileManager;
     }
 
-    @Async
     void graphBusinessCustomer(PersonN4j personN4j) {
         List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(personN4j.getQid());
         for (BusinessCustomerEntity businessCustomer : businessCustomers) {
