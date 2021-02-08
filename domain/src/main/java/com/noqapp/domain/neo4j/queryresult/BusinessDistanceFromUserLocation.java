@@ -14,10 +14,10 @@ import java.util.Objects;
 public class BusinessDistanceFromUserLocation {
 
     @Property("travelDistance")
-    double travelDistance;
+    private double travelDistance;
 
     @Property("bizNameId")
-    String bizNameId;
+    private String bizNameId;
 
     public double getTravelDistance() {
         return travelDistance;
