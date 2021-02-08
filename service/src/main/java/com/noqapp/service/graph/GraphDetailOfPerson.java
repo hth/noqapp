@@ -77,27 +77,34 @@ public class GraphDetailOfPerson {
         PersonN4j personN4j = graphQueue.graphUser(qid);
         graphBusinessCustomer.graphBusinessCustomer(personN4j);
 
-        checkForAnomaly(personN4j);
-        BusinessDistanceFromUserLocation businessDistanceFromUserLocation = findBusinessVisitedThatIsDeemedTooFar(personN4j);
-        if (null != businessDistanceFromUserLocation) {
-            LOG.info("Moved qid={} found bizNameId={} {} {}", personN4j.getQid(), personN4j.getBizNameId(), personN4j.getLongitude(), personN4j.getLatitude());
-        }
-    }
-
-    /** Check anomaly in data created by user which has broken business rule. */
-    private void checkForAnomaly(PersonN4j personN4j) {
         if (personN4j.getStoreN4js().isEmpty()) {
             LOG.debug("No history found for qid={}", personN4j.getQid());
             return;
         }
 
+        runAnalysis(personN4j);
+    }
+
+    private void runAnalysis(PersonN4j personN4j) {
+        String logMe = checkForAnomaly(personN4j);
+        BusinessDistanceFromUserLocation businessDistanceFromUserLocation = findBusinessVisitedThatIsDeemedTooFar(personN4j);
+        if (null != businessDistanceFromUserLocation) {
+            logMe += String.format("Moved qid=%s found bizNameId=%s %s %s", personN4j.getQid(), personN4j.getBizNameId(), personN4j.getLongitude(), personN4j.getLatitude());
+        }
+
+        LOG.info("{}", logMe);
+    }
+
+    /** Check anomaly in data created by user which has broken business rule. */
+    private String checkForAnomaly(PersonN4j personN4j) {
         List<StoreN4j> storeN4js = personN4jManager.findAllStoreVisitedByQid(personN4j.getQid());
         Set<String> bizNameIds = personN4jManager.findAllBusinessVisitedByQid(personN4j.getQid());
         Collection<BusinessCustomerN4j> customerAssociatedToBusinesses = businessCustomerN4jManager.findCustomerRegisteredToAllBusiness(personN4j.getQid());
         boolean hasAnomaly = graphBusinessCustomer.hasDataAnomaly(personN4j.getQid(), BusinessTypeEnum.CDQ);
 
+        String logMe;
         if (hasAnomaly) {
-            LOG.warn("Data anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={} {}",
+            logMe = String.format("Data anomaly for person=%s visits=%s different stores that are owned by business=%s of which customer is registered in business=%s %s",
                 personN4j.getQid(), storeN4js.size(),
                 bizNameIds.size(),
                 customerAssociatedToBusinesses.size(),
@@ -109,11 +116,13 @@ public class GraphDetailOfPerson {
             personN4j.setAnomalyN4j(anomalyN4j);
             personN4jManager.save(personN4j);
         } else {
-            LOG.info("No anomaly for person={} visits={} different stores that are owned by business={} of which customer is registered in business={}",
+            logMe = String.format("No anomaly for person=%s visits=%s different stores that are owned by business=%s of which customer is registered in business=%s",
                 personN4j.getQid(), storeN4js.size(),
                 bizNameIds.size(),
                 customerAssociatedToBusinesses.size());
         }
+
+        return logMe;
     }
 
     /** Figures out if user has moved. */
