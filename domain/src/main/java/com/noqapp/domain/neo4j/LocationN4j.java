@@ -23,6 +23,10 @@ public class LocationN4j {
     @Property("lat")
     private double latitude;
 
+    private LocationN4j() {
+        //Default constructor
+    }
+
     private LocationN4j(double longitude, double latitude, String id) {
         this.longitude = longitude;
         this.latitude = latitude;
