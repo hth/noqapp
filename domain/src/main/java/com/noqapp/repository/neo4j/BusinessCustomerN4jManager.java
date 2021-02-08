@@ -17,10 +17,10 @@ import java.util.Date;
 @Repository
 public interface BusinessCustomerN4jManager extends Neo4jRepository<BusinessCustomerN4j, Long> {
 
-    @Query("MATCH (c:BusinessCustomer)-[r:CUSTOMER_ID]->(b:BizName) where c.qid = $0 RETURN c, r, b")
+    @Query("MATCH (c:BusinessCustomer)-[r:CUSTOMER_ID]->(b:BizName) WHERE c.qid = $0 RETURN c, r, b")
     Collection<BusinessCustomerN4j> findCustomerRegisteredToAllBusiness(String qid);
 
-    @Query("MATCH (c:BusinessCustomer)-[r:CUSTOMER_ID]->(b:BizName) where c.qid = $0 and b.businessType = $1 RETURN c, r, b")
+    @Query("MATCH (c:BusinessCustomer)-[r:CUSTOMER_ID]->(b:BizName) WHERE c.qid = $0 AND b.businessType = $1 RETURN c, r, b")
     Collection<BusinessCustomerN4j> findCustomerRegisteredToSpecificBusinessType(String qid, BusinessTypeEnum businessType);
 
     @Query("MATCH (c:BusinessCustomer) WHERE c.lastAccessed < $0 DETACH DELETE c RETURN count(*)")
