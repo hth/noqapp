@@ -1,12 +1,13 @@
 package com.noqapp.service.graph;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.neo4j.AnomalyN4j;
 import com.noqapp.domain.neo4j.BusinessCustomerN4j;
-import com.noqapp.domain.neo4j.LocationN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.neo4j.StoreN4j;
+import com.noqapp.domain.neo4j.queryresult.BusinessDistanceFromUserLocation;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.neo4j.AnomalyN4jManager;
 import com.noqapp.repository.neo4j.BusinessCustomerN4jManager;
@@ -77,7 +78,7 @@ public class GraphDetailOfPerson {
         graphBusinessCustomer.graphBusinessCustomer(personN4j);
 
         checkForAnomaly(personN4j);
-        hasUserMoved(personN4j);
+        LOG.info("Has qid={} moved ", hasUserMoved(personN4j));
     }
 
     /** Check anomaly in data created by user which has broken business rule. */
@@ -113,7 +114,8 @@ public class GraphDetailOfPerson {
     }
 
     /** Figures out if user has moved. */
-    private void hasUserMoved(PersonN4j personN4j) {
-        String bizNameId = personN4j.getBizNameId();
+    private boolean hasUserMoved(PersonN4j personN4j) {
+        Set<BusinessDistanceFromUserLocation> businessDistanceFromUserLocations = personN4jManager.visitedBusinessDistance(personN4j.getQid());
+        return businessDistanceFromUserLocations.stream().anyMatch(x -> x.getTravelDistance() > Constants.HUNDRED_KMS_IN_METERS);
     }
 }
