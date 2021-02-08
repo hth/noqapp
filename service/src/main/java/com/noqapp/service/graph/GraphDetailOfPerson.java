@@ -72,9 +72,9 @@ public class GraphDetailOfPerson {
     @Async
     public void graphPerson(String qid) {
         try {
-            LOG.info("Graphing for qid={}", qid);
             PersonN4j personN4j = personN4jManager.findByQidWithQuery(qid, new Date());
             if (null == personN4j) {
+                LOG.info("Graphing for qid={}", qid);
                 populateForQid(qid);
             } else if (24 < DateUtil.getHoursBetween(DateUtil.asLocalDateTime(personN4j.getLastAccessed()))) {
                 long count = personN4jManager.detachAndDelete(qid);
