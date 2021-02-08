@@ -27,18 +27,20 @@ public class LocationN4j {
         //Default constructor
     }
 
-    private LocationN4j(double longitude, double latitude, String id) {
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.id = id;
-    }
-
     public static LocationN4j newInstance(double longitude, double latitude) {
-        return new LocationN4j(longitude, latitude, new GeoPoint(latitude, longitude).geohash());
+        return new LocationN4j()
+            .setLongitude(longitude)
+            .setLatitude(latitude)
+            .setId(new GeoPoint(latitude, longitude).geohash());
     }
 
     public String getId() {
         return id;
+    }
+
+    public LocationN4j setId(String id) {
+        this.id = id;
+        return this;
     }
 
     public double getLongitude() {
