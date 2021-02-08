@@ -47,6 +47,12 @@ public class PersonN4j {
     @Property("lastAccessed")
     private Date lastAccessed;
 
+    @Property("lng")
+    private double longitude;
+
+    @Property("lat")
+    private double latitude;
+
     public String getQid() {
         return qid;
     }
@@ -126,6 +132,24 @@ public class PersonN4j {
 
     public PersonN4j setLastAccessed(Date lastAccessed) {
         this.lastAccessed = lastAccessed;
+        return this;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public PersonN4j setLongitude(double longitude) {
+        this.longitude = longitude;
+        return this;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public PersonN4j setLatitude(double latitude) {
+        this.latitude = latitude;
         return this;
     }
 
