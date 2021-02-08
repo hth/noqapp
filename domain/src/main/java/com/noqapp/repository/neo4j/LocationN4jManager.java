@@ -14,5 +14,5 @@ import org.springframework.stereotype.Repository;
 public interface LocationN4jManager extends Neo4jRepository<LocationN4j, Long> {
 
     @Query("MATCH (l:Location) WHERE l.id = $0 RETURN l")
-    LocationN4j findByGeoPoint(String geoPoint);
+    LocationN4j searchByGeoPoint(String geoPoint);
 }

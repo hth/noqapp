@@ -82,7 +82,7 @@ public class GraphBusinessCustomer {
                 lng = bizName.getCoordinate()[0];
                 lat = bizName.getCoordinate()[1];
                 LocationN4j locationN4j = LocationN4j.newInstance(lng, lat);
-                LocationN4j found = locationN4jManager.findByGeoPoint(locationN4j.getId());
+                LocationN4j found = locationN4jManager.searchByGeoPoint(locationN4j.getId());
                 if (null == found) {
                     locationN4jManager.save(locationN4j);
                 }
