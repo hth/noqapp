@@ -78,7 +78,7 @@ public class GraphDetailOfPerson {
         graphBusinessCustomer.graphBusinessCustomer(personN4j);
 
         checkForAnomaly(personN4j);
-        LOG.info("Has qid={} moved {}", personN4j.getQid(), hasUserMoved(personN4j));
+        LOG.info("Has qid={} moved {} {} {}", personN4j.getQid(), hasUserMoved(personN4j), personN4j.getLongitude(), personN4j.getLatitude());
     }
 
     /** Check anomaly in data created by user which has broken business rule. */
