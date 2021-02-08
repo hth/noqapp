@@ -104,7 +104,7 @@ public class GraphDetailOfPerson {
 
         String logMe;
         if (hasAnomaly) {
-            logMe = String.format("Data anomaly for person=%s visits=%s different stores that are owned by business=%s of which customer is registered in business=%s %s",
+            logMe = String.format("Data anomaly for person=%s visits=%s different stores that are owned by business=%s of which customer is registered in business=%s %s;",
                 personN4j.getQid(), storeN4js.size(),
                 bizNameIds.size(),
                 customerAssociatedToBusinesses.size(),
@@ -116,7 +116,7 @@ public class GraphDetailOfPerson {
             personN4j.setAnomalyN4j(anomalyN4j);
             personN4jManager.save(personN4j);
         } else {
-            logMe = String.format("No anomaly for person=%s visits=%s different stores that are owned by business=%s of which customer is registered in business=%s",
+            logMe = String.format("No anomaly for person=%s visits=%s different stores that are owned by business=%s of which customer is registered in business=%s;",
                 personN4j.getQid(), storeN4js.size(),
                 bizNameIds.size(),
                 customerAssociatedToBusinesses.size());
