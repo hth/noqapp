@@ -145,7 +145,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     private static final String findQueueClientVisitedBusiness =
         "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
-            "QUEUE WHERE BN = ? AND QID = ? ORDER BY C DESC";
+            "QUEUE WHERE BN = ? AND QID = ? ORDER BY C DESC LIMIT 1";
 
     private static final String findByCodeQR_Qid_Token =
         "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
