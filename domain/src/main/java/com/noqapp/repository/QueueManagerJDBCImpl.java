@@ -354,7 +354,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
     }
 
     @Override
-    public QueueEntity findClientVisitedLatestStore(String bizNameId, String qid) {
+    public QueueEntity findClientLastVisitedStoreFromThisBusiness(String bizNameId, String qid) {
         LOG.info("Fetch last visited bizNameId={} qid={}", bizNameId, qid);
         return jdbcTemplate.queryForObject(findClientVisitedLatestStore, new Object[]{bizNameId, qid}, new QueueRowMapper());
     }

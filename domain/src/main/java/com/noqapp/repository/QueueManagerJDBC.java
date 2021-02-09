@@ -59,7 +59,7 @@ public interface QueueManagerJDBC {
     @Mobile
     boolean hasClientVisitedThisBusiness(String bizNameId, String qid);
 
-    QueueEntity findClientVisitedLatestStore(String bizNameId, String qid);
+    QueueEntity findClientLastVisitedStoreFromThisBusiness(String bizNameId, String qid);
 
     @Mobile
     List<QueueEntity> findReviews(String codeQR, int reviewLimitedToDays);
