@@ -103,7 +103,7 @@ public class GraphDetailOfPerson {
         BusinessDistanceFromUserLocation businessDistanceFromUserLocation = findBusinessVisitedThatIsDeemedTooFar(personN4j);
         if (null != businessDistanceFromUserLocation) {
             BizNameEntity bizName = bizService.getByBizNameId(businessDistanceFromUserLocation.getBizNameId());
-            QueueEntity queue = queueManagerJDBC.findQueueClientVisitedBusiness(personN4j.getBizNameId(), personN4j.getQid());
+            QueueEntity queue = queueManagerJDBC.findClientVisitedLatestStore(personN4j.getBizNameId(), personN4j.getQid());
             logMe += String.format("Moved qid=%s found bizNameId=%s bizName=%s lastVisited=%s", personN4j.getQid(), personN4j.getBizNameId(), bizName.getBusinessName(), queue.getCreated());
         }
 
