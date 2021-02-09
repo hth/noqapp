@@ -102,12 +102,13 @@ public class GraphDetailOfPerson {
         String logMe = checkForAnomaly(personN4j);
         BusinessDistanceFromUserLocation businessDistanceFromUserLocation = findBusinessVisitedThatIsDeemedTooFar(personN4j);
         if (null != businessDistanceFromUserLocation) {
-            BizNameEntity currentBizName = bizService.getByBizNameId(personN4j.getBizNameId());
-            BizNameEntity movedFromBizName = bizService.getByBizNameId(businessDistanceFromUserLocation.getBizNameId());
-            QueueEntity queue = queueManagerJDBC.findClientLastVisitedStoreFromThisBusiness(movedFromBizName.getId(), personN4j.getQid());
+            QueueEntity queue = queueManagerJDBC.findClientLastVisitedStoreFromThisBusiness(businessDistanceFromUserLocation.getBizNameId(), personN4j.getQid());
 
             /* When no queue is found then user has not moved. Just business id was registered under that business. That's why its an anomaly. */
             if (null != queue) {
+                BizNameEntity currentBizName = bizService.getByBizNameId(personN4j.getBizNameId());
+                BizNameEntity movedFromBizName = bizService.getByBizNameId(businessDistanceFromUserLocation.getBizNameId());
+
                 logMe += String.format(" Moved qid=%s found bizNameId=%s currentBizName=%s area=%s bizName=%s area=%s lastVisited=%s",
                     personN4j.getQid(),
                     personN4j.getBizNameId(),
@@ -116,6 +117,8 @@ public class GraphDetailOfPerson {
                     movedFromBizName.getBusinessName(),
                     movedFromBizName.getArea(),
                     queue.getCreated());
+            } else {
+                logMe += String.format(" Not moved qid=%s", personN4j.getQid());
             }
         }
 
