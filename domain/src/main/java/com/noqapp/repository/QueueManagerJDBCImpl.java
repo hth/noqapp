@@ -355,8 +355,14 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
 
     @Override
     public QueueEntity findClientLastVisitedStoreFromThisBusiness(String bizNameId, String qid) {
-        LOG.info("Fetch last visited bizNameId={} qid={}", bizNameId, qid);
-        return jdbcTemplate.queryForObject(findClientVisitedLatestStore, new Object[]{bizNameId, qid}, new QueueRowMapper());
+        try {
+            LOG.info("Fetch last visited bizNameId={} qid={}", bizNameId, qid);
+            return jdbcTemplate.queryForObject(findClientVisitedLatestStore, new Object[]{bizNameId, qid}, new QueueRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            LOG.warn("Remove me {}", e.getLocalizedMessage());
+            //TODO fix this error or query for Incorrect result size: expected 1, actual 0
+            return null;
+        }
     }
 
     @Override
