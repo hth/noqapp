@@ -37,6 +37,7 @@ ext {
     activeProfilewarConfDir = file("$activeProfilewarDir$conf")
     activeProfilewarFreemarkerDir = file("$activeProfilewarDir$freemarker")
     activeProfilewarXslfoDir = file("$activeProfilewarDir$xslfo")
+    activeProfilewarGeoDBDir = file("$activeProfilewarDir$geo_db")
 
     unzipDir = file("${buildDir}/unpacked/dist")
     unzipLibDir = file("$unzipDir$lib")
@@ -563,6 +564,7 @@ task setUpProfileForJunit() {
         activeProfilewarConfDir.mkdirs()
         activeProfilewarFreemarkerDir.mkdirs()
         activeProfilewarXslfoDir.mkdirs()
+        activeProfilewarGeoDBDir.mkdirs()
 
         copy {
             from file("view/environment/$env/$env" + ".properties")
@@ -626,6 +628,35 @@ task setUpProfileForJunit() {
             }
 
             into activeProfilewarConfDir
+        }
+
+        copy {
+            if (env == 'prod') {
+                if (geoDBProd.exists()) {
+                    from geoDBProdFileLocation
+                } else {
+                    throw new Exception("Required GeoLite file does not exists: $geoDBProdFileLocation.canonicalPath")
+                }
+            }
+
+            if (env == 'sandbox') {
+                if (geoDBTest.exists()) {
+                    from geoDBTestFileLocation
+                } else {
+                    throw new Exception("Required GeoLite file does not exists: $geoDBTestFileLocation.canonicalPath")
+                }
+            }
+
+            if (env == 'dev') {
+                println "Development environment, getting local GeoLite file $geoDBLocal.canonicalPath"
+                if (geoDBLocal.exists()) {
+                    from 'view/resources/geo_db/GeoLite2-City.mmdb'
+                } else {
+                    throw new Exception("Required GeoLite file does not exists: $geoDBLocal.canonicalPath")
+                }
+            }
+
+            into activeProfilewarGeoDBDir
         }
 
         copy {
