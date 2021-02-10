@@ -249,7 +249,7 @@ public class ITest extends RealMongoForITest {
         deviceType = DeviceTypeEnum.A.getName();
         model = "Model";
         osVersion = "OS-Version";
-        appVersion = "1.2.700";
+        appVersion = "1.2.800";
 
         userAccountManager = new UserAccountManagerImpl(getMongoTemplate());
         userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
