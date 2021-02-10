@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * hitender
@@ -61,7 +62,7 @@ public class GeoIPLocationService {
     }
 
     @Mobile
-    public IpCoordinate computeIpCoordinate(List<String> ips) {
+    public IpCoordinate computeIpCoordinate(Set<String> ips) {
         for (String ip : ips) {
             CityResponse response = cityResponse(ip);
             if (null != response) {
