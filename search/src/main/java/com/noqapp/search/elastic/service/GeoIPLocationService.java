@@ -68,7 +68,7 @@ public class GeoIPLocationService {
             if (null != response) {
                 double latitude = response.getLocation().getLatitude();
                 double longitude = response.getLocation().getLongitude();
-                new IpCoordinate()
+                return new IpCoordinate()
                     .setCoordinate(new double[]{longitude, latitude})
                     .setIp(ip);
             }
