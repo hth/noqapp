@@ -118,7 +118,7 @@ public class GraphDetailOfPerson {
                     movedFromBizName.getArea(),
                     queue.getCreated());
             } else {
-                logMe += String.format(" Not moved qid=%s", personN4j.getQid());
+                logMe += String.format(" No change qid=%s", personN4j.getQid());
             }
         }
 
