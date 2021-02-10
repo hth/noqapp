@@ -59,6 +59,17 @@ public class GeoIPLocationService {
         return null;
     }
 
+    @Mobile
+    public String getIpOfSelectedLocation(List<String> ips) {
+        for (String ip : ips) {
+            CityResponse response = cityResponse(ip);
+            if (null != response) {
+                return ip;
+            }
+        }
+        return null;
+    }
+
     private CityResponse cityResponse(String ip) {
         LOG.debug("From ip={}", ip);
 
