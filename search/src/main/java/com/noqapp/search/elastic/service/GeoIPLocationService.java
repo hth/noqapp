@@ -4,6 +4,7 @@ import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.search.elastic.helper.GeoIP;
+import com.noqapp.search.elastic.helper.IpCoordinate;
 
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
@@ -60,11 +61,15 @@ public class GeoIPLocationService {
     }
 
     @Mobile
-    public String getIpOfSelectedLocation(List<String> ips) {
+    public IpCoordinate computeIpCoordinate(List<String> ips) {
         for (String ip : ips) {
             CityResponse response = cityResponse(ip);
             if (null != response) {
-                return ip;
+                double latitude = response.getLocation().getLatitude();
+                double longitude = response.getLocation().getLongitude();
+                new IpCoordinate()
+                    .setCoordinate(new double[]{longitude, latitude})
+                    .setIp(ip);
             }
         }
         return null;
