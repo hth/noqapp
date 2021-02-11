@@ -89,6 +89,7 @@ class AppointmentFlexAndWalkinITest extends ITest {
                 fcmToken,
                 appVersion,
                 null,
+                null,
                 null));
 
         ScheduleAppointmentEntity scheduleAppointment = new ScheduleAppointmentEntity()
