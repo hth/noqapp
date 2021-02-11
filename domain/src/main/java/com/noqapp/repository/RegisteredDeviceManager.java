@@ -28,6 +28,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
         String token,
         String model,
         String osVersion,
+        String cityName,
         double[] coordinate,
         String ipAddress,
         boolean sinceBeginning);
@@ -64,6 +65,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
         String token,
         String model,
         String osVersion,
+        String cityName,
         double[] coordinate,
         String ipAddress);
 

@@ -106,6 +106,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         String token,
         String model,
         String osVersion,
+        String cityName,
         double[] coordinate,
         String ipAddress,
         boolean sinceBeginning
@@ -118,6 +119,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                     .set("TK", token)
                     .set("MO", model)
                     .set("OS", osVersion)
+                    .set("CT", cityName)
                     .set("COR", coordinate)
                     .addToSet("CH", coordinate)
                     .set("IP", ipAddress)
@@ -135,6 +137,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .set("TK", token)
                 .set("MO", model)
                 .set("OS", osVersion)
+                .set("CT", cityName)
                 .set("COR", coordinate)
                 .addToSet("CH", coordinate)
                 .set("IP", ipAddress)
@@ -256,6 +259,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         String token,
         String model,
         String osVersion,
+        String cityName,
         double[] coordinate,
         String ipAddress
     ) {
@@ -268,6 +272,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .set("MO", model)
                 .set("OS", osVersion)
                 .set("AF", appFlavor)
+                .set("CT", cityName)
                 .set("COR", coordinate)
                 .addToSet("CH", coordinate)
                 .set("IP", ipAddress)
@@ -280,6 +285,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .set("MO", model)
                 .set("OS", osVersion)
                 .set("AF", appFlavor)
+                .set("CT", cityName)
                 .set("COR", coordinate)
                 .addToSet("CH", coordinate)
                 .set("IP", ipAddress)
