@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -46,19 +45,6 @@ public class GeoIPLocationService {
         double latitude = response.getLocation().getLatitude();
         double longitude = response.getLocation().getLongitude();
         return new GeoIP(ip, cityName, latitude, longitude);
-    }
-
-    @Mobile
-    public double[] getLocationAsDouble(List<String> ips) {
-        for (String ip : ips) {
-            CityResponse response = cityResponse(ip);
-            if (null != response) {
-                double latitude = response.getLocation().getLatitude();
-                double longitude = response.getLocation().getLongitude();
-                return new double[]{longitude, latitude};
-            }
-        }
-        return null;
     }
 
     @Mobile

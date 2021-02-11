@@ -62,8 +62,8 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field("AV")
     private String appVersion;
 
-    @Field("SB")
-    private boolean sinceBeginning = true;
+    @Field("CT")
+    private String cityName;
 
     /* Format Longitude and then Latitude. */
     @Field("COR")
@@ -79,6 +79,9 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field("IH")
     private Set<String> ipAddressHistorical = new HashSet<>();
 
+    @Field("SB")
+    private boolean sinceBeginning = true;
+
     /** To keep bean happy. */
     public RegisteredDeviceEntity() {
         super();
@@ -90,39 +93,8 @@ public class RegisteredDeviceEntity extends BaseEntity {
         DeviceTypeEnum deviceType,
         AppFlavorEnum appFlavor,
         String token,
-        String appVersion
-    ) {
-        super();
-        this.queueUserId = queueUserId;
-        this.deviceId = deviceId;
-        this.deviceType = deviceType;
-        this.appFlavor = appFlavor;
-        this.token = token;
-        this.appVersion = appVersion;
-    }
-
-    private RegisteredDeviceEntity(
-        String deviceId,
-        DeviceTypeEnum deviceType,
-        AppFlavorEnum appFlavor,
-        String token,
-        String appVersion
-    ) {
-        super();
-        this.deviceId = deviceId;
-        this.deviceType = deviceType;
-        this.appFlavor = appFlavor;
-        this.token = token;
-        this.appVersion = appVersion;
-    }
-
-    private RegisteredDeviceEntity(
-        String queueUserId,
-        String deviceId,
-        DeviceTypeEnum deviceType,
-        AppFlavorEnum appFlavor,
-        String token,
         String appVersion,
+        String cityName,
         double[] coordinate,
         String ipAddress
     ) {
@@ -133,6 +105,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.appFlavor = appFlavor;
         this.token = token;
         this.appVersion = appVersion;
+        this.cityName = cityName;
         this.coordinate = coordinate;
         this.ipAddress = ipAddress;
     }
@@ -143,6 +116,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
         AppFlavorEnum appFlavor,
         String token,
         String appVersion,
+        String cityName,
         double[] coordinate,
         String ipAddress
     ) {
@@ -152,6 +126,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.appFlavor = appFlavor;
         this.token = token;
         this.appVersion = appVersion;
+        this.cityName = cityName;
         this.coordinate = coordinate;
         this.ipAddress = ipAddress;
     }
@@ -163,13 +138,14 @@ public class RegisteredDeviceEntity extends BaseEntity {
         AppFlavorEnum appFlavor,
         String token,
         String appVersion,
+        String cityName,
         double[] coordinate,
         String ipAddress
     ) {
         if (StringUtils.isBlank(queueUserId)) {
-            return new RegisteredDeviceEntity(deviceId, deviceType, appFlavor, token, appVersion , coordinate, ipAddress);
+            return new RegisteredDeviceEntity(deviceId, deviceType, appFlavor, token, appVersion, cityName, coordinate, ipAddress);
         } else {
-            return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, appFlavor, token, appVersion, coordinate, ipAddress);
+            return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, appFlavor, token, appVersion, cityName, coordinate, ipAddress);
         }
     }
 
@@ -237,12 +213,12 @@ public class RegisteredDeviceEntity extends BaseEntity {
         return this;
     }
 
-    public boolean isSinceBeginning() {
-        return sinceBeginning;
+    public String getCityName() {
+        return cityName;
     }
 
-    public RegisteredDeviceEntity setSinceBeginning(boolean sinceBeginning) {
-        this.sinceBeginning = sinceBeginning;
+    public RegisteredDeviceEntity setCityName(String cityName) {
+        this.cityName = cityName;
         return this;
     }
 
@@ -270,5 +246,14 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     public Set<String> getIpAddressHistorical() {
         return ipAddressHistorical;
+    }
+
+    public boolean isSinceBeginning() {
+        return sinceBeginning;
+    }
+
+    public RegisteredDeviceEntity setSinceBeginning(boolean sinceBeginning) {
+        this.sinceBeginning = sinceBeginning;
+        return this;
     }
 }
