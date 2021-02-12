@@ -57,6 +57,9 @@ public class GeoIPLocationService {
                 return new IpCoordinate()
                     .setCoordinate(new double[]{longitude, latitude})
                     .setIp(ip);
+            } else {
+                return new IpCoordinate()
+                    .setIp(ip);
             }
         }
         return null;
