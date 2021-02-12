@@ -50,7 +50,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
      */
     @SuppressWarnings("unused")
     @Mobile
-    RegisteredDeviceEntity lastAccessed(String qid, String did, String token, String model, String osVersion, String ipAddress, String cityName);
+    RegisteredDeviceEntity lastAccessed(String qid, String did, String token, String model, String osVersion, String appVersion, String ipAddress, String cityName);
 
     /**
      * When existing did, update with latest info. This happens when one user logs out and another user

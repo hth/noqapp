@@ -218,7 +218,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
      * @return
      */
     @Override
-    public RegisteredDeviceEntity lastAccessed(String qid, String did, String token, String model, String osVersion, String ipAddress, String cityName) {
+    public RegisteredDeviceEntity lastAccessed(String qid, String did, String token, String model, String osVersion, String appVersion, String ipAddress, String cityName) {
         return lastAccessed(
             qid,
             did,
@@ -226,6 +226,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .set("TK", token)
                 .set("MO", model)
                 .set("OS", osVersion)
+                .set("AV", appVersion)
                 .set("IP", ipAddress)
                 .addToSet("IH", ipAddress)
                 .set("CT", cityName));
