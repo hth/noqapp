@@ -218,14 +218,17 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
      * @return
      */
     @Override
-    public RegisteredDeviceEntity lastAccessed(String qid, String did, String token, String model, String osVersion) {
+    public RegisteredDeviceEntity lastAccessed(String qid, String did, String token, String model, String osVersion, String ipAddress, String cityName) {
         return lastAccessed(
             qid,
             did,
             update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate())
                 .set("TK", token)
                 .set("MO", model)
-                .set("OS", osVersion));
+                .set("OS", osVersion)
+                .set("IP", ipAddress)
+                .addToSet("IH", ipAddress)
+                .set("CT", cityName));
     }
 
     private RegisteredDeviceEntity lastAccessed(String qid, String did, Update update) {
