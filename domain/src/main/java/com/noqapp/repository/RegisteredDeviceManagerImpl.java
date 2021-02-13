@@ -112,37 +112,47 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         boolean sinceBeginning
     ) {
         if (StringUtils.isBlank(qid)) {
-            return mongoTemplate.updateFirst(
-                query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
-                entityUpdate(update("DT", deviceType)
-                    .set("AF", appFlavor)
-                    .set("TK", token)
-                    .set("MO", model)
-                    .set("OS", osVersion)
-                    .set("CT", cityName)
-                    .set("COR", coordinate)
-                    .addToSet("CH", coordinate)
-                    .set("IP", ipAddress)
-                    .addToSet("IH", ipAddress)
-                    .set("SB", sinceBeginning)),
-                RegisteredDeviceEntity.class,
-                TABLE
-            ).getModifiedCount() > 0;
-        }
-        return mongoTemplate.updateFirst(
-            query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
-            entityUpdate(update("QID", qid)
-                .set("DT", deviceType)
+            Update update = entityUpdate(update("DT", deviceType)
                 .set("AF", appFlavor)
                 .set("TK", token)
                 .set("MO", model)
                 .set("OS", osVersion)
-                .set("CT", cityName)
                 .set("COR", coordinate)
                 .addToSet("CH", coordinate)
                 .set("IP", ipAddress)
                 .addToSet("IH", ipAddress)
-                .set("SB", sinceBeginning)),
+                .set("SB", sinceBeginning));
+
+            if (StringUtils.isNotBlank(cityName)) {
+                update.set("CT", cityName);
+            }
+
+            return mongoTemplate.updateFirst(
+                query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
+                update,
+                RegisteredDeviceEntity.class,
+                TABLE
+            ).getModifiedCount() > 0;
+        }
+        Update update = entityUpdate(update("QID", qid)
+            .set("DT", deviceType)
+            .set("AF", appFlavor)
+            .set("TK", token)
+            .set("MO", model)
+            .set("OS", osVersion)
+            .set("COR", coordinate)
+            .addToSet("CH", coordinate)
+            .set("IP", ipAddress)
+            .addToSet("IH", ipAddress)
+            .set("SB", sinceBeginning));
+
+        if (StringUtils.isNotBlank(cityName)) {
+            update.set("CT", cityName);
+        }
+
+        return mongoTemplate.updateFirst(
+            query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
+            update,
             RegisteredDeviceEntity.class,
             TABLE
         ).getModifiedCount() > 0;
@@ -219,17 +229,19 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
      */
     @Override
     public RegisteredDeviceEntity lastAccessed(String qid, String did, String token, String model, String osVersion, String appVersion, String ipAddress, String cityName) {
-        return lastAccessed(
-            qid,
-            did,
-            update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate())
-                .set("TK", token)
-                .set("MO", model)
-                .set("OS", osVersion)
-                .set("AV", appVersion)
-                .set("IP", ipAddress)
-                .addToSet("IH", ipAddress)
-                .set("CT", cityName));
+        Update update = update("U", "ON".equals(deviceLastAccessedNow) ? new Date() : DateTime.now().minusYears(1).toDate())
+            .set("TK", token)
+            .set("MO", model)
+            .set("OS", osVersion)
+            .set("AV", appVersion)
+            .set("IP", ipAddress)
+            .addToSet("IH", ipAddress);
+
+        if (StringUtils.isNotBlank(cityName)) {
+            update.set("CT", cityName);
+        }
+
+        return lastAccessed(qid, did, update);
     }
 
     private RegisteredDeviceEntity lastAccessed(String qid, String did, Update update) {
@@ -276,7 +288,6 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .set("MO", model)
                 .set("OS", osVersion)
                 .set("AF", appFlavor)
-                .set("CT", cityName)
                 .set("COR", coordinate)
                 .addToSet("CH", coordinate)
                 .set("IP", ipAddress)
@@ -289,11 +300,14 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .set("MO", model)
                 .set("OS", osVersion)
                 .set("AF", appFlavor)
-                .set("CT", cityName)
                 .set("COR", coordinate)
                 .addToSet("CH", coordinate)
                 .set("IP", ipAddress)
                 .addToSet("IH", ipAddress);
+        }
+
+        if (StringUtils.isNotBlank(cityName)) {
+            update.set("CT", cityName);
         }
 
         return mongoTemplate.updateFirst(
