@@ -64,10 +64,15 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     /** Don't over use this process as this can cause OptimisticLockingFailureException. Try updating individual fields. */
     @Override
     public void save(UserProfileEntity object) {
-        if (object.getId() != null) {
-            object.setUpdated();
+        try {
+            if (object.getId() != null) {
+                object.setUpdated();
+            }
+            mongoTemplate.save(object, TABLE);
+        } catch (DataIntegrityViolationException e) {
+            LOG.error("Duplicate record entry for UserProfileEntity={}", e.getLocalizedMessage(), e);
+            throw e;
         }
-        mongoTemplate.save(object, TABLE);
     }
 
     @Override
