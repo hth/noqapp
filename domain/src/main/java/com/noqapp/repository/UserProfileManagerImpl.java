@@ -56,51 +56,21 @@ public final class UserProfileManagerImpl implements UserProfileManager {
 
     private MongoTemplate mongoTemplate;
 
-    /**
-     * When OptimisticLockingFailureException happen, ignore and re-create record.
-     */
-    private boolean ignoreOptimisticLockingFailureException = false;
-
     @Autowired
     public UserProfileManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
+    /** Don't over use this process as this can cause OptimisticLockingFailureException. Try updating individual fields. */
     @Override
     public void save(UserProfileEntity object) {
         try {
             if (object.getId() != null) {
-                if (!ObjectId.isValid(object.getId())) {
-                    LOG.error("UserProfileId is not valid id={} qid={}", object.getId(), object.getQueueUserId());
-                }
                 object.setUpdated();
             }
             mongoTemplate.save(object, TABLE);
-        } catch (OptimisticLockingFailureException e) {
-            //TODO may be remove this condition in future. This is annoying temporary condition.
-            if (ignoreOptimisticLockingFailureException) {
-                /* This will re-create user profile with same details every time when there is a failure. */
-                LOG.error("UserProfile saving optimistic locking failure, override optimistic locking qid={} reason={}",
-                    object.getQueueUserId(), e.getLocalizedMessage(), e);
-
-                DeleteResult deleteResult = mongoTemplate.remove(
-                    query(where("QID").is(object.getQueueUserId())),
-                    UserProfileEntity.class,
-                    TABLE);
-                if (deleteResult.getDeletedCount() > 0) {
-                    LOG.info("Deleted optimistic locking data issue for qid={}", object.getQueueUserId());
-                    object.setId(null);
-                    object.setVersion(null);
-                    mongoTemplate.save(object, TABLE);
-                } else {
-                    LOG.error("Delete failed on locking issue for qid={}", object.getQueueUserId());
-                    throw e;
-                }
-            } else {
-                throw e;
-            }
         } catch (DataIntegrityViolationException e) {
-            LOG.error("Found existing userProfile qid={} email={}", object.getQueueUserId(), object.getEmail());
+            LOG.error("Duplicate record entry for UserProfileEntity={}", e.getLocalizedMessage(), e);
             throw e;
         }
     }

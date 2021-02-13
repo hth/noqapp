@@ -134,6 +134,7 @@ public class MessageCustomerService {
             NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
                 .setTitle(title)
                 .setBody(body)
+                .setImageURL(imageURL)
                 .setQueueUserId(qid);
             notificationMessageManager.save(notificationMessage);
 

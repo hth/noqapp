@@ -26,6 +26,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * User: hitender
@@ -117,7 +118,7 @@ public class TokenQueueManagerImpl implements TokenQueueManager {
             );
         } catch (NullPointerException e) {
             String[] cleanedIds = Arrays.stream(ids)
-                .filter(s -> (s != null))
+                .filter(Objects::nonNull)
                 .toArray(String[]::new);
 
             if (cleanedIds.length < ids.length) {
