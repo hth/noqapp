@@ -68,6 +68,9 @@ public final class JsonProfile extends AbstractDomain {
     @JsonProperty ("ic")
     private String inviteCode;
 
+    @JsonProperty("ps")
+    private int points;
+
     @JsonProperty ("bd")
     private String birthday;
 
@@ -120,7 +123,8 @@ public final class JsonProfile extends AbstractDomain {
         GenderEnum gender,
         UserLevelEnum userLevel,
         BusinessTypeEnum businessType,
-        boolean accountValidated
+        boolean accountValidated,
+        int points
     ) {
         this.queueUserId = queueUserId;
         this.profileImage = profileImage;
@@ -136,9 +140,14 @@ public final class JsonProfile extends AbstractDomain {
         this.userLevel = userLevel;
         this.businessType = businessType;
         this.accountValidated = accountValidated;
+        this.points = points;
     }
 
     public static JsonProfile newInstance(UserProfileEntity userProfile, UserAccountEntity userAccount) {
+        return newInstance(userProfile, userAccount, 0);
+    }
+
+    public static JsonProfile newInstance(UserProfileEntity userProfile, UserAccountEntity userAccount, int points) {
         return new JsonProfile(
             userProfile.getQueueUserId(),
             userProfile.getProfileImage(),
@@ -153,7 +162,8 @@ public final class JsonProfile extends AbstractDomain {
             userProfile.getGender(),
             userProfile.getLevel(),
             userProfile.getBusinessType(),
-            userAccount.isAccountValidated()
+            userAccount.isAccountValidated(),
+            points
         );
     }
 
@@ -211,6 +221,10 @@ public final class JsonProfile extends AbstractDomain {
 
     public boolean isAccountValidated() {
         return accountValidated;
+    }
+
+    public int getPoints() {
+        return points;
     }
 
     public JsonUserMedicalProfile getJsonUserMedicalProfile() {
