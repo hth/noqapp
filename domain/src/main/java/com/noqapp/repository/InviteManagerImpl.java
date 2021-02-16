@@ -35,18 +35,18 @@ import java.util.List;
  * Date: 3/29/17 10:40 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class InviteManagerImpl implements InviteManager {
     private static final Logger LOG = LoggerFactory.getLogger(EmailValidateManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            InviteEntity.class,
-            Document.class,
-            "collection");
+        InviteEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -74,7 +74,7 @@ public class InviteManagerImpl implements InviteManager {
 
             /* To group additional field add next to QID with comma separated like "QID", "XYZ" */
             GroupOperation groupByStateAndSumPop = group("QID")
-                    .sum("RJQ").as("summation");
+                .sum("RJQ").as("summation");
 
             MatchOperation filterStates = match(where("QID").is(qid).and("A").is(true));
             Aggregation aggregation = newAggregation(filterStates, groupByStateAndSumPop);
@@ -85,7 +85,7 @@ public class InviteManagerImpl implements InviteManager {
             }
 
             groupByStateAndSumPop = group("IID")
-                    .sum("RJI").as("summation");
+                .sum("RJI").as("summation");
 
             filterStates = match(where("IID").is(qid).and("A").is(true));
             aggregation = newAggregation(filterStates, groupByStateAndSumPop);
@@ -107,14 +107,14 @@ public class InviteManagerImpl implements InviteManager {
             Assert.hasLength(qid, "QID cannot be empty");
 
             InviteEntity invite = mongoTemplate.findOne(
-                    query(where("A").is(true)
-                            .orOperator(
-                                    where("QID").is(qid).and("RJQ").gt(0),
-                                    where("IID").is(qid).and("RJI").gt(0)
-                            )
-                    ),
-                    InviteEntity.class,
-                    TABLE);
+                query(where("A").is(true)
+                    .orOperator(
+                        where("QID").is(qid).and("RJQ").gt(0),
+                        where("IID").is(qid).and("RJI").gt(0)
+                    )
+                ),
+                InviteEntity.class,
+                TABLE);
 
             boolean updated = false;
             if (invite.getQueueUserId().equalsIgnoreCase(qid)) {
@@ -139,10 +139,10 @@ public class InviteManagerImpl implements InviteManager {
 
     public long increaseRemoteJoin(int maxRemoteJoin) {
         UpdateResult updateResult = mongoTemplate.updateMulti(
-                query(where("RJQ").lte(10).andOperator(isActive())),
-                entityUpdate(update("RJQ", maxRemoteJoin)),
-                InviteEntity.class,
-                TABLE
+            query(where("RJQ").lte(10).andOperator(isActive())),
+            entityUpdate(update("RJQ", maxRemoteJoin)),
+            InviteEntity.class,
+            TABLE
         );
 
         return updateResult.getModifiedCount();

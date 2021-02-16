@@ -62,7 +62,7 @@ import java.util.concurrent.ExecutorService;
 @Service
 public class AccountService {
     private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
-    private int freeRemoteJoins;
+    private int points;
 
     private UserAccountManager userAccountManager;
     private UserAuthenticationManager userAuthenticationManager;
@@ -77,8 +77,8 @@ public class AccountService {
 
     @Autowired
     public AccountService(
-        @Value("${AccountService.freeRemoteJoins}")
-        int freeRemoteJoins,
+        @Value("${AccountService.points}")
+        int points,
 
         UserAccountManager userAccountManager,
         UserAuthenticationManager userAuthenticationManager,
@@ -89,7 +89,7 @@ public class AccountService {
         InviteService inviteService,
         ForgotRecoverManager forgotRecoverManager
     ) {
-        this.freeRemoteJoins = freeRemoteJoins;
+        this.points = points;
 
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
@@ -254,15 +254,15 @@ public class AccountService {
             createPreferences(userProfile.getQueueUserId());
             if (StringUtils.isNotBlank(inviteCode)) {
                 UserProfileEntity userProfileOfInvitee = findProfileByInviteCode(inviteCode);
+                InviteEntity invite;
                 if (null != userProfileOfInvitee) {
-                    InviteEntity invite = new InviteEntity(qid, userProfileOfInvitee.getQueueUserId(), inviteCode, freeRemoteJoins);
-                    inviteService.save(invite);
+                    invite = new InviteEntity(qid, userProfileOfInvitee.getQueueUserId(), inviteCode, points);
                 } else {
-                    InviteEntity invite = new InviteEntity(qid, null, null, freeRemoteJoins);
-                    inviteService.save(invite);
+                    invite = new InviteEntity(qid, null, null, points);
                 }
+                inviteService.save(invite);
             } else {
-                InviteEntity invite = new InviteEntity(qid, null, null, freeRemoteJoins);
+                InviteEntity invite = new InviteEntity(qid, null, null, points);
                 inviteService.save(invite);
             }
             return userAccount;
@@ -360,7 +360,7 @@ public class AccountService {
             }
 
             createPreferences(userProfile.getQueueUserId());
-            InviteEntity invite = new InviteEntity(qid, userProfileOfAdmin.getQueueUserId(), userProfileOfAdmin.getInviteCode(), freeRemoteJoins);
+            InviteEntity invite = new InviteEntity(qid, userProfileOfAdmin.getQueueUserId(), userProfileOfAdmin.getInviteCode(), points);
             inviteService.save(invite);
             return userAccount;
         } else {
