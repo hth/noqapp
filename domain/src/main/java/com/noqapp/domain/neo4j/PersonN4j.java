@@ -53,6 +53,9 @@ public class PersonN4j {
     @Property("lat")
     private double latitude;
 
+    @Property("points")
+    private int points;
+
     public String getQid() {
         return qid;
     }
@@ -150,6 +153,15 @@ public class PersonN4j {
 
     public PersonN4j setLatitude(double latitude) {
         this.latitude = latitude;
+        return this;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public PersonN4j setPoints(int points) {
+        this.points = points;
         return this;
     }
 

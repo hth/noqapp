@@ -8,21 +8,12 @@ import com.noqapp.domain.InviteEntity;
  */
 public interface InviteManager extends RepositoryManager<InviteEntity> {
 
-    /**
-     * Lists total number of remote join available.
-     */
-    @Deprecated
+    /** Lists total number of points available. */
     int computePoints(String qid);
 
-    /**
-     * Deducts remote join from available remote scans.
-     */
-    @Deprecated
+    /** Deducts points. */
     boolean deductPoints(String qid);
 
-    /**
-     * Increase max remote join by a specific count.
-     */
-    @Deprecated
+    /** Increase points. */
     long increasePoints(int maxRemoteJoin);
 }
