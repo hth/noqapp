@@ -7,6 +7,7 @@ import com.noqapp.domain.neo4j.LocationN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.neo4j.StoreN4j;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.InviteManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.UserProfileManager;
@@ -35,6 +36,7 @@ public class GraphQueue {
     private QueueManagerJDBC queueManagerJDBC;
     private UserProfileManager userProfileManager;
     private BizStoreManager bizStoreManager;
+    private InviteManager inviteManager;
 
     @Autowired
     public GraphQueue(
@@ -44,7 +46,8 @@ public class GraphQueue {
         QueueManager queueManager,
         QueueManagerJDBC queueManagerJDBC,
         UserProfileManager userProfileManager,
-        BizStoreManager bizStoreManager
+        BizStoreManager bizStoreManager,
+        InviteManager inviteManager
     ) {
         this.storeN4jManager = storeN4jManager;
         this.personN4jManager = personN4jManager;
@@ -53,6 +56,7 @@ public class GraphQueue {
         this.queueManagerJDBC = queueManagerJDBC;
         this.userProfileManager = userProfileManager;
         this.bizStoreManager = bizStoreManager;
+        this.inviteManager = inviteManager;
     }
 
     public PersonN4j graphUser(String qid) {
@@ -63,7 +67,8 @@ public class GraphQueue {
         PersonN4j personN4j = new PersonN4j()
             .setQid(qid)
             .setName(userProfile.getName())
-            .setLastAccessed(new Date());
+            .setLastAccessed(new Date())
+            .setPoints(inviteManager.computePoints(qid));
 
         String codeQR = queueManagerJDBC.clientLatestVisit(qid);
         if (StringUtils.isNotBlank(codeQR)) {
