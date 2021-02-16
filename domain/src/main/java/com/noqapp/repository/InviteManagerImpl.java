@@ -66,7 +66,7 @@ public class InviteManagerImpl implements InviteManager {
     }
 
     @Override
-    public int getRemoteJoinCount(String qid) {
+    public int computePoints(String qid) {
         try {
             Assert.hasLength(qid, "QID cannot be empty");
 
@@ -102,7 +102,7 @@ public class InviteManagerImpl implements InviteManager {
         }
     }
 
-    public boolean deductRemoteJoinCount(String qid) {
+    public boolean deductPoints(String qid) {
         try {
             Assert.hasLength(qid, "QID cannot be empty");
 
@@ -137,7 +137,7 @@ public class InviteManagerImpl implements InviteManager {
         }
     }
 
-    public long increaseRemoteJoin(int maxRemoteJoin) {
+    public long increasePoints(int maxRemoteJoin) {
         UpdateResult updateResult = mongoTemplate.updateMulti(
             query(where("RJQ").lte(10).andOperator(isActive())),
             entityUpdate(update("RJQ", maxRemoteJoin)),
