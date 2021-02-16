@@ -118,14 +118,14 @@ public class InviteManagerImpl implements InviteManager {
 
             boolean updated = false;
             if (invite.getQueueUserId().equalsIgnoreCase(qid)) {
-                invite.deductRemoteJoinForQueueUserCount();
+                invite.deductPointsForQueueUserCount();
                 updated = true;
             } else if (invite.getInviterId().equalsIgnoreCase(qid)) {
-                invite.deductRemoteJoinForInviterCount();
+                invite.deductPointsForInviterCount();
                 updated = true;
             }
 
-            if (0 == invite.getRemoteJoinForQueueUserCount() && 0 == invite.getRemoteJoinForInviterCount()) {
+            if (0 == invite.getPointsForQueueUserCount() && 0 == invite.getPointsForInviterCount()) {
                 invite.inActive();
             }
 

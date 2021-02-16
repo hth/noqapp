@@ -36,7 +36,7 @@ public class InviteEntity extends BaseEntity {
     /* RJQ maps to QID. */
     @NotNull
     @Field ("RJQ")
-    private int remoteJoinForQueueUserCount;
+    private int pointsForQueueUserCount;
 
     @NotNull
     @Field ("IC")
@@ -50,7 +50,7 @@ public class InviteEntity extends BaseEntity {
     /* IID maps to RJI. */
     @NotNull
     @Field ("RJI")
-    private int remoteJoinForInviterCount;
+    private int pointsForInviterCount;
 
     @SuppressWarnings("unused")
     public InviteEntity() {
@@ -61,14 +61,14 @@ public class InviteEntity extends BaseEntity {
             String queueUserId,
             String inviterId,
             String inviteeCode,
-            int freeRemoteJoins
+            int points
     ) {
         this.queueUserId = queueUserId;
-        this.remoteJoinForQueueUserCount = freeRemoteJoins;
+        this.pointsForQueueUserCount = points;
         if (StringUtils.isNotBlank(inviteeCode)) {
             this.inviteeCode = inviteeCode;
             this.inviterId = inviterId;
-            this.remoteJoinForInviterCount = freeRemoteJoins;
+            this.pointsForInviterCount = points;
         }
     }
 
@@ -80,8 +80,8 @@ public class InviteEntity extends BaseEntity {
         this.queueUserId = queueUserId;
     }
 
-    public int getRemoteJoinForQueueUserCount() {
-        return remoteJoinForQueueUserCount;
+    public int getPointsForQueueUserCount() {
+        return pointsForQueueUserCount;
     }
 
     public String getInviteeCode() {
@@ -100,17 +100,17 @@ public class InviteEntity extends BaseEntity {
         this.inviterId = inviterId;
     }
 
-    public int getRemoteJoinForInviterCount() {
-        return remoteJoinForInviterCount;
+    public int getPointsForInviterCount() {
+        return pointsForInviterCount;
     }
 
-    public void deductRemoteJoinForQueueUserCount() {
-        assertNotEquals(0, remoteJoinForQueueUserCount);
-        this.remoteJoinForQueueUserCount--;
+    public void deductPointsForQueueUserCount() {
+        assertNotEquals(0, pointsForQueueUserCount);
+        this.pointsForQueueUserCount--;
     }
 
-    public void deductRemoteJoinForInviterCount() {
-        assertNotEquals(0, remoteJoinForInviterCount);
-        this.remoteJoinForInviterCount--;
+    public void deductPointsForInviterCount() {
+        assertNotEquals(0, pointsForInviterCount);
+        this.pointsForInviterCount--;
     }
 }
