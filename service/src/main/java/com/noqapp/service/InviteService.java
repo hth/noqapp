@@ -1,6 +1,7 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.InviteEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.repository.InviteManager;
 
 import org.slf4j.Logger;
@@ -32,5 +33,15 @@ public class InviteService {
 
     public void save(InviteEntity invite) {
         inviteManager.save(invite);
+    }
+
+    @Mobile
+    public int computePoints(String qid) {
+        return inviteManager.computePoints(qid);
+    }
+
+    @Mobile
+    public boolean deductPoints(String qid) {
+        return inviteManager.deductPoints(qid);
     }
 }
