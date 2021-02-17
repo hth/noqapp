@@ -118,7 +118,7 @@ public class DomainConversion {
             case CDQ:
                 bizStoreElastic
                     .setTag(bizStore.getBizName().getTag())
-                    .addTag("csd").addTag("esm").addTag("ems").addTag("echs").addTag("canteen");
+                    .addTag("csd").addTag("esm").addTag("ems").addTag("echs").addTag("canteen").addTag("ex service");
             default:
                 //Do nothing
         }
