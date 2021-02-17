@@ -73,4 +73,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     void updateName(String firstName, String lastName, String qid);
 
     void changeUserLevel(String qid, UserLevelEnum userLevel);
+
+    void markProfileVerified(String qid);
 }

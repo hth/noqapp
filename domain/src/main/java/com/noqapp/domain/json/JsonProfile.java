@@ -105,6 +105,9 @@ public final class JsonProfile extends AbstractDomain {
     @JsonProperty("cbs")
     private Map<String, String> codeQRAndBizStoreIds = new HashMap<>();
 
+    @JsonProperty("pv")
+    private boolean profileVerified;
+
     public JsonProfile() {
         //Required Default Constructor
     }
@@ -124,6 +127,7 @@ public final class JsonProfile extends AbstractDomain {
         UserLevelEnum userLevel,
         BusinessTypeEnum businessType,
         boolean accountValidated,
+        boolean profileVerified,
         int points
     ) {
         this.queueUserId = queueUserId;
@@ -140,6 +144,7 @@ public final class JsonProfile extends AbstractDomain {
         this.userLevel = userLevel;
         this.businessType = businessType;
         this.accountValidated = accountValidated;
+        this.profileVerified = profileVerified;
         this.points = points;
     }
 
@@ -163,6 +168,7 @@ public final class JsonProfile extends AbstractDomain {
             userProfile.getLevel(),
             userProfile.getBusinessType(),
             userAccount.isAccountValidated(),
+            userProfile.isProfileVerified(),
             points
         );
     }
@@ -283,6 +289,15 @@ public final class JsonProfile extends AbstractDomain {
 
     public JsonProfile addCodeQRAndBizStoreId(String codeQR, String bizStoreId) {
         this.codeQRAndBizStoreIds.put(codeQR, bizStoreId);
+        return this;
+    }
+
+    public boolean isProfileVerified() {
+        return profileVerified;
+    }
+
+    public JsonProfile setProfileVerified(boolean profileVerified) {
+        this.profileVerified = profileVerified;
         return this;
     }
 }

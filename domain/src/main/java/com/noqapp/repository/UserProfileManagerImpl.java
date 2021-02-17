@@ -280,4 +280,14 @@ public final class UserProfileManagerImpl implements UserProfileManager {
             TABLE
         );
     }
+
+    @Override
+    public void markProfileVerified(String qid) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            update("PV", true),
+            UserProfileEntity.class,
+            TABLE
+        );
+    }
 }
