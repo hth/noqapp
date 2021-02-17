@@ -182,6 +182,10 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("PF")
     private int appointmentOpenHowFar;
 
+    /* Tag to help in search. */
+    @JsonProperty("TAG")
+    private String tag;
+
     @Transient
     @JsonProperty("AP")
     private Set<SupportedPaymentEnum> acceptedPayments;
@@ -562,6 +566,20 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
+    public BizStoreElastic setTag(String tag) {
+        this.tag = tag;
+        return this;
+    }
+
+    public BizStoreElastic addTag(String tag) {
+        this.tag += tag + " ";
+        return this;
+    }
+
     public Set<SupportedPaymentEnum> getAcceptedPayments() {
         return acceptedPayments;
     }
@@ -721,6 +739,9 @@ public class BizStoreElastic extends AbstractDomain {
                 bizStoreElastic.setAddress(FileUtil.DASH);
                 bizStoreElastic.setArea(FileUtil.DASH);
                 bizStoreElastic.setTown(FileUtil.DASH);
+
+                /* Hardly used. Mostly used in search. */
+                bizStoreElastic.setTag(bizStore.getBizName().getTag());
             default:
                 //Do nothing
         }

@@ -46,7 +46,7 @@ public class QueryString extends AbstractDomain {
             "ST", //State
             "AR", //Area is smaller than Town
             "TO", //Town
-            "PH"  //Phone
+            "TAG" //Easy to search on
         };
 
     public String getQuery() {
