@@ -30,82 +30,82 @@ import javax.validation.constraints.NotNull;
  * User: hitender
  * Date: 11/18/16 6:02 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
-@Document (collection = "USER_PROFILE")
-@CompoundIndexes ({
-        @CompoundIndex (name = "user_profile_qid_em_idx", def = "{'QID': -1, 'EM' : 1}", unique = true),
-        @CompoundIndex (name = "user_profile_em_idx", def = "{'EM': 1}", unique = true),
-        @CompoundIndex (name = "user_profile_ph_idx", def = "{'PH': 1}", unique = true),
-        @CompoundIndex (name = "user_profile_ic_idx", def = "{'IC': 1}", unique = true),
-        @CompoundIndex (name = "user_profile_guardian_idx", def = "{'GP' : 1}", unique = false, sparse = true),
+@Document(collection = "USER_PROFILE")
+@CompoundIndexes({
+    @CompoundIndex(name = "user_profile_qid_em_idx", def = "{'QID': -1, 'EM' : 1}", unique = true),
+    @CompoundIndex(name = "user_profile_em_idx", def = "{'EM': 1}", unique = true),
+    @CompoundIndex(name = "user_profile_ph_idx", def = "{'PH': 1}", unique = true),
+    @CompoundIndex(name = "user_profile_ic_idx", def = "{'IC': 1}", unique = true),
+    @CompoundIndex(name = "user_profile_guardian_idx", def = "{'GP' : 1}", unique = false, sparse = true),
 })
 public class UserProfileEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(UserProfileEntity.class);
 
     @NotNull
-    @Field ("QID")
+    @Field("QID")
     private String queueUserId;
 
-    @Field ("PI")
+    @Field("PI")
     private String profileImage;
 
-    @Field ("FN")
+    @Field("FN")
     private String firstName;
-    
-    @Field ("LN")
+
+    @Field("LN")
     private String lastName;
 
-    @Field ("GE")
+    @Field("GE")
     private GenderEnum gender;
 
-    @Field ("LO")
+    @Field("LO")
     private Locale locale;
 
-    @Field ("EM")
+    @Field("EM")
     private String email;
 
-    @Field ("TZ")
+    @Field("TZ")
     private String timeZone;
 
-    @Field ("BD")
+    @Field("BD")
     private String birthday;
 
     @NotNull
-    @Field ("UL")
+    @Field("UL")
     private UserLevelEnum level = UserLevelEnum.CLIENT;
 
-    @Field ("AD")
+    @Field("AD")
     private String address;
 
-    @Field ("CS")
+    @Field("CS")
     private String countryShortName;
 
     /* Phone number saved with country code. */
     @NotNull
-    @Field ("PH")
+    @Field("PH")
     private String phone;
 
     /* To not loose user entered phone number. */
-    @Field ("PR")
+    @Field("PR")
     private String phoneRaw;
 
-    @Field ("GP")
+    @Field("GP")
     private String guardianPhone;
 
     /* Is populated when the user has dependents. */
-    @Field ("DP")
+    @Field("DP")
     private List<String> qidOfDependents;
 
     @NotNull
-    @Field ("IC")
+    @Field("IC")
     private String inviteCode;
 
-    @Field ("AO")
+    @Field("AO")
     private AddressOriginEnum addressOrigin;
 
     @Field("BT")
@@ -113,6 +113,9 @@ public class UserProfileEntity extends BaseEntity {
 
     @Field("MO")
     private String mailOTP;
+
+    @Field("PV")
+    private boolean profileVerified;
 
     /** To make bean happy. */
     public UserProfileEntity() {
@@ -329,6 +332,15 @@ public class UserProfileEntity extends BaseEntity {
 
     public UserProfileEntity setMailOTP(String mailOTP) {
         this.mailOTP = mailOTP;
+        return this;
+    }
+
+    public boolean isProfileVerified() {
+        return profileVerified;
+    }
+
+    public UserProfileEntity setProfileVerified(boolean profileVerified) {
+        this.profileVerified = profileVerified;
         return this;
     }
 

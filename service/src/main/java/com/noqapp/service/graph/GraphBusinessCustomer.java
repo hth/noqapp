@@ -70,6 +70,7 @@ public class GraphBusinessCustomer {
 
     void graphBusinessCustomer(PersonN4j personN4j) {
         List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(personN4j.getQid());
+        UserProfileEntity userProfile = null;
         for (BusinessCustomerEntity businessCustomer : businessCustomers) {
             BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
 
@@ -87,7 +88,7 @@ public class GraphBusinessCustomer {
                 .setLocation(null == found ? locationN4j : found);
             bizNameN4jManager.save(bizNameN4j);
 
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
+            userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
             BusinessCustomerN4j businessCustomerN4j = new BusinessCustomerN4j()
                 .setBizNameN4j(bizNameN4j)
                 .setName(userProfile.getName())
@@ -99,7 +100,11 @@ public class GraphBusinessCustomer {
         }
 
         if (!businessCustomers.isEmpty()) {
+            personN4j.isVerified();
             personN4jManager.save(personN4j);
+            if (!userProfile.isProfileVerified()) {
+                userProfileManager.markProfileVerified(personN4j.getQid());
+            }
         }
     }
 

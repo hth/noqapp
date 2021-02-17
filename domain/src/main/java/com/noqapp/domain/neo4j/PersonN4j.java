@@ -56,6 +56,9 @@ public class PersonN4j {
     @Property("points")
     private int points;
 
+    @Property("pv")
+    private boolean profileVerified;
+
     public String getQid() {
         return qid;
     }
@@ -162,6 +165,20 @@ public class PersonN4j {
 
     public PersonN4j setPoints(int points) {
         this.points = points;
+        return this;
+    }
+
+    public boolean isProfileVerified() {
+        return profileVerified;
+    }
+
+    public PersonN4j setProfileVerified(boolean profileVerified) {
+        this.profileVerified = profileVerified;
+        return this;
+    }
+
+    public PersonN4j isVerified() {
+        this.profileVerified = true;
         return this;
     }
 
