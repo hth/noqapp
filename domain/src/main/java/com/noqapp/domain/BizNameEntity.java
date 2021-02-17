@@ -179,6 +179,9 @@ public class BizNameEntity extends BaseEntity {
     @Field("SL")
     private LocaleEnum smsLocale;
 
+    @Field("TAG")
+    private String tag = "";
+
     @SuppressWarnings("unused")
     public BizNameEntity() {
         super();
@@ -573,6 +576,15 @@ public class BizNameEntity extends BaseEntity {
 
     public BizNameEntity setSmsLocale(LocaleEnum smsLocale) {
         this.smsLocale = smsLocale;
+        return this;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public BizNameEntity setTag(String tag) {
+        this.tag = tag;
         return this;
     }
 

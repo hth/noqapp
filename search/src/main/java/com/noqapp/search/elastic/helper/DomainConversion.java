@@ -69,7 +69,7 @@ public class DomainConversion {
             LOG.warn("No Banner Image for bizName={} bizId={}", bizStore.getBizName().getBusinessName(), bizStore.getBizName().getId());
         }
 
-        return new BizStoreElastic()
+        BizStoreElastic bizStoreElastic = new BizStoreElastic()
             .setId(bizStore.getId())
             .setBusinessName(bizStore.getBizName().getBusinessName())
             .setBusinessType(bizStore.getBusinessType())
@@ -112,6 +112,18 @@ public class DomainConversion {
             .setDisplayImage(businessImageHolder.getBannerImage())
             .setStoreHourElasticList(getStoreHourElastics(storeHours))
             .setBizServiceImages(businessImageHolder.getServiceImages());
+
+        switch (bizStore.getBusinessType()) {
+            case CD:
+            case CDQ:
+                bizStoreElastic
+                    .setTag(bizStore.getBizName().getTag())
+                    .addTag("csd").addTag("esm").addTag("ems").addTag("echs").addTag("canteen");
+            default:
+                //Do nothing
+        }
+
+        return bizStoreElastic;
     }
 
     @Mobile
