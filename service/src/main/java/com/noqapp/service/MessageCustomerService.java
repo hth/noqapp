@@ -9,11 +9,16 @@ import com.noqapp.domain.NotificationMessageEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.neo4j.NotificationN4j;
+import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.NotificationMessageManager;
 import com.noqapp.repository.RegisteredDeviceManager;
+import com.noqapp.repository.neo4j.NotificationN4jManager;
+import com.noqapp.repository.neo4j.PersonN4jManager;
+import com.noqapp.service.graph.GraphDetailOfPerson;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,6 +50,9 @@ public class MessageCustomerService {
     private FirebaseService firebaseService;
     private BizService bizService;
 
+    private GraphDetailOfPerson graphDetailOfPerson;
+    private NotificationN4jManager notificationN4jManager;
+
     private int limitedToDays;
 
     /* Supported max limit by Firebase. */
@@ -60,7 +68,10 @@ public class MessageCustomerService {
         NotificationMessageManager notificationMessageManager,
         RegisteredDeviceManager registeredDeviceManager,
         FirebaseService firebaseService,
-        BizService bizService
+        BizService bizService,
+
+        GraphDetailOfPerson graphDetailOfPerson,
+        NotificationN4jManager notificationN4jManager
     ) {
         this.limitedToDays = limitedToDays;
 
@@ -70,6 +81,18 @@ public class MessageCustomerService {
         this.registeredDeviceManager = registeredDeviceManager;
         this.firebaseService = firebaseService;
         this.bizService = bizService;
+
+        this.graphDetailOfPerson = graphDetailOfPerson;
+        this.notificationN4jManager = notificationN4jManager;
+    }
+
+    private void save(NotificationMessageEntity notificationMessage) {
+        notificationMessageManager.save(notificationMessage);
+        NotificationN4j notificationN4j = notificationN4jManager.findById(notificationMessage.getId());
+        if (null == notificationN4j) {
+            notificationN4j = new NotificationN4j().setId(notificationMessage.getId());
+            notificationN4jManager.save(notificationN4j);
+        }
     }
 
     @Mobile
@@ -80,7 +103,7 @@ public class MessageCustomerService {
                 .setTitle(title)
                 .setBody(body)
                 .setQueueUserId(qid);
-            notificationMessageManager.save(notificationMessage);
+            save(notificationMessage);
 
             int messageSendCount = 0;
             for (String codeQR : codeQRs) {
@@ -94,7 +117,7 @@ public class MessageCustomerService {
             }
 
             notificationMessage.setMessageSendCount(messageSendCount);
-            notificationMessageManager.save(notificationMessage);
+            save(notificationMessage);
         } catch (Exception e) {
             LOG.error("Failed sending message qid={} title=\"{}\" body=\"{}\"", qid, title, body);
         }
@@ -105,7 +128,7 @@ public class MessageCustomerService {
             .setTitle(title)
             .setBody(body)
             .setQueueUserId(qid);
-        notificationMessageManager.save(notificationMessage);
+        save(notificationMessage);
 
         TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
         tokenQueueService.sendAlertMessageToAllOnSpecificTopic(title, body, tokenQueue, QueueStatusEnum.C);
@@ -136,7 +159,7 @@ public class MessageCustomerService {
                 .setBody(body)
                 .setImageURL(imageURL)
                 .setQueueUserId(qid);
-            notificationMessageManager.save(notificationMessage);
+            save(notificationMessage);
 
             if (StringUtils.isBlank(imageURL)) {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
@@ -150,7 +173,7 @@ public class MessageCustomerService {
                 }
             }
 
-            notificationMessageManager.save(notificationMessage);
+            save(notificationMessage);
         } catch (Exception e) {
             LOG.error("Failed sending message to all {} {} {} reason={}", title, body, qid, e.getMessage(), e);
         }
@@ -162,7 +185,7 @@ public class MessageCustomerService {
                 .setTitle(title)
                 .setBody(body)
                 .setQueueUserId(qid);
-            notificationMessageManager.save(notificationMessage);
+            save(notificationMessage);
 
             int sendMessageCount = sendMessageToPastClients(bizNameId);
             LOG.info("Sending message by {} total send={} \"{}\" \"{}\" {}", qid, sendMessageCount, title, body, bizNameId);
@@ -210,7 +233,7 @@ public class MessageCustomerService {
             }
 
             notificationMessage.setMessageSendCount(sendMessageCount);
-            notificationMessageManager.save(notificationMessage);
+            save(notificationMessage);
             return sendMessageCount;
         } catch (Exception e) {
             LOG.error("Failed sending message {} {} reason={}", bizNameId, qid, e.getMessage(), e);
@@ -237,7 +260,8 @@ public class MessageCustomerService {
     }
 
     @Mobile
-    public boolean increaseViewCount(String id) {
+    public boolean increaseViewCount(String id, String qid) {
+        graphDetailOfPerson.graphPersonWithNotification(id, qid);
         return notificationMessageManager.increaseViewClientCount(id);
     }
 
@@ -247,7 +271,8 @@ public class MessageCustomerService {
     }
 
     @Mobile
-    public boolean increaseViewBusinessCount(String id) {
+    public boolean increaseViewBusinessCount(String id, String qid) {
+        graphDetailOfPerson.graphPersonWithNotification(id, qid);
         return notificationMessageManager.increaseViewBusinessCount(id);
     }
 }

@@ -7,6 +7,7 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.neo4j.AnomalyN4j;
 import com.noqapp.domain.neo4j.BusinessCustomerN4j;
+import com.noqapp.domain.neo4j.NotificationN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.neo4j.StoreN4j;
 import com.noqapp.domain.neo4j.queryresult.BusinessDistanceFromUserLocation;
@@ -14,6 +15,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.neo4j.AnomalyN4jManager;
 import com.noqapp.repository.neo4j.BusinessCustomerN4jManager;
+import com.noqapp.repository.neo4j.NotificationN4jManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
 import com.noqapp.service.BizService;
 
@@ -39,6 +41,7 @@ public class GraphDetailOfPerson {
     private PersonN4jManager personN4jManager;
     private BusinessCustomerN4jManager businessCustomerN4jManager;
     private AnomalyN4jManager anomalyN4jManager;
+    private NotificationN4jManager notificationN4jManager;
 
     private GraphQueue graphQueue;
     private GraphBusinessCustomer graphBusinessCustomer;
@@ -50,6 +53,7 @@ public class GraphDetailOfPerson {
         PersonN4jManager personN4jManager,
         BusinessCustomerN4jManager businessCustomerN4jManager,
         AnomalyN4jManager anomalyN4jManager,
+        NotificationN4jManager notificationN4jManager,
 
         GraphQueue graphQueue,
         GraphBusinessCustomer graphBusinessCustomer,
@@ -60,6 +64,7 @@ public class GraphDetailOfPerson {
         this.personN4jManager = personN4jManager;
         this.businessCustomerN4jManager = businessCustomerN4jManager;
         this.anomalyN4jManager = anomalyN4jManager;
+        this.notificationN4jManager = notificationN4jManager;
 
         this.graphQueue = graphQueue;
         this.graphBusinessCustomer = graphBusinessCustomer;
@@ -84,6 +89,15 @@ public class GraphDetailOfPerson {
         } catch (Exception e) {
             LOG.error("Failed graphing qid={} reason={}", qid, e.getLocalizedMessage(), e);
         }
+    }
+
+    @Mobile
+    @Async
+    public void graphPersonWithNotification(String notificationId, String qid) {
+        graphPerson(qid);
+        PersonN4j personN4j = personN4jManager.findByQid(qid);
+        NotificationN4j notificationN4j = notificationN4jManager.findByIdAndIncrementCount(notificationId);
+        personN4j.addNotificationN4j(notificationN4j);
     }
 
     private void populateForQid(String qid) {

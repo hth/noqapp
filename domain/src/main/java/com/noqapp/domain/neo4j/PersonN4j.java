@@ -38,6 +38,9 @@ public class PersonN4j {
     @Relationship(type = "HAS_ANOMALY", direction = Relationship.OUTGOING)
     private AnomalyN4j anomalyN4j;
 
+    @Relationship(type = "VIEWED", direction = Relationship.OUTGOING)
+    private Collection<NotificationN4j> notificationN4js;
+
     @Property("bizNameId")
     private String bizNameId;
 
@@ -111,6 +114,20 @@ public class PersonN4j {
 
     public PersonN4j setAnomalyN4j(AnomalyN4j anomalyN4j) {
         this.anomalyN4j = anomalyN4j;
+        return this;
+    }
+
+    public Collection<NotificationN4j> getNotificationN4js() {
+        return notificationN4js;
+    }
+
+    public PersonN4j setNotificationN4js(Collection<NotificationN4j> notificationN4js) {
+        this.notificationN4js = notificationN4js;
+        return this;
+    }
+
+    public PersonN4j addNotificationN4j(NotificationN4j notificationN4j) {
+        this.notificationN4js.add(notificationN4j);
         return this;
     }
 
