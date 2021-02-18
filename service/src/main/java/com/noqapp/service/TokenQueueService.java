@@ -405,9 +405,9 @@ public class TokenQueueService {
             userPreference.addSubscriptionTopic(subscribedTopic);
 
             userProfilePreferenceService.save(userPreference);
-            LOG.info("Updated preference with subscription={} recommended={}", bizStore.getBusinessType().getName(), bizStore.getBizName().getBusinessName());
+            LOG.info("Updated preference with {} subscription={} recommended={}", qid, bizStore.getBusinessType().getName(), bizStore.getBizName().getBusinessName());
         } catch (Exception e) {
-            LOG.error("Failed subscribing or adding to recommended {}", e.getLocalizedMessage(), e);
+            LOG.error("Failed subscribing or adding to recommended {} {}", qid, e.getLocalizedMessage(), e);
         }
     }
 
