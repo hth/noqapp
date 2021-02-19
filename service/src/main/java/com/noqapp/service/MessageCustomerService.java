@@ -11,6 +11,7 @@ import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.neo4j.NotificationN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -95,43 +96,30 @@ public class MessageCustomerService {
         }
     }
 
+    /** Send message to all customers in the queue. */
     @Mobile
     @Async
     public void sendMessageToSubscribers(String title, String body, List<String> codeQRs, String qid) {
         try {
-            NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
-                .setTitle(title)
-                .setBody(body)
-                .setQueueUserId(qid);
-            save(notificationMessage);
-
-            int messageSendCount = 0;
             for (String codeQR : codeQRs) {
                 BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
                 TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
-                messageSendCount =+ tokenQueue.getLastNumber();
                 sendMessageToSubscriber(
                     title,
                     CommonUtil.appendBusinessNameToNotificationMessage(body, bizStore.getBizName().getBusinessName()),
                     tokenQueue);
-            }
 
-            notificationMessage.setMessageSendCount(messageSendCount);
-            save(notificationMessage);
+                NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
+                    .setTitle(title)
+                    .setBody(body)
+                    .setTopic(tokenQueue.getCorrectTopic(QueueStatusEnum.C) + UNDER_SCORE + DeviceTypeEnum.onlyForLogging())
+                    .setQueueUserId(qid)
+                    .setMessageSendCount(tokenQueue.getLastNumber());
+                save(notificationMessage);
+            }
         } catch (Exception e) {
             LOG.error("Failed sending message qid={} title=\"{}\" body=\"{}\"", qid, title, body);
         }
-    }
-
-    public void sendMessageToSubscriber(String title, String body, String codeQR, String qid) {
-        NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
-            .setTitle(title)
-            .setBody(body)
-            .setQueueUserId(qid);
-        save(notificationMessage);
-
-        TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
-        tokenQueueService.sendAlertMessageToAllOnSpecificTopic(title, body, tokenQueue, QueueStatusEnum.C);
     }
 
     private void sendMessageToSubscriber(String title, String body, TokenQueueEntity tokenQueue) {
@@ -158,6 +146,7 @@ public class MessageCustomerService {
                 .setTitle(title)
                 .setBody(body)
                 .setImageURL(imageURL)
+                .setTopic(CommonUtil.buildTopic(subscribedTopic, DeviceTypeEnum.onlyForLogging()))
                 .setQueueUserId(qid);
             save(notificationMessage);
 
@@ -179,11 +168,17 @@ public class MessageCustomerService {
         }
     }
 
+    public void sendMessageToAll(String title, String body, String imageURL, String qid, BusinessTypeEnum businessType) {
+        sendMessageToAll(title, body, imageURL, qid, businessType.getName());
+    }
+
     public int sendMessageToPastClients(String title, String body, String bizNameId, String qid) {
         try {
+            BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
             NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
                 .setTitle(title)
                 .setBody(body)
+                .setTopic(CommonUtil.buildTopic(bizName.getCountryShortName() + UNDER_SCORE + bizNameId, DeviceTypeEnum.onlyForLogging()))
                 .setQueueUserId(qid);
             save(notificationMessage);
 
@@ -192,7 +187,6 @@ public class MessageCustomerService {
 
             List<String> tokens_A = new ArrayList<>();
             List<String> tokens_I = new ArrayList<>();
-            BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
             queueService.distinctQIDsInBiz(bizNameId, limitedToDays).stream().iterator()
                 .forEachRemaining(senderQid -> {
                     RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(senderQid);
