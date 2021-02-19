@@ -49,10 +49,15 @@ public class QueryString extends AbstractDomain {
     @JsonProperty("fields")
     private String[] fields = new String[]
         {
+            "SA", //Store Address
             "DN", //Display Name
             "BT", //Business Type
             "BC", //Business Category defined by businesses
+            "DT", //District
             "N",  //BusinessName
+            "ST", //State
+            "AR", //Area is smaller than Town
+            "TO", //Town
             "TAG" //Easy to search on
         };
 
