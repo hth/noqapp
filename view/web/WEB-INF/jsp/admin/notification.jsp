@@ -74,6 +74,18 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
+                                        <form:label path="businessType" cssErrorClass="lb_error">Message Business Type</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:select path="businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                            <form:option value="" label="--- Select or Leave Blank ---"/>
+                                            <form:options items="${businessTypes}" itemValue="name" itemLabel="description" />
+                                        </form:select>
+                                    </div>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
                                         <form:label path="title" cssErrorClass="lb_error">Title</form:label>
                                     </div>
                                     <div class="col-fields">
