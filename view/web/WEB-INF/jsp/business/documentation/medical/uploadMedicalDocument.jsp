@@ -34,7 +34,7 @@
 
     <!-- Fine Uploader New/Modern CSS file
     ====================================================================== -->
-    <link href="../../../../../static2/external/fine-uploader/fine-uploader-new.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../../static2/external/fine-uploader/fine-uploader-new.css" type='text/css'>
 
     <!-- Fine Uploader JS file
     ====================================================================== -->

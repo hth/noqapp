@@ -17,9 +17,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
 
     <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
-    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/brands.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/static2/external/fontawesome/css/solid.css" rel="stylesheet">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/fontawesome/css/fontawesome.css" type='text/css'>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/fontawesome/css/brands.css" type='text/css'>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/fontawesome/css/solid.css" type='text/css'>
 
     <!-- custom styling for all icons -->
     i.fas,
