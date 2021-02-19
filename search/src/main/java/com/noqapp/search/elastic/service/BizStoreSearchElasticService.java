@@ -117,11 +117,11 @@ public class BizStoreSearchElasticService {
         }
 
         if (StringUtils.isNotBlank(geoHash)) {
-            q.getConditions().setFilter(new Filter()
-                .setGeoDistance(new GeoDistance()
-                    .setDistance(Constants.MAX_Q_SEARCH_DISTANCE_WITH_UNITS)
-                    .setGeoHash(geoHash)
-                ));
+            q.getConditions().setFilter(
+                new Filter().setGeoDistance(
+                    new GeoDistance()
+                        .setDistance(Constants.MAX_Q_SEARCH_DISTANCE_WITH_UNITS)
+                        .setGeoHash(geoHash)));
         }
 
         LOG.info("Elastic query q={}", q.asJson());
