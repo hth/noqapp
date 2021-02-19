@@ -33,6 +33,18 @@ public class QueryString extends AbstractDomain {
     @JsonProperty("query")
     private String query;
 
+    /**
+     * https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-match-query.html
+     * best_fields -- default
+     * most_fields
+     * cross_fields
+     * phrase
+     * phrase_prefix
+     * bool_prefix
+     */
+    @JsonProperty("type")
+    private String type = "best_fields";
+
     /* Query on fields below when querying. */
     @JsonProperty("fields")
     private String[] fields = new String[]
@@ -55,6 +67,15 @@ public class QueryString extends AbstractDomain {
 
     public QueryString setQuery(String query) {
         this.query = query;
+        return this;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public QueryString setType(String type) {
+        this.type = type;
         return this;
     }
 
