@@ -141,6 +141,13 @@ public class GraphBusinessCustomer {
             return false;
         }
 
+        for (String id : ids) {
+            if (!id.startsWith("L") && !id.startsWith("G")) {
+                LOG.warn("Data anomaly in as business type does not start with L & G businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
+                return true;
+            }
+        }
+
         if (2 < ids.size()) {
             LOG.warn("Data anomaly in businessType={} qid={} ids={}", BusinessTypeEnum.CDQ, qid, numberOfCustomerIds.get(BusinessTypeEnum.CDQ));
             return true;
