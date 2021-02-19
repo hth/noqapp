@@ -25,6 +25,10 @@ public enum DeviceTypeEnum {
         return description;
     }
 
+    public static String onlyForLogging() {
+        return I.name() + A.name() + W.name();
+    }
+
     @Override
     public String toString() {
         return description;

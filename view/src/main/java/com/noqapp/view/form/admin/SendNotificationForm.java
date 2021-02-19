@@ -1,6 +1,9 @@
 package com.noqapp.view.form.admin;
 
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.types.BusinessTypeEnum;
+
+import java.util.List;
 
 /**
  * hitender
@@ -16,6 +19,9 @@ public class SendNotificationForm {
     private boolean success;
     private ScrubbedInput qid;
     private String businessName;
+    private BusinessTypeEnum businessType;
+
+    private List<BusinessTypeEnum> businessTypes = BusinessTypeEnum.asList();
 
     public ScrubbedInput getTitle() {
         return title;
@@ -86,6 +92,24 @@ public class SendNotificationForm {
 
     public SendNotificationForm setBusinessName(String businessName) {
         this.businessName = businessName;
+        return this;
+    }
+
+    public BusinessTypeEnum getBusinessType() {
+        return businessType;
+    }
+
+    public SendNotificationForm setBusinessType(BusinessTypeEnum businessType) {
+        this.businessType = businessType;
+        return this;
+    }
+
+    public List<BusinessTypeEnum> getBusinessTypes() {
+        return businessTypes;
+    }
+
+    public SendNotificationForm setBusinessTypes(List<BusinessTypeEnum> businessTypes) {
+        this.businessTypes = businessTypes;
         return this;
     }
 }

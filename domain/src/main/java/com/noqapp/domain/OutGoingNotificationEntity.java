@@ -21,7 +21,7 @@ public class OutGoingNotificationEntity extends BaseEntity {
     @Field("BD")
     private String body;
 
-    @Field("TO")
+    @Field("TP")
     private String topic;
 
     @Field("YR")

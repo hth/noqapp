@@ -28,6 +28,9 @@ public class NotificationMessageEntity extends BaseEntity {
     @Field("IU")
     private String imageURL;
 
+    @Field("TP")
+    private String topic;
+
     @Field("MC")
     private int messageSendCount;
 
@@ -73,6 +76,15 @@ public class NotificationMessageEntity extends BaseEntity {
 
     public NotificationMessageEntity setImageURL(String imageURL) {
         this.imageURL = imageURL;
+        return this;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public NotificationMessageEntity setTopic(String topic) {
+        this.topic = topic;
         return this;
     }
 

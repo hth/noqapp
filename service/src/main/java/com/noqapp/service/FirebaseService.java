@@ -5,6 +5,7 @@ import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 
 import com.google.api.core.ApiFuture;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -101,5 +102,9 @@ public class FirebaseService {
     public void subscribeToTopic(String subscribedTopic, RegisteredDeviceEntity registeredDevice) {
         String topic = CommonUtil.buildTopic(subscribedTopic, registeredDevice.getDeviceType().name());
         subscribeToTopic(new ArrayList<>() {{ add(registeredDevice.getToken()); }}, topic);
+    }
+
+    public void subscribeToTopic(BusinessTypeEnum businessType, RegisteredDeviceEntity registeredDevice) {
+        subscribeToTopic(businessType.getName(), registeredDevice);
     }
 }

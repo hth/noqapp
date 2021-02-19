@@ -125,13 +125,23 @@ public class NotificationController {
                     sendNotificationForm.getTitle(),
                     sendNotificationForm.getBody());
             } else {
-                messageCustomerService.sendMessageToAll(
-                    sendNotificationForm.getTitle().getText(),
-                    sendNotificationForm.getBody().getText(),
-                    sendNotificationForm.getImageURL().getText(),
-                    queueUser.getQueueUserId(),
-                    information
-                );
+                if (null != sendNotificationForm.getBusinessTypes()) {
+                    messageCustomerService.sendMessageToAll(
+                        sendNotificationForm.getTitle().getText(),
+                        sendNotificationForm.getBody().getText(),
+                        sendNotificationForm.getImageURL().getText(),
+                        queueUser.getQueueUserId(),
+                        sendNotificationForm.getBusinessType()
+                    );
+                } else {
+                    messageCustomerService.sendMessageToAll(
+                        sendNotificationForm.getTitle().getText(),
+                        sendNotificationForm.getBody().getText(),
+                        sendNotificationForm.getImageURL().getText(),
+                        queueUser.getQueueUserId(),
+                        information
+                    );
+                }
 
                 sendNotificationForm
                     /* Since all of them are already subscribed to hence difficult to compute sending to all count. */

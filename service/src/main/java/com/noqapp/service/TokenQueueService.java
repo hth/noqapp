@@ -392,8 +392,7 @@ public class TokenQueueService {
     private void addSubscribedTopic(String qid, BizStoreEntity bizStore) {
         try {
             RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
-            String subscribedTopic = bizStore.getBusinessType().getName();
-            firebaseService.subscribeToTopic(subscribedTopic, registeredDevice);
+            firebaseService.subscribeToTopic(bizStore.getBusinessType(), registeredDevice);
             UserPreferenceEntity userPreference = userProfilePreferenceService.findByQueueUserId(qid);
 
             /* If not tagged to favorite then add to suggestion. */
@@ -402,12 +401,12 @@ public class TokenQueueService {
             }
 
             /* When user signs up with new device or token, subscribe to these topics by default. */
-            userPreference.addSubscriptionTopic(subscribedTopic);
+            userPreference.addSubscriptionTopic(bizStore.getBusinessType().getName());
 
             userProfilePreferenceService.save(userPreference);
-            LOG.info("Updated preference with subscription={} recommended={}", bizStore.getBusinessType().getName(), bizStore.getBizName().getBusinessName());
+            LOG.info("Updated preference with {} subscription={} recommended={}", qid, bizStore.getBusinessType().getName(), bizStore.getBizName().getBusinessName());
         } catch (Exception e) {
-            LOG.error("Failed subscribing or adding to recommended {}", e.getLocalizedMessage(), e);
+            LOG.error("Failed subscribing or adding to recommended {} {}", qid, e.getLocalizedMessage(), e);
         }
     }
 
@@ -1044,15 +1043,14 @@ public class TokenQueueService {
         }
     }
 
-    /**
-     * Sends any message to all users subscribed to topic. This includes Client and Merchant.
-     */
+    /** Sends any message to all users subscribed to topic. This includes Client and Merchant. */
     @Mobile
     public void sendAlertMessageToAllOnSpecificTopic(String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus) {
         LOG.debug("Sending message to all title={} body={}", title, body);
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-            LOG.debug("Topic being sent to {}", tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
-            JsonMessage jsonMessage = new JsonMessage(tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name());
+            String topic = tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name();
+            LOG.debug("Topic being sent to {}", topic);
+            JsonMessage jsonMessage = new JsonMessage(topic);
             JsonData jsonData = new JsonTopicData(MessageOriginEnum.A, FirebaseMessageTypeEnum.P).getJsonAlertData()
                 //Added additional info to message for Android to not crash as it looks for CodeQR.
                 //TODO improve messaging to do some action on Client and Business app when status is Closed.
