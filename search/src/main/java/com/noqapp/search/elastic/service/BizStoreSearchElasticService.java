@@ -87,7 +87,7 @@ public class BizStoreSearchElasticService {
         String result = searchResultAsString(searchParameter, geoHash);
         if (StringUtils.isNotBlank(result)) {
             try {
-                ElasticResult elasticResult = objectMapper.readValue(result, new TypeReference<ElasticResult<ElasticBizStoreSearchSource>>(){});
+                ElasticResult<ElasticBizStoreSearchSource> elasticResult = objectMapper.readValue(result, new TypeReference<>() {});
                 return elasticResult.getHits() == null ? new ArrayList<>() : elasticResult.getHits().getElasticSources();
             } catch (IOException e) {
                 LOG.error("Failed parsing elastic result query={} reason={}", searchParameter, e.getLocalizedMessage(), e);
@@ -104,16 +104,16 @@ public class BizStoreSearchElasticService {
         Query q = new Query();
         if (StringUtils.isNotBlank(searchParameter)) {
             /* Search across all the specified fields. */
-            q.setConditions(new Conditions()
-                .setOptions(new Options()
-                    .setQueryStringMultiMatch(new QueryString()
-                        .setQuery(searchParameter)
-                    )
-                )
-            );
+            q.setConditions(
+                new Conditions().setOptions(
+                    new Options().setQueryStringMultiMatch(
+                        new QueryString().setQuery(searchParameter))));
         } else {
             /* When blank then do a match all. Should be avoided as its little too vague and set Fields as null. */
-            q.setConditions(new Conditions().setOptions(new Options().setQueryStringMatchAll(new QueryString().setFields(null))));
+            q.setConditions(
+                new Conditions().setOptions(
+                    new Options().setQueryStringMatchAll(
+                        new QueryString().setFields(null))));
         }
 
         if (StringUtils.isNotBlank(geoHash)) {
