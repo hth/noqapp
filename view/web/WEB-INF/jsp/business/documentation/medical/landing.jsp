@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
-    <link href="https://transloadit.edgly.net/releases/uppy/v1.9.0/uppy.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://transloadit.edgly.net/releases/uppy/v1.9.0/uppy.min.css" type='text/css'>
 
     <style type="text/css">
         .card {
