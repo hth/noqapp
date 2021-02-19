@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Options  extends AbstractDomain {
+public class Options extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(Options.class);
 
     @JsonProperty("multi_match")
