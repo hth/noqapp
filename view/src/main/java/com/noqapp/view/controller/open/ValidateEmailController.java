@@ -96,7 +96,7 @@ public class ValidateEmailController {
                 redirectAttrs.addFlashAttribute("success", "false");
                 LOG.info("email address authentication failed for qid={}", userAccount.getQueueUserId());
             } else {
-                accountService.validateAccount(emailValidate, userAccount);
+                accountService.validateAccount(emailValidate, emailValidate.getQueueUserId());
                 redirectAttrs.addFlashAttribute("success", "true");
 
                 LOG.info("email address authentication success for qid={}", userAccount.getQueueUserId());
