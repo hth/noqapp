@@ -189,13 +189,13 @@ public class AddQueueSupervisorFlowActions {
 
                 if (userProfile.getQueueUserId().endsWith(MAIL_NOQAPP_COM) || !userAccount.isAccountValidated()) {
                     messageContext.addMessage(
-                            new MessageBuilder()
-                                    .error()
-                                    .source("inviteQueueSupervisor.phoneNumber")
-                                    .defaultText("This process requires a valid email address. Since user with "
-                                            + inviteQueueSupervisor.getPhoneNumber()
-                                            + " has not provided email address, you would need to enter user's invitee code and not yours.")
-                                    .build());
+                        new MessageBuilder()
+                            .error()
+                            .source("inviteQueueSupervisor.phoneNumber")
+                            .defaultText("This process requires a valid email address. Since user with "
+                                + inviteQueueSupervisor.getPhoneNumber()
+                                + " has not provided email address, you would need to enter user's invitee code and not yours.")
+                            .build());
 
                     throw new InviteSupervisorException("Override failed as user has not registered with valid email address.");
                 }
@@ -204,20 +204,20 @@ public class AddQueueSupervisorFlowActions {
             /* To avoid inner if logic. UserProfileOfInviteeCode will be null when quickDataEntryByPassSwitch is OFF. */
             if (null == userProfileOfInviteeCode) {
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("inviteQueueSupervisor.phoneNumber")
-                                .defaultText("User of phone number "
-                                        + inviteQueueSupervisor.getPhoneNumber()
-                                        + " does not exists or Invitee code does not match.")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("inviteQueueSupervisor.phoneNumber")
+                        .defaultText("User of phone number "
+                            + inviteQueueSupervisor.getPhoneNumber()
+                            + " does not exists or Invitee code does not match.")
+                        .build());
 
                 throw new InviteSupervisorException("User does not exists or Invitee code does not match");
             } else {
                 LOG.warn("QuickDataEntryByPassSwitch used by bizStoreId={} for user phone={} by uid={}",
-                        inviteQueueSupervisor.getBizStoreId(),
-                        inviteQueueSupervisor.getPhoneNumber(),
-                        userProfile.getQueueUserId());
+                    inviteQueueSupervisor.getBizStoreId(),
+                    inviteQueueSupervisor.getPhoneNumber(),
+                    userProfile.getQueueUserId());
             }
         }
 
@@ -228,17 +228,17 @@ public class AddQueueSupervisorFlowActions {
                 break;
             case M_ADMIN:
                 LOG.warn("Failed invite for qid={} with role={} and being invited by business name={} id={}",
-                        userProfile.getQueueUserId(),
-                        userProfile.getLevel(),
-                        bizStore.getBizName().getBusinessName(),
-                        bizStore.getBizName().getId());
+                    userProfile.getQueueUserId(),
+                    userProfile.getLevel(),
+                    bizStore.getBizName().getBusinessName(),
+                    bizStore.getBizName().getId());
 
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("inviteQueueSupervisor.phoneNumber")
-                                .defaultText("This user cannot be invited to supervise queue. Please email with details at contact@noqapp.com")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("inviteQueueSupervisor.phoneNumber")
+                        .defaultText("This user cannot be invited to supervise queue. Please email with details at contact@noqapp.com")
+                        .build());
                 throw new InviteSupervisorException("Cannot invite this person");
             case Q_SUPERVISOR:
             case S_MANAGER:
@@ -249,42 +249,42 @@ public class AddQueueSupervisorFlowActions {
                 }
 
                 LOG.warn("Failed invite for qid={} with role={} and is invited by business name={} id={}",
-                        userProfile.getQueueUserId(),
-                        userProfile.getLevel(),
-                        bizStore.getBizName().getBusinessName(),
-                        bizStore.getBizName().getId());
+                    userProfile.getQueueUserId(),
+                    userProfile.getLevel(),
+                    bizStore.getBizName().getBusinessName(),
+                    bizStore.getBizName().getId());
 
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("inviteQueueSupervisor.phoneNumber")
-                                .defaultText("This user cannot be invited to supervise queue. Please email with details at contact@noqapp.com")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("inviteQueueSupervisor.phoneNumber")
+                        .defaultText("This user cannot be invited to supervise queue. Please email with details at contact@noqapp.com")
+                        .build());
                 throw new InviteSupervisorException("Cannot invite this person");
             default:
                 LOG.error("Failed Invite as reached condition for qid={} with role={} for business name={} id={}",
-                        userProfile.getQueueUserId(),
-                        userProfile.getLevel(),
-                        bizStore.getBizName().getBusinessName(),
-                        bizStore.getBizName().getId());
+                    userProfile.getQueueUserId(),
+                    userProfile.getLevel(),
+                    bizStore.getBizName().getBusinessName(),
+                    bizStore.getBizName().getId());
 
                 messageContext.addMessage(
-                        new MessageBuilder()
-                                .error()
-                                .source("inviteQueueSupervisor.phoneNumber")
-                                .defaultText("This user cannot be invited to supervise queue. Please email with details at contact@noqapp.com")
-                                .build());
+                    new MessageBuilder()
+                        .error()
+                        .source("inviteQueueSupervisor.phoneNumber")
+                        .defaultText("This user cannot be invited to supervise queue. Please email with details at contact@noqapp.com")
+                        .build());
                 throw new InviteSupervisorException("Reached unsupported condition");
         }
 
         int supervisorCount = businessUserStoreService.getAssignedTokenAndQueues(userProfile.getQueueUserId()).size();
         if (supervisorCount > queueLimit) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("inviteQueueSupervisor.phoneNumber")
-                            .defaultText("User of phone number " + inviteQueueSupervisor.getPhoneNumber() + " already manages " + queueLimit + " queues. Please ask user to un-subscribe from other queues.")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("inviteQueueSupervisor.phoneNumber")
+                    .defaultText("User of phone number " + inviteQueueSupervisor.getPhoneNumber() + " already manages " + queueLimit + " queues. Please ask user to un-subscribe from other queues.")
+                    .build());
 
             throw new InviteSupervisorException("User already manages " + queueLimit + " queues. Please ask user to un-subscribe from other queues.");
         }
@@ -292,11 +292,11 @@ public class AddQueueSupervisorFlowActions {
         boolean userExists = businessUserService.doesBusinessUserExists(userProfile.getQueueUserId(), bizStore.getId());
         if (userExists) {
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("inviteQueueSupervisor.phoneNumber")
-                            .defaultText("User of phone number " + inviteQueueSupervisor.getPhoneNumber() + " already a Supervisor for this queue.")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("inviteQueueSupervisor.phoneNumber")
+                    .defaultText("User of phone number " + inviteQueueSupervisor.getPhoneNumber() + " already a Supervisor for this queue.")
+                    .build());
 
             throw new InviteSupervisorException("User already a Supervisor for this queue");
         }
@@ -320,8 +320,8 @@ public class AddQueueSupervisorFlowActions {
         accountService.save(userProfile);
 
         userAccount = accountService.changeAccountRolesToMatchUserLevel(
-                userProfile.getQueueUserId(),
-                userProfile.getLevel());
+            userProfile.getQueueUserId(),
+            userProfile.getLevel());
         accountService.save(userAccount);
 
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(userProfile.getQueueUserId(), bizStore.getBizName().getId());
@@ -339,40 +339,38 @@ public class AddQueueSupervisorFlowActions {
 
         final String qid = userProfile.getQueueUserId();
         businessUserStoreService.addToBusinessUserStore(
-                qid,
-                bizStore,
-                businessUser.getBusinessUserRegistrationStatus(),
-                userProfile.getLevel());
+            qid,
+            bizStore,
+            businessUser.getBusinessUserRegistrationStatus(),
+            userProfile.getLevel());
 
         if (BusinessUserRegistrationStatusEnum.V == businessUser.getBusinessUserRegistrationStatus()) {
             String title = "Added to supervise Queue: " + bizStore.getDisplayName();
             String body = bizStore.getBizName().getBusinessName() + " has added you to supervise a new queue.";
             /* Send FCM notification. */
-            executorService.submit(() -> tokenQueueService.sendMessageToSpecificUser(title, body, qid, MessageOriginEnum.D));
+            executorService.submit(() -> tokenQueueService.sendMessageToSpecificUser(title, body, qid, MessageOriginEnum.D, bizStore.getBusinessType()));
 
             /*
              * Send mail to the supervisor after adding them to queue
              * as the supervisor has already been validated.
              */
             mailService.addedAsQueueSupervisorNotifyMail(
-                    userAccount.getUserId(),
-                    userProfile.getName(),
-                    bizStore.getBizName().getBusinessName(),
-                    bizStore.getDisplayName()
-            );
+                userAccount.getUserId(),
+                userProfile.getName(),
+                bizStore.getBizName().getBusinessName(),
+                bizStore.getDisplayName());
         } else {
             /* Send FCM notification. */
             String title = "Invitation to supervise: " + bizStore.getDisplayName();
             String body = bizStore.getBizName().getBusinessName() + " has sent an invite. Please login at https://noqapp.com to complete your profile.";
-            executorService.submit(() -> tokenQueueService.sendMessageToSpecificUser(title, body, qid, MessageOriginEnum.D));
+            executorService.submit(() -> tokenQueueService.sendMessageToSpecificUser(title, body, qid, MessageOriginEnum.D, bizStore.getBusinessType()));
 
             /* Also send mail to the invitee. */
             mailService.sendQueueSupervisorInvite(
-                    userAccount.getUserId(),
-                    userProfile.getName(),
-                    bizStore.getBizName().getBusinessName(),
-                    bizStore.getDisplayName()
-            );
+                userAccount.getUserId(),
+                userProfile.getName(),
+                bizStore.getBizName().getBusinessName(),
+                bizStore.getDisplayName());
         }
 
         /*
@@ -380,30 +378,30 @@ public class AddQueueSupervisorFlowActions {
          * Override scenario does not mean to skip steps of notifying users.
          */
         if (null != userProfileOfInviteeCode
-                && "ON".equalsIgnoreCase(quickDataEntryByPassSwitch)
-                && userAccount.isAccountValidated()) {
+            && "ON".equalsIgnoreCase(quickDataEntryByPassSwitch)
+            && userAccount.isAccountValidated()) {
 
             BusinessUserEntity businessUserOfInviteeCode = businessUserService.findBusinessUser(userProfileOfInviteeCode.getQueueUserId(), bizStore.getBizName().getId());
             RegisterUser registerUser = new RegisterUser()
-                    .setEmail(new ScrubbedInput(userProfile.getEmail()))
-                    .setAddress(new ScrubbedInput(businessUserOfInviteeCode.getBizName().getAddress()))
-                    .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
-                    .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
-                    .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
-                    .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
-                    .setAddressOrigin(businessUserOfInviteeCode.getBizName().getAddressOrigin())
-                    .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
-                    .setLastName(new ScrubbedInput(userProfile.getLastName()))
-                    .setGender(userProfile.getGender())
-                    .setQueueUserId(userProfile.getQueueUserId());
+                .setEmail(new ScrubbedInput(userProfile.getEmail()))
+                .setAddress(new ScrubbedInput(businessUserOfInviteeCode.getBizName().getAddress()))
+                .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
+                .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
+                .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
+                .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
+                .setAddressOrigin(businessUserOfInviteeCode.getBizName().getAddressOrigin())
+                .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
+                .setLastName(new ScrubbedInput(userProfile.getLastName()))
+                .setGender(userProfile.getGender())
+                .setQueueUserId(userProfile.getQueueUserId());
 
             accountService.updateUserProfile(registerUser, userProfile.getEmail());
             businessUserService.markBusinessUserProfileCompleteOnProfileUpdate(userProfile.getQueueUserId(), bizStore.getBizName().getId());
 
             LOG.warn("Complete process QuickDataEntryByPassSwitch used by bizStoreId={} for user phone={} by uid={}",
-                    inviteQueueSupervisor.getBizStoreId(),
-                    inviteQueueSupervisor.getPhoneNumber(),
-                    userProfile.getQueueUserId());
+                inviteQueueSupervisor.getBizStoreId(),
+                inviteQueueSupervisor.getPhoneNumber(),
+                userProfile.getQueueUserId());
         }
 
         return inviteQueueSupervisor;
@@ -411,11 +409,11 @@ public class AddQueueSupervisorFlowActions {
 
     private InviteQueueSupervisor messageWhenCannotFindInviteeWithPhoneNumber(MessageContext messageContext) {
         messageContext.addMessage(
-                new MessageBuilder()
-                        .error()
-                        .source("inviteQueueSupervisor.phoneNumber")
-                        .defaultText("Could not find user with matching phone number or invitee code. Please re-confirm.")
-                        .build());
+            new MessageBuilder()
+                .error()
+                .source("inviteQueueSupervisor.phoneNumber")
+                .defaultText("Could not find user with matching phone number or invitee code. Please re-confirm.")
+                .build());
 
         throw new InviteSupervisorException("User does not exists or Invitee code does not match");
     }
@@ -432,28 +430,28 @@ public class AddQueueSupervisorFlowActions {
     }
 
     private InviteQueueSupervisor messageWhenStoreAndInviteeAreFromDifferentCountry(
-            InviteQueueSupervisor inviteQueueSupervisor,
-            MessageContext messageContext,
-            UserProfileEntity userProfile
+        InviteQueueSupervisor inviteQueueSupervisor,
+        MessageContext messageContext,
+        UserProfileEntity userProfile
     ) {
         String storeCountry = CommonUtil.getCountryNameFromIsoCode(inviteQueueSupervisor.getCountryShortName());
         String inviteeCountry = CommonUtil.getCountryNameFromIsoCode(userProfile.getCountryShortName());
 
         messageContext.addMessage(
-                new MessageBuilder()
-                        .error()
-                        .source("inviteQueueSupervisor.phoneNumber")
-                        .defaultText("Store Located in "
-                                + storeCountry
-                                + " and Invitee Located in "
-                                + inviteeCountry
-                                + ". As they are in different countries, please contact customer support.")
-                        .build());
+            new MessageBuilder()
+                .error()
+                .source("inviteQueueSupervisor.phoneNumber")
+                .defaultText("Store Located in "
+                    + storeCountry
+                    + " and Invitee Located in "
+                    + inviteeCountry
+                    + ". As they are in different countries, please contact customer support.")
+                .build());
 
         LOG.warn("Store Located={} and Invitee={} are from two different countries storeId={}",
-                storeCountry,
-                inviteeCountry,
-                inviteQueueSupervisor.getBizStoreId());
+            storeCountry,
+            inviteeCountry,
+            inviteQueueSupervisor.getBizStoreId());
 
         throw new InviteSupervisorException("Store Location and Invitee are from two different countries");
     }

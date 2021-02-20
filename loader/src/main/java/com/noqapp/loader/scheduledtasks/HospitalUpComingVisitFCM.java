@@ -4,6 +4,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.medical.domain.HospitalVisitScheduleEntity;
 import com.noqapp.medical.repository.HospitalVisitScheduleManager;
@@ -94,7 +95,7 @@ public class HospitalUpComingVisitFCM {
                     + "\n\n"
                     + "Note: This message is auto-generated based on your Date of Birth set in your profile or dependent's profile or Hospital/Doctor has scheduled a visit.";
                 RegisteredDeviceEntity registeredDevice = deviceService.findRegisteredDeviceByQid(hospitalVisitSchedule.getQueueUserId());
-                tokenQueueService.sendMessageToSpecificUser(title, body, null, registeredDevice, MessageOriginEnum.A);
+                tokenQueueService.sendMessageToSpecificUser(title, body, null, registeredDevice, MessageOriginEnum.A, BusinessTypeEnum.DO);
                 hospitalVisitScheduleManager.increaseNotificationCount(hospitalVisitSchedule.getId());
                 notificationSentCount.getAndIncrement();
 

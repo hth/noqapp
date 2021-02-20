@@ -408,6 +408,7 @@ public class WebJoinQueueController {
             "Joined Queue",
             "You have joined queue successfully",
             qid,
-            MessageOriginEnum.D);
+            MessageOriginEnum.D,
+            tokenQueue.getBusinessType());
     }
 }

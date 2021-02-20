@@ -2,6 +2,7 @@ package com.noqapp.view.controller.admin;
 
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.MessageCustomerService;
@@ -131,16 +132,16 @@ public class NotificationController {
                         sendNotificationForm.getBody().getText(),
                         sendNotificationForm.getImageURL().getText(),
                         queueUser.getQueueUserId(),
-                        sendNotificationForm.getBusinessType()
-                    );
+                        sendNotificationForm.getBusinessType());
                 } else {
                     messageCustomerService.sendMessageToAll(
                         sendNotificationForm.getTitle().getText(),
                         sendNotificationForm.getBody().getText(),
                         sendNotificationForm.getImageURL().getText(),
                         queueUser.getQueueUserId(),
-                        information
-                    );
+                        information,
+                        //Change from PA to ZZ after 1.2.700
+                        BusinessTypeEnum.PA);
                 }
 
                 sendNotificationForm
@@ -171,7 +172,8 @@ public class NotificationController {
                 sendNotificationForm.getBody().getText(),
                 sendNotificationForm.getImageURL().getText(),
                 userProfile.getQueueUserId(),
-                MessageOriginEnum.D);
+                MessageOriginEnum.D,
+                BusinessTypeEnum.ZZ);
 
             sentCount.getAndIncrement();
         } else {
@@ -181,7 +183,8 @@ public class NotificationController {
                     sendNotificationForm.getBody().getText(),
                     sendNotificationForm.getImageURL().getText(),
                     userProfile.getQueueUserId(),
-                    MessageOriginEnum.D);
+                    MessageOriginEnum.D,
+                    BusinessTypeEnum.ZZ);
 
                 sentCount.getAndIncrement();
             }
