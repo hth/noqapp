@@ -135,10 +135,11 @@ public class MessageCustomerService {
     }
 
     public void sendMessageToAll(String title, String body, String qid, String subscribedTopic) {
-        sendMessageToAll(title, body, null, qid, subscribedTopic);
+        //TODO change this from PA to ZZ after 1.2.700
+        sendMessageToAll(title, body, null, qid, subscribedTopic, BusinessTypeEnum.PA);
     }
 
-    public void sendMessageToAll(String title, String body, String imageURL, String qid, String subscribedTopic) {
+    public void sendMessageToAll(String title, String body, String imageURL, String qid, String subscribedTopic, BusinessTypeEnum businessType) {
         try {
             Assert.hasText(subscribedTopic, "Subscribed topic cannot be empty");
 
@@ -153,23 +154,45 @@ public class MessageCustomerService {
             if (StringUtils.isBlank(imageURL)) {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                     String topic = CommonUtil.buildTopic(subscribedTopic, deviceType.name());
-                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType);
+                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, businessType);
                 }
             } else {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                     String topic = CommonUtil.buildTopic(subscribedTopic, deviceType.name());
-                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, imageURL, topic, MessageOriginEnum.A, deviceType);
+                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, imageURL, topic, MessageOriginEnum.A, deviceType, businessType);
                 }
             }
-
-            save(notificationMessage);
         } catch (Exception e) {
             LOG.error("Failed sending message to all {} {} {} reason={}", title, body, qid, e.getMessage(), e);
         }
     }
 
     public void sendMessageToAll(String title, String body, String imageURL, String qid, BusinessTypeEnum businessType) {
-        sendMessageToAll(title, body, imageURL, qid, businessType.getName());
+        try {
+            Assert.hasText(businessType.getName(), "Subscribed topic cannot be empty");
+
+            NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
+                .setTitle(title)
+                .setBody(body)
+                .setImageURL(imageURL)
+                .setTopic(CommonUtil.buildTopic(businessType.getName(), DeviceTypeEnum.onlyForLogging()))
+                .setQueueUserId(qid);
+            save(notificationMessage);
+
+            if (StringUtils.isBlank(imageURL)) {
+                for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+                    String topic = CommonUtil.buildTopic(businessType.getName(), deviceType.name());
+                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, businessType);
+                }
+            } else {
+                for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+                    String topic = CommonUtil.buildTopic(businessType.getName(), deviceType.name());
+                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, imageURL, topic, MessageOriginEnum.A, deviceType, businessType);
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Failed sending message to all {} {} {} reason={}", title, body, qid, e.getMessage(), e);
+        }
     }
 
     public int sendMessageToPastClients(String title, String body, String bizNameId, String qid) {
@@ -212,12 +235,12 @@ public class MessageCustomerService {
                 switch (deviceType) {
                     case A:
                         if (subscribeToTopic(tokens_A, topic)) {
-                            tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType);
+                            tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, bizName.getBusinessType());
                         }
                         break;
                     case I:
                         if (subscribeToTopic(tokens_I, topic)) {
-                            tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType);
+                            tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, bizName.getBusinessType());
                         }
                         break;
                     case W:

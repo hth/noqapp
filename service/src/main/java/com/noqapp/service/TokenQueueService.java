@@ -935,39 +935,39 @@ public class TokenQueueService {
     }
 
     /** Sends any message to a specific user. */
-    public void sendMessageToSpecificUser(String title, String body, String qid, MessageOriginEnum messageOrigin) {
+    public void sendMessageToSpecificUser(String title, String body, String qid, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
         LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
         RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
         if (null != registeredDevice) {
-            createMessageToSendToSpecificUserOrDevice(title, body, null, registeredDevice, messageOrigin);
+            createMessageToSendToSpecificUserOrDevice(title, body, null, registeredDevice, messageOrigin, businessType);
         } else {
             LOG.warn("Skipped as no registered device found for qid={}", qid);
         }
     }
 
     /** Sends any message to a specific user. */
-    public void sendMessageToSpecificUser(String title, String body, String imageURL, String qid, MessageOriginEnum messageOrigin) {
+    public void sendMessageToSpecificUser(String title, String body, String imageURL, String qid, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
         LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
         RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
         if (null != registeredDevice) {
-            createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin);
+            createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin, businessType);
         } else {
             LOG.warn("Skipped as no registered device found for qid={}", qid);
         }
     }
 
     /** Sends any message to a specific user. */
-    public void sendMessageToSpecificUser(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin) {
+    public void sendMessageToSpecificUser(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
         LOG.debug("Sending message to specific user title={} body={} messageOrigin={}", title, body, messageOrigin);
         if (null != registeredDevice) {
-            createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin);
+            createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin, businessType);
         }
     }
 
-    private void createMessageToSendToSpecificUserOrDevice(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin) {
+    private void createMessageToSendToSpecificUserOrDevice(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
         String token = registeredDevice.getToken();
         JsonMessage jsonMessage = new JsonMessage(token);
-        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
+        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
         jsonData.setImageURL(imageURL);
 
         if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
@@ -990,9 +990,9 @@ public class TokenQueueService {
         }
     }
 
-    public void sendBulkMessageToBusinessUser(String id, String title, String body, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType) {
+    public void sendBulkMessageToBusinessUser(String id, String title, String body, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType, BusinessTypeEnum businessType) {
         JsonMessage jsonMessage = new JsonMessage(topic);
-        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
+        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
         jsonData.setId(id);
 
         if (DeviceTypeEnum.I == deviceType) {
@@ -1016,9 +1016,9 @@ public class TokenQueueService {
         }
     }
 
-    public void sendBulkMessageToBusinessUser(String id, String title, String body, String imageURL, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType) {
+    public void sendBulkMessageToBusinessUser(String id, String title, String body, String imageURL, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType, BusinessTypeEnum businessType) {
         JsonMessage jsonMessage = new JsonMessage(topic);
-        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData();
+        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
         jsonData
             .setId(id)
             .setImageURL(imageURL);
@@ -1051,11 +1051,10 @@ public class TokenQueueService {
             String topic = tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name();
             LOG.debug("Topic being sent to {}", topic);
             JsonMessage jsonMessage = new JsonMessage(topic);
-            JsonData jsonData = new JsonTopicData(MessageOriginEnum.A, FirebaseMessageTypeEnum.P).getJsonAlertData()
+            JsonData jsonData = new JsonTopicData(MessageOriginEnum.A, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(tokenQueue.getBusinessType())
                 //Added additional info to message for Android to not crash as it looks for CodeQR.
                 //TODO improve messaging to do some action on Client and Business app when status is Closed.
-                .setCodeQR(tokenQueue.getId())
-                .setBusinessType(tokenQueue.getBusinessType());
+                .setCodeQR(tokenQueue.getId());
 
             if (DeviceTypeEnum.I == deviceType) {
                 jsonMessage.getNotification()
@@ -1317,8 +1316,8 @@ public class TokenQueueService {
                 "You have cancelled your position in queue. If tokens are available, you have a short window to re-join to retain your spot. " +
                     "After short window has elapsed, you would be able to join again if tokens are available after service has started.",
                 StringUtils.isBlank(queue.getGuardianQid()) ? queue.getQueueUserId() : queue.getGuardianQid(),
-                MessageOriginEnum.A
-            );
+                MessageOriginEnum.A,
+                bizStore.getBusinessType());
 
             /* Now update time slot for all. */
             updateSlotTimeForAll(id);

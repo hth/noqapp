@@ -191,7 +191,8 @@ public class AppointmentFlexAndWalkin {
                     bizStore.getDisplayName() + ": Token not issued",
                     jsonToken.getQueueJoinDenied().friendlyDescription(),
                     scheduleAppointment.getQueueUserId(),
-                    MessageOriginEnum.A);
+                    MessageOriginEnum.A,
+                    bizStore.getBusinessType());
 
                 LOG.warn("Token not received for {} {} {} reason={}",
                     bizStore.getCodeQR(),
