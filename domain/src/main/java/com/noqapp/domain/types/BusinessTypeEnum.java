@@ -64,7 +64,10 @@ public enum BusinessTypeEnum {
     PA("PA", "Park", Q, "Queue", QQ, TNS),
 
     //For Marketplace
-    PR("PR", "Property Rental", M, "Marketplace", MP, TNS);
+    PR("PR", "Property Rental", M, "Marketplace", MP, TNS),
+
+    //For All, to support when sending to all
+    ZZ("ZZ", "Global", Q, "Queue", QQ, TNS);
 
     private final String description;
     private final String name;
