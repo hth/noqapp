@@ -1068,7 +1068,7 @@ public class TokenQueueService {
                 jsonMessage.setNotification(null);
                 jsonData.setTitle(title)
                     .setBody(body)
-                    .setTranslatedBody(languageTranslationService.translateText(body));;
+                    .setTranslatedBody(languageTranslationService.translateText(body));
             }
 
             jsonMessage.setData(jsonData);
