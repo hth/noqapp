@@ -977,7 +977,8 @@ public class TokenQueueService {
         } else {
             jsonMessage.setNotification(null);
             jsonData.setTitle(title)
-                .setBody(body);
+                .setBody(body)
+                .setTranslatedBody(languageTranslationService.translateText(body));
         }
 
         jsonMessage.setData(jsonData);
@@ -1030,7 +1031,8 @@ public class TokenQueueService {
         } else {
             jsonMessage.setNotification(null);
             jsonData.setTitle(title)
-                .setBody(body);
+                .setBody(body)
+                .setTranslatedBody(languageTranslationService.translateText(body));
         }
 
         jsonMessage.setData(jsonData);
@@ -1065,7 +1067,8 @@ public class TokenQueueService {
             } else {
                 jsonMessage.setNotification(null);
                 jsonData.setTitle(title)
-                    .setBody(body);
+                    .setBody(body)
+                    .setTranslatedBody(languageTranslationService.translateText(body));;
             }
 
             jsonMessage.setData(jsonData);
