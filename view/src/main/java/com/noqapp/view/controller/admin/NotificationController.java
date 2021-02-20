@@ -125,7 +125,7 @@ public class NotificationController {
                     sendNotificationForm.getTitle(),
                     sendNotificationForm.getBody());
             } else {
-                if (null != sendNotificationForm.getBusinessTypes()) {
+                if (null != sendNotificationForm.getBusinessType()) {
                     messageCustomerService.sendMessageToAll(
                         sendNotificationForm.getTitle().getText(),
                         sendNotificationForm.getBody().getText(),
