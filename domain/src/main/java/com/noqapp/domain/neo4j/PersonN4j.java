@@ -39,7 +39,7 @@ public class PersonN4j {
     private AnomalyN4j anomalyN4j;
 
     @Relationship(type = "VIEWED", direction = Relationship.OUTGOING)
-    private Collection<NotificationN4j> notificationN4js;
+    private Collection<NotificationN4j> notificationN4js = new ArrayList<>();
 
     @Property("bizNameId")
     private String bizNameId;
