@@ -502,14 +502,15 @@ public class AccountService {
         userProfileManager.updateName(firstNameCleanedUp, lastNameCleanedUp, qid);
     }
 
-    public void validateAccount(EmailValidateEntity emailValidate, UserAccountEntity userAccount) {
-        markAccountValidated(userAccount);
+    public void validateAccount(EmailValidateEntity emailValidate, String qid) {
+        markAccountValidated(qid);
 
         emailValidate.inActive();
         emailValidateService.saveEmailValidateEntity(emailValidate);
     }
 
-    private void markAccountValidated(UserAccountEntity userAccount) {
+    private void markAccountValidated(String qid) {
+        UserAccountEntity userAccount = findByQueueUserId(qid);
         if (null != userAccount.getAccountInactiveReason()) {
             switch (userAccount.getAccountInactiveReason()) {
                 case ANV:
@@ -520,8 +521,7 @@ public class AccountService {
                     throw new RuntimeException("Reached unreachable condition " + userAccount.getQueueUserId());
             }
         } else {
-            userAccount.setAccountValidated(true);
-            saveUserAccount(userAccount);
+            userAccountManager.markAccountAsValid(qid);
         }
     }
 

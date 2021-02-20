@@ -94,6 +94,15 @@ public class UserAccountManagerImpl implements UserAccountManager {
     }
 
     @Override
+    public void markAccountAsValid(String qid) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            entityUpdate(update("AV", true)),
+            UserAccountEntity.class
+        );
+    }
+
+    @Override
     public long countRegisteredBetweenDates(Date from, Date to) {
         return mongoTemplate.count(
             new Query().addCriteria(where("C").gte(from).lt(to)),
