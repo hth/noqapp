@@ -1045,7 +1045,7 @@ public class TokenQueueService {
 
     /** Sends any message to all users subscribed to topic. This includes Client and Merchant. */
     @Mobile
-    public void sendAlertMessageToAllOnSpecificTopic(String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus) {
+    public void sendAlertMessageToAllOnSpecificTopic(String id, String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus) {
         LOG.debug("Sending message to all title={} body={}", title, body);
         for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
             String topic = tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name();
@@ -1055,6 +1055,8 @@ public class TokenQueueService {
                 //Added additional info to message for Android to not crash as it looks for CodeQR.
                 //TODO improve messaging to do some action on Client and Business app when status is Closed.
                 .setCodeQR(tokenQueue.getId());
+            jsonData
+                .setId(id);
 
             if (DeviceTypeEnum.I == deviceType) {
                 jsonMessage.getNotification()

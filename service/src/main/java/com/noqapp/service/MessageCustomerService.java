@@ -104,11 +104,6 @@ public class MessageCustomerService {
             for (String codeQR : codeQRs) {
                 BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
                 TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
-                sendMessageToSubscriber(
-                    title,
-                    CommonUtil.appendBusinessNameToNotificationMessage(body, bizStore.getBizName().getBusinessName()),
-                    tokenQueue);
-
                 NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
                     .setTitle(title)
                     .setBody(body)
@@ -116,14 +111,20 @@ public class MessageCustomerService {
                     .setQueueUserId(qid)
                     .setMessageSendCount(tokenQueue.getLastNumber());
                 save(notificationMessage);
+
+                sendMessageToSubscriber(
+                    notificationMessage.getId(),
+                    title,
+                    CommonUtil.appendBusinessNameToNotificationMessage(body, bizStore.getBizName().getBusinessName()),
+                    tokenQueue);
             }
         } catch (Exception e) {
             LOG.error("Failed sending message qid={} title=\"{}\" body=\"{}\"", qid, title, body);
         }
     }
 
-    private void sendMessageToSubscriber(String title, String body, TokenQueueEntity tokenQueue) {
-        tokenQueueService.sendAlertMessageToAllOnSpecificTopic(title, body, tokenQueue, QueueStatusEnum.C);
+    private void sendMessageToSubscriber(String id, String title, String body, TokenQueueEntity tokenQueue) {
+        tokenQueueService.sendAlertMessageToAllOnSpecificTopic(id, title, body, tokenQueue, QueueStatusEnum.C);
     }
 
     public int sendMessageToPastClients(String bizNameId) {
