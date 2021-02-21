@@ -10,7 +10,6 @@ import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.neo4j.NotificationN4j;
-import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
@@ -18,7 +17,6 @@ import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.NotificationMessageManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.neo4j.NotificationN4jManager;
-import com.noqapp.repository.neo4j.PersonN4jManager;
 import com.noqapp.service.graph.GraphDetailOfPerson;
 
 import org.apache.commons.lang3.StringUtils;
