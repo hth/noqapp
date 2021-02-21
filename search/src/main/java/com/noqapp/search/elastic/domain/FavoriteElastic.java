@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * hitender
@@ -32,10 +34,10 @@ import java.util.List;
 public class FavoriteElastic extends AbstractDomain {
 
     @JsonProperty("fs")
-    private List<BizStoreElastic> favoriteSuggested = new ArrayList<>();
+    private Set<BizStoreElastic> favoriteSuggested = new HashSet<>();
 
     @JsonProperty("ft")
-    private List<BizStoreElastic> favoriteTagged = new ArrayList<>();
+    private Set<BizStoreElastic> favoriteTagged = new HashSet<>();
 
     @JsonProperty("at")
     private ActionTypeEnum actionType;
@@ -43,7 +45,7 @@ public class FavoriteElastic extends AbstractDomain {
     @JsonProperty("qr")
     private String codeQR;
 
-    public List<BizStoreElastic> getFavoriteSuggested() {
+    public Set<BizStoreElastic> getFavoriteSuggested() {
         return favoriteSuggested;
     }
 
@@ -52,7 +54,7 @@ public class FavoriteElastic extends AbstractDomain {
         return this;
     }
 
-    public List<BizStoreElastic> getFavoriteTagged() {
+    public Set<BizStoreElastic> getFavoriteTagged() {
         return favoriteTagged;
     }
 
