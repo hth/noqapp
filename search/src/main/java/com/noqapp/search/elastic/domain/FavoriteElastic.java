@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * hitender
@@ -37,6 +39,12 @@ public class FavoriteElastic extends AbstractDomain {
     @JsonProperty("ft")
     private List<BizStoreElastic> favoriteTagged = new ArrayList<>();
 
+    @JsonProperty("fsb")
+    private Set<String> favoriteSuggestedBizNameIds = new HashSet<>();
+
+    @JsonProperty("ftb")
+    private Set<String> favoriteTaggedBizNameIds = new HashSet<>();
+
     @JsonProperty("at")
     private ActionTypeEnum actionType;
 
@@ -58,6 +66,34 @@ public class FavoriteElastic extends AbstractDomain {
 
     public FavoriteElastic addFavoriteTagged(BizStoreElastic favoriteTagged) {
         this.favoriteTagged.add(favoriteTagged);
+        return this;
+    }
+
+    public Set<String> getFavoriteSuggestedBizNameIds() {
+        return favoriteSuggestedBizNameIds;
+    }
+
+    public FavoriteElastic setFavoriteSuggestedBizNameIds(Set<String> favoriteSuggestedBizNameIds) {
+        this.favoriteSuggestedBizNameIds = favoriteSuggestedBizNameIds;
+        return this;
+    }
+
+    public FavoriteElastic addFavoriteSuggestedBizNameId(String favoriteSuggestedBizNameId) {
+        this.favoriteSuggestedBizNameIds.add(favoriteSuggestedBizNameId);
+        return this;
+    }
+
+    public Set<String> getFavoriteTaggedBizNameIds() {
+        return favoriteTaggedBizNameIds;
+    }
+
+    public FavoriteElastic setFavoriteTaggedBizNameIds(Set<String> favoriteTaggedBizNameIds) {
+        this.favoriteTaggedBizNameIds = favoriteTaggedBizNameIds;
+        return this;
+    }
+
+    public FavoriteElastic addFavoriteTaggedBizNameId(String favoriteTaggedBizNameId) {
+        this.favoriteTaggedBizNameIds.add(favoriteTaggedBizNameId);
         return this;
     }
 
