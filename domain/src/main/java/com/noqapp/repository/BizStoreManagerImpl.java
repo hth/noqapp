@@ -227,10 +227,9 @@ public class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public List<BizStoreEntity> findMany(Set<String> bizNameIds) {
-        List<ObjectId> converted = bizNameIds.stream().map(ObjectId::new).collect(Collectors.toList());
+    public List<BizStoreEntity> findBizStoresByCodeQRs(Set<String> codeQRs) {
         return mongoTemplate.find(
-            query(where("BIZ_NAME.$id").in(converted).and("A").is(true).and("D").is(false)),
+            query(where("QR").in(codeQRs).and("A").is(true).and("D").is(false)),
             BizStoreEntity.class,
             TABLE
         );
