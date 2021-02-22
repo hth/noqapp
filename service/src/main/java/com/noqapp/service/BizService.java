@@ -704,13 +704,13 @@ public class BizService {
     @Mobile
     public List<BizStoreEntity> favoriteSuggested(String qid) {
         UserPreferenceEntity userPreference = userPreferenceManager.favorite(qid);
-        return bizStoreManager.findMany(userPreference.getFavoriteSuggested());
+        return bizStoreManager.findBizStoresByCodeQRs(userPreference.getFavoriteSuggested());
     }
 
     @Mobile
     public List<BizStoreEntity> favoriteTagged(String qid) {
         UserPreferenceEntity userPreference = userPreferenceManager.favorite(qid);
-        return bizStoreManager.findMany(userPreference.getFavoriteTagged());
+        return bizStoreManager.findBizStoresByCodeQRs(userPreference.getFavoriteTagged());
     }
 
     @Mobile
