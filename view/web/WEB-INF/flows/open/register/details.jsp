@@ -10,11 +10,11 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css" type='text/css'/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/jquery/css/jquery-ui.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/toggle/css/toggle-style.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/internal/css/style.css" type='text/css'/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/internal/css/phone-style.css" type='text/css' media="screen"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/intl-tel-input/css/intlTelInput.css" type='text/css'/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/jquery/css/jquery-ui.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/toggle/css/toggle-style.css" />
 
     <script defer type="text/javascript" src="//code.getmdl.io/1.1.3/material.min.js"></script>
 
@@ -34,7 +34,7 @@
 <!-- header -->
 <div class="header">
     <div class="warp-inner">
-        <div class="logo"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue"/></div>
+        <div class="logo"><img src="${pageContext.request.contextPath}/static/internal/img/logo.png" alt="NoQueue"/></div>
     </div>
 </div>
 <!-- header end -->
@@ -121,7 +121,7 @@
     <!-- Footer -->
     <div class="footer">
         <div class="warp-inner ">
-            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100"/>
+            <img src="${pageContext.request.contextPath}/static/internal/img/footer-img.jpg" class="img100"/>
         </div>
         <div class="footer-dark">
             <div class="footer4">
@@ -144,7 +144,7 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/jquery/js/jquery-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/external/jquery/js/jquery-ui.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function() {
@@ -226,8 +226,8 @@
     }
 </script>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/external/ladda/js/spin.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/external/ladda/js/ladda.min.js"></script>
 <script type="text/javascript">
     // Bind normal buttons
     Ladda.bind('.button-btn button', {timeout: 6000});
