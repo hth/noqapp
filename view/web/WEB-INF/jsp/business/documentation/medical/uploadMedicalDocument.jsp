@@ -34,11 +34,11 @@
 
     <!-- Fine Uploader New/Modern CSS file
     ====================================================================== -->
-    <link rel="stylesheet" href="../../../../../static2/external/fine-uploader/fine-uploader-new.css" type='text/css'>
+    <link rel="stylesheet" href="../../../../../../static2/external/fine-uploader/fine-uploader-new.css" type='text/css'>
 
     <!-- Fine Uploader JS file
     ====================================================================== -->
-    <script src="../../../../../static2/external/fine-uploader/fine-uploader.js"></script>
+    <script src="../../../../../../static2/external/fine-uploader/fine-uploader.js"></script>
 
     <!-- Fine Uploader Thumbnails template w/ customization
     ====================================================================== -->
