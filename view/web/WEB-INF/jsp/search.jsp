@@ -10,9 +10,9 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible' />
     <meta content='width=device-width, initial-scale=1' name='viewport' />
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/style.css" type='text/css'/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/internal/css/phone-style.css" type='text/css' media="screen" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static2/external/intl-tel-input/css/intlTelInput.css" type='text/css'>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/internal/css/style.css" type='text/css'/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/internal/css/phone-style.css" type='text/css' media="screen" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/intl-tel-input/css/intlTelInput.css" type='text/css'>
 
     <script defer type="text/javascript" src="//code.getmdl.io/1.1.3/material.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -35,7 +35,7 @@
     <!-- header -->
     <div class="header">
         <div class="warp-inner">
-            <div class="logo-left"><img src="${pageContext.request.contextPath}/static2/internal/img/logo.png" alt="NoQueue"/></div>
+            <div class="logo-left"><img src="${pageContext.request.contextPath}/static/internal/img/logo.png" alt="NoQueue"/></div>
             <div class="top-menu-right">
                 <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
                 <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Business Register</a></span>
@@ -55,7 +55,7 @@
                     <form:form id="search-form" method="post" modelAttribute="searchForm" action="/open/search.htm" autocomplete="off">
                         <form:hidden path="geoIP.geoHash" />
                         <form:input path="search" cssClass="form-field" required="required" cssErrorClass="form-field error" placeholder="" autofocus="autofocus"/>
-                        <img src="${pageContext.request.contextPath}/static2/internal/img/location.png" alt="Location" style="float: left;"/>
+                        <img src="${pageContext.request.contextPath}/static/internal/img/location.png" alt="Location" style="float: left;"/>
                         <c:choose>
                         <c:when test="${!empty searchForm.geoIP.cityName}">
                         <span class="left-remember">${searchForm.geoIP.cityName}</span>
@@ -121,7 +121,7 @@
     <!-- Foote -->
     <div class="footer">
         <div class="warp-inner ">
-            <img src="${pageContext.request.contextPath}/static2/internal/img/footer-img.jpg" class="img100"/>
+            <img src="${pageContext.request.contextPath}/static/internal/img/footer-img.jpg" class="img100"/>
         </div>
         <div class="footer-dark">
             <div class="footer4">
@@ -144,8 +144,8 @@
 
 
 </body>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/spin.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static2/external/ladda/js/ladda.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/external/ladda/js/spin.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/external/ladda/js/ladda.min.js"></script>
 <script type="text/javascript">
     // Bind normal buttons
     Ladda.bind('.button-btn button', {timeout: 12000});
