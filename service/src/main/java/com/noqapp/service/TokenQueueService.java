@@ -396,8 +396,8 @@ public class TokenQueueService {
             UserPreferenceEntity userPreference = userProfilePreferenceService.findByQueueUserId(qid);
 
             /* If not tagged to favorite then add to suggestion. */
-            if (!userPreference.getFavoriteTagged().contains(bizStore.getBizName().getCodeQR())) {
-                userPreference.addFavoriteSuggested(bizStore.getBizName().getCodeQR());
+            if (!userPreference.getFavoriteTagged().contains(bizStore.getCodeQR())) {
+                userPreference.addFavoriteSuggested(bizStore.getCodeQR());
             }
 
             /* When user signs up with new device or token, subscribe to these topics by default. */
