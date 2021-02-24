@@ -36,8 +36,8 @@ import javax.servlet.http.HttpServletRequest;
  * 1/10/21 11:12 AM
  */
 @Component
-public class PostOnMarketplaceFlowActions {
-    private static final Logger LOG = LoggerFactory.getLogger(PostOnMarketplaceFlowActions.class);
+public class PropertyRentalMarketplaceFlowActions {
+    private static final Logger LOG = LoggerFactory.getLogger(PropertyRentalMarketplaceFlowActions.class);
 
     private Environment environment;
     private DatabaseReader databaseReader;
@@ -45,7 +45,7 @@ public class PostOnMarketplaceFlowActions {
     private UserProfileManager userProfileManager;
 
     @Autowired
-    public PostOnMarketplaceFlowActions(
+    public PropertyRentalMarketplaceFlowActions(
         Environment environment,
         DatabaseReader databaseReader,
         PropertyManager propertyManager,
@@ -104,6 +104,8 @@ public class PostOnMarketplaceFlowActions {
                     LOG.error("Reached unreachable condition, businessType={}", postOnMarketplaceForm.getBusinessType());
                     throw new IllegalStateException("Condition set is not defined");
             }
+        } else {
+            postOnMarketplaceForm.setBusinessType(BusinessTypeEnum.valueOf(businessTypeAsString));
         }
 
         return postOnMarketplaceForm;
