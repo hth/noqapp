@@ -86,13 +86,13 @@
                     <p>&nbsp;</p>
                     </c:if>
 
-<%--                    <div class="store">--%>
-<%--                        <div class="add-store">--%>
-<%--                            <div class="store-table">--%>
-<%--                                Post on Marketplace: <a href="/access/marketplace/post.htm" class="add-btn">Start Here</a>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
+                    <div class="store">
+                        <div class="add-store">
+                            <div class="store-table">
+                                Post on Marketplace: <a href="/access/marketplace/post.htm" class="add-btn">Start Here</a>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="store">
                         <c:if test="${!empty landingForm.minorUserProfiles}">
@@ -155,71 +155,71 @@
                             </div>
                         </div>
 
-<%--                        <h3>Listed on Marketplace</h3>--%>
-<%--                        <div class="add-store">--%>
-<%--                            <div class="store-table">--%>
-<%--                                <c:choose>--%>
-<%--                                    <c:when test="${!empty landingForm.properties}">--%>
-<%--                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">--%>
-<%--                                            <tr>--%>
-<%--                                                <th>&nbsp;</th>--%>
-<%--                                                <th>Name</th>--%>
-<%--                                                <th>Posted For</th>--%>
-<%--                                                <th>Listed For</th>--%>
-<%--                                                <th>City/Area</th>--%>
-<%--                                                <th>Not Visible After</th>--%>
-<%--                                                <th>Stats</th>--%>
-<%--                                                <th></th>--%>
-<%--                                            </tr>--%>
-<%--                                            <c:forEach items="${landingForm.properties}" var="property" varStatus="status">--%>
-<%--                                            <tr>--%>
-<%--                                                <td>${status.count}&nbsp;</td>--%>
-<%--                                                <td><a href="/access/marketplace/edit/${property.businessType.name}/${property.id}.htm" target="_blank">${property.title}</a></td>--%>
-<%--                                                <td>${property.businessType.description} (${property.rentalType.description})</td>--%>
-<%--                                                <td>${property.priceForDisplay}</td>--%>
-<%--                                                <td>${property.city}</td>--%>
-<%--                                                <td>--%>
-<%--                                                    <a href="/access/marketplace/${property.businessType.name}/${property.id}/boost.htm">--%>
-<%--                                                    <fmt:formatDate pattern="MMMM dd, yyyy" value="${property.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>--%>
-<%--                                                    </a>--%>
-<%--                                                </td>--%>
-<%--                                                <td>--%>
-<%--                                                    <c:choose>--%>
-<%--                                                        <c:when test="${property.likeCount == 0}">--%>
-<%--                                                            <i class="fas fa-heart" style="color:#4e4d4d;" title="Liked"></i> ${property.likeCount}--%>
-<%--                                                        </c:when>--%>
-<%--                                                        <c:otherwise>--%>
-<%--                                                            <i class="fas fa-heart" style="color:#ff217c;" title="Liked"></i> ${property.likeCount}--%>
-<%--                                                        </c:otherwise>--%>
-<%--                                                    </c:choose>--%>
-<%--                                                    <c:choose>--%>
-<%--                                                        <c:when test="${property.expressedInterestCount == 0}">--%>
-<%--                                                            <i class="fas fa-fire" style="color:#4e4d4d;" title="Interest"></i> ${property.expressedInterestCount}--%>
-<%--                                                        </c:when>--%>
-<%--                                                        <c:otherwise>--%>
-<%--                                                            <i class="fas fa-fire" style="color:#ff217c;" title="Interest"></i> ${property.expressedInterestCount}--%>
-<%--                                                        </c:otherwise>--%>
-<%--                                                    </c:choose>--%>
-<%--                                                </td>--%>
-<%--                                                <c:choose>--%>
-<%--                                                    <c:when test="${empty property.postImages}">--%>
-<%--                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/uploadImage.htm">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Images"></i></a></td>--%>
-<%--                                                    </c:when>--%>
-<%--                                                    <c:otherwise>--%>
-<%--                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/uploadImage.htm">${property.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Images"></i></a></td>--%>
-<%--                                                    </c:otherwise>--%>
-<%--                                                </c:choose>--%>
-<%--                                            </tr>--%>
-<%--                                            </c:forEach>--%>
-<%--                                        </table>--%>
-<%--                                    </c:when>--%>
-<%--                                    <c:otherwise>--%>
-<%--                                        No posting on marketplace.--%>
-<%--                                    </c:otherwise>--%>
-<%--                                </c:choose>--%>
-<%--                            </div>--%>
+                        <h3>Listed on Marketplace</h3>
+                        <div class="add-store">
+                            <div class="store-table">
+                                <c:choose>
+                                    <c:when test="${!empty landingForm.properties}">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>Name</th>
+                                                <th>Posted For</th>
+                                                <th>Listed For</th>
+                                                <th>City/Area</th>
+                                                <th>Not Visible After</th>
+                                                <th>Stats</th>
+                                                <th></th>
+                                            </tr>
+                                            <c:forEach items="${landingForm.properties}" var="property" varStatus="status">
+                                            <tr>
+                                                <td>${status.count}&nbsp;</td>
+                                                <td><a href="/access/marketplace/edit/${property.businessType.name}/${property.id}.htm" target="_blank">${property.title}</a></td>
+                                                <td>${property.businessType.description} (${property.rentalType.description})</td>
+                                                <td>${property.priceForDisplay}</td>
+                                                <td>${property.city}</td>
+                                                <td>
+                                                    <a href="/access/marketplace/${property.businessType.name}/${property.id}/boost.htm">
+                                                    <fmt:formatDate pattern="MMMM dd, yyyy" value="${property.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${property.likeCount == 0}">
+                                                            <i class="fas fa-heart" style="color:#4e4d4d;" title="Liked"></i> ${property.likeCount}
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <i class="fas fa-heart" style="color:#ff217c;" title="Liked"></i> ${property.likeCount}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                    <c:choose>
+                                                        <c:when test="${property.expressedInterestCount == 0}">
+                                                            <i class="fas fa-fire" style="color:#4e4d4d;" title="Interest"></i> ${property.expressedInterestCount}
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <i class="fas fa-fire" style="color:#ff217c;" title="Interest"></i> ${property.expressedInterestCount}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <c:choose>
+                                                    <c:when test="${empty property.postImages}">
+                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/uploadImage.htm">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Images"></i></a></td>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/uploadImage.htm">${property.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Images"></i></a></td>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </tr>
+                                            </c:forEach>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        No posting on marketplace.
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
 
-<%--                        </div>--%>
+                        </div>
 
                         <h3>Historical Queue</h3>
                         <div class="add-store">
