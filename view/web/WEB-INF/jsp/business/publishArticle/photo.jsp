@@ -113,7 +113,7 @@
                                         <li>
                                             <div class="col-fields">
                                                 <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/article/${publishArticleForm.publishId}/${publishArticleForm.bannerImage}"
-                                                        <%--onerror="this.src='/static2/internal/img/profile-image-192x192.png'"--%>
+                                                        <%--onerror="this.src='/static/internal/img/profile-image-192x192.png'"--%>
                                                         class="img-profile-circle" />
                                             </div>
                                             <div class="col-lable3">

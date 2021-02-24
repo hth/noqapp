@@ -23,7 +23,7 @@
             <img src="/i/${qrFileName}.htm" height="50%" width="50%"/>
             <br>
             <br>
-            <img src="${https}://${domain}/static2/internal/img/logo_under_qr.png" alt="NoQueue"/>
+            <img src="${https}://${domain}/static/internal/img/logo_under_qr.png" alt="NoQueue"/>
             <div style="font-size: smaller">&copy; &reg; 2021 NoQueue</div>
             <br>
             <h3><span style="color: black">Download NoQueue</span></h3>

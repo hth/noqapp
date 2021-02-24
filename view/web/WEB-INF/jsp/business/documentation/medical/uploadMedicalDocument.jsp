@@ -247,8 +247,8 @@
         },
         thumbnails: {
             placeholders: {
-                waitingPath: '../../../../../static2/external/fine-uploader/placeholders/waiting-generic.png',
-                notAvailablePath: '../../../../../static2/external/fine-uploader/placeholders/not_available-generic.png'
+                waitingPath: '../../../../../static/external/fine-uploader/placeholders/waiting-generic.png',
+                notAvailablePath: '../../../../../static/external/fine-uploader/placeholders/not_available-generic.png'
             }
         },
         validation: {

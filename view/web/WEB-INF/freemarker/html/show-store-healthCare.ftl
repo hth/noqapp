@@ -115,7 +115,7 @@
                         <p>Get NoQueue</p>
                         <div>
                             <#--<a href="https://itunes.apple.com/us/app/noqapp/id1237327532?ls=1&mt=8">-->
-                            <#--<img src="${page.parentHost}/static2/internal/img/apple-store.png"/>-->
+                            <#--<img src="${page.parentHost}/static/internal/img/apple-store.png"/>-->
                             <#--</a>-->
                             <a href="https://play.google.com/store/apps/details?id=com.noqapp.android.client">
                                 <img src="${page.parentHost}/static/internal/img/google-play.png"/>
@@ -155,15 +155,15 @@
         halfShow: true,
         readOnly: true,
         noRatedMsg: 'Not rated yet!',
-        starHalf: '${page.parentHost}/static2/external/raty/img/star-half.png',
-        starOff: '${page.parentHost}/static2/external/raty/img/star-off.png',
-        starOn: '${page.parentHost}/static2/external/raty/img/star-on.png',
+        starHalf: '${page.parentHost}/static/external/raty/img/star-half.png',
+        starOff: '${page.parentHost}/static/external/raty/img/star-off.png',
+        starOn: '${page.parentHost}/static/external/raty/img/star-on.png',
         hints: ['Bad', 'Poor', 'Good', 'Best', 'Awesome']
     });
     </#list>
 </script>
-<script type="text/javascript" src="${page.https}://${page.domain}/static2/external/ladda/js/spin.min.js"></script>
-<script type="text/javascript" src="${page.https}://${page.domain}/static2/external/ladda/js/ladda.min.js"></script>
+<script type="text/javascript" src="${page.https}://${page.domain}/static/external/ladda/js/spin.min.js"></script>
+<script type="text/javascript" src="${page.https}://${page.domain}/static/external/ladda/js/ladda.min.js"></script>
 <script type="text/javascript">
     // Bind normal buttons
     Ladda.bind('.button-btn button', {timeout: 6000});

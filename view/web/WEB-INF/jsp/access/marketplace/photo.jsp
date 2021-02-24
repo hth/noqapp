@@ -123,7 +123,7 @@
                                     <li>
                                         <div class="col-fields">
                                             <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/${postId}/${image}"
-                                                    onerror="this.src='/static2/internal/img/pending-image.png'"
+                                                    onerror="this.src='/static/internal/img/pending-image.png'"
                                                     class="img-profile-circle" />
                                         </div>
                                         <div class="col-lable3">
