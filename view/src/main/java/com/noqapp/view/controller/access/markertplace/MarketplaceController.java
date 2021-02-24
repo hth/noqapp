@@ -1,4 +1,4 @@
-package com.noqapp.view.controller.access;
+package com.noqapp.view.controller.access.markertplace;
 
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
@@ -15,6 +15,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.market.PropertyService;
+import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.controller.business.store.PublishArticleController;
 import com.noqapp.view.form.FileUploadForm;
 import com.noqapp.view.validator.ImageValidator;
@@ -66,7 +67,7 @@ public class MarketplaceController {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceController.class);
 
     private String bucketName;
-    private String postOnMarketplaceFlowActions;
+    private String nextPage;
 
     private AccountService accountService;
     private PropertyService propertyService;
@@ -79,8 +80,8 @@ public class MarketplaceController {
         @Value("${aws.s3.bucketName}")
         String bucketName,
 
-        @Value("${postOnMarketplaceFlowActions:redirect:/access/postOnMarketplace.htm}")
-        String postOnMarketplaceFlowActions,
+        @Value("${nextPage:/access/marketplace/landing}")
+        String nextPage,
 
         AccountService accountService,
         PropertyService propertyService,
@@ -89,7 +90,7 @@ public class MarketplaceController {
         ApiHealthService apiHealthService
     ) {
         this.bucketName = bucketName;
-        this.postOnMarketplaceFlowActions = postOnMarketplaceFlowActions;
+        this.nextPage = nextPage;
 
         this.accountService = accountService;
         this.propertyService = propertyService;
@@ -110,24 +111,7 @@ public class MarketplaceController {
             LOG.error("Restricted posting to market place {}", queueUser.getQueueUserId());
             redirectAttributes.addFlashAttribute("postingAllowed", false);
         }
-        return postOnMarketplaceFlowActions;
-    }
-
-    @GetMapping(value = "/edit/{businessTypeAsString}/{postId}")
-    public String fetchPostOnMarketplace(
-        @PathVariable("businessTypeAsString")
-        String businessTypeAsString,
-
-        @PathVariable("postId")
-        String postId,
-
-        RedirectAttributes redirectAttributes
-    ) {
-        LOG.info("Requested post on marketplace {}", postOnMarketplaceFlowActions);
-
-        redirectAttributes.addFlashAttribute("businessTypeAsString", businessTypeAsString);
-        redirectAttributes.addFlashAttribute("postId", postId);
-        return postOnMarketplaceFlowActions;
+        return nextPage;
     }
 
     /** For uploading article image. */
@@ -159,6 +143,9 @@ public class MarketplaceController {
             switch (BusinessTypeEnum.valueOf(businessTypeAsString)) {
                 case PR:
                     marketplace = propertyService.findOneById(postId);
+                    break;
+                case HI:
+                    marketplace = null;
                     break;
                 default:
                     LOG.error("Reached unsupported condition={}", businessTypeAsString);
@@ -289,20 +276,5 @@ public class MarketplaceController {
                 FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType),
                 bufferedImage);
         }
-    }
-
-    @GetMapping(value = "/{businessTypeAsString}/{postId}/boost")
-    public String boostYourPost(
-        @PathVariable("businessTypeAsString")
-        String businessTypeAsString,
-
-        @PathVariable("postId")
-        String postId,
-
-        Model model,
-        RedirectAttributes redirectAttrs,
-        HttpServletResponse response
-    ) {
-        return "";
     }
 }

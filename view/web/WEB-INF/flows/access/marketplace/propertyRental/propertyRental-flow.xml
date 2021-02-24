@@ -10,7 +10,7 @@
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'postId')" result="conversationScope.postId" />
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'businessTypeAsString')" result="conversationScope.businessTypeAsString" />
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'postingAllowed')" result="conversationScope.postingAllowed" />
-        <evaluate expression="postOnMarketplaceFlowActions.startOfNewPost(postId, businessTypeAsString, postingAllowed, externalContext)"
+        <evaluate expression="propertyRentalMarketplaceFlowActions.startOfNewPost(postId, businessTypeAsString, postingAllowed, externalContext)"
                   result="flowScope.postOnMarketplaceForm"/>
     </on-start>
 
@@ -26,7 +26,7 @@
 
     <view-state id="titleDescriptionOfPost" model="postOnMarketplaceForm">
         <on-entry>
-            <evaluate expression="postOnMarketplaceFlowActions.afterPostTypeHasBeenSelected(postOnMarketplaceForm)" />
+            <evaluate expression="propertyRentalMarketplaceFlowActions.afterPostTypeHasBeenSelected(postOnMarketplaceForm)" />
         </on-entry>
         <transition on="submit" to="validateTitleDescription"/>
         <transition on="cancel" to="home"/>
@@ -56,7 +56,7 @@
 
     <action-state id="completeNewPost">
         <!-- Need the result to show correct message on JSP -->
-        <evaluate expression="postOnMarketplaceFlowActions.completeNewPost(postOnMarketplaceForm)"/>
+        <evaluate expression="propertyRentalMarketplaceFlowActions.completeNewPost(postOnMarketplaceForm)"/>
         <transition on="success" to="home"/>
         <transition on="failure" to="reviewBeforePost"/>
     </action-state>

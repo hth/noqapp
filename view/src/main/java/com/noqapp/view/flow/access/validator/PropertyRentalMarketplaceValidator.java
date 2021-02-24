@@ -20,11 +20,11 @@ import org.springframework.stereotype.Component;
  * 1/10/21 12:02 PM
  */
 @Component
-public class PostOnMarketplaceValidator {
-    private static final Logger LOG = LoggerFactory.getLogger(PostOnMarketplaceValidator.class);
+public class PropertyRentalMarketplaceValidator {
+    private static final Logger LOG = LoggerFactory.getLogger(PropertyRentalMarketplaceValidator.class);
 
     @Autowired
-    public PostOnMarketplaceValidator() {
+    public PropertyRentalMarketplaceValidator() {
     }
 
     public String validateStartOfMarketplace(PostOnMarketplaceForm postOnMarketplaceForm, MessageContext messageContext) {

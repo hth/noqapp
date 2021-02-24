@@ -1,5 +1,5 @@
-<%@ page import="com.noqapp.domain.types.BusinessUserRegistrationStatusEnum" %>
-<%@ include file="../../../jsp/include.jsp" %>
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum" %>
+<%@ include file="../../../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -70,10 +70,10 @@
                         <div class="admin-title">
                             <c:choose>
                                 <c:when test="${empty postOnMarketplaceForm.validateByQid}">
-                                    <h2>Post on Marketplace</h2>
+                                    <h2>Post on Marketplace for ${postOnMarketplaceForm.businessType.description}</h2>
                                 </c:when>
                                 <c:otherwise>
-                                    <h2>Edit Post</h2>
+                                    <h2>Edit Post on ${postOnMarketplaceForm.businessType.description}</h2>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -93,23 +93,23 @@
                                 <ul class="list-form">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="businessType" cssErrorClass="lb_error">Posting For</form:label>
+                                            <form:label path="marketplace.title" cssErrorClass="lb_error">Title</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <c:choose>
-                                                <c:when test="${!empty postOnMarketplaceForm.validateByQid}">
-                                                    <form:select path="businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                        <form:options items="${postOnMarketplaceForm.marketPlaces}" itemValue="name" itemLabel="description" disabled="true"/>
-                                                    </form:select>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <form:select path="businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                        <form:options items="${postOnMarketplaceForm.marketPlaces}" itemValue="name" itemLabel="description"/>
-                                                    </form:select>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <form:input path="marketplace.title" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
-                                        <span class="tooltip" title="Select market place post type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                        <div class="clearFix"></div>
+                                    </li>
+                                    <li>
+                                        <div class="col-lable3">
+                                            <form:label path="marketplace.description" cssErrorClass="lb_error">Description</form:label>
+                                        </div>
+                                        <div class="col-fields">
+                                            <form:textarea path="marketplace.description" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
+                                        </div>
+                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -125,16 +125,10 @@
                                             </div>
                                         </c:when>
                                         <c:otherwise>
-                                            <div class="button-btn" style="padding-bottom: 50px">
+                                            <div class="button-btn">
                                                 <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
                                                 <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                             </div>
-
-                                            <c:if test="${!postingAllowed}">
-                                            <div class="alert-info">
-                                                <p>Your market place posting could be delayed. Remember to validate your email account.</p>
-                                            </div>
-                                            </c:if>
                                         </c:otherwise>
                                     </c:choose>
                                     <div class="clearFix"></div>
@@ -175,10 +169,14 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/external/editor/ck/js/ckeditor.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/internal/js/script.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/internal/js/services.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/ladda/js/spin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/ladda/js/ladda.min.js"></script>
+<script>
+    CKEDITOR.replace('marketplace.description');
+</script>
 <script type="text/javascript">
     // Bind normal buttons
     Ladda.bind('.button-btn button', {timeout: 6000});

@@ -174,12 +174,12 @@
                                             <c:forEach items="${landingForm.properties}" var="property" varStatus="status">
                                             <tr>
                                                 <td>${status.count}&nbsp;</td>
-                                                <td><a href="/access/marketplace/edit/${property.businessType.name}/${property.id}.htm" target="_blank">${property.title}</a></td>
+                                                <td><a href="/access/marketplace/property/edit/${property.businessType.name}/${property.id}.htm" target="_blank">${property.title}</a></td>
                                                 <td>${property.businessType.description} (${property.rentalType.description})</td>
                                                 <td>${property.priceForDisplay}</td>
                                                 <td>${property.city}</td>
                                                 <td>
-                                                    <a href="/access/marketplace/${property.businessType.name}/${property.id}/boost.htm">
+                                                    <a href="/access/marketplace/property/${property.businessType.name}/${property.id}/boost.htm">
                                                     <fmt:formatDate pattern="MMMM dd, yyyy" value="${property.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
                                                     </a>
                                                 </td>
