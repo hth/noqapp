@@ -1,3 +1,11 @@
+### Changed Feb 24, 2021
+
+    db.getCollection('USER_PREFERENCE').update({"FS" : {$gt: []}}, {$set : {"FS" : []}}, {multi: true});
+
+Find the ones greater than zero items in list
+
+    db.getCollection('USER_PREFERENCE').find({"FS" : {$gt: []}})
+
 ### Changed Dec 29, 2020
 
     db.getCollection('PUBLISH_ARTICLE').update({"CO" : {$exists : true}}, {$rename: {"CO":"DS"}}, {multi: true});

@@ -4,6 +4,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.Validate;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.domain.site.QueueUser;
@@ -101,10 +102,12 @@ public class MarketplaceController {
     public String postOnMarketplace(RedirectAttributes redirectAttributes) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Requested post on marketplace {}", queueUser.getQueueUserId());
-        if (accountService.accountOpenedInLast10Days(queueUser.getQueueUserId())) {
+
+        UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
+        if (accountService.accountOpenedInLast10Days(queueUser.getQueueUserId()) || userProfile.isProfileVerified()) {
             redirectAttributes.addFlashAttribute("postingAllowed", true);
         } else {
-            LOG.error("Cannot post to market place {}", queueUser.getQueueUserId());
+            LOG.error("Restricted posting to market place {}", queueUser.getQueueUserId());
             redirectAttributes.addFlashAttribute("postingAllowed", false);
         }
         return postOnMarketplaceFlowActions;

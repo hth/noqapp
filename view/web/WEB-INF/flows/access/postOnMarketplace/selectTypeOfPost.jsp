@@ -109,7 +109,7 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Select market place post type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -125,19 +125,16 @@
                                             </div>
                                         </c:when>
                                         <c:otherwise>
-                                            <div class="button-btn">
-                                                <c:choose>
-                                                    <c:when test="${postingAllowed}">
-                                                        <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <div class="alert-info">
-                                                            <p>Validate your email account and wait for at least 10 days before your first posting.</p>
-                                                        </div>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                            <div class="button-btn" style="padding-bottom: 50px">
+                                                <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
                                                 <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
                                             </div>
+
+                                            <c:if test="${!postingAllowed}">
+                                            <div class="alert-info">
+                                                <p>Your market place posting could be delayed. Remember to validate your email account.</p>
+                                            </div>
+                                            </c:if>
                                         </c:otherwise>
                                     </c:choose>
                                     <div class="clearFix"></div>

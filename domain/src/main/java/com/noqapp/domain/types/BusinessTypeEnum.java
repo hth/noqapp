@@ -65,6 +65,7 @@ public enum BusinessTypeEnum {
 
     //For Marketplace
     PR("PR", "Property Rental", M, "Marketplace", MP, TNS),
+    HI("HI", "Household Items", M, "Marketplace", MP, TNS),
 
     //For All, to support when sending to all
     ZZ("ZZ", "Global", Q, "Queue", QQ, TNS);
@@ -166,6 +167,7 @@ public enum BusinessTypeEnum {
     public static List<BusinessTypeEnum> marketPlaces() {
         return new ArrayList<>() {{
             add(PR);
+            add(HI);
         }};
     }
 
