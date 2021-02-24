@@ -259,7 +259,7 @@ public class ShowHTMLService {
         profile.put("gender", userProfile.getGender().name());
         profile.put("experienceDuration", jsonProfessionalProfile.experienceDuration());
         profile.put("profileImage", StringUtils.isBlank(userProfile.getProfileImage())
-            ? "/static2/internal/img/profile-image-192x192.png"
+            ? "/static/internal/img/profile-image-192x192.png"
             : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage());
 
         profile.put("awards", jsonProfessionalProfile.getAwards());

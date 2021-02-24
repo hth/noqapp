@@ -25,7 +25,7 @@
             <br>
             <br>
             <br>
-            <img src="${https}://${domain}/static2/internal/img/logo_under_qr.png" alt="NoQueue"/>
+            <img src="${https}://${domain}/static/internal/img/logo_under_qr.png" alt="NoQueue"/>
             <div style="font-size: smaller">&copy; &reg; 2021 NoQueue</div>
             <br>
             <br>

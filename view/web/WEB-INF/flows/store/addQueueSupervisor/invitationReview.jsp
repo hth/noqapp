@@ -179,7 +179,7 @@
         // placeholderNumberType: "MOBILE",
         preferredCountries: ['in'],
         // separateDialCode: true,
-        utilsScript: "${pageContext.request.contextPath}/static2/external/intl-tel-input/js/utils.js"
+        utilsScript: "${pageContext.request.contextPath}/static/external/intl-tel-input/js/utils.js"
     });
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/ladda/js/spin.min.js"></script>

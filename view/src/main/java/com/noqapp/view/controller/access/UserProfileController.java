@@ -207,7 +207,7 @@ public class UserProfileController {
 
         userProfileForm
             .setProfileImage(StringUtils.isBlank(userProfile.getProfileImage())
-                ? "/static2/internal/img/profile-image-192x192.png"
+                ? "/static/internal/img/profile-image-192x192.png"
                 : awsEndPoint + awsBucket + "/profile/" + userProfile.getProfileImage())
             .setGender(userProfile.getGender())
             .setEmail(new ScrubbedInput(userProfile.getEmail()))

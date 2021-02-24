@@ -47,7 +47,7 @@
                                 content-height="110%"
                                 width="110%"
                                 scaling="uniform"
-                                src="../../../static2/internal/img/logo.png"/>
+                                src="../../../static/internal/img/logo.png"/>
                     </fo:block>
                     <fo:block font-size="smaller"
                               text-align="center"
@@ -78,7 +78,7 @@
                                                     content-height="80%"
                                                     width="80%"
                                                     scaling="uniform"
-                                                    src="../../../static2/internal/img/apple-store.png"/>
+                                                    src="../../../static/internal/img/apple-store.png"/>
                                         </fo:block>
                                     </fo:table-cell>
 
@@ -89,7 +89,7 @@
                                                     content-height="80%"
                                                     width="80%"
                                                     scaling="uniform"
-                                                    src="../../../static2/internal/img/google-play.png"/>
+                                                    src="../../../static/internal/img/google-play.png"/>
                                         </fo:block>
                                     </fo:table-cell>
                                 </fo:table-row>
@@ -102,7 +102,7 @@
                                                     width="50%"
                                                     scaling="uniform"
                                                     padding-top="10px"
-                                                    src="../../../static2/internal/img/NoQApp-apple.png"/>
+                                                    src="../../../static/internal/img/NoQApp-apple.png"/>
                                         </fo:block>
                                     </fo:table-cell>
                                     <fo:table-cell>
@@ -113,7 +113,7 @@
                                                     width="50%"
                                                     scaling="uniform"
                                                     padding-top="10px"
-                                                    src="../../../static2/internal/img/NoQApp-google.png"/>
+                                                    src="../../../static/internal/img/NoQApp-google.png"/>
                                         </fo:block>
                                     </fo:table-cell>
                                 </fo:table-row>

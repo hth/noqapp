@@ -379,7 +379,7 @@
         // placeholderNumberType: "MOBILE",
         preferredCountries: ['in', 'us'],
         // separateDialCode: true,
-        utilsScript: "${pageContext.request.contextPath}/static2/external/intl-tel-input/js/utils.js"
+        utilsScript: "${pageContext.request.contextPath}/static/external/intl-tel-input/js/utils.js"
     });
 
     function getPhoneNumberFromUserInput() {
