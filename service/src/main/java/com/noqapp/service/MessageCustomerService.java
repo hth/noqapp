@@ -276,7 +276,7 @@ public class MessageCustomerService {
     }
 
     @Mobile
-    public boolean increaseViewCount(String id, String qid) {
+    public boolean increaseViewClientCount(String id, String qid) {
         graphDetailOfPerson.graphPersonWithNotification(id, qid);
         return notificationMessageManager.increaseViewClientCount(id);
     }
