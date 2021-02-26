@@ -82,7 +82,7 @@
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
                                     <ul>
                                         <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
+                                        <li>${message.text}</li>
                                         </c:forEach>
                                     </ul>
                                 </c:if>
@@ -93,7 +93,7 @@
                                 <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="marketplace.productPrice" cssErrorClass="lb_error">Rent per Month</form:label>
+                                            <form:label path="marketplace.productPrice" cssErrorClass="lb_error">List Price</form:label>
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="marketplace.productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
@@ -104,11 +104,11 @@
                                     </li>
                                     <li>
                                         <div class="col-lable3">
-                                            <form:label path="marketplace.rentalType" cssErrorClass="lb_error">Rental Type</form:label>
+                                            <form:label path="marketplace.itemCondition" cssErrorClass="lb_error">Condition</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:select path="marketplace.rentalType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                <form:options items="${marketplaceForm.rentalTypes}" itemValue="name" itemLabel="description" disabled="false"/>
+                                            <form:select path="marketplace.itemCondition" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                <form:options items="${marketplaceForm.itemConditions}" itemValue="name" itemLabel="description" disabled="false"/>
                                             </form:select>
                                         </div>
                                         <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
@@ -118,56 +118,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="admin-content">
-                            <div class="add-new">
-                                <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.bedroom" cssErrorClass="lb_error">Number of bedrooms</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.bedroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.bathroom" cssErrorClass="lb_error">Number of bathrooms</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.bathroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.carpetArea" cssErrorClass="lb_error">Carpet Area (sq. ft.)</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.carpetArea" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.address" cssErrorClass="lb_error">Rental Address</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.address" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+
                         <div class="admin-content">
                             <div class="add-new">
                                 <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
@@ -205,7 +156,6 @@
                                         <div class="clearFix"></div>
                                     </li>
                                 </ul>
-
                                 <div class="col-lable3"></div>
                                 <div class="col-fields">
                                     <c:choose>

@@ -11,52 +11,52 @@
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'businessTypeAsString')" result="conversationScope.businessTypeAsString" />
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'postingAllowed')" result="conversationScope.postingAllowed" />
         <evaluate expression="propertyRentalMarketplaceFlowActions.startOfNewPost(postId, businessTypeAsString, postingAllowed, externalContext)"
-                  result="flowScope.postOnMarketplaceForm"/>
+                  result="flowScope.marketplaceForm"/>
     </on-start>
 
-    <view-state id="selectTypeOfPost" model="postOnMarketplaceForm">
+    <view-state id="selectTypeOfPost" model="marketplaceForm">
         <transition on="submit" to="validateStartOfMarketplacePost"/>
     </view-state>
 
     <action-state id="validateStartOfMarketplacePost">
-        <evaluate expression="postOnMarketplaceValidator.validateStartOfMarketplace(postOnMarketplaceForm, messageContext)"/>
+        <evaluate expression="propertyRentalMarketplaceValidator.validateStartOfMarketplace(marketplaceForm, messageContext)"/>
         <transition on="success" to="titleDescriptionOfPost"/>
         <transition on="failure" to="selectTypeOfPost"/>
     </action-state>
 
-    <view-state id="titleDescriptionOfPost" model="postOnMarketplaceForm">
+    <view-state id="titleDescriptionOfPost" model="marketplaceForm">
         <on-entry>
-            <evaluate expression="propertyRentalMarketplaceFlowActions.afterPostTypeHasBeenSelected(postOnMarketplaceForm)" />
+            <evaluate expression="propertyRentalMarketplaceFlowActions.afterPostTypeHasBeenSelected(marketplaceForm)" />
         </on-entry>
         <transition on="submit" to="validateTitleDescription"/>
         <transition on="cancel" to="home"/>
     </view-state>
 
     <action-state id="validateTitleDescription">
-        <evaluate expression="postOnMarketplaceValidator.validateTitleDescription(postOnMarketplaceForm, messageContext)"/>
+        <evaluate expression="propertyRentalMarketplaceValidator.validateTitleDescription(marketplaceForm, messageContext)"/>
         <transition on="success" to="detailOfPost"/>
         <transition on="failure" to="titleDescriptionOfPost"/>
     </action-state>
 
-    <view-state id="detailOfPost" model="postOnMarketplaceForm">
+    <view-state id="detailOfPost" model="marketplaceForm">
         <transition on="submit" to="readyToPost"/>
         <transition on="cancel" to="home"/>
     </view-state>
 
     <action-state id="readyToPost">
-        <evaluate expression="postOnMarketplaceValidator.validateReadyToPostMarketplace(postOnMarketplaceForm, messageContext)"/>
+        <evaluate expression="propertyRentalMarketplaceValidator.validateReadyToPostMarketplace(marketplaceForm, messageContext)"/>
         <transition on="success" to="reviewBeforePost"/>
         <transition on="failure" to="detailOfPost"/>
     </action-state>
 
-    <view-state id="reviewBeforePost" model="postOnMarketplaceForm">
+    <view-state id="reviewBeforePost" model="marketplaceForm">
         <transition on="submit" to="completeNewPost" history="invalidate"/>
         <transition on="cancel" to="home"/>
     </view-state>
 
     <action-state id="completeNewPost">
         <!-- Need the result to show correct message on JSP -->
-        <evaluate expression="propertyRentalMarketplaceFlowActions.completeNewPost(postOnMarketplaceForm)"/>
+        <evaluate expression="propertyRentalMarketplaceFlowActions.completeNewPost(marketplaceForm)"/>
         <transition on="success" to="home"/>
         <transition on="failure" to="reviewBeforePost"/>
     </action-state>

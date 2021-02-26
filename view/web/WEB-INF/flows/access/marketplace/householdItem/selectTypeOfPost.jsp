@@ -80,11 +80,11 @@
                         <div class="error-box">
                             <div class="error-txt">
                                 <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                <ul>
-                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                    <li>${message.text}</li>
-                                    </c:forEach>
-                                </ul>
+                                    <ul>
+                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                            <li>${message.text}</li>
+                                        </c:forEach>
+                                    </ul>
                                 </c:if>
                             </div>
                         </div>
@@ -131,9 +131,9 @@
                                             </div>
 
                                             <c:if test="${!postingAllowed}">
-                                            <div class="alert-info">
-                                                <p>Your market place posting could be delayed. Remember to validate your email account.</p>
-                                            </div>
+                                                <div class="alert-info">
+                                                    <p>Your market place posting could be delayed. Remember to validate your email account.</p>
+                                                </div>
                                             </c:if>
                                         </c:otherwise>
                                     </c:choose>
@@ -230,3 +230,4 @@
 </script>
 
 </html>
+

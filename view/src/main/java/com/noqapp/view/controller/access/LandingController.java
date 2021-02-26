@@ -8,6 +8,7 @@ import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.QueueService;
+import com.noqapp.service.market.HouseholdItemService;
 import com.noqapp.service.market.PropertyService;
 import com.noqapp.view.form.LandingForm;
 
@@ -50,6 +51,7 @@ public class LandingController {
     private ApiHealthService apiHealthService;
     private AccountService accountService;
     private PropertyService propertyService;
+    private HouseholdItemService householdItemService;
 
     @Autowired
     public LandingController(
@@ -63,7 +65,8 @@ public class LandingController {
         QueueService queueService,
         ApiHealthService apiHealthService,
         AccountService accountService,
-        PropertyService propertyService
+        PropertyService propertyService,
+        HouseholdItemService householdItemService
     ) {
         this.nextPage = nextPage;
         this.migrateToBusinessRegistrationFlowActions = migrateToBusinessRegistrationFlowActions;
@@ -73,6 +76,7 @@ public class LandingController {
         this.apiHealthService = apiHealthService;
         this.accountService = accountService;
         this.propertyService = propertyService;
+        this.householdItemService = householdItemService;
     }
 
     @GetMapping(value = "/landing")
@@ -95,7 +99,8 @@ public class LandingController {
                 .setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
                 .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()))
                 .setMinorUserProfiles(accountService.findDependentProfiles(queueUser.getQueueUserId()))
-                .setProperties(propertyService.findPostedProperties(queueUser.getQueueUserId()));
+                .addPropertyMarketplaceForm(propertyService.findPostedProperties(queueUser.getQueueUserId()))
+                .addHouseholdItemMarketplaceForm(householdItemService.findPostedProperties(queueUser.getQueueUserId()));
 
             LOG.info("Current size={} and Historical size={}",
                 landingForm.getCurrentQueues().size(),

@@ -159,54 +159,54 @@
                         <div class="add-store">
                             <div class="store-table">
                                 <c:choose>
-                                    <c:when test="${!empty landingForm.properties}">
+                                    <c:when test="${!empty landingForm.marketplaceForms}">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Name</th>
                                                 <th>Posted For</th>
-                                                <th>Listed For</th>
+                                                <th>Price</th>
                                                 <th>City/Area</th>
-                                                <th>Not Visible After</th>
+                                                <th>Expires On</th>
                                                 <th>Stats</th>
                                                 <th></th>
                                             </tr>
-                                            <c:forEach items="${landingForm.properties}" var="property" varStatus="status">
+                                            <c:forEach items="${landingForm.marketplaceForms}" var="marketplaceForm" varStatus="status">
                                             <tr>
                                                 <td>${status.count}&nbsp;</td>
-                                                <td><a href="/access/marketplace/property/edit/${property.businessType.name}/${property.id}.htm" target="_blank">${property.title}</a></td>
-                                                <td>${property.businessType.description} (${property.rentalType.description})</td>
-                                                <td>${property.priceForDisplay}</td>
-                                                <td>${property.city}</td>
+                                                <td><a href="/access/marketplace/property/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}.htm" target="_blank">${marketplaceForm.marketplace.title}</a></td>
+                                                <td>${marketplaceForm.marketplace.businessType.description}</td>
+                                                <td>${marketplaceForm.marketplace.priceForDisplay}</td>
+                                                <td>${marketplaceForm.marketplace.city}</td>
                                                 <td>
-                                                    <a href="/access/marketplace/property/${property.businessType.name}/${property.id}/boost.htm">
-                                                    <fmt:formatDate pattern="MMMM dd, yyyy" value="${property.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
+                                                    <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost.htm">
+                                                    <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
                                                     </a>
                                                 </td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${property.likeCount == 0}">
-                                                            <i class="fas fa-heart" style="color:#4e4d4d;" title="Liked"></i> ${property.likeCount}
+                                                        <c:when test="${marketplaceForm.marketplace.likeCount == 0}">
+                                                            <i class="fas fa-heart" style="color:#4e4d4d;" title="Liked"></i> ${marketplaceForm.marketplace.likeCount}
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <i class="fas fa-heart" style="color:#ff217c;" title="Liked"></i> ${property.likeCount}
+                                                            <i class="fas fa-heart" style="color:#ff217c;" title="Liked"></i> ${marketplaceForm.marketplace.likeCount}
                                                         </c:otherwise>
                                                     </c:choose>
                                                     <c:choose>
-                                                        <c:when test="${property.expressedInterestCount == 0}">
-                                                            <i class="fas fa-fire" style="color:#4e4d4d;" title="Interest"></i> ${property.expressedInterestCount}
+                                                        <c:when test="${marketplaceForm.marketplace.expressedInterestCount == 0}">
+                                                            <i class="fas fa-fire" style="color:#4e4d4d;" title="Interest"></i> ${marketplaceForm.marketplace.expressedInterestCount}
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <i class="fas fa-fire" style="color:#ff217c;" title="Interest"></i> ${property.expressedInterestCount}
+                                                            <i class="fas fa-fire" style="color:#ff217c;" title="Interest"></i> ${marketplaceForm.marketplace.expressedInterestCount}
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
                                                 <c:choose>
-                                                    <c:when test="${empty property.postImages}">
-                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/uploadImage.htm">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Images"></i></a></td>
+                                                    <c:when test="${empty marketplaceForm.marketplace.postImages}">
+                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage.htm">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Images"></i></a></td>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <td><a href="/access/marketplace/${property.businessType.name}/${property.id}/uploadImage.htm">${property.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Images"></i></a></td>
+                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage.htm">${marketplaceForm.marketplace.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Images"></i></a></td>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </tr>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+    <secured attributes="ROLE_CLIENT" match="any"/>
+
+    <on-start>
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'postId')" result="conversationScope.postId" />
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'businessTypeAsString')" result="conversationScope.businessTypeAsString" />
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'postingAllowed')" result="conversationScope.postingAllowed" />
+        <evaluate expression="householdItemMarketplaceFlowActions.startOfNewPost(postId, businessTypeAsString, postingAllowed, externalContext)"
+                  result="flowScope.marketplaceForm"/>
+    </on-start>
+
+    <view-state id="selectTypeOfPost" model="marketplaceForm">
+        <transition on="submit" to="validateStartOfMarketplacePost"/>
+    </view-state>
+
+    <action-state id="validateStartOfMarketplacePost">
+        <evaluate expression="householdItemMarketplaceValidator.validateStartOfMarketplace(marketplaceForm, messageContext)"/>
+        <transition on="success" to="titleDescriptionOfPost"/>
+        <transition on="failure" to="selectTypeOfPost"/>
+    </action-state>
+
+    <view-state id="titleDescriptionOfPost" model="marketplaceForm">
+        <on-entry>
+            <evaluate expression="householdItemMarketplaceFlowActions.afterPostTypeHasBeenSelected(marketplaceForm)" />
+        </on-entry>
+        <transition on="submit" to="validateTitleDescription"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="validateTitleDescription">
+        <evaluate expression="householdItemMarketplaceValidator.validateTitleDescription(marketplaceForm, messageContext)"/>
+        <transition on="success" to="detailOfPost"/>
+        <transition on="failure" to="titleDescriptionOfPost"/>
+    </action-state>
+
+    <view-state id="detailOfPost" model="marketplaceForm">
+        <transition on="submit" to="readyToPost"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="readyToPost">
+        <evaluate expression="householdItemMarketplaceValidator.validateReadyToPostMarketplace(marketplaceForm, messageContext)"/>
+        <transition on="success" to="reviewBeforePost"/>
+        <transition on="failure" to="detailOfPost"/>
+    </action-state>
+
+    <view-state id="reviewBeforePost" model="marketplaceForm">
+        <transition on="submit" to="completeNewPost" history="invalidate"/>
+        <transition on="cancel" to="home"/>
+    </view-state>
+
+    <action-state id="completeNewPost">
+        <!-- Need the result to show correct message on JSP -->
+        <evaluate expression="householdItemMarketplaceFlowActions.completeNewPost(marketplaceForm)"/>
+        <transition on="success" to="home"/>
+        <transition on="failure" to="reviewBeforePost"/>
+    </action-state>
+
+    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/access/landing.htm"/>
+    <end-state id="home" view="externalRedirect:contextRelative:/access/landing.htm"/>
+
+    <global-transitions>
+        <transition on="cancel" to="home"/>
+    </global-transitions>
+</flow>

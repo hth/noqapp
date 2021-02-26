@@ -59,7 +59,7 @@ public abstract class MarketplaceEntity extends BaseEntity {
     @Field("EC")
     private int expressedInterestCount;
 
-    //Marketplace location
+    /** Marketplace location. */
     @Field("MA")
     private String address;
 
@@ -76,7 +76,7 @@ public abstract class MarketplaceEntity extends BaseEntity {
     private String landmark;
 
     @Field("PU")
-    private Date publishUntil = DateUtil.plusDays(7);
+    private Date publishUntil = DateUtil.plusDays(10);
 
     @Field ("VB")
     private String validateByQid;
