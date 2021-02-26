@@ -1,6 +1,7 @@
-package com.noqapp.view.form;
+package com.noqapp.view.form.marketplace;
 
 import com.noqapp.domain.market.MarketplaceEntity;
+import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.catgeory.RentalTypeEnum;
 
@@ -23,8 +24,8 @@ import java.util.List;
     "PMD.MethodArgumentCouldBeFinal",
     "PMD.LongVariable"
 })
-public class PostOnMarketplaceForm implements Serializable {
-    private static final Logger LOG = LoggerFactory.getLogger(PostOnMarketplaceForm.class);
+public class MarketplaceForm implements Serializable {
+    private static final Logger LOG = LoggerFactory.getLogger(MarketplaceForm.class);
 
     private String ip;
     private String countryCode;
@@ -33,6 +34,7 @@ public class PostOnMarketplaceForm implements Serializable {
     private double[] coordinate;
 
     private BusinessTypeEnum businessType;
+    private boolean postingAllowed;
 
     private MarketplaceEntity marketplace;
 
@@ -41,16 +43,11 @@ public class PostOnMarketplaceForm implements Serializable {
     @Transient
     private List<BusinessTypeEnum> marketPlaces = BusinessTypeEnum.marketPlaces();
 
-    @Transient
-    private List<RentalTypeEnum> rentalTypes = new ArrayList<>(RentalTypeEnum.rentalTypes);
-
-    private boolean postingAllowed;
-
     public String getIp() {
         return ip;
     }
 
-    public PostOnMarketplaceForm setIp(String ip) {
+    public MarketplaceForm setIp(String ip) {
         this.ip = ip;
         return this;
     }
@@ -59,7 +56,7 @@ public class PostOnMarketplaceForm implements Serializable {
         return countryCode;
     }
 
-    public PostOnMarketplaceForm setCountryCode(String countryCode) {
+    public MarketplaceForm setCountryCode(String countryCode) {
         this.countryCode = countryCode;
         return this;
     }
@@ -68,7 +65,7 @@ public class PostOnMarketplaceForm implements Serializable {
         return city;
     }
 
-    public PostOnMarketplaceForm setCity(String city) {
+    public MarketplaceForm setCity(String city) {
         this.city = city;
         return this;
     }
@@ -77,7 +74,7 @@ public class PostOnMarketplaceForm implements Serializable {
         return coordinate;
     }
 
-    public PostOnMarketplaceForm setCoordinate(double[] coordinate) {
+    public MarketplaceForm setCoordinate(double[] coordinate) {
         this.coordinate = coordinate;
         return this;
     }
@@ -86,8 +83,17 @@ public class PostOnMarketplaceForm implements Serializable {
         return businessType;
     }
 
-    public PostOnMarketplaceForm setBusinessType(BusinessTypeEnum businessType) {
+    public MarketplaceForm setBusinessType(BusinessTypeEnum businessType) {
         this.businessType = businessType;
+        return this;
+    }
+
+    public boolean isPostingAllowed() {
+        return postingAllowed;
+    }
+
+    public MarketplaceForm setPostingAllowed(boolean postingAllowed) {
+        this.postingAllowed = postingAllowed;
         return this;
     }
 
@@ -95,7 +101,7 @@ public class PostOnMarketplaceForm implements Serializable {
         return marketplace;
     }
 
-    public PostOnMarketplaceForm setMarketplace(MarketplaceEntity marketplace) {
+    public MarketplaceForm setMarketplace(MarketplaceEntity marketplace) {
         this.marketplace = marketplace;
         return this;
     }
@@ -104,7 +110,7 @@ public class PostOnMarketplaceForm implements Serializable {
         return validateByQid;
     }
 
-    public PostOnMarketplaceForm setValidateByQid(String validateByQid) {
+    public MarketplaceForm setValidateByQid(String validateByQid) {
         this.validateByQid = validateByQid;
         return this;
     }
@@ -113,26 +119,8 @@ public class PostOnMarketplaceForm implements Serializable {
         return marketPlaces;
     }
 
-    public PostOnMarketplaceForm setMarketPlaces(List<BusinessTypeEnum> marketPlaces) {
+    public MarketplaceForm setMarketPlaces(List<BusinessTypeEnum> marketPlaces) {
         this.marketPlaces = marketPlaces;
-        return this;
-    }
-
-    public List<RentalTypeEnum> getRentalTypes() {
-        return rentalTypes;
-    }
-
-    public PostOnMarketplaceForm setRentalTypes(List<RentalTypeEnum> rentalTypes) {
-        this.rentalTypes = rentalTypes;
-        return this;
-    }
-
-    public boolean isPostingAllowed() {
-        return postingAllowed;
-    }
-
-    public PostOnMarketplaceForm setPostingAllowed(boolean postingAllowed) {
-        this.postingAllowed = postingAllowed;
         return this;
     }
 }

@@ -11,17 +11,13 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.UserLevelEnum;
 
-import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-
-import org.bson.types.ObjectId;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -286,6 +282,15 @@ public final class UserProfileManagerImpl implements UserProfileManager {
         mongoTemplate.updateFirst(
             query(where("QID").is(qid)),
             update("PV", true),
+            UserProfileEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public boolean isProfileVerified(String qid) {
+        return mongoTemplate.exists(
+            query(where("QID").is(qid).and("PV").is(true)),
             UserProfileEntity.class,
             TABLE
         );

@@ -75,4 +75,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     void changeUserLevel(String qid, UserLevelEnum userLevel);
 
     void markProfileVerified(String qid);
+
+    boolean isProfileVerified(String qid);
 }

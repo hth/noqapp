@@ -1,10 +1,12 @@
 package com.noqapp.view.flow.access;
 
+import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.UserProfileManager;
-import com.noqapp.repository.market.PropertyManager;
+import com.noqapp.repository.market.HouseholdItemManager;
+import com.noqapp.view.form.marketplace.HouseholdItemMarketplaceForm;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 import com.noqapp.view.form.marketplace.PropertyRentalMarketplaceForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
@@ -34,27 +36,27 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * hitender
- * 1/10/21 11:12 AM
+ * 2/24/21 4:05 PM
  */
 @Component
-public class PropertyRentalMarketplaceFlowActions {
-    private static final Logger LOG = LoggerFactory.getLogger(PropertyRentalMarketplaceFlowActions.class);
+public class HouseholdItemMarketplaceFlowActions {
+    private static final Logger LOG = LoggerFactory.getLogger(HouseholdItemMarketplaceFlowActions.class);
 
     private Environment environment;
     private DatabaseReader databaseReader;
-    private PropertyManager propertyManager;
+    private HouseholdItemManager householdItemManager;
     private UserProfileManager userProfileManager;
 
     @Autowired
-    public PropertyRentalMarketplaceFlowActions(
+    public HouseholdItemMarketplaceFlowActions(
         Environment environment,
         DatabaseReader databaseReader,
-        PropertyManager propertyManager,
+        HouseholdItemManager householdItemManager,
         UserProfileManager userProfileManager
     ) {
         this.environment = environment;
         this.databaseReader = databaseReader;
-        this.propertyManager = propertyManager;
+        this.householdItemManager = householdItemManager;
         this.userProfileManager = userProfileManager;
     }
 
@@ -83,7 +85,7 @@ public class PropertyRentalMarketplaceFlowActions {
             LOG.error("Failed reason={}", e.getLocalizedMessage(), e);
         }
 
-        MarketplaceForm marketplaceForm = new PropertyRentalMarketplaceForm()
+        MarketplaceForm marketplaceForm = new HouseholdItemMarketplaceForm()
             .setIp(ip)
             .setCountryCode(countryCode)
             .setCity(city)
@@ -95,8 +97,8 @@ public class PropertyRentalMarketplaceFlowActions {
 
         if (StringUtils.isNotBlank(postId)) {
             switch (BusinessTypeEnum.valueOf(businessTypeAsString)) {
-                case PR:
-                    PropertyEntity property = propertyManager.findOneById(postId);
+                case HI:
+                    HouseholdItemEntity property = householdItemManager.findOneById(postId);
                     marketplaceForm.setMarketplace(property)
                         .setBusinessType(property.getBusinessType())
                         .setCity(property.getCity());
@@ -114,12 +116,12 @@ public class PropertyRentalMarketplaceFlowActions {
 
     /** After business type is selected set the entity. */
     @SuppressWarnings("unused")
-    public void afterPostTypeHasBeenSelected(PropertyRentalMarketplaceForm marketplaceForm) {
+    public void afterPostTypeHasBeenSelected(HouseholdItemMarketplaceForm marketplaceForm) {
         switch (marketplaceForm.getBusinessType()) {
-            case PR:
+            case HI:
                 if (null == marketplaceForm.getMarketplace()) {
                     marketplaceForm.setMarketplace(
-                        new PropertyEntity()
+                        new HouseholdItemEntity()
                             .setCity(marketplaceForm.getCity())
                             .setCountryShortName(marketplaceForm.getCountryCode()));
                 } else {
@@ -135,12 +137,12 @@ public class PropertyRentalMarketplaceFlowActions {
     }
 
     @SuppressWarnings("unused")
-    public String completeNewPost(PropertyRentalMarketplaceForm marketplaceForm) {
+    public String completeNewPost(HouseholdItemMarketplaceForm marketplaceForm) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Ready to post {}", marketplaceForm);
         switch (marketplaceForm.getBusinessType()) {
-            case PR:
-                PropertyEntity marketplace = (PropertyEntity) marketplaceForm.getMarketplace();
+            case HI:
+                HouseholdItemEntity marketplace = (HouseholdItemEntity) marketplaceForm.getMarketplace();
                 boolean isUserProfileVerified = userProfileManager.isProfileVerified(queueUser.getQueueUserId());
                 marketplace.setBusinessType(marketplaceForm.getBusinessType())
                     .setQueueUserId(queueUser.getQueueUserId())
@@ -152,7 +154,7 @@ public class PropertyRentalMarketplaceFlowActions {
                             ? userProfileManager.findOneByMail("beta@noqapp.com").getQueueUserId()
                             : "100000000002");
                 }
-                propertyManager.save(marketplace);
+                householdItemManager.save(marketplace);
                 return "success";
             default:
                 LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());

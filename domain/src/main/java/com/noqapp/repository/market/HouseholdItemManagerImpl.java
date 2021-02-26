@@ -4,6 +4,8 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.market.HouseholdItemEntity;
+import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyEntity;
 
 import com.mongodb.DuplicateKeyException;
@@ -13,7 +15,6 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -23,7 +24,7 @@ import java.util.List;
 
 /**
  * hitender
- * 1/11/21 12:51 AM
+ * 2/25/21 1:46 PM
  */
 @SuppressWarnings({
     "PMD.BeanMembersShouldSerialize",
@@ -32,22 +33,21 @@ import java.util.List;
     "PMD.LongVariable"
 })
 @Repository
-public class PropertyManagerImpl implements PropertyManager {
-    private static final Logger LOG = LoggerFactory.getLogger(PropertyManagerImpl.class);
+public class HouseholdItemManagerImpl implements HouseholdItemManager {
+    private static final Logger LOG = LoggerFactory.getLogger(HouseholdItemManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-        PropertyEntity.class,
+        HouseholdItemEntity.class,
         Document.class,
         "collection");
 
     private MongoTemplate mongoTemplate;
 
-    @Autowired
-    public PropertyManagerImpl(MongoTemplate mongoTemplate) {
+    public HouseholdItemManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
     @Override
-    public void save(PropertyEntity object) {
+    public void save(HouseholdItemEntity object) {
         try {
             if (object.getId() != null) {
                 object.setUpdated();
@@ -59,20 +59,20 @@ public class PropertyManagerImpl implements PropertyManager {
     }
 
     @Override
-    public void deleteHard(PropertyEntity object) {
+    public void deleteHard(HouseholdItemEntity object) {
         throw new UnsupportedOperationException("This method is not supported");
     }
 
     @Override
-    public PropertyEntity findOneById(String id) {
-        return mongoTemplate.findById(new ObjectId(id), PropertyEntity.class, TABLE);
+    public HouseholdItemEntity findOneById(String id) {
+        return mongoTemplate.findById(new ObjectId(id), HouseholdItemEntity.class, TABLE);
     }
 
     @Override
-    public List<PropertyEntity> findByQid(String queueUserId) {
+    public List<HouseholdItemEntity> findByQid(String queueUserId) {
         return mongoTemplate.find(
             query(where("QID").is(queueUserId)).with(Sort.by(Sort.Direction.DESC, "C")),
-            PropertyEntity.class,
+            HouseholdItemEntity.class,
             TABLE
         );
     }

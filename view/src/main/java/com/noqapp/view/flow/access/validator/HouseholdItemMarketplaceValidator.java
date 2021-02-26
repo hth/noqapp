@@ -1,9 +1,10 @@
 package com.noqapp.view.flow.access.validator;
 
+import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.view.controller.access.LandingController;
-import com.noqapp.view.form.marketplace.PropertyRentalMarketplaceForm;
+import com.noqapp.view.form.marketplace.HouseholdItemMarketplaceForm;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,17 +18,17 @@ import org.springframework.stereotype.Component;
 
 /**
  * hitender
- * 1/10/21 12:02 PM
+ * 2/24/21 4:07 PM
  */
 @Component
-public class PropertyRentalMarketplaceValidator {
-    private static final Logger LOG = LoggerFactory.getLogger(PropertyRentalMarketplaceValidator.class);
+public class HouseholdItemMarketplaceValidator {
+    private static final Logger LOG = LoggerFactory.getLogger(HouseholdItemMarketplaceValidator.class);
 
     @Autowired
-    public PropertyRentalMarketplaceValidator() {
+    public HouseholdItemMarketplaceValidator() {
     }
 
-    public String validateStartOfMarketplace(PropertyRentalMarketplaceForm marketplaceForm, MessageContext messageContext) {
+    public String validateStartOfMarketplace(HouseholdItemMarketplaceForm marketplaceForm, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
         if (null == marketplaceForm.getBusinessType()) {
@@ -43,7 +44,7 @@ public class PropertyRentalMarketplaceValidator {
         return status;
     }
 
-    public String validateTitleDescription(PropertyRentalMarketplaceForm marketplaceForm, MessageContext messageContext) {
+    public String validateTitleDescription(HouseholdItemMarketplaceForm marketplaceForm, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
         if (StringUtils.isBlank(marketplaceForm.getMarketplace().getTitle())) {
@@ -85,60 +86,20 @@ public class PropertyRentalMarketplaceValidator {
         return status;
     }
 
-    public String validateReadyToPostMarketplace(PropertyRentalMarketplaceForm marketplaceForm, MessageContext messageContext) {
+    public String validateReadyToPostMarketplace(HouseholdItemMarketplaceForm marketplaceForm, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
-        if (BusinessTypeEnum.PR == marketplaceForm.getBusinessType()) {
-            PropertyEntity property = (PropertyEntity) marketplaceForm.getMarketplace();
-            if (property.getBedroom() <= 0) {
-                messageContext.addMessage(
-                    new MessageBuilder()
-                        .error()
-                        .source("marketplace.bedroom")
-                        .defaultText("At least 1 Bedroom")
-                        .build());
-                status = "failure";
-            }
-
-            if (property.getBathroom() <= 0) {
-                messageContext.addMessage(
-                    new MessageBuilder()
-                        .error()
-                        .source("marketplace.bathroom")
-                        .defaultText("At least 1 Bathroom")
-                        .build());
-                status = "failure";
-            }
-
-            if (property.getCarpetArea() <= 0) {
-                messageContext.addMessage(
-                    new MessageBuilder()
-                        .error()
-                        .source("marketplace.carpetArea")
-                        .defaultText("Please provide carpet area")
-                        .build());
-                status = "failure";
-            }
-
-            if (property.getProductPrice() <= 0) {
+        if (BusinessTypeEnum.HI == marketplaceForm.getBusinessType()) {
+            HouseholdItemEntity householdItem = (HouseholdItemEntity) marketplaceForm.getMarketplace();
+            if (householdItem.getProductPrice() <= 0) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()
                         .source("marketplace.productPrice")
-                        .defaultText("Please provide Rent per Month")
+                        .defaultText("Please provide List Price")
                         .build());
                 status = "failure";
             }
-        }
-
-        if (StringUtils.isBlank(marketplaceForm.getMarketplace().getAddress())) {
-            messageContext.addMessage(
-                new MessageBuilder()
-                    .error()
-                    .source("marketplace.address")
-                    .defaultText("Please provide rental address where rental unit is located. Address stays private.")
-                    .build());
-            status = "failure";
         }
 
         if (StringUtils.isBlank(marketplaceForm.getMarketplace().getCity())) {
@@ -146,7 +107,7 @@ public class PropertyRentalMarketplaceValidator {
                 new MessageBuilder()
                     .error()
                     .source("marketplace.city")
-                    .defaultText("Please provide city/area where rental unit is located")
+                    .defaultText("Please provide city/area where item is located")
                     .build());
             status = "failure";
         }
@@ -156,7 +117,7 @@ public class PropertyRentalMarketplaceValidator {
                 new MessageBuilder()
                     .error()
                     .source("marketplace.town")
-                    .defaultText("Please provide town/locality/sector where rental unit is located")
+                    .defaultText("Please provide town/locality/sector where item  is located")
                     .build());
             status = "failure";
         }

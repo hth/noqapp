@@ -12,17 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * hitender
- * 2/24/21 12:33 PM
+ * 2/24/21 6:07 PM
  */
 @SuppressWarnings ({
     "PMD.BeanMembersShouldSerialize",
@@ -31,22 +28,22 @@ import javax.servlet.http.HttpServletResponse;
     "PMD.LongVariable"
 })
 @Controller
-@RequestMapping(value = "/access/marketplace/property")
-public class PropertyRentalMarketController {
-    private static final Logger LOG = LoggerFactory.getLogger(PropertyRentalMarketController.class);
+@RequestMapping(value = "/access/marketplace/household")
+public class HouseholdItemMarketController {
+    private static final Logger LOG = LoggerFactory.getLogger(HouseholdItemMarketController.class);
 
-    private String propertyRentalMarketplaceFlowActions;
+    private String householdItemMarketplaceFlowActions;
 
     private AccountService accountService;
 
     @Autowired
-    public PropertyRentalMarketController(
-        @Value("${propertyRentalMarketplaceFlowActions:redirect:/access/marketplace/propertyRental.htm}")
-        String propertyRentalMarketplaceFlowActions,
+    public HouseholdItemMarketController(
+        @Value("${householdItemMarketplaceFlowActions:redirect:/access/marketplace/householdItem.htm}")
+        String householdItemMarketplaceFlowActions,
 
         AccountService accountService
     ) {
-        this.propertyRentalMarketplaceFlowActions = propertyRentalMarketplaceFlowActions;
+        this.householdItemMarketplaceFlowActions = householdItemMarketplaceFlowActions;
         this.accountService = accountService;
     }
 
@@ -62,8 +59,8 @@ public class PropertyRentalMarketController {
             LOG.error("Restricted posting to market place {}", queueUser.getQueueUserId());
             redirectAttributes.addFlashAttribute("postingAllowed", false);
         }
-        redirectAttributes.addFlashAttribute("businessTypeAsString", BusinessTypeEnum.PR.name());
-        return propertyRentalMarketplaceFlowActions;
+        redirectAttributes.addFlashAttribute("businessTypeAsString", BusinessTypeEnum.HI.name());
+        return householdItemMarketplaceFlowActions;
     }
 
     @GetMapping(value = "/edit/{businessTypeAsString}/{postId}")
@@ -76,26 +73,11 @@ public class PropertyRentalMarketController {
 
         RedirectAttributes redirectAttributes
     ) {
-        LOG.info("Requested post on marketplace {}", propertyRentalMarketplaceFlowActions);
+        LOG.info("Requested post on marketplace {}", householdItemMarketplaceFlowActions);
 
         redirectAttributes.addFlashAttribute("postId", postId);
         redirectAttributes.addFlashAttribute("businessTypeAsString", businessTypeAsString);
         redirectAttributes.addFlashAttribute("postingAllowed", true);
-        return propertyRentalMarketplaceFlowActions;
-    }
-
-    @GetMapping(value = "/{businessTypeAsString}/{postId}/boost")
-    public String boostYourPost(
-        @PathVariable("businessTypeAsString")
-        String businessTypeAsString,
-
-        @PathVariable("postId")
-        String postId,
-
-        Model model,
-        RedirectAttributes redirectAttrs,
-        HttpServletResponse response
-    ) {
-        return "";
+        return householdItemMarketplaceFlowActions;
     }
 }

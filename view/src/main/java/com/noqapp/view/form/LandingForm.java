@@ -2,11 +2,16 @@ package com.noqapp.view.form;
 
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.market.HouseholdItemEntity;
+import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
+import com.noqapp.view.form.marketplace.MarketplaceForm;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * User: hitender
@@ -24,7 +29,7 @@ public class LandingForm {
     private Date businessAccountSignedUp;
     private List<QueueEntity> currentQueues;
     private List<QueueEntity> historicalQueues;
-    private List<PropertyEntity> properties;
+    private List<MarketplaceForm> marketplaceForms = new LinkedList<>();
 
     private List<UserProfileEntity> minorUserProfiles;
 
@@ -64,12 +69,27 @@ public class LandingForm {
         return this;
     }
 
-    public List<PropertyEntity> getProperties() {
-        return properties;
+    /** Sorted by publishing date descending. */
+    public List<MarketplaceForm> getMarketplaceForms() {
+        return marketplaceForms.stream().sorted((s1,s2)->s2.getMarketplace().getPublishUntil().compareTo(s1.getMarketplace().getPublishUntil())).collect(Collectors.toList());
     }
 
-    public LandingForm setProperties(List<PropertyEntity> properties) {
-        this.properties = properties;
+    public LandingForm setMarketplaceForms(List<MarketplaceForm> marketplaceForms) {
+        this.marketplaceForms = marketplaceForms;
+        return this;
+    }
+
+    public LandingForm addPropertyMarketplaceForm(List<PropertyEntity> marketplaces) {
+        for (MarketplaceEntity marketplace : marketplaces) {
+            this.marketplaceForms.add(new MarketplaceForm().setMarketplace(marketplace));
+        }
+        return this;
+    }
+
+    public LandingForm addHouseholdItemMarketplaceForm(List<HouseholdItemEntity> marketplaces) {
+        for (MarketplaceEntity marketplace : marketplaces) {
+            this.marketplaceForms.add(new MarketplaceForm().setMarketplace(marketplace));
+        }
         return this;
     }
 
