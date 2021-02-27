@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
  * User: hitender
  * Date: 12/10/16 4:37 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 public class LandingForm {
 
@@ -71,7 +71,7 @@ public class LandingForm {
 
     /** Sorted by publishing date descending. */
     public List<MarketplaceForm> getMarketplaceForms() {
-        return marketplaceForms.stream().sorted((s1,s2)->s2.getMarketplace().getPublishUntil().compareTo(s1.getMarketplace().getPublishUntil())).collect(Collectors.toList());
+        return marketplaceForms.stream().sorted((s1, s2) -> s2.getMarketplace().getPublishUntil().compareTo(s1.getMarketplace().getPublishUntil())).collect(Collectors.toList());
     }
 
     public LandingForm setMarketplaceForms(List<MarketplaceForm> marketplaceForms) {
