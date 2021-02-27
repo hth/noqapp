@@ -1,21 +1,30 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
+
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.json.JsonProfessionalProfile;
+import com.noqapp.domain.json.JsonReview;
 import com.noqapp.domain.types.WalkInStateEnum;
+import com.noqapp.repository.PurchaseOrderManagerJDBC;
+import com.noqapp.repository.QueueManagerJDBC;
+import com.noqapp.repository.UserProfileManager;
 
 import com.google.zxing.WriterException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.text.WordUtils;
 
 import org.slf4j.Logger;
@@ -25,11 +34,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import org.jetbrains.annotations.NotNull;
+
 import freemarker.template.TemplateException;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -56,6 +68,9 @@ public class ShowHTMLService {
     private CodeQRGeneratorService codeQRGeneratorService;
     private StoreHourService storeHourService;
 
+    private UserProfileManager userProfileManager;
+    private QueueManagerJDBC queueManagerJDBC;
+
     private static String showStoreBlank;
     private static String showBusinessBlank;
 
@@ -80,7 +95,10 @@ public class ShowHTMLService {
         FreemarkerService freemarkerService,
         TokenQueueService tokenQueueService,
         CodeQRGeneratorService codeQRGeneratorService,
-        StoreHourService storeHourService
+        StoreHourService storeHourService,
+
+        UserProfileManager userProfileManager,
+        QueueManagerJDBC queueManagerJDBC
     ) {
         this.parentHost = parentHost;
         this.domain = domain;
@@ -93,6 +111,9 @@ public class ShowHTMLService {
         this.tokenQueueService = tokenQueueService;
         this.codeQRGeneratorService = codeQRGeneratorService;
         this.storeHourService = storeHourService;
+
+        this.userProfileManager = userProfileManager;
+        this.queueManagerJDBC = queueManagerJDBC;
 
         try {
             Map<String, Object> rootMap = new HashMap<>();
@@ -200,6 +221,7 @@ public class ShowHTMLService {
         rootMap.put("peopleInQueue", String.valueOf(tokenQueue.numberOfPeopleInQueue()));
         rootMap.put("codeQR", bizStore.getCodeQRInBase64());
         rootMap.put("walkIn", bizStore.getWalkInState() == null ? WalkInStateEnum.E.getName() : bizStore.getWalkInState().getName());
+        rootMap.put("reviews", getStoreReviews(bizStore));
 
         int i = zonedDateTime.getDayOfWeek().getValue();
         StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
@@ -239,6 +261,35 @@ public class ShowHTMLService {
             }
         }
         return true;
+    }
+
+    private List<JsonReview> getStoreReviews(BizStoreEntity bizStore) {
+        List<JsonReview> jsonReviews = new LinkedList<>();
+
+        List<QueueEntity> queues = queueManagerJDBC.findReviews(bizStore.getCodeQR(), 365);
+        if (queues.size() == 0) {
+            return jsonReviews;
+        }
+
+        for (QueueEntity queue : queues) {
+            try {
+                if (StringUtils.isNotBlank(queue.getReview())) {
+                    UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queue.getQueueUserId());
+                    jsonReviews.add(new JsonReview(
+                        queue.getId(),
+                        queue.getRatingCount(),
+                        queue.getReview(),
+                        userProfile.getProfileImage(),
+                        userProfile.getName(),
+                        true,
+                        DateUtil.convertDateToStringOf_DTF_MMMM_DD_YYYY(queue.getUpdated(), bizStore.getTimeZone())
+                    ));
+                }
+            } catch (Exception e) {
+                LOG.warn("Failed populating review {} {} {} {}", queue.getId(), bizStore.getId(), bizStore.getDisplayName(), bizStore.getBizName().getBusinessName());
+            }
+        }
+        return jsonReviews;
     }
 
     boolean populateMedicalProfile(

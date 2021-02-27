@@ -12,6 +12,8 @@ import com.noqapp.loader.domain.SiteMapIndex;
 import com.noqapp.loader.domain.SiteUrl;
 import com.noqapp.loader.domain.SiteUrlMap;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.PurchaseOrderManagerJDBC;
+import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.ShowProfessionalProfileHTMLService;
 import com.noqapp.service.StatsCronService;
@@ -65,7 +67,7 @@ public class GenerateStoreQueueHTML {
         @Value("${GenerateStoreQueueHTML.staticHTMLSwitch:ON}")
         String staticHTMLSwitch,
 
-        @Value("${GenerateStoreQueueHTML.store.base.directory:/tmp/b/s}")
+        @Value("${GenerateStoreQueueHTML.store.base.directory:/tmp/business/store}")
         String storeBaseDirectory,
 
         BizStoreManager bizStoreManager,
@@ -162,8 +164,8 @@ public class GenerateStoreQueueHTML {
 
             /* Create site index file upon exit. */
             createSiteMapIndexFile(
-                /* Since store file is in two levels down at /b/s hence getParent() & getParent(). */
-                Paths.get(Paths.get(storeBaseDirectory).getParent().getParent() + Constants.FILE_SEPARATOR + "q-s-sitemap.xml"),
+                /* Since store file is in two levels down at /business/store hence getParent() & getParent(). */
+                Paths.get(Paths.get(storeBaseDirectory).getParent().getParent() + Constants.FILE_SEPARATOR + "queue-store-sitemap.xml"),
                 siteMapIndex);
 
         } catch (Exception e) {
