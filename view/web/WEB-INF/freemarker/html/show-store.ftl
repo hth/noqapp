@@ -95,21 +95,23 @@
                     </div>
 
                     <div id="user_review">
-                        <p style="font-weight: bold; font-size: large; padding-bottom: 20px;">Latest reviews</p>
-                        <#list reviews as review>
-                            <div class="review">
-                                <input type="hidden" name="score" value="${review.ratingCount}" readonly="readonly">
-                                <p style="color: #1b1b1b; font-weight: bold">
-                                    <span id="review_rating"></span>
-                                </p>
-                                ${review.name} &nbsp;
-                            </div>
-                            <div style="padding-bottom: 20px;">
-                                <span style="font-size: small; color: #404040">Reviewed on ${review.created}</span><br/>
-                                <span style="font-size: x-small; color: #ff1c79">Verified Review</span><br/>
-                                <p style="color: #1b1b1b; padding-top: 10px;">${review.review}</p>
-                            </div>
-                        </#list>
+                        <#if reviews?has_content>
+                            <p style="font-weight: bold; font-size: large; padding-bottom: 20px;">Latest reviews</p>
+                            <#list reviews as review>
+                                <div class="review">
+                                    <input type="hidden" name="score" value="${review.ratingCount}" readonly="readonly">
+                                    <p style="color: #1b1b1b; font-weight: bold">
+                                        <span id="review_rating"></span>
+                                    </p>
+                                    ${review.name} &nbsp;
+                                </div>
+                                <div style="padding-bottom: 20px;">
+                                    <span style="font-size: small; color: #404040">Reviewed on ${review.created}</span><br/>
+                                    <span style="font-size: x-small; color: #ff1c79">Verified Review</span><br/>
+                                    <p style="color: #1b1b1b; padding-top: 10px;">${review.review}</p>
+                                </div>
+                            </#list>
+                        </#if>
                     </div>
 
                     <div class="qr-footer">
