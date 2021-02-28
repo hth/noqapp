@@ -25,7 +25,7 @@
         "fields": {
           "keyword": {
             "type": "keyword",
-            "ignore_above": 2
+            "ignore_above": 3
           }
         }
       },

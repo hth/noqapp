@@ -230,7 +230,7 @@ public final class DateUtil {
     public static String convertDateToStringOf_DTF_DD_MMM_YYYY(Date date, String timeZone) {
         return DTF_DD_MMM_YYYY.format(date.toInstant().atZone(ZoneId.of(timeZone)));
     }
-    
+
     public static String convertDateToStringOf_DTF_MMMM_DD_YYYY(LocalDate date) {
         return DTF_MMMM_DD_YYYY.format(date);
     }
@@ -245,13 +245,7 @@ public final class DateUtil {
         return getDaysBetween(DateUtil.asLocalDate(start), DateUtil.asLocalDate(new Date()));
     }
 
-    /**
-     * Inclusive of the days the campaign is going to run.
-     *
-     * @param start
-     * @param end
-     * @return
-     */
+    /** Inclusive of the days the campaign is going to run. */
     public static long getDaysBetween(Date start, Date end) {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");
