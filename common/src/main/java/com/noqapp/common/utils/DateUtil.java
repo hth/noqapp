@@ -230,9 +230,14 @@ public final class DateUtil {
     public static String convertDateToStringOf_DTF_DD_MMM_YYYY(Date date, String timeZone) {
         return DTF_DD_MMM_YYYY.format(date.toInstant().atZone(ZoneId.of(timeZone)));
     }
+    
+    public static String convertDateToStringOf_DTF_MMMM_DD_YYYY(LocalDate date) {
+        return DTF_MMMM_DD_YYYY.format(date);
+    }
 
-    public static String convertDateToStringOf_DTF_MMMM_DD_YYYY(Date date, String timeZone) {
-        return DTF_MMMM_DD_YYYY.format(date.toInstant().atZone(ZoneId.of(timeZone)));
+    /** Date should have timezone when converting to Instant or use LocalDate. */
+    public static String convertDateToStringOf_DTF_MMMM_DD_YYYY(Date date) {
+        return convertDateToStringOf_DTF_MMMM_DD_YYYY(DateUtil.asLocalDate(date));
     }
 
     public static long getDaysBetween(Date start) {
