@@ -286,7 +286,13 @@ public class ShowHTMLService {
                     ));
                 }
             } catch (Exception e) {
-                LOG.warn("Failed populating review {} {} {} {} {}", queue.getId(), bizStore.getId(), bizStore.getDisplayName(), bizStore.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
+                LOG.error("Failed populating review {} {} {} {} {}",
+                    queue.getId(),
+                    bizStore.getId(),
+                    bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName(),
+                    e.getLocalizedMessage(),
+                    e);
             }
         }
         return jsonReviews;
