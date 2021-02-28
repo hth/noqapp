@@ -245,13 +245,7 @@ public final class DateUtil {
         return getDaysBetween(DateUtil.asLocalDate(start), DateUtil.asLocalDate(new Date()));
     }
 
-    /**
-     * Inclusive of the days the campaign is going to run.
-     *
-     * @param start
-     * @param end
-     * @return
-     */
+    /** Inclusive of the days the campaign is going to run. */
     public static long getDaysBetween(Date start, Date end) {
         Assert.notNull(start, "Start date is null");
         Assert.notNull(end, "End date is null");
