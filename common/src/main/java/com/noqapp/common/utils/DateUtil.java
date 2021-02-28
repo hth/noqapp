@@ -230,7 +230,7 @@ public final class DateUtil {
     public static String convertDateToStringOf_DTF_DD_MMM_YYYY(Date date, String timeZone) {
         return DTF_DD_MMM_YYYY.format(date.toInstant().atZone(ZoneId.of(timeZone)));
     }
-    
+
     public static String convertDateToStringOf_DTF_MMMM_DD_YYYY(LocalDate date) {
         return DTF_MMMM_DD_YYYY.format(date);
     }
