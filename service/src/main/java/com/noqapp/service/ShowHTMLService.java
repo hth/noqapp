@@ -282,11 +282,11 @@ public class ShowHTMLService {
                         userProfile.getProfileImage(),
                         userProfile.getName(),
                         true,
-                        DateUtil.convertDateToStringOf_DTF_MMMM_DD_YYYY(queue.getUpdated(), bizStore.getTimeZone())
+                        DateUtil.convertDateToStringOf_DTF_MMMM_DD_YYYY(queue.getCreated())
                     ));
                 }
             } catch (Exception e) {
-                LOG.warn("Failed populating review {} {} {} {}", queue.getId(), bizStore.getId(), bizStore.getDisplayName(), bizStore.getBizName().getBusinessName());
+                LOG.warn("Failed populating review {} {} {} {} {}", queue.getId(), bizStore.getId(), bizStore.getDisplayName(), bizStore.getBizName().getBusinessName(), e.getLocalizedMessage(), e);
             }
         }
         return jsonReviews;
