@@ -7,6 +7,7 @@
     <title>NoQueue</title>
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
+    <meta name="description" content="Complete your booking on NoQueue. Get instant token and real-time status. Search for doctors, hospital related service, doctors timing, pay online.">
 
     <link rel="stylesheet" href="${page.parentHost}/static/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${page.parentHost}/static/internal/css/phone-style.css" type='text/css' media="screen"/>
