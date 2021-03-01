@@ -52,7 +52,7 @@ public class BizStoreElasticList extends AbstractDomain {
     @JsonProperty("categories")
     private List<JsonCategory> jsonCategories = new ArrayList<>();
 
-    /** Do not make it a Set. Intentionally using List here. When Set, level up stops working and shows just one store. */
+    /** Do not make it a Set datatype. Intentionally using List here. When changed to use Set, level up stops working and shows just one store. */
     @JsonProperty("result")
     private Collection<BizStoreElastic> bizStoreElastics = new ArrayList<>();
 
