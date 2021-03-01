@@ -2,7 +2,7 @@
   "mappings": {
     "dynamic": false,
     "properties": {
-      "SA": {
+      "AR": {
         "type": "text",
         "fields": {
           "keyword": {
@@ -194,6 +194,15 @@
       "RC": {
         "type": "long"
       },
+      "SA": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
       "SS": {
         "type": "text",
         "fields": {
@@ -204,15 +213,6 @@
         }
       },
       "ST": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "AR": {
         "type": "text",
         "fields": {
           "keyword": {
