@@ -182,7 +182,7 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("PF")
     private int appointmentOpenHowFar;
 
-    /* Tag to help in search. */
+    /** Tag to help in search. Can put data that can help find it easily. */
     @JsonProperty("TAG")
     private String tag;
 
