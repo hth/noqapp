@@ -2,28 +2,7 @@
   "mappings": {
     "dynamic": false,
     "properties": {
-      "A": {
-        "type" : "boolean"
-      },
-      "AC": {
-        "type" : "nested"
-      },
-      "AM": {
-        "type" : "nested"
-      },
       "AR": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "BI": {
-        "type" : "nested"
-      },
-      "BDI": {
         "type": "text",
         "fields": {
           "keyword": {
@@ -90,15 +69,6 @@
           }
         }
       },
-      "DI": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
       "DN": {
         "type": "text",
 
@@ -120,18 +90,6 @@
       },
       "EP" : {
         "type": "boolean"
-      },
-      "FA": {
-        "type" : "nested"
-      },
-      "FF": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
       },
       "GH": {
         "type": "geo_point"
@@ -179,24 +137,15 @@
       "PP": {
         "type": "integer"
       },
-      "WL" : {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "WS" : {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 1
-          }
-        }
-      },
+
+
+
+
+
+
+
+
+
       "PS" : {
         "type": "text",
         "fields": {
@@ -272,15 +221,15 @@
           }
         }
       },
-      "TAG": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
+
+
+
+
+
+
+
+
+
       "TO": {
         "type": "text",
         "fields": {
