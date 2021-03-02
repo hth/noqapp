@@ -3,190 +3,178 @@
     "dynamic": false,
     "properties": {
       "AR": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
-      },
-      "BID": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "BT": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 3
-          }
-        }
+        },
+        "type": "text"
       },
       "BC": {
-        "type": "text",
         "fielddata": true,
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "BCI": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
+      },
+      "BID": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "BT": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 3,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
       },
       "CC": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "COR": {
         "type": "geo_point"
       },
       "CS": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "DN": {
-        "type": "text",
         "fielddata": true,
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "DT": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
-      "EP" : {
+      "EP": {
         "type": "boolean"
       },
       "GH": {
         "type": "geo_point"
       },
-      "SH": {
-        "type": "nested"
-      },
       "N": {
-        "type": "text",
         "fielddata": true,
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "PC": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
+      },
+      "PD": {
+        "type": "integer"
+      },
+      "PF": {
+        "type": "integer"
       },
       "PH": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "PI": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "PP": {
         "type": "integer"
       },
-      "WS" : {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 1
-          }
-        }
-      },
-      "PS" : {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 1
-          }
-        }
-      },
-      "PD" : {
-        "type": "integer"
-      },
-      "PF" : {
-        "type": "integer"
-      },
       "PR": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
+      },
+      "PS": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 1,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
       },
       "PT": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "QR": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "RA": {
         "type": "float"
@@ -195,58 +183,70 @@
         "type": "long"
       },
       "SA": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
+      },
+      "SH": {
+        "type": "nested"
       },
       "SS": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "ST": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "TAG": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "TO": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
       },
       "TZ": {
-        "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "type": "keyword"
           }
-        }
+        },
+        "type": "text"
+      },
+      "WS": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 1,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
       }
     }
   }
