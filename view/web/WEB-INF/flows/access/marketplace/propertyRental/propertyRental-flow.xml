@@ -10,6 +10,7 @@
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'postId')" result="conversationScope.postId" />
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'businessTypeAsString')" result="conversationScope.businessTypeAsString" />
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'postingAllowed')" result="conversationScope.postingAllowed" />
+        <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'editMode')" result="conversationScope.editMode" />
         <evaluate expression="propertyRentalMarketplaceFlowActions.startOfNewPost(postId, businessTypeAsString, postingAllowed, externalContext)"
                   result="flowScope.marketplaceForm"/>
     </on-start>

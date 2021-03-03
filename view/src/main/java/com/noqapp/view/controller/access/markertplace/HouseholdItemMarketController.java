@@ -60,6 +60,7 @@ public class HouseholdItemMarketController {
             redirectAttributes.addFlashAttribute("postingAllowed", false);
         }
         redirectAttributes.addFlashAttribute("businessTypeAsString", BusinessTypeEnum.HI.name());
+        redirectAttributes.addFlashAttribute("editMode", false);
         return householdItemMarketplaceFlowActions;
     }
 
@@ -78,6 +79,7 @@ public class HouseholdItemMarketController {
         redirectAttributes.addFlashAttribute("postId", postId);
         redirectAttributes.addFlashAttribute("businessTypeAsString", businessTypeAsString);
         redirectAttributes.addFlashAttribute("postingAllowed", true);
+        redirectAttributes.addFlashAttribute("editMode", true);
         return householdItemMarketplaceFlowActions;
     }
 }

@@ -69,11 +69,11 @@
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
                             <c:choose>
-                                <c:when test="${empty marketplaceForm.validateByQid}">
-                                    <h2>Post on Marketplace for ${marketplaceForm.businessType.description}</h2>
+                                <c:when test="${editMode}">
+                                    <h2>Edit Post on ${marketplaceForm.businessType.description}</h2>
                                 </c:when>
                                 <c:otherwise>
-                                    <h2>Edit Post on ${marketplaceForm.businessType.description}</h2>
+                                    <h2>Post on Marketplace for ${marketplaceForm.businessType.description}</h2>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -98,7 +98,7 @@
                                         <div class="col-fields">
                                             <form:input path="marketplace.productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="List the price of your item" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -111,7 +111,7 @@
                                                 <form:options items="${marketplaceForm.itemConditions}" itemValue="name" itemLabel="description" disabled="false"/>
                                             </form:select>
                                         </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Select the condition of your item" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -129,7 +129,7 @@
                                         <div class="col-fields">
                                             <form:input path="marketplace.city" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="City your item is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -140,7 +140,7 @@
                                         <div class="col-fields">
                                             <form:input path="marketplace.town" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Town or Sector item is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -151,7 +151,7 @@
                                         <div class="col-fields">
                                             <form:input path="marketplace.landmark" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Any close by landmark" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;"></sup>
                                         <div class="clearFix"></div>
                                     </li>

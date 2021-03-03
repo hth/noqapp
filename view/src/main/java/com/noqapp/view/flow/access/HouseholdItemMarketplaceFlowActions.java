@@ -1,14 +1,15 @@
 package com.noqapp.view.flow.access;
 
 import com.noqapp.domain.market.HouseholdItemEntity;
-import com.noqapp.domain.market.PropertyEntity;
+import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.HouseholdItemManager;
+import com.noqapp.search.elastic.helper.DomainConversion;
+import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.view.form.marketplace.HouseholdItemMarketplaceForm;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
-import com.noqapp.view.form.marketplace.PropertyRentalMarketplaceForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 
 import com.maxmind.geoip2.DatabaseReader;
@@ -46,18 +47,21 @@ public class HouseholdItemMarketplaceFlowActions {
     private DatabaseReader databaseReader;
     private HouseholdItemManager householdItemManager;
     private UserProfileManager userProfileManager;
+    private MarketplaceElasticService marketplaceElasticService;
 
     @Autowired
     public HouseholdItemMarketplaceFlowActions(
         Environment environment,
         DatabaseReader databaseReader,
         HouseholdItemManager householdItemManager,
-        UserProfileManager userProfileManager
+        UserProfileManager userProfileManager,
+        MarketplaceElasticService marketplaceElasticService
     ) {
         this.environment = environment;
         this.databaseReader = databaseReader;
         this.householdItemManager = householdItemManager;
         this.userProfileManager = userProfileManager;
+        this.marketplaceElasticService = marketplaceElasticService;
     }
 
     @SuppressWarnings("unused")
@@ -74,7 +78,7 @@ public class HouseholdItemMarketplaceFlowActions {
             countryCode = StringUtils.isEmpty(response.getCountry().getIsoCode()) ? "" : response.getCountry().getIsoCode();
             city = StringUtils.isEmpty(response.getCity().getName()) ? "" : response.getCity().getName();
             location = response.getLocation();
-            LOG.info("Accuracy radius {} {} {}", location.getAccuracyRadius(), city, countryCode);
+            LOG.info("Accuracy radius {} {} {} {}", ip, location.getAccuracyRadius(), city, countryCode);
         } catch (AddressNotFoundException e) {
             LOG.warn("Failed finding ip={} reason={}", ip, e.getLocalizedMessage());
         } catch (GeoIp2Exception e) {
@@ -101,7 +105,8 @@ public class HouseholdItemMarketplaceFlowActions {
                     HouseholdItemEntity property = householdItemManager.findOneById(postId);
                     marketplaceForm.setMarketplace(property)
                         .setBusinessType(property.getBusinessType())
-                        .setCity(property.getCity());
+                        .setCity(property.getCity())
+                        .setCoordinate(marketplaceForm.getCoordinate());
                     break;
                 default:
                     LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());
@@ -155,6 +160,7 @@ public class HouseholdItemMarketplaceFlowActions {
                             : "100000000002");
                 }
                 householdItemManager.save(marketplace);
+                marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
                 return "success";
             default:
                 LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());

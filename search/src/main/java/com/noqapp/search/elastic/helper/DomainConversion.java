@@ -4,7 +4,12 @@ import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.market.HouseholdItemEntity;
+import com.noqapp.domain.market.MarketplaceEntity;
+import com.noqapp.domain.market.PropertyEntity;
+import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.domain.MarketplaceElastic;
 import com.noqapp.search.elastic.domain.StoreHourElastic;
 
 import org.apache.commons.lang3.StringUtils;
@@ -164,5 +169,32 @@ public class DomainConversion {
             );
         }
         return storeHourElastics;
+    }
+
+    public static MarketplaceElastic getAsMarketplaceElastic(MarketplaceEntity marketplace) {
+        MarketplaceElastic marketplaceElastic = new MarketplaceElastic()
+            .setId(marketplace.getId())
+            .setBusinessType(marketplace.getBusinessType())
+            .setProductPrice(marketplace.getProductPrice())
+            .setTitle(marketplace.getTitle())
+            .setDescription(marketplace.getDescription())
+            .setPostImages(marketplace.getPostImages())
+            .setLikeCount(marketplace.getLikeCount())
+            .setExpressedInterestCount(marketplace.getExpressedInterestCount())
+            .setGeoPointOfQ(marketplace.getCoordinate() == null ? new GeoPointOfQ(0.0, 0.0) : marketplace.getGeoPointOfQ())
+            .setCity(marketplace.getCity())
+            .setTown(marketplace.getTown())
+            .setCountryShortName(marketplace.getCountryShortName())
+            .setPublishUntil(marketplace.getPublishUntil());
+        switch (marketplace.getBusinessType()) {
+            case PR:
+                marketplaceElastic.setTag(marketplace.getFieldValueForTag());
+                break;
+            case HI:
+                marketplaceElastic.setTag(marketplace.getFieldValueForTag());
+                break;
+        }
+
+        return marketplaceElastic;
     }
 }

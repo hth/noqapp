@@ -92,6 +92,8 @@ import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserPreferenceManagerImpl;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.UserProfileManagerImpl;
+import com.noqapp.repository.market.HouseholdItemManager;
+import com.noqapp.repository.market.HouseholdItemManagerImpl;
 import com.noqapp.repository.market.PropertyManager;
 import com.noqapp.repository.market.PropertyManagerImpl;
 import com.noqapp.service.nlp.NLPService;
@@ -197,6 +199,7 @@ public class ITest extends RealMongoForITest {
     protected PublishArticleManager publishArticleManager;
     protected AdvertisementManager advertisementManager;
     protected PropertyManager propertyManager;
+    protected HouseholdItemManager householdItemManager;
     protected ScheduleAppointmentManager scheduleAppointmentManager;
     protected CouponManager couponManager;
     protected CustomTextToSpeechManager customTextToSpeechManager;
@@ -415,6 +418,7 @@ public class ITest extends RealMongoForITest {
         publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
         advertisementManager = new AdvertisementManagerImpl(getMongoTemplate());
         propertyManager = new PropertyManagerImpl(getMongoTemplate());
+        householdItemManager = new HouseholdItemManagerImpl(getMongoTemplate());
 
         fileService = new FileService(
             192, 192, 300, 150,

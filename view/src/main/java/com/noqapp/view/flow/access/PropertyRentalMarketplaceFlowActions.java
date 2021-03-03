@@ -5,6 +5,8 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.PropertyManager;
+import com.noqapp.search.elastic.helper.DomainConversion;
+import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 import com.noqapp.view.form.marketplace.PropertyRentalMarketplaceForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
@@ -44,18 +46,21 @@ public class PropertyRentalMarketplaceFlowActions {
     private DatabaseReader databaseReader;
     private PropertyManager propertyManager;
     private UserProfileManager userProfileManager;
+    private MarketplaceElasticService marketplaceElasticService;
 
     @Autowired
     public PropertyRentalMarketplaceFlowActions(
         Environment environment,
         DatabaseReader databaseReader,
         PropertyManager propertyManager,
-        UserProfileManager userProfileManager
+        UserProfileManager userProfileManager,
+        MarketplaceElasticService marketplaceElasticService
     ) {
         this.environment = environment;
         this.databaseReader = databaseReader;
         this.propertyManager = propertyManager;
         this.userProfileManager = userProfileManager;
+        this.marketplaceElasticService = marketplaceElasticService;
     }
 
     @SuppressWarnings("unused")
@@ -72,7 +77,7 @@ public class PropertyRentalMarketplaceFlowActions {
             countryCode = StringUtils.isEmpty(response.getCountry().getIsoCode()) ? "" : response.getCountry().getIsoCode();
             city = StringUtils.isEmpty(response.getCity().getName()) ? "" : response.getCity().getName();
             location = response.getLocation();
-            LOG.info("Accuracy radius {} {} {}", location.getAccuracyRadius(), city, countryCode);
+            LOG.info("Accuracy radius {} {} {} {}", ip, location.getAccuracyRadius(), city, countryCode);
         } catch (AddressNotFoundException e) {
             LOG.warn("Failed finding ip={} reason={}", ip, e.getLocalizedMessage());
         } catch (GeoIp2Exception e) {
@@ -99,7 +104,8 @@ public class PropertyRentalMarketplaceFlowActions {
                     PropertyEntity property = propertyManager.findOneById(postId);
                     marketplaceForm.setMarketplace(property)
                         .setBusinessType(property.getBusinessType())
-                        .setCity(property.getCity());
+                        .setCity(property.getCity())
+                        .setCoordinate(property.getCoordinate());
                     break;
                 default:
                     LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());
@@ -153,6 +159,7 @@ public class PropertyRentalMarketplaceFlowActions {
                             : "100000000002");
                 }
                 propertyManager.save(marketplace);
+                marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
                 return "success";
             default:
                 LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());

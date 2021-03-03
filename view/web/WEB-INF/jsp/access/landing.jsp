@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -174,7 +175,16 @@
                                             <c:forEach items="${landingForm.marketplaceForms}" var="marketplaceForm" varStatus="status">
                                             <tr>
                                                 <td>${status.count}&nbsp;</td>
-                                                <td><a href="/access/marketplace/property/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}.htm" target="_blank">${marketplaceForm.marketplace.title}</a></td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.PR}">
+                                                            <a href="/access/marketplace/property/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}.htm" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                        </c:when>
+                                                        <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.HI}">
+                                                            <a href="/access/marketplace/household/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}.htm" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                        </c:when>
+                                                    </c:choose>
+                                                </td>
                                                 <td>${marketplaceForm.marketplace.businessType.description}</td>
                                                 <td>${marketplaceForm.marketplace.priceForDisplay}</td>
                                                 <td>${marketplaceForm.marketplace.city}</td>

@@ -1,17 +1,23 @@
 package com.noqapp.domain.market;
 
+import static com.noqapp.common.utils.Constants.UNDER_SCORE;
+
 import com.noqapp.domain.types.catgeory.RentalTypeEnum;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
+ * All fields are added to tag. Example IC_itemCondition: IC_G, IC_P, IC_V.
  * hitender
  * 12/30/20 7:02 PM
- */
+ */ 
 @SuppressWarnings ({
     "PMD.BeanMembersShouldSerialize",
     "PMD.LocalVariableCouldBeFinal",
@@ -68,5 +74,14 @@ public class PropertyEntity extends MarketplaceEntity {
     public PropertyEntity setRentalType(RentalTypeEnum rentalType) {
         this.rentalType = rentalType;
         return this;
+    }
+
+    @Transient
+    public String getFieldValueForTag() {
+        return "BE" + UNDER_SCORE + bedroom + " "
+            + "BR" + UNDER_SCORE + bathroom + " "
+            + "CA" + UNDER_SCORE + carpetArea + " "
+            + "RT" + UNDER_SCORE + rentalType.name()
+            + (StringUtils.isNotBlank(getTags()) ? " " + getTags() : "");
     }
 }

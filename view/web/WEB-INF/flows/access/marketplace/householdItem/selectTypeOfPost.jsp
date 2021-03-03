@@ -69,11 +69,11 @@
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
                             <c:choose>
-                                <c:when test="${empty marketplaceForm.validateByQid}">
-                                    <h2>Post on Marketplace</h2>
+                                <c:when test="${editMode}">
+                                    <h2>Edit Post</h2>
                                 </c:when>
                                 <c:otherwise>
-                                    <h2>Edit Post</h2>
+                                    <h2>Post on Marketplace</h2>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -96,18 +96,9 @@
                                             <form:label path="businessType" cssErrorClass="lb_error">Posting For</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <c:choose>
-                                                <c:when test="${!empty marketplaceForm.validateByQid}">
-                                                    <form:select path="businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                        <form:options items="${marketplaceForm.marketPlaces}" itemValue="name" itemLabel="description" disabled="true"/>
-                                                    </form:select>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <form:select path="businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                        <form:options items="${marketplaceForm.marketPlaces}" itemValue="name" itemLabel="description" disabled="true"/>
-                                                    </form:select>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <form:select path="businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                                <form:options items="${marketplaceForm.marketPlaces}" itemValue="name" itemLabel="description" disabled="${editMode}"/>
+                                            </form:select>
                                         </div>
                                         <span class="tooltip" title="Your post will be listed on the market places selected here. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>

@@ -20,7 +20,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -75,5 +77,14 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
             HouseholdItemEntity.class,
             TABLE
         );
+    }
+
+    @Override
+    public Stream<HouseholdItemEntity> findAllWithStream() {
+        return mongoTemplate.find(
+            query(where("PU").gte(new Date()).and("A").is(true).and("D").is(false)),
+            HouseholdItemEntity.class,
+            TABLE
+        ).stream();
     }
 }
