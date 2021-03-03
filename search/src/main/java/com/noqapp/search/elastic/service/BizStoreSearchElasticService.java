@@ -12,6 +12,7 @@ import com.noqapp.domain.types.PaginationEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreElasticList;
+import com.noqapp.search.elastic.dsl.BizStoreQueryString;
 import com.noqapp.search.elastic.dsl.Conditions;
 import com.noqapp.search.elastic.dsl.Filter;
 import com.noqapp.search.elastic.dsl.GeoDistance;
@@ -107,13 +108,13 @@ public class BizStoreSearchElasticService {
             q.setConditions(
                 new Conditions().setOptions(
                     new Options().setQueryStringMultiMatch(
-                        new QueryString().setQuery(searchParameter))));
+                        new BizStoreQueryString().setQuery(searchParameter))));
         } else {
             /* When blank then do a match all. Should be avoided as its little too vague and set Fields as null. */
             q.setConditions(
                 new Conditions().setOptions(
                     new Options().setQueryStringMatchAll(
-                        new QueryString().setFields(null))));
+                        new BizStoreQueryString().setFields(null))));
         }
 
         if (StringUtils.isNotBlank(geoHash)) {

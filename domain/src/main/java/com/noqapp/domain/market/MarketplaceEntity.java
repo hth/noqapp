@@ -260,4 +260,7 @@ public abstract class MarketplaceEntity extends BaseEntity {
 
     @Transient
     abstract public String getFieldValueForTag();
+
+    @Transient
+    abstract public String[] getFieldTags();
 }

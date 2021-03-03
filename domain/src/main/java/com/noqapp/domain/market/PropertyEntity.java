@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
- * All fields are added to tag. Example IC_itemCondition: IC_G, IC_P, IC_V.
+ * All fields are added to tag. Example IC_itemCondition: G_IC, P_IC, V_IC.
  * hitender
  * 12/30/20 7:02 PM
  */ 
@@ -76,12 +76,24 @@ public class PropertyEntity extends MarketplaceEntity {
         return this;
     }
 
+    @Override
     @Transient
     public String getFieldValueForTag() {
-        return "BE" + UNDER_SCORE + bedroom + " "
-            + "BR" + UNDER_SCORE + bathroom + " "
-            + "CA" + UNDER_SCORE + carpetArea + " "
-            + "RT" + UNDER_SCORE + rentalType.name()
+        return bedroom + UNDER_SCORE + "BE" + " "
+            + bathroom + UNDER_SCORE + "BR" + " "
+            + carpetArea + UNDER_SCORE + "CA" + " "
+            + rentalType.name() + UNDER_SCORE + "RT"
             + (StringUtils.isNotBlank(getTags()) ? " " + getTags() : "");
+    }
+
+    @Override
+    @Transient
+    public String[] getFieldTags() {
+        return new String[] {
+            "Bedroom " + bedroom,
+            "Bathroom " + bathroom,
+            "Carpet Area " + carpetArea + " sq ft",
+            "Rent " + rentalType.getDescription()
+        };
     }
 }

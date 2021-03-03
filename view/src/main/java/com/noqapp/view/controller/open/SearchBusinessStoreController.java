@@ -1,8 +1,11 @@
 package com.noqapp.view.controller.open;
 
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.search.elastic.json.ElasticBizStoreSearchSource;
+import com.noqapp.search.elastic.json.ElasticMarketplaceSearchSource;
 import com.noqapp.search.elastic.service.BizStoreSearchElasticService;
 import com.noqapp.search.elastic.service.GeoIPLocationService;
+import com.noqapp.search.elastic.service.MarketplaceSearchElasticService;
 import com.noqapp.view.form.SearchForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
 import com.noqapp.view.validator.SearchValidator;
@@ -20,6 +23,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,6 +44,7 @@ public class SearchBusinessStoreController {
     private static final Logger LOG = LoggerFactory.getLogger(SearchBusinessStoreController.class);
 
     private BizStoreSearchElasticService bizStoreSearchElasticService;
+    private MarketplaceSearchElasticService marketplaceSearchElasticService;
     private GeoIPLocationService geoIPLocationService;
     private SearchValidator searchValidator;
 
@@ -50,12 +56,14 @@ public class SearchBusinessStoreController {
         String nextPage,
 
         BizStoreSearchElasticService bizStoreSearchElasticService,
+        MarketplaceSearchElasticService marketplaceSearchElasticService,
         GeoIPLocationService geoIPLocationService,
         SearchValidator searchValidator
     ) {
         this.nextPage = nextPage;
 
         this.bizStoreSearchElasticService = bizStoreSearchElasticService;
+        this.marketplaceSearchElasticService = marketplaceSearchElasticService;
         this.geoIPLocationService = geoIPLocationService;
         this.searchValidator = searchValidator;
     }
@@ -79,8 +87,14 @@ public class SearchBusinessStoreController {
             if (model.asMap().containsKey("search")) {
                 searchForm.setSearch(((SearchForm) model.asMap().get("search")).getSearch());
                 model.addAttribute(
-                    "searchResult",
+                    "bizStoreSearchResult",
                     bizStoreSearchElasticService.createBizStoreSearchDSLQuery(
+                        searchForm.getSearch().getText(),
+                        searchForm.getGeoIP().getGeoHash()));
+
+                model.addAttribute(
+                    "marketplaceSearchResult",
+                    marketplaceSearchElasticService.createMarketplaceSearchDSLQuery(
                         searchForm.getSearch().getText(),
                         searchForm.getGeoIP().getGeoHash()));
             }
@@ -90,7 +104,7 @@ public class SearchBusinessStoreController {
         return nextPage;
     }
 
-    @PostMapping(produces = "application/json")
+    @PostMapping
     public String search(
         @ModelAttribute("searchForm")
         SearchForm searchForm,

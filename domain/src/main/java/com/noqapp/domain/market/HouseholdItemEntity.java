@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 /**
- * All fields are added to tag. Example IC_itemCondition: IC_G, IC_P, IC_V.
+ * All fields are added to tag. Example IC_itemCondition: G_IC, P_IC, V_IC.
  * hitender
  * 2/24/21 4:33 PM
  */
@@ -40,9 +40,17 @@ public class HouseholdItemEntity extends MarketplaceEntity {
         return this;
     }
 
+    @Override
     @Transient
     public String getFieldValueForTag() {
-        return "IC" + UNDER_SCORE + itemCondition.name()
+        return itemCondition.name() + UNDER_SCORE + "IC"
             + (StringUtils.isNotBlank(getTags()) ? " " + getTags() : "");
+    }
+
+    @Override
+    public String[] getFieldTags() {
+        return new String[] {
+            itemCondition.getDescription()
+        };
     }
 }

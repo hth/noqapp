@@ -1,6 +1,8 @@
 package com.noqapp.search.elastic.helper;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.FileUtil;
+import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -175,7 +177,7 @@ public class DomainConversion {
         MarketplaceElastic marketplaceElastic = new MarketplaceElastic()
             .setId(marketplace.getId())
             .setBusinessType(marketplace.getBusinessType())
-            .setProductPrice(marketplace.getProductPrice())
+            .setProductPrice(MathUtil.displayPrice(marketplace.getProductPrice()))
             .setTitle(marketplace.getTitle())
             .setDescription(marketplace.getDescription())
             .setPostImages(marketplace.getPostImages())
@@ -188,10 +190,14 @@ public class DomainConversion {
             .setPublishUntil(marketplace.getPublishUntil());
         switch (marketplace.getBusinessType()) {
             case PR:
-                marketplaceElastic.setTag(marketplace.getFieldValueForTag());
+                marketplaceElastic
+                    .setTag(marketplace.getFieldValueForTag())
+                    .setFieldTags(marketplace.getFieldTags());
                 break;
             case HI:
-                marketplaceElastic.setTag(marketplace.getFieldValueForTag());
+                marketplaceElastic
+                    .setTag(marketplace.getFieldValueForTag())
+                    .setFieldTags(marketplace.getFieldTags());
                 break;
         }
 

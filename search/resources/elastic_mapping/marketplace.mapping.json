@@ -57,13 +57,28 @@
         "type": "text"
       },
       "PP": {
-        "type": "integer"
+        "fields": {
+          "keyword": {
+            "ignore_above": 10,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
       },
       "PU": {
         "format": "epoch_millis",
         "type": "date"
       },
-      "TAG": {
+      "TG": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "TS": {
         "fields": {
           "keyword": {
             "ignore_above": 256,
