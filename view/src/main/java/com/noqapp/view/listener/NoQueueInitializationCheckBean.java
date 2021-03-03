@@ -9,7 +9,6 @@ import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.SmsService;
-import com.noqapp.service.graph.GraphDetailOfPerson;
 import com.noqapp.service.payment.PaymentGatewayService;
 
 import com.maxmind.geoip2.DatabaseReader;
@@ -32,9 +31,6 @@ import org.springframework.stereotype.Component;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.core.MainResponse;
-import org.neo4j.driver.exceptions.ClientException;
-import org.neo4j.ogm.model.Result;
-import org.neo4j.ogm.session.Session;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -44,11 +40,8 @@ import edu.stanford.nlp.util.CoreMap;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;

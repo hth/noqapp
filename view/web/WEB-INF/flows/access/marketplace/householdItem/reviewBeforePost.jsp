@@ -99,7 +99,7 @@
                                     <div class="col-lable3">
                                         <form:label path="marketplace.description" cssErrorClass="lb_error">Description</form:label>
                                     </div>
-                                    <div class="col-fields">
+                                    <div class="col-fields" style="margin-top: 10px;">
                                         <c:out value="${marketplaceForm.marketplace.description}" escapeXml="false"/>
                                     </div>
                                     <span class="tooltip" title="Description of your listing" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>

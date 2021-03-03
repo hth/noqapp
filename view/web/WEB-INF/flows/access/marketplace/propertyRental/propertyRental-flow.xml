@@ -15,7 +15,7 @@
                   result="flowScope.marketplaceForm"/>
     </on-start>
 
-    <view-state id="selectTypeOfPost" model="marketplaceForm">
+    <view-state id="typeOfPost" model="marketplaceForm">
         <transition on="submit" to="validateStartOfMarketplacePost"/>
     </view-state>
 
@@ -35,11 +35,11 @@
 
     <action-state id="validateTitleDescription">
         <evaluate expression="propertyRentalMarketplaceValidator.validateTitleDescription(marketplaceForm, messageContext)"/>
-        <transition on="success" to="detailOfPost"/>
+        <transition on="success" to="thePostDetail"/>
         <transition on="failure" to="titleDescriptionOfPost"/>
     </action-state>
 
-    <view-state id="detailOfPost" model="marketplaceForm">
+    <view-state id="thePostDetail" model="marketplaceForm">
         <transition on="submit" to="readyToPost"/>
         <transition on="cancel" to="home"/>
     </view-state>

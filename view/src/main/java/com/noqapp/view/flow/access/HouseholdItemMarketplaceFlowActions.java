@@ -1,7 +1,6 @@
 package com.noqapp.view.flow.access;
 
 import com.noqapp.domain.market.HouseholdItemEntity;
-import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.UserProfileManager;

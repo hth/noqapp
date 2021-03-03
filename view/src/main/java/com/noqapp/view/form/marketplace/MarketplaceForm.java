@@ -1,9 +1,7 @@
 package com.noqapp.view.form.marketplace;
 
 import com.noqapp.domain.market.MarketplaceEntity;
-import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.catgeory.RentalTypeEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
