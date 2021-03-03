@@ -1,7 +1,6 @@
 package com.noqapp.view.form.marketplace;
 
 import com.noqapp.domain.types.catgeory.ItemConditionEnum;
-import com.noqapp.domain.types.catgeory.RentalTypeEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

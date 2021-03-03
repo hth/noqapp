@@ -1,7 +1,6 @@
 package com.noqapp.view.flow.access.validator;
 
 import com.noqapp.domain.market.HouseholdItemEntity;
-import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.view.controller.access.LandingController;
 import com.noqapp.view.form.marketplace.HouseholdItemMarketplaceForm;
