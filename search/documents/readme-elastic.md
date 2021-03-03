@@ -257,4 +257,53 @@ create new index by changing index version appended from v1 to v2.
        }
      }
     }
+
+#### Added search for marketplace
+
+    GET noqueue_v2_marketplace/_search?pretty
+    {
+        "from": 0,
+        "query": {
+            "bool": {
+                "must": {
+                    "multi_match": {
+                        "fields": [
+                        "BT",
+                        "PP",
+                        "TI",
+                        "DS",
+                        "TG",
+                        "TS"
+                        ],
+                        "query": "Home"
+                    }
+                }
+            }
+        },
+        "size": 30
+    }    
+
+#### Global search on curl
+
+    curl -XGET 'localhost:9200/_search?pretty' -H 'Content-Type: application/json' -d'
+    {
+      "from": 0,
+      "query": {
+        "bool": {
+          "must": {
+            "match_all": {}
+          },
+          "filter": {
+            "geo_distance": {
+              "distance": "150km",
+              "GH": "te7ut71tgd9n"
+            }
+          }
+        }
+      },
+      "size": 10
+    }
+    '    
+
+
        

@@ -1,18 +1,17 @@
-package com.noqapp.search.elastic.dsl;
+package com.noqapp.search.elastic.json;
 
-import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.search.elastic.domain.MarketplaceElastic;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * hitender
- * 11/22/17 4:39 PM
+ * 3/2/21 10:15 PM
  */
-@SuppressWarnings({
+@SuppressWarnings ({
     "PMD.BeanMembersShouldSerialize",
     "PMD.LocalVariableCouldBeFinal",
     "PMD.MethodArgumentCouldBeFinal",
@@ -26,23 +25,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public abstract class QueryString extends AbstractDomain {
+public class ElasticMarketplaceSearchSource implements ElasticSource {
 
-    /* Searching for elements. */
-    @JsonProperty("query")
-    private String query;
+    @JsonProperty("_source")
+    private MarketplaceElastic marketplaceElastic;
 
-    public String getQuery() {
-        return query;
+    public MarketplaceElastic getMarketplaceElastic() {
+        return marketplaceElastic;
     }
 
-    public QueryString setQuery(String query) {
-        this.query = query;
+    public ElasticMarketplaceSearchSource setMarketplaceElastic(MarketplaceElastic marketplaceElastic) {
+        this.marketplaceElastic = marketplaceElastic;
         return this;
     }
-
-    abstract String getType();
-
-    abstract String[] getFields();
 }

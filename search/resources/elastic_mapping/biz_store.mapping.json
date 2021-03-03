@@ -212,7 +212,7 @@
         },
         "type": "text"
       },
-      "TAG": {
+      "TG": {
         "fields": {
           "keyword": {
             "ignore_above": 256,

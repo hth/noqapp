@@ -14,11 +14,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -53,7 +56,7 @@ public class MarketplaceElastic extends AbstractDomain {
     private BusinessTypeEnum businessType;
 
     @JsonProperty("PP")
-    private int productPrice;
+    private String productPrice;
 
     @JsonProperty("TI")
     private String title;
@@ -65,7 +68,7 @@ public class MarketplaceElastic extends AbstractDomain {
     private Set<String> postImages = new LinkedHashSet<>();
 
     /** Tags are going to be category under business type. Like Rent has category of Apartment, House. */
-    @JsonProperty("TAG")
+    @JsonProperty("TG")
     private String tag;
 
     @JsonProperty("LC")
@@ -89,6 +92,10 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonProperty("PU")
     private Date publishUntil;
 
+    /** Mostly used for display as most of the common data is listed as text here. */
+    @JsonProperty("TS")
+    private String[] fieldTags;
+
     public String getId() {
         return id;
     }
@@ -107,11 +114,11 @@ public class MarketplaceElastic extends AbstractDomain {
         return this;
     }
 
-    public int getProductPrice() {
+    public String getProductPrice() {
         return productPrice;
     }
 
-    public MarketplaceElastic setProductPrice(int productPrice) {
+    public MarketplaceElastic setProductPrice(String productPrice) {
         this.productPrice = productPrice;
         return this;
     }
@@ -212,6 +219,15 @@ public class MarketplaceElastic extends AbstractDomain {
 
     public MarketplaceElastic setPublishUntil(Date publishUntil) {
         this.publishUntil = publishUntil;
+        return this;
+    }
+
+    public String[] getFieldTags() {
+        return fieldTags;
+    }
+
+    public MarketplaceElastic setFieldTags(String[] fieldTags) {
+        this.fieldTags = fieldTags;
         return this;
     }
 }
