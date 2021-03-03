@@ -1,0 +1,95 @@
+{
+  "mappings": {
+    "dynamic": false,
+    "properties": {
+      "BT": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 3,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "COR": {
+        "type": "geo_point"
+      },
+      "CS": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "DS": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "EC": {
+        "type": "integer"
+      },
+      "LC": {
+        "type": "integer"
+      },
+      "MC": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "PI": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "PP": {
+        "type": "integer"
+      },
+      "PU": {
+        "format": "epoch_millis",
+        "type": "date"
+      },
+      "TAG": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "TI": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "TO": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      }
+    }
+  }
+}

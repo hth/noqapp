@@ -69,11 +69,11 @@
                         <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                         <div class="admin-title">
                             <c:choose>
-                                <c:when test="${empty marketplaceForm.validateByQid}">
-                                    <h2>Post on Marketplace for ${marketplaceForm.businessType.description}</h2>
+                                <c:when test="${editMode}">
+                                    <h2>Edit Post on ${marketplaceForm.businessType.description}</h2>
                                 </c:when>
                                 <c:otherwise>
-                                    <h2>Edit Post on ${marketplaceForm.businessType.description}</h2>
+                                    <h2>Post on Marketplace for ${marketplaceForm.businessType.description}</h2>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -98,7 +98,7 @@
                                         <div class="col-fields">
                                             <form:input path="marketplace.title" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                         </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Title of your listing" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>
@@ -109,7 +109,7 @@
                                         <div class="col-fields">
                                             <form:textarea path="marketplace.description" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" />
                                         </div>
-                                        <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                        <span class="tooltip" title="Describe your listing" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                         <div class="clearFix"></div>
                                     </li>

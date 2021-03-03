@@ -3,8 +3,10 @@ package com.noqapp.view.listener;
 import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
+import com.noqapp.search.elastic.domain.MarketplaceElastic;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
+import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.SmsService;
 import com.noqapp.service.graph.GraphDetailOfPerson;
@@ -75,6 +77,7 @@ public class NoQueueInitializationCheckBean {
     private RestHighLevelClient restHighLevelClient;
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreElasticService bizStoreElasticService;
+    private MarketplaceElasticService marketplaceElasticService;
     private JmsTemplate jmsMailSignUpTemplate;
     private DatabaseReader databaseReader;
     private FtpService ftpService;
@@ -95,6 +98,7 @@ public class NoQueueInitializationCheckBean {
         RestHighLevelClient restHighLevelClient,
         ElasticAdministrationService elasticAdministrationService,
         BizStoreElasticService bizStoreElasticService,
+        MarketplaceElasticService marketplaceElasticService,
 
         @Qualifier("jmsMailSignUpTemplate")
         JmsTemplate jmsMailSignUpTemplate,
@@ -114,6 +118,8 @@ public class NoQueueInitializationCheckBean {
         this.restHighLevelClient = restHighLevelClient;
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreElasticService = bizStoreElasticService;
+        this.marketplaceElasticService = marketplaceElasticService;
+
         this.jmsMailSignUpTemplate = jmsMailSignUpTemplate;
         this.databaseReader = databaseReader;
         this.ftpService = ftpService;
@@ -207,6 +213,19 @@ public class NoQueueInitializationCheckBean {
             }
         } else {
             LOG.info("Elastic Index={} found", BizStoreElastic.INDEX);
+        }
+
+        if (!elasticAdministrationService.doesIndexExists(MarketplaceElastic.INDEX)) {
+            boolean createdMarketplaceMappingSuccessfully = elasticAdministrationService.addMapping(
+                MarketplaceElastic.INDEX,
+                MarketplaceElastic.TYPE);
+
+            if (createdMarketplaceMappingSuccessfully) {
+                LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
+                marketplaceElasticService.addAllMarketplaceToElastic();
+            }
+        } else {
+            LOG.info("Elastic Index={} found", MarketplaceElastic.INDEX);
         }
     }
 

@@ -4,6 +4,7 @@ import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.repository.RepositoryManager;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -13,4 +14,6 @@ public interface PropertyManager extends RepositoryManager<PropertyEntity> {
     List<PropertyEntity> findByQid(String queueUserId);
 
     PropertyEntity findOneById(String id);
+
+    Stream<PropertyEntity> findAllWithStream();
 }

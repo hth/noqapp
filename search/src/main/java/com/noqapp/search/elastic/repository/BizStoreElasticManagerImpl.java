@@ -163,7 +163,7 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
                 for (BulkItemResponse bulkItemResponse : bulkResponse) {
                     if (bulkItemResponse.isFailed()) {
                         BulkItemResponse.Failure failure = bulkItemResponse.getFailure();
-                        LOG.info("Failed during saving id={} message={} cause={} status={}",
+                        LOG.error("Failed during saving id={} message={} cause={} status={}",
                             failure.getId(), failure.getMessage(), failure.getCause(), failure.getStatus());
                     }
                 }

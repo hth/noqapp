@@ -3,14 +3,15 @@ package com.noqapp.domain.market;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.beans.Transient;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -51,7 +52,7 @@ public abstract class MarketplaceEntity extends BaseEntity {
     private Set<String> postImages = new LinkedHashSet<>();
 
     @Field("TG")
-    private String[] tags;
+    private String tags;
 
     @Field("LC")
     private int likeCount;
@@ -147,11 +148,11 @@ public abstract class MarketplaceEntity extends BaseEntity {
         return this;
     }
 
-    public String[] getTags() {
+    public String getTags() {
         return tags;
     }
 
-    public MarketplaceEntity setTags(String[] tags) {
+    public MarketplaceEntity setTags(String tags) {
         this.tags = tags;
         return this;
     }
@@ -250,4 +251,13 @@ public abstract class MarketplaceEntity extends BaseEntity {
     public String getPriceForDisplay() {
         return CommonUtil.displayWithCurrencyCode(productPrice, countryShortName);
     }
+
+    @Transient
+    public GeoPointOfQ getGeoPointOfQ() {
+        /* Latitude and then Longitude. */
+        return new GeoPointOfQ(coordinate[1], coordinate[0]);
+    }
+
+    @Transient
+    abstract public String getFieldValueForTag();
 }

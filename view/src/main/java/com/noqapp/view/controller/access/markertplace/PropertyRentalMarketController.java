@@ -63,6 +63,7 @@ public class PropertyRentalMarketController {
             redirectAttributes.addFlashAttribute("postingAllowed", false);
         }
         redirectAttributes.addFlashAttribute("businessTypeAsString", BusinessTypeEnum.PR.name());
+        redirectAttributes.addFlashAttribute("editMode", false);
         return propertyRentalMarketplaceFlowActions;
     }
 
@@ -81,6 +82,7 @@ public class PropertyRentalMarketController {
         redirectAttributes.addFlashAttribute("postId", postId);
         redirectAttributes.addFlashAttribute("businessTypeAsString", businessTypeAsString);
         redirectAttributes.addFlashAttribute("postingAllowed", true);
+        redirectAttributes.addFlashAttribute("editMode", true);
         return propertyRentalMarketplaceFlowActions;
     }
 

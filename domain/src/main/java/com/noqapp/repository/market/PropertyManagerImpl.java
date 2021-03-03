@@ -4,6 +4,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.market.PropertyEntity;
 
 import com.mongodb.DuplicateKeyException;
@@ -19,7 +20,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -75,5 +78,14 @@ public class PropertyManagerImpl implements PropertyManager {
             PropertyEntity.class,
             TABLE
         );
+    }
+
+    @Override
+    public Stream<PropertyEntity> findAllWithStream() {
+        return mongoTemplate.find(
+            query(where("PU").gte(new Date()).and("A").is(true).and("D").is(false)),
+            PropertyEntity.class,
+            TABLE
+        ).stream();
     }
 }

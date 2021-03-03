@@ -70,6 +70,7 @@ public class LandingForm {
     }
 
     /** Sorted by publishing date descending. */
+    @SuppressWarnings("unused")
     public List<MarketplaceForm> getMarketplaceForms() {
         return marketplaceForms.stream().sorted((s1, s2) -> s2.getMarketplace().getPublishUntil().compareTo(s1.getMarketplace().getPublishUntil())).collect(Collectors.toList());
     }

@@ -3,8 +3,10 @@ package com.noqapp.view.controller.admin;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
+import com.noqapp.search.elastic.domain.MarketplaceElastic;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
+import com.noqapp.search.elastic.service.MarketplaceElasticService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,7 @@ public class ElasticController {
 
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreElasticService bizStoreElasticService;
+    private MarketplaceElasticService marketplaceElasticService;
 
     private ScheduledExecutorService executorService;
 
@@ -49,12 +52,14 @@ public class ElasticController {
         String nextPage,
 
         ElasticAdministrationService elasticAdministrationService,
-        BizStoreElasticService bizStoreElasticService
+        BizStoreElasticService bizStoreElasticService,
+        MarketplaceElasticService marketplaceElasticService
     ) {
         this.nextPage = nextPage;
 
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreElasticService = bizStoreElasticService;
+        this.marketplaceElasticService = marketplaceElasticService;
 
         this.executorService = Executors.newSingleThreadScheduledExecutor();
     }
@@ -80,9 +85,17 @@ public class ElasticController {
                         BizStoreSpatialElastic.INDEX,
                         BizStoreSpatialElastic.TYPE);
 
-                    if (createdBizStoreMappingSuccessfully && createdSpatialMappingSuccessfully) {
+                    boolean createdMarketplaceMappingSuccessfully = elasticAdministrationService.addMapping(
+                        MarketplaceElastic.INDEX,
+                        MarketplaceElastic.TYPE);
+
+                    if (createdBizStoreMappingSuccessfully
+                        && createdSpatialMappingSuccessfully
+                        && createdMarketplaceMappingSuccessfully
+                    ) {
                         LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
                         bizStoreElasticService.addAllBizStoreToElastic();
+                        marketplaceElasticService.addAllMarketplaceToElastic();
                     } else {
                         LOG.error("Failed re-create elastic index");
                     }

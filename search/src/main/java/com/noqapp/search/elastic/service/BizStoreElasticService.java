@@ -52,6 +52,7 @@ public class BizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticService.class);
     static final long MINUTES = 10L;
 
+    /** Include field are the fields to be included upon completing the search. */
     static String[] includeFields = new String[]{
         "N", "BT", "BC", "BCI", "BID", "SA", "AR", "TO", "DT", "SH",
         "ST", "SS", "CC", "CS", "PH", "PI", "RA", "RC", "DN", "QR",

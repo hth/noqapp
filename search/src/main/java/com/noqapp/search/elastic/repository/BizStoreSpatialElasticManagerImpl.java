@@ -45,7 +45,6 @@ import java.util.Set;
 })
 @Repository
 public class BizStoreSpatialElasticManagerImpl implements BizStoreSpatialElasticManager<BizStoreElastic> {
-
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticManagerImpl.class);
 
     private RestHighLevelClient restHighLevelClient;
@@ -141,7 +140,7 @@ public class BizStoreSpatialElasticManagerImpl implements BizStoreSpatialElastic
                 for (BulkItemResponse bulkItemResponse : bulkResponse) {
                     if (bulkItemResponse.isFailed()) {
                         BulkItemResponse.Failure failure = bulkItemResponse.getFailure();
-                        LOG.info("Failed during saving id={} message={} cause={} status={}",
+                        LOG.error("Failed during saving id={} message={} cause={} status={}",
                             failure.getId(), failure.getMessage(), failure.getCause(), failure.getStatus());
                     }
                 }

@@ -91,7 +91,7 @@
                                     <div class="col-fields">
                                         <form:input path="marketplace.title" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Title of your property listing" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -102,7 +102,7 @@
                                     <div class="col-fields">
                                         <c:out value="${marketplaceForm.marketplace.description}" escapeXml="false"/>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Public information about your property" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -120,7 +120,7 @@
                                     <div class="col-fields">
                                         <form:input path="marketplace.productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Rent on this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -133,7 +133,7 @@
                                             <form:options items="${marketplaceForm.rentalTypes}" itemValue="name" itemLabel="description" disabled="true"/>
                                         </form:select>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Type of rental property" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -151,7 +151,7 @@
                                     <div class="col-fields">
                                         <form:input path="marketplace.bedroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Number of bedrooms available" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -162,7 +162,7 @@
                                     <div class="col-fields">
                                         <form:input path="marketplace.bathroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Number of bathrooms available" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -173,7 +173,7 @@
                                     <div class="col-fields">
                                         <form:input path="marketplace.carpetArea" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Size of this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -184,7 +184,7 @@
                                     <div class="col-fields">
                                         <form:input path="marketplace.address" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Address of the rental place. This is not <b><u>visible</u></b> to others. Cannot change this information later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -201,7 +201,7 @@
                                     <div class="col-fields">
                                         <form:input path="marketplace.city" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="City the property is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -212,7 +212,7 @@
                                     <div class="col-fields">
                                         <form:input path="marketplace.town" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Town or Sector the property is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -223,7 +223,7 @@
                                     <div class="col-fields">
                                         <form:input path="marketplace.landmark" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Any close by landmark" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;"></sup>
                                     <div class="clearFix"></div>
                                 </li>
@@ -236,7 +236,7 @@
                                             <form:options items="${marketplaceForm.marketPlaces}" itemValue="name" itemLabel="description" disabled="true"/>
                                         </form:select>
                                     </div>
-                                    <span class="tooltip" title="Primary business type. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <span class="tooltip" title="Your post will be listed on the market places selected here. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
                                 </li>

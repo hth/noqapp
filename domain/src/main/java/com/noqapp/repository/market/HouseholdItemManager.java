@@ -4,6 +4,7 @@ import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.repository.RepositoryManager;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -13,4 +14,6 @@ public interface HouseholdItemManager extends RepositoryManager<HouseholdItemEnt
     List<HouseholdItemEntity> findByQid(String queueUserId);
 
     HouseholdItemEntity findOneById(String id);
+
+    Stream<HouseholdItemEntity> findAllWithStream();
 }
