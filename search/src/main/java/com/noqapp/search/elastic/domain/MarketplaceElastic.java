@@ -80,6 +80,9 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonProperty("COR")
     private GeoPointOfQ geoPointOfQ;
 
+    @JsonProperty("GH")
+    private String geoHash;
+
     @JsonProperty("MC")
     private String city;
 
@@ -183,6 +186,15 @@ public class MarketplaceElastic extends AbstractDomain {
 
     public MarketplaceElastic setGeoPointOfQ(GeoPointOfQ geoPointOfQ) {
         this.geoPointOfQ = geoPointOfQ;
+        return this;
+    }
+
+    public String getGeoHash() {
+        return geoHash;
+    }
+
+    public MarketplaceElastic setGeoHash(String geoHash) {
+        this.geoHash = geoHash;
         return this;
     }
 

@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import org.elasticsearch.common.geo.GeoPoint;
+
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -256,6 +258,12 @@ public abstract class MarketplaceEntity extends BaseEntity {
     public GeoPointOfQ getGeoPointOfQ() {
         /* Latitude and then Longitude. */
         return new GeoPointOfQ(coordinate[1], coordinate[0]);
+    }
+
+    @Transient
+    public GeoPoint getGeoPoint() {
+        /* Longitude and then Latitude. */
+        return new GeoPoint(coordinate[1], coordinate[0]);
     }
 
     @Transient
