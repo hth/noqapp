@@ -1,12 +1,15 @@
 package com.noqapp.view.flow.access;
 
 import com.noqapp.domain.market.PropertyEntity;
+import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.PropertyManager;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.MarketplaceElasticService;
+import com.noqapp.service.ExternalService;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 import com.noqapp.view.form.marketplace.PropertyRentalMarketplaceForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
@@ -47,6 +50,7 @@ public class PropertyRentalMarketplaceFlowActions {
     private PropertyManager propertyManager;
     private UserProfileManager userProfileManager;
     private MarketplaceElasticService marketplaceElasticService;
+    private ExternalService externalService;
 
     @Autowired
     public PropertyRentalMarketplaceFlowActions(
@@ -54,13 +58,15 @@ public class PropertyRentalMarketplaceFlowActions {
         DatabaseReader databaseReader,
         PropertyManager propertyManager,
         UserProfileManager userProfileManager,
-        MarketplaceElasticService marketplaceElasticService
+        MarketplaceElasticService marketplaceElasticService,
+        ExternalService externalService
     ) {
         this.environment = environment;
         this.databaseReader = databaseReader;
         this.propertyManager = propertyManager;
         this.userProfileManager = userProfileManager;
         this.marketplaceElasticService = marketplaceElasticService;
+        this.externalService = externalService;
     }
 
     @SuppressWarnings("unused")
@@ -158,6 +164,16 @@ public class PropertyRentalMarketplaceFlowActions {
                             ? userProfileManager.findOneByMail("beta@noqapp.com").getQueueUserId()
                             : "100000000002");
                 }
+
+                Geocode geocode;
+                if (StringUtils.isNotBlank(marketplace.getAddress())) {
+                    geocode = Geocode.newInstance(externalService.getGeocodingResults(marketplace.getAddress()), marketplace.getAddress());
+                } else {
+                    geocode = Geocode.newInstance(externalService.getGeocodingResults(marketplace.getTown() + " " + marketplace.getCity()), marketplace.getTown() + " " + marketplace.getCity());
+                }
+                DecodedAddress decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
+                marketplace.setCoordinate(decodedAddress.getCoordinate());
+
                 propertyManager.save(marketplace);
                 marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
                 return "success";

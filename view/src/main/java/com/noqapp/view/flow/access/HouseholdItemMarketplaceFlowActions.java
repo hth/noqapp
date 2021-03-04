@@ -1,12 +1,15 @@
 package com.noqapp.view.flow.access;
 
 import com.noqapp.domain.market.HouseholdItemEntity;
+import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.HouseholdItemManager;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.MarketplaceElasticService;
+import com.noqapp.service.ExternalService;
 import com.noqapp.view.form.marketplace.HouseholdItemMarketplaceForm;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 import com.noqapp.view.util.HttpRequestResponseParser;
@@ -47,6 +50,7 @@ public class HouseholdItemMarketplaceFlowActions {
     private HouseholdItemManager householdItemManager;
     private UserProfileManager userProfileManager;
     private MarketplaceElasticService marketplaceElasticService;
+    private ExternalService externalService;
 
     @Autowired
     public HouseholdItemMarketplaceFlowActions(
@@ -54,13 +58,15 @@ public class HouseholdItemMarketplaceFlowActions {
         DatabaseReader databaseReader,
         HouseholdItemManager householdItemManager,
         UserProfileManager userProfileManager,
-        MarketplaceElasticService marketplaceElasticService
+        MarketplaceElasticService marketplaceElasticService,
+        ExternalService externalService
     ) {
         this.environment = environment;
         this.databaseReader = databaseReader;
         this.householdItemManager = householdItemManager;
         this.userProfileManager = userProfileManager;
         this.marketplaceElasticService = marketplaceElasticService;
+        this.externalService = externalService;
     }
 
     @SuppressWarnings("unused")
@@ -158,6 +164,16 @@ public class HouseholdItemMarketplaceFlowActions {
                             ? userProfileManager.findOneByMail("beta@noqapp.com").getQueueUserId()
                             : "100000000002");
                 }
+
+                Geocode geocode;
+                if (StringUtils.isNotBlank(marketplace.getAddress())) {
+                    geocode = Geocode.newInstance(externalService.getGeocodingResults(marketplace.getAddress()), marketplace.getAddress());
+                } else {
+                    geocode = Geocode.newInstance(externalService.getGeocodingResults(marketplace.getTown() + " " + marketplace.getCity()), marketplace.getTown() + " " + marketplace.getCity());
+                }
+                DecodedAddress decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
+                marketplace.setCoordinate(decodedAddress.getCoordinate());
+
                 householdItemManager.save(marketplace);
                 marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
                 return "success";
