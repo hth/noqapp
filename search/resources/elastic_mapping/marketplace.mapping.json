@@ -35,6 +35,9 @@
       "EC": {
         "type": "integer"
       },
+      "GH": {
+        "type": "geo_point"
+      },
       "LC": {
         "type": "integer"
       },
