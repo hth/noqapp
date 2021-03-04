@@ -172,7 +172,8 @@ public class PropertyRentalMarketplaceFlowActions {
                     geocode = Geocode.newInstance(externalService.getGeocodingResults(marketplace.getTown() + " " + marketplace.getCity()), marketplace.getTown() + " " + marketplace.getCity());
                 }
                 DecodedAddress decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
-                marketplace.setCoordinate(decodedAddress.getCoordinate());
+                marketplace.setCoordinate(decodedAddress.getCoordinate())
+                    .setCountryShortName(decodedAddress.getCountryShortName());
 
                 propertyManager.save(marketplace);
                 marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
