@@ -201,7 +201,7 @@ public class NoQueueInitializationCheckBean {
                 BizStoreSpatialElastic.TYPE);
 
             if (createdBizStoreMappingSuccessfully && createdSpatialMappingSuccessfully) {
-                LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
+                LOG.info("Created Index and Mapping {} successfully. Adding data to Index/Type", BizStoreElastic.INDEX);
                 bizStoreElasticService.addAllBizStoreToElastic();
             }
         } else {
@@ -209,12 +209,13 @@ public class NoQueueInitializationCheckBean {
         }
 
         if (!elasticAdministrationService.doesIndexExists(MarketplaceElastic.INDEX)) {
+            LOG.info("Elastic Index={} not found. Building Indexes... please wait", MarketplaceElastic.INDEX);
             boolean createdMarketplaceMappingSuccessfully = elasticAdministrationService.addMapping(
                 MarketplaceElastic.INDEX,
                 MarketplaceElastic.TYPE);
 
             if (createdMarketplaceMappingSuccessfully) {
-                LOG.info("Created Index and Mapping successfully. Adding data to Index/Type");
+                LOG.info("Created Index and Mapping {} successfully. Adding data to Index/Type", MarketplaceElastic.INDEX);
                 marketplaceElasticService.addAllMarketplaceToElastic();
             }
         } else {
