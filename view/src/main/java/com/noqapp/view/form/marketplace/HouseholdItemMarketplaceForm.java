@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * hitender
@@ -27,5 +28,12 @@ public class HouseholdItemMarketplaceForm extends MarketplaceForm {
     public HouseholdItemMarketplaceForm setItemConditions(List<ItemConditionEnum> itemConditions) {
         this.itemConditions = itemConditions;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", HouseholdItemMarketplaceForm.class.getSimpleName() + "[", "]")
+            .add("itemConditions=" + itemConditions)
+            .toString();
     }
 }

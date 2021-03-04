@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * hitender
@@ -23,5 +24,12 @@ public class PropertyRentalMarketplaceForm extends MarketplaceForm {
     public MarketplaceForm setRentalTypes(List<RentalTypeEnum> rentalTypes) {
         this.rentalTypes = rentalTypes;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", PropertyRentalMarketplaceForm.class.getSimpleName() + "[", "]")
+            .add("rentalTypes=" + rentalTypes)
+            .toString();
     }
 }
