@@ -79,37 +79,31 @@
 
             <div class="form-style">
                 <div class="store-table">
-                    <c:if test="${!empty searchForm.search}">
-                    <c:choose>
-                        <c:when test="${!empty bizStoreSearchResult}">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0;">
-                            <c:forEach items="${bizStoreSearchResult}" var="elasticBizStoreSearchSource" varStatus="status">
-                            <tr>
-                                <td nowrap style="border: 0px;">
-                                    <a href="../${elasticBizStoreSearchSource.bizStoreSearchElastic.codeQR}/q.htm" target="_blank">${elasticBizStoreSearchSource.bizStoreSearchElastic.displayName}</a>
-                                    <c:choose>
-                                        <c:when test="${!empty elasticBizStoreSearchSource.bizStoreSearchElastic.bizCategoryName}">
-                                            <span style="display:block; font-size:13px;">
-                                                ${elasticBizStoreSearchSource.bizStoreSearchElastic.businessType.description}, ${elasticBizStoreSearchSource.bizStoreSearchElastic.bizCategoryName}, ${elasticBizStoreSearchSource.bizStoreSearchElastic.area} ${elasticBizStoreSearchSource.bizStoreSearchElastic.town};
-                                                    <a href="https://noqapp.com/b/s${elasticBizStoreSearchSource.bizStoreSearchElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
-                                            </span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span style="display:block; font-size:13px;">
-                                                ${elasticBizStoreSearchSource.bizStoreSearchElastic.businessType.description}, ${elasticBizStoreSearchSource.bizStoreSearchElastic.area} ${elasticBizStoreSearchSource.bizStoreSearchElastic.town};
-                                                    <a href="https://noqapp.com/b/s${elasticBizStoreSearchSource.bizStoreSearchElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
-                                            </span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <span style="display:block; font-size:13px;">${elasticBizStoreSearchSource.bizStoreSearchElastic.businessName}</span>
-                                </td>
-                            </tr>
-                            </c:forEach>
-                        </table>
-                        </c:when>
-                        <c:when test="${!empty marketplaceSearchResult}">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0;">
-                            <c:forEach items="${marketplaceSearchResult}" var="marketplace" varStatus="status">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0;">
+                        <c:forEach items="${bizStoreSearchResult}" var="elasticBizStoreSearchSource" varStatus="status">
+                        <tr>
+                            <td nowrap style="border: 0px;">
+                                <a href="../${elasticBizStoreSearchSource.bizStoreSearchElastic.codeQR}/q.htm" target="_blank">${elasticBizStoreSearchSource.bizStoreSearchElastic.displayName}</a>
+                                <c:choose>
+                                    <c:when test="${!empty elasticBizStoreSearchSource.bizStoreSearchElastic.bizCategoryName}">
+                                        <span style="display:block; font-size:13px;">
+                                            ${elasticBizStoreSearchSource.bizStoreSearchElastic.businessType.description}, ${elasticBizStoreSearchSource.bizStoreSearchElastic.bizCategoryName}, ${elasticBizStoreSearchSource.bizStoreSearchElastic.area} ${elasticBizStoreSearchSource.bizStoreSearchElastic.town};
+                                                <a href="https://noqapp.com/b/s${elasticBizStoreSearchSource.bizStoreSearchElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
+                                        </span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span style="display:block; font-size:13px;">
+                                            ${elasticBizStoreSearchSource.bizStoreSearchElastic.businessType.description}, ${elasticBizStoreSearchSource.bizStoreSearchElastic.area} ${elasticBizStoreSearchSource.bizStoreSearchElastic.town};
+                                                <a href="https://noqapp.com/b/s${elasticBizStoreSearchSource.bizStoreSearchElastic.webLocation}.html" target="_blank">Join walk-in queue</a>
+                                        </span>
+                                    </c:otherwise>
+                                </c:choose>
+                                <span style="display:block; font-size:13px;">${elasticBizStoreSearchSource.bizStoreSearchElastic.businessName}</span>
+                            </td>
+                        </tr>
+                        </c:forEach>
+
+                        <c:forEach items="${marketplaceSearchResult}" var="marketplace" varStatus="status">
                             <tr>
                                 <td nowrap style="border: 0px;">
                                     <span style="display:block; font-size:13px; font-weight: bold;">${marketplace.marketplaceElastic.title}</span>
@@ -117,19 +111,23 @@
                                     <span style="display:block; font-size:13px;">Rent: <b>${marketplace.marketplaceElastic.productPrice}</b>, Location: <b>${marketplace.marketplaceElastic.town} ${marketplace.marketplaceElastic.city}</b></span>
                                     <span class="label label-default">${marketplace.marketplaceElastic.businessType.description}</span>
                                     <c:forEach items="${marketplace.marketplaceElastic.fieldTags}" var="tag" varStatus="status">
-                                    <span class="label label-default" style="background: #ff217c">${tag}</span>
+                                        <span class="label label-default" style="background: #ff217c">${tag}</span>
                                     </c:forEach>
                                 </td>
                             </tr>
-                            </c:forEach>
-                        </table>
-                        </c:when>
-                        <c:otherwise>
+                        </c:forEach>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-style">
+                <div class="store-table">
+                    <c:if test="${!empty searchForm.search}">
+                        <c:if test="${empty bizStoreSearchResult || empty marketplaceSearchResult}">
                         <div class="alert-info">
                             No search result found. Modify query and search again.
                         </div>
-                        </c:otherwise>
-                    </c:choose>
+                        </c:if>
                     </c:if>
                 </div>
             </div>
