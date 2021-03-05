@@ -17,7 +17,7 @@
 </head>
 <body>
 <form:form method="post"
-        action="${pageContext.request.contextPath}/open/chat/conversation.htm"
+        action="${pageContext.request.contextPath}/open/chat/conversation"
         modelAttribute="chatConversationForm">
 
     <form:hidden path="chatMessagesAsString" value="${chatConversationForm.chatMessagesAsString}" />

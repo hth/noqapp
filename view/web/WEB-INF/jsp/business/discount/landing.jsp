@@ -32,11 +32,11 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/business/discount/landing">Discount</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing">Client Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding">Business Coupon</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -62,7 +62,7 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/discount/add.htm" class="add-btn">Add New Discount</a>
+                                <a href="/business/discount/add" class="add-btn">Add New Discount</a>
                             </div>
                             <div class="store-table">
                                 <c:choose>
@@ -101,7 +101,7 @@
                                         <td>
                                             <c:choose>
                                             <c:when test="${discount.active}">
-                                                <form:form action="${pageContext.request.contextPath}/business/discount/action.htm" modelAttribute="discountForm" method="post">
+                                                <form:form action="${pageContext.request.contextPath}/business/discount/action" modelAttribute="discountForm" method="post">
                                                     <form:hidden path="actionType" value="${ActionTypeEnum.INACTIVE}" />
                                                     <form:hidden path="discountId" value="${discount.id}" />
                                                     <input class="cancel-btn" style="margin: 0;" value="In-Active" type="submit">
@@ -111,7 +111,7 @@
                                                 <span style="display:block; font-size:13px;">Available to delete in ${discount.canDeletedAfterDays} days</span>
                                             </c:when>
                                             <c:otherwise>
-                                                <form:form action="${pageContext.request.contextPath}/business/discount/action.htm" modelAttribute="discountForm" method="post">
+                                                <form:form action="${pageContext.request.contextPath}/business/discount/action" modelAttribute="discountForm" method="post">
                                                     <form:hidden path="actionType" value="${ActionTypeEnum.REMOVE}" />
                                                     <form:hidden path="discountId" value="${discount.id}" />
                                                     <input class="cancel-btn" style="margin: 0;" value="Delete" type="submit">

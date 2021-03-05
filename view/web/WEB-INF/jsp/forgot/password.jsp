@@ -22,8 +22,8 @@
     <div class="warp-inner">
         <div class="logo-left"><img src="${pageContext.request.contextPath}/static/internal/img/logo.png" alt="NoQueue"/></div>
         <div class="top-menu-right">
-            <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
-            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Business Register</a></span>
+            <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login">Sign In</a></span>
+            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register">Business Register</a></span>
         </div>
 
         <div class="clearFix"></div>
@@ -40,7 +40,7 @@
                 <h2><fmt:message key="account.recover.title"/></h2>
                 <p class="mB20 Tcenter"><fmt:message key="account.forgot.sub.title"/></p>
                 <div class="form-style">
-                    <form:form method="post" modelAttribute="forgotRecoverForm" action="password.htm">
+                    <form:form method="post" modelAttribute="forgotRecoverForm" action="password">
                         <form:hidden path="origin" value="forgot"/>
                         <spring:hasBindErrors name="forgotRecoverForm">
                         <div class="error-box">

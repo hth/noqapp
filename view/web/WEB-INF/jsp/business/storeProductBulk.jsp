@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -54,7 +54,7 @@
             <div class="admin-main">
                 <!-- File Upload From -->
 
-                <form:form action="${pageContext.request.contextPath}/business/store/product/bulk/upload.htm" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
+                <form:form action="${pageContext.request.contextPath}/business/store/product/bulk/upload" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="codeQR" value="${codeQR}"/>
                     <div class="admin-title">
                         <h2>Store Product Bulk Upload</h2>
@@ -126,7 +126,7 @@
                     </div>
                 </form:form>
 
-                <form:form action="${pageContext.request.contextPath}/business/store/product/bulk/download.htm" method="post">
+                <form:form action="${pageContext.request.contextPath}/business/store/product/bulk/download" method="post">
                     <input type="hidden" name="codeQR" value="${codeQR}"/>
                     <div class="admin-title">
                         <h2>Store Product Bulk Download</h2>

@@ -35,7 +35,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -62,7 +62,7 @@
                         </div>
                         <c:choose>
                             <c:when test="${!empty migrateBusinessTypeForm.allowedMigrationBusinessType && !migrateBusinessTypeForm.migrationSuccess}">
-                                <form:form method="post" action="${pageContext.request.contextPath}/business/migrateBusinessType.htm" modelAttribute="migrateBusinessTypeForm">
+                                <form:form method="post" action="${pageContext.request.contextPath}/business/migrateBusinessType" modelAttribute="migrateBusinessTypeForm">
                                 <form:hidden path="existingBusinessType" />
                                 <form:hidden path="allowedMigrationBusinessType" />
                                 <div class="alert-info">

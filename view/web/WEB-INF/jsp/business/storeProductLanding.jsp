@@ -44,9 +44,9 @@
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/business/external/access.htm">Permissions</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/business/external/access">Permissions</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -78,7 +78,7 @@
                                     </div>
                                 </div>
 
-                                <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/edit.htm" modelAttribute="storeProductForm">
+                                <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/edit" modelAttribute="storeProductForm">
                                     <form:hidden path="bizStoreId" />
                                     <form:hidden path="storeProductId" />
                                     <form:hidden path="businessType" />
@@ -374,7 +374,7 @@
                                     </div>
                                 </div>
 
-                                <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/add.htm" modelAttribute="storeProductForm">
+                                <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/add" modelAttribute="storeProductForm">
                                     <form:hidden path="bizStoreId" />
                                     <form:hidden path="businessType" />
 
@@ -665,7 +665,7 @@
                             </div>
                             <div class="store-table">
                                 <c:if test="${BusinessTypeEnum.PH eq storeProductForm.businessType}">
-                                    <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/preferredRefresh.htm" modelAttribute="storeProductForm">
+                                    <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/preferredRefresh" modelAttribute="storeProductForm">
                                         <form:hidden path="bizStoreId" value="${storeProductForm.bizStoreId}" />
                                         <button name="refresh" class="add-btn">Refresh</button>
                                         <span style="display:block; font-size:13px;">Only 3 forced refresh allowed in a month *. Use this when you have made lots of changes to product list & would like to push out an update at the earliest</span>
@@ -737,7 +737,7 @@
                                             <span style="display:block; font-size:13px;">Package: ${storeProduct.packageSize}</span>
                                         </td>
                                         <td>
-                                            <a href="/business/store/product/photo/${storeProductForm.bizStoreId}/${storeProduct.id}/image.htm" class="add-btn">Image</a>
+                                            <a href="/business/store/product/photo/${storeProductForm.bizStoreId}/${storeProduct.id}/image" class="add-btn">Image</a>
                                             <c:choose>
                                                 <c:when test="${!empty storeProduct.productImage}">
                                                     <span style="display:block; font-size:13px;">Present</span>
@@ -748,10 +748,10 @@
                                             </c:choose>
                                         </td>
                                         <td>
-                                            <a href="/business/store/product/${storeProductForm.bizStoreId}/${storeProduct.id}/edit.htm" class="add-btn">Edit</a>
+                                            <a href="/business/store/product/${storeProductForm.bizStoreId}/${storeProduct.id}/edit" class="add-btn">Edit</a>
                                         </td>
                                         <td>
-                                            <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/delete.htm" modelAttribute="storeProductForm">
+                                            <form:form method="post" action="${pageContext.request.contextPath}/business/store/product/delete" modelAttribute="storeProductForm">
                                                 <form:hidden path="bizStoreId" value="${storeProductForm.bizStoreId}" />
                                                 <form:hidden path="storeProductId" value="${storeProduct.id}" />
                                                 <button name="delete" class="add-btn">Delete</button>

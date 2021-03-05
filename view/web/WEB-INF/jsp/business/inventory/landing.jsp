@@ -32,8 +32,8 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -59,7 +59,7 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/inventory/asset/bulk.htm" class="add-btn">Asset</a>
+                                <a href="/business/inventory/asset/bulk" class="add-btn">Asset</a>
                             </div>
                             <div class="store-table">
 

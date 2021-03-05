@@ -31,15 +31,15 @@
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/business/editBusiness.htm">Edit Business</a>
-                        <a href="${pageContext.request.contextPath}/business/uploadServicePhoto.htm">Business Photo</a>
-                        <a href="${pageContext.request.contextPath}/business/preferredBusiness.htm">Preferred Business</a>
-                        <a href="${pageContext.request.contextPath}/business/external/access.htm">Permissions</a>
-                        <a href="${pageContext.request.contextPath}/business/dataVisibility/landing.htm">Data Visibility</a>
-                        <a href="${pageContext.request.contextPath}/business/paymentConfiguration/landing.htm">Payment Permission</a>
-                        <a href="${pageContext.request.contextPath}/business/advertisement/landing.htm">Advertisement</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/business/editBusiness">Edit Business</a>
+                        <a href="${pageContext.request.contextPath}/business/uploadServicePhoto">Business Photo</a>
+                        <a href="${pageContext.request.contextPath}/business/preferredBusiness">Preferred Business</a>
+                        <a href="${pageContext.request.contextPath}/business/external/access">Permissions</a>
+                        <a href="${pageContext.request.contextPath}/business/dataVisibility/landing">Data Visibility</a>
+                        <a href="${pageContext.request.contextPath}/business/paymentConfiguration/landing">Payment Permission</a>
+                        <a href="${pageContext.request.contextPath}/business/advertisement/landing">Advertisement</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -65,7 +65,7 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="${pageContext.request.contextPath}/business/advertisement/create.htm" class="add-btn">Add New Advertisement</a>
+                                <a href="${pageContext.request.contextPath}/business/advertisement/create" class="add-btn">Add New Advertisement</a>
                             </div>
                             <div class="store-table">
                                 <c:choose>
@@ -106,11 +106,11 @@
                                             <c:choose>
                                                 <c:when test="${!empty advertisement.imageUrls}">
                                                     <span style="display:block; font-size:13px;">Image Exists</span>
-                                                    <a href="${pageContext.request.contextPath}/business/advertisement/${advertisement.id}/upload.htm" class="add-btn">Edit Image</a>
+                                                    <a href="${pageContext.request.contextPath}/business/advertisement/${advertisement.id}/upload" class="add-btn">Edit Image</a>
                                                 </c:when>
                                                 <c:otherwise>
                                                     <span style="display:block; font-size:13px;">Image Missing</span>
-                                                    <a href="${pageContext.request.contextPath}/business/advertisement/${advertisement.id}/upload.htm" class="add-btn">Add Image</a>
+                                                    <a href="${pageContext.request.contextPath}/business/advertisement/${advertisement.id}/upload" class="add-btn">Add Image</a>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
@@ -126,9 +126,9 @@
                                             <span style="display:block; font-size:13px;"><fmt:formatDate value="${advertisement.created}" pattern="yyyy-MM-dd"/></span>
                                         </td>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/business/advertisement/edit/${advertisement.id}.htm" class="add-btn" style="margin: 0px;">Edit</a>
+                                            <a href="${pageContext.request.contextPath}/business/advertisement/edit/${advertisement.id}" class="add-btn" style="margin: 0px;">Edit</a>
                                             <c:if test="${!advertisement.active}">
-                                                <form:form action="${pageContext.request.contextPath}/business/advertisement/delete.htm" modelAttribute="advertisementForm" method="post">
+                                                <form:form action="${pageContext.request.contextPath}/business/advertisement/delete" modelAttribute="advertisementForm" method="post">
                                                     <input type="hidden" name="advertisementId" value="${advertisement.id}"/>
                                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                                     <input name="delete" class="ladda-button next-btn" value="DELETE" type="submit" style="font-weight: 400; padding: 7%; background: #666;">

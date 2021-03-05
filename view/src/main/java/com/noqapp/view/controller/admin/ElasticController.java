@@ -106,6 +106,6 @@ public class ElasticController {
         } else {
             LOG.warn("Failed deleting elastic index");
         }
-        return "redirect:/admin/landing.htm";
+        return "redirect:/admin/landing";
     }
 }

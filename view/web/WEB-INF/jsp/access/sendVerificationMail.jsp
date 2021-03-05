@@ -34,8 +34,8 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/access/rewards.htm">Rewards</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/access/rewards">Rewards</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -73,7 +73,7 @@
                         </div>
                     </c:when>
                     <c:when test="${!profile.submitState && !profile.accountValidated}">
-                        <form:form method="post" modelAttribute="profile"  action="${pageContext.request.contextPath}/access/sendVerificationMail.htm">
+                        <form:form method="post" modelAttribute="profile"  action="${pageContext.request.contextPath}/access/sendVerificationMail">
                             <div class="admin-content">
                                 <div class="add-new">
                                     <ul class="list-form">

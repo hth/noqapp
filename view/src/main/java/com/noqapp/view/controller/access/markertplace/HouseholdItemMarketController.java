@@ -38,7 +38,7 @@ public class HouseholdItemMarketController {
 
     @Autowired
     public HouseholdItemMarketController(
-        @Value("${householdItemMarketplaceFlowActions:redirect:/access/marketplace/householdItem.htm}")
+        @Value("${householdItemMarketplaceFlowActions:redirect:/access/marketplace/householdItem}")
         String householdItemMarketplaceFlowActions,
 
         AccountService accountService

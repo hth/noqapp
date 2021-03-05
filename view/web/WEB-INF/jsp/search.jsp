@@ -1,4 +1,5 @@
 <%@ include file="include.jsp"%>
+<%@ page session="false"%>
 <!doctype html>
 <html>
 <head>
@@ -43,8 +44,8 @@
         <div class="warp-inner">
             <div class="logo-left"><img src="${pageContext.request.contextPath}/static/internal/img/logo.png" alt="NoQueue"/></div>
             <div class="top-menu-right">
-                <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
-                <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Business Register</a></span>
+                <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login">Sign In</a></span>
+                <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register">Business Register</a></span>
             </div>
 
             <div class="clearFix"></div>
@@ -58,7 +59,7 @@
             <!-- login-box -->
             <div class="login-box">
                 <div class="form-style">
-                    <form:form id="search-form" method="post" modelAttribute="searchForm" action="/open/search.htm" autocomplete="off">
+                    <form:form id="search-form" method="post" modelAttribute="searchForm" action="/open/search" autocomplete="off">
                         <form:hidden path="geoIP.geoHash" />
                         <form:input path="search" cssClass="form-field" required="required" cssErrorClass="form-field error" placeholder="" autofocus="autofocus"/>
                         <img src="${pageContext.request.contextPath}/static/internal/img/location.png" alt="Location" style="float: left;"/>
@@ -83,7 +84,7 @@
                         <c:forEach items="${bizStoreSearchResult}" var="elasticBizStoreSearchSource" varStatus="status">
                         <tr>
                             <td nowrap style="border: 0px;">
-                                <a href="../${elasticBizStoreSearchSource.bizStoreSearchElastic.codeQR}/q.htm" target="_blank">${elasticBizStoreSearchSource.bizStoreSearchElastic.displayName}</a>
+                                <a href="../${elasticBizStoreSearchSource.bizStoreSearchElastic.codeQR}/q" target="_blank">${elasticBizStoreSearchSource.bizStoreSearchElastic.displayName}</a>
                                 <c:choose>
                                     <c:when test="${!empty elasticBizStoreSearchSource.bizStoreSearchElastic.bizCategoryName}">
                                         <span style="display:block; font-size:13px;">

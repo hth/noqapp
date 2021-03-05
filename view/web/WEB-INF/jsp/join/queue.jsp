@@ -52,8 +52,8 @@
         <div class="warp-inner">
             <div class="logo-left"><img src="${pageContext.request.contextPath}/static/internal/img/logo.png" alt="NoQueue"/></div>
             <div class="top-menu-right">
-                <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
-                <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Business Register</a></span>
+                <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login">Sign In</a></span>
+                <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register">Business Register</a></span>
             </div>
 
             <div class="clearFix"></div>
@@ -460,7 +460,7 @@
         window.confirmationResult = null;
         //updateVerificationCodeFormUI();
         //updateSignInFormUI();
-        window.location = "/open/login.htm";
+        window.location = "/open/login";
     }
 
     function onSignOutClick() {

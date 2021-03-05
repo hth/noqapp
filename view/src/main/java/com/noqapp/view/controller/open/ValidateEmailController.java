@@ -48,7 +48,7 @@ public class ValidateEmailController {
     private AccountService accountService;
     private ApiHealthService apiHealthService;
 
-    @Value("${emailValidate:redirect:/open/validate/result.htm}")
+    @Value("${emailValidate:redirect:/open/validate/result}")
     private String validateResult;
 
     @Value("${emailValidatePage:validate/success}")

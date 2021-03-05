@@ -141,7 +141,7 @@ public class EmpLandingController {
         LOG.info("Approved Business user={} loaded by qid={}", businessAwaitingApprovalForm.getBusinessUser().getId(), queueUser.getQueueUserId());
 
         empLandingService.approveBusiness(businessAwaitingApprovalForm.getBusinessUser().getId(), queueUser.getQueueUserId());
-        return "redirect:" + "/emp/landing.htm";
+        return "redirect:" + "/emp/landing";
     }
 
     @PostMapping(value = "/approval", params = "business-user-decline")
@@ -153,7 +153,7 @@ public class EmpLandingController {
         LOG.info("Decline Business user={} loaded by qid={}", businessAwaitingApprovalForm.getBusinessUser().getId(), queueUser.getQueueUserId());
 
         empLandingService.declineBusiness(businessAwaitingApprovalForm.getBusinessUser().getId(), queueUser.getQueueUserId());
-        return "redirect:" + "/emp/landing.htm";
+        return "redirect:" + "/emp/landing";
     }
 
     @GetMapping(value = "/publishArticle/{publishId}/preview", produces = "text/html;charset=UTF-8")
@@ -217,6 +217,6 @@ public class EmpLandingController {
         }
         publishArticle.setValidateByQid(queueUser.getQueueUserId());
         publishArticleService.save(publishArticle);
-        return "redirect:" + "/emp/landing.htm";
+        return "redirect:" + "/emp/landing";
     }
 }

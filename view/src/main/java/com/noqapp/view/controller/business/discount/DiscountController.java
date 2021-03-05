@@ -147,7 +147,7 @@ public class DiscountController {
                     redirectAttrs.addFlashAttribute("result", result);
                     LOG.warn("Failed validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/business/discount/add.htm";
+                    return "redirect:/business/discount/add";
                 }
 
                 int amount = 0;
@@ -177,12 +177,12 @@ public class DiscountController {
                 break;
         }
 
-        return "redirect:/business/discount/landing.htm";
+        return "redirect:/business/discount/landing";
     }
 
     /** For uploading service image. */
     @PostMapping (value = "/action", params = {"cancel_Add"})
     public String upload() {
-        return "redirect:/business/discount/landing.htm";
+        return "redirect:/business/discount/landing";
     }
 }

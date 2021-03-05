@@ -22,8 +22,8 @@
     <div class="warp-inner">
         <div class="logo-left"><img src="${pageContext.request.contextPath}/static/internal/img/logo.png" alt="NoQueue"/></div>
         <div class="top-menu-right">
-            <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
-            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Business Register</a></span>
+            <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login">Sign In</a></span>
+            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register">Business Register</a></span>
         </div>
 
         <div class="clearFix"></div>
@@ -41,7 +41,7 @@
                     <div class="login-box">
                         <div class="form-style">
                             <h2><fmt:message key="password.update.heading"/></h2>
-                            <form:form method="post" modelAttribute="forgotAuthenticateForm" action="authenticate.htm">
+                            <form:form method="post" modelAttribute="forgotAuthenticateForm" action="authenticate">
                                 <form:hidden path="queueUserId"/>
                                 <form:hidden path="authenticationKey"/>
 
@@ -80,7 +80,7 @@
                                 <p>We apologize, but we are unable to verify the link you used to access this page.
                                     <sup>(404)</sup></p>
                                 <p>Please
-                                    <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">click here</a> to return to the main page to start over.
+                                    <a href="${pageContext.request.contextPath}/open/login" class="add-btn">click here</a> to return to the main page to start over.
                                 </p>
                             </div>
                         </div>

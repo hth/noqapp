@@ -76,13 +76,13 @@ public class UserController {
             searchUserForm.setNoUserFound(true);
         }
         redirectAttrs.addFlashAttribute("searchUserForm", searchUserForm);
-        return "redirect:" + "/admin/user/landing" + ".htm";
+        return "redirect:" + "/admin/user/landing";
     }
 
     @PostMapping(value = "/landing", params = {"cancel-search-user"})
     public String postPreferredBusinessCancel() {
         LOG.info("Loading admin landing after user search cancelled");
-        return "redirect:/admin/landing.htm";
+        return "redirect:/admin/landing";
     }
 
     @PostMapping(value = "/action", produces = "text/html;charset=UTF-8")
@@ -131,7 +131,7 @@ public class UserController {
             populateSearchUserForm(searchUserForm, userAccount);
         }
         redirectAttrs.addFlashAttribute("searchUserForm", searchUserForm);
-        return "redirect:" + "/admin/user/landing" + ".htm";
+        return "redirect:" + "/admin/user/landing";
     }
 
     private void populateSearchUserForm(SearchUserForm searchUserForm, UserAccountEntity userAccount) {

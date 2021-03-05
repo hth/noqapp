@@ -31,25 +31,25 @@
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/business/editBusiness.htm">Edit Business</a>
-                        <a href="${pageContext.request.contextPath}/business/uploadServicePhoto.htm">Business Photo</a>
-                        <a href="${pageContext.request.contextPath}/business/preferredBusiness.htm">Preferred Business</a>
-                        <a href="${pageContext.request.contextPath}/business/external/access.htm">Permissions</a>
-                        <a href="${pageContext.request.contextPath}/business/migrateBusinessType.htm">Migrate Business Type</a>
-                        <a href="${pageContext.request.contextPath}/business/dataVisibility/landing.htm">Data Visibility</a>
-                        <a href="${pageContext.request.contextPath}/business/customTextToSpeech/landing.htm">Voice Announcement</a>
-                        <a href="${pageContext.request.contextPath}/business/message/customer.htm">Message Your Customers</a>
-                        <a href="${pageContext.request.contextPath}/business/survey/landing.htm">Survey</a>
-                        <a href="${pageContext.request.contextPath}/business/paymentConfiguration/landing.htm">Payment Permission</a>
-                        <a href="${pageContext.request.contextPath}/business/advertisement/landing.htm">Advertisement</a>
-                        <a href="${pageContext.request.contextPath}/business/store/publishJob/landing.htm">Post Job</a>
-                        <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
-                        <a href="${pageContext.request.contextPath}/business/customer/landing.htm">Service Priority</a>
-                        <a href="${pageContext.request.contextPath}/business/customerHistory/landing.htm">Customer Lookup</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/business/editBusiness">Edit Business</a>
+                        <a href="${pageContext.request.contextPath}/business/uploadServicePhoto">Business Photo</a>
+                        <a href="${pageContext.request.contextPath}/business/preferredBusiness">Preferred Business</a>
+                        <a href="${pageContext.request.contextPath}/business/external/access">Permissions</a>
+                        <a href="${pageContext.request.contextPath}/business/migrateBusinessType">Migrate Business Type</a>
+                        <a href="${pageContext.request.contextPath}/business/dataVisibility/landing">Data Visibility</a>
+                        <a href="${pageContext.request.contextPath}/business/customTextToSpeech/landing">Voice Announcement</a>
+                        <a href="${pageContext.request.contextPath}/business/message/customer">Message Your Customers</a>
+                        <a href="${pageContext.request.contextPath}/business/survey/landing">Survey</a>
+                        <a href="${pageContext.request.contextPath}/business/paymentConfiguration/landing">Payment Permission</a>
+                        <a href="${pageContext.request.contextPath}/business/advertisement/landing">Advertisement</a>
+                        <a href="${pageContext.request.contextPath}/business/store/publishJob/landing">Post Job</a>
+                        <a href="${pageContext.request.contextPath}/business/discount/landing">Discount</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing">Client Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding">Business Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/customer/landing">Service Priority</a>
+                        <a href="${pageContext.request.contextPath}/business/customerHistory/landing">Customer Lookup</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -71,7 +71,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3><a href="/business/detail/business/${businessLandingForm.bizCodeQR}.htm" target="_blank"><span>${businessLandingForm.bizName}</span></a></h3>
+                        <h3><a href="/business/detail/business/${businessLandingForm.bizCodeQR}" target="_blank"><span>${businessLandingForm.bizName}</span></a></h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">
@@ -93,22 +93,22 @@
                                     || BusinessTypeEnum.CDQ eq businessLandingForm.businessType
                                     }">
                                         <c:if test="${businessLandingForm.bizStores.size() != 0}">
-                                            <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
-                                            <a href="/business/category.htm" class="add-btn">Show Business Category</a>
-                                            <a href="/business/addStore.htm" class="add-btn">Setup Online ${businessLandingForm.businessType.classifierTitle}</a>
+                                            <a href="/business/authorizedUsers" class="add-btn">Show Authorized Users</a>
+                                            <a href="/business/category" class="add-btn">Show Business Category</a>
+                                            <a href="/business/addStore" class="add-btn">Setup Online ${businessLandingForm.businessType.classifierTitle}</a>
                                         </c:if>
                                     </c:when>
                                     <c:otherwise>
-                                        <a href="/business/authorizedUsers.htm" class="add-btn">Show Authorized Users</a>
+                                        <a href="/business/authorizedUsers" class="add-btn">Show Authorized Users</a>
                                         <c:choose>
                                             <c:when test="${BusinessTypeEnum.PH eq businessLandingForm.businessType}">
 
                                             </c:when>
                                             <c:otherwise>
-                                                <a href="/business/category.htm" class="add-btn">Show Business Category</a>
+                                                <a href="/business/category" class="add-btn">Show Business Category</a>
                                             </c:otherwise>
                                         </c:choose>
-                                        <a href="/business/addStore.htm" class="add-btn">Setup Online ${businessLandingForm.businessType.classifierTitle}</a>
+                                        <a href="/business/addStore" class="add-btn">Setup Online ${businessLandingForm.businessType.classifierTitle}</a>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
@@ -134,10 +134,10 @@
                                             <tr>
                                                 <td>${status.count}&nbsp;</td>
                                                 <td>
-                                                    <a href="/business/detail/store/${store.id}.htm" target="_blank" style="display:block; font-size:13px; color: #0000FF;">${store.addressWrappedFunky}</a>
+                                                    <a href="/business/detail/store/${store.id}" target="_blank" style="display:block; font-size:13px; color: #0000FF;">${store.addressWrappedFunky}</a>
                                                 </td>
                                                 <td nowrap>
-                                                    <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">${store.displayName}</a>
+                                                    <a href="/${store.codeQR}/q" target="_blank" style="color: #0000FF;">${store.displayName}</a>
                                                     <span style="display:block; font-size:13px;">Business Type: ${store.businessType.description}</span>
                                                     <span style="display:block; font-size:13px;">Category:
                                                         <c:choose>
@@ -151,10 +151,10 @@
                                                     </span>
                                                     <c:choose>
                                                         <c:when test="${store.averageServiceTime > 0}">
-                                                            <a href="/business/averageHandling/${store.id}.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted} per client</span></a>
+                                                            <a href="/business/averageHandling/${store.id}" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted} per client</span></a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <a href="/business/averageHandling/${store.id}.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span></a>
+                                                            <a href="/business/averageHandling/${store.id}" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">AHT: ${store.averageServiceTimeFormatted}</span></a>
                                                         </c:otherwise>
                                                     </c:choose>
 
@@ -185,13 +185,13 @@
                                                     </c:choose>
                                                 </td>
                                                 <td>
-                                                    <a href="/business/${store.id}/listQueueSupervisor.htm" style="color: #0000FF;">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
+                                                    <a href="/business/${store.id}/listQueueSupervisor" style="color: #0000FF;">${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}</a>
                                                 </td>
                                                 <td>
-                                                    <a href="/business/${store.id}/listQueueSupervisor.htm" style="color: #0000FF;">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
+                                                    <a href="/business/${store.id}/listQueueSupervisor" style="color: #0000FF;">${businessLandingForm.queueDetails.get(store.id).assignedToQueue}</a>
                                                 </td>
                                                 <td>
-                                                    <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>
+                                                    <a href="/business/${store.id}/editStore" class="add-btn">Edit</a>
                                                     <c:choose>
                                                         <c:when test="${store.active}">
                                                             <button id="storeOnlineOrOffline_${store.id}" class="add-btn" onclick="storeOnlineOrOffline('${store.id}', '${ActionTypeEnum.INACTIVE}')">Go Offline</button>
@@ -214,9 +214,9 @@
 
                                         <div class="addbtn-store">
                                             <p align="center">
-                                                <a href="/business/addStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">&nbsp;&nbsp;One location &nbsp;&nbsp;&nbsp;</a>
+                                                <a href="/business/addStore" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">&nbsp;&nbsp;One location &nbsp;&nbsp;&nbsp;</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                <a href="/business/addFranchiseStore.htm" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">Multiple locations</a>
+                                                <a href="/business/addFranchiseStore" class="add-btn" style="height: 90px; line-height: 90px; text-align: center; font-size: 18px;">Multiple locations</a>
                                             </p>
                                         </div>
                                     </c:otherwise>

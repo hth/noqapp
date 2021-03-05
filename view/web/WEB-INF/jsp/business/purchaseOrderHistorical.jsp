@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -85,7 +85,7 @@
                                                 <c:choose>
                                                 <c:when test="${PurchaseOrderStateEnum.OD eq purchaseOrder.presentOrderState}">
                                                     <span style="display:block;">
-                                                        <a href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/historical/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
+                                                        <a href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/historical/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}"
                                                                 target="_blank" class="add-btn" style="margin: 0;">Add / Remove Report</a>
                                                     </span>
                                                 </c:when>

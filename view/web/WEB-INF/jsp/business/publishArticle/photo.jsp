@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -54,7 +54,7 @@
             <sec:authorize access="hasAnyRole('ROLE_S_MANAGER')">
                 <div class="admin-main">
                     <!-- File Upload From -->
-                    <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/upload.htm"
+                    <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/upload"
                             modelAttribute="publishArticleForm" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="publishId" value="${publishArticleForm.publishId}"/>
                         <div class="admin-title">
@@ -117,7 +117,7 @@
                                                         class="img-profile-circle" />
                                             </div>
                                             <div class="col-lable3">
-                                                <form action="${pageContext.request.contextPath}/business/store/publishArticle/deleteImage.htm" method="post">
+                                                <form action="${pageContext.request.contextPath}/business/store/publishArticle/deleteImage" method="post">
                                                     <input type="hidden" name="publishId" value="${publishArticleForm.publishId}"/>
                                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                                     <div class="left-btn">

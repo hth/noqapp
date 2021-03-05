@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -54,7 +54,7 @@
             <sec:authorize access="hasAnyRole('ROLE_Q_SUPERVISOR')">
                 <div class="admin-main">
                     <!-- File Upload From -->
-                    <form:form action="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/upload.htm"
+                    <form:form action="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/upload"
                             modelAttribute="medicalReportForm" method="post" enctype="multipart/form-data">
                         <input type="hidden" name="storeId" value="${medicalReportForm.storeId}"/>
                         <input type="hidden" name="transactionId" value="${medicalReportForm.transactionId}"/>
@@ -130,7 +130,7 @@
                                             </c:choose>
                                         </td>
                                         <td>
-                                            <form action="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/delete.htm" method="post">
+                                            <form action="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/delete" method="post">
                                                 <input type="hidden" name="storeId" value="${medicalReportForm.storeId}"/>
                                                 <input type="hidden" name="transactionId" value="${medicalReportForm.transactionId}"/>
                                                 <input type="hidden" name="filename" value="${image}"/>

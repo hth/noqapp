@@ -171,7 +171,7 @@ public class AverageHandlingController {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
-            return "redirect:/business/averageHandling/" + averageHandlingForm.getBizStoreId() + ".htm";
+            return "redirect:/business/averageHandling/" + averageHandlingForm.getBizStoreId();
         }
 
         BizStoreEntity bizStore = bizService.getByStoreId(averageHandlingForm.getBizStoreId());
@@ -186,12 +186,12 @@ public class AverageHandlingController {
             averageHandlingForm);
 
         bizService.updateStoreTokenAndServiceTime(bizStore.getCodeQR(), averagesServiceTime, averageHandlingForm.getAvailableTokenCount());
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/landing";
     }
 
     @PostMapping(value = "/landing",  produces = "text/html;charset=UTF-8", params = "cancel-aht")
     public String updateAverageHandlingTime() {
         LOG.info("Cancel search");
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/landing";
     }
 }

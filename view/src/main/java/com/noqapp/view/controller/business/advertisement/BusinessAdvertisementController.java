@@ -81,7 +81,7 @@ public class BusinessAdvertisementController {
         @Value("${nextPage:/business/advertisement/landing}")
         String nextPage,
 
-        @Value("${newAdvertisementFlow:redirect:/store/addNewBusinessAdvertisement.htm}")
+        @Value("${newAdvertisementFlow:redirect:/store/addNewBusinessAdvertisement}")
         String addNewBusinessAdvertisementFlow,
 
         ImageValidator imageValidator,
@@ -162,7 +162,7 @@ public class BusinessAdvertisementController {
         advertisement.markAsDeleted();
         advertisementService.save(advertisement);
 
-        return "redirect:/business/advertisement/landing.htm";
+        return "redirect:/business/advertisement/landing";
     }
 
     /** For uploading article image. */
@@ -211,12 +211,12 @@ public class BusinessAdvertisementController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/business/advertisement/" + advertisementForm.getAdvertisementId() + "/upload.htm";
+                    return "redirect:/business/advertisement/" + advertisementForm.getAdvertisementId() + "/upload";
                 }
 
                 try {
                     processImage(advertisementForm.getAdvertisementId(), multipartFile);
-                    return "redirect:/business/advertisement/" + advertisementForm.getAdvertisementId() + "/upload.htm";
+                    return "redirect:/business/advertisement/" + advertisementForm.getAdvertisementId() + "/upload";
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -227,7 +227,7 @@ public class BusinessAdvertisementController {
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:/business/advertisement/" + advertisementForm.getAdvertisementId() + "/upload.htm";
+                return "redirect:/business/advertisement/" + advertisementForm.getAdvertisementId() + "/upload";
             }
         }
         return "redirect:/business/advertisement/" + advertisementForm.getAdvertisementId() + "/upload";
@@ -236,7 +236,7 @@ public class BusinessAdvertisementController {
     /** For uploading service image. */
     @PostMapping (value = "/upload", params = {"cancel_Upload"})
     public String upload() {
-        return "redirect:/business/advertisement/landing.htm";
+        return "redirect:/business/advertisement/landing";
     }
 
     @PostMapping(value = "/deleteImage")
@@ -253,7 +253,7 @@ public class BusinessAdvertisementController {
             .setValidateStatus(ValidateStatusEnum.P)
             .getImageUrls().remove(advertisementForm.getImageUrl());
         advertisementService.save(advertisement);
-        return "redirect:/business/advertisement/" + advertisementForm.getAdvertisementId() + "/upload.htm";
+        return "redirect:/business/advertisement/" + advertisementForm.getAdvertisementId() + "/upload";
     }
 
     private void processImage(String advertisementId, MultipartFile multipartFile) throws IOException {

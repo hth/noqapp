@@ -117,9 +117,9 @@ public class SearchBusinessStoreController {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
-            return "redirect:/open/search.htm";
+            return "redirect:/open/search";
         }
         redirectAttrs.addFlashAttribute("search", searchForm);
-        return "redirect:/open/search.htm";
+        return "redirect:/open/search";
     }
 }

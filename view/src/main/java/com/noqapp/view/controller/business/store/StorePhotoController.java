@@ -206,7 +206,7 @@ public class StorePhotoController {
         bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore, storeHourService.findAllStoreHours(bizStore.getId())));
         bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
         redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Store service image deleted successfully"));
-        return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
+        return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR;
     }
 
     @PostMapping(value = "/deleteInteriorPhoto")
@@ -238,7 +238,7 @@ public class StorePhotoController {
         bizStoreElasticService.save(DomainConversion.getAsBizStoreElastic(bizStore, storeHourService.findAllStoreHours(bizStore.getId())));
         bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
         redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Store image deleted successfully"));
-        return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+        return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR;
     }
 
     /** For uploading service image. */
@@ -277,13 +277,13 @@ public class StorePhotoController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
+                    return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR;
                 }
 
                 try {
                     processServiceImage(queueUser.getQueueUserId(), codeQR, multipartFile, true);
                     redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Store service image uploaded successfully"));
-                    return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
+                    return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR;
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -294,16 +294,16 @@ public class StorePhotoController {
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
+                return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR;
             }
         }
-        return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR + ".htm";
+        return "redirect:/business/store/photo/uploadServicePhoto/" + codeQR;
     }
 
     @PostMapping(value = "/uploadServicePhoto", params = "cancel_Upload")
     public String cancelUploadServicePhoto() {
         LOG.info("Cancel file upload for store service");
-        return "redirect:/business/store/landing.htm";
+        return "redirect:/business/store/landing";
     }
 
     /** For uploading service image. */
@@ -342,13 +342,13 @@ public class StorePhotoController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+                    return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR;
                 }
 
                 try {
                     processServiceImage(queueUser.getQueueUserId(), codeQR, multipartFile, false);
                     redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Store image uploaded successfully"));
-                    return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+                    return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR;
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -359,16 +359,16 @@ public class StorePhotoController {
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+                return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR;
             }
         }
-        return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR + ".htm";
+        return "redirect:/business/store/photo/uploadInteriorPhoto/" + codeQR;
     }
 
     @PostMapping(value = "/uploadInteriorPhoto", params = "cancel_Upload")
     public String cancelUploadInteriorPhoto() {
         LOG.info("Cancel file upload for store interior");
-        return "redirect:/business/store/landing.htm";
+        return "redirect:/business/store/landing";
     }
 
     private void processServiceImage(String qid, String codeQR, MultipartFile multipartFile, boolean service) throws IOException {

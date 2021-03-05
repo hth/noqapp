@@ -58,7 +58,7 @@ public class LandingController {
         @Value ("${nextPage:/access/landing}")
         String nextPage,
 
-        @Value ("${migrateToBusinessRegistrationFlowActions:redirect:/migrate/business/registration.htm}")
+        @Value ("${migrateToBusinessRegistrationFlowActions:redirect:/migrate/business/registration}")
         String migrateToBusinessRegistrationFlowActions,
 
         BusinessUserService businessUserService,

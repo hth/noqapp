@@ -43,7 +43,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -85,7 +85,7 @@
                         <div class="space10"></div>
                         </spring:hasBindErrors>
 
-                        <form:form method="POST" action="./landing.htm" modelAttribute="averageHandlingForm">
+                        <form:form method="POST" action="./landing" modelAttribute="averageHandlingForm">
                             <form:hidden path="bizStoreId" value="${averageHandlingForm.bizStoreId}" />
                             <ul class="list-form">
                                 <li>

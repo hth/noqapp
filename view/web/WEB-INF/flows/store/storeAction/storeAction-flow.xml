@@ -126,9 +126,9 @@
         <if test="registerBusiness.decidePathTraversalOnRegistrationComplete()" then="registrationComplete" else="registrationCompleteAsManager"/>
     </decision-state>
 
-    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
-    <view-state id="registrationCompleteAsManager" view="externalRedirect:contextRelative:/business/store/landing.htm"/>
-    <end-state id="logout" view="externalRedirect:contextRelative:/business/landing.htm"/>
+    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing"/>
+    <view-state id="registrationCompleteAsManager" view="externalRedirect:contextRelative:/business/store/landing"/>
+    <end-state id="logout" view="externalRedirect:contextRelative:/business/landing"/>
 
     <global-transitions>
         <transition on="cancel" to="logout"/>

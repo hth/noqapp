@@ -38,10 +38,10 @@
     </action-state>
 
     <end-state id="home"
-               view="externalRedirect:contextRelative:/business/store/publishArticle/landing.htm"/>
+               view="externalRedirect:contextRelative:/business/store/publishArticle/landing"/>
 
     <view-state id="cancelPublish"
-                view="externalRedirect:contextRelative:/business/store/publishArticle/landing.htm"/>
+                view="externalRedirect:contextRelative:/business/store/publishArticle/landing"/>
 
     <global-transitions>
         <transition on="cancel" to="home"/>

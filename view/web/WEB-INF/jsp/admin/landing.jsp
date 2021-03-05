@@ -28,8 +28,8 @@
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png" /></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/emp/landing/account/access.htm">Permissions</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/emp/landing/account/access">Permissions</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -53,16 +53,16 @@
                     <div class="store">
                         <div class="add-store">
                             <div class="store-table">
-                                User Control: <a href="/admin/user/landing.htm">Active / In-Active User</a>
+                                User Control: <a href="/admin/user/landing">Active / In-Active User</a>
                             </div>
                             <div class="store-table">
-                                Global Notification: <a href="/admin/notification/landing.htm">Sends Notifications To All</a>
+                                Global Notification: <a href="/admin/notification/landing">Sends Notifications To All</a>
                             </div>
                             <div class="store-table">
-                                Run Cron Task Manually: <a href="/admin/invokeCronTask.htm">Cron Task</a>
+                                Run Cron Task Manually: <a href="/admin/invokeCronTask">Cron Task</a>
                             </div>
                             <div class="store-table">
-                                Elastic Re-Create: <a href="/admin/elastic.htm">Re-Create Elastic</a>
+                                Elastic Re-Create: <a href="/admin/elastic">Re-Create Elastic</a>
                             </div>
                         </div>
                     </div>

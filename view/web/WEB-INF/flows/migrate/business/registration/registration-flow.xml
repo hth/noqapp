@@ -144,9 +144,9 @@
         <transition to="registrationEditComplete"/>
     </action-state>
 
-    <view-state id="registrationEditComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
+    <view-state id="registrationEditComplete" view="externalRedirect:contextRelative:/business/landing"/>
     <view-state id="registrationComplete"/>
-    <end-state id="logout" view="externalRedirect:contextRelative:/access/landing.htm"/>
+    <end-state id="logout" view="externalRedirect:contextRelative:/access/landing"/>
 
     <global-transitions>
         <transition on="cancel" to="logout"/>

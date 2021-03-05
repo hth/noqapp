@@ -32,8 +32,8 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -59,7 +59,7 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/store/publishArticle/newArticle.htm" class="add-btn">Add New Article</a>
+                                <a href="/business/store/publishArticle/newArticle" class="add-btn">Add New Article</a>
                             </div>
                             <div class="store-table">
                                 <c:choose>
@@ -81,7 +81,7 @@
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0">
                                                         <tr>
                                                             <td style="border: 0; padding: 1px;">
-                                                                <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/action.htm"
+                                                                <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/action"
                                                                         modelAttribute="publishArticleForm" method="post">
                                                                     <form:hidden path="action" value="EDIT" />
                                                                     <form:hidden path="publishId" value="${item.publishId}" />
@@ -91,7 +91,7 @@
                                                             <td style="border: 0; padding: 1px;">
                                                                 <c:choose>
                                                                     <c:when test="${item.active}">
-                                                                        <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/action.htm"
+                                                                        <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/action"
                                                                                 modelAttribute="publishArticleForm" method="post">
                                                                             <form:hidden path="action" value="OFFLINE" />
                                                                             <form:hidden path="publishId" value="${item.publishId}" />
@@ -99,7 +99,7 @@
                                                                         </form:form>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/action.htm"
+                                                                        <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/action"
                                                                                 modelAttribute="publishArticleForm" method="post">
                                                                             <form:hidden path="action" value="ONLINE" />
                                                                             <form:hidden path="publishId" value="${item.publishId}" />
@@ -109,7 +109,7 @@
                                                                 </c:choose>
                                                             </td>
                                                             <td style="border: 0; padding: 1px;">
-                                                                <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/action.htm"
+                                                                <form:form action="${pageContext.request.contextPath}/business/store/publishArticle/action"
                                                                         modelAttribute="publishArticleForm" method="post">
                                                                     <form:hidden path="action" value="DELETE" />
                                                                     <form:hidden path="publishId" value="${item.publishId}" />
@@ -124,12 +124,12 @@
                                                         <c:when test="${!empty item.bannerImage}">
                                                             Image Exists
                                                             <br/>
-                                                            <a href="${pageContext.request.contextPath}/business/store/publishArticle/${item.publishId}/upload.htm" class="add-btn">Edit Image</a>
+                                                            <a href="${pageContext.request.contextPath}/business/store/publishArticle/${item.publishId}/upload" class="add-btn">Edit Image</a>
                                                         </c:when>
                                                         <c:otherwise>
                                                             Image Missing
                                                             <br/>
-                                                            <a href="${pageContext.request.contextPath}/business/store/publishArticle/${item.publishId}/upload.htm" class="add-btn">Add Image</a>
+                                                            <a href="${pageContext.request.contextPath}/business/store/publishArticle/${item.publishId}/upload" class="add-btn">Add Image</a>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>

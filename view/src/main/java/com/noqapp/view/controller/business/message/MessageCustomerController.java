@@ -99,7 +99,7 @@ public class MessageCustomerController {
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
-            return "redirect:" + "/business/message/customer" + ".htm";
+            return "redirect:" + "/business/message/customer";
         }
 
         try {
@@ -122,7 +122,7 @@ public class MessageCustomerController {
         } catch (Exception e) {
             LOG.error("Failed sending message reason={}", e.getLocalizedMessage(), e);
         }
-        return "redirect:" + "/business/message/customer" + ".htm";
+        return "redirect:" + "/business/message/customer";
     }
 
     @PostMapping(params = {"cancel-send-notification"}, produces = "text/html;charset=UTF-8")

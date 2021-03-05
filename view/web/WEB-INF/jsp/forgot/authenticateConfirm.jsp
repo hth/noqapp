@@ -19,8 +19,8 @@
     <div class="warp-inner">
         <div class="logo-left"><img src="${pageContext.request.contextPath}/static/internal/img/logo.png" alt="NoQueue"/></div>
         <div class="top-menu-right">
-            <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
-            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Business Register</a></span>
+            <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login">Sign In</a></span>
+            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register">Business Register</a></span>
         </div>
 
         <div class="clearFix"></div>
@@ -39,7 +39,7 @@
                             <h3>Password Update Failed</h3>
                             <p>We apologize, but we were unable to update your account with new password.</p>
                             <p>Please
-                                <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">click here</a> to return to the main page and start over.
+                                <a href="${pageContext.request.contextPath}/open/login" class="add-btn">click here</a> to return to the main page and start over.
                             </p>
                         </c:if>
 
@@ -47,7 +47,7 @@
                             <h3>Password Update Success</h3>
                             <p>Please log in with your new password.</p>
                             <p>Click here for
-                                <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">Sign In</a> page.
+                                <a href="${pageContext.request.contextPath}/open/login" class="add-btn">Sign In</a> page.
                             </p>
                         </c:if>
                     </div>

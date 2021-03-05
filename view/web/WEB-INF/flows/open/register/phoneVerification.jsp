@@ -88,7 +88,7 @@
                         <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
                         <div class="error-box">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/register.htm">Please click here to register</a>
+                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/register">Please click here to register</a>
                             </div>
                         </div>
                         </c:if>

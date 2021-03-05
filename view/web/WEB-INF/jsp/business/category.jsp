@@ -31,7 +31,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -80,7 +80,7 @@
                                 <td>${status.count}&nbsp;</td>
                                 <td nowrap>${category.value}</td>
                                 <td nowrap>
-                                    <a href="/business/category/${category.key}/storeByCategory.htm" style="color: #0000FF;">${categoryLanding.categoryCounts.get(category.key)}</a>
+                                    <a href="/business/category/${category.key}/storeByCategory" style="color: #0000FF;">${categoryLanding.categoryCounts.get(category.key)}</a>
                                 </td>
                             </tr>
                             </c:forEach>

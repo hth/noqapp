@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -93,7 +93,7 @@
                                     <div class="col-lable3"></div>
                                     <div class="col-fields">
                                         <div class="button-btn">
-                                            <form:form action="${pageContext.request.contextPath}/emp/landing/publishArticle/preview.htm" method="post">
+                                            <form:form action="${pageContext.request.contextPath}/emp/landing/publishArticle/preview" method="post">
                                                 <input type="hidden" name="publishId" value="${publishArticleForm.publishId}"/>
                                                 <input type="hidden" name="validateStatus" value="${ValidateStatusEnum.A}"/>
                                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -102,7 +102,7 @@
                                                 </div>
                                             </form:form>
 
-                                            <form:form action="${pageContext.request.contextPath}/emp/landing/publishArticle/preview.htm" method="post">
+                                            <form:form action="${pageContext.request.contextPath}/emp/landing/publishArticle/preview" method="post">
                                                 <input type="hidden" name="publishId" value="${publishArticleForm.publishId}"/>
                                                 <input type="hidden" name="validateStatus" value="${ValidateStatusEnum.R}"/>
                                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

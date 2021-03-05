@@ -41,7 +41,7 @@
     </action-state>
 
     <view-state id="invitationCancel"
-                view="externalRedirect:contextRelative:/business/#{inviteQueueSupervisor.bizStoreId}/listQueueSupervisor.htm"/>
+                view="externalRedirect:contextRelative:/business/#{inviteQueueSupervisor.bizStoreId}/listQueueSupervisor"/>
     <view-state id="invitationComplete"
-                view="externalRedirect:contextRelative:/business/#{inviteQueueSupervisor.bizStoreId}/listQueueSupervisor.htm"/>
+                view="externalRedirect:contextRelative:/business/#{inviteQueueSupervisor.bizStoreId}/listQueueSupervisor"/>
 </flow>

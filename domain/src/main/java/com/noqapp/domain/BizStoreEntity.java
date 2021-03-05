@@ -952,10 +952,10 @@ public class BizStoreEntity extends BaseEntity {
     public String getCodeQRInALink() {
         switch (businessType.getMessageOrigin()) {
             case O:
-                return "https://q.noqapp.com/" + codeQR + "/o.htm";
+                return "https://q.noqapp.com/" + codeQR + "/o";
             case Q:
             default:
-                return "https://q.noqapp.com/" + codeQR + "/q.htm";
+                return "https://q.noqapp.com/" + codeQR + "/q";
         }
     }
 

@@ -119,7 +119,7 @@ public class CustomTextToSpeechController {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
-            return "redirect:/business/customTextToSpeech/landing.htm";
+            return "redirect:/business/customTextToSpeech/landing";
         }
 
         if (customTextToSpeech == null) {
@@ -153,13 +153,13 @@ public class CustomTextToSpeechController {
             .setLanguageTag(null)
             .setTemplate(null);
         redirectAttrs.addFlashAttribute("customTextToSpeechForm", customTextToSpeechForm);
-        return "redirect:" + "/business/customTextToSpeech/landing.htm";
+        return "redirect:" + "/business/customTextToSpeech/landing";
     }
 
     /** For cancelling creating announcement image. */
     @PostMapping (value = "/landing", params = {"cancel-announcement"})
     public String landing() {
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/landing";
     }
 
     @PostMapping(value = "/action", params = {"action-announcement"}, produces = "text/html;charset=UTF-8")
@@ -197,6 +197,6 @@ public class CustomTextToSpeechController {
             .setLanguageTag(null)
             .setTemplate(null);
         redirectAttrs.addFlashAttribute("customTextToSpeechForm", customTextToSpeechForm);
-        return "redirect:" + "/business/customTextToSpeech/landing.htm";
+        return "redirect:" + "/business/customTextToSpeech/landing";
     }
 }

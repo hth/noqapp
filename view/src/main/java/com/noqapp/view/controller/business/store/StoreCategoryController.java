@@ -222,7 +222,7 @@ public class StoreCategoryController {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
-            return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId() + ".htm";
+            return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId();
         }
 
         BizStoreEntity bizStore = bizService.getByStoreId(storeCategoryForm.getBizStoreId().getText());
@@ -231,7 +231,7 @@ public class StoreCategoryController {
             .setBizStoreId(storeCategoryForm.getBizStoreId().getText())
             .setCategoryName(storeCategoryForm.getCategoryName().getText());
         storeCategoryService.save(storeCategory);
-        return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId() + ".htm";
+        return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId();
     }
 
     /** On cancelling addition of new product. */
@@ -240,7 +240,7 @@ public class StoreCategoryController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel adding store category qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
-        return "redirect:/business/store/landing.htm";
+        return "redirect:/business/store/landing";
     }
 
     /** Edit landing category name. */
@@ -277,7 +277,7 @@ public class StoreCategoryController {
             .setCategoryName(new ScrubbedInput(storeCategory.getCategoryName()));
 
         redirectAttrs.addFlashAttribute("storeCategoryForm", storeCategoryForm);
-        return "redirect:" + "/business/store/category/" + storeId.getText() + ".htm";
+        return "redirect:" + "/business/store/category/" + storeId.getText();
     }
 
     /** Edit landing category name. */
@@ -309,14 +309,14 @@ public class StoreCategoryController {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
-            return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId().getText() + ".htm";
+            return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId().getText();
         }
 
         StoreCategoryEntity storeCategory = storeCategoryService.findOne(storeCategoryForm.getStoreCategoryId().getText());
         storeCategory
             .setCategoryName(storeCategoryForm.getCategoryName().getText());
         storeCategoryService.save(storeCategory);
-        return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId().getText() + ".htm";
+        return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId().getText();
     }
 
     /** On cancelling edit of product. */
@@ -328,7 +328,7 @@ public class StoreCategoryController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel editing store category qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
-        return "redirect:/business/store/landing.htm";
+        return "redirect:/business/store/landing";
     }
 
     /** Delete store category. */
@@ -353,6 +353,6 @@ public class StoreCategoryController {
 
         StoreCategoryEntity storeCategory = storeCategoryService.findOne(storeCategoryForm.getStoreCategoryId().getText());
         storeCategoryService.delete(storeCategory);
-        return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId().getText() + ".htm";
+        return "redirect:" + "/business/store/category/" + storeCategoryForm.getBizStoreId().getText();
     }
 }

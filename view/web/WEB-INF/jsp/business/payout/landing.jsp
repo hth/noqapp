@@ -32,8 +32,8 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -59,8 +59,8 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-<%--                                <a href="/business/payout/couponUsed.htm" class="add-btn">Coupon Used</a>--%>
-                                <a href="/business/payout/historical.htm" class="add-btn">Earnings</a>
+<%--                                <a href="/business/payout/couponUsed" class="add-btn">Coupon Used</a>--%>
+                                <a href="/business/payout/historical" class="add-btn">Earnings</a>
                             </div>
                             <div class="store-table">
                             <c:choose>

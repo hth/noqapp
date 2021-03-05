@@ -102,6 +102,6 @@ public class AdvertisementController {
         }
         advertisement.setValidateByQid(queueUser.getQueueUserId());
         advertisementService.save(advertisement);
-        return "redirect:" + "/emp/landing.htm";
+        return "redirect:" + "/emp/landing";
     }
 }

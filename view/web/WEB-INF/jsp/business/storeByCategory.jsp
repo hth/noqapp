@@ -31,7 +31,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -77,28 +77,28 @@
                                                 <tr>
                                                     <td>${status.count}&nbsp;</td>
                                                     <td>
-                                                        <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;">
+                                                        <a href="/business/detail/store/${store.id}" target="_blank" style="color: #0000FF;">
                                                             <span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span>
                                                         </a>
                                                     </td>
                                                     <td nowrap>
-                                                        <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">
+                                                        <a href="/${store.codeQR}/q" target="_blank" style="color: #0000FF;">
                                                             <span style="display:block; font-size:13px;">${store.displayName}</span>
                                                         </a>
                                                         <span style="display:block; font-size:13px;">${businessLandingForm.categories.get(store.bizCategoryId)}</span>
                                                     </td>
                                                     <td>
-                                                        <a href="/business/${store.id}/listQueueSupervisor.htm" style="color: #0000FF;">
+                                                        <a href="/business/${store.id}/listQueueSupervisor" style="color: #0000FF;">
                                                             ${businessLandingForm.queueDetails.get(store.id).pendingApprovalToQueue}
                                                         </a>
                                                     </td>
                                                     <td>
-                                                        <a href="/business/${store.id}/listQueueSupervisor.htm" style="color: #0000FF;">
+                                                        <a href="/business/${store.id}/listQueueSupervisor" style="color: #0000FF;">
                                                             ${businessLandingForm.queueDetails.get(store.id).assignedToQueue}
                                                         </a>
                                                     </td>
                                                     <td>
-                                                        <a href="/business/${store.id}/editStore.htm" class="add-btn">Edit</a>
+                                                        <a href="/business/${store.id}/editStore" class="add-btn">Edit</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>

@@ -268,9 +268,9 @@ public class MedicalReportController {
         MedicalReportForm medicalReportForm
     ) {
         if (referer.contains("historical")) {
-            return "redirect:/business/store/sup/historical/" + medicalReportForm.getCodeQR() + ".htm";
+            return "redirect:/business/store/sup/historical/" + medicalReportForm.getCodeQR();
         } else {
-            return "redirect:/business/store/sup/current/" + medicalReportForm.getCodeQR() + ".htm";
+            return "redirect:/business/store/sup/current/" + medicalReportForm.getCodeQR();
         }
     }
 
@@ -304,9 +304,9 @@ public class MedicalReportController {
 
     private String redirectTo(String referer, String storeId, String transactionId) {
         if (referer.contains("historical")) {
-            return "redirect:/business/store/sup/order/medicalReport/historical/" + storeId + "/" + transactionId + ".htm";
+            return "redirect:/business/store/sup/order/medicalReport/historical/" + storeId + "/" + transactionId;
         } else {
-            return "redirect:/business/store/sup/order/medicalReport/current/" + storeId + "/" + transactionId + ".htm";
+            return "redirect:/business/store/sup/order/medicalReport/current/" + storeId + "/" + transactionId;
         }
     }
 }

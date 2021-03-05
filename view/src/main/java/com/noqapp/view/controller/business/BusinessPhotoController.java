@@ -140,7 +140,7 @@ public class BusinessPhotoController {
         Set<String> businessServiceImages = bizName.getBusinessServiceImages();
         businessServiceImages.remove(request.getParameter("businessServiceImage"));
         bizService.saveName(bizName);
-        return "redirect:/business/uploadServicePhoto.htm";
+        return "redirect:/business/uploadServicePhoto";
     }
 
     /** For uploading service image. */
@@ -179,12 +179,12 @@ public class BusinessPhotoController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/business/uploadServicePhoto.htm";
+                    return "redirect:/business/uploadServicePhoto";
                 }
 
                 try {
                     processServiceImage(queueUser.getQueueUserId(), businessUser.getBizName().getId(), multipartFile);
-                    return "redirect:/business/uploadServicePhoto.htm";
+                    return "redirect:/business/uploadServicePhoto";
                 } catch (Exception e) {
                     LOG.error("Failed business image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -195,10 +195,10 @@ public class BusinessPhotoController {
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:/business/uploadServicePhoto.htm";
+                return "redirect:/business/uploadServicePhoto";
             }
         }
-        return "redirect:/business/uploadServicePhoto.htm";
+        return "redirect:/business/uploadServicePhoto";
     }
 
     private void processServiceImage(String qid, String bizNameId, MultipartFile multipartFile) throws IOException {

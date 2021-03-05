@@ -71,7 +71,7 @@
     </action-state>
 
     <view-state id="surveyCancel"
-                view="externalRedirect:contextRelative:/business/survey/landing.htm"/>
+                view="externalRedirect:contextRelative:/business/survey/landing"/>
     <view-state id="surveyComplete"
-                view="externalRedirect:contextRelative:/business/landing.htm"/>
+                view="externalRedirect:contextRelative:/business/landing"/>
 </flow>

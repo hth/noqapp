@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -58,10 +58,10 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/${queueSupervisorForm.bizStoreId}/addNewAgent.htm" class="add-btn">Add New Agent</a>
-                                <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor.htm" class="add-btn">Add New Supervisor</a>
+                                <a href="/business/${queueSupervisorForm.bizStoreId}/addNewAgent" class="add-btn">Add New Agent</a>
+                                <a href="/business/${queueSupervisorForm.bizStoreId}/addQueueSupervisor" class="add-btn">Add New Supervisor</a>
                                 <c:if test="${queueSupervisorForm.businessType eq BusinessType.DO}">
-                                <a href="/business/${queueSupervisorForm.bizStoreId}/addDoctor.htm" class="add-btn">Add New Doctor</a>
+                                <a href="/business/${queueSupervisorForm.bizStoreId}/addDoctor" class="add-btn">Add New Doctor</a>
                                 </c:if>
                             </div>
                             <div class="store-table">
@@ -158,14 +158,14 @@
                                                 <c:choose>
                                                 <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'C'}">
                                                 <div>
-                                                    <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                    <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor" modelAttribute="queueSupervisorActionForm" method="post">
                                                         <form:hidden path="action" value="APPROVE" />
                                                         <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
                                                         <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
                                                         <input class="cancel-btn" value="Approve" type="submit">
                                                     </form:form>
                                                     <br />
-                                                    <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                    <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor" modelAttribute="queueSupervisorActionForm" method="post">
                                                         <form:hidden path="action" value="REJECT" />
                                                         <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
                                                         <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
@@ -181,7 +181,7 @@
                                                     </p>
                                                 </c:when>
                                                 <c:when test="${queueSupervisor.businessUserRegistrationStatus eq 'V'}">
-                                                    <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                                    <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor" modelAttribute="queueSupervisorActionForm" method="post">
                                                         <form:hidden path="action" value="REMOVE" />
                                                         <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
                                                         <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
@@ -285,7 +285,7 @@
                                             <span style="display:block; font-size:13px;"><fmt:formatDate value="${queueSupervisor.created}" pattern="yyyy-MM-dd"/></span>
                                         </td>
                                         <td class="Tleft" nowrap>
-                                            <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor.htm" modelAttribute="queueSupervisorActionForm" method="post">
+                                            <form:form action="${pageContext.request.contextPath}/business/actionQueueSupervisor" modelAttribute="queueSupervisorActionForm" method="post">
                                                 <form:hidden path="action" value="ADD" />
                                                 <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
                                                 <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />

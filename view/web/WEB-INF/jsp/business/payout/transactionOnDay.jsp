@@ -32,8 +32,8 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -92,7 +92,7 @@
                                                     <span style="display:block; font-size:12px; color:red;">Partial: ${item.partialPaymentForDisplay}</span>
                                                     </c:if>
                                                     <c:if test="${fn:length(item.couponId) gt 0}">
-                                                        <span style="display:block; font-size:12px;"><a href="/business/payout/coupon/${item.couponId}.htm" target="_blank">Used Coupon</a></span>
+                                                        <span style="display:block; font-size:12px;"><a href="/business/payout/coupon/${item.couponId}" target="_blank">Used Coupon</a></span>
                                                     </c:if>
                                                 </td>
                                                 <td>

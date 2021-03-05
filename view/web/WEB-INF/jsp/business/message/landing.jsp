@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -56,7 +56,7 @@
                     <div class="store">
                         <h3>Message Alert</h3>
                         <div class="space10"></div>
-                        <form:form method="POST" action="./landing.htm" modelAttribute="messageAlertForm">
+                        <form:form method="POST" action="./landing" modelAttribute="messageAlertForm">
                         <spring:hasBindErrors name="customTextToSpeechForm">
                         <div class="error-box">
                             <div class="error-txt">
@@ -150,7 +150,7 @@
                                                     <td><span style="display:block; font-size:13px;">${Locale.forLanguageTag(textToSpeech.languageTag).displayCountry} (${Locale.forLanguageTag(textToSpeech.languageTag).displayLanguage})&nbsp;</span></td>
                                                     <td><span style="display:block; font-size:13px;">${textToSpeech.template}&nbsp;</span></td>
                                                     <td>
-                                                        <form:form action="${pageContext.request.contextPath}/business/customTextToSpeech/action.htm" modelAttribute="customTextToSpeechForm" method="post">
+                                                        <form:form action="${pageContext.request.contextPath}/business/customTextToSpeech/action" modelAttribute="customTextToSpeechForm" method="post">
                                                             <form:hidden path="actionType" value="${ActionTypeEnum.REMOVE}" />
                                                             <form:hidden path="textToSpeechType" value="${textToSpeechTemplate.key}" />
                                                             <form:hidden path="languageTag" value="${textToSpeech.languageTag}" />

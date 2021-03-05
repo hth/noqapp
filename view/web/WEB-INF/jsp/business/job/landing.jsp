@@ -32,8 +32,8 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -59,7 +59,7 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/store/publishJob/newJob.htm" class="add-btn">Add New Job</a>
+                                <a href="/business/store/publishJob/newJob" class="add-btn">Add New Job</a>
                             </div>
                             <div class="store-table">
                                 <c:choose>
@@ -80,7 +80,7 @@
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 0">
                                                         <tr>
                                                             <td style="border: 0; padding: 1px;">
-                                                                <form:form action="${pageContext.request.contextPath}/business/store/publishJob/action.htm"
+                                                                <form:form action="${pageContext.request.contextPath}/business/store/publishJob/action"
                                                                         modelAttribute="publishJobForm" method="post">
                                                                     <form:hidden path="action" value="EDIT" />
                                                                     <form:hidden path="publishId" value="${item.publishId}" />
@@ -90,7 +90,7 @@
                                                             <td style="border: 0; padding: 1px;">
                                                                 <c:choose>
                                                                     <c:when test="${item.active}">
-                                                                        <form:form action="${pageContext.request.contextPath}/business/store/publishJob/action.htm"
+                                                                        <form:form action="${pageContext.request.contextPath}/business/store/publishJob/action"
                                                                                 modelAttribute="publishJobForm" method="post">
                                                                             <form:hidden path="action" value="OFFLINE" />
                                                                             <form:hidden path="publishId" value="${item.publishId}" />
@@ -98,7 +98,7 @@
                                                                         </form:form>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <form:form action="${pageContext.request.contextPath}/business/store/publishJob/action.htm"
+                                                                        <form:form action="${pageContext.request.contextPath}/business/store/publishJob/action"
                                                                                 modelAttribute="publishJobForm" method="post">
                                                                             <form:hidden path="action" value="ONLINE" />
                                                                             <form:hidden path="publishId" value="${item.publishId}" />
@@ -108,7 +108,7 @@
                                                                 </c:choose>
                                                             </td>
                                                             <td style="border: 0; padding: 1px;">
-                                                                <form:form action="${pageContext.request.contextPath}/business/store/publishJob/action.htm"
+                                                                <form:form action="${pageContext.request.contextPath}/business/store/publishJob/action"
                                                                         modelAttribute="publishJobForm" method="post">
                                                                     <form:hidden path="action" value="DELETE" />
                                                                     <form:hidden path="publishId" value="${item.publishId}" />

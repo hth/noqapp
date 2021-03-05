@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -54,7 +54,7 @@
             <div class="admin-main">
                 <!-- File Upload From -->
                 <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
-                <form:form action="${pageContext.request.contextPath}/access/userProfile/upload.htm" modelAttribute="fileUploadForm"  method="post" enctype="multipart/form-data">
+                <form:form action="${pageContext.request.contextPath}/access/userProfile/upload" modelAttribute="fileUploadForm"  method="post" enctype="multipart/form-data">
                     <div class="admin-title">
                         <h2>Profile Image</h2>
                     </div>
@@ -101,7 +101,7 @@
                 </form:form>
                 </c:if>
 
-                <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfile.htm" method="post" modelAttribute="userProfileForm">
+                <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfile" method="post" modelAttribute="userProfileForm">
                 <div class="admin-title">
                     <h2>Profile</h2>
                 </div>
@@ -275,7 +275,7 @@
                                             <span class="txt-red">${registerUser.email}</span>
                                             has not been validated. Please validated email address to continue business account registration.
                                         </p>
-                                        <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a>
+                                        <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail">click here.</a>
                                         </p>
                                     </div>
                                 </li>
@@ -323,7 +323,7 @@
                 <div class="admin-content">
                     <div class="add-new">
                         <ul class="list-form">
-                            <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfessionalProfile.htm" method="post" modelAttribute="professionalProfileForm">
+                            <form:form action="${pageContext.request.contextPath}/access/userProfile/updateProfessionalProfile" method="post" modelAttribute="professionalProfileForm">
                             <li>
                                 <div class="col-lable3">
                                     <form:label path="practiceStart" cssErrorClass="lb_error">Practicing Since</form:label>
@@ -382,7 +382,7 @@
                                 </div>
 
                                 <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
-                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/awards/modify.htm" class="add-btn">Add/Edit Awards</a>
+                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/awards/modify" class="add-btn">Add/Edit Awards</a>
                                 </c:if>
                                 <span style="display:block; font-size:13px; padding-top: 20px;">This information is public</span>
                             </fieldset>
@@ -411,7 +411,7 @@
                                 </div>
 
                                 <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
-                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/education/modify.htm" class="add-btn">Add/Edit Education</a>
+                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/education/modify" class="add-btn">Add/Edit Education</a>
                                 </c:if>
                                 <span style="display:block; font-size:13px; padding-top: 20px;">This information is public</span>
                             </fieldset>
@@ -440,7 +440,7 @@
                                 </div>
 
                                 <c:if test="${userProfileForm.emailValidated and userProfileForm.email eq pageContext.request.userPrincipal.principal.username}">
-                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/licenses/modify.htm" class="add-btn">Add/Edit Licenses</a>
+                                <a href="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/licenses/modify" class="add-btn">Add/Edit Licenses</a>
                                 </c:if>
                                 <span style="display:block; font-size:13px; padding-top: 20px;">This information is public. Will be shown in prescriptions and all printouts.</span>
                             </fieldset>

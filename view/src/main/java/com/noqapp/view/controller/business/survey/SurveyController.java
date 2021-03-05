@@ -66,7 +66,7 @@ public class SurveyController {
         @Value("${surveyDashboardPage:/business/survey/surveyDashboard}")
         String surveyDashboardPage,
 
-        @Value("${addSurveyFlow:redirect:/store/addSurvey.htm}")
+        @Value("${addSurveyFlow:redirect:/store/addSurvey}")
         String addSurveyFlow,
 
         SurveyService surveyService,
@@ -147,10 +147,10 @@ public class SurveyController {
                 surveyService.changePublishStatus(PublishStatusEnum.D, questionnaire);
                 break;
             default:
-                return "redirect:/business/survey/landing.htm";
+                return "redirect:/business/survey/landing";
         }
 
-        return "redirect:/business/survey/landing.htm";
+        return "redirect:/business/survey/landing";
     }
 
     @GetMapping(

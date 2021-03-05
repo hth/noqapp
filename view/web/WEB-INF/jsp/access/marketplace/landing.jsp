@@ -38,9 +38,9 @@
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <a href="${pageContext.request.contextPath}/access/rewards.htm">Rewards</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <a href="${pageContext.request.contextPath}/access/rewards">Rewards</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -65,10 +65,10 @@
                         <h3>List On Marketplace</h3>
                         <div class="add-store">
                             <div class="store-table">
-                                <a href="/access/marketplace/property/post.htm" style="text-transform: capitalize; font-size: large"><i class="fas fa-home add-btn"></i>&nbsp;Property (Rental, Sell)</a>
+                                <a href="/access/marketplace/property/post" style="text-transform: capitalize; font-size: large"><i class="fas fa-home add-btn"></i>&nbsp;Property (Rental, Sell)</a>
                             </div>
                             <div class="store-table">
-                                <a href="/access/marketplace/household/post.htm" style="text-transform: capitalize; font-size: large"><i class="fas fa-ellipsis-h add-btn"></i>&nbsp;Household Items</a>
+                                <a href="/access/marketplace/household/post" style="text-transform: capitalize; font-size: large"><i class="fas fa-ellipsis-h add-btn"></i>&nbsp;Household Items</a>
                             </div>
                         </div>
                     </div>
