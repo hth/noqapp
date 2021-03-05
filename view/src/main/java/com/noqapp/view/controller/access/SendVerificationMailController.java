@@ -108,7 +108,7 @@ public class SendVerificationMailController {
 
         profile.setSubmitState(true);
         redirectAttrs.addFlashAttribute("profile", profile);
-        return "redirect:" + nextPage + ".htm";
+        return "redirect:" + nextPage;
     }
 
     /** On cancelling addition of re-sending verification mail. */
@@ -117,6 +117,6 @@ public class SendVerificationMailController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel sending verification mail qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
-        return "redirect:/access/landing.htm";
+        return "redirect:/access/landing";
     }
 }

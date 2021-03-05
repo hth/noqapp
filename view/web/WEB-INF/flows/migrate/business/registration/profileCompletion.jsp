@@ -43,7 +43,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -197,7 +197,7 @@
                                                         has not been validated. Please validated email address to continue business
                                                         account registration.
                                                     </p>
-                                                    <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail.htm">click here.</a></p>
+                                                    <p>To resend account validation email, <a href="${pageContext.request.contextPath}/access/sendVerificationMail">click here.</a></p>
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>

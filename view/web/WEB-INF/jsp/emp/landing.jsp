@@ -28,8 +28,8 @@
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png" /></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/emp/landing/account/access.htm">Permissions</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/emp/landing/account/access">Permissions</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -65,7 +65,7 @@
                                     <c:forEach items="${empLandingForm.businessUsers}" var="businessUser" varStatus="status">
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
-                                        <td><a href="/emp/landing/${businessUser.id}.htm">${businessUser.bizName.businessName}</a></td>
+                                        <td><a href="/emp/landing/${businessUser.id}">${businessUser.bizName.businessName}</a></td>
                                         <td>
                                             <fmt:formatDate pattern="MMMM dd, yyyy" value="${businessUser.updated}"/>
                                             <span class="light-color">&nbsp;<fmt:formatDate value="${businessUser.updated}" type="time"/></span>
@@ -104,7 +104,7 @@
                                         <td>${status.count}&nbsp;</td>
                                         <td>${publishArticle.title}</td>
                                         <td>${publishArticle.businessType.description}</td>
-                                        <td><a href="${pageContext.request.contextPath}/emp/landing/publishArticle/${publishArticle.id}/preview.htm" class="add-btn" style="margin: 0px;">Preview</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/emp/landing/publishArticle/${publishArticle.id}/preview" class="add-btn" style="margin: 0px;">Preview</a></td>
                                     </tr>
                                     </c:forEach>
                                 </table>
@@ -166,7 +166,7 @@
                                         <td>
                                             <span style="display:block; font-size:13px;"><fmt:formatDate value="${advertisement.created}" pattern="yyyy-MM-dd"/></span>
                                         </td>
-                                        <td><a href="${pageContext.request.contextPath}/emp/advertisement/approval/${advertisement.id}/preview.htm" class="add-btn" style="margin: 0px;">Preview</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/emp/advertisement/approval/${advertisement.id}/preview" class="add-btn" style="margin: 0px;">Preview</a></td>
                                     </tr>
                                     </c:forEach>
                                 </table>

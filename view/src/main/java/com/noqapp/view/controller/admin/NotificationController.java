@@ -104,7 +104,7 @@ public class NotificationController {
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
-            return "redirect:" + "/admin/notification/landing" + ".htm";
+            return "redirect:" + "/admin/notification/landing";
         }
 
         try {
@@ -158,7 +158,7 @@ public class NotificationController {
         } catch (Exception e) {
             LOG.error("Failed sending message reason={}", e.getLocalizedMessage(), e);
         }
-        return "redirect:" + "/admin/notification/landing" + ".htm";
+        return "redirect:" + "/admin/notification/landing";
     }
 
     private void sendMessageToUser(
@@ -194,6 +194,6 @@ public class NotificationController {
     @PostMapping(value = "/landing", params = {"cancel-send-notification"})
     public String postPreferredBusinessCancel() {
         LOG.info("Loading admin landing after user search cancelled");
-        return "redirect:/admin/landing.htm";
+        return "redirect:/admin/landing";
     }
 }

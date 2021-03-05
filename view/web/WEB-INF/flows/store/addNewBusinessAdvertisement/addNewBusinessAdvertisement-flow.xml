@@ -74,13 +74,13 @@
     </action-state>
 
     <view-state id="advertisementEditComplete"
-                view="externalRedirect:contextRelative:/business/advertisement/landing.htm"/>
+                view="externalRedirect:contextRelative:/business/advertisement/landing"/>
 
     <view-state id="advertisementComplete"
-                view="externalRedirect:contextRelative:/business/advertisement/landing.htm"/>
+                view="externalRedirect:contextRelative:/business/advertisement/landing"/>
 
     <end-state id="home"
-               view="externalRedirect:contextRelative:/business/advertisement/landing.htm"/>
+               view="externalRedirect:contextRelative:/business/advertisement/landing"/>
 
     <global-transitions>
         <transition on="cancel" to="home"/>

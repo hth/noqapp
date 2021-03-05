@@ -161,7 +161,7 @@
     function checkAvailability() {
         $.ajax({
             type: "POST",
-            url: '${pageContext. request. contextPath}/open/registrationMerchant/availability.htm',
+            url: '${pageContext. request. contextPath}/open/registrationMerchant/availability',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
             },

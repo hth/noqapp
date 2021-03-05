@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -53,7 +53,7 @@
             <!-- Complete profile -->
             <div class="admin-main">
                 <!-- File Upload From -->
-                <form:form action="${pageContext.request.contextPath}/business/uploadServicePhoto.htm" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
+                <form:form action="${pageContext.request.contextPath}/business/uploadServicePhoto" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
                 <div class="admin-title">
                     <h2>Add Business Photo</h2>
                 </div>
@@ -115,7 +115,7 @@
                                              class="img-profile-circle" />
                                     </div>
                                     <div class="col-lable3">
-                                        <form action="${pageContext.request.contextPath}/business/deleteServicePhoto.htm" method="post">
+                                        <form action="${pageContext.request.contextPath}/business/deleteServicePhoto" method="post">
                                             <input type="hidden" name="businessServiceImage" value="${image}"/>
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                             <div class="left-btn">

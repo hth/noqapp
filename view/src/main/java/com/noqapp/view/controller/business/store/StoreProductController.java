@@ -280,7 +280,7 @@ public class StoreProductController {
             redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
 
             //Re-direct to prevent resubmit
-            return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId() + ".htm";
+            return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId();
         }
 
         try {
@@ -306,7 +306,7 @@ public class StoreProductController {
             LOG.error("Failed adding product reason={}", e.getLocalizedMessage(), e);
         }
 
-        return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId() + ".htm";
+        return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId();
     }
 
     /** On cancelling addition of new product. */
@@ -315,7 +315,7 @@ public class StoreProductController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel adding new product qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
-        return "redirect:/business/store/landing.htm";
+        return "redirect:/business/store/landing";
     }
 
     /** Edit landing category name. */
@@ -366,7 +366,7 @@ public class StoreProductController {
             .setUnitValue(new ScrubbedInput(new BigDecimal(storeProduct.getUnitValue()).divide(new BigDecimal(100), MathContext.DECIMAL64).toString()));
 
         redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
-        return "redirect:" + "/business/store/product/" + storeId.getText() + ".htm";
+        return "redirect:" + "/business/store/product/" + storeId.getText();
     }
 
     /** Edit landing category name. */
@@ -399,7 +399,7 @@ public class StoreProductController {
             redirectAttrs.addFlashAttribute("storeProductForm", storeProductForm);
 
             //Re-direct to prevent resubmit
-            return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
+            return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText();
         }
 
         try {
@@ -426,7 +426,7 @@ public class StoreProductController {
             LOG.error("Failed updating product storeProductId={} reason={}", storeProductForm.getStoreProductId(), e.getLocalizedMessage(), e);
         }
 
-        return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
+        return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText();
     }
 
     /** On cancelling edit of product. */
@@ -438,7 +438,7 @@ public class StoreProductController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel product edit qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
-        return "redirect:/business/store/landing.htm";
+        return "redirect:/business/store/landing";
     }
 
     /** Delete product. */
@@ -466,7 +466,7 @@ public class StoreProductController {
             fileService.deleteProductImage(queueUser.getQueueUserId(), storeProduct.getProductImage(), storeProduct.getBizStoreId());
         }
         storeProductService.delete(storeProduct);
-        return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText() + ".htm";
+        return "redirect:" + "/business/store/product/" + storeProductForm.getBizStoreId().getText();
     }
 
     /** Preferred product creates a new zip file for business app to download. */
@@ -490,7 +490,7 @@ public class StoreProductController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         fileService.createPreferredBusinessFiles(storeProductForm.getBizStoreId().getText());
-        return "redirect:/business/store/landing.htm";
+        return "redirect:/business/store/landing";
     }
 
     /** Gymnastic for PRG. */
@@ -529,7 +529,7 @@ public class StoreProductController {
 
     @PostMapping(value = "/bulk/upload", params = "cancel_Upload")
     public String cancel() {
-        return "redirect:/business/store/landing.htm";
+        return "redirect:/business/store/landing";
     }
 
     @PostMapping(value = "/bulk/upload", params = "upload")
@@ -563,7 +563,7 @@ public class StoreProductController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed CSV validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+                    return "redirect:/business/store/product/bulk/" + codeQR;
                 }
 
                 try {
@@ -571,21 +571,21 @@ public class StoreProductController {
                     redirectAttrs
                         .addFlashAttribute("uploadSuccess", true)
                         .addFlashAttribute("recordsUpdated", recordsUpdated);
-                    return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+                    return "redirect:/business/store/product/bulk/" + codeQR;
                 } catch (CSVParsingException e) {
                     LOG.warn("Failed parsing CSV file codeQR={} reason={}", codeQR, e.getLocalizedMessage());
                     methodStatusSuccess = false;
                     ObjectError error = new ObjectError("file", "Failed to parser file " + e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+                    return "redirect:/business/store/product/bulk/" + codeQR;
                 } catch (CSVProcessingException e) {
                     LOG.warn("Failed processing CSV data codeQR={} reason={}", codeQR, e.getLocalizedMessage());
                     methodStatusSuccess = false;
                     ObjectError error = new ObjectError("file", "Failed processing " + e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+                    return "redirect:/business/store/product/bulk/" + codeQR;
                 } catch (Exception e) {
                     LOG.error("document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     methodStatusSuccess = false;
@@ -598,10 +598,10 @@ public class StoreProductController {
                         methodStatusSuccess ? HealthStatusEnum.G : HealthStatusEnum.F);
                 }
 
-                return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+                return "redirect:/business/store/product/bulk/" + codeQR;
             }
         }
-        return "redirect:/business/store/product/bulk/" + codeQR + ".htm";
+        return "redirect:/business/store/product/bulk/" + codeQR;
     }
 
     /** Gets file of all products as zip in CSV format for preferred business store id. */

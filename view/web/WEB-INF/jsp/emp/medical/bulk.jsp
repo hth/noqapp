@@ -35,7 +35,7 @@
                     </div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -57,7 +57,7 @@
             <div class="admin-main">
                 <!-- File Upload From -->
 
-                <form:form action="${pageContext.request.contextPath}/emp/medical/masterLab/bulk/upload.htm" modelAttribute="masterLabForm" method="post" enctype="multipart/form-data">
+                <form:form action="${pageContext.request.contextPath}/emp/medical/masterLab/bulk/upload" modelAttribute="masterLabForm" method="post" enctype="multipart/form-data">
                     <div class="admin-title">
                         <h2>Master Lab Product Bulk Upload</h2>
                     </div>
@@ -140,7 +140,7 @@
                     </div>
                 </form:form>
 
-                <form:form action="${pageContext.request.contextPath}/emp/medical/masterLab/bulk/download.htm" method="post">
+                <form:form action="${pageContext.request.contextPath}/emp/medical/masterLab/bulk/download" method="post">
                     <div class="admin-title">
                         <h2>Master Lab Product Bulk Download</h2>
                     </div>

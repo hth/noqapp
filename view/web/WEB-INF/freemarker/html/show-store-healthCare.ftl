@@ -98,7 +98,7 @@
                                 <p><strong>People in Queue: </strong>${value.peopleInQueue}</p>
 
                                 <div class="button-btn" style="margin-bottom: 50px;">
-                                    <form action="${page.https}://${page.domain}/open/join/queue/${value.codeQR}.htm">
+                                    <form action="${page.https}://${page.domain}/open/join/queue/${value.codeQR}">
                                         <#if value.claimed == "No">
                                             <p style="padding: 20px 20px 20px 0; color: #9f1313">Not accepting Walk-ins</p>
                                         <#elseif value.storeClosed == "Yes">

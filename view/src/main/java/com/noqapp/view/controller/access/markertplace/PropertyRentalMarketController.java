@@ -41,7 +41,7 @@ public class PropertyRentalMarketController {
 
     @Autowired
     public PropertyRentalMarketController(
-        @Value("${propertyRentalMarketplaceFlowActions:redirect:/access/marketplace/propertyRental.htm}")
+        @Value("${propertyRentalMarketplaceFlowActions:redirect:/access/marketplace/propertyRental}")
         String propertyRentalMarketplaceFlowActions,
 
         AccountService accountService

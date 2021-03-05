@@ -607,7 +607,7 @@ public class BizNameEntity extends BaseEntity {
 
     @Transient
     public String getCodeQRInALink() {
-        return "https://q.noqapp.com/" + codeQR + "/b.htm";
+        return "https://q.noqapp.com/" + codeQR + "/b";
     }
 
     @Override

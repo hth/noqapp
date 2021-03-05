@@ -56,7 +56,7 @@ public class IndexController {
 
 //        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 //        map.addAttribute("userDetails", userDetails);
-        return "redirect:/access/landing.htm";
+        return "redirect:/access/landing";
     }
 }
 

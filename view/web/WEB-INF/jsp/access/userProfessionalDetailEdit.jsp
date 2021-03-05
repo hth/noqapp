@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -74,7 +74,7 @@
                     <div class="admin-content">
                         <div class="add-new">
                             <ul class="list-form">
-                                <form:form action="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/add.htm" method="post" modelAttribute="professionalProfileEditForm">
+                                <form:form action="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/add" method="post" modelAttribute="professionalProfileEditForm">
                                     <form:hidden path="action" value="${professionalProfileEditForm.action}" />
                                     <li>
                                         <div class="col-lable3">
@@ -130,7 +130,7 @@
                                                             <td nowrap>${nameDatePair.name}</td>
                                                             <td>${nameDatePair.monthYear}</td>
                                                             <td nowrap>
-                                                                <form action="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/delete.htm" method="post">
+                                                                <form action="${pageContext.request.contextPath}/access/userProfile/userProfessionalDetail/delete" method="post">
                                                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                                                     <input type="hidden" name="name" value="${nameDatePair.name}"/>
                                                                     <input type="hidden" name="monthYear" value="${nameDatePair.monthYear}"/>

@@ -141,15 +141,13 @@
 
     <servlet-mapping>
         <servlet-name>noqueue</servlet-name>
-        <url-pattern>*.htm</url-pattern>
-        <url-pattern>*.xml</url-pattern>
-        <url-pattern>*.json</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <!--Do no include html servlet mapping here as this would result in not throwing the right error codes listed below -->
 
     <welcome-file-list>
         <!-- maps to LoginController index -->
-        <welcome-file>open/login.htm</welcome-file>
+        <welcome-file>open/login</welcome-file>
     </welcome-file-list>
 
     <session-config>
@@ -162,53 +160,6 @@
     </session-config>
 
     <error-page>
-        <error-code>400</error-code>
-        <location>/400.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>401</error-code>
-        <!-- Intentional -->
-        <location>/404.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>403</error-code>
-        <location>/403.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>404</error-code>
-        <location>/404.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>405</error-code>
-        <location>/405.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>410</error-code>
-        <location>/410.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>414</error-code>
-        <location>/414.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>500</error-code>
-        <location>/500.html</location>
-    </error-page>
-
-    <error-page>
-        <error-code>503</error-code>
-        <location>/503.html</location>
-    </error-page>
-
-    <!-- for all other errors -->
-    <error-page>
-        <location>/404.html</location>
+        <location>/errors</location>
     </error-page>
 </web-app>

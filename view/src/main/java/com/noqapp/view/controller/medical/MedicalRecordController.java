@@ -224,11 +224,11 @@ public class MedicalRecordController {
                     "",
                     deviceId,
                     TokenServiceEnum.W);
-            return "redirect:/business/store/sup/" + medicalRecordForm.getCodeQR() + ".htm";
+            return "redirect:/business/store/sup/" + medicalRecordForm.getCodeQR();
         } catch (Exception e) {
             LOG.error("Failed to get records reason={}", e.getLocalizedMessage(), e);
             methodStatusSuccess = false;
-            return "redirect:" + "/medical/record/add.htm";
+            return "redirect:" + "/medical/record/add";
         } finally {
             apiHealthService.insert(
                     "/add",

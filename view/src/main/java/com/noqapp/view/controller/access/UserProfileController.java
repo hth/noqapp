@@ -255,7 +255,7 @@ public class UserProfileController {
         if (result.hasErrors()) {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
-            return "redirect:" + "/access/userProfile.htm";
+            return "redirect:" + "/access/userProfile";
         }
 
         //TODO(hth) to support change of address, this will need to be changed to flow
@@ -279,7 +279,7 @@ public class UserProfileController {
             UserProfileController.class.getName(),
             Duration.between(start, Instant.now()),
             HealthStatusEnum.G);
-        return "redirect:/access/userProfile.htm";
+        return "redirect:/access/userProfile";
     }
 
     /** Updated practising since of professional profile. */
@@ -301,7 +301,7 @@ public class UserProfileController {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
-            return "redirect:/access/userProfile.htm";
+            return "redirect:/access/userProfile";
         }
 
         professionalProfile
@@ -315,7 +315,7 @@ public class UserProfileController {
             UserProfileController.class.getName(),
             Duration.between(start, Instant.now()),
             HealthStatusEnum.G);
-        return "redirect:/access/userProfile.htm";
+        return "redirect:/access/userProfile";
     }
 
     /**
@@ -337,7 +337,7 @@ public class UserProfileController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
         if (null == professionalProfile) {
-            return "redirect:/access/userProfile.htm";
+            return "redirect:/access/userProfile";
         } else {
             professionalProfileEditForm.setProfessionalProfile(true);
             //Gymnastic to show BindingResult errors if any
@@ -396,7 +396,7 @@ public class UserProfileController {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
-            return "redirect:/access/userProfile/userProfessionalDetail/" + professionalProfileEditForm.getAction() + "/modify.htm";
+            return "redirect:/access/userProfile/userProfessionalDetail/" + professionalProfileEditForm.getAction() + "/modify";
         }
 
         ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUser.getQueueUserId());
@@ -431,12 +431,12 @@ public class UserProfileController {
             UserProfileController.class.getName(),
             Duration.between(start, Instant.now()),
             HealthStatusEnum.G);
-        return "redirect:/access/userProfile/userProfessionalDetail/" + professionalProfileEditForm.getAction() + "/modify.htm";
+        return "redirect:/access/userProfile/userProfessionalDetail/" + professionalProfileEditForm.getAction() + "/modify";
     }
 
     @PostMapping(value = "/userProfessionalDetail/add", params = "cancel")
     public String cancel() {
-        return "redirect:/access/userProfile.htm";
+        return "redirect:/access/userProfile";
     }
 
     @PostMapping(value = "/userProfessionalDetail/delete")
@@ -480,7 +480,7 @@ public class UserProfileController {
             UserProfileController.class.getName(),
             Duration.between(start, Instant.now()),
             HealthStatusEnum.G);
-        return "redirect:/access/userProfile/userProfessionalDetail/" + professionalProfileEditForm.getAction() + "/modify.htm";
+        return "redirect:/access/userProfile/userProfessionalDetail/" + professionalProfileEditForm.getAction() + "/modify";
     }
 
     @PostMapping(value = "/upload", params = "cancel_Upload")
@@ -518,12 +518,12 @@ public class UserProfileController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed image validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/access/userProfile.htm";
+                    return "redirect:/access/userProfile";
                 }
 
                 try {
                     processProfileImage(queueUser.getQueueUserId(), multipartFile);
-                    return "redirect:" + nextPage + ".htm";
+                    return "redirect:" + nextPage;
                 } catch (Exception e) {
                     LOG.error("document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -534,10 +534,10 @@ public class UserProfileController {
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:" + nextPage + ".htm";
+                return "redirect:" + nextPage;
             }
         }
-        return "redirect:" + nextPage + ".htm";
+        return "redirect:" + nextPage;
     }
 
     private void processProfileImage(String qid, MultipartFile multipartFile) throws IOException {

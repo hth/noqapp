@@ -56,6 +56,6 @@ public class InvokeCronTaskController {
     public String generateStoreQueueHTML() {
         LOG.info("Generate Store Queue HTML");
         generateStoreQueueHTML.generateHTMLPages();
-        return "redirect:/admin/landing.htm";
+        return "redirect:/admin/landing";
     }
 }

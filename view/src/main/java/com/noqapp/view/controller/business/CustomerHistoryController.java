@@ -129,7 +129,7 @@ public class CustomerHistoryController {
         if (null == userProfile) {
             LOG.info("User not found with phone={}", customerHistoryForm.getLookupPhone().getText());
             redirectAttrs.addFlashAttribute("customerHistoryForm", customerHistoryForm);
-            return "redirect:" + "/business/customerHistory/landing" + ".htm";
+            return "redirect:" + "/business/customerHistory/landing";
         }
         customerHistoryForm.setBusinessCustomer(true);
         customerHistoryForm.setUserProfile(userProfile);
@@ -155,13 +155,13 @@ public class CustomerHistoryController {
             redirectAttrs.addFlashAttribute("customerHistoryForm", customerHistoryForm);
         }
 
-        return "redirect:" + "/business/customerHistory/landing.htm";
+        return "redirect:" + "/business/customerHistory/landing";
     }
 
     @PostMapping(value = "/landing", params = {"cancel"})
     public String searchCancel() {
         LOG.info("Cancel search");
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/landing";
     }
 
     private void populateWithCurrentAndPastQueue(CustomerHistoryForm customerHistoryForm, String bizNameId, UserProfileEntity userProfile) {

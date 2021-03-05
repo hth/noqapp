@@ -110,7 +110,7 @@ public class MasterLabController {
 
     @PostMapping(value = "/bulk/upload", params = "cancel_Upload")
     public String cancel() {
-        return "redirect:/emp/medical/landing.htm";
+        return "redirect:/emp/medical/landing";
     }
 
     @PostMapping(value = "/bulk/upload", params = "upload")
@@ -140,7 +140,7 @@ public class MasterLabController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed CSV validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/emp/medical/masterLab/bulk";
                 }
 
                 try {
@@ -148,35 +148,35 @@ public class MasterLabController {
                     redirectAttrs
                         .addFlashAttribute("uploadSuccess", true)
                         .addFlashAttribute("recordsUpdated", recordsUpdated);
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/emp/medical/masterLab/bulk";
                 } catch (CSVParsingException e) {
                     LOG.warn("Failed parsing CSV file healthCareService={} reason={}", masterLabForm.getHealthCareService(), e.getLocalizedMessage());
                     methodStatusSuccess = false;
                     ObjectError error = new ObjectError("file","Failed to parser file " + e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/emp/medical/masterLab/bulk";
                 } catch (CSVProcessingException e) {
                     LOG.warn("Failed processing CSV data healthCareService={} reason={}", masterLabForm.getHealthCareService(), e.getLocalizedMessage());
                     methodStatusSuccess = false;
                     ObjectError error = new ObjectError("file","Failed processing " + e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/emp/medical/masterLab/bulk";
                 } catch (FailedTransactionException e) {
                     LOG.error("Document upload transaction failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     methodStatusSuccess = false;
                     ObjectError error = new ObjectError("file", e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/emp/medical/masterLab/bulk";
                 } catch (Exception e) {
                     LOG.error("Document upload failed reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     methodStatusSuccess = false;
                     ObjectError error = new ObjectError("file","Failed processing " + e.getLocalizedMessage());
                     result.addError(error);
                     redirectAttrs.addFlashAttribute("resultImage", result);
-                    return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+                    return "redirect:" + "/emp/medical/masterLab/bulk";
                 } finally {
                     apiHealthService.insert(
                         "/bulk/upload",
@@ -187,7 +187,7 @@ public class MasterLabController {
                 }
             }
         }
-        return "redirect:" + "/emp/medical/masterLab/bulk" + ".htm";
+        return "redirect:" + "/emp/medical/masterLab/bulk";
     }
 
     /** Gets file of all products as zip in CSV format for preferred business store id. */

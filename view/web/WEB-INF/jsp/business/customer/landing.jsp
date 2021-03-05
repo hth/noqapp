@@ -44,9 +44,9 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/>
                     </div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/business/external/access.htm">Permissions</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/business/external/access">Permissions</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -87,7 +87,7 @@
                             </spring:hasBindErrors>
                             
                             <div class="addbtn-store">
-                                <form:form method="post" action="${pageContext.request.contextPath}/business/customer/priority.htm" modelAttribute="businessCustomerPriorityForm">
+                                <form:form method="post" action="${pageContext.request.contextPath}/business/customer/priority" modelAttribute="businessCustomerPriorityForm">
                                 <div class="admin-content">
                                     <div class="add-new">
                                         <ul class="list-form">
@@ -121,7 +121,7 @@
                             </div>
                             <div class="addbtn-store">
                             <c:if test="${businessCustomerPriorityForm.priorityAccess == OnOffEnum.O}">
-                                <form:form method="post" action="${pageContext.request.contextPath}/business/customer/priority/add.htm" modelAttribute="businessCustomerPriorityForm">
+                                <form:form method="post" action="${pageContext.request.contextPath}/business/customer/priority/add" modelAttribute="businessCustomerPriorityForm">
                                 <div class="admin-content">
                                     <div class="add-new">
                                         <ul class="list-form">

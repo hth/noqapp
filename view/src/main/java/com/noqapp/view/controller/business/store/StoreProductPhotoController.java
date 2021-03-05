@@ -166,13 +166,13 @@ public class StoreProductPhotoController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/business/store/product/photo/" + bizStoreId + "/" + storeProductId + "/image.htm";
+                    return "redirect:/business/store/product/photo/" + bizStoreId + "/" + storeProductId + "/image";
                 }
 
                 try {
                     processImage(queueUser.getQueueUserId(), storeProductId, multipartFile);
                     redirectAttrs.addFlashAttribute("fileUploadForm", fileUploadForm.setMessage("Product image uploaded successfully"));
-                    return "redirect:/business/store/product/photo/" + bizStoreId + "/" + storeProductId + "/image.htm";
+                    return "redirect:/business/store/product/photo/" + bizStoreId + "/" + storeProductId + "/image";
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -183,16 +183,16 @@ public class StoreProductPhotoController {
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:/business/store/product/photo/" + bizStoreId + "/" + storeProductId + "/image.htm";
+                return "redirect:/business/store/product/photo/" + bizStoreId + "/" + storeProductId + "/image";
             }
         }
-        return "redirect:/business/store/product/photo/" + bizStoreId + "/" + storeProductId + "/image.htm";
+        return "redirect:/business/store/product/photo/" + bizStoreId + "/" + storeProductId + "/image";
     }
 
     @PostMapping(value = "/uploadPhoto", params = "cancel_Upload")
     public String cancelUploadServicePhoto(HttpServletRequest httpServletRequest) {
         LOG.info("Cancel file upload for store product");
-        return "redirect:/business/store/product/" + httpServletRequest.getParameter("bizStoreId") + ".htm";
+        return "redirect:/business/store/product/" + httpServletRequest.getParameter("bizStoreId");
     }
 
     @PostMapping(value = "/deletePhoto")
@@ -220,7 +220,7 @@ public class StoreProductPhotoController {
 
         storeProduct.setProductImage(null);
         storeProductService.save(storeProduct);
-        return "redirect:/business/store/product/photo/" + bizStoreId + "/" + storeProductId + "/image.htm";
+        return "redirect:/business/store/product/photo/" + bizStoreId + "/" + storeProductId + "/image";
     }
 
     private void processImage(String qid, String storeProductId, MultipartFile multipartFile) throws IOException {

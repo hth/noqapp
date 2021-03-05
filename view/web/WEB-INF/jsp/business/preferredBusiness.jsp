@@ -31,7 +31,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -58,7 +58,7 @@
                         </div>
                     </div>
 
-                    <form:form method="post" action="${pageContext.request.contextPath}/business/preferredBusiness.htm" modelAttribute="preferredBusinessForm">
+                    <form:form method="post" action="${pageContext.request.contextPath}/business/preferredBusiness" modelAttribute="preferredBusinessForm">
                         <spring:hasBindErrors name="preferredBusinessForm">
                         <div class="error-box">
                             <div class="error-txt">
@@ -127,7 +127,7 @@
                                             <td nowrap><span style="display:block; font-size:13px;">${preferredBusiness.preferredBusinessName}</span></td>
                                             <td nowrap><span style="display:block; font-size:13px;">${preferredBusiness.businessType.description}</span></td>
                                             <td nowrap>
-                                                <form:form method="post" action="${pageContext.request.contextPath}/business/preferredBusiness.htm" modelAttribute="preferredBusinessForm">
+                                                <form:form method="post" action="${pageContext.request.contextPath}/business/preferredBusiness" modelAttribute="preferredBusinessForm">
                                                     <form:hidden path="recordId" value="${preferredBusiness.id}" />
                                                     <button name="delete" class="add-btn">Delete</button>
                                                 </form:form>

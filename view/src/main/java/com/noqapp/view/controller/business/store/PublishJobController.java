@@ -130,7 +130,7 @@ public class PublishJobController {
                 goToPage = publishJobFlow;
                 break;
             default:
-                goToPage = "redirect:/business/store/publishJob/landing.htm";
+                goToPage = "redirect:/business/store/publishJob/landing";
         }
         return goToPage;
     }

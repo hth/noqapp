@@ -39,9 +39,9 @@
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <a href="${pageContext.request.contextPath}/access/rewards.htm">Rewards</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <a href="${pageContext.request.contextPath}/access/rewards">Rewards</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -75,11 +75,11 @@
                                     </c:if>
                                     <c:if test="${landingForm.businessUserRegistrationStatus eq 'N'}">
                                         Application marked as not complete.
-                                        <a href="/access/landing/business/migrate.htm" class="add-btn">Please modify your application for approval</a>
+                                        <a href="/access/landing/business/migrate" class="add-btn">Please modify your application for approval</a>
                                     </c:if>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="/access/landing/business/migrate.htm" class="add-btn">Do you own a business which you would like to register?</a>
+                                    <a href="/access/landing/business/migrate" class="add-btn">Do you own a business which you would like to register?</a>
                                 </c:otherwise>
                             </c:choose>
                         </sec:authorize>
@@ -90,7 +90,7 @@
                     <div class="store">
                         <div class="add-store">
                             <div class="store-table">
-                                Post on Marketplace: <a href="/access/marketplace/post.htm" class="add-btn">Start Here</a>
+                                Post on Marketplace: <a href="/access/marketplace/post" class="add-btn">Start Here</a>
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@
                                             <c:forEach items="${landingForm.currentQueues}" var="store" varStatus="status">
                                             <tr>
                                                 <td>${status.count}&nbsp;</td>
-                                                <td><a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a></td>
+                                                <td><a href="/${store.codeQR}/q" target="_blank">${store.displayName}</a></td>
                                                 <td>${store.queueUserState.description}</td>
                                                 <td>${store.tokenNumber}</td>
                                             </tr>
@@ -178,10 +178,10 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.PR}">
-                                                            <a href="/access/marketplace/property/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}.htm" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                            <a href="/access/marketplace/property/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
                                                         </c:when>
                                                         <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.HI}">
-                                                            <a href="/access/marketplace/household/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}.htm" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                            <a href="/access/marketplace/household/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
                                                         </c:when>
                                                     </c:choose>
                                                 </td>
@@ -189,7 +189,7 @@
                                                 <td>${marketplaceForm.marketplace.priceForDisplay}</td>
                                                 <td>${marketplaceForm.marketplace.city}</td>
                                                 <td>
-                                                    <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost.htm">
+                                                    <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost">
                                                     <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
                                                     </a>
                                                 </td>
@@ -213,10 +213,10 @@
                                                 </td>
                                                 <c:choose>
                                                     <c:when test="${empty marketplaceForm.marketplace.postImages}">
-                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage.htm">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Images"></i></a></td>
+                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Images"></i></a></td>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage.htm">${marketplaceForm.marketplace.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Images"></i></a></td>
+                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage">${marketplaceForm.marketplace.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Images"></i></a></td>
                                                     </c:otherwise>
                                                 </c:choose>
                                             </tr>
@@ -248,7 +248,7 @@
                                             <tr>
                                                 <td>${status.count}&nbsp;</td>
                                                 <td>
-                                                    <a href="/${store.codeQR}/q.htm" target="_blank">${store.displayName}</a>
+                                                    <a href="/${store.codeQR}/q" target="_blank">${store.displayName}</a>
                                                 </td>
                                                 <td>
                                                     <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${store.serviceEndTime}"/>

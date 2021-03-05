@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -54,7 +54,7 @@
             <sec:authorize access="hasAnyRole('ROLE_S_MANAGER', 'ROLE_TECHNICIAN', 'ROLE_SUPERVISOR')">
             <div class="admin-main">
                 <!-- File Upload From -->
-                <form:form action="${pageContext.request.contextPath}/business/store/photo/uploadServicePhoto.htm" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
+                <form:form action="${pageContext.request.contextPath}/business/store/photo/uploadServicePhoto" modelAttribute="fileUploadForm" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="codeQR" value="${codeQR}"/>
                     <div class="admin-title">
                         <h2>Add Store Service Image</h2>
@@ -128,7 +128,7 @@
                                                 class="img-profile-circle" />
                                     </div>
                                     <div class="col-lable3">
-                                        <form action="${pageContext.request.contextPath}/business/store/photo/deleteServicePhoto.htm" method="post">
+                                        <form action="${pageContext.request.contextPath}/business/store/photo/deleteServicePhoto" method="post">
                                             <input type="hidden" name="storeServiceImage" value="${image}"/>
                                             <input type="hidden" name="codeQR" value="${codeQR}"/>
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>

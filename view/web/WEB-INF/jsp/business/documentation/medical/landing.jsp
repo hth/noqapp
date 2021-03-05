@@ -51,11 +51,11 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/business/documentation/medical/landing.htm">Medical Documents</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/business/documentation/medical/landing">Medical Documents</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing">Client Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding">Business Coupon</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -101,7 +101,7 @@
                                                 <span style="display:block; font-size:13px;">${DateFormatter.convertMilitaryTo12HourFormat(storeHour.startHour)} - ${DateFormatter.convertMilitaryTo12HourFormat(storeHour.endHour)}</span>
                                                 </c:forEach>
                                                 <span style="display:block; font-size:13px;">
-                                                    <a href="/business/documentation/medical/historicalLanding/${medicalDocumentUploadForm.bizStore.codeQR}.htm" target="_blank" style="color: #0f74a8">Historical</a>
+                                                    <a href="/business/documentation/medical/historicalLanding/${medicalDocumentUploadForm.bizStore.codeQR}" target="_blank" style="color: #0f74a8">Historical</a>
                                                 </span>
                                             </td>
                                             <td>
@@ -111,7 +111,7 @@
                                                         ${jsonQueuedPerson.customerName} <br/>
                                                         <span style="display:block; font-size:13px;">${jsonQueuedPerson.phoneFormatted}</span>
                                                         <span style="display:block; font-size:13px; text-align: right;">
-                                                            <a href="/business/documentation/medical/${jsonQueuedPerson.encryptedId}/upload/${medicalDocumentUploadForm.bizStore.codeQR}.htm" target="_blank" style="color: #0f74a8">Upload</a>
+                                                            <a href="/business/documentation/medical/${jsonQueuedPerson.encryptedId}/upload/${medicalDocumentUploadForm.bizStore.codeQR}" target="_blank" style="color: #0f74a8">Upload</a>
                                                         </span>
                                                     </div>
                                                 </div>

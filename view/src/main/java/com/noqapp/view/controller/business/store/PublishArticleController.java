@@ -78,7 +78,7 @@ public class PublishArticleController {
         @Value("${nextPage:/business/publishArticle/landing}")
         String nextPage,
 
-        @Value("${publishArticleFlow:redirect:/store/publishArticle.htm}")
+        @Value("${publishArticleFlow:redirect:/store/publishArticle}")
         String publishArticleFlow,
 
         ImageValidator imageValidator,
@@ -163,7 +163,7 @@ public class PublishArticleController {
                 goToPage = publishArticleFlow;
                 break;
             default:
-                goToPage = "redirect:/business/store/publishArticle/landing.htm";
+                goToPage = "redirect:/business/store/publishArticle/landing";
         }
         return goToPage;
     }
@@ -231,12 +231,12 @@ public class PublishArticleController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/business/store/publishArticle/" + publishArticleForm.getPublishId() + "/upload.htm";
+                    return "redirect:/business/store/publishArticle/" + publishArticleForm.getPublishId() + "/upload";
                 }
 
                 try {
                     processImage(publishArticleForm.getPublishId().getText(), multipartFile);
-                    return "redirect:/business/store/publishArticle/" + publishArticleForm.getPublishId() + "/upload.htm";
+                    return "redirect:/business/store/publishArticle/" + publishArticleForm.getPublishId() + "/upload";
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -247,7 +247,7 @@ public class PublishArticleController {
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:/business/store/publishArticle/" + publishArticleForm.getPublishId() + "/upload.htm";
+                return "redirect:/business/store/publishArticle/" + publishArticleForm.getPublishId() + "/upload";
             }
         }
         return "redirect:/business/store/publishArticle/" + publishArticleForm.getPublishId() + "/upload";
@@ -256,7 +256,7 @@ public class PublishArticleController {
     /** For cancelling uploading service image. */
     @PostMapping (value = "/upload", params = {"cancel_Upload"})
     public String upload() {
-        return "redirect:/business/store/publishArticle/landing.htm";
+        return "redirect:/business/store/publishArticle/landing";
     }
 
     @PostMapping(value = "/deleteImage")
@@ -282,7 +282,7 @@ public class PublishArticleController {
             .setBannerImage(null)
             .setValidateStatus(ValidateStatusEnum.I);
         publishArticleService.save(publishArticle);
-        return "redirect:/business/store/publishArticle/landing.htm";
+        return "redirect:/business/store/publishArticle/landing";
     }
 
     private void processImage(String publishId, MultipartFile multipartFile) throws IOException {

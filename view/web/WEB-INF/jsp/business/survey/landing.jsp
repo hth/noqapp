@@ -40,8 +40,8 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -67,8 +67,8 @@
 
                         <div class="add-store">
                             <div class="addbtn-store" style="padding-bottom: 10px;">
-                                <a href="/business/survey/add.htm" class="add-btn" target="_blank">Add New Survey</a>
-                                <a href="/business/survey/dashboard.htm" class="add-btn" target="_blank">Dashboard</a>
+                                <a href="/business/survey/add" class="add-btn" target="_blank">Add New Survey</a>
+                                <a href="/business/survey/dashboard" class="add-btn" target="_blank">Dashboard</a>
                             </div>
                             <div id="container"></div>
                             <div class="store-table">
@@ -87,10 +87,10 @@
                                                 <td nowrap>
                                                     <c:choose>
                                                     <c:when test="${fn:length(questionnaire.title) == 0}">
-                                                        <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm"><span style="display:block; font-size:13px;">No Title</span></a>
+                                                        <a href="/business/survey/questionnaireDetail/${questionnaire.id}"><span style="display:block; font-size:13px;">No Title</span></a>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <a href="/business/survey/questionnaireDetail/${questionnaire.id}.htm"><span style="display:block; font-size:13px;">${questionnaire.title}</span></a>
+                                                        <a href="/business/survey/questionnaireDetail/${questionnaire.id}"><span style="display:block; font-size:13px;">${questionnaire.title}</span></a>
                                                     </c:otherwise>
                                                     </c:choose>
                                                 </td>
@@ -108,17 +108,17 @@
                                                 <td>
                                                     <c:choose>
                                                     <c:when test="${questionnaire.publishStatus == PublishStatusEnum.I}">
-                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.I}.htm"><span style="display:block; font-size:13px;">Edit</span></a>
+                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.I}"><span style="display:block; font-size:13px;">Edit</span></a>
                                                     </c:when>
                                                     <c:when test="${questionnaire.publishStatus == PublishStatusEnum.P}">
-                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.A}.htm"><span style="display:block; font-size:13px;">Approve</span></a>
-                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.R}.htm"><span style="display:block; font-size:13px;">Reject</span></a>
+                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.A}"><span style="display:block; font-size:13px;">Approve</span></a>
+                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.R}"><span style="display:block; font-size:13px;">Reject</span></a>
                                                     </c:when>
                                                     <c:when test="${questionnaire.publishStatus == PublishStatusEnum.A}">
-                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.U}.htm"><span style="display:block; font-size:13px;">Un-published</span></a>
+                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.U}"><span style="display:block; font-size:13px;">Un-published</span></a>
                                                     </c:when>
                                                     <c:when test="${questionnaire.publishStatus == PublishStatusEnum.R}">
-                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.D}.htm"><span style="display:block; font-size:13px;">Delete</span></a>
+                                                        <a href="/business/survey/${questionnaire.id}/${PublishStatusEnum.D}"><span style="display:block; font-size:13px;">Delete</span></a>
                                                     </c:when>
                                                     <c:otherwise>
                                                         <span style="display:block; font-size:13px;">Not Active</span>
@@ -220,7 +220,7 @@
     // Data
     function getData() {
         setInterval(function () {
-            fetch('/business/survey/live/rating.htm').then(function (response) {
+            fetch('/business/survey/live/rating').then(function (response) {
                 return response.json()
             }).then(function (data) {
                 console.log(data);

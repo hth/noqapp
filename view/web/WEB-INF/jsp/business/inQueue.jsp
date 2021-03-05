@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -81,7 +81,7 @@
                                             <c:when test="${inQueueForm.businessType == BusinessTypeEnum.DO}">
                                             <c:choose>
                                             <c:when test="${!empty jsonQueuedPerson.queueUserId}">
-                                            <a href="/medical/record/${inQueueForm.codeQR}/${jsonQueuedPerson.encryptedId}.htm" target="_blank">${jsonQueuedPerson.customerName}</a>
+                                            <a href="/medical/record/${inQueueForm.codeQR}/${jsonQueuedPerson.encryptedId}" target="_blank">${jsonQueuedPerson.customerName}</a>
                                             </c:when>
                                             <c:otherwise>
                                             ${jsonQueuedPerson.customerName}
@@ -90,7 +90,7 @@
 
                                             <c:if test="${!empty jsonQueuedPerson.minors}">
                                             <c:forEach items="${jsonQueuedPerson.minors}" var="minor">
-                                            <span style="display:block; font-size:13px;">&nbsp;&nbsp;&nbsp;<a href="/medical/record/${inQueueForm.codeQR}/${minor.encryptedId}.htm" target="_blank">${minor.customerName} ${minor.gender} ${minor.age} yrs</a></span>
+                                            <span style="display:block; font-size:13px;">&nbsp;&nbsp;&nbsp;<a href="/medical/record/${inQueueForm.codeQR}/${minor.encryptedId}" target="_blank">${minor.customerName} ${minor.gender} ${minor.age} yrs</a></span>
                                             </c:forEach>
                                             </c:if>
                                             </c:when>

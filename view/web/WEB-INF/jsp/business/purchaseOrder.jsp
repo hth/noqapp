@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -59,7 +59,7 @@
                         <div class="add-store">
                             <div class="details-box" style="padding: 10px 0 10px 0; width: 100%">
                                 Total: <span>${inQueueForm.purchaseOrders.size()}</span>
-                                <span style="display:block; float: right;"><a href="/business/store/sup/historical/${inQueueForm.codeQR}.htm">Historical</a></span>
+                                <span style="display:block; float: right;"><a href="/business/store/sup/historical/${inQueueForm.codeQR}">Historical</a></span>
                             </div>
                             <div class="store-table">
                                 <c:choose>
@@ -86,7 +86,7 @@
                                                 <c:choose>
                                                 <c:when test="${PurchaseOrderStateEnum.OD eq purchaseOrder.presentOrderState}">
                                                     <span style="display:block;">
-                                                        <a href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/current/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}.htm"
+                                                        <a href="${pageContext.request.contextPath}/business/store/sup/order/medicalReport/current/${purchaseOrder.bizStoreId}/${purchaseOrder.transactionId}"
                                                                 target="_blank" class="add-btn" style="margin: 0;">Add / Remove Report</a>
                                                     </span>
                                                 </c:when>

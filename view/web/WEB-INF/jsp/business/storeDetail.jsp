@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -56,7 +56,7 @@
                     <div class="store">
                         <div class="store-details-row">
                             <div class="qr-store-box" style="border:1px dotted black;">
-                                <img src="/i/${storeLandingForm.qrFileName}.htm"/>
+                                <img src="/i/${storeLandingForm.qrFileName}"/>
                                 <br />
                                 <p style="font-weight: bold; color: #222; font-size: 16px">We are on NoQueue</p>
                                 <br />

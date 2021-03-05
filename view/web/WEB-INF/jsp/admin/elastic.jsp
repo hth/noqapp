@@ -28,8 +28,8 @@
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png" /></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/emp/landing/account/access.htm">Permissions</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/emp/landing/account/access">Permissions</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -50,7 +50,7 @@
             <!-- Add New Supervisor -->
             <div class="admin-main">
                 <div class="admin-content">
-                    <form:form method="POST" action="${pageContext.request.contextPath}/admin/elastic/recreate.htm">
+                    <form:form method="POST" action="${pageContext.request.contextPath}/admin/elastic/recreate">
                         <div class="col-fields">
                             <div class="left-btn">
                                 <input type="submit" value="Re-Create Elastic" class="next-btn">

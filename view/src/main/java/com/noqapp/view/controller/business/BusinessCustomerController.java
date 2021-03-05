@@ -124,16 +124,16 @@ public class BusinessCustomerController {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
-            return "redirect:/business/customer/landing.htm";
+            return "redirect:/business/customer/landing";
         }
         businessCustomerPriorityService.changePriorityAccess(businessUser.getBizName().getId(), businessCustomerPriorityForm.getPriorityAccess());
-        return "redirect:/business/customer/landing.htm";
+        return "redirect:/business/customer/landing";
     }
 
     @PostMapping(value = "/priority",  produces = "text/html;charset=UTF-8", params = "cancel-edit")
     public String update() {
         LOG.info("Cancel priority ON/OFF");
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/landing";
     }
 
     @PostMapping(value = "/priority/{action}", produces = "text/html;charset=UTF-8")
@@ -164,7 +164,7 @@ public class BusinessCustomerController {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
-            return "redirect:/business/customer/landing.htm";
+            return "redirect:/business/customer/landing";
         }
 
         ActionTypeEnum actionType = ActionTypeEnum.valueOf(action.getText().toUpperCase());
@@ -183,7 +183,7 @@ public class BusinessCustomerController {
                 LOG.error("Reached un-supported condition");
         }
 
-        return "redirect:/business/customer/landing.htm";
+        return "redirect:/business/customer/landing";
     }
 
     @PostMapping(value = "/priority/{action}",  produces = "text/html;charset=UTF-8", params = "cancel-add")
@@ -192,6 +192,6 @@ public class BusinessCustomerController {
         ScrubbedInput action
     ) {
         LOG.info("Cancel priority {}", action);
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/landing";
     }
 }

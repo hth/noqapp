@@ -73,10 +73,10 @@ public class CouponController {
         @Value("${upcomingBusinessPage:/business/coupon/upcomingBusiness}")
         String upcomingBusinessPage,
 
-        @Value("${couponFlow:redirect:/store/coupon/couponBusiness.htm}")
+        @Value("${couponFlow:redirect:/store/coupon/couponBusiness}")
         String couponFlow,
 
-        @Value("${couponForClientFlow:redirect:/store/coupon/couponClient.htm}")
+        @Value("${couponForClientFlow:redirect:/store/coupon/couponClient}")
         String couponForClientFlow,
 
         UserProfileManager userProfileManager,

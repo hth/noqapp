@@ -50,7 +50,7 @@
         <intercept-url pattern="/migrate/business/profile/**"
                        access="hasRole('ROLE_Q_SUPERVISOR')" />
 
-        <intercept-url pattern="/access/signoff.htm"
+        <intercept-url pattern="/access/signoff"
                        access="hasAnyRole(
                        'ROLE_CLIENT',
                        'ROLE_Q_SUPERVISOR',
@@ -129,10 +129,10 @@
         <intercept-url pattern="/monitoring/**"
                        access="hasIpAddress('10.0.0.0/24') or hasIpAddress('127.0.0.1')" />
         <form-login
-                login-page="/open/login.htm"
-                default-target-url="/access/landing.htm"
+                login-page="/open/login"
+                default-target-url="/access/landing"
                 authentication-success-handler-ref="onLoginSuccessHandler"
-                authentication-failure-url="/open/login.htm?loginFailure=--#"
+                authentication-failure-url="/open/login?loginFailure=--#"
                 username-parameter="emailId"
                 password-parameter="password" />
 
@@ -143,7 +143,7 @@
         <!--login-page="/login"-->
         <!--authentication-failure-url="/login?login_error=true" />-->
 
-        <logout logout-url="/access/signoff.htm"
+        <logout logout-url="/access/signoff"
                 success-handler-ref="signOffController"
                 delete-cookies="JSESSIONID"
                 invalidate-session="true" />

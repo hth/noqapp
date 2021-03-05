@@ -115,12 +115,12 @@ public class DataVisibilityController {
         map.put(UserLevelEnum.S_MANAGER.name(), dataVisibilityForm.getDataVisibilityForManager());
         bizService.updateDataVisibility(map, bizName.getId());
 
-        return "redirect:" + "/business/dataVisibility/landing" + ".htm";
+        return "redirect:" + "/business/dataVisibility/landing";
     }
 
     @PostMapping(value = "/landing", params = {"cancel-dataVisibility"})
     public String postPreferredBusinessCancel() {
         LOG.info("Loading admin landing after user search cancelled");
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/landing";
     }
 }

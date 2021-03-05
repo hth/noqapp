@@ -63,7 +63,7 @@ public class StoreSupervisorLandingController {
         @Value("${nextPage:/business/storeSupervisorLanding}")
         String nextPage,
 
-        @Value("${migrateBusinessProfileFlow:redirect:/migrate/business/profile.htm}")
+        @Value("${migrateBusinessProfileFlow:redirect:/migrate/business/profile}")
         String migrateBusinessProfileFlow,
 
         BusinessUserService businessUserService,

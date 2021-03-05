@@ -32,11 +32,11 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/business/documentation/medical/landing.htm">Medical Documentation</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/business/documentation/medical/landing">Medical Documentation</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing">Client Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding">Business Coupon</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -80,7 +80,7 @@
                                     <tr>
                                         <td>${status.count}&nbsp;</td>
                                         <td nowrap>
-                                            <a href="/business/store/sup/current/${jsonTopic.codeQR}.htm">${jsonTopic.displayName}</a>
+                                            <a href="/business/store/sup/current/${jsonTopic.codeQR}">${jsonTopic.displayName}</a>
                                             <span style="display:block; font-size:13px;">${jsonTopic.businessType.description}</span>
                                         </td>
                                         <td nowrap>

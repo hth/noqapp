@@ -62,8 +62,8 @@
         <transition on="failure" to="reviewBeforePost"/>
     </action-state>
 
-    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/access/landing.htm"/>
-    <end-state id="home" view="externalRedirect:contextRelative:/access/landing.htm"/>
+    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/access/landing"/>
+    <end-state id="home" view="externalRedirect:contextRelative:/access/landing"/>
 
     <global-transitions>
         <transition on="cancel" to="home"/>

@@ -20,8 +20,8 @@
     <div class="warp-inner">
         <div class="logo-left"><img src="${pageContext.request.contextPath}/static/internal/img/logo.png" alt="NoQueue"/></div>
         <div class="top-menu-right">
-            <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
-            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Business Register</a></span>
+            <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login">Sign In</a></span>
+            <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register">Business Register</a></span>
         </div>
 
         <div class="clearFix"></div>
@@ -40,14 +40,14 @@
                                 <h3>Success Password Mail</h3>
                                 <p>An email has been sent with information regarding recovering your account password.</p>
                                 <p>Click here for
-                                    <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">Sign In</a> page.
+                                    <a href="${pageContext.request.contextPath}/open/login" class="add-btn">Sign In</a> page.
                                 </p>
                             </c:when>
                             <c:when test="${success_email_admin eq MailTypeEnum.SUCCESS_SENT_TO_ADMIN}">
                                 <h3>Success Password Mail</h3>
                                 <p>An email has been sent with information regarding recovering your account password to the administrator.</p>
                                 <p>Click here for
-                                    <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">Sign In</a> page.
+                                    <a href="${pageContext.request.contextPath}/open/login" class="add-btn">Sign In</a> page.
                                 </p>
                             </c:when>
                             <c:otherwise>
@@ -55,7 +55,7 @@
                                 <p>Since your email address has not being verified, we have sent verification email.</p>
                                 <p>Follow directions in email to validated your account and then resubmit new password reset request.</p>
                                 <p>Click here for
-                                    <a href="${pageContext.request.contextPath}/open/login.htm" class="add-btn">Sign In</a> page.
+                                    <a href="${pageContext.request.contextPath}/open/login" class="add-btn">Sign In</a> page.
                                 </p>
                             </c:otherwise>
                         </c:choose>

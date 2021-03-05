@@ -53,7 +53,7 @@
             <div class="logo-left"><img src="${pageContext.request.contextPath}/static/internal/img/logo.png" alt="NoQueue"/></div>
             <div class="top-menu-right">
                 <span class="help-btn"><a href="#">Sign In</a></span>
-                <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Business Register</a></span>
+                <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register">Business Register</a></span>
             </div>
 
             <div class="clearFix"></div>
@@ -86,7 +86,7 @@
                         <c:if test="${!empty param.loginFailure and param.loginFailure eq 'p--'}">
                         <div class="error-box">
                             <div class="error-txt" style="margin-left: 10px; width: 100%; font-size:14px; float:none;display:block; padding:5px 0;">
-                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/register.htm">Please click here to register</a>
+                                User not registered with this number. <a href="${pageContext.request.contextPath}/open/register">Please click here to register</a>
                             </div>
                         </div>
                         </c:if>
@@ -183,7 +183,7 @@
                         </div>
 
                         <span class="left-remember"><input name="remember-me" type="checkbox" value="" id="cd-checkbox-1"/>Remember me on this device</span>
-                        <span class="right-forgot"><a href="${pageContext.request.contextPath}/open/forgot/password.htm">Forgot your password</a></span>
+                        <span class="right-forgot"><a href="${pageContext.request.contextPath}/open/forgot/password">Forgot your password</a></span>
                     </form:form>
 
                 </div>

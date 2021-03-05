@@ -145,11 +145,11 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/business/documentation/medical/landing.htm">Medical Documents</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/business/documentation/medical/landing">Medical Documents</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing">Client Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding">Business Coupon</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -239,7 +239,7 @@
             },
         },
         request: {
-            endpoint: '${pageContext.request.contextPath}/business/documentation/medical/${queue.recordReferenceId}/upload/${queue.codeQR}.htm',
+            endpoint: '${pageContext.request.contextPath}/business/documentation/medical/${queue.recordReferenceId}/upload/${queue.codeQR}',
             customHeaders: {
                 Accept: 'multipart/form-data',
                 'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")

@@ -67,7 +67,7 @@ public class LoginPhoneController {
         UserProfileEntity userProfile = firebaseService.getUserWhenLoggedViaPhone(userLoginPhoneForm.getUid());
         if (null == userProfile) {
             LOG.warn("Failed to find user uid={} phone={}", userLoginPhoneForm.getUid(), userLoginPhoneForm.getPhone());
-            return String.format("{ \"next\" : \"%s\" }", "/open/login.htm?loginFailure=p--#");
+            return String.format("{ \"next\" : \"%s\" }", "/open/login?loginFailure=p--#");
         }
         UserAccountEntity userAccount = accountService.findByQueueUserId(userProfile.getQueueUserId());
         if (!userAccount.isPhoneValidated()) {
@@ -84,7 +84,7 @@ public class LoginPhoneController {
                 userLoginPhoneForm.getUid(),
                 userLoginPhoneForm.getPhone(),
                 userAccount.getAccountInactiveReason());
-            return String.format("{ \"next\" : \"%s\" }", "/open/login.htm?loginFailure=i--#");
+            return String.format("{ \"next\" : \"%s\" }", "/open/login?loginFailure=i--#");
         }
         LOG.info("Redirecting user to link={}", redirect);
         return String.format("{ \"next\" : \"%s\" }", redirect);

@@ -128,8 +128,8 @@
         <transition on="ok" to="home" />
     </view-state>
 
-    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing.htm"/>
-    <end-state id="home" view="externalRedirect:contextRelative:/business/#{bizStoreId}/listQueueSupervisor.htm"/>
+    <view-state id="registrationComplete" view="externalRedirect:contextRelative:/business/landing"/>
+    <end-state id="home" view="externalRedirect:contextRelative:/business/#{bizStoreId}/listQueueSupervisor"/>
 
     <global-transitions>
         <transition on="cancel" to="home"/>

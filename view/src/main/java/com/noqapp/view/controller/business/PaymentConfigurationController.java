@@ -116,12 +116,12 @@ public class PaymentConfigurationController {
         map.put(UserLevelEnum.S_MANAGER.name(), paymentPermissionForm.getPaymentPermissionForManager());
         bizService.updatePaymentPermission(map, bizName.getId());
 
-        return "redirect:" + "/business/paymentConfiguration/landing" + ".htm";
+        return "redirect:" + "/business/paymentConfiguration/landing";
     }
 
     @PostMapping(value = "/landing", params = {"cancel-paymentPermission"})
     public String postPreferredBusinessCancel() {
         LOG.info("Loading admin landing after payment permission is cancelled");
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/landing";
     }
 }

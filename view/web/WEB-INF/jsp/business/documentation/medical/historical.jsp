@@ -51,11 +51,11 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/business/documentation/medical/landing.htm">Medical Documents</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/business/documentation/medical/landing">Medical Documents</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing">Client Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding">Business Coupon</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -110,7 +110,7 @@
                                                                             N/A
                                                                         </c:when>
                                                                         <c:otherwise>
-                                                                            <a href="/business/documentation/medical/${jsonQueuedPerson.recordReferenceId}/uploadHistorical/${medicalDocumentUploadListForm.medicalDocumentUploadForms.get(0).bizStore.codeQR}.htm" target="_blank">Upload</a>
+                                                                            <a href="/business/documentation/medical/${jsonQueuedPerson.recordReferenceId}/uploadHistorical/${medicalDocumentUploadListForm.medicalDocumentUploadForms.get(0).bizStore.codeQR}" target="_blank">Upload</a>
                                                                         </c:otherwise>
                                                                     </c:choose>
                                                                 </span>

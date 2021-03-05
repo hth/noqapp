@@ -43,8 +43,8 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -77,12 +77,12 @@
                                         <div class="alert-info" style="text-align: left">
                                             <p>Contact Administrator to modify store details</p>
                                         </div>
-                                        <a href="/business/store/publishArticle/landing.htm" class="add-btn">Publish Article</a>
+                                        <a href="/business/store/publishArticle/landing" class="add-btn">Publish Article</a>
                                     </c:when>
                                     <c:otherwise>
                                         <sec:authorize access="hasAnyRole('ROLE_M_ADMIN')">
                                             <!-- Currently Managers are not supported to Setup Online Store. -->
-                                            <a href="/business/addStore.htm" class="add-btn">Setup Online Store</a>
+                                            <a href="/business/addStore" class="add-btn">Setup Online Store</a>
                                         </sec:authorize>
                                     </c:otherwise>
                                 </c:choose>
@@ -105,7 +105,7 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${isMerchantAdmin}">
-                                                    <a href="/business/detail/store/${store.id}.htm" style="color: #0000FF;">
+                                                    <a href="/business/detail/store/${store.id}" style="color: #0000FF;">
                                                         <span style="display:block; font-size:13px; ">${store.addressWrappedFunky}</span>
                                                     </a>
                                                 </c:when>
@@ -128,9 +128,9 @@
                                                 || BusinessTypeEnum.CDQ eq store.businessType
                                                 }">
                                                     <span style="display:block; font-size:13px;">
-                                                        <a href="/business/store/product/${store.id}.htm" style="color: #0000FF;"><i class="fas fa-th-large"></i> Products (${storeManagerForm.productListCount.get(store.id)})</a>
+                                                        <a href="/business/store/product/${store.id}" style="color: #0000FF;"><i class="fas fa-th-large"></i> Products (${storeManagerForm.productListCount.get(store.id)})</a>
                                                         &nbsp; <span style="font-size:18px;">|</span> &nbsp;
-                                                        <a href="/business/store/category/${store.id}.htm" style="color: #0000FF;"><i class="fas fa-list"></i> Store Category (${storeManagerForm.storeCategoryListCount.get(store.id)})</a>
+                                                        <a href="/business/store/category/${store.id}" style="color: #0000FF;"><i class="fas fa-list"></i> Store Category (${storeManagerForm.storeCategoryListCount.get(store.id)})</a>
                                                     </span>
                                                     <span style="display:block; font-size:13px;">
                                                         <c:choose>
@@ -144,17 +144,17 @@
                                                             || BusinessTypeEnum.CD eq store.businessType
                                                             || BusinessTypeEnum.CDQ eq store.businessType
                                                             }">
-                                                                <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Store Image</a>
+                                                                <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}" style="color: #0000FF;">Store Image</a>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <a href="/business/store/photo/uploadServicePhoto/${store.codeQR}.htm" style="color: #0000FF;">Menu Image</a>
+                                                                <a href="/business/store/photo/uploadServicePhoto/${store.codeQR}" style="color: #0000FF;">Menu Image</a>
                                                                 &nbsp; <span style="font-size:18px;">|</span> &nbsp;
-                                                                <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Store Image</a>
+                                                                <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}" style="color: #0000FF;">Store Image</a>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </span>
                                                     <span style="display:block; font-size:13px;">
-                                                        <a href="/business/store/product/bulk/${store.codeQR}.htm" class="add-btn">Bulk Product Change</a>
+                                                        <a href="/business/store/product/bulk/${store.codeQR}" class="add-btn">Bulk Product Change</a>
                                                     </span>
                                                 </c:when>
                                                 <c:when test="${
@@ -165,11 +165,11 @@
                                                 || BusinessTypeEnum.GSQ eq store.businessType
                                                 || BusinessTypeEnum.CFQ eq store.businessType
                                                 }">
-                                                    <span style="display:block; font-size:13px;"><a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Store Image</a></span>
+                                                    <span style="display:block; font-size:13px;"><a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}" style="color: #0000FF;">Store Image</a></span>
                                                 </c:when>
                                                 <c:when test="${BusinessTypeEnum.BK eq store.businessType}">
                                                     <span style="display:block; font-size:13px;">
-                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}.htm" style="color: #0000FF;">Store Image</a>
+                                                        <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}" style="color: #0000FF;">Store Image</a>
                                                     </span>
                                                 </c:when>
                                                 <c:otherwise>
@@ -178,7 +178,7 @@
                                             </c:choose>
                                         </td>
                                         <td nowrap>
-                                            <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;">
+                                            <a href="/${store.codeQR}/q" target="_blank" style="color: #0000FF;">
                                                 <span style="display:block; font-size:13px;">${store.displayName}</span>
                                             </a>
                                         </td>
@@ -193,7 +193,7 @@
                                         <td>
                                             <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
                                             <br/>
-                                            <a href="/business/store/inQueueReport/${store.codeQR}.htm" style="color: #0000FF;">
+                                            <a href="/business/store/inQueueReport/${store.codeQR}" style="color: #0000FF;">
                                                 <span style="display:block; font-size:13px;">Print In Queue</span>
                                             </a>
                                         </td>

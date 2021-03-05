@@ -32,7 +32,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -67,7 +67,7 @@
                         </div>
                     </div>
 
-                    <form:form method="post" action="${pageContext.request.contextPath}/medical/record/add.htm" modelAttribute="medicalRecordForm">
+                    <form:form method="post" action="${pageContext.request.contextPath}/medical/record/add" modelAttribute="medicalRecordForm">
                     <div class="add-new">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <input type="hidden" name="token" value="${medicalRecordForm.token}"/>

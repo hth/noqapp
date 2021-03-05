@@ -38,8 +38,8 @@
         <div class="warp-inner">
             <div class="logo-left"><img src="${pageContext.request.contextPath}/static/internal/img/logo.png" alt="NoQueue"/></div>
             <div class="top-menu-right">
-                <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login.htm">Sign In</a></span>
-                <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register.htm">Business Register</a></span>
+                <span class="help-btn"><a href="${pageContext.request.contextPath}/open/login">Sign In</a></span>
+                <span class="become-btn"><a href="${pageContext.request.contextPath}/open/register">Business Register</a></span>
             </div>
 
             <div class="clearFix"></div>
@@ -72,7 +72,7 @@
                                 <c:choose>
                                     <c:when test="${!empty webJoinQueue.rootMap.get('registration')}">
                                         <h4>Failed to generate token. You are not a registered user. </h4>
-                                        <h4>${webJoinQueue.rootMap.get("displayName")} only accepts registered users. <a href="/open/register.htm" style="font-size: large;">Click here to register</a></h4>
+                                        <h4>${webJoinQueue.rootMap.get("displayName")} only accepts registered users. <a href="/open/register" style="font-size: large;">Click here to register</a></h4>
                                         <br/>
                                         We are on mobile too. Please download NoQueue from Google Play.
                                         <div class="download-app-icon">

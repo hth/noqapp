@@ -210,12 +210,12 @@ public class MarketplaceController {
                     redirectAttrs.addFlashAttribute("resultImage", result);
                     LOG.warn("Failed validation");
                     //Re-direct to prevent resubmit
-                    return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage.htm";
+                    return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage";
                 }
 
                 try {
                     processImage(queueUser.getQueueUserId(), postId, multipartFile);
-                    return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage.htm";
+                    return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage";
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
                     apiHealthService.insert(
@@ -226,16 +226,16 @@ public class MarketplaceController {
                         HealthStatusEnum.F);
                 }
 
-                return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage.htm";
+                return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage";
             }
         }
-        return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage.htm";
+        return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage";
     }
 
     /** For cancelling uploading service image. */
     @PostMapping (value = "/uploadImage", params = {"cancel_Upload"})
     public String upload() {
-        return "redirect:/access/landing.htm";
+        return "redirect:/access/landing";
     }
 
     @PostMapping(value = "/deleteImage")
@@ -263,7 +263,7 @@ public class MarketplaceController {
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessType);
         }
 
-        return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage.htm";
+        return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage";
     }
 
     private void processImage(String qid, String postId, MultipartFile multipartFile) throws IOException {

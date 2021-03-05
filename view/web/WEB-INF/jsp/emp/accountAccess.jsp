@@ -29,7 +29,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png" /></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -56,7 +56,7 @@
                 </div>
 
                 <form:form method="post"
-                           action="${pageContext.request.contextPath}/emp/landing/account/access/search.htm"
+                           action="${pageContext.request.contextPath}/emp/landing/account/access/search"
                            modelAttribute="searchForm">
                 <spring:hasBindErrors name="searchForm">
                 <div class="error-box">
@@ -135,7 +135,7 @@
                                     <td>${status.count}&nbsp;</td>
                                     <td>${jsonBusiness.bizName}</td>
                                     <td nowrap>
-                                        <form:form action="${pageContext.request.contextPath}/emp/landing/account/access/actionExternalAccess.htm"
+                                        <form:form action="${pageContext.request.contextPath}/emp/landing/account/access/actionExternalAccess"
                                                    modelAttribute="accountAccessForm"
                                                    method="post">
                                             <form:hidden path="action" value="SEND" />
@@ -167,7 +167,7 @@
                             <td>
                                 <c:choose>
                                 <c:when test="${!empty jsonBusiness.approverQID}">
-                                <a href="/emp/landing/account/access/${jsonBusiness.externalAccessId}.htm">${jsonBusiness.bizName}</a>
+                                <a href="/emp/landing/account/access/${jsonBusiness.externalAccessId}">${jsonBusiness.bizName}</a>
                                 <span style="display:block; font-size:13px;">Approved Access</span>
                                 </c:when>
                                 <c:otherwise>
@@ -179,7 +179,7 @@
                             <td>${jsonBusiness.externalPermission.customerFriendlyDescription}</td>
                             <td class="Tleft" nowrap>
                                 <div>
-                                    <form:form action="${pageContext.request.contextPath}/emp/landing/account/access/actionExternalAccess.htm"
+                                    <form:form action="${pageContext.request.contextPath}/emp/landing/account/access/actionExternalAccess"
                                                modelAttribute="accountAccessForm"
                                                method="post">
                                         <form:hidden path="action" value="REMOVE" />

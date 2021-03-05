@@ -27,7 +27,7 @@
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -117,10 +117,10 @@
                                                 &nbsp;${status.count}
                                             </td>
                                             <td>
-                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span></a>
+                                                <a href="/business/detail/store/${store.id}" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span></a>
                                             </td>
                                             <td nowrap>
-                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.displayName}</span></a>
+                                                <a href="/${store.codeQR}/q" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.displayName}</span></a>
                                                 <c:choose>
                                                 <c:when test="${!empty store.bizCategoryId}">
                                                 <span style="display:block; font-size:13px;">${authorizedQueueUser.categories.get(store.bizCategoryId)}</span>
@@ -165,10 +165,10 @@
                                         <tr>
                                             <td>${status.count}&nbsp;</td>
                                             <td>
-                                                <a href="/business/detail/store/${store.id}.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span></a>
+                                                <a href="/business/detail/store/${store.id}" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.addressWrappedFunky}</span></a>
                                             </td>
                                             <td nowrap>
-                                                <a href="/${store.codeQR}/q.htm" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.displayName}</span></a>
+                                                <a href="/${store.codeQR}/q" target="_blank" style="color: #0000FF;"><span style="display:block; font-size:13px;">${store.displayName}</span></a>
                                                 <span style="display:block; font-size:13px;">${authorizedQueueUser.categories.get(store.bizCategoryId)}</span>
                                             </td>
                                         </tr>

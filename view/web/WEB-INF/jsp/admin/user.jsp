@@ -29,8 +29,8 @@
                 <div id="myDropdown" class="dropdown-content">
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png" /></div>
                     <div class="dropdown-inner">
-                        <a href="${pageContext.request.contextPath}/emp/landing/account/access.htm">Permissions</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/emp/landing/account/access">Permissions</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -52,7 +52,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="add-new">
-                        <form:form method="POST" action="${pageContext.request.contextPath}/admin/user/landing.htm" modelAttribute="searchUserForm">
+                        <form:form method="POST" action="${pageContext.request.contextPath}/admin/user/landing" modelAttribute="searchUserForm">
                             <ul class="list-form">
                                 <li>
                                     <div class="alert-info">
@@ -101,7 +101,7 @@
                                     <th width="16%"></th>
                                 </tr>
                                 <tr>
-                                    <form:form method="POST" action="${pageContext.request.contextPath}/admin/user/action.htm" modelAttribute="searchUserForm">
+                                    <form:form method="POST" action="${pageContext.request.contextPath}/admin/user/action" modelAttribute="searchUserForm">
                                         <form:hidden path="qid" />
                                         <td style="font-size:13px;">${status.count}&nbsp;</td>
                                         <td style="font-size:13px;">

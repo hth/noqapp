@@ -41,7 +41,7 @@
     </action-state>
 
     <view-state id="queueUserDetailCancel"
-                view="externalRedirect:contextRelative:/business/authorizedUsers.htm"/>
+                view="externalRedirect:contextRelative:/business/authorizedUsers"/>
     <view-state id="queueUserDetailComplete"
-                view="externalRedirect:contextRelative:/business/authorizedUsers.htm"/>
+                view="externalRedirect:contextRelative:/business/authorizedUsers"/>
 </flow>

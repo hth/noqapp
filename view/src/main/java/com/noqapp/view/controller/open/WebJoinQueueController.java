@@ -85,7 +85,7 @@ public class WebJoinQueueController {
     @Value ("${joinQueue:/join/queue}")
     private String joinQueuePage;
 
-    @Value ("${joinQueueConfirm:redirect:/open/join/queueConfirm.htm}")
+    @Value ("${joinQueueConfirm:redirect:/open/join/queueConfirm}")
     private String joinQueueConfirm;
 
     @Value ("${joinQueueConfirmPage:/join/queueConfirm}")

@@ -121,25 +121,25 @@ public class AdminBusinessLandingController {
         @Value("${authorizedUsersPage:/business/authorizedUsers}")
         String authorizedUsersPage,
 
-        @Value("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration.htm}")
+        @Value("${migrateBusinessRegistrationFlow:redirect:/migrate/business/registration}")
         String migrateBusinessRegistrationFlow,
 
-        @Value("${storeActionFlow:redirect:/store/storeAction.htm}")
+        @Value("${storeActionFlow:redirect:/store/storeAction}")
         String storeActionFlow,
 
-        @Value("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor.htm}")
+        @Value("${addQueueSupervisorFlow:redirect:/store/addQueueSupervisor}")
         String addQueueSupervisorFlow,
 
-        @Value("${addDoctorFlow:redirect:/store/addDoctor.htm}")
+        @Value("${addDoctorFlow:redirect:/store/addDoctor}")
         String addDoctorFlow,
 
-        @Value("${addNewAgentFlow:redirect:/store/addNewAgent.htm}")
+        @Value("${addNewAgentFlow:redirect:/store/addNewAgent}")
         String addNewAgentFlow,
 
-        @Value("${queueUserDetailFlow:redirect:/store/authorizedQueueUserDetail.htm}")
+        @Value("${queueUserDetailFlow:redirect:/store/authorizedQueueUserDetail}")
         String queueUserDetailFlow,
 
-        @Value("${editBusinessFlow:redirect:/migrate/business/registration.htm}")
+        @Value("${editBusinessFlow:redirect:/migrate/business/registration}")
         String editBusinessFlow,
 
         @Value("${migrateBusinessTypePage:/business/migrateBusinessType}")
@@ -461,7 +461,7 @@ public class AdminBusinessLandingController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         redirectAttributes.addFlashAttribute("businessUserId", businessUserId.getText());
-        return "redirect:/access/userProfile/show.htm";
+        return "redirect:/access/userProfile/show";
     }
 
     /**
@@ -512,7 +512,7 @@ public class AdminBusinessLandingController {
 
                         redirectAttrs.addFlashAttribute("result", result);
                         //Re-direct to prevent resubmit
-                        return "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
+                        return "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor";
                     }
 
                     bizStore = bizService.getByStoreId(queueSupervisorActionForm.getBizStoreId().getText());
@@ -621,10 +621,10 @@ public class AdminBusinessLandingController {
             String goToPage;
             switch (queueSupervisorActionForm.getAction().getText()) {
                 case "DELETE":
-                    goToPage = "redirect:/business/authorizedUsers.htm";
+                    goToPage = "redirect:/business/authorizedUsers";
                     break;
                 default:
-                    goToPage = "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
+                    goToPage = "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor";
             }
             return goToPage;
         } catch (Exception e) {
@@ -637,10 +637,10 @@ public class AdminBusinessLandingController {
             String goToPage;
             switch (queueSupervisorActionForm.getAction().getText()) {
                 case "DELETE":
-                    goToPage = "redirect:/business/authorizedUsers.htm";
+                    goToPage = "redirect:/business/authorizedUsers";
                     break;
                 default:
-                    goToPage = "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor.htm";
+                    goToPage = "redirect:/business/" + queueSupervisorActionForm.getBizStoreId().getText() + "/listQueueSupervisor";
             }
             return goToPage;
         }
@@ -843,13 +843,13 @@ public class AdminBusinessLandingController {
         }
 
         LOG.info("Loading preferred business");
-        return "redirect:" + preferredBusinessPage + ".htm";
+        return "redirect:" + preferredBusinessPage;
     }
 
     @PostMapping(value = "/preferredBusiness", params = {"cancel_Add"})
     public String postPreferredBusinessCancel() {
         LOG.info("Loading preferred business cancelled");
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/landing";
     }
 
     @PostMapping(value = "/preferredBusiness", params = {"delete"})
@@ -870,7 +870,7 @@ public class AdminBusinessLandingController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         preferredBusinessService.deleteById(preferredBusinessForm.getRecordId());
-        return "redirect:" + preferredBusinessPage + ".htm";
+        return "redirect:" + preferredBusinessPage;
     }
 
     @GetMapping(value = "/migrateBusinessType")
@@ -922,7 +922,7 @@ public class AdminBusinessLandingController {
                 .setMigrationSuccess(false)
                 .setMigrationMessage("Cannot migrate during business hour. Best to migrate before start of the day.");
             redirectAttrs.addFlashAttribute("migrateBusinessTypeForm", migrateBusinessTypeForm);
-            return "redirect:/business/migrateBusinessType.htm";
+            return "redirect:/business/migrateBusinessType";
         }
 
         if (migrateBusinessTypeForm.isMigrate()) {
@@ -943,13 +943,13 @@ public class AdminBusinessLandingController {
         }
 
         redirectAttrs.addFlashAttribute("migrateBusinessTypeForm", migrateBusinessTypeForm);
-        return "redirect:/business/migrateBusinessType.htm";
+        return "redirect:/business/migrateBusinessType";
     }
 
     @PostMapping(value = "/migrateBusinessType", params = {"cancel_Migrate"})
     public String cancelMigrationToBusinessType() {
         LOG.info("Loading business landing after user business migration cancelled");
-        return "redirect:/business/landing.htm";
+        return "redirect:/business/landing";
     }
 
     private static BusinessTypeEnum supportedMigration(BusinessTypeEnum businessType) {

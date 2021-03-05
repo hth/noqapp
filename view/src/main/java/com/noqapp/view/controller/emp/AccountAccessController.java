@@ -126,12 +126,12 @@ public class AccountAccessController {
             redirectAttrs.addFlashAttribute("result", result);
             LOG.warn("Failed validation");
             //Re-direct to prevent resubmit
-            return "redirect:/emp/landing/account/access.htm";
+            return "redirect:/emp/landing/account/access";
         }
         List<JsonBusiness> jsonBusinesses = bizService.findDistinctBizWithMatchingName(searchForm.getSearch().getText());
         accountAccessForm.setJsonBusinessesMatchingSearch(jsonBusinesses);
         redirectAttrs.addFlashAttribute("accountAccessForm", accountAccessForm);
-        return "redirect:/emp/landing/account/access.htm";
+        return "redirect:/emp/landing/account/access";
     }
 
     /**
@@ -142,7 +142,7 @@ public class AccountAccessController {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Cancel business category qid={} userLevel={}", queueUser.getQueueUserId(), queueUser.getUserLevel());
 
-        return "redirect:/emp/landing.htm";
+        return "redirect:/emp/landing";
     }
 
     /**
@@ -176,10 +176,10 @@ public class AccountAccessController {
             businessUserService.save(businessUser);
 
             LOG.info("ExternalAccess to businessName={} qid={}", bizName.getBusinessName(), qid);
-            return "redirect:/business/landing.htm";
+            return "redirect:/business/landing";
         }
 
-        return "redirect:/emp/landing/account/access.htm";
+        return "redirect:/emp/landing/account/access";
     }
 
     /**
@@ -205,7 +205,7 @@ public class AccountAccessController {
                     throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
             }
 
-            return "redirect:/emp/landing/account/access.htm";
+            return "redirect:/emp/landing/account/access";
         } catch (Exception e) {
             LOG.error("Failed updated status for bizId={} status={} qid={} reason={}",
                 accountAccessForm.getId().getText(),
@@ -214,7 +214,7 @@ public class AccountAccessController {
                 e.getLocalizedMessage(),
                 e);
 
-            return "redirect:/emp/landing/account/access.htm";
+            return "redirect:/emp/landing/account/access";
         }
     }
 }

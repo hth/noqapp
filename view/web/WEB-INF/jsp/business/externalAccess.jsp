@@ -31,7 +31,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -80,13 +80,13 @@
                                             <c:choose>
                                                 <c:when test="${empty externalAccess.approverQID}">
                                                     <div>
-                                                        <form:form action="${pageContext.request.contextPath}/business/external/access/actionExternalAccess.htm" modelAttribute="externalAccessForm" method="post">
+                                                        <form:form action="${pageContext.request.contextPath}/business/external/access/actionExternalAccess" modelAttribute="externalAccessForm" method="post">
                                                             <form:hidden path="action" value="APPROVE" />
                                                             <form:hidden path="id" value="${externalAccess.idAsBase64}" />
                                                             <input class="cancel-btn" value="Approve" type="submit">
                                                         </form:form>
                                                         <br />
-                                                        <form:form action="${pageContext.request.contextPath}/business/external/access/actionExternalAccess.htm" modelAttribute="externalAccessForm" method="post">
+                                                        <form:form action="${pageContext.request.contextPath}/business/external/access/actionExternalAccess" modelAttribute="externalAccessForm" method="post">
                                                             <form:hidden path="action" value="REJECT" />
                                                             <form:hidden path="id" value="${externalAccess.idAsBase64}" />
                                                             <input class="cancel-btn" value="Reject" type="submit">
@@ -95,7 +95,7 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <div>
-                                                        <form:form action="${pageContext.request.contextPath}/business/external/access/actionExternalAccess.htm" modelAttribute="externalAccessForm" method="post">
+                                                        <form:form action="${pageContext.request.contextPath}/business/external/access/actionExternalAccess" modelAttribute="externalAccessForm" method="post">
                                                             <form:hidden path="action" value="REMOVE" />
                                                             <form:hidden path="id" value="${externalAccess.idAsBase64}" />
                                                             <input class="cancel-btn" style="margin: 0;" value="Remove" type="submit">

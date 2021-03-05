@@ -124,7 +124,7 @@ public class ExternalAccessController {
                     throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
             }
 
-            return "redirect:/business/external/access.htm";
+            return "redirect:/business/external/access";
         } catch (Exception e) {
             LOG.error("Failed updated status for externalAccessId={} status={} reason={}",
                 externalAccessForm.decodeId(),
@@ -132,7 +132,7 @@ public class ExternalAccessController {
                 e.getLocalizedMessage(),
                 e);
 
-            return "redirect:/business/external/access.htm";
+            return "redirect:/business/external/access";
         }
     }
 }

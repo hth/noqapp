@@ -31,39 +31,39 @@ public class OnLoginAuthenticationSuccessHandler extends SimpleUrlAuthentication
     private static final Logger LOG = LoggerFactory.getLogger(OnLoginAuthenticationSuccessHandler.class);
 
     /** For users. */
-    @Value ("${accessLanding:/access/landing.htm}")
+    @Value ("${accessLanding:/access/landing}")
     private String accessLanding;
 
     /** For supers. */
-    @Value ("${empSupervisorLanding:/emp/landing.htm}")
+    @Value ("${empSupervisorLanding:/emp/landing}")
     private String empSupervisorLanding;
 
     /** For NoQueue techs for data related. TODO(hth) still */
-    @Value ("${empTechLanding:/emp/noqueue/landing.htm}")
+    @Value ("${empTechLanding:/emp/noqueue/landing}")
     private String empTechLanding;
 
-    @Value ("${empMedicalTechLanding:/emp/medical/landing.htm}")
+    @Value ("${empMedicalTechLanding:/emp/medical/landing}")
     private String empMedicalTechLanding;
 
-    @Value ("${adminLanding:/admin/landing.htm}")
+    @Value ("${adminLanding:/admin/landing}")
     private String adminLanding;
 
-    @Value ("${displayLanding:/display/landing.htm}")
+    @Value ("${displayLanding:/display/landing}")
     private String displayLanding;
 
-    @Value ("${supervisorLanding:/business/store/sup/landing.htm}")
+    @Value ("${supervisorLanding:/business/store/sup/landing}")
     private String supervisorLanding;
 
-    @Value ("${assetSupervisorLanding:/business/inventory/landing.htm}")
+    @Value ("${assetSupervisorLanding:/business/inventory/landing}")
     private String assetSupervisorLanding;
 
-    @Value ("${storeManagerLanding:/business/store/landing.htm}")
+    @Value ("${storeManagerLanding:/business/store/landing}")
     private String storeManagerLanding;
 
-    @Value ("${payoutLanding:/business/payout/landing.htm}")
+    @Value ("${payoutLanding:/business/payout/landing}")
     private String payoutLanding;
 
-    @Value ("${businessAdminLanding:/business/landing.htm}")
+    @Value ("${businessAdminLanding:/business/landing}")
     private String businessAdminLanding;
 
     private final RequestCache requestCache = new HttpSessionRequestCache();

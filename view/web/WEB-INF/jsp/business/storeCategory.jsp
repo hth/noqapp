@@ -31,7 +31,7 @@
                     <div class="menu-top-arrow"><img src="${pageContext.request.contextPath}/static/internal/img/menu-top-arrow.png"/></div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -60,7 +60,7 @@
 
                 <c:choose>
                 <c:when test="${!empty storeCategoryForm.storeCategoryId}">
-                <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/edit.htm" modelAttribute="storeCategoryForm">
+                <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/edit" modelAttribute="storeCategoryForm">
                     <form:hidden path="bizStoreId" />
                     <form:hidden path="storeCategoryId" />
                     <form:hidden path="businessType" />
@@ -106,7 +106,7 @@
                 </form:form>
                 </c:when>
                 <c:otherwise>
-                <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/add.htm" modelAttribute="storeCategoryForm">
+                <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/add" modelAttribute="storeCategoryForm">
                     <form:hidden path="bizStoreId" />
                     <form:hidden path="businessType" />
 
@@ -184,7 +184,7 @@
                                                 N/A
                                             </c:when>
                                             <c:otherwise>
-                                                <a href="/business/store/category/${storeCategoryForm.bizStoreId}/${category.key}/edit.htm" class="add-btn" style="color: #0000FF;">Edit</a>
+                                                <a href="/business/store/category/${storeCategoryForm.bizStoreId}/${category.key}/edit" class="add-btn" style="color: #0000FF;">Edit</a>
                                             </c:otherwise>
                                         </c:choose>
                                     </td>
@@ -194,7 +194,7 @@
                                                 N/A
                                             </c:when>
                                             <c:otherwise>
-                                                <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/delete.htm" modelAttribute="storeCategoryForm">
+                                                <form:form method="post" action="${pageContext.request.contextPath}/business/store/category/delete" modelAttribute="storeCategoryForm">
                                                     <form:hidden path="bizStoreId" value="${storeCategoryForm.bizStoreId}" />
                                                     <form:hidden path="storeCategoryId" value="${category.key}" />
                                                     <button name="delete" class="add-btn">Delete</button>

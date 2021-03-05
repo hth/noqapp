@@ -34,7 +34,7 @@
                     </div>
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -56,7 +56,7 @@
             <div class="admin-main">
                 <!-- File Upload From -->
 
-                <form:form action="${pageContext.request.contextPath}/business/inventory/asset/bulk/upload.htm" modelAttribute="assetForm" method="post" enctype="multipart/form-data">
+                <form:form action="${pageContext.request.contextPath}/business/inventory/asset/bulk/upload" modelAttribute="assetForm" method="post" enctype="multipart/form-data">
                     <div class="admin-title">
                         <h2>Asset Bulk Upload</h2>
                     </div>
@@ -127,7 +127,7 @@
                     </div>
                 </form:form>
 
-                <form:form action="${pageContext.request.contextPath}/business/inventory/asset/bulk/download.htm" method="post">
+                <form:form action="${pageContext.request.contextPath}/business/inventory/asset/bulk/download" method="post">
                     <div class="admin-title">
                         <h2>Asset Bulk Download</h2>
                     </div>

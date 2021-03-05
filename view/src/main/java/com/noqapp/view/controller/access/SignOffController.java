@@ -51,7 +51,7 @@ public class SignOffController extends SimpleUrlLogoutSuccessHandler implements 
          * Even though it defaults to root as in secure.xml, need logoutSuccess to execute script to logout
          * from firebase authentication if any.
          */
-        response.sendRedirect("/open/login.htm?logoutSuccess=s--#");
+        response.sendRedirect("/open/login?logoutSuccess=s--#");
 
         LOG.info("Logout qid={} from={}", queueUserId, request.getServletPath());
         super.onLogoutSuccess(request, response, authentication);

@@ -33,12 +33,12 @@
                     <div class="dropdown-inner">
                         <a href="${pageContext.request.contextPath}/">Home</a>
                         <sec:authorize access="hasRole('ROLE_M_ADMIN')">
-                        <a href="${pageContext.request.contextPath}/business/discount/landing.htm">Discount</a>
+                        <a href="${pageContext.request.contextPath}/business/discount/landing">Discount</a>
                         </sec:authorize>
-                        <a href="${pageContext.request.contextPath}/business/coupon/landing.htm">Client Coupon</a>
-                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding.htm">Business Coupon</a>
-                        <a href="${pageContext.request.contextPath}/access/userProfile.htm">Profile</a>
-                        <form action="${pageContext.request.contextPath}/access/signoff.htm" method="post">
+                        <a href="${pageContext.request.contextPath}/business/coupon/landing">Client Coupon</a>
+                        <a href="${pageContext.request.contextPath}/business/coupon/businessLanding">Business Coupon</a>
+                        <a href="${pageContext.request.contextPath}/access/userProfile">Profile</a>
+                        <form action="${pageContext.request.contextPath}/access/signoff" method="post">
                             <input type="submit" value="Logout" class="button-txt"/>
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         </form>
@@ -64,8 +64,8 @@
 
                         <div class="add-store">
                             <div class="addbtn-store">
-                                <a href="/business/coupon/businessUpcoming.htm" class="add-btn">Upcoming Business Coupon</a>
-                                <a href="/business/coupon/newBusinessCoupon.htm" class="add-btn">Add New Business Coupon</a>
+                                <a href="/business/coupon/businessUpcoming" class="add-btn">Upcoming Business Coupon</a>
+                                <a href="/business/coupon/newBusinessCoupon" class="add-btn">Add New Business Coupon</a>
                             </div>
                             <div class="store-table">
                                 <c:choose>
@@ -117,14 +117,14 @@
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${coupon.active}">
-                                                                <form:form action="${pageContext.request.contextPath}/business/coupon/action.htm" modelAttribute="couponForm" method="post">
+                                                                <form:form action="${pageContext.request.contextPath}/business/coupon/action" modelAttribute="couponForm" method="post">
                                                                     <form:hidden path="actionType" value="${ActionTypeEnum.INACTIVE}" />
                                                                     <form:hidden path="couponId" value="${coupon.id}" />
                                                                     <input class="cancel-btn" style="margin: 0;" value="In-Active" type="submit">
                                                                 </form:form>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <form:form action="${pageContext.request.contextPath}/business/coupon/action.htm" modelAttribute="couponForm" method="post">
+                                                                <form:form action="${pageContext.request.contextPath}/business/coupon/action" modelAttribute="couponForm" method="post">
                                                                     <form:hidden path="actionType" value="${ActionTypeEnum.REMOVE}" />
                                                                     <form:hidden path="couponId" value="${coupon.id}" />
                                                                     <input class="cancel-btn" style="margin: 0;" value="Delete" type="submit">
