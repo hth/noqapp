@@ -292,7 +292,11 @@ public class MessageCustomerService {
 
     @Mobile
     public boolean increaseViewBusinessCount(String id, String qid) {
-        graphDetailOfPerson.graphPersonWithNotification(id, qid);
+        try {
+            graphDetailOfPerson.graphPersonWithNotification(id, qid);
+        } catch (Exception e) {
+            LOG.error("Failed graphing person {} {} {}", qid, id, e.getLocalizedMessage());
+        }
         return notificationMessageManager.increaseViewBusinessCount(id);
     }
 }
