@@ -12,10 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
+import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.core.WriteResultChecking;
 import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
@@ -63,14 +63,12 @@ public class MongoConfiguration {
      * @return a ready to use MongoDbFactory
      */
     @Bean
-    MongoDbFactory mongoDbFactory() {
+    MongoDatabaseFactory mongoDbFactory() {
         // Mongo Client
         MongoClient mongoClient = MongoClients.create(populateMongoClientSettings());
 
         // Mongo DB Factory
-        MongoDbFactory mongoDbFactory = new SimpleMongoClientDbFactory(mongoClient, mongoDatabaseName);
-
-        return mongoDbFactory;
+        return new SimpleMongoClientDatabaseFactory(mongoClient, mongoDatabaseName);
     }
 
     private MongoClientSettings populateMongoClientSettings() {
@@ -128,7 +126,7 @@ public class MongoConfiguration {
     }
 
     @Bean
-    MongoTransactionManager transactionManager(MongoDbFactory dbFactory) {
-        return new MongoTransactionManager(dbFactory);
+    MongoTransactionManager transactionManager(MongoDatabaseFactory databaseFactory) {
+        return new MongoTransactionManager(databaseFactory);
     }
 }
