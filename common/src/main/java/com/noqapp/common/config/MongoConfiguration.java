@@ -72,12 +72,10 @@ public class MongoConfiguration {
     }
 
     private MongoClientSettings populateMongoClientSettings() {
-        MongoClientSettings settings = MongoClientSettings.builder()
+        return MongoClientSettings.builder()
             .applicationName("NoQueue")
             .applyToClusterSettings(builder -> builder.hosts(mongoHosts()))
             .build();
-
-        return settings;
     }
 
     @Bean
@@ -95,9 +93,7 @@ public class MongoConfiguration {
 
     @Bean
     MappingMongoConverter mongoConverter() {
-        MappingMongoConverter converter = new MappingMongoConverter(
-                new DefaultDbRefResolver(mongoDbFactory()),
-                mongoMappingContext());
+        MappingMongoConverter converter = new MappingMongoConverter(new DefaultDbRefResolver(mongoDbFactory()), mongoMappingContext());
         converter.setTypeMapper(mongoTypeMapper());
         return converter;
     }
