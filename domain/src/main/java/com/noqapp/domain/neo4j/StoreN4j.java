@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.Index;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 
@@ -20,7 +19,7 @@ public class StoreN4j {
     private static final Logger LOG = LoggerFactory.getLogger(StoreN4j.class);
 
     /* A unique constraint exists on codeQR. */
-    @Id @Index(unique = true)
+    @Id
     private String codeQR;
 
     @Property("storeName")

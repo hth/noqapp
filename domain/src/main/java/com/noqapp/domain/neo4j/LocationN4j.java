@@ -13,7 +13,7 @@ import org.neo4j.ogm.annotation.Property;
 @NodeEntity("Location")
 public class LocationN4j {
 
-    @Id @Index(unique = true)
+    @Id
     private String id;
 
     @Property("lng")

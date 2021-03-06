@@ -16,7 +16,7 @@ import org.neo4j.ogm.annotation.Relationship;
 public class BizNameN4j {
 
     /* A unique constraint exists on id. */
-    @Id @Index(unique = true)
+    @Id
     private String id;
 
     @Property("codeQR")

@@ -16,7 +16,7 @@ import java.util.Date;
 public class BusinessCustomerN4j {
 
     /* A unique constraint exists on codeQR. */
-    @Id @Index(unique = true)
+    @Id
     private String businessCustomerId;
 
     @Property("name")

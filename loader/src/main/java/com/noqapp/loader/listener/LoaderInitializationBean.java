@@ -140,6 +140,13 @@ public class LoaderInitializationBean {
                 LOG.info("Constraint found location_id");
             }
 
+            if (!constraintIds.contains("notification_unique_id")) {
+                Result result = session.query("CREATE CONSTRAINT notification_unique_id ON (n:Notification) ASSERT n.id IS UNIQUE;", Collections.EMPTY_MAP);
+                LOG.info("Constraint on Notification added={}", result.queryStatistics().containsUpdates());
+            } else {
+                LOG.info("Constraint found notification_unique_id");
+            }
+
             if (!constraintIds.contains("person_unique_qid")) {
                 Result result = session.query("CREATE CONSTRAINT person_unique_qid ON (p:Person) ASSERT p.qid IS UNIQUE;", Collections.EMPTY_MAP);
                 LOG.info("Constraint on QID in Person added={}", result.queryStatistics().containsUpdates());
