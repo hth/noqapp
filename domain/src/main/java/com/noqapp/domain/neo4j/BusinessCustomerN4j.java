@@ -12,11 +12,11 @@ import java.util.Date;
  * hitender
  * 1/20/21 11:46 PM
  */
-@NodeEntity(label = "BusinessCustomer")
+@NodeEntity("BusinessCustomer")
 public class BusinessCustomerN4j {
 
     /* A unique constraint exists on codeQR. */
-    @Id @Index(unique = true)
+    @Id
     private String businessCustomerId;
 
     @Property("name")

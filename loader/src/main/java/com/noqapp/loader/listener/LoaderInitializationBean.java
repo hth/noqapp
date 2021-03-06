@@ -119,6 +119,34 @@ public class LoaderInitializationBean {
             Set<String> constraintIds = new HashSet<>();
             resultOnConstraints.queryResults().forEach(x -> constraintIds.add((String) x.get("name")));
 
+            if (!constraintIds.contains("biz_name_unique_id")) {
+                Result result = session.query("CREATE CONSTRAINT biz_name_unique_id ON (b:BizName) ASSERT b.id IS UNIQUE;", Collections.EMPTY_MAP);
+                LOG.info("Constraint on id in BizName added={}", result.queryStatistics().containsUpdates());
+            } else {
+                LOG.info("Constraint found biz_name_unique_id");
+            }
+
+            if (!constraintIds.contains("business_customer_unique_id")) {
+                Result result = session.query("CREATE CONSTRAINT business_customer_unique_id ON (b:BusinessCustomer) ASSERT b.businessCustomerId IS UNIQUE;", Collections.EMPTY_MAP);
+                LOG.info("Constraint on BusinessCustomerId in BusinessCustomer added={}", result.queryStatistics().containsUpdates());
+            } else {
+                LOG.info("Constraint found business_customer_unique_id");
+            }
+
+            if (!constraintIds.contains("location_id")) {
+                Result result = session.query("CREATE CONSTRAINT location_id ON (l:Location) ASSERT l.id IS UNIQUE;", Collections.EMPTY_MAP);
+                LOG.info("Constraint on geoPoint in Location added={}", result.queryStatistics().containsUpdates());
+            } else {
+                LOG.info("Constraint found location_id");
+            }
+
+            if (!constraintIds.contains("notification_unique_id")) {
+                Result result = session.query("CREATE CONSTRAINT notification_unique_id ON (n:Notification) ASSERT n.id IS UNIQUE;", Collections.EMPTY_MAP);
+                LOG.info("Constraint on Notification added={}", result.queryStatistics().containsUpdates());
+            } else {
+                LOG.info("Constraint found notification_unique_id");
+            }
+
             if (!constraintIds.contains("person_unique_qid")) {
                 Result result = session.query("CREATE CONSTRAINT person_unique_qid ON (p:Person) ASSERT p.qid IS UNIQUE;", Collections.EMPTY_MAP);
                 LOG.info("Constraint on QID in Person added={}", result.queryStatistics().containsUpdates());
@@ -131,27 +159,6 @@ public class LoaderInitializationBean {
                 LOG.info("Constraint on CodeQR in Store added={}", result.queryStatistics().containsUpdates());
             } else {
                 LOG.info("Constraint found store_unique_codeQR");
-            }
-
-            if (!constraintIds.contains("business_customer_unique_id")) {
-                Result result = session.query("CREATE CONSTRAINT business_customer_unique_id ON (b:BusinessCustomer) ASSERT b.businessCustomerId IS UNIQUE;", Collections.EMPTY_MAP);
-                LOG.info("Constraint on BusinessCustomerId in BusinessCustomer added={}", result.queryStatistics().containsUpdates());
-            } else {
-                LOG.info("Constraint found business_customer_unique_id");
-            }
-
-            if (!constraintIds.contains("biz_name_unique_id")) {
-                Result result = session.query("CREATE CONSTRAINT biz_name_unique_id ON (b:BizName) ASSERT b.id IS UNIQUE;", Collections.EMPTY_MAP);
-                LOG.info("Constraint on id in BizName added={}", result.queryStatistics().containsUpdates());
-            } else {
-                LOG.info("Constraint found biz_name_unique_id");
-            }
-
-            if (!constraintIds.contains("location_id")) {
-                Result result = session.query("CREATE CONSTRAINT location_id ON (l:Location) ASSERT l.id IS UNIQUE;", Collections.EMPTY_MAP);
-                LOG.info("Constraint on geoPoint in Location added={}", result.queryStatistics().containsUpdates());
-            } else {
-                LOG.info("Constraint found location_id");
             }
         } catch (ClientException ex) {
             LOG.error("Failed creating constraint reason={}", ex.getLocalizedMessage(), ex);

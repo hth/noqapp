@@ -10,10 +10,10 @@ import org.neo4j.ogm.annotation.Property;
  * hitender
  * 2/5/21 8:44 PM
  */
-@NodeEntity(label = "Location")
+@NodeEntity("Location")
 public class LocationN4j {
 
-    @Id @Index(unique = true)
+    @Id
     private String id;
 
     @Property("lng")
