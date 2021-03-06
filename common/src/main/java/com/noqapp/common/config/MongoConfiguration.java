@@ -72,12 +72,10 @@ public class MongoConfiguration {
     }
 
     private MongoClientSettings populateMongoClientSettings() {
-        MongoClientSettings settings = MongoClientSettings.builder()
+        return MongoClientSettings.builder()
             .applicationName("NoQueue")
             .applyToClusterSettings(builder -> builder.hosts(mongoHosts()))
             .build();
-
-        return settings;
     }
 
     @Bean
