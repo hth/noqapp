@@ -95,9 +95,7 @@ public class MongoConfiguration {
 
     @Bean
     MappingMongoConverter mongoConverter() {
-        MappingMongoConverter converter = new MappingMongoConverter(
-                new DefaultDbRefResolver(mongoDbFactory()),
-                mongoMappingContext());
+        MappingMongoConverter converter = new MappingMongoConverter(new DefaultDbRefResolver(mongoDbFactory()), mongoMappingContext());
         converter.setTypeMapper(mongoTypeMapper());
         return converter;
     }
