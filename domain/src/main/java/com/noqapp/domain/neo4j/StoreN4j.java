@@ -15,7 +15,7 @@ import org.neo4j.ogm.annotation.Property;
  * hitender
  * 1/19/21 4:50 PM
  */
-@NodeEntity(label = "Store")
+@NodeEntity("Store")
 public class StoreN4j {
     private static final Logger LOG = LoggerFactory.getLogger(StoreN4j.class);
 

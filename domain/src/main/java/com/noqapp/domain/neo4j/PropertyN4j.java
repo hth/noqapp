@@ -12,7 +12,7 @@ import org.neo4j.ogm.annotation.Property;
  * hitender
  * 1/19/21 12:50 AM
  */
-@NodeEntity(label = "Property")
+@NodeEntity("Property")
 public class PropertyN4j {
     private static final Logger LOG = LoggerFactory.getLogger(PropertyN4j.class);
 

@@ -18,7 +18,7 @@ import java.util.StringJoiner;
  * hitender
  * 1/19/21 4:49 PM
  */
-@NodeEntity(label = "Person")
+@NodeEntity("Person")
 public class PersonN4j {
     private static final Logger LOG = LoggerFactory.getLogger(PersonN4j.class);
 

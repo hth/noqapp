@@ -12,7 +12,7 @@ import org.neo4j.ogm.annotation.Relationship;
  * hitender
  * 1/21/21 12:06 AM
  */
-@NodeEntity(label = "BizName")
+@NodeEntity("BizName")
 public class BizNameN4j {
 
     /* A unique constraint exists on id. */
