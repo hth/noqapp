@@ -1,14 +1,11 @@
 package com.noqapp.domain.json.marketplace;
 
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.common.utils.DateUtil;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 import java.util.LinkedHashSet;
