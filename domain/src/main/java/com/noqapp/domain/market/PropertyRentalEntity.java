@@ -24,9 +24,9 @@ import org.springframework.data.mongodb.core.mapping.Field;
     "PMD.MethodArgumentCouldBeFinal",
     "PMD.LongVariable"
 })
-@Document(collection = "MP_PROPERTY")
-public class PropertyEntity extends MarketplaceEntity {
-    private static final Logger LOG = LoggerFactory.getLogger(PropertyEntity.class);
+@Document(collection = "MP_PROPERTY_RENTAL")
+public class PropertyRentalEntity extends MarketplaceEntity {
+    private static final Logger LOG = LoggerFactory.getLogger(PropertyRentalEntity.class);
 
     @Field("BE")
     private int bedroom;
@@ -44,7 +44,7 @@ public class PropertyEntity extends MarketplaceEntity {
         return bedroom;
     }
 
-    public PropertyEntity setBedroom(int bedroom) {
+    public PropertyRentalEntity setBedroom(int bedroom) {
         this.bedroom = bedroom;
         return this;
     }
@@ -53,7 +53,7 @@ public class PropertyEntity extends MarketplaceEntity {
         return bathroom;
     }
 
-    public PropertyEntity setBathroom(int bathroom) {
+    public PropertyRentalEntity setBathroom(int bathroom) {
         this.bathroom = bathroom;
         return this;
     }
@@ -62,7 +62,7 @@ public class PropertyEntity extends MarketplaceEntity {
         return carpetArea;
     }
 
-    public PropertyEntity setCarpetArea(int carpetArea) {
+    public PropertyRentalEntity setCarpetArea(int carpetArea) {
         this.carpetArea = carpetArea;
         return this;
     }
@@ -71,7 +71,7 @@ public class PropertyEntity extends MarketplaceEntity {
         return rentalType;
     }
 
-    public PropertyEntity setRentalType(RentalTypeEnum rentalType) {
+    public PropertyRentalEntity setRentalType(RentalTypeEnum rentalType) {
         this.rentalType = rentalType;
         return this;
     }

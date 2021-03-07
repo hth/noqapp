@@ -4,7 +4,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.market.PropertyEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
 
 import com.mongodb.DuplicateKeyException;
 
@@ -34,22 +34,22 @@ import java.util.stream.Stream;
     "PMD.LongVariable"
 })
 @Repository
-public class PropertyManagerImpl implements PropertyManager {
-    private static final Logger LOG = LoggerFactory.getLogger(PropertyManagerImpl.class);
+public class PropertyRentalManagerImpl implements PropertyRentalManager {
+    private static final Logger LOG = LoggerFactory.getLogger(PropertyRentalManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-        PropertyEntity.class,
+        PropertyRentalEntity.class,
         Document.class,
         "collection");
 
     private MongoTemplate mongoTemplate;
 
     @Autowired
-    public PropertyManagerImpl(MongoTemplate mongoTemplate) {
+    public PropertyRentalManagerImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
     @Override
-    public void save(PropertyEntity object) {
+    public void save(PropertyRentalEntity object) {
         try {
             if (object.getId() != null) {
                 object.setUpdated();
@@ -61,29 +61,29 @@ public class PropertyManagerImpl implements PropertyManager {
     }
 
     @Override
-    public void deleteHard(PropertyEntity object) {
+    public void deleteHard(PropertyRentalEntity object) {
         throw new UnsupportedOperationException("This method is not supported");
     }
 
     @Override
-    public PropertyEntity findOneById(String id) {
-        return mongoTemplate.findById(new ObjectId(id), PropertyEntity.class, TABLE);
+    public PropertyRentalEntity findOneById(String id) {
+        return mongoTemplate.findById(new ObjectId(id), PropertyRentalEntity.class, TABLE);
     }
 
     @Override
-    public List<PropertyEntity> findByQid(String queueUserId) {
+    public List<PropertyRentalEntity> findByQid(String queueUserId) {
         return mongoTemplate.find(
             query(where("QID").is(queueUserId)).with(Sort.by(Sort.Direction.DESC, "C")),
-            PropertyEntity.class,
+            PropertyRentalEntity.class,
             TABLE
         );
     }
 
     @Override
-    public Stream<PropertyEntity> findAllWithStream() {
+    public Stream<PropertyRentalEntity> findAllWithStream() {
         return mongoTemplate.find(
             query(where("PU").gte(new Date()).and("A").is(true).and("D").is(false)),
-            PropertyEntity.class,
+            PropertyRentalEntity.class,
             TABLE
         ).stream();
     }

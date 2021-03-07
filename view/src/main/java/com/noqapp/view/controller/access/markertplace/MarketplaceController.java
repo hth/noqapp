@@ -6,7 +6,7 @@ import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
-import com.noqapp.domain.market.PropertyEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
@@ -14,7 +14,7 @@ import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FtpService;
-import com.noqapp.service.market.PropertyService;
+import com.noqapp.service.market.PropertyRentalService;
 import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.controller.business.store.PublishArticleController;
 import com.noqapp.view.form.FileUploadForm;
@@ -70,7 +70,7 @@ public class MarketplaceController {
     private String nextPage;
 
     private AccountService accountService;
-    private PropertyService propertyService;
+    private PropertyRentalService propertyRentalService;
     private FileService fileService;
     private ImageValidator imageValidator;
     private ApiHealthService apiHealthService;
@@ -84,7 +84,7 @@ public class MarketplaceController {
         String nextPage,
 
         AccountService accountService,
-        PropertyService propertyService,
+        PropertyRentalService propertyRentalService,
         FileService fileService,
         ImageValidator imageValidator,
         ApiHealthService apiHealthService
@@ -93,7 +93,7 @@ public class MarketplaceController {
         this.nextPage = nextPage;
 
         this.accountService = accountService;
-        this.propertyService = propertyService;
+        this.propertyRentalService = propertyRentalService;
         this.fileService = fileService;
         this.imageValidator = imageValidator;
         this.apiHealthService = apiHealthService;
@@ -142,7 +142,7 @@ public class MarketplaceController {
         try {
             switch (BusinessTypeEnum.valueOf(businessTypeAsString)) {
                 case PR:
-                    marketplace = propertyService.findOneById(postId);
+                    marketplace = propertyRentalService.findOneById(postId);
                     break;
                 case HI:
                     marketplace = null;
@@ -250,12 +250,12 @@ public class MarketplaceController {
 
         switch (BusinessTypeEnum.valueOf(businessType)) {
             case PR:
-                PropertyEntity property = propertyService.findOneById(postId);
-                if (property.getPostImages().contains(imageId)) {
-                    fileService.deleteMarketImage(queueUser.getQueueUserId(), imageId, postId, property.getBusinessType());
+                PropertyRentalEntity propertyRental = propertyRentalService.findOneById(postId);
+                if (propertyRental.getPostImages().contains(imageId)) {
+                    fileService.deleteMarketImage(queueUser.getQueueUserId(), imageId, postId, propertyRental.getBusinessType());
 
-                    property.getPostImages().remove(imageId);
-                    propertyService.save(property);
+                    propertyRental.getPostImages().remove(imageId);
+                    propertyRentalService.save(propertyRental);
                 }
                 break;
             default:

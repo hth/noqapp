@@ -23,7 +23,7 @@ import com.noqapp.domain.StoreCategoryEntity;
 import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.market.PropertyEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
 import com.noqapp.domain.types.UnitOfMeasurementEnum;
@@ -37,7 +37,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PublishArticleManager;
 import com.noqapp.repository.S3FileManager;
 import com.noqapp.repository.StoreProductManager;
-import com.noqapp.repository.market.PropertyManager;
+import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.service.exceptions.CSVParsingException;
 import com.noqapp.service.exceptions.CSVProcessingException;
 
@@ -151,7 +151,7 @@ public class FileService {
     private StoreProductManager storeProductManager;
     private PublishArticleManager publishArticleManager;
     private AdvertisementManager advertisementManager;
-    private PropertyManager propertyManager;
+    private PropertyRentalManager propertyRentalManager;
     private BizService bizService;
     private StoreCategoryService storeCategoryService;
 
@@ -177,7 +177,7 @@ public class FileService {
         StoreProductManager storeProductManager,
         PublishArticleManager publishArticleManager,
         AdvertisementManager advertisementManager,
-        PropertyManager propertyManager,
+        PropertyRentalManager propertyRentalManager,
         BizService bizService,
         StoreCategoryService storeCategoryService
     ) {
@@ -194,7 +194,7 @@ public class FileService {
         this.storeProductManager = storeProductManager;
         this.publishArticleManager = publishArticleManager;
         this.advertisementManager = advertisementManager;
-        this.propertyManager = propertyManager;
+        this.propertyRentalManager = propertyRentalManager;
         this.bizService = bizService;
         this.storeCategoryService = storeCategoryService;
     }
@@ -478,12 +478,12 @@ public class FileService {
         File tempFile = null;
 
         try {
-            PropertyEntity property = propertyManager.findOneById(postId);
-            Set<String> images = property.getPostImages();
+            PropertyRentalEntity propertyRental = propertyRentalManager.findOneById(postId);
+            Set<String> images = propertyRental.getPostImages();
 
             while (images.size() >= 10) {
                 String lastImage = images.stream().findFirst().get();
-                deleteMarketImage(qid, lastImage, postId, property.getBusinessType());
+                deleteMarketImage(qid, lastImage, postId, propertyRental.getBusinessType());
                 /* Delete local reference. */
                 images.remove(lastImage);
             }
@@ -498,7 +498,7 @@ public class FileService {
             ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY);
 
             images.add(filename);
-            propertyManager.save(property);
+            propertyRentalManager.save(propertyRental);
 
             LOG.debug("Uploaded store service file={}", toFileAbsolutePath);
         } catch (IOException e) {

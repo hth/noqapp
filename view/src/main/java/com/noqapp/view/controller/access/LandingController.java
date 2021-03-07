@@ -9,7 +9,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.market.HouseholdItemService;
-import com.noqapp.service.market.PropertyService;
+import com.noqapp.service.market.PropertyRentalService;
 import com.noqapp.view.form.LandingForm;
 
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ public class LandingController {
     private QueueService queueService;
     private ApiHealthService apiHealthService;
     private AccountService accountService;
-    private PropertyService propertyService;
+    private PropertyRentalService propertyRentalService;
     private HouseholdItemService householdItemService;
 
     @Autowired
@@ -65,7 +65,7 @@ public class LandingController {
         QueueService queueService,
         ApiHealthService apiHealthService,
         AccountService accountService,
-        PropertyService propertyService,
+        PropertyRentalService propertyRentalService,
         HouseholdItemService householdItemService
     ) {
         this.nextPage = nextPage;
@@ -75,7 +75,7 @@ public class LandingController {
         this.queueService = queueService;
         this.apiHealthService = apiHealthService;
         this.accountService = accountService;
-        this.propertyService = propertyService;
+        this.propertyRentalService = propertyRentalService;
         this.householdItemService = householdItemService;
     }
 
@@ -99,7 +99,7 @@ public class LandingController {
                 .setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
                 .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()))
                 .setMinorUserProfiles(accountService.findDependentProfiles(queueUser.getQueueUserId()))
-                .addPropertyMarketplaceForm(propertyService.findPostedProperties(queueUser.getQueueUserId()))
+                .addPropertyMarketplaceForm(propertyRentalService.findPostedProperties(queueUser.getQueueUserId()))
                 .addHouseholdItemMarketplaceForm(householdItemService.findPostedProperties(queueUser.getQueueUserId()));
 
             LOG.info("Current size={} and Historical size={}",

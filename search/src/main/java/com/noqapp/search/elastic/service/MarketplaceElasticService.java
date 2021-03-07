@@ -1,11 +1,11 @@
 package com.noqapp.search.elastic.service;
 
 import com.noqapp.domain.market.HouseholdItemEntity;
-import com.noqapp.domain.market.PropertyEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.market.HouseholdItemManager;
-import com.noqapp.repository.market.PropertyManager;
+import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.repository.MarketplaceElasticManager;
@@ -37,19 +37,19 @@ import java.util.stream.Stream;
 public class MarketplaceElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceElasticService.class);
 
-    private PropertyManager propertyManager;
+    private PropertyRentalManager propertyRentalManager;
     private HouseholdItemManager householdItemManager;
     private MarketplaceElasticManager<MarketplaceElastic> marketplaceElasticManager;
     private ApiHealthService apiHealthService;
 
     @Autowired
     public MarketplaceElasticService(
-        PropertyManager propertyManager,
+        PropertyRentalManager propertyRentalManager,
         HouseholdItemManager householdItemManager,
         MarketplaceElasticManager<MarketplaceElastic> marketplaceElasticManager,
         ApiHealthService apiHealthService
     ) {
-        this.propertyManager = propertyManager;
+        this.propertyRentalManager = propertyRentalManager;
         this.householdItemManager = householdItemManager;
         this.marketplaceElasticManager = marketplaceElasticManager;
         this.apiHealthService = apiHealthService;
@@ -80,8 +80,8 @@ public class MarketplaceElasticService {
      */
     public void addAllMarketplaceToElastic() {
         Instant start = Instant.now();
-        long countPropertyElastic = 0, countHouseholdElastic = 0;
-        try (Stream<PropertyEntity> stream = propertyManager.findAllWithStream()) {
+        long countPropertyRentalElastic = 0, countHouseholdElastic = 0;
+        try (Stream<PropertyRentalEntity> stream = propertyRentalManager.findAllWithStream()) {
             List<MarketplaceElastic> marketplaceElastics = new ArrayList<>();
             stream.iterator().forEachRemaining(marketplace -> {
                 MarketplaceElastic marketplaceElastic = null;
@@ -96,7 +96,7 @@ public class MarketplaceElasticService {
                 }
             });
             save(marketplaceElastics);
-            countPropertyElastic += marketplaceElastics.size();
+            countPropertyRentalElastic += marketplaceElastics.size();
         }
 
         try (Stream<HouseholdItemEntity> stream = householdItemManager.findAllWithStream()) {
@@ -123,8 +123,8 @@ public class MarketplaceElasticService {
             this.getClass().getName(),
             Duration.between(start, Instant.now()),
             HealthStatusEnum.G);
-        LOG.info("Added countPropertyElastic={} countHouseholdElastic={} to Elastic in duration={}",
-            countPropertyElastic,
+        LOG.info("Added countPropertyRentalElastic={} countHouseholdElastic={} to Elastic in duration={}",
+            countPropertyRentalElastic,
             countHouseholdElastic,
             Duration.between(start, Instant.now()).toMillis());
     }
