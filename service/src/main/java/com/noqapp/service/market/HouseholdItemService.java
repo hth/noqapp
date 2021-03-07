@@ -1,10 +1,7 @@
 package com.noqapp.service.market;
 
 import com.noqapp.domain.market.HouseholdItemEntity;
-import com.noqapp.domain.market.MarketplaceEntity;
-import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.repository.market.HouseholdItemManager;
-import com.noqapp.repository.market.PropertyManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

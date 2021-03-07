@@ -5,8 +5,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.market.HouseholdItemEntity;
-import com.noqapp.domain.market.MarketplaceEntity;
-import com.noqapp.domain.market.PropertyEntity;
 
 import com.mongodb.DuplicateKeyException;
 
