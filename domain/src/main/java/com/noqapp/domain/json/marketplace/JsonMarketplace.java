@@ -32,6 +32,9 @@ import java.util.Set;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class JsonMarketplace extends AbstractDomain {
 
+    @JsonProperty("id")
+    private String id;
+
     @JsonProperty("qid")
     private String queueUserId;
 
@@ -80,6 +83,15 @@ public abstract class JsonMarketplace extends AbstractDomain {
 
     @JsonProperty("pu")
     private Date publishUntil;
+
+    public String getId() {
+        return id;
+    }
+
+    public JsonMarketplace setId(String id) {
+        this.id = id;
+        return this;
+    }
 
     public String getQueueUserId() {
         return queueUserId;
