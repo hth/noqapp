@@ -1,14 +1,11 @@
 package com.noqapp.search.elastic.helper;
 
-import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
-import com.noqapp.domain.market.PropertyEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
