@@ -94,8 +94,8 @@ import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.UserProfileManagerImpl;
 import com.noqapp.repository.market.HouseholdItemManager;
 import com.noqapp.repository.market.HouseholdItemManagerImpl;
-import com.noqapp.repository.market.PropertyManager;
-import com.noqapp.repository.market.PropertyManagerImpl;
+import com.noqapp.repository.market.PropertyRentalManager;
+import com.noqapp.repository.market.PropertyRentalManagerImpl;
 import com.noqapp.service.nlp.NLPService;
 import com.noqapp.service.payment.CashfreeService;
 import com.noqapp.service.transaction.TransactionService;
@@ -198,7 +198,7 @@ public class ITest extends RealMongoForITest {
     protected ScheduledTaskManager scheduledTaskManager;
     protected PublishArticleManager publishArticleManager;
     protected AdvertisementManager advertisementManager;
-    protected PropertyManager propertyManager;
+    protected PropertyRentalManager propertyRentalManager;
     protected HouseholdItemManager householdItemManager;
     protected ScheduleAppointmentManager scheduleAppointmentManager;
     protected CouponManager couponManager;
@@ -417,7 +417,7 @@ public class ITest extends RealMongoForITest {
         storeCategoryService = new StoreCategoryService(storeCategoryManager, storeProductManager);
         publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
         advertisementManager = new AdvertisementManagerImpl(getMongoTemplate());
-        propertyManager = new PropertyManagerImpl(getMongoTemplate());
+        propertyRentalManager = new PropertyRentalManagerImpl(getMongoTemplate());
         householdItemManager = new HouseholdItemManagerImpl(getMongoTemplate());
 
         fileService = new FileService(
@@ -430,7 +430,7 @@ public class ITest extends RealMongoForITest {
             storeProductManager,
             publishArticleManager,
             advertisementManager,
-            propertyManager,
+            propertyRentalManager,
             bizService,
             storeCategoryService
         );

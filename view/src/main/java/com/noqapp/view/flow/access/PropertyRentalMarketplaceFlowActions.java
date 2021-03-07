@@ -1,12 +1,12 @@
 package com.noqapp.view.flow.access;
 
-import com.noqapp.domain.market.PropertyEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.UserProfileManager;
-import com.noqapp.repository.market.PropertyManager;
+import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.service.ExternalService;
@@ -47,7 +47,7 @@ public class PropertyRentalMarketplaceFlowActions {
 
     private Environment environment;
     private DatabaseReader databaseReader;
-    private PropertyManager propertyManager;
+    private PropertyRentalManager propertyRentalManager;
     private UserProfileManager userProfileManager;
     private MarketplaceElasticService marketplaceElasticService;
     private ExternalService externalService;
@@ -56,14 +56,14 @@ public class PropertyRentalMarketplaceFlowActions {
     public PropertyRentalMarketplaceFlowActions(
         Environment environment,
         DatabaseReader databaseReader,
-        PropertyManager propertyManager,
+        PropertyRentalManager propertyRentalManager,
         UserProfileManager userProfileManager,
         MarketplaceElasticService marketplaceElasticService,
         ExternalService externalService
     ) {
         this.environment = environment;
         this.databaseReader = databaseReader;
-        this.propertyManager = propertyManager;
+        this.propertyRentalManager = propertyRentalManager;
         this.userProfileManager = userProfileManager;
         this.marketplaceElasticService = marketplaceElasticService;
         this.externalService = externalService;
@@ -107,11 +107,11 @@ public class PropertyRentalMarketplaceFlowActions {
         if (StringUtils.isNotBlank(postId)) {
             switch (BusinessTypeEnum.valueOf(businessTypeAsString)) {
                 case PR:
-                    PropertyEntity property = propertyManager.findOneById(postId);
-                    marketplaceForm.setMarketplace(property)
-                        .setBusinessType(property.getBusinessType())
-                        .setCity(property.getCity())
-                        .setCoordinate(property.getCoordinate());
+                    PropertyRentalEntity propertyRental = propertyRentalManager.findOneById(postId);
+                    marketplaceForm.setMarketplace(propertyRental)
+                        .setBusinessType(propertyRental.getBusinessType())
+                        .setCity(propertyRental.getCity())
+                        .setCoordinate(propertyRental.getCoordinate());
                     break;
                 default:
                     LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());
@@ -131,7 +131,7 @@ public class PropertyRentalMarketplaceFlowActions {
             case PR:
                 if (null == marketplaceForm.getMarketplace()) {
                     marketplaceForm.setMarketplace(
-                        new PropertyEntity()
+                        new PropertyRentalEntity()
                             .setCity(marketplaceForm.getCity())
                             .setCountryShortName(marketplaceForm.getCountryCode()));
                 } else {
@@ -152,7 +152,7 @@ public class PropertyRentalMarketplaceFlowActions {
         LOG.info("Ready to post {}", marketplaceForm);
         switch (marketplaceForm.getBusinessType()) {
             case PR:
-                PropertyEntity marketplace = (PropertyEntity) marketplaceForm.getMarketplace();
+                PropertyRentalEntity marketplace = (PropertyRentalEntity) marketplaceForm.getMarketplace();
                 boolean isUserProfileVerified = userProfileManager.isProfileVerified(queueUser.getQueueUserId());
                 marketplace.setBusinessType(marketplaceForm.getBusinessType())
                     .setQueueUserId(queueUser.getQueueUserId())
@@ -175,7 +175,7 @@ public class PropertyRentalMarketplaceFlowActions {
                 marketplace.setCoordinate(decodedAddress.getCoordinate())
                     .setCountryShortName(decodedAddress.getCountryShortName());
 
-                propertyManager.save(marketplace);
+                propertyRentalManager.save(marketplace);
                 marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
                 return "success";
             default:

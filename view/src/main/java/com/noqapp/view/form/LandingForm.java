@@ -4,7 +4,7 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
-import com.noqapp.domain.market.PropertyEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 
@@ -80,7 +80,7 @@ public class LandingForm {
         return this;
     }
 
-    public LandingForm addPropertyMarketplaceForm(List<PropertyEntity> marketplaces) {
+    public LandingForm addPropertyMarketplaceForm(List<PropertyRentalEntity> marketplaces) {
         for (MarketplaceEntity marketplace : marketplaces) {
             this.marketplaceForms.add(new MarketplaceForm().setMarketplace(marketplace));
         }

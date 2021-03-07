@@ -1,6 +1,6 @@
 package com.noqapp.view.flow.access.validator;
 
-import com.noqapp.domain.market.PropertyEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.view.controller.access.LandingController;
 import com.noqapp.view.form.marketplace.PropertyRentalMarketplaceForm;
@@ -89,8 +89,8 @@ public class PropertyRentalMarketplaceValidator {
         String status = LandingController.SUCCESS;
 
         if (BusinessTypeEnum.PR == marketplaceForm.getBusinessType()) {
-            PropertyEntity property = (PropertyEntity) marketplaceForm.getMarketplace();
-            if (property.getBedroom() <= 0) {
+            PropertyRentalEntity propertyRental = (PropertyRentalEntity) marketplaceForm.getMarketplace();
+            if (propertyRental.getBedroom() <= 0) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()
@@ -100,7 +100,7 @@ public class PropertyRentalMarketplaceValidator {
                 status = "failure";
             }
 
-            if (property.getBathroom() <= 0) {
+            if (propertyRental.getBathroom() <= 0) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()
@@ -110,7 +110,7 @@ public class PropertyRentalMarketplaceValidator {
                 status = "failure";
             }
 
-            if (property.getCarpetArea() <= 0) {
+            if (propertyRental.getCarpetArea() <= 0) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()
@@ -120,7 +120,7 @@ public class PropertyRentalMarketplaceValidator {
                 status = "failure";
             }
 
-            if (property.getProductPrice() <= 0) {
+            if (propertyRental.getProductPrice() <= 0) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()

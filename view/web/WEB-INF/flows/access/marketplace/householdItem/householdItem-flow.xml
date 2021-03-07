@@ -47,7 +47,7 @@
     <action-state id="readyToPost">
         <evaluate expression="householdItemMarketplaceValidator.validateReadyToPostMarketplace(marketplaceForm, messageContext)"/>
         <transition on="success" to="reviewBeforePost"/>
-        <transition on="failure" to="detailOfPost"/>
+        <transition on="failure" to="thePostDetail"/>
     </action-state>
 
     <view-state id="reviewBeforePost" model="marketplaceForm">
