@@ -34,7 +34,11 @@ public class HouseholdItemService {
         return householdItemManager.findByQid(queueUserId);
     }
 
-    public HouseholdItemEntity findOneById(String postId) {
-        return householdItemManager.findOneById(postId);
+    public HouseholdItemEntity findOneById(String id) {
+        return householdItemManager.findOneById(id);
+    }
+
+    public HouseholdItemEntity findOneByIdAndExpressInterest(String id) {
+        return householdItemManager.findOneByIdAndExpressInterest(id);
     }
 }

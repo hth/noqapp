@@ -14,8 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -84,5 +86,15 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
             HouseholdItemEntity.class,
             TABLE
         ).stream();
+    }
+
+    @Override
+    public HouseholdItemEntity findOneByIdAndExpressInterest(String id) {
+        return mongoTemplate.findAndModify(
+            query(where("id").is(id)),
+            new Update().inc("LC", 1),
+            FindAndModifyOptions.options().returnNew(true),
+            HouseholdItemEntity.class,
+            TABLE);
     }
 }
