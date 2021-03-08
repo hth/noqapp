@@ -250,6 +250,8 @@ public class BizStoreElasticService {
                             e.getLocalizedMessage(),
                             e);
                     }
+                } else {
+                    LOG.warn("Cannot add to spatial as {} {} {} {}", bizStore.getId(), bizStore.getDisplayName(), bizStore.isActive(), bizStore.isRemoteJoin());
                 }
             });
 

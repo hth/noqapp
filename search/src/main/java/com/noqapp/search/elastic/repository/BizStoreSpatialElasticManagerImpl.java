@@ -99,6 +99,10 @@ public class BizStoreSpatialElasticManagerImpl implements BizStoreSpatialElastic
                 LOG.warn("Created successfully id={}", id);
             } else if (deleteResponse.getResult() == DocWriteResponse.Result.UPDATED) {
                 LOG.warn("Updated document id={}", id);
+            } else if (deleteResponse.getResult() == DocWriteResponse.Result.NOT_FOUND) {
+                LOG.warn("Failed to find document id={}", id);
+            } else if (deleteResponse.getResult() == DocWriteResponse.Result.DELETED) {
+                LOG.info("Successfully deleted document id={}", id);
             }
 
             ReplicationResponse.ShardInfo shardInfo = deleteResponse.getShardInfo();
