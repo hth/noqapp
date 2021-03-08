@@ -156,7 +156,7 @@
                                             </div>
                                             <div class="col-fields">
                                                 <form:checkbox path="remoteJoin" cssClass="form-check-box" disabled="true"/>
-                                                <span style="display:block; font-size:14px;">(Allow user to join queue from Home, or far of places)</span>
+                                                <span style="display:block; font-size:14px;">(Allow user to join queue from Home, place online orders)</span>
                                             </div>
                                             <div class="clearFix"></div>
                                         </li>
