@@ -192,10 +192,12 @@
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
-                                            <br/>
-                                            <a href="/business/store/inQueueReport/${store.codeQR}" style="color: #0000FF;">
-                                                <span style="display:block; font-size:13px;">Print In Queue</span>
-                                            </a>
+                                            <c:if test="${BusinessTypeEnum.CD eq store.businessType || BusinessTypeEnum.CDQ eq store.businessType}">
+                                                <br/>
+                                                <a href="/business/store/inQueueReport/${store.codeQR}" style="color: #0000FF;">
+                                                    <span style="display:block; font-size:13px;">Print In Queue</span>
+                                                </a>
+                                            </c:if>
                                         </td>
                                     </tr>
                                     </c:forEach>

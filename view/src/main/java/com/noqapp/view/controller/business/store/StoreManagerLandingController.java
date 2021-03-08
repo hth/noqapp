@@ -213,7 +213,10 @@ public class StoreManagerLandingController {
         }
     }
 
-    /** Generate list of people in queue listed in PDF. */
+    /**
+     * Generate list of people in queue listed in PDF.
+     * Shows list of people in queue only for CD and CDQ business type.
+     */
     @GetMapping(value = "/inQueueReport/{codeQR}")
     public void inQueueReport(
         @PathVariable("codeQR")
@@ -233,13 +236,24 @@ public class StoreManagerLandingController {
             /* Above condition to make sure users with right roles and access gets access. */
 
             BizStoreEntity bizStore = bizService.findByCodeQR(codeQR.getText());
-            JsonQueuePersonList jsonQueuePersonList = queueService.findAllClient(codeQR.getText());
-            File file = new PeopleInQueue().setBizStore(bizStore).setJsonQueuePersonList(jsonQueuePersonList).generateReport();
-            WebUtil.setContentType(file.getName(), response);
-            String fileName = (bizStore.getDisplayName() + "_" + bizStore.getDisplayName()).replace(" ", "_");
-            response.setHeader("Content-Disposition", "inline; filename=\"" + "NoQueue_" + fileName + ".pdf\"");
-            IOUtils.copy(new FileInputStream(file), response.getOutputStream());
-            response.flushBuffer();
+            switch (bizStore.getBusinessType()) {
+                case CD:
+                case CDQ:
+                    JsonQueuePersonList jsonQueuePersonList = queueService.findAllClient(codeQR.getText());
+                    File file = new PeopleInQueue().setBizStore(bizStore).setJsonQueuePersonList(jsonQueuePersonList).generateReport();
+                    WebUtil.setContentType(file.getName(), response);
+                    String fileName = (bizStore.getDisplayName() + "_" + bizStore.getDisplayName()).replace(" ", "_");
+                    response.setHeader("Content-Disposition", "inline; filename=\"" + "NoQueue_" + fileName + ".pdf\"");
+                    IOUtils.copy(new FileInputStream(file), response.getOutputStream());
+                    response.flushBuffer();
+                default:
+                    file = new PeopleInQueue().setBizStore(bizStore).setJsonQueuePersonList(new JsonQueuePersonList()).generateReport();
+                    WebUtil.setContentType(file.getName(), response);
+                    fileName = (bizStore.getDisplayName() + "_" + bizStore.getDisplayName()).replace(" ", "_");
+                    response.setHeader("Content-Disposition", "inline; filename=\"" + "NoQueue_" + fileName + ".pdf\"");
+                    IOUtils.copy(new FileInputStream(file), response.getOutputStream());
+                    response.flushBuffer();
+            }
         } catch (IOException e) {
             LOG.error("Failed generating image for codeQR reason={}", e.getLocalizedMessage());
         }
