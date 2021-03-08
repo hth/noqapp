@@ -19,7 +19,7 @@ function handleFoundAddressStoreCheckboxUncheck() {
 function storeOnlineOrOffline(storeId, action) {
     $.ajax({
         type: "POST",
-        url: '/business/store/onlineOrOffline.htm',
+        url: '/business/store/onlineOrOffline',
         beforeSend: function (xhr) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
         },
