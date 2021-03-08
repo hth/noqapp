@@ -108,7 +108,7 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:checkbox path="remoteJoin" cssClass="form-check-box" cssErrorClass="form-check-box error-field"/>
-                                            <span style="display:block; font-size:14px;">(Allow user to join queue from Home, or far of places)</span>
+                                            <span style="display:block; font-size:14px;">(Allow user to join queue from Home, place online orders)</span>
                                         </div>
                                         <span class="tooltip" title="Remote join allows customers to join queue from home." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                         <div class="clearFix"></div>
