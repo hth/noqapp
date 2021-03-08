@@ -11,7 +11,7 @@ let noQAuthentication = {
                 window.location = data.next;
             },
             error: function (data, request) {
-                window.location = "/open/login.htm?loginFailure=p--#";
+                window.location = "/open/login?loginFailure=p--#";
             }
         });
     },
@@ -26,31 +26,31 @@ let noQAuthentication = {
             success: function (data) {
                 let json = $.parseJSON(data);
                 if (json['c'] === 'pre-approved-req') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=par--#";
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=par--#";
                 } else if (json['c'] === 'non-approved') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=na--#";
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=na--#";
                 } else if (json['c'] === 'denied-joining-queue') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=djq--#";
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=djq--#";
                 } else if (json['c'] === 'closed') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=c--#";
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=c--#";
                 } else if (json['c'] === 'before') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=b--#";
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=b--#";
                 } else if (json['c'] === 'after') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=a--#";
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=a--#";
                 } else if (json['c'] === 'alreadyServiced') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=as--#";
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=as--#";
                 } else if (json['c'] === 'waitUntil') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=wu--#";
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=wu--#";
                 } else if (json['c'] === 'wait') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=x--#";
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=x--#";
                 } else if (json['c'] === 'limit') {
-                    window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=l--#";
+                    window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=l--#";
                 } else {
-                    window.location = '/open/join/' + json['c'] + '/queueConfirm.htm';
+                    window.location = '/open/join/' + json['c'] + '/queueConfirm';
                 }
             },
             error: function (data, request) {
-                window.location = "/open/join/queue/" + $('#codeQR').val() + ".htm?joinFailure=p--#";
+                window.location = "/open/join/queue/" + $('#codeQR').val() + "?joinFailure=p--#";
             }
         });
     },
