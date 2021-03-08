@@ -34,7 +34,11 @@ public class PropertyRentalService {
         return propertyRentalManager.findByQid(queueUserId);
     }
 
-    public PropertyRentalEntity findOneById(String postId) {
-        return propertyRentalManager.findOneById(postId);
+    public PropertyRentalEntity findOneById(String id) {
+        return propertyRentalManager.findOneById(id);
+    }
+
+    public PropertyRentalEntity findOneByIdAndExpressInterest(String id) {
+        return propertyRentalManager.findOneByIdAndExpressInterest(id);
     }
 }

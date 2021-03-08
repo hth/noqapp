@@ -15,8 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -86,5 +88,15 @@ public class PropertyRentalManagerImpl implements PropertyRentalManager {
             PropertyRentalEntity.class,
             TABLE
         ).stream();
+    }
+
+    @Override
+    public PropertyRentalEntity findOneByIdAndExpressInterest(String id) {
+        return mongoTemplate.findAndModify(
+            query(where("id").is(id)),
+            new Update().inc("LC", 1),
+            FindAndModifyOptions.options().returnNew(true),
+            PropertyRentalEntity.class,
+            TABLE);
     }
 }
