@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.ValidateStatusEnum" %>
+<%@ page import="com.noqapp.domain.types.ValidateStatusEnum,com.noqapp.domain.types.TransactionViaEnum" %>
 <%@ include file="../../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -81,13 +81,40 @@
                                                 <span style="display:block; font-size:13px;"><a href="/business/payout/transactionOnDay/${item.key}" target="_blank">${item.key}</a></span>
                                             </td>
                                             <td nowrap>
-                                                <span style="display:block; font-size:13px;">${item.value.internalTransaction}</span>
+                                                <c:if test="${TransactionViaEnum.I eq item.value.transactionVia}">
+                                                <table>
+                                                    <c:forEach items="${item.value.paymentStatusNetPayments}" var="loop" varStatus="status">
+                                                    <tr>
+                                                        <td><span style="display:block; font-size:13px;">${loop.key.description}</span></td>
+                                                        <td>${loop.value}</td>
+                                                    </tr>
+                                                    </c:forEach>
+                                                </table>
+                                                </c:if>
                                             </td>
                                             <td nowrap>
-                                                <span style="display:block; font-size:13px;">${item.value.externalTransaction}</span>
+                                                <c:if test="${TransactionViaEnum.E eq item.value.transactionVia}">
+                                                <table>
+                                                    <c:forEach items="${item.value.paymentStatusNetPayments}" var="loop" varStatus="status">
+                                                    <tr>
+                                                        <td><span style="display:block; font-size:13px;">${loop.key.description}</span></td>
+                                                        <td>${loop.value}</td>
+                                                    </tr>
+                                                    </c:forEach>
+                                                </table>
+                                                </c:if>
                                             </td>
                                             <td nowrap>
-                                                <span style="display:block; font-size:13px;">${item.value.unknownTransaction}</span>
+                                                <c:if test="${TransactionViaEnum.U eq item.value.transactionVia}">
+                                                <table>
+                                                    <c:forEach items="${item.value.paymentStatusNetPayments}" var="loop" varStatus="status">
+                                                    <tr>
+                                                        <td><span style="display:block; font-size:13px;">${loop.key.description}</span></td>
+                                                        <td>${loop.value}</td>
+                                                    </tr>
+                                                    </c:forEach>
+                                                </table>
+                                                </c:if>
                                             </td>
                                         </tr>
                                         </c:forEach>

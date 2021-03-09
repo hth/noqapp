@@ -47,26 +47,17 @@ public class HistoricalTransactionForm {
     }
 
     private void populateExistingForm(TransactionForm transactionForm, TransactionForm existingForm) {
-        switch (transactionForm.getTransactionVia()) {
-            case E:
-                existingForm.setExternalTransaction(transactionForm.getExternalTransaction());
-                break;
-            case I:
-                existingForm.setInternalTransaction(transactionForm.getExternalTransaction());
-                break;
-            case U:
-            default:
-                existingForm.setUnknownTransaction(transactionForm.getExternalTransaction());
-        }
+        existingForm
+            .setTransactionVia(transactionForm.getTransactionVia())
+            .addPaymentStatusNetPayment(transactionForm.getPaymentStatus(), transactionForm.getGrandTotal());
     }
 
     public void populate(List<PurchaseOrderEntity> purchaseOrders, String countryShortName) {
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             TransactionForm transactionForm = new TransactionForm()
-                .setDeliveryMode(purchaseOrder.getDeliveryMode())
                 .setPaymentStatus(purchaseOrder.getPaymentStatus())
                 .setDayOfTransaction(purchaseOrder.getCreated())
-                .setExternalTransaction(CommonUtil.displayWithCurrencyCode(purchaseOrder.getOrderPriceForDisplay(), countryShortName))
+                .setGrandTotal(CommonUtil.displayWithCurrencyCode(purchaseOrder.getGrandTotalForDisplay(), countryShortName))
                 .setTransactionVia(purchaseOrder.getTransactionVia());
             addTransactionForm(transactionForm);
         }

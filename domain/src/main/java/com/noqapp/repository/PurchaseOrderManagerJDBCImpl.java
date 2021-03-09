@@ -87,11 +87,12 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             "C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
             "ORDER BY C DESC";
 
+    /** Group by Date and Payment Status on Paid and Pending Payment. */
     private static final String computeEarning =
-        "SELECT SUM(OP), SUM(TA), DM, PY, DATE(C) DateOnly" +
+        "SELECT SUM(OP), SUM(TA), SUM(GT), PY, DATE(C) DateOnly" +
         " FROM " +
         "PURCHASE_ORDER WHERE BN = ? AND (PS LIKE ? or PS LIKE ?) AND TV = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
-        "GROUP BY DateOnly, DM, PY ORDER BY DateOnly DESC";
+        "GROUP BY DateOnly, PY ORDER BY DateOnly DESC";
 
     private static final String transactionOnDay =
         "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
@@ -294,7 +295,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                     .setTransactionVia(transactionVia)
                     .setOrderPrice(rs.getString(1))
                     .setTax(rs.getString(2))
-                    .setDeliveryMode(DeliveryModeEnum.valueOf(rs.getString(3)))
+                    .setGrandTotal(rs.getString(3))
                     .setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(4)));
                 purchaseOrder.setCreated(rs.getDate(5));
                 return purchaseOrder;

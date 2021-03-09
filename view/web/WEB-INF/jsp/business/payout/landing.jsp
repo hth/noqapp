@@ -88,7 +88,7 @@
                                                 <span style="display:block; font-size:13px;">${item.displayName}</span>
                                             </td>
                                             <td>
-                                                <span style="display:block; font-size:13px;"><b style="color: #1b1b1b;">${item.orderPriceForDisplay}</b></span>
+                                                <span style="display:block; font-size:13px;"><b style="color: #1b1b1b;">${item.grandTotalForDisplay}</b></span>
                                                 <c:if test="${fn:length(item.partialPayment) gt 0}">
                                                 <span style="display:block; font-size:12px; color:red;">Partial: ${item.partialPaymentForDisplay}</span>
                                                 </c:if>
