@@ -294,9 +294,9 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                     .setTransactionVia(transactionVia)
                     .setOrderPrice(rs.getString(1))
                     .setTax(rs.getString(2))
-                    .setDeliveryMode(DeliveryModeEnum.valueOf(rs.getString(2)))
-                    .setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(3)));
-                purchaseOrder.setCreated(rs.getDate(4));
+                    .setDeliveryMode(DeliveryModeEnum.valueOf(rs.getString(3)))
+                    .setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(4)));
+                purchaseOrder.setCreated(rs.getDate(5));
                 return purchaseOrder;
             }
         );

@@ -56,8 +56,8 @@
                 <div class="admin-content">
                     <div class="store">
                         <c:set var="currentPage" value="${requestScope['javax.servlet.forward.request_uri']}"/>
-                        <c:set var="splitURI" value="${fn:split(currentPage, '/ .')}"/>
-                        <c:set var="lastValue" value="${splitURI[fn:length(splitURI)-2]}"/>
+                        <c:set var="splitURI" value="${fn:split(currentPage, '/')}"/>
+                        <c:set var="lastValue" value="${splitURI[fn:length(splitURI)-1]}"/>
                         <h3>Transaction on day: <c:out value="${lastValue}"></c:out></h3>
 
                         <div class="add-store">

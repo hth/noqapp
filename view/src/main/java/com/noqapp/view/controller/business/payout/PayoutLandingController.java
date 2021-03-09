@@ -132,12 +132,16 @@ public class PayoutLandingController {
         String bizNameId = businessUser.getBizName().getId();
         historicalTransactionForm.setDurationInDays(durationInDays);
 
-        List<PurchaseOrderEntity> purchaseOrderInternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.I, durationInDays);
-        historicalTransactionForm.populate(purchaseOrderInternal);
-        List<PurchaseOrderEntity> purchaseOrderExternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.E, durationInDays);
-        historicalTransactionForm.populate(purchaseOrderExternal);
-        List<PurchaseOrderEntity> purchaseOrderUnknown = payoutService.computeEarning(bizNameId, TransactionViaEnum.U, durationInDays);
-        historicalTransactionForm.populate(purchaseOrderUnknown);
+        try {
+            List<PurchaseOrderEntity> purchaseOrderInternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.I, durationInDays);
+            historicalTransactionForm.populate(purchaseOrderInternal, queueUser.getCountryShortName());
+            List<PurchaseOrderEntity> purchaseOrderExternal = payoutService.computeEarning(bizNameId, TransactionViaEnum.E, durationInDays);
+            historicalTransactionForm.populate(purchaseOrderExternal, queueUser.getCountryShortName());
+            List<PurchaseOrderEntity> purchaseOrderUnknown = payoutService.computeEarning(bizNameId, TransactionViaEnum.U, durationInDays);
+            historicalTransactionForm.populate(purchaseOrderUnknown, queueUser.getCountryShortName());
+        } catch (Exception e) {
+            LOG.error("Failed earnings bizNameId={} qid={} reason={}", bizNameId, queueUser.getQueueUserId(), e.getLocalizedMessage(), e);
+        }
         return historicalTransactionPage;
     }
 

@@ -1,6 +1,6 @@
 package com.noqapp.view.form.business.payout;
 
-import com.noqapp.common.utils.MathUtil;
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.PurchaseOrderEntity;
 
 import java.util.Date;
@@ -69,13 +69,13 @@ public class HistoricalTransactionForm {
         }
     }
 
-    public void populate(List<PurchaseOrderEntity> purchaseOrders) {
+    public void populate(List<PurchaseOrderEntity> purchaseOrders, String countryShortName) {
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             TransactionForm transactionForm = new TransactionForm()
                 .setDeliveryMode(purchaseOrder.getDeliveryMode())
                 .setPaymentStatus(purchaseOrder.getPaymentStatus())
                 .setDayOfTransaction(purchaseOrder.getCreated())
-                .setExternalTransaction(MathUtil.displayPrice(purchaseOrder.getOrderPrice()))
+                .setExternalTransaction(CommonUtil.displayWithCurrencyCode(purchaseOrder.getOrderPriceForDisplay(), countryShortName))
                 .setTransactionVia(purchaseOrder.getTransactionVia());
             addTransactionForm(transactionForm);
         }
