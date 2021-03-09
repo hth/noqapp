@@ -97,7 +97,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE BN = ? AND C >= ? AND C < ? " +
-            "ORDER BY C DESC";
+            "ORDER BY TN ASC";
 
     private static final String qidAndBizNameId =
         "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
