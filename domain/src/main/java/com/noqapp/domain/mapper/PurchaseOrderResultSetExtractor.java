@@ -11,6 +11,9 @@ import com.noqapp.domain.types.TransactionViaEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
@@ -22,6 +25,7 @@ import java.sql.SQLException;
  * 10/4/18 2:54 PM
  */
 public class PurchaseOrderResultSetExtractor implements ResultSetExtractor<PurchaseOrderEntity> {
+    private static final Logger LOG = LoggerFactory.getLogger(PurchaseOrderResultSetExtractor.class);
 
     private static final int ID = 1;
     private static final int QID = 2;
@@ -68,57 +72,62 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor<Purch
 
     @Override
     public PurchaseOrderEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
-        PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(
+        try {
+            PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(
                 rs.getString(QID),
                 rs.getString(BS),
                 rs.getString(BN),
                 rs.getString(QR)
-        );
-        purchaseOrder.setId(rs.getString(ID));
-        purchaseOrder.setDid(rs.getString(DID));
-        purchaseOrder.setDeliveryMode(DeliveryModeEnum.valueOf(rs.getString(DM)));
-        purchaseOrder.setPaymentMode(StringUtils.isBlank(rs.getString(PM)) ? null : PaymentModeEnum.valueOf(rs.getString(PM)));
-        purchaseOrder.setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(PY)));
-        purchaseOrder.addOrderState(PurchaseOrderStateEnum.valueOf(rs.getString(PS)));
-        purchaseOrder.setDeliveryAddress(rs.getString(DA));
-        purchaseOrder.setRatingCount(rs.getInt(RA));
-        purchaseOrder.setReview(rs.getString(RV));
-        purchaseOrder.setSentimentType(StringUtils.isBlank(rs.getString(ST)) ? null : SentimentTypeEnum.valueOf(rs.getString(ST)));
-        purchaseOrder.setTokenNumber(rs.getInt(TN));
-        purchaseOrder.setDisplayToken(rs.getString(DT));
-        purchaseOrder.setStoreDiscount(rs.getInt(SD));
-        purchaseOrder.setPartialPayment(rs.getString(PP));
-        purchaseOrder.setOrderPrice(rs.getString(OP));
-        purchaseOrder.setTax(rs.getString(TA));
-        purchaseOrder.setGrandTotal(rs.getString(GT));
-        purchaseOrder.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
-        purchaseOrder.setPartialPaymentAcceptedByQid(rs.getString(PQ));
-        purchaseOrder.setFullPaymentAcceptedByQid(rs.getString(FQ));
-        purchaseOrder.setCouponAddedByQid(rs.getString(CQ));
-        purchaseOrder.setCouponId(rs.getString(CI));
-        purchaseOrder.setServerName(rs.getString(SN));
-        purchaseOrder.setServiceBeginTime(rs.getTimestamp(SB));
-        purchaseOrder.setServiceEndTime(rs.getTimestamp(SE));
-        purchaseOrder.setTransactionId(rs.getString(TI));
-        purchaseOrder.setTransactionReferenceId(rs.getString(TR));
-        purchaseOrder.setTransactionMessage(rs.getString(TM));
-        purchaseOrder.setTransactionVia(TransactionViaEnum.valueOf(rs.getString(TV)));
-        purchaseOrder.setDisplayName(rs.getString(DN));
-        purchaseOrder.setAdditionalNote(rs.getString(AN));
+            );
+            purchaseOrder.setId(rs.getString(ID));
+            purchaseOrder.setDid(rs.getString(DID));
+            purchaseOrder.setDeliveryMode(DeliveryModeEnum.valueOf(rs.getString(DM)));
+            purchaseOrder.setPaymentMode(StringUtils.isBlank(rs.getString(PM)) ? null : PaymentModeEnum.valueOf(rs.getString(PM)));
+            purchaseOrder.setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(PY)));
+            purchaseOrder.addOrderState(PurchaseOrderStateEnum.valueOf(rs.getString(PS)));
+            purchaseOrder.setDeliveryAddress(rs.getString(DA));
+            purchaseOrder.setRatingCount(rs.getInt(RA));
+            purchaseOrder.setReview(rs.getString(RV));
+            purchaseOrder.setSentimentType(StringUtils.isBlank(rs.getString(ST)) ? null : SentimentTypeEnum.valueOf(rs.getString(ST)));
+            purchaseOrder.setTokenNumber(rs.getInt(TN));
+            purchaseOrder.setDisplayToken(rs.getString(DT));
+            purchaseOrder.setStoreDiscount(rs.getInt(SD));
+            purchaseOrder.setPartialPayment(rs.getString(PP));
+            purchaseOrder.setOrderPrice(rs.getString(OP));
+            purchaseOrder.setTax(rs.getString(TA));
+            purchaseOrder.setGrandTotal(rs.getString(GT));
+            purchaseOrder.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
+            purchaseOrder.setPartialPaymentAcceptedByQid(rs.getString(PQ));
+            purchaseOrder.setFullPaymentAcceptedByQid(rs.getString(FQ));
+            purchaseOrder.setCouponAddedByQid(rs.getString(CQ));
+            purchaseOrder.setCouponId(rs.getString(CI));
+            purchaseOrder.setServerName(rs.getString(SN));
+            purchaseOrder.setServiceBeginTime(rs.getTimestamp(SB));
+            purchaseOrder.setServiceEndTime(rs.getTimestamp(SE));
+            purchaseOrder.setTransactionId(rs.getString(TI));
+            purchaseOrder.setTransactionReferenceId(rs.getString(TR));
+            purchaseOrder.setTransactionMessage(rs.getString(TM));
+            purchaseOrder.setTransactionVia(TransactionViaEnum.valueOf(rs.getString(TV)));
+            purchaseOrder.setDisplayName(rs.getString(DN));
+            purchaseOrder.setAdditionalNote(rs.getString(AN));
 
-        purchaseOrder.setVersion(rs.getInt(V));
-        purchaseOrder.setCreateAndUpdate(rs.getTimestamp(U));
-        purchaseOrder.setCreated(rs.getTimestamp(C));
-        if (rs.getInt(A) > 0) {
-            purchaseOrder.active();
-        } else {
-            purchaseOrder.inActive();
+            purchaseOrder.setVersion(rs.getInt(V));
+            purchaseOrder.setCreateAndUpdate(rs.getTimestamp(U));
+            purchaseOrder.setCreated(rs.getTimestamp(C));
+            if (rs.getInt(A) > 0) {
+                purchaseOrder.active();
+            } else {
+                purchaseOrder.inActive();
+            }
+
+            if (rs.getInt(D) > 0) {
+                purchaseOrder.markAsDeleted();
+            }
+
+            return purchaseOrder;
+        } catch (Exception e) {
+            LOG.error("Failed populating extractor {} {}", e.getLocalizedMessage(), e);
+            throw e;
         }
-
-        if (rs.getInt(D) > 0) {
-            purchaseOrder.markAsDeleted();
-        }
-
-        return purchaseOrder;
     }
 }
