@@ -90,7 +90,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor<Purch
         purchaseOrder.setPartialPayment(rs.getString(PP));
         purchaseOrder.setOrderPrice(rs.getString(OP));
         purchaseOrder.setTax(rs.getString(TA));
-        purchaseOrder.setGrandTotal(rs.getString(TA));
+        purchaseOrder.setGrandTotal(rs.getString(GT));
         purchaseOrder.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
         purchaseOrder.setPartialPaymentAcceptedByQid(rs.getString(PQ));
         purchaseOrder.setFullPaymentAcceptedByQid(rs.getString(FQ));
