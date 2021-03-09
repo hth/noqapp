@@ -55,7 +55,7 @@
             <div class="admin-main">
                 <div class="admin-content">
                     <div class="store">
-                        <h3>Current Transactions</h3>
+                        <h3>Today's Transactions</h3>
 
                         <div class="add-store">
                             <div class="addbtn-store">

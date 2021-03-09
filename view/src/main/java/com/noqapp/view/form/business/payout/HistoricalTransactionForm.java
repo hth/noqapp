@@ -49,23 +49,14 @@ public class HistoricalTransactionForm {
     private void populateExistingForm(TransactionForm transactionForm, TransactionForm existingForm) {
         switch (transactionForm.getTransactionVia()) {
             case E:
-                existingForm
-                    .setDeliveryMode(transactionForm.getDeliveryMode())
-                    .setPaymentStatus(transactionForm.getPaymentStatus())
-                    .setExternalTransaction(transactionForm.getExternalTransaction());
+                existingForm.setExternalTransaction(transactionForm.getExternalTransaction());
                 break;
             case I:
-                existingForm
-                    .setDeliveryMode(transactionForm.getDeliveryMode())
-                    .setPaymentStatus(transactionForm.getPaymentStatus())
-                    .setInternalTransaction(transactionForm.getExternalTransaction());
+                existingForm.setInternalTransaction(transactionForm.getExternalTransaction());
                 break;
             case U:
-                existingForm
-                    .setDeliveryMode(transactionForm.getDeliveryMode())
-                    .setPaymentStatus(transactionForm.getPaymentStatus())
-                    .setUnknownTransaction(transactionForm.getExternalTransaction());
-                break;
+            default:
+                existingForm.setUnknownTransaction(transactionForm.getExternalTransaction());
         }
     }
 

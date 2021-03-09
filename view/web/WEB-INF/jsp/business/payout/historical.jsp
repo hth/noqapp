@@ -68,11 +68,9 @@
                                         <tr>
                                             <th>&nbsp;</th>
                                             <th nowrap>Date</th>
-                                            <th nowrap>Delivery Mode</th>
-                                            <th nowrap>Payment Status</th>
                                             <th nowrap>Through NoQueue</th>
-                                            <th>At Counter</th>
-                                            <th>Unknown</th>
+                                            <th>At The Counter</th>
+                                            <th>All Other</th>
                                         </tr>
                                         <c:forEach items="${historicalTransactionForm.historicalTransaction}" var="item" varStatus="status">
                                         <tr>
@@ -81,12 +79,6 @@
                                             </td>
                                             <td>
                                                 <span style="display:block; font-size:13px;"><a href="/business/payout/transactionOnDay/${item.key}" target="_blank">${item.key}</a></span>
-                                            </td>
-                                            <td nowrap>
-                                                <span style="display:block; font-size:13px;">${item.value.deliveryMode.description}</span>
-                                            </td>
-                                            <td nowrap>
-                                                <span style="display:block; font-size:13px;">${item.value.paymentStatus.description}</span>
                                             </td>
                                             <td nowrap>
                                                 <span style="display:block; font-size:13px;">${item.value.internalTransaction}</span>
