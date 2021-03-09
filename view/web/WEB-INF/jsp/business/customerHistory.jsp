@@ -161,7 +161,7 @@
                                                                     <span style="display:block; font-size:13px;">${customerHistoryForm.qidNameMaps.get(purchaseOrder.queueUserId)}</span>
                                                                 </td>
                                                                 <td nowrap>
-                                                                    <span style="display:block; font-size:13px;">${purchaseOrder.orderPriceForDisplay}</span>
+                                                                    <span style="display:block; font-size:13px;">${purchaseOrder.grandTotalForDisplay}</span>
                                                                 </td>
                                                                 <td nowrap>
                                                                     <span style="display:block; font-size:13px;">${purchaseOrder.paymentMode.description}</span>
@@ -221,7 +221,7 @@
                                                                     <span style="display:block; font-size:13px;">${customerHistoryForm.qidNameMaps.get(purchaseOrder.queueUserId)}</span>
                                                                 </td>
                                                                 <td nowrap>
-                                                                    <span style="display:block; font-size:13px;">${purchaseOrder.orderPriceForDisplay}</span>
+                                                                    <span style="display:block; font-size:13px;">${purchaseOrder.grandTotalForDisplay}</span>
                                                                 </td>
                                                                 <td nowrap>
                                                                     <span style="display:block; font-size:13px;">${purchaseOrder.paymentMode.description}</span>

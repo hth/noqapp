@@ -634,6 +634,11 @@ public class PurchaseOrderEntity extends BaseEntity {
     }
 
     @Transient
+    public String getGrandTotalForDisplay() {
+        return MathUtil.displayPrice(grandTotal);
+    }
+
+    @Transient
     public String getPartialPaymentForDisplay() {
         if (StringUtils.isNotBlank(partialPayment)) {
             return MathUtil.displayPrice(partialPayment);

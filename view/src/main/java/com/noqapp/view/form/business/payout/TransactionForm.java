@@ -1,10 +1,11 @@
 package com.noqapp.view.form.business.payout;
 
-import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
 import com.noqapp.domain.types.TransactionViaEnum;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: hitender
@@ -13,11 +14,11 @@ import java.util.Date;
 public class TransactionForm {
 
     private Date dayOfTransaction;
-    private DeliveryModeEnum deliveryMode;
     private PaymentStatusEnum paymentStatus;
-    private String internalTransaction;
-    private String externalTransaction;
-    private String unknownTransaction;
+    private String grandTotal;
+
+    /** All payment types holder. */
+    private Map<PaymentStatusEnum, String> paymentStatusNetPayments = new HashMap<>();
 
     private TransactionViaEnum transactionVia;
 
@@ -30,15 +31,6 @@ public class TransactionForm {
         return this;
     }
 
-    public DeliveryModeEnum getDeliveryMode() {
-        return deliveryMode;
-    }
-
-    public TransactionForm setDeliveryMode(DeliveryModeEnum deliveryMode) {
-        this.deliveryMode = deliveryMode;
-        return this;
-    }
-
     public PaymentStatusEnum getPaymentStatus() {
         return paymentStatus;
     }
@@ -48,30 +40,26 @@ public class TransactionForm {
         return this;
     }
 
-    public String getInternalTransaction() {
-        return internalTransaction;
+    public String getGrandTotal() {
+        return grandTotal;
     }
 
-    public TransactionForm setInternalTransaction(String internalTransaction) {
-        this.internalTransaction = internalTransaction;
+    public TransactionForm setGrandTotal(String grandTotal) {
+        this.grandTotal = grandTotal;
         return this;
     }
 
-    public String getExternalTransaction() {
-        return externalTransaction;
+    public Map<PaymentStatusEnum, String> getPaymentStatusNetPayments() {
+        return paymentStatusNetPayments;
     }
 
-    public TransactionForm setExternalTransaction(String externalTransaction) {
-        this.externalTransaction = externalTransaction;
+    public TransactionForm setPaymentStatusNetPayments(Map<PaymentStatusEnum, String> paymentStatusNetPayments) {
+        this.paymentStatusNetPayments = paymentStatusNetPayments;
         return this;
     }
 
-    public String getUnknownTransaction() {
-        return unknownTransaction;
-    }
-
-    public TransactionForm setUnknownTransaction(String unknownTransaction) {
-        this.unknownTransaction = unknownTransaction;
+    public TransactionForm addPaymentStatusNetPayment(PaymentStatusEnum paymentStatusEnum, String payment) {
+        this.paymentStatusNetPayments.put(paymentStatusEnum, payment);
         return this;
     }
 
