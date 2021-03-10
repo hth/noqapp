@@ -438,6 +438,7 @@ class RegistrationFlowActions {
             .setBizCategoryId(registerBusiness.getBizCategoryId())
             .setWalkInState(registerBusiness.getWalkInState())
             .setRemoteJoin(registerBusiness.isRemoteJoin())
+            .setDeliveryRange(registerBusiness.getDeliveryRange())
             .setAverageServiceTime(registerBusiness.getAverageServiceTime())
             .setAllowLoggedInUser(registerBusiness.isAllowLoggedInUser())
             .setAvailableTokenCount(registerBusiness.getAvailableTokenCount())
