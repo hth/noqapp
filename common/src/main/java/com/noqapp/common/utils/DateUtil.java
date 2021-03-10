@@ -55,8 +55,9 @@ public final class DateUtil {
     public static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern(YYYY_MM_DD, Locale.US);
     public static final DateTimeFormatter DTF_DD_MMM_YYYY = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.US);
     public static final DateTimeFormatter DTF_MMMM_DD_YYYY = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.US);
-    public static final DateTimeFormatter DTF_DD_MMM_YYYY_HH_MM = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a", Locale.US);
+    public static final DateTimeFormatter DTF_DD_MMM_YYYY_HH_MM_SS = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm:ss a", Locale.US);
     private static final DateTimeFormatter DTF_YYYY_MM_DD_KK_MM = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
+    private static final DateTimeFormatter DTF_YYYY_MM_DD_KK_MM_SS = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss");
     public static final DateTimeFormatter DTF_HH_MM_SS_SSS = DateTimeFormatter.ofPattern("HHmmssSSS", Locale.US);
 
     public static final Pattern DOB_PATTERN = Pattern.compile("^\\d{4}\\-\\d{1,2}\\-\\d{1,2}$");
@@ -229,6 +230,14 @@ public final class DateUtil {
 
     public static String convertDateToStringOf_DTF_DD_MMM_YYYY(Date date, String timeZone) {
         return DTF_DD_MMM_YYYY.format(date.toInstant().atZone(ZoneId.of(timeZone)));
+    }
+
+    public static String convertDateToStringOf_DTF_YYYY_MM_DD_KK_MM_SS(Date date, String timeZone) {
+        return DTF_YYYY_MM_DD_KK_MM_SS.format(date.toInstant().atZone(ZoneId.of(timeZone)));
+    }
+
+    public static String convertDateToStringOf_DTF_DD_MMM_YYYY_HH_MM_SS(Date date, String timeZone) {
+        return DTF_DD_MMM_YYYY_HH_MM_SS.format(date.toInstant().atZone(ZoneId.of(timeZone)));
     }
 
     public static String convertDateToStringOf_DTF_MMMM_DD_YYYY(LocalDate date) {
@@ -428,5 +437,13 @@ public final class DateUtil {
 
     public static String getLocalDateTimeToISODate(ZonedDateTime expectedServiceBegin) {
         return getLocalDateTimeToISODate(expectedServiceBegin, "UTC");
+    }
+
+    public static String getLocalDateTimeToMySQLDate(ZonedDateTime expectedServiceBegin, String timeZone) {
+        return expectedServiceBegin.withZoneSameInstant(ZoneId.of(timeZone)).format(DateUtil.DTF_YYYY_MM_DD_KK_MM_SS);
+    }
+
+    public static String getLocalDateTimeToMySQLDate(ZonedDateTime expectedServiceBegin) {
+        return getLocalDateTimeToMySQLDate(expectedServiceBegin, "UTC");
     }
 }

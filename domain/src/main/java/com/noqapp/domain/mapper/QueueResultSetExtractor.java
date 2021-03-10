@@ -6,6 +6,9 @@ import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.domain.types.SentimentTypeEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
@@ -18,6 +21,7 @@ import javax.validation.constraints.NotNull;
  * Date: 3/11/17 4:45 PM
  */
 public class QueueResultSetExtractor implements ResultSetExtractor<QueueEntity> {
+    private static final Logger LOG = LoggerFactory.getLogger(QueueResultSetExtractor.class);
 
     private static final int ID = 1;
     private static final int QR = 2;
@@ -50,7 +54,8 @@ public class QueueResultSetExtractor implements ResultSetExtractor<QueueEntity> 
 
     @Override
     public QueueEntity extractData(@NotNull ResultSet rs) throws SQLException {
-        QueueEntity queue = new QueueEntity(
+        try {
+            QueueEntity queue = new QueueEntity(
                 rs.getString(QR),
                 rs.getString(DID),
                 TokenServiceEnum.valueOf(rs.getString(TS)),
@@ -59,34 +64,38 @@ public class QueueResultSetExtractor implements ResultSetExtractor<QueueEntity> 
                 rs.getString(DT),
                 rs.getString(DN),
                 BusinessTypeEnum.valueOf(rs.getString(BT))
-        );
-        queue.setId(rs.getString(ID));
-        queue.setQueueUserState(QueueUserStateEnum.valueOf(rs.getString(QS)));
-        queue.setNotifiedOnService(rs.getInt(NS) == 1);
-        queue.setRatingCount(rs.getInt(RA));
-        queue.setHoursSaved(rs.getInt(HR));
-        queue.setReview(rs.getString(RV));
-        queue.setServerName(rs.getString(SN));
-        queue.setTransactionId(rs.getString(TI));
-        queue.setServiceBeginTime(rs.getTimestamp(SB));
-        queue.setServiceEndTime(rs.getTimestamp(SE));
-        queue.setBizNameId(rs.getString(BN));
-        queue.setRecordReferenceId(rs.getString(RR));
-        queue.setSentimentType(null == rs.getString(ST) ? null : SentimentTypeEnum.valueOf(rs.getString(ST)));
-        queue.setAuthorizedCheckByQid(rs.getString(AC));
-        queue.setVersion(rs.getInt(V));
-        queue.setCreateAndUpdate(rs.getTimestamp(U));
-        queue.setCreated(rs.getTimestamp(C));
-        if (rs.getInt(A) > 0) {
-            queue.active();
-        } else {
-            queue.inActive();
-        }
+            );
+            queue.setId(rs.getString(ID));
+            queue.setQueueUserState(QueueUserStateEnum.valueOf(rs.getString(QS)));
+            queue.setNotifiedOnService(rs.getInt(NS) == 1);
+            queue.setRatingCount(rs.getInt(RA));
+            queue.setHoursSaved(rs.getInt(HR));
+            queue.setReview(rs.getString(RV));
+            queue.setServerName(rs.getString(SN));
+            queue.setTransactionId(rs.getString(TI));
+            queue.setServiceBeginTime(rs.getTimestamp(SB));
+            queue.setServiceEndTime(rs.getTimestamp(SE));
+            queue.setBizNameId(rs.getString(BN));
+            queue.setRecordReferenceId(rs.getString(RR));
+            queue.setSentimentType(null == rs.getString(ST) ? null : SentimentTypeEnum.valueOf(rs.getString(ST)));
+            queue.setAuthorizedCheckByQid(rs.getString(AC));
+            queue.setVersion(rs.getInt(V));
+            queue.setCreateAndUpdate(rs.getTimestamp(U));
+            queue.setCreated(rs.getTimestamp(C));
+            if (rs.getInt(A) > 0) {
+                queue.active();
+            } else {
+                queue.inActive();
+            }
 
-        if (rs.getInt(D) > 0) {
-            queue.markAsDeleted();
-        }
+            if (rs.getInt(D) > 0) {
+                queue.markAsDeleted();
+            }
 
-        return queue;
+            return queue;
+        } catch (Exception e) {
+            LOG.error("Failed populating extractor {} {}", e.getLocalizedMessage(), e);
+            throw e;
+        }
     }
 }

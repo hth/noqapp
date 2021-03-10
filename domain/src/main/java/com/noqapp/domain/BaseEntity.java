@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.json.JsonNameDatePair;
 
@@ -158,5 +159,11 @@ public abstract class BaseEntity implements Serializable {
         }
 
         return jsonNameDatePairs;
+    }
+
+    /** Used displaying on web page. */
+    @SuppressWarnings("unused")
+    public String createdAsPerBusinessTimeZone(String timeZone) {
+        return DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY_HH_MM_SS(this.getCreated(), timeZone);
     }
 }

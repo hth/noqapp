@@ -8,6 +8,9 @@ import com.noqapp.domain.types.UnitOfMeasurementEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
@@ -19,6 +22,7 @@ import java.sql.SQLException;
  * Date: 10/5/18 8:17 PM
  */
 public class PurchaseOrderProductResultSetExtractor implements ResultSetExtractor<PurchaseOrderProductEntity> {
+    private static final Logger LOG = LoggerFactory.getLogger(PurchaseOrderProductResultSetExtractor.class);
 
     private static final int ID = 1;
     private static final int PN = 2;
@@ -45,37 +49,42 @@ public class PurchaseOrderProductResultSetExtractor implements ResultSetExtracto
 
     @Override
     public PurchaseOrderProductEntity extractData(ResultSet rs) throws SQLException, DataAccessException {
-        PurchaseOrderProductEntity purchaseOrderProduct = new PurchaseOrderProductEntity();
-        purchaseOrderProduct.setId(rs.getString(ID));
-        purchaseOrderProduct.setProductName(rs.getString(PN));
-        purchaseOrderProduct.setProductPrice(rs.getInt(PP));
-        purchaseOrderProduct.setTax(TaxEnum.valueOf(rs.getString(TA)));
-        purchaseOrderProduct.setProductDiscount(rs.getInt(PD));
-        purchaseOrderProduct.setProductType(StringUtils.isBlank(rs.getString(PT)) ? null : ProductTypeEnum.valueOf(rs.getString(PT)));
-        purchaseOrderProduct.setUnitValue(rs.getInt(UV));
-        purchaseOrderProduct.setUnitOfMeasurement(StringUtils.isBlank(rs.getString(UM)) ? null : UnitOfMeasurementEnum.valueOf(rs.getString(UM)));
-        purchaseOrderProduct.setPackageSize(rs.getInt(PS));
-        purchaseOrderProduct.setProductQuantity(rs.getInt(PQ));
-        purchaseOrderProduct.setPurchaseOrderId(rs.getString(PO));
-        purchaseOrderProduct.setQueueUserId(rs.getString(QID));
-        purchaseOrderProduct.setBizStoreId(rs.getString(BS));
-        purchaseOrderProduct.setBizNameId(rs.getString(BN));
-        purchaseOrderProduct.setCodeQR(rs.getString(QR));
-        purchaseOrderProduct.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
+        try {
+            PurchaseOrderProductEntity purchaseOrderProduct = new PurchaseOrderProductEntity();
+            purchaseOrderProduct.setId(rs.getString(ID));
+            purchaseOrderProduct.setProductName(rs.getString(PN));
+            purchaseOrderProduct.setProductPrice(rs.getInt(PP));
+            purchaseOrderProduct.setTax(TaxEnum.valueOf(rs.getString(TA)));
+            purchaseOrderProduct.setProductDiscount(rs.getInt(PD));
+            purchaseOrderProduct.setProductType(StringUtils.isBlank(rs.getString(PT)) ? null : ProductTypeEnum.valueOf(rs.getString(PT)));
+            purchaseOrderProduct.setUnitValue(rs.getInt(UV));
+            purchaseOrderProduct.setUnitOfMeasurement(StringUtils.isBlank(rs.getString(UM)) ? null : UnitOfMeasurementEnum.valueOf(rs.getString(UM)));
+            purchaseOrderProduct.setPackageSize(rs.getInt(PS));
+            purchaseOrderProduct.setProductQuantity(rs.getInt(PQ));
+            purchaseOrderProduct.setPurchaseOrderId(rs.getString(PO));
+            purchaseOrderProduct.setQueueUserId(rs.getString(QID));
+            purchaseOrderProduct.setBizStoreId(rs.getString(BS));
+            purchaseOrderProduct.setBizNameId(rs.getString(BN));
+            purchaseOrderProduct.setCodeQR(rs.getString(QR));
+            purchaseOrderProduct.setBusinessType(BusinessTypeEnum.valueOf(rs.getString(BT)));
 
-        purchaseOrderProduct.setVersion(rs.getInt(V));
-        purchaseOrderProduct.setCreateAndUpdate(rs.getTimestamp(U));
-        purchaseOrderProduct.setCreated(rs.getTimestamp(C));
-        if (rs.getInt(A) > 0) {
-            purchaseOrderProduct.active();
-        } else {
-            purchaseOrderProduct.inActive();
+            purchaseOrderProduct.setVersion(rs.getInt(V));
+            purchaseOrderProduct.setCreateAndUpdate(rs.getTimestamp(U));
+            purchaseOrderProduct.setCreated(rs.getTimestamp(C));
+            if (rs.getInt(A) > 0) {
+                purchaseOrderProduct.active();
+            } else {
+                purchaseOrderProduct.inActive();
+            }
+
+            if (rs.getInt(D) > 0) {
+                purchaseOrderProduct.markAsDeleted();
+            }
+
+            return purchaseOrderProduct;
+        } catch (Exception e) {
+            LOG.error("Failed populating extractor {} {}", e.getLocalizedMessage(), e);
+            throw e;
         }
-
-        if (rs.getInt(D) > 0) {
-            purchaseOrderProduct.markAsDeleted();
-        }
-
-        return purchaseOrderProduct;
     }
 }
