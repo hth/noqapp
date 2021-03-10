@@ -84,7 +84,7 @@
                                                     <span style="display:block; font-size:13px;">Token/Order: <b style="color: #1b1b1b;">${item.tokenNumber}</b></span>
                                                 </td>
                                                 <td nowrap>
-                                                    <span style="display:block; font-size:13px;">${item.displayName}</span>
+                                                    <span style="display:block; font-size:13px;">${fn:substring(item.displayName, 0, 10)}...</span>
                                                 </td>
                                                 <td>
                                                     <span style="display:block; font-size:13px;"><b style="color: #1b1b1b;">${item.grandTotalForDisplay}</b></span>
@@ -98,12 +98,15 @@
                                                 <td>
                                                     <c:choose>
                                                     <c:when test="${item.paymentStatus eq PaymentStatusEnum.PA}">
-                                                        <span style="display:block; font-size:13px;"><b style="color: darkgreen;">${item.paymentStatus.description}</b> via <b style="color: #1b1b1b;">${item.paymentMode.description}</b></span>
+                                                        <span style="display:block; font-size:13px;"><b style="color: darkgreen;">&nbsp;${item.paymentStatus.description}</b> via <b style="color: #1b1b1b;">${item.paymentMode.description}</b></span>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <span style="display:block; font-size:13px;"><b style="color: darkred;">${item.paymentStatus.description}</b></span>
+                                                        <span style="display:block; font-size:13px;"><b style="color: darkred;">&nbsp;${item.paymentStatus.description}</b></span>
                                                     </c:otherwise>
                                                     </c:choose>
+                                                    <br/>
+                                                    <span style="display:block; font-size:13px;">&nbsp;&nbsp;Tx Id: ${item.transactionId.replaceFirst("-", "")}</span>
+<%--                                                    <span style="display:block; font-size:13px;">&nbsp;&nbsp;Tx Time: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm:ss a" value="${item.created}"/></span>--%>
                                                 </td>
                                                 <td>
                                                     <span style="display:block; font-size:13px;">&nbsp;${item.transactionMessage}</span>
@@ -120,7 +123,7 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                     </span>
-                                                    <span style="display:block; font-size:13px;">&nbsp;Date Time: <fmt:formatDate pattern="MMMM dd, yyyy hh:mm a" value="${item.created}"/></span>
+                                                    <span style="display:block; font-size:13px;">&nbsp;&nbsp;Order Time: ${item.createdAsPerBusinessTimeZone(payoutLandingForm.timeZone)}</span>
                                                 </td>
                                             </tr>
                                         </c:forEach>

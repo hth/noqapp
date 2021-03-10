@@ -10,7 +10,17 @@ import java.util.List;
  */
 public class PayoutLandingForm {
 
+    private String timeZone;
     private List<PurchaseOrderEntity> purchaseOrders;
+
+    public String getTimeZone() {
+        return timeZone;
+    }
+
+    public PayoutLandingForm setTimeZone(String timeZone) {
+        this.timeZone = timeZone;
+        return this;
+    }
 
     public List<PurchaseOrderEntity> getPurchaseOrders() {
         return purchaseOrders;

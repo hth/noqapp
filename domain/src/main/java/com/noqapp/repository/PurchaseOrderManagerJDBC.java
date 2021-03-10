@@ -40,9 +40,11 @@ public interface PurchaseOrderManagerJDBC {
     @Mobile
     void deleteById(String id);
 
+    /** Computes historical earning. */
     List<PurchaseOrderEntity> computeEarning(String bizNameId, TransactionViaEnum transactionVia, int durationInDays);
 
     List<PurchaseOrderEntity> findAllOrderByCodeQR(String codeQR, int durationInDays);
+
     PurchaseOrderEntity findByTransactionIdAndBizStore(String transactionId, String bizStoreId);
 
     @Mobile
@@ -50,7 +52,15 @@ public interface PurchaseOrderManagerJDBC {
 
     List<PurchaseOrderEntity> findPurchaseMadeUsingCoupon(String bizNameId);
 
-    List<PurchaseOrderEntity> findTransactionBetweenDays(String bizNameId, Date from, Date until);
+    /**
+     * Get all transaction for the day.
+     *
+     * @param bizNameId
+     * @param from      From is the start day set to the UTC time of the store start day
+     * @param until     Until is the end day set to the UTC time of the store end day
+     * @return
+     */
+    List<PurchaseOrderEntity> findTransactionBetweenDays(String bizNameId, String from, String until);
 
     List<PurchaseOrderEntity> findByQidAndBizNameId(String qid, String bizNameId);
 }

@@ -13,12 +13,12 @@ import com.noqapp.domain.types.TransactionViaEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.beans.Transient;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;

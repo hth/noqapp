@@ -4,11 +4,13 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.TransactionViaEnum;
+import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.CouponService;
 import com.noqapp.service.PayoutService;
@@ -58,6 +60,7 @@ public class PayoutLandingController {
     private BusinessUserService businessUserService;
     private PayoutService payoutService;
     private CouponService couponService;
+    private BizService bizService;
 
     @Autowired
     public PayoutLandingController(
@@ -78,7 +81,8 @@ public class PayoutLandingController {
 
         BusinessUserService businessUserService,
         PayoutService payoutService,
-        CouponService couponService
+        CouponService couponService,
+        BizService bizService
     ) {
         this.durationInDays = durationInDays;
         this.nextPage = nextPage;
@@ -89,6 +93,7 @@ public class PayoutLandingController {
         this.businessUserService = businessUserService;
         this.payoutService = payoutService;
         this.couponService = couponService;
+        this.bizService = bizService;
     }
 
     @GetMapping(value = "/landing", produces = "text/html;charset=UTF-8")
@@ -166,8 +171,11 @@ public class PayoutLandingController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         String bizNameId = businessUser.getBizName().getId();
-        List<PurchaseOrderEntity> purchaseOrders = payoutService.findTransactionOnDay(bizNameId, day.getText());
-        payoutLandingForm.setPurchaseOrders(purchaseOrders);
+        BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
+        List<PurchaseOrderEntity> purchaseOrders = payoutService.findTransactionOnDay(bizNameId, day.getText(), bizName.getTimeZone());
+        payoutLandingForm
+            .setPurchaseOrders(purchaseOrders)
+            .setTimeZone(bizName.getTimeZone());
         return transactionOnDayPage;
     }
 

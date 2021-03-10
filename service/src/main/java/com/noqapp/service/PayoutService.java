@@ -16,6 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -51,13 +55,14 @@ public class PayoutService {
         return purchaseOrderManagerJDBC.computeEarning(bizNameId, transactionVia, durationInDays);
     }
 
-    public List<PurchaseOrderEntity> findTransactionOnDay(String bizNameId, String day) {
+    public List<PurchaseOrderEntity> findTransactionOnDay(String bizNameId, String day, String timeZone) {
         Assert.isTrue(DateUtil.DOB_PATTERN.matcher(day).matches(), "Day pattern does not match");
-        LocalDate localDate = LocalDate.parse(day);
+        /* UTC day to datetime zone of the business. As transaction are based on the business time zone. */
+        ZonedDateTime zonedDateTimeOfBusiness = LocalDate.parse(day).atStartOfDay().atZone(ZoneId.of(timeZone));
         List<PurchaseOrderEntity> purchaseOrders = purchaseOrderManagerJDBC.findTransactionBetweenDays(
             bizNameId,
-            DateUtil.asDate(localDate),
-            DateUtil.asDate(localDate.plusDays(1)));
+            DateUtil.getLocalDateTimeToMySQLDate(zonedDateTimeOfBusiness.minus(1, ChronoUnit.SECONDS)),
+            DateUtil.getLocalDateTimeToMySQLDate(zonedDateTimeOfBusiness.plusDays(1).minus(1, ChronoUnit.SECONDS)));
 
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(purchaseOrder.getQueueUserId());
