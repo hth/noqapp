@@ -85,18 +85,14 @@ public class ShowStoreController {
         }
     }
 
-    /**
-     * Loading landing page for business with Code QR.
-     */
+    /** Loading landing page for business with Code QR. */
     @GetMapping(value = "/{codeQR}/b", produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String showBusinessByCodeQR(@PathVariable("codeQR") ScrubbedInput codeQR) {
         return showHTMLService.showBusinessByCodeQR(codeQR.getText());
     }
 
-    /**
-     * Fetch the requested file image.
-     */
+    /** Fetch the requested file image. */
     @GetMapping(value = "/i/{fileName}")
     public void getFileImage(
         @PathVariable("fileName")
@@ -111,10 +107,7 @@ public class ShowStoreController {
             inputStream = new FileInputStream(FileUtil.getFileFromTmpDir(fileName.getText() + "." + FileExtensionTypeEnum.PNG.name().toLowerCase()));
             IOUtils.copy(inputStream, response.getOutputStream());
         } catch (IOException e) {
-            LOG.error("Failed PNG image retrieval error occurred for fileName={} reason={}",
-                fileName.getText(),
-                e.getLocalizedMessage(),
-                e);
+            LOG.error("Failed PNG image retrieval error occurred for fileName={} reason={}", fileName.getText(), e.getLocalizedMessage(), e);
         } finally {
             if (inputStream != null) {
                 try {
@@ -124,5 +117,11 @@ public class ShowStoreController {
                 }
             }
         }
+    }
+
+    /** Added fix to return login page when root path is submitted. */
+    @GetMapping(value = "/")
+    public String index() {
+        return "redirect:" + "/open/login";
     }
 }
