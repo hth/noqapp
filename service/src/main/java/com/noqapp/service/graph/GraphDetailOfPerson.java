@@ -94,10 +94,14 @@ public class GraphDetailOfPerson {
     @Mobile
     @Async
     public void graphPersonWithNotification(String notificationId, String qid) {
-        graphPerson(qid);
-        PersonN4j personN4j = personN4jManager.findByQid(qid);
-        NotificationN4j notificationN4j = notificationN4jManager.findByIdAndIncrementCount(notificationId);
-        personN4j.addNotificationN4j(notificationN4j);
+        try {
+            graphPerson(qid);
+            PersonN4j personN4j = personN4jManager.findByQid(qid);
+            NotificationN4j notificationN4j = notificationN4jManager.findByIdAndIncrementCount(notificationId);
+            personN4j.addNotificationN4j(notificationN4j);
+        } catch (Exception e) {
+            LOG.error("Failed graphing person {} notificationId={} {}", qid, notificationId, e.getLocalizedMessage(), e);
+        }
     }
 
     private void populateForQid(String qid) {
