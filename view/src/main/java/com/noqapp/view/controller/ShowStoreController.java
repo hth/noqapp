@@ -118,4 +118,10 @@ public class ShowStoreController {
             }
         }
     }
+
+    /** Added fix to return login page when root path is submitted. */
+    @GetMapping(value = "/")
+    public String index() {
+        return "redirect:" + "/open/login";
+    }
 }
