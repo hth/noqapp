@@ -55,6 +55,10 @@ public final class DateUtil {
     public static final DateTimeFormatter DTF_YYYY_MM_DD = DateTimeFormatter.ofPattern(YYYY_MM_DD, Locale.US);
     public static final DateTimeFormatter DTF_DD_MMM_YYYY = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.US);
     public static final DateTimeFormatter DTF_MMMM_DD_YYYY = DateTimeFormatter.ofPattern("MMMM dd, yyyy", Locale.US);
+
+    /** Used in mobile. */
+    @SuppressWarnings("unused")
+    public static final DateTimeFormatter DTF_DD_MMM_YYYY_HH_MM = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm a", Locale.US);
     public static final DateTimeFormatter DTF_DD_MMM_YYYY_HH_MM_SS = DateTimeFormatter.ofPattern("dd MMM, yyyy hh:mm:ss a", Locale.US);
     private static final DateTimeFormatter DTF_YYYY_MM_DD_KK_MM = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm");
     private static final DateTimeFormatter DTF_YYYY_MM_DD_KK_MM_SS = DateTimeFormatter.ofPattern("yyyy-MM-dd kk:mm:ss");
