@@ -82,38 +82,23 @@
                                             </td>
                                             <td nowrap>
                                                 <c:if test="${TransactionViaEnum.I eq item.value.transactionVia}">
-                                                <table>
                                                     <c:forEach items="${item.value.paymentStatusNetPayments}" var="loop" varStatus="status">
-                                                    <tr>
-                                                        <td><span style="display:block; font-size:13px;">${loop.key.description}</span></td>
-                                                        <td>${loop.value}</td>
-                                                    </tr>
+                                                        <span style="display:block; font-size:13px;">${loop.key.description}: ${loop.value}</span>
                                                     </c:forEach>
-                                                </table>
                                                 </c:if>
                                             </td>
                                             <td nowrap>
                                                 <c:if test="${TransactionViaEnum.E eq item.value.transactionVia}">
-                                                <table>
                                                     <c:forEach items="${item.value.paymentStatusNetPayments}" var="loop" varStatus="status">
-                                                    <tr>
-                                                        <td><span style="display:block; font-size:13px;">${loop.key.description}</span></td>
-                                                        <td>${loop.value}</td>
-                                                    </tr>
+                                                        <span style="display:block; font-size:13px;">${loop.key.description}: ${loop.value}</span>
                                                     </c:forEach>
-                                                </table>
                                                 </c:if>
                                             </td>
                                             <td nowrap>
                                                 <c:if test="${TransactionViaEnum.U eq item.value.transactionVia}">
-                                                <table>
                                                     <c:forEach items="${item.value.paymentStatusNetPayments}" var="loop" varStatus="status">
-                                                    <tr>
-                                                        <td><span style="display:block; font-size:13px;">${loop.key.description}</span></td>
-                                                        <td>${loop.value}</td>
-                                                    </tr>
+                                                        <span style="display:block; font-size:13px;">${loop.key.description}: ${loop.value}</span>
                                                     </c:forEach>
-                                                </table>
                                                 </c:if>
                                             </td>
                                         </tr>
