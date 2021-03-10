@@ -12,6 +12,7 @@ import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.AppointmentStateEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.service.BizService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.view.controller.access.LandingController;
@@ -547,6 +548,19 @@ public class BusinessFlowValidator {
                     .defaultText("Walk-in state cannot be empty")
                     .build());
             status = "failure";
+        }
+
+        /* When business accepts orders. */
+        if (MessageOriginEnum.O == registerBusiness.getBusinessType().getMessageOrigin()) {
+            if (registerBusiness.getDeliveryRange() < 3) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source(source + "deliveryRange")
+                        .defaultText("Delivery Radius cannot be less than 3kms")
+                        .build());
+                status = "failure";
+            }
         }
         return status;
     }

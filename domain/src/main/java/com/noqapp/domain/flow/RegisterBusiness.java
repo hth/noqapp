@@ -91,6 +91,7 @@ public class RegisterBusiness implements Serializable {
     private String famousFor;
     private boolean remoteJoin = true;
     private String appendPrefixToToken = Constants.appendPrefix;
+    private int deliveryRange = 5;
     private long averageServiceTime = 300000;
     /* Now defaults to allow logged in user ONLY. */
     private boolean allowLoggedInUser = true;
@@ -608,6 +609,15 @@ public class RegisterBusiness implements Serializable {
         return this;
     }
 
+    public int getDeliveryRange() {
+        return deliveryRange;
+    }
+
+    public RegisterBusiness setDeliveryRange(int deliveryRange) {
+        this.deliveryRange = deliveryRange;
+        return this;
+    }
+
     public long getAverageServiceTime() {
         return averageServiceTime;
     }
@@ -876,6 +886,7 @@ public class RegisterBusiness implements Serializable {
         this.averageServiceTime = bizStore.getAverageServiceTime() == 0 ? Constants.MINUTES_2_IN_MILLISECOND : bizStore.getAverageServiceTime();
         this.remoteJoin = bizStore.isRemoteJoin();
         this.appendPrefixToToken = tokenQueue.getAppendPrefix();
+        this.deliveryRange = bizStore.getDeliveryRange();
         this.allowLoggedInUser = bizStore.isAllowLoggedInUser();
         this.availableTokenCount = bizStore.getAvailableTokenCount();
         this.famousFor = bizStore.getFamousFor();

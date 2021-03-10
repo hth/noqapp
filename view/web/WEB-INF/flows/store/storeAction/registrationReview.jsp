@@ -206,6 +206,19 @@
                                             <span class="tooltip" title="Helps separate different token based on prefix" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                             <div class="clearFix"></div>
                                         </li>
+                                        <c:if test="${MessageOriginEnum.O == registerBusiness.businessType.messageOrigin}">
+                                        <li>
+                                            <div class="col-lable3">
+                                                <form:label path="deliveryRange" cssErrorClass="lb_error">Delivery Radius</form:label>
+                                            </div>
+                                            <div class="col-fields">
+                                                <form:input path="deliveryRange" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" disabled="true"/>
+                                                <span style="display:block; font-size:14px;">(Delivery Range in km)</span>
+                                            </div>
+                                            <span class="tooltip" title="Accepts order from locations within range" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                        </c:if>
                                     </ul>
                                 </div>
 
