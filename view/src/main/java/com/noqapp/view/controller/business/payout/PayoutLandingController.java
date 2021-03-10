@@ -17,6 +17,7 @@ import com.noqapp.service.PayoutService;
 import com.noqapp.view.form.business.CouponForm;
 import com.noqapp.view.form.business.payout.HistoricalTransactionForm;
 import com.noqapp.view.form.business.payout.PayoutLandingForm;
+import com.noqapp.view.form.business.payout.TransactionForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -144,6 +150,12 @@ public class PayoutLandingController {
             historicalTransactionForm.populate(purchaseOrderExternal, queueUser.getCountryShortName());
             List<PurchaseOrderEntity> purchaseOrderUnknown = payoutService.computeEarning(bizNameId, TransactionViaEnum.U, durationInDays);
             historicalTransactionForm.populate(purchaseOrderUnknown, queueUser.getCountryShortName());
+
+            Map<Date, TransactionForm> historicalTransaction = historicalTransactionForm.getHistoricalTransaction().entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+            historicalTransactionForm.setHistoricalTransaction(historicalTransaction);
         } catch (Exception e) {
             LOG.error("Failed earnings bizNameId={} qid={} reason={}", bizNameId, queueUser.getQueueUserId(), e.getLocalizedMessage(), e);
         }
