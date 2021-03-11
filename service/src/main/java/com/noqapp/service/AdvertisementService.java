@@ -23,17 +23,21 @@ import java.util.List;
 @Service
 public class AdvertisementService {
 
-    private int limit;
+    private int showLimit;
+    private int advtDistanceLimit;
     private AdvertisementManager advertisementManager;
 
     @Autowired
     public AdvertisementService(
-        @Value("${limit:5}")
-        int limit,
+        @Value("${AdvertisementService.showLimit:5}")
+        int showLimit,
+
+        @Value("${AdvertisementService.advtDistanceLimit:40}")
+        int advtDistanceLimit,
 
         AdvertisementManager advertisementManager
     ) {
-        this.limit = limit;
+        this.showLimit = showLimit;
         this.advertisementManager = advertisementManager;
     }
 
@@ -58,14 +62,14 @@ public class AdvertisementService {
     }
 
     public List<AdvertisementEntity> findAllMobileApprovedAdvertisements(Point point) {
-        return advertisementManager.findAllMobileClientApprovedAdvertisements(point, 1000, limit);
+        return advertisementManager.findAllMobileClientApprovedAdvertisements(point, advtDistanceLimit, showLimit);
     }
 
     public List<AdvertisementEntity> findAllMobileMerchantApprovedAdvertisements() {
-        return advertisementManager.findAllMobileMerchantApprovedAdvertisements(limit);
+        return advertisementManager.findAllMobileMerchantApprovedAdvertisements(showLimit);
     }
 
     public List<AdvertisementEntity> findAllMobileTVApprovedAdvertisements(String bizNameId) {
-        return advertisementManager.findAllMobileTVApprovedAdvertisements(bizNameId, limit);
+        return advertisementManager.findAllMobileTVApprovedAdvertisements(bizNameId, showLimit);
     }
 }
