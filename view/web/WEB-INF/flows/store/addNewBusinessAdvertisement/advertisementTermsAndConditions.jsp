@@ -84,7 +84,7 @@
                                             <form:label path="termAndCondition" cssErrorClass="lb_error">Terms And Conditions</form:label>
                                         </div>
                                         <div class="col-fields">
-                                            <form:input path="termAndCondition" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                            <form:input path="termAndCondition" cssClass="form-field-admin" cssStyle="text-transform: none;" cssErrorClass="form-field-admin error-field"/>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
