@@ -85,7 +85,7 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList nearMeExcludedBusinessTypes(List<BusinessTypeEnum> filterMustNotBusinessTypes, String geoHash, String scrollId) {
+    public BizStoreElasticList nearMeExcludedBusinessTypes(List<BusinessTypeEnum> filterMustNotBusinessTypes, List<BusinessTypeEnum> filteringFor, String geoHash, String scrollId) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
@@ -103,9 +103,19 @@ public class BizStoreSpatialElasticService {
                 for (BusinessTypeEnum businessType : filterMustNotBusinessTypes) {
                     boolQueryBuilder.mustNot(QueryBuilders.matchQuery("BT", businessType.name()));
                 }
+
+                String distance;
+                if (filteringFor.contains(BusinessTypeEnum.CD) || filteringFor.contains(BusinessTypeEnum.CDQ)) {
+                    distance = Constants.MAX_Q_SEARCH_DISTANCE;
+                } else if (filteringFor.contains(BusinessTypeEnum.HS) || filteringFor.contains(BusinessTypeEnum.DO)) {
+                    distance = Constants.MAX_Q_SEARCH_DISTANCE;
+                } else {
+                    distance = "200";
+                }
+
                 boolQueryBuilder.filter(geoDistanceQuery("GH")
                     .geohash(geoHash)
-                    .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
+                    .distance(distance, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder);
 
                 searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());

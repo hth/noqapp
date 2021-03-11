@@ -171,6 +171,26 @@ public enum BusinessTypeEnum {
         }};
     }
 
+    public static List<BusinessTypeEnum> includeHospital() {
+        return new ArrayList<>() {{
+            add(HS);
+            add(DO);
+        }};
+    }
+
+    public static List<BusinessTypeEnum> includeCanteen() {
+        return new ArrayList<>() {{
+            add(CD);
+            add(CDQ);
+        }};
+    }
+
+    public static List<BusinessTypeEnum> includePlaceOfWorship() {
+        return new ArrayList<>() {{
+            add(PW);
+        }};
+    }
+
     @Override
     public String toString() {
         return description;
