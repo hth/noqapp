@@ -18,7 +18,6 @@ public enum PaymentModeCFEnum {
     FreeCharge("FreeCharge", "Freecharge Wallet"),
     MobiKwik("MobiKwik", "MobiKwik Wallet"),
     OLA("OLA", "Ola Wallet"),
-    OlaMoneyPostPaid("OlaMoneyPostPaid", "Ola Money Post Paid"),
     JioMoney("JioMoney", "JioMoney Wallet"),
     ZestMoney("ZestMoney", "ZestMoney"),
     Instacred("Instacred", "AmazonPay"),
