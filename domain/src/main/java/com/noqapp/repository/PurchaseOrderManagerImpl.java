@@ -557,11 +557,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
         return mongoTemplate.findAndModify(
             query(where("TI").is(transactionId).and("BS").is(bizStoreId)),
             update("PY", PaymentStatusEnum.PA)
-                /*
-                 * Commented as not needed to update state of the order only payment needs to be updated.
-                 * Removed @since 1.2.590 ready for restaurant.
-                 */
-                //.set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
+                .set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO)
                 .set("PM", paymentMode)
                 .set("TM", transactionMessage)
                 .set("TV", TransactionViaEnum.E)
