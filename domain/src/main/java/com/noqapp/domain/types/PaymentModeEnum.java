@@ -20,7 +20,6 @@ public enum PaymentModeEnum {
     FCH("FCH", "Freecharge Wallet"),
     MKK("MKK", "MobiKwik Wallet"),
     OLA("OLA", "Ola Wallet"),
-    OMP("OMP", "Ola Money Post Paid"),
     JIO("JIO", "JioMoney Wallet"),
     ZST("ZST", "ZestMoney"),
     INS("INS", "AmazonPay"),

@@ -197,6 +197,9 @@ public class PurchaseOrderEntity extends BaseEntity {
     @Field("VS")
     private boolean clientVisitedThisStore;
 
+    @Field("VSD")
+    private Date clientVisitedThisStoreDate;
+
     @DBMapping
     @Field("TI")
     private String transactionId;
@@ -553,6 +556,15 @@ public class PurchaseOrderEntity extends BaseEntity {
 
     public PurchaseOrderEntity setClientVisitedThisStore(boolean clientVisitedThisStore) {
         this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public Date getClientVisitedThisStoreDate() {
+        return clientVisitedThisStoreDate;
+    }
+
+    public PurchaseOrderEntity setClientVisitedThisStoreDate(Date clientVisitedThisStoreDate) {
+        this.clientVisitedThisStoreDate = clientVisitedThisStoreDate;
         return this;
     }
 

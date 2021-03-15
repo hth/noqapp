@@ -23,6 +23,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
@@ -121,6 +122,12 @@ public class JsonPurchaseOrder extends AbstractDomain {
 
     @JsonProperty("e")
     private String expectedServiceBegin;
+
+    @JsonProperty("vs")
+    private boolean clientVisitedThisStore;
+
+    @JsonProperty("vsd")
+    private String clientVisitedThisStoreDate;
 
     @JsonProperty("ti")
     private String transactionId;
@@ -377,6 +384,24 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
+    public boolean isClientVisitedThisStore() {
+        return clientVisitedThisStore;
+    }
+
+    public JsonPurchaseOrder setClientVisitedThisStore(boolean clientVisitedThisStore) {
+        this.clientVisitedThisStore = clientVisitedThisStore;
+        return this;
+    }
+
+    public String getClientVisitedThisStoreDate() {
+        return clientVisitedThisStoreDate;
+    }
+
+    public JsonPurchaseOrder setClientVisitedThisStoreDate(String clientVisitedThisStoreDate) {
+        this.clientVisitedThisStoreDate = clientVisitedThisStoreDate;
+        return this;
+    }
+
     public String getTransactionId() {
         return transactionId;
     }
@@ -538,6 +563,9 @@ public class JsonPurchaseOrder extends AbstractDomain {
         this.paymentStatus = purchaseOrder.getPaymentStatus();
         this.transactionMessage = purchaseOrder.getTransactionMessage();
         this.transactionVia = purchaseOrder.getTransactionVia();
+
+        this.clientVisitedThisStore = purchaseOrder.isClientVisitedThisStore();
+        this.clientVisitedThisStoreDate = purchaseOrder.getClientVisitedThisStoreDate() == null ? null : DateFormatUtils.format(purchaseOrder.getClientVisitedThisStoreDate(), ISO8601_FMT, TimeZone.getTimeZone("UTC"));
 
         /* Ignore from here onwards. */
         this.did = purchaseOrder.getDid();

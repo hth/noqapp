@@ -578,6 +578,13 @@ public class PurchaseOrderService {
             .setAdditionalNote(StringUtils.isBlank(jsonPurchaseOrder.getAdditionalNote()) ? null : jsonPurchaseOrder.getAdditionalNote());
         purchaseOrder.setId(CommonUtil.generateHexFromObjectId());
 
+        //Check when did this person visit last to this store
+        if (purchaseOrderManagerJDBC.hasClientVisitedThisStoreAndServiced(bizStore.getCodeQR(), qid)) {
+            purchaseOrder.setClientVisitedThisStore(true);
+            //Fails with Failed getting token reason=Incorrect result size: expected 1, actual 0 when users has not visited the store
+            purchaseOrder.setClientVisitedThisStoreDate(purchaseOrderManagerJDBC.clientVisitedStoreAndServicedDate(bizStore.getCodeQR(), qid));
+        }
+
         List<PurchaseOrderProductEntity> purchaseOrderProducts = new LinkedList<>();
         int computedOrderPrice = 0, computedTax = 0;
         Map<String, Integer> productPurchases = new HashMap<>();
