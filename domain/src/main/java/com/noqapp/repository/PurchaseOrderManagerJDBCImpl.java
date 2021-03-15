@@ -120,6 +120,9 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final String clientVisitedStoreDate =
         "SELECT C FROM PURCHASE_ORDER WHERE QR = ? AND QID = ? AND PY = ? ORDER BY C DESC LIMIT 1";
 
+    private static final String checkIfClientVisitedStore =
+        "SELECT EXISTS(SELECT 1 FROM PURCHASE_ORDER WHERE QR = ? AND QID = ? AND PY = ? LIMIT 1)";
+
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
 
@@ -328,6 +331,12 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
             //TODO fix this error or query
             return null;
         }
+    }
+
+    @Override
+    public boolean hasClientVisitedThisStoreAndServiced(String codeQR, String qid) {
+        LOG.info("Fetch history by codeQR={} qid={}", codeQR, qid);
+        return jdbcTemplate.queryForObject(checkIfClientVisitedStore, new Object[]{codeQR, qid, PaymentStatusEnum.PA.getName()}, Boolean.class);
     }
 
     @Override
