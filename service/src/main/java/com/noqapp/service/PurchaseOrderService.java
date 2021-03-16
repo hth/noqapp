@@ -460,10 +460,17 @@ public class PurchaseOrderService {
      * @param tokenService
      */
     @Mobile
-    public void createOrder(JsonPurchaseOrder jsonPurchaseOrder, String did, TokenServiceEnum tokenService) {
+    public void createOrderInitiatedByBusiness(JsonPurchaseOrder jsonPurchaseOrder, String did, TokenServiceEnum tokenService) {
         Assert.hasText(jsonPurchaseOrder.getQueueUserId(), "QID cannot be empty");
         LOG.info("JsonPurchaseOrder={}", jsonPurchaseOrder);
         createOrder(jsonPurchaseOrder, jsonPurchaseOrder.getQueueUserId(), did, tokenService);
+        changeItToPurchaseOrderState(jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getBizStoreId());
+        jsonPurchaseOrder.setPresentOrderState(PurchaseOrderStateEnum.PO);
+    }
+
+    /** Order initiated by business should be set PO as business knows best. Do not change payment here as its always payment pending. */
+    private void changeItToPurchaseOrderState(String transactionId, String bizStoreId) {
+        purchaseOrderManager.changeItToPurchaseOrderState(transactionId, bizStoreId);
     }
 
     @Mobile

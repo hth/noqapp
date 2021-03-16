@@ -628,4 +628,14 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
             TABLE
         );
     }
+
+    @Override
+    public void changeItToPurchaseOrderState(String transactionId, String bizStoreId) {
+        mongoTemplate.updateFirst(
+            query(where("TI").is(transactionId).and("BS").is(bizStoreId)),
+            new Update().set("PS", PurchaseOrderStateEnum.PO).push("OS", PurchaseOrderStateEnum.PO),
+            PurchaseOrderEntity.class,
+            TABLE
+        );
+    }
 }
