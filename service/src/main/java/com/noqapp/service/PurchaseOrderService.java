@@ -1704,12 +1704,12 @@ public class PurchaseOrderService {
                         case HD:
                             purchaseOrder
                                 .addOrderState(PurchaseOrderStateEnum.PR)
-                                .addOrderState(PurchaseOrderStateEnum.RP);
+                                .addOrderState(PurchaseOrderStateEnum.RD);
                             break;
                         case TO:
                             purchaseOrder
                                 .addOrderState(PurchaseOrderStateEnum.PR)
-                                .addOrderState(PurchaseOrderStateEnum.RD);
+                                .addOrderState(PurchaseOrderStateEnum.RP);
                             break;
                         default:
                             LOG.error("Reached unreachable condition, deliveryMode={}", purchaseOrder.getDeliveryMode());
