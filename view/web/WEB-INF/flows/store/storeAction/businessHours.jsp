@@ -117,7 +117,7 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                             <tr>
                                                 <td width="45%" class="lable-td">
-                                                    <form:label path="businessHours[${status.index}].tokenAvailableFrom" cssErrorClass="lb_error">Token Available Time</form:label>
+                                                    <form:label path="businessHours[${status.index}].tokenAvailableFrom" cssErrorClass="lb_error">${registerBusiness.labelForOrderOrToken} Available Time</form:label>
                                                 </td>
                                                 <td width="45%">
                                                     <form:input path="businessHours[${status.index}].tokenAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
@@ -157,7 +157,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="lable-td">
-                                                    <form:label path="businessHours[${status.index}].tokenNotAvailableFrom" cssErrorClass="lb_error">Token Not Available After</form:label>
+                                                    <form:label path="businessHours[${status.index}].tokenNotAvailableFrom" cssErrorClass="lb_error">${registerBusiness.labelForOrderOrToken} Not Available After</form:label>
                                                 </td>
                                                 <td>
                                                     <form:input path="businessHours[${status.index}].tokenNotAvailableFrom" cssClass="form-field-hours" cssErrorClass="form-field-hours error-field"/>
