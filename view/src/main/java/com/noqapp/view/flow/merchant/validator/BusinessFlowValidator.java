@@ -606,7 +606,7 @@ public class BusinessFlowValidator {
                         new MessageBuilder()
                             .error()
                             .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
-                            .defaultText("Specify Token Available Time for "
+                            .defaultText("Specify " + registerBusiness.getLabelForOrderOrToken() + " Available Time for "
                                 + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
                                 + ". This is the time from when Token would be available to users.")
                             .build());
@@ -642,7 +642,7 @@ public class BusinessFlowValidator {
                         new MessageBuilder()
                             .error()
                             .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenAvailableFrom")
-                            .defaultText("Token Available Time for "
+                            .defaultText(registerBusiness.getLabelForOrderOrToken() + " Available Time for "
                                 + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
                                 + " cannot exceed 2359")
                             .build());
@@ -654,7 +654,7 @@ public class BusinessFlowValidator {
                         new MessageBuilder()
                             .error()
                             .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenNotAvailableFrom")
-                            .defaultText("Token Not Available After for "
+                            .defaultText(registerBusiness.getLabelForOrderOrToken() + " Not Available After for "
                                 + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
                                 + " cannot exceed 2359")
                             .build());
