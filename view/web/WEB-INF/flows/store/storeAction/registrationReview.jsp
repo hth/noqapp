@@ -315,7 +315,7 @@
                                                     <c:otherwise>
                                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                         <tr>
-                                                            <td>Token Available Time</td>
+                                                            <td>${registerBusiness.labelForOrderOrToken} Available Time</td>
                                                             <td><c:out value="${businessHour.tokenAvailableFromAsString}"/></td>
                                                         </tr>
                                                         <tr>
@@ -327,7 +327,7 @@
                                                             <td>&nbsp;</td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Token Not Available After</td>
+                                                            <td>${registerBusiness.labelForOrderOrToken} Not Available After</td>
                                                             <td><c:out value="${businessHour.tokenNotAvailableFromAsString}"/></td>
                                                         </tr>
                                                         <tr>

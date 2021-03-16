@@ -18,6 +18,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.FacilityEnum;
 import com.noqapp.domain.types.LocaleEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.SupportedDeliveryEnum;
 import com.noqapp.domain.types.SupportedPaymentEnum;
 import com.noqapp.domain.types.UserLevelEnum;
@@ -117,9 +118,11 @@ public class RegisterBusiness implements Serializable {
     private String foundAddressStorePlaceId;
 
     private StoreFranchise storeFranchise = StoreFranchise.OFF;
+    private String labelForOrderOrToken = "Token";
 
     public RegisterBusiness(BusinessTypeEnum businessType, StoreFranchise storeFranchise) {
         this.businessType = businessType;
+        this.labelForOrderOrToken = businessType.getMessageOrigin() == MessageOriginEnum.O ? "Order" : "Token";
         this.storeFranchise = storeFranchise;
 
         for (int i = 1; i <= 7; i++) {
@@ -800,6 +803,15 @@ public class RegisterBusiness implements Serializable {
 
     public RegisterBusiness setStoreFranchise(StoreFranchise storeFranchise) {
         this.storeFranchise = storeFranchise;
+        return this;
+    }
+
+    public String getLabelForOrderOrToken() {
+        return labelForOrderOrToken;
+    }
+
+    public RegisterBusiness setLabelForOrderOrToken(String labelForOrderOrToken) {
+        this.labelForOrderOrToken = labelForOrderOrToken;
         return this;
     }
 
