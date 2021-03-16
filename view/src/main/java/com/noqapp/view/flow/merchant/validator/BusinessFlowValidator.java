@@ -774,6 +774,30 @@ public class BusinessFlowValidator {
                             .build());
                     status = "failure";
                 }
+
+                if (businessHour.getEndHourStore() < businessHour.getStartHourStore()) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].endHourStore")
+                            .defaultText("Store Close Time has for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name()) +
+                                " to be after Store Start Time.")
+                            .build());
+                    status = "failure";
+                }
+
+                if (businessHour.getEndHourStore() < businessHour.getTokenNotAvailableFrom()) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source(source + "businessHours[" + businessHour.getDayOfWeek().ordinal() + "].tokenNotAvailableFrom")
+                            .defaultText(registerBusiness.getLabelForOrderOrToken() + " Not Available After for "
+                                + WordUtils.capitalizeFully(businessHour.getDayOfWeek().name())
+                                + " has to be before Store Close Time.")
+                            .build());
+                    status = "failure";
+                }
             }
         }
 
