@@ -267,9 +267,9 @@ public class PurchaseOrderService {
             return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
         } catch (
             PurchaseOrderRefundPartialException |
-            PurchaseOrderRefundExternalException |
-            PurchaseOrderCancelException |
-            QueueAbortPaidPastDurationException e
+                PurchaseOrderRefundExternalException |
+                PurchaseOrderCancelException |
+                QueueAbortPaidPastDurationException e
         ) {
             LOG.warn("Failed cancel order reason={}", e.getLocalizedMessage());
             throw e;
@@ -461,6 +461,8 @@ public class PurchaseOrderService {
     }
 
     /**
+     * Orders initiated by business is by default set to PO.
+     *
      * @param jsonPurchaseOrder
      * @param did               Device Id of guardian or purchaser. Helps in notifying user of changes through FCM.
      * @param tokenService
@@ -619,7 +621,7 @@ public class PurchaseOrderService {
                     .setUnitOfMeasurement(storeProduct.getUnitOfMeasurement())
                     .setPackageSize(storeProduct.getPackageSize());
 
-                switch(bizStore.getBusinessType()) {
+                switch (bizStore.getBusinessType()) {
                     case RS:
                     case FT:
                         if (storeProduct.getInventoryCurrent() > 0) {
@@ -1010,7 +1012,7 @@ public class PurchaseOrderService {
     /* Invokes a refresh when some event or activity happens that needs to be notified. */
     public void forceRefreshOnSomeActivity(String codeQR, String transactionId) {
         PurchaseOrderEntity purchaseOrder = findByTransactionId(transactionId);
-        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());;
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         doActionBasedOnQueueStatus(codeQR, purchaseOrder, tokenQueue, null);
     }
 
