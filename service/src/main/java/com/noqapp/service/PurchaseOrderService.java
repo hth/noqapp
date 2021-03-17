@@ -384,7 +384,7 @@ public class PurchaseOrderService {
     }
 
     @Mobile
-    public PurchaseOrderEntity updateOnCashPayment(
+    public JsonPurchaseOrder updateOnCashPayment(
         String transactionId,
         String transactionMessage,
         PaymentStatusEnum paymentStatus,
@@ -403,7 +403,13 @@ public class PurchaseOrderService {
         /* Notification not required as Business has the update payment and Client always fetches fresh. */
         //TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         //doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
-        return purchaseOrder;
+
+        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder);
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
+        jsonPurchaseOrder
+            .setServingNumber(tokenQueue.getCurrentlyServing())
+            .setDisplayServingNumber(tokenQueue.generateDisplayServingNow());
+        return jsonPurchaseOrder;
     }
 
     @Mobile
@@ -1275,7 +1281,7 @@ public class PurchaseOrderService {
             JsonData jsonData = new JsonTopicData(purchaseOrder.getBusinessType().getMessageOrigin(), tokenQueue.getFirebaseMessageType()).getJsonTopicOrderData()
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenQueue.getCurrentlyServing())
-                .setDisplayServingNow(tokenQueue.generateDisplayServingNow())
+                .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
                 .setCodeQR(codeQR)
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setGoTo(goTo)
@@ -1435,7 +1441,7 @@ public class PurchaseOrderService {
             JsonData jsonData = new JsonTopicOrderData(FirebaseMessageTypeEnum.P, MessageOriginEnum.O)
                 .setLastNumber(tokenQueue.getLastNumber())
                 .setCurrentlyServing(tokenNumber)
-                .setDisplayServingNow(tokenQueue.generateDisplayServingNow())
+                .setDisplayServingNumber(tokenQueue.generateDisplayServingNow())
                 .setCodeQR(codeQR)
                 .setQueueStatus(tokenQueue.getQueueStatus())
                 .setPurchaseOrderState(purchaseOrder.getPresentOrderState())

@@ -46,6 +46,9 @@ public class JsonTopicQueueData extends JsonData {
     @JsonProperty("cs")
     private int currentlyServing;
 
+    @JsonProperty("ds")
+    private String displayServingNumber;
+
     @JsonProperty("qr")
     private String codeQR;
 
@@ -95,6 +98,15 @@ public class JsonTopicQueueData extends JsonData {
 
     public JsonTopicQueueData setCurrentlyServing(int currentlyServing) {
         this.currentlyServing = currentlyServing;
+        return this;
+    }
+
+    public String getDisplayServingNumber() {
+        return displayServingNumber;
+    }
+
+    public JsonTopicQueueData setDisplayServingNumber(String displayServingNumber) {
+        this.displayServingNumber = displayServingNumber;
         return this;
     }
 
