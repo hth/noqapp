@@ -158,6 +158,13 @@ public enum BusinessTypeEnum {
         return list;
     }
 
+    public static List<BusinessTypeEnum> excludeRestaurant() {
+        List<BusinessTypeEnum> list = Stream.of(BusinessTypeEnum.values()).collect(Collectors.toList());
+        list.remove(RS);
+        list.remove(RSQ);
+        return list;
+    }
+
     public static List<BusinessTypeEnum> excludePlaceOfWorship() {
         List<BusinessTypeEnum> list = Stream.of(BusinessTypeEnum.values()).collect(Collectors.toList());
         list.remove(PW);
@@ -182,6 +189,13 @@ public enum BusinessTypeEnum {
         return new ArrayList<>() {{
             add(CD);
             add(CDQ);
+        }};
+    }
+
+    public static List<BusinessTypeEnum> includeRestaurant() {
+        return new ArrayList<>() {{
+            add(RS);
+            add(RSQ);
         }};
     }
 
