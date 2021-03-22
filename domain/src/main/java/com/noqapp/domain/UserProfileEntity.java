@@ -229,16 +229,18 @@ public class UserProfileEntity extends BaseEntity {
         return address;
     }
 
-    public void setAddress(String address) {
+    public UserProfileEntity setAddress(String address) {
         this.address = address;
+        return this;
     }
 
     public String getCountryShortName() {
         return countryShortName;
     }
 
-    public void setCountryShortName(String countryShortName) {
+    public UserProfileEntity setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
+        return this;
     }
 
     public String getPhone() {

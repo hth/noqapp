@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.access;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
@@ -101,7 +102,7 @@ public class HouseholdItemMarketplaceFlowActions {
             .setPostingAllowed(postingAllowed);
 
         if (null != location) {
-            marketplaceForm.setCoordinate(new double[]{location.getLongitude(), location.getLatitude()});
+            marketplaceForm.setCoordinate(CommonUtil.getCoordinates(location.getLongitude(), location.getLatitude()));
         }
 
         if (StringUtils.isNotBlank(postId)) {

@@ -26,7 +26,7 @@ public class LocationN4j {
         return new LocationN4j()
             .setLongitude(longitude)
             .setLatitude(latitude)
-            .setId(new GeoPoint(latitude, longitude).geohash());
+            .setId(new GeoPoint(latitude, longitude).getGeohash());
     }
 
     public String getId() {

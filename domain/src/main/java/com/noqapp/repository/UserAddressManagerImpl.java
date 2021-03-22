@@ -108,7 +108,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
         );
     }
 
-    private long count(String qid) {
+    public long count(String qid) {
         return mongoTemplate.count(
             query(where("QID").is(qid)),
             UserAddressEntity.class,

@@ -32,11 +32,30 @@ public class UserAddressEntity extends BaseEntity {
     @Field ("AD")
     private String address;
 
-    @Field ("GH")
-    private String geoHash;
+    @Field("AR")
+    private String area;
+
+    @Field("TO")
+    private String town;
+
+    @Field("DT")
+    private String district;
+
+    @Field("ST")
+    private String state;
+
+    @Field("SS")
+    private String stateShortName;
 
     @Field ("CS")
     private String countryShortName;
+
+    @Field ("GH")
+    private String geoHash;
+
+    /* Format Longitude and then Latitude. */
+    @Field("COR")
+    private double[] coordinate;
 
     @Field ("LU")
     private Date lastUsed;
@@ -46,9 +65,28 @@ public class UserAddressEntity extends BaseEntity {
         super();
     }
 
-    public UserAddressEntity(String queueUserId, String address) {
+    public UserAddressEntity(
+        String queueUserId,
+        String address,
+        String area,
+        String town,
+        String district,
+        String state,
+        String stateShortName,
+        String countryShortName,
+        String geoHash,
+        double[] coordinate
+    ) {
         this.queueUserId = queueUserId;
         this.address = address;
+        this.area = area;
+        this.town = town;
+        this.district = district;
+        this.state = state;
+        this.stateShortName = stateShortName;
+        this.countryShortName = countryShortName;
+        this.geoHash = geoHash;
+        this.coordinate = coordinate;
         this.setLastUsed();
     }
 
@@ -60,22 +98,36 @@ public class UserAddressEntity extends BaseEntity {
         return address;
     }
 
-    public String getGeoHash() {
-        return geoHash;
+    public String getArea() {
+        return area;
     }
 
-    public UserAddressEntity setGeoHash(String geoHash) {
-        this.geoHash = geoHash;
-        return this;
+    public String getTown() {
+        return town;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public String getStateShortName() {
+        return stateShortName;
     }
 
     public String getCountryShortName() {
         return countryShortName;
     }
 
-    public UserAddressEntity setCountryShortName(String countryShortName) {
-        this.countryShortName = countryShortName;
-        return this;
+    public String getGeoHash() {
+        return geoHash;
+    }
+
+    public double[] getCoordinate() {
+        return coordinate;
     }
 
     public Date getLastUsed() {
