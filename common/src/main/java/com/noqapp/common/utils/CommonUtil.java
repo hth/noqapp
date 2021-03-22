@@ -11,8 +11,10 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.util.Assert;
 
+import org.elasticsearch.common.geo.GeoPoint;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,6 +112,14 @@ public final class CommonUtil {
         } else {
             return 0.0;
         }
+    }
+
+    public static double[] getCoordinates(String longitude, String latitude) {
+        return CommonUtil.getCoordinates(Double.parseDouble(longitude), Double.parseDouble(latitude));
+    }
+
+    public static double[] getCoordinates(double longitude, double latitude) {
+        return new double[]{longitude, latitude};
     }
 
     /**

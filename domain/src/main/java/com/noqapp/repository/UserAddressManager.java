@@ -12,6 +12,8 @@ public interface UserAddressManager extends RepositoryManager<UserAddressEntity>
 
     List<UserAddressEntity> getAll(String qid);
 
+    long count(String qid);
+
     void updateLastUsedAddress(String address, String qid);
 
     void deleteAddress(String id, String qid);

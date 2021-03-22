@@ -1046,7 +1046,7 @@ public class BizStoreEntity extends BaseEntity {
 
     @Transient
     public GeoPoint getGeoPoint() {
-        /* Longitude and then Latitude. */
+        /* Latitude and then Longitude. */
         return new GeoPoint(coordinate[1], coordinate[0]);
     }
 
