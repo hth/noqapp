@@ -73,8 +73,9 @@ public class UserAddressManagerImpl implements UserAddressManager {
 
     @Override
     public void deleteAddress(String id, String qid) {
-        mongoTemplate.remove(
+        mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id)).and("QID").is(qid)),
+            entityUpdate(update("A", false)),
             UserAddressEntity.class,
             TABLE
         );
@@ -92,7 +93,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
     @Override
     public List<UserAddressEntity> getAll(String qid) {
         return mongoTemplate.find(
-            query(where("QID").is(qid)).with(Sort.by(ASC, "LU")),
+            query(where("QID").is(qid).and("A").is(true)).with(Sort.by(ASC, "LU")),
             UserAddressEntity.class,
             TABLE
         );
