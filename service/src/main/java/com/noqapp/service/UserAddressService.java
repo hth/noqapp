@@ -49,7 +49,6 @@ public class UserAddressService {
            jsonUserAddress.getCoordinate());
     }
 
-    @Mobile
     private UserAddressEntity saveAddress(
         String id,
         String qid,
