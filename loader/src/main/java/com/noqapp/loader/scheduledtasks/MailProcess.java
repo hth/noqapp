@@ -133,6 +133,7 @@ public class MailProcess {
             emailSwitch);
 
         if ("OFF".equalsIgnoreCase(emailSwitch)) {
+            LOG.warn("Email sending is {}", emailSwitch);
             return;
         }
 
