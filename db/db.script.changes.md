@@ -1,3 +1,20 @@
+### Changed Mar 23, 2021
+    
+    db.getCollection('USER_PROFILE').update({QID : "100000001777"}, {$unset: {AD : ""}}, {multi: true});
+    db.getCollection('USER_PROFILE').update({QID : "100000001824"}, {$unset: {AD : ""}}, {multi: true});
+    db.getCollection('USER_PROFILE').update({QID : "100000002047"}, {$unset: {AD : ""}}, {multi: true});
+    db.getCollection('USER_PROFILE').update({QID : "100000002052"}, {$unset: {AD : ""}}, {multi: true});
+    db.getCollection('USER_PROFILE').update({QID : "100000014150"}, {$unset: {AD : ""}}, {multi: true});
+    db.getCollection('USER_PROFILE').update({QID : "100000019912"}, {$unset: {AD : ""}}, {multi: true});
+    db.getCollection('USER_PROFILE').update({QID : "100000020923"}, {$unset: {AD : ""}}, {multi: true});
+    db.getCollection('USER_PROFILE').update({QID : "100000020974"}, {$unset: {AD : ""}}, {multi: true});
+
+    db.getCollection('USER_ADDRESS').remove({QID : "100000008897"});
+    db.getCollection('USER_ADDRESS').remove({QID : "100000032005"});
+    db.getCollection('USER_ADDRESS').remove({QID : "100000032360"});
+
+    db.getCollection('USER_PROFILE').update({AD : ""}, {$unset: {AD : ""}}, {multi: true});
+
 ### Changed Feb 24, 2021
 
     db.getCollection('USER_PREFERENCE').update({"FS" : {$gt: []}}, {$set : {"FS" : []}}, {multi: true});
