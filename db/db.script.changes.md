@@ -6,8 +6,8 @@ For new version
 
 For older version
 
-    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
-    CHANGE COLUMN `DA` `AI` VARCHAR(128) NULL DEFAULT NULL ;
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` 
+    CHANGE COLUMN `DA` `AI` VARCHAR(24) NULL DEFAULT NULL ;
 
 ### Changed Mar 23, 2021
     
