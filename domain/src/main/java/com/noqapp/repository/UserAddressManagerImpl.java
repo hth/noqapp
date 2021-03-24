@@ -163,7 +163,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
     @Override
     public UserAddressEntity markAddressPrimary(String id, String qid) {
         mongoTemplate.updateMulti(
-            query(where("QID").is(qid).and("A").is(true)),
+            query(where("QID").is(qid).and("PA").exists(true).and("A").is(true)),
             entityUpdate(new Update().unset("PA")),
             UserAddressEntity.class,
             TABLE
