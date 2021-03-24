@@ -19,4 +19,12 @@ public interface UserAddressManager extends RepositoryManager<UserAddressEntity>
     void deleteAddress(String id, String qid);
 
     boolean doesAddressExists(String id, String qid);
+
+    boolean doesAddressWithGoeHashExists(String qid, String geoHash);
+
+    UserAddressEntity findOne(String qid, String geoHash);
+
+    List<UserAddressEntity> findAllWhereCoordinateDoesNotExists();
+
+    UserAddressEntity findById(String id);
 }
