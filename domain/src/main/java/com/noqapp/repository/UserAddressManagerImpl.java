@@ -63,7 +63,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
     public void save(UserAddressEntity object) {
         while (count(object.getQueueUserId()) >= numberOfAddressAllowed) {
             UserAddressEntity leastUsed = leastUsedAddress(object.getQueueUserId());
-            mongoTemplate.remove(leastUsed);
+            markAddressAsInactive(leastUsed.getId(), leastUsed.getQueueUserId());
         }
         mongoTemplate.save(object, TABLE);
     }
@@ -74,7 +74,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     @Override
-    public void deleteAddress(String id, String qid) {
+    public void markAddressAsInactive(String id, String qid) {
         mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id)).and("QID").is(qid)),
             entityUpdate(update("A", false)),
@@ -119,9 +119,10 @@ public class UserAddressManagerImpl implements UserAddressManager {
         );
     }
 
+    /** Primary Address is not considered in least used. */
     private UserAddressEntity leastUsedAddress(String qid) {
         return mongoTemplate.findOne(
-            query(where("QID").is(qid)).with(Sort.by(DESC, "LU")),
+            query(where("QID").is(qid).and("PA").is(false)).with(Sort.by(DESC, "LU")),
             UserAddressEntity.class,
             TABLE
         );
@@ -170,7 +171,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
         );
 
         return mongoTemplate.findAndModify(
-            query(where(id).is(id).and("QID").is(qid)),
+            query(where(id).is(new ObjectId(id)).and("QID").is(qid)),
             entityUpdate(update("PA", true)),
             FindAndModifyOptions.options().returnNew(true),
             UserAddressEntity.class,

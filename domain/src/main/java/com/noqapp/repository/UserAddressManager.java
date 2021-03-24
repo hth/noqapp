@@ -16,7 +16,7 @@ public interface UserAddressManager extends RepositoryManager<UserAddressEntity>
 
     void updateLastUsedAddress(String id, String qid);
 
-    void deleteAddress(String id, String qid);
+    void markAddressAsInactive(String id, String qid);
 
     boolean doesAddressExists(String id, String qid);
 
