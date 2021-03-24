@@ -11,6 +11,9 @@ import com.noqapp.repository.UserProfileManager;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,7 @@ import java.util.List;
  */
 @Service
 public class UserAddressService {
+    private static final Logger LOG = LoggerFactory.getLogger(UserAddressService.class);
     private UserAddressManager userAddressManager;
     private UserProfileManager userProfileManager;
 
@@ -49,6 +53,29 @@ public class UserAddressService {
            jsonUserAddress.getCoordinate());
     }
 
+    public UserAddressEntity updateAddress(String id, String qid, JsonUserAddress jsonUserAddress) {
+        UserAddressEntity userAddressFromDB = userAddressManager.findById(id);
+        UserAddressEntity userAddress = new UserAddressEntity(
+            qid,
+            jsonUserAddress.getAddress(),
+            jsonUserAddress.getArea(),
+            jsonUserAddress.getTown(),
+            jsonUserAddress.getDistrict(),
+            jsonUserAddress.getState(),
+            jsonUserAddress.getStateShortName(),
+            jsonUserAddress.getCountryShortName(),
+            jsonUserAddress.geoHash(),
+            jsonUserAddress.getCoordinate()
+        ).setLastUsed();
+        userAddress.setId(id);
+
+        userAddress.setVersion(userAddressFromDB.getVersion());
+        userAddress.setCreated(userAddressFromDB.getCreated());
+        userAddressManager.save(userAddress);
+
+        return userAddress;
+    }
+
     private UserAddressEntity saveAddress(
         String id,
         String qid,
@@ -64,31 +91,38 @@ public class UserAddressService {
     ) {
         Assert.hasText(id, "Id cannot be blank");
 
-        long existing = userAddressManager.count(qid);
-        UserAddressEntity userAddress = new UserAddressEntity(
-            qid,
-            address,
-            area,
-            town,
-            district,
-            state,
-            stateShortName,
-            countryShortName,
-            geoHash,
-            coordinate
-        ).setLastUsed();
-        userAddress.setId(id);
-        userAddressManager.save(userAddress);
+        if (!userAddressManager.doesAddressWithGoeHashExists(qid, geoHash)) {
+            long existing = userAddressManager.count(qid);
+            UserAddressEntity userAddress = new UserAddressEntity(
+                qid,
+                address,
+                area,
+                town,
+                district,
+                state,
+                stateShortName,
+                countryShortName,
+                geoHash,
+                coordinate
+            ).setLastUsed();
+            userAddress.setId(id);
+            userAddressManager.save(userAddress);
 
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
-        if (StringUtils.isBlank(userProfile.getAddress()) || 0 == existing) {
-            userProfile
-                .setAddress(address)
-                .setCountryShortName(countryShortName)
-                .setAddressOrigin(AddressOriginEnum.G);
-            userProfileManager.save(userProfile);
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+            if (StringUtils.isBlank(userProfile.getAddress()) || 0 == existing) {
+                userProfile
+                    .setAddress(address)
+                    .setCountryShortName(countryShortName)
+                    .setAddressOrigin(AddressOriginEnum.G);
+                userProfileManager.save(userProfile);
+            }
+            LOG.info("Saved added successfully {} {}", userAddress.getId(), userAddress.getQueueUserId());
+            return userAddress;
+        } else {
+            UserAddressEntity userAddress = userAddressManager.findOne(qid, geoHash);
+            LOG.info("Skipped added successfully {} {}", userAddress.getId(), userAddress.getQueueUserId());
+            return userAddress;
         }
-        return userAddress;
     }
 
     @Mobile
@@ -129,5 +163,9 @@ public class UserAddressService {
     @Async
     public void addressLastUsed(String address, String qid) {
         userAddressManager.updateLastUsedAddress(address, qid);
+    }
+
+    public List<UserAddressEntity> findAllWhereCoordinateDoesNotExists() {
+        return userAddressManager.findAllWhereCoordinateDoesNotExists();
     }
 }
