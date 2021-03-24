@@ -4,6 +4,7 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.json.payment.cashfree.JsonResponseWithCFToken;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
@@ -62,8 +63,11 @@ public class JsonPurchaseOrder extends AbstractDomain {
     @JsonProperty("p")
     private String customerPhone;
 
-    @JsonProperty("da")
-    private String deliveryAddress;
+    @JsonProperty("ai")
+    private String userAddressId;
+
+    @JsonProperty("jua")
+    private JsonUserAddress jsonUserAddress;
 
     @JsonProperty("sd")
     private int storeDiscount;
@@ -208,12 +212,21 @@ public class JsonPurchaseOrder extends AbstractDomain {
         return this;
     }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
+    public String getUserAddressId() {
+        return userAddressId;
     }
 
-    public JsonPurchaseOrder setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
+    public JsonPurchaseOrder setUserAddressId(String userAddressId) {
+        this.userAddressId = userAddressId;
+        return this;
+    }
+
+    public JsonUserAddress getJsonUserAddress() {
+        return jsonUserAddress;
+    }
+
+    public JsonPurchaseOrder setJsonUserAddress(JsonUserAddress jsonUserAddress) {
+        this.jsonUserAddress = jsonUserAddress;
         return this;
     }
 
@@ -494,13 +507,14 @@ public class JsonPurchaseOrder extends AbstractDomain {
     }
 
     /** Mostly used when cancelling the order. */
-    public static JsonPurchaseOrder populateForCancellingOrder(PurchaseOrderEntity po) {
+    public static JsonPurchaseOrder populateForCancellingOrder(PurchaseOrderEntity po, UserAddressEntity userAddress) {
         return new JsonPurchaseOrder()
             .setBizStoreId(po.getBizStoreId())
             .setCodeQR(po.getCodeQR())
             .setQueueUserId(po.getQueueUserId())
             .setCustomerPhone(po.getCustomerPhone())
-            .setDeliveryAddress(po.getDeliveryAddress())
+            .setUserAddressId(po.getUserAddressId())
+            .setJsonUserAddress(null == userAddress ? null : JsonUserAddress.populateAsJson(userAddress))
             .setStoreDiscount(po.getStoreDiscount())
             .setPartialPayment(po.getPartialPayment())
             .setOrderPrice(po.getOrderPrice())
@@ -526,20 +540,21 @@ public class JsonPurchaseOrder extends AbstractDomain {
             .setTransactionVia(po.getTransactionVia());
     }
 
-    public JsonPurchaseOrder(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts) {
-        this(purchaseOrder);
+    public JsonPurchaseOrder(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts, UserAddressEntity userAddress) {
+        this(purchaseOrder, userAddress);
 
         for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
             jsonPurchaseOrderProducts.add(JsonPurchaseOrderProduct.populate(purchaseOrderProduct));
         }
     }
 
-    public JsonPurchaseOrder(PurchaseOrderEntity purchaseOrder) {
+    public JsonPurchaseOrder(PurchaseOrderEntity purchaseOrder, UserAddressEntity userAddress) {
         this.queueUserId = purchaseOrder.getQueueUserId();
         this.codeQR = purchaseOrder.getCodeQR();
         this.bizStoreId = purchaseOrder.getBizStoreId();
         this.customerPhone = purchaseOrder.getCustomerPhone();
-        this.deliveryAddress = purchaseOrder.getDeliveryAddress();
+        this.userAddressId = purchaseOrder.getUserAddressId();
+        this.jsonUserAddress = null == userAddress ? null : JsonUserAddress.populateAsJson(userAddress);
         this.storeDiscount = purchaseOrder.getStoreDiscount();
         this.partialPayment = purchaseOrder.getPartialPayment();
         this.orderPrice = purchaseOrder.getOrderPrice();
@@ -578,7 +593,7 @@ public class JsonPurchaseOrder extends AbstractDomain {
             ", codeQR='" + codeQR + '\'' +
             ", queueUserId='" + queueUserId + '\'' +
             ", customerPhone='" + customerPhone + '\'' +
-            ", deliveryAddress='" + deliveryAddress + '\'' +
+            ", userAddressId='" + userAddressId + '\'' +
             ", storeDiscount=" + storeDiscount +
             ", partialPayment='" + partialPayment + '\'' +
             ", orderPrice='" + orderPrice + '\'' +

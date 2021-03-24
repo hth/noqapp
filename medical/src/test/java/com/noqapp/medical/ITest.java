@@ -298,7 +298,8 @@ public class ITest extends RealMongoForITest {
         );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
         couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
-        purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC);
+        userAddressService = new UserAddressService(userAddressManager, userProfileManager);
+        purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC, userAddressService);
 
         accountService = new AccountService(
             5,

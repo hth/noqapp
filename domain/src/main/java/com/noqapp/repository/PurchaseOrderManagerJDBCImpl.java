@@ -44,36 +44,36 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final Logger LOG = LoggerFactory.getLogger(PurchaseOrderProductManagerJDBCImpl.class);
 
     private static final String insert =
-        "INSERT INTO PURCHASE_ORDER (ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D)" +
+        "INSERT INTO PURCHASE_ORDER (ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, AI, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D)" +
             " VALUES " +
-            "(:id,:qid,:bs,:bn,:qr,:did,:dm,:pm,:py,:ps,:da,:ra,:rv,:st,:tn,:dt,:sd,:pp,:op,:ta,:gt,:bt,:pq,:fq,:cq,:ci,:sn,:sb,:se,:ti,:tr,:tm,:tv,:dn,:an,:v,:u,:c,:a,:d)";
+            "(:id,:qid,:bs,:bn,:qr,:did,:dm,:pm,:py,:ps,:ai,:ra,:rv,:st,:tn,:dt,:sd,:pp,:op,:ta,:gt,:bt,:pq,:fq,:cq,:ci,:sn,:sb,:se,:ti,:tr,:tm,:tv,:dn,:an,:v,:u,:c,:a,:d)";
 
     private static final String delete = "DELETE FROM PURCHASE_ORDER WHERE ID = :id";
     private static final String delete_by_id = "DELETE FROM PURCHASE_ORDER WHERE ID = ?";
 
     private static final String query_by_qid =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, AI, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? AND BT <> ?" +
             "ORDER BY C DESC";
 
     private static final String query_by_qid_and_transactionId =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, AI, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? AND TI = ? ";
 
     private static final String query_by_transactionId =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, AI, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE TI = ? ";
 
     private static final String query_where_coupon_applied =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, AI, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE BN = ? AND CI <> ? ";
 
     private static final String query_by_qid_where_ps =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, AI, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? AND PS = ? " +
             "ORDER BY C DESC";
@@ -95,25 +95,25 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
         "GROUP BY DateOnly, PY ORDER BY DateOnly DESC";
 
     private static final String transactionOnDay =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, AI, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE BN = ? AND C BETWEEN ? AND ? " +
             "ORDER BY TN";
 
     private static final String qidAndBizNameId =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, AI, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QID = ? AND BN = ? " +
             "ORDER BY C DESC";
 
     private static final String query_by_codeQR =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, AI, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE QR = ? AND C BETWEEN NOW() - INTERVAL ? DAY AND NOW() " +
             "ORDER BY C DESC";
 
     private static final String query_by_transactionId_and_storeId =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
+        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, AI, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
             " FROM " +
             "PURCHASE_ORDER WHERE TI = ? AND BS = ? ";
 
@@ -122,12 +122,6 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
 
     private static final String checkIfClientVisitedStore =
         "SELECT EXISTS(SELECT 1 FROM PURCHASE_ORDER WHERE QR = ? AND QID = ? AND PY = ? LIMIT 1)";
-
-    private static final String ordersWithAddress =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
-            " FROM " +
-            "PURCHASE_ORDER WHERE DA <> '' " +
-            "ORDER BY C DESC";
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
@@ -158,7 +152,7 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
                 namedParameters.addValue("pm", null == purchaseOrder.getPaymentMode() ? null : purchaseOrder.getPaymentMode().name());
                 namedParameters.addValue("py", null == purchaseOrder.getPaymentStatus() ? PaymentStatusEnum.PP.name() : purchaseOrder.getPaymentStatus().name());
                 namedParameters.addValue("ps", purchaseOrder.getPresentOrderState().name());
-                namedParameters.addValue("da", StringUtils.isBlank(purchaseOrder.getDeliveryAddress()) ? null : purchaseOrder.getDeliveryAddress().substring(0, Math.min(128, purchaseOrder.getDeliveryAddress().length())));
+                namedParameters.addValue("ai", purchaseOrder.getUserAddressId());
                 namedParameters.addValue("ra", purchaseOrder.getRatingCount());
                 namedParameters.addValue("rv", purchaseOrder.getReview());
                 namedParameters.addValue("st", null == purchaseOrder.getSentimentType() ? null : purchaseOrder.getSentimentType().name());
@@ -359,16 +353,5 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     @Override
     public List<PurchaseOrderEntity> findByQidAndBizNameId(String qid, String bizNameId) {
         return jdbcTemplate.query(qidAndBizNameId, new Object[]{qid, bizNameId}, new PurchaseOrderRowMapper());
-    }
-
-    @Override
-    public List<PurchaseOrderEntity> findAllOrdersWhereAddressExists() {
-        return jdbcTemplate.query(ordersWithAddress, new PurchaseOrderRowMapper());
-    }
-
-    @Override
-    @CustomTransactional
-    public boolean updateAddressToUserAddressId(String id, String userAddressId) {
-        return this.jdbcTemplate.update("UPDATE PURCHASE_ORDER SET DA = ? WHERE ID = ?", userAddressId, id) > 0;
     }
 }

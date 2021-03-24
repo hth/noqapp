@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -60,19 +59,11 @@ public class UserAddressManagerImpl implements UserAddressManager {
 
     @Override
     public void save(UserAddressEntity object) {
-        try {
-            while (count(object.getQueueUserId()) >= numberOfAddressAllowed) {
-                UserAddressEntity leastUsed = leastUsedAddress(object.getQueueUserId());
-                mongoTemplate.remove(leastUsed);
-            }
-            if (object.getId() != null) {
-                object.setUpdated();
-            }
-            mongoTemplate.save(object, TABLE);
-        } catch (DataIntegrityViolationException e) {
-            LOG.error("Duplicate record entry for UserAddressEntity={}", e.getLocalizedMessage(), e);
-            throw e;
+        while (count(object.getQueueUserId()) >= numberOfAddressAllowed) {
+            UserAddressEntity leastUsed = leastUsedAddress(object.getQueueUserId());
+            mongoTemplate.remove(leastUsed);
         }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override
@@ -100,37 +91,6 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     @Override
-    public boolean doesAddressWithGoeHashExists(String qid, String geoHash) {
-        return mongoTemplate.exists(
-            query(where("QID").is(qid).and("GH").is(geoHash)),
-            UserAddressEntity.class,
-            TABLE
-        );
-    }
-
-    @Override
-    public UserAddressEntity findOne(String qid, String geoHash) {
-        return mongoTemplate.findOne(
-            query(where("QID").is(qid).and("GH").is(geoHash)),
-            UserAddressEntity.class,
-            TABLE
-        );
-    }
-
-    @Override
-    public List<UserAddressEntity> findAllWhereCoordinateDoesNotExists() {
-        return mongoTemplate.find(
-            query(where("COR").exists(false)),
-            UserAddressEntity.class,
-            TABLE);
-    }
-
-    @Override
-    public UserAddressEntity findById(String id) {
-        return mongoTemplate.findById(new ObjectId(id), UserAddressEntity.class, TABLE);
-    }
-
-    @Override
     public List<UserAddressEntity> getAll(String qid) {
         return mongoTemplate.find(
             query(where("QID").is(qid).and("A").is(true)).with(Sort.by(ASC, "LU")),
@@ -140,9 +100,9 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     @Override
-    public void updateLastUsedAddress(String address, String qid) {
+    public void updateLastUsedAddress(String id, String qid) {
         mongoTemplate.updateFirst(
-            query(where("QID").is(qid).and("AD").regex("^" + address, "i")),
+            query(where("id").is(new ObjectId(id)).and("QID").is(qid)),
             entityUpdate(update("LU", new Date())),
             UserAddressEntity.class,
             TABLE
@@ -158,6 +118,29 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     private UserAddressEntity leastUsedAddress(String qid) {
+        return mongoTemplate.findOne(
+            query(where("QID").is(qid)).with(Sort.by(DESC, "LU")),
+            UserAddressEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public UserAddressEntity findById(String id) {
+        return mongoTemplate.findById(id, UserAddressEntity.class, TABLE);
+    }
+
+    @Override
+    public UserAddressEntity findByAddress(String qid, String address) {
+        return mongoTemplate.findOne(
+            query(where("QID").is(qid).and("AD").regex("^" + address, "i")),
+            UserAddressEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public UserAddressEntity findOne(String qid) {
         return mongoTemplate.findOne(
             query(where("QID").is(qid)).with(Sort.by(DESC, "LU")),
             UserAddressEntity.class,

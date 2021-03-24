@@ -4,6 +4,7 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
@@ -49,8 +50,11 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
     @JsonProperty("qr")
     private String codeQR;
 
-    @JsonProperty("da")
-    private String deliveryAddress;
+    @JsonProperty("ai")
+    private String userAddressId;
+
+    @JsonProperty("jua")
+    private JsonUserAddress jsonUserAddress;
 
     @JsonProperty("sd")
     private int storeDiscount;
@@ -134,10 +138,11 @@ public class JsonPurchaseOrderHistorical extends AbstractDomain {
         //Required default constructor
     }
 
-    public JsonPurchaseOrderHistorical(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts, BizStoreEntity bizStore) {
+    public JsonPurchaseOrderHistorical(PurchaseOrderEntity purchaseOrder, List<PurchaseOrderProductEntity> purchaseOrderProducts, UserAddressEntity userAddress, BizStoreEntity bizStore) {
         this.queueUserId = purchaseOrder.getQueueUserId();
         this.codeQR = purchaseOrder.getCodeQR();
-        this.deliveryAddress = purchaseOrder.getDeliveryAddress();
+        this.userAddressId = purchaseOrder.getUserAddressId();
+        this.jsonUserAddress = null == userAddress ? null : JsonUserAddress.populateAsJson(userAddress);
         this.storeDiscount = purchaseOrder.getStoreDiscount();
         this.orderPrice = purchaseOrder.getOrderPrice();
         this.tax = purchaseOrder.getTax();

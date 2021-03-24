@@ -72,8 +72,8 @@ public class PurchaseOrderEntity extends BaseEntity {
     private String customerName;
 
     @DBMapping
-    @Field("DA")
-    private String deliveryAddress;
+    @Field("AI")
+    private String userAddressId;
 
     @Field("CP")
     private String customerPhone;
@@ -270,12 +270,12 @@ public class PurchaseOrderEntity extends BaseEntity {
         return this;
     }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
+    public String getUserAddressId() {
+        return userAddressId;
     }
 
-    public PurchaseOrderEntity setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
+    public PurchaseOrderEntity setUserAddressId(String userAddressId) {
+        this.userAddressId = userAddressId;
         return this;
     }
 
@@ -685,7 +685,7 @@ public class PurchaseOrderEntity extends BaseEntity {
             ", codeQR='" + codeQR + '\'' +
             ", did='" + did + '\'' +
             ", customerName='" + customerName + '\'' +
-            ", deliveryAddress='" + deliveryAddress + '\'' +
+            ", userAddressId='" + userAddressId + '\'' +
             ", customerPhone='" + customerPhone + '\'' +
             ", storeDiscount=" + storeDiscount +
             ", partialPayment='" + partialPayment + '\'' +

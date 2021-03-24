@@ -23,7 +23,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.data.util.CloseableIterator;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -238,25 +237,6 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public List<UserProfileEntity> findAll() {
         return mongoTemplate.findAll(UserProfileEntity.class);
-    }
-
-    @Override
-    public CloseableIterator<UserProfileEntity> findAllWithAddress() {
-        return mongoTemplate.stream(
-            query(where("AD").exists(true)),
-            UserProfileEntity.class,
-            TABLE
-        );
-    }
-
-    @Override
-    public void unsetAddress(String queueUserId) {
-        mongoTemplate.updateFirst(
-            query(where("QID").is(queueUserId)),
-            new Update().unset("AD"),
-            UserProfileEntity.class,
-            TABLE
-        );
     }
 
     @Override

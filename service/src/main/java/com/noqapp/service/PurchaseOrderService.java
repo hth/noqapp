@@ -17,6 +17,7 @@ import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPurchaseOrder;
@@ -264,7 +265,9 @@ public class PurchaseOrderService {
             for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
                 storeProductService.changeInventoryCount(purchaseOrderProduct.getProductId(), purchaseOrderProduct.getProductQuantity());
             }
-            return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder);
+
+            UserAddressEntity userAddress = userAddressService.findById(purchaseOrder.getUserAddressId());
+            return JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder, userAddress);
         } catch (
             PurchaseOrderRefundPartialException |
                 PurchaseOrderRefundExternalException |
@@ -302,7 +305,7 @@ public class PurchaseOrderService {
                 //Allow activate when in VB state or PO state
             default:
                 List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
-                JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
+                JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts, userAddressService.findById(purchaseOrder.getUserAddressId()));
                 createOrder(jsonPurchaseOrder, purchaseOrder.getQueueUserId(), did, TokenServiceEnum.C);
                 purchaseOrderProductManagerJDBC.deleteByPurchaseOrderId(purchaseOrder.getId());
                 purchaseOrderManagerJDBC.deleteById(purchaseOrder.getId());
@@ -346,7 +349,7 @@ public class PurchaseOrderService {
         PaymentModeEnum paymentMode
     ) {
         PurchaseOrderEntity purchaseOrder = updateOnPaymentGatewayNotification(transactionId, transactionMessage, transactionReferenceId, paymentStatus, purchaseOrderState, paymentMode);
-        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder);
+        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder, userAddressService.findById(purchaseOrder.getUserAddressId()));
 
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         jsonPurchaseOrder
@@ -404,7 +407,7 @@ public class PurchaseOrderService {
         //TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         //doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
 
-        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder);
+        JsonPurchaseOrder jsonPurchaseOrder = new JsonPurchaseOrder(purchaseOrder, userAddressService.findById(purchaseOrder.getUserAddressId()));
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         jsonPurchaseOrder
             .setServingNumber(tokenQueue.getCurrentlyServing())
@@ -426,7 +429,9 @@ public class PurchaseOrderService {
         for (PurchaseOrderProductEntity purchaseOrderProduct : purchaseOrderProducts) {
             storeProductService.changeInventoryCount(purchaseOrderProduct.getProductId(), purchaseOrderProduct.getProductQuantity());
         }
-        return new JsonPurchaseOrderList().addPurchaseOrder(JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder));
+
+        UserAddressEntity userAddress = userAddressService.findById(purchaseOrder.getUserAddressId());
+        return new JsonPurchaseOrderList().addPurchaseOrder(JsonPurchaseOrder.populateForCancellingOrder(purchaseOrder, userAddress));
     }
 
     @Mobile
@@ -457,7 +462,7 @@ public class PurchaseOrderService {
         }
         purchaseOrder.setOrderPrice(orderPrice.toString());
         purchaseOrderManager.save(purchaseOrder);
-        return new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts);
+        return new JsonPurchaseOrder(purchaseOrder, purchaseOrderProducts, userAddressService.findById(purchaseOrder.getUserAddressId()));
     }
 
     /**
@@ -576,7 +581,7 @@ public class PurchaseOrderService {
         PurchaseOrderEntity purchaseOrder = new PurchaseOrderEntity(qid, bizStore.getId(), bizStore.getBizName().getId(), bizStore.getCodeQR())
             .setDid(did)
             .setCustomerName(jsonPurchaseOrder.getCustomerName())
-            .setDeliveryAddress(jsonPurchaseOrder.getDeliveryAddress())
+            .setUserAddressId(jsonPurchaseOrder.getUserAddressId())
             .setCustomerPhone(jsonPurchaseOrder.getCustomerPhone())
             .setCouponId(StringUtils.isNotBlank(jsonPurchaseOrder.getCouponId()) ? jsonPurchaseOrder.getCouponId() : null)
             .setDiscountedPurchase(jsonPurchaseOrder.isDiscountedPurchase())
@@ -711,7 +716,7 @@ public class PurchaseOrderService {
                 .setExpectedServiceBegin(expectedServiceBegin);
             purchaseOrderManager.save(purchaseOrder);
             executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
-            userAddressService.addressLastUsed(jsonPurchaseOrder.getDeliveryAddress(), qid);
+            userAddressService.addressLastUsed(jsonPurchaseOrder.getUserAddressId(), qid);
 
             /* Decrease inventory when purchase successful. */
             for (String productId : productPurchases.keySet()) {
@@ -750,16 +755,11 @@ public class PurchaseOrderService {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
         if (StringUtils.isNotBlank(userProfile.getGuardianPhone())) {
             UserProfileEntity guardianUserProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
-            jsonPurchaseOrder.setDeliveryAddress(
-                StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress())
-                    ? guardianUserProfile.getAddress()
-                    : jsonPurchaseOrder.getDeliveryAddress());
             jsonPurchaseOrder.setCustomerPhone(guardianUserProfile.getPhone());
+
+            UserAddressEntity userAddress = userAddressService.findByAddress(guardianUserProfile.getQueueUserId(), guardianUserProfile.getAddress());
+            jsonPurchaseOrder.setUserAddressId(null == userAddress ? null : userAddress.getId());
         } else {
-            jsonPurchaseOrder.setDeliveryAddress(
-                StringUtils.isBlank(jsonPurchaseOrder.getDeliveryAddress())
-                    ? userProfile.getAddress()
-                    : jsonPurchaseOrder.getDeliveryAddress());
             jsonPurchaseOrder.setCustomerPhone(userProfile.getPhone());
         }
     }
@@ -982,7 +982,7 @@ public class PurchaseOrderService {
 
         TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(purchaseOrder.getCodeQR());
         doActionBasedOnQueueStatus(purchaseOrder.getCodeQR(), purchaseOrder, tokenQueue, null);
-        return couponService.addCouponInformationIfAny(new JsonPurchaseOrder(purchaseOrder));
+        return couponService.addCouponInformationIfAny(new JsonPurchaseOrder(purchaseOrder, userAddressService.findById(purchaseOrder.getUserAddressId())));
     }
 
     @Mobile
@@ -996,7 +996,7 @@ public class PurchaseOrderService {
             jpo.getPaymentMode(),
             qid);
 
-        return couponService.addCouponInformationIfAny(new JsonPurchaseOrder(purchaseOrder));
+        return couponService.addCouponInformationIfAny(new JsonPurchaseOrder(purchaseOrder, userAddressService.findById(purchaseOrder.getUserAddressId())));
     }
 
     private void updatePurchaseOrderWithUserDetail(PurchaseOrderEntity purchaseOrder) {
@@ -1247,13 +1247,15 @@ public class PurchaseOrderService {
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManager.getAllByPurchaseOrderId(purchaseOrder.getId());
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
-            jsonPurchaseOrderHistoricalList.addJsonPurchaseOrderHistorical(new JsonPurchaseOrderHistorical(purchaseOrder, purchaseOrderProducts, bizStore));
+            UserAddressEntity userAddress = userAddressService.findById(purchaseOrder.getUserAddressId());
+            jsonPurchaseOrderHistoricalList.addJsonPurchaseOrderHistorical(new JsonPurchaseOrderHistorical(purchaseOrder, purchaseOrderProducts, userAddress, bizStore));
         }
         purchaseOrders = purchaseOrderManagerJDBC.getByQid(qid, BusinessTypeEnum.DO);
         for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
             List<PurchaseOrderProductEntity> purchaseOrderProducts = purchaseOrderProductManagerJDBC.getByPurchaseOrderId(purchaseOrder.getId());
             BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
-            jsonPurchaseOrderHistoricalList.addJsonPurchaseOrderHistorical(new JsonPurchaseOrderHistorical(purchaseOrder, purchaseOrderProducts, bizStore));
+            UserAddressEntity userAddress = userAddressService.findById(purchaseOrder.getUserAddressId());
+            jsonPurchaseOrderHistoricalList.addJsonPurchaseOrderHistorical(new JsonPurchaseOrderHistorical(purchaseOrder, purchaseOrderProducts, userAddress, bizStore));
         }
         LOG.info("Order history size {}", jsonPurchaseOrderHistoricalList.getJsonPurchaseOrderHistoricals().size());
         return jsonPurchaseOrderHistoricalList;

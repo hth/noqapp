@@ -2,6 +2,7 @@ package com.noqapp.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.domain.UserAddressEntity;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -179,6 +180,22 @@ public class JsonUserAddress extends AbstractDomain {
         /* Latitude and then Longitude. */
         double[] coordinate = getCoordinate();
         return new GeoPoint(coordinate[1], coordinate[0]).getGeohash();
+    }
+
+    @Transient
+    public static JsonUserAddress populateAsJson(UserAddressEntity userAddress) {
+        return new JsonUserAddress()
+            .setId(userAddress.getId())
+            .setAddress(userAddress.getAddress())
+            .setArea(userAddress.getArea())
+            .setTown(userAddress.getTown())
+            .setDistrict(userAddress.getDistrict())
+            .setState(userAddress.getState())
+            .setStateShortName(userAddress.getStateShortName())
+            .setCountryShortName(userAddress.getCountryShortName())
+            .setGeoHash(userAddress.getGeoHash())
+            .setLatitude(String.valueOf(userAddress.getCoordinate()[1]))
+            .setLongitude(String.valueOf(userAddress.getCoordinate()[0]));
     }
 
     @Override

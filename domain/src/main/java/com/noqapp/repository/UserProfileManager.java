@@ -4,8 +4,6 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.UserLevelEnum;
 
-import org.springframework.data.util.CloseableIterator;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -63,9 +61,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
 
     @Deprecated
     List<UserProfileEntity> findAll();
-
-    CloseableIterator<UserProfileEntity> findAllWithAddress();
-    void unsetAddress(String queueUserId);
 
     /**
      * //TODO this needs a location to limit transmission.
