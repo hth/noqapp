@@ -1166,7 +1166,7 @@ public class MedicalRecordService {
     /** Puts in a purchase order. */
     private void placeOrder(JsonMedicalRecord jsonMedicalRecord, JsonPurchaseOrder jsonPurchaseOrder, String bizStoreId) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(jsonMedicalRecord.getQueueUserId());
-        UserAddressEntity userAddress = userAddressManager.findOne(userProfile.getQueueUserId());
+        UserAddressEntity userAddress = userAddressManager.findPrimaryOrAnyExistingAddress(userProfile.getQueueUserId());
         jsonPurchaseOrder
             .setCustomerName(userProfile.getName())
             .setUserAddressId(null == userAddress ? null : userAddress.getId())

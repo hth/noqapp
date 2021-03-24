@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -140,9 +141,36 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     @Override
-    public UserAddressEntity findOne(String qid) {
-        return mongoTemplate.findOne(
-            query(where("QID").is(qid)).with(Sort.by(DESC, "LU")),
+    public UserAddressEntity findPrimaryOrAnyExistingAddress(String qid) {
+        UserAddressEntity userAddress = mongoTemplate.findOne(
+            query(where("QID").is(qid).and("PA").is(true)).with(Sort.by(DESC, "LU")),
+            UserAddressEntity.class,
+            TABLE
+        );
+
+        if (null == userAddress) {
+            userAddress = mongoTemplate.findOne(
+                query(where("QID").is(qid)).with(Sort.by(DESC, "LU")),
+                UserAddressEntity.class,
+                TABLE
+            );
+        }
+
+        return userAddress;
+    }
+
+    @Override
+    public void markAddressPrimary(String id, String qid) {
+        mongoTemplate.updateMulti(
+            query(where("QID").is(qid).and("A").is(true)),
+            entityUpdate(new Update().unset("PA")),
+            UserAddressEntity.class,
+            TABLE
+        );
+
+        mongoTemplate.updateFirst(
+            query(where(id).is(id).and("QID").is(qid)),
+            entityUpdate(update("PA", true)),
             UserAddressEntity.class,
             TABLE
         );

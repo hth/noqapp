@@ -60,7 +60,7 @@ as a value, then it gets endless connections.
         PM VARCHAR(3),
         PY VARCHAR(2),
         PS VARCHAR(2)       NOT NULL,
-        DA VARCHAR(128),
+        AI VARCHAR(24),
         RA TINYINT,
         RV VARCHAR(256),
         ST VARCHAR(1),

@@ -13,15 +13,15 @@ import javax.validation.constraints.NotNull;
  * hitender
  * 5/15/18 9:23 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Document(collection = "USER_ADDRESS")
 @CompoundIndexes({
-        @CompoundIndex(name = "user_address_idx", def = "{'QID': 1}", unique = false)
+    @CompoundIndex(name = "user_address_idx", def = "{'QID': 1}", unique = false)
 })
 public class UserAddressEntity extends BaseEntity {
 
@@ -29,7 +29,7 @@ public class UserAddressEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
-    @Field ("AD")
+    @Field("AD")
     private String address;
 
     @Field("AR")
@@ -47,17 +47,20 @@ public class UserAddressEntity extends BaseEntity {
     @Field("SS")
     private String stateShortName;
 
-    @Field ("CS")
+    @Field("CS")
     private String countryShortName;
 
-    @Field ("GH")
+    @Field("PA")
+    private boolean primaryAddress;
+
+    @Field("GH")
     private String geoHash;
 
     /* Format Longitude and then Latitude. */
     @Field("COR")
     private double[] coordinate;
 
-    @Field ("LU")
+    @Field("LU")
     private Date lastUsed;
 
     @SuppressWarnings("unused")
@@ -120,6 +123,15 @@ public class UserAddressEntity extends BaseEntity {
 
     public String getCountryShortName() {
         return countryShortName;
+    }
+
+    public boolean isPrimaryAddress() {
+        return primaryAddress;
+    }
+
+    public UserAddressEntity setPrimaryAddress(boolean primaryAddress) {
+        this.primaryAddress = primaryAddress;
+        return this;
     }
 
     public String getGeoHash() {
