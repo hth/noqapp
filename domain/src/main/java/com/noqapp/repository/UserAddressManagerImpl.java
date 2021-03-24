@@ -100,9 +100,9 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     @Override
-    public void updateLastUsedAddress(String address, String qid) {
+    public void updateLastUsedAddress(String id, String qid) {
         mongoTemplate.updateFirst(
-            query(where("QID").is(qid).and("AD").regex("^" + address, "i")),
+            query(where("id").is(new ObjectId(id)).and("QID").is(qid)),
             entityUpdate(update("LU", new Date())),
             UserAddressEntity.class,
             TABLE
@@ -118,6 +118,29 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     private UserAddressEntity leastUsedAddress(String qid) {
+        return mongoTemplate.findOne(
+            query(where("QID").is(qid)).with(Sort.by(DESC, "LU")),
+            UserAddressEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public UserAddressEntity findById(String id) {
+        return mongoTemplate.findById(id, UserAddressEntity.class, TABLE);
+    }
+
+    @Override
+    public UserAddressEntity findByAddress(String qid, String address) {
+        return mongoTemplate.findOne(
+            query(where("QID").is(qid).and("AD").regex("^" + address, "i")),
+            UserAddressEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public UserAddressEntity findOne(String qid) {
         return mongoTemplate.findOne(
             query(where("QID").is(qid)).with(Sort.by(DESC, "LU")),
             UserAddressEntity.class,

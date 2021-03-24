@@ -1,3 +1,7 @@
+### Changed Mar 24, 2021
+
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` RENAME COLUMN `DA` TO `AI`;
+
 ### Changed Mar 23, 2021
     
     db.getCollection('USER_PROFILE').update({QID : "100000001777"}, {$unset: {AD : ""}}, {multi: true});

@@ -8,6 +8,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPurchaseOrder;
@@ -55,6 +56,7 @@ import com.noqapp.medical.repository.MedicalRecordManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.RegisteredDeviceManager;
+import com.noqapp.repository.UserAddressManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.BusinessUserStoreService;
 import com.noqapp.service.PurchaseOrderService;
@@ -101,6 +103,7 @@ public class MedicalRecordService {
     private BusinessUserStoreService businessUserStoreService;
     private PurchaseOrderService purchaseOrderService;
     private UserMedicalProfileService userMedicalProfileService;
+    private UserAddressManager userAddressManager;
 
     private ExecutorService executorService;
 
@@ -123,7 +126,8 @@ public class MedicalRecordService {
         RegisteredDeviceManager registeredDeviceManager,
         BusinessUserStoreService businessUserStoreService,
         PurchaseOrderService purchaseOrderService,
-        UserMedicalProfileService userMedicalProfileService
+        UserMedicalProfileService userMedicalProfileService,
+        UserAddressManager userAddressManager
     ) {
         this.limitRecords = limitRecords;
 
@@ -142,6 +146,7 @@ public class MedicalRecordService {
         this.businessUserStoreService = businessUserStoreService;
         this.purchaseOrderService = purchaseOrderService;
         this.userMedicalProfileService = userMedicalProfileService;
+        this.userAddressManager = userAddressManager;
 
         this.executorService = newCachedThreadPool();
     }
@@ -1161,9 +1166,10 @@ public class MedicalRecordService {
     /** Puts in a purchase order. */
     private void placeOrder(JsonMedicalRecord jsonMedicalRecord, JsonPurchaseOrder jsonPurchaseOrder, String bizStoreId) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(jsonMedicalRecord.getQueueUserId());
+        UserAddressEntity userAddress = userAddressManager.findOne(userProfile.getQueueUserId());
         jsonPurchaseOrder
             .setCustomerName(userProfile.getName())
-            .setDeliveryAddress(userProfile.getAddress())
+            .setUserAddressId(null == userAddress ? null : userAddress.getId())
             .setCustomerPhone(userProfile.getPhone())
             .setDeliveryMode(DeliveryModeEnum.TO)
             //.setPaymentMode(PaymentModeEnum.CA)

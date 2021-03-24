@@ -107,19 +107,7 @@ public class UserAddressService {
         JsonUserAddressList jsonUserAddressList = new JsonUserAddressList();
         List<UserAddressEntity> userAddresses = getAll(qid);
         for (UserAddressEntity userAddress : userAddresses) {
-            jsonUserAddressList.addJsonUserAddresses(
-                new JsonUserAddress()
-                    .setId(userAddress.getId())
-                    .setAddress(userAddress.getAddress())
-                    .setArea(userAddress.getArea())
-                    .setTown(userAddress.getTown())
-                    .setDistrict(userAddress.getDistrict())
-                    .setState(userAddress.getState())
-                    .setStateShortName(userAddress.getStateShortName())
-                    .setCountryShortName(userAddress.getCountryShortName())
-                    .setGeoHash(userAddress.getGeoHash())
-                    .setLatitude(String.valueOf(userAddress.getCoordinate()[1]))
-                    .setLongitude(String.valueOf(userAddress.getCoordinate()[0])));
+            jsonUserAddressList.addJsonUserAddresses(JsonUserAddress.populateAsJson(userAddress));
         }
 
         return jsonUserAddressList;
@@ -127,7 +115,20 @@ public class UserAddressService {
 
     @Mobile
     @Async
-    public void addressLastUsed(String address, String qid) {
-        userAddressManager.updateLastUsedAddress(address, qid);
+    public void addressLastUsed(String id, String qid) {
+        if (StringUtils.isNotBlank(id)) {
+            userAddressManager.updateLastUsedAddress(id, qid);
+        }
+    }
+
+    public UserAddressEntity findById(String id) {
+        if (StringUtils.isBlank(id)) {
+            return null;
+        }
+        return userAddressManager.findById(id);
+    }
+
+    public UserAddressEntity findByAddress(String qid, String address) {
+        return userAddressManager.findByAddress(qid, address);
     }
 }

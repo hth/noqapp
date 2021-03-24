@@ -336,7 +336,7 @@ public class ITest extends RealMongoForITest {
         deviceType = DeviceTypeEnum.A.getName();
         model = "Model";
         osVersion = "OS-Version";
-        appVersion = "1.2.800";
+        appVersion = "1.3.10";
 
         userAccountManager = new UserAccountManagerImpl(getMongoTemplate());
         userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
@@ -425,7 +425,8 @@ public class ITest extends RealMongoForITest {
         );
 
         couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
-        purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC);
+        userAddressService = new UserAddressService(userAddressManager, userProfileManager);
+        purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC, userAddressService);
 
         customTextToSpeechService = new CustomTextToSpeechService(customTextToSpeechManager);
         textToSpeechService = new TextToSpeechService(

@@ -14,9 +14,16 @@ public interface UserAddressManager extends RepositoryManager<UserAddressEntity>
 
     long count(String qid);
 
-    void updateLastUsedAddress(String address, String qid);
+    void updateLastUsedAddress(String id, String qid);
 
     void deleteAddress(String id, String qid);
 
     boolean doesAddressExists(String id, String qid);
+
+    UserAddressEntity findById(String id);
+
+    UserAddressEntity findByAddress(String qid, String address);
+
+    //Can be changed to select primary address
+    UserAddressEntity findOne(String qid);
 }

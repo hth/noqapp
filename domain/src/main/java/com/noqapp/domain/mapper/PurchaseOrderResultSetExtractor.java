@@ -37,7 +37,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor<Purch
     private static final int PM = 8;
     private static final int PY = 9;
     private static final int PS = 10;
-    private static final int DA = 11;
+    private static final int AI = 11;
     private static final int RA = 12;
     private static final int RV = 13;
     private static final int ST = 14;
@@ -85,7 +85,7 @@ public class PurchaseOrderResultSetExtractor implements ResultSetExtractor<Purch
             purchaseOrder.setPaymentMode(StringUtils.isBlank(rs.getString(PM)) ? null : PaymentModeEnum.valueOf(rs.getString(PM)));
             purchaseOrder.setPaymentStatus(PaymentStatusEnum.valueOf(rs.getString(PY)));
             purchaseOrder.addOrderState(PurchaseOrderStateEnum.valueOf(rs.getString(PS)));
-            purchaseOrder.setDeliveryAddress(rs.getString(DA));
+            purchaseOrder.setUserAddressId(rs.getString(AI));
             purchaseOrder.setRatingCount(rs.getInt(RA));
             purchaseOrder.setReview(rs.getString(RV));
             purchaseOrder.setSentimentType(StringUtils.isBlank(rs.getString(ST)) ? null : SentimentTypeEnum.valueOf(rs.getString(ST)));
