@@ -1,6 +1,13 @@
 ### Changed Mar 24, 2021
 
+For new version
+
     ALTER TABLE `noqapp_test`.`PURCHASE_ORDER` RENAME COLUMN `DA` TO `AI`;
+
+For older version
+
+    ALTER TABLE `noqapp_test`.`PURCHASE_ORDER`
+    CHANGE COLUMN `DA` `AI` VARCHAR(128) NULL DEFAULT NULL ;
 
 ### Changed Mar 23, 2021
     
