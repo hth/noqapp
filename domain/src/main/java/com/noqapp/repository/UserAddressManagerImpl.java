@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -60,19 +59,11 @@ public class UserAddressManagerImpl implements UserAddressManager {
 
     @Override
     public void save(UserAddressEntity object) {
-        try {
-            while (count(object.getQueueUserId()) >= numberOfAddressAllowed) {
-                UserAddressEntity leastUsed = leastUsedAddress(object.getQueueUserId());
-                mongoTemplate.remove(leastUsed);
-            }
-            if (object.getId() != null) {
-                object.setUpdated();
-            }
-            mongoTemplate.save(object, TABLE);
-        } catch (DataIntegrityViolationException e) {
-            LOG.error("Duplicate record entry for UserAddressEntity={}", e.getLocalizedMessage(), e);
-            throw e;
+        while (count(object.getQueueUserId()) >= numberOfAddressAllowed) {
+            UserAddressEntity leastUsed = leastUsedAddress(object.getQueueUserId());
+            mongoTemplate.remove(leastUsed);
         }
+        mongoTemplate.save(object, TABLE);
     }
 
     @Override
@@ -97,37 +88,6 @@ public class UserAddressManagerImpl implements UserAddressManager {
             UserAddressEntity.class,
             TABLE
         );
-    }
-
-    @Override
-    public boolean doesAddressWithGoeHashExists(String qid, String geoHash) {
-        return mongoTemplate.exists(
-            query(where("QID").is(qid).and("GH").is(geoHash)),
-            UserAddressEntity.class,
-            TABLE
-        );
-    }
-
-    @Override
-    public UserAddressEntity findOne(String qid, String geoHash) {
-        return mongoTemplate.findOne(
-            query(where("QID").is(qid).and("GH").is(geoHash)),
-            UserAddressEntity.class,
-            TABLE
-        );
-    }
-
-    @Override
-    public List<UserAddressEntity> findAllWhereCoordinateDoesNotExists() {
-        return mongoTemplate.find(
-            query(where("COR").exists(false)),
-            UserAddressEntity.class,
-            TABLE);
-    }
-
-    @Override
-    public UserAddressEntity findById(String id) {
-        return mongoTemplate.findById(new ObjectId(id), UserAddressEntity.class, TABLE);
     }
 
     @Override

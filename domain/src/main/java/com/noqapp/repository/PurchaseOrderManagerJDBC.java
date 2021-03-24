@@ -65,8 +65,4 @@ public interface PurchaseOrderManagerJDBC {
     List<PurchaseOrderEntity> findTransactionBetweenDays(String bizNameId, String from, String until);
 
     List<PurchaseOrderEntity> findByQidAndBizNameId(String qid, String bizNameId);
-
-    List<PurchaseOrderEntity> findAllOrdersWhereAddressExists();
-
-    boolean updateAddressToUserAddressId(String id, String userAddressId);
 }

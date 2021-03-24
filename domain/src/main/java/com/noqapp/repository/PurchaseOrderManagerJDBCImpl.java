@@ -123,12 +123,6 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     private static final String checkIfClientVisitedStore =
         "SELECT EXISTS(SELECT 1 FROM PURCHASE_ORDER WHERE QR = ? AND QID = ? AND PY = ? LIMIT 1)";
 
-    private static final String ordersWithAddress =
-        "SELECT ID, QID, BS, BN, QR, DID, DM, PM, PY, PS, DA, RA, RV, ST, TN, DT, SD, PP, OP, TA, GT, BT, PQ, FQ, CQ, CI, SN, SB, SE, TI, TR, TM, TV, DN, AN, V, U, C, A, D" +
-            " FROM " +
-            "PURCHASE_ORDER WHERE DA <> '' " +
-            "ORDER BY C DESC";
-
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private JdbcTemplate jdbcTemplate;
 
@@ -359,16 +353,5 @@ public class PurchaseOrderManagerJDBCImpl implements PurchaseOrderManagerJDBC {
     @Override
     public List<PurchaseOrderEntity> findByQidAndBizNameId(String qid, String bizNameId) {
         return jdbcTemplate.query(qidAndBizNameId, new Object[]{qid, bizNameId}, new PurchaseOrderRowMapper());
-    }
-
-    @Override
-    public List<PurchaseOrderEntity> findAllOrdersWhereAddressExists() {
-        return jdbcTemplate.query(ordersWithAddress, new PurchaseOrderRowMapper());
-    }
-
-    @Override
-    @CustomTransactional
-    public boolean updateAddressToUserAddressId(String id, String userAddressId) {
-        return this.jdbcTemplate.update("UPDATE PURCHASE_ORDER SET DA = ? WHERE ID = ?", userAddressId, id) > 0;
     }
 }
