@@ -22,16 +22,16 @@ import java.util.StringJoiner;
  * 5/16/18 10:07 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable",
-        "unused"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable",
+    "unused"
 })
 @JsonAutoDetect(
-        fieldVisibility = JsonAutoDetect.Visibility.ANY,
-        getterVisibility = JsonAutoDetect.Visibility.NONE,
-        setterVisibility = JsonAutoDetect.Visibility.NONE
+    fieldVisibility = JsonAutoDetect.Visibility.ANY,
+    getterVisibility = JsonAutoDetect.Visibility.NONE,
+    setterVisibility = JsonAutoDetect.Visibility.NONE
 )
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -70,6 +70,9 @@ public class JsonUserAddress extends AbstractDomain {
 
     @JsonProperty("lng")
     private String longitude;
+
+    @JsonProperty("pa")
+    private boolean primaryAddress;
 
     public String getId() {
         return id;
@@ -170,6 +173,15 @@ public class JsonUserAddress extends AbstractDomain {
         return this;
     }
 
+    public boolean isPrimaryAddress() {
+        return primaryAddress;
+    }
+
+    public JsonUserAddress setPrimaryAddress(boolean primaryAddress) {
+        this.primaryAddress = primaryAddress;
+        return this;
+    }
+
     @Transient
     public double[] getCoordinate() {
         return CommonUtil.getCoordinates(longitude, latitude);
@@ -193,6 +205,7 @@ public class JsonUserAddress extends AbstractDomain {
             .setState(userAddress.getState())
             .setStateShortName(userAddress.getStateShortName())
             .setCountryShortName(userAddress.getCountryShortName())
+            .setPrimaryAddress(userAddress.isPrimaryAddress())
             .setGeoHash(userAddress.getGeoHash())
             .setLatitude(String.valueOf(userAddress.getCoordinate()[1]))
             .setLongitude(String.valueOf(userAddress.getCoordinate()[0]));

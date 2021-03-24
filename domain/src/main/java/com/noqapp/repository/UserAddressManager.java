@@ -24,6 +24,8 @@ public interface UserAddressManager extends RepositoryManager<UserAddressEntity>
 
     UserAddressEntity findByAddress(String qid, String address);
 
-    //Can be changed to select primary address
-    UserAddressEntity findOne(String qid);
+    /** If primary address exists then return primary or find any other address. */
+    UserAddressEntity findPrimaryOrAnyExistingAddress(String qid);
+
+    UserAddressEntity markAddressPrimary(String id, String qid);
 }
