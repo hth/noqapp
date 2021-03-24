@@ -56,4 +56,13 @@ public class JsonUserAddressList extends AbstractDomain {
     public void removeJsonUserAddresses(String id) {
         jsonUserAddresses.removeIf(i -> i.getId().equals(id));
     }
+
+    @Transient
+    public void markJsonUserAddressesPrimary(String id) {
+        jsonUserAddresses.forEach(f -> {
+            if (f.getId().equalsIgnoreCase(id)) {
+                f.setPrimaryAddress(true);
+            }
+        });
+    }
 }
