@@ -107,9 +107,9 @@ public class UserAddressService {
 
     @Mobile
     @Async
-    public void deleteAddress(String id, String qid) {
+    public void markAddressAsInactive(String id, String qid) {
         Assert.hasText(id, "Id cannot be blank " + qid);
-        userAddressManager.deleteAddress(id, qid);
+        userAddressManager.markAddressAsInactive(id, qid);
     }
 
     private List<UserAddressEntity> getAll(String qid) {

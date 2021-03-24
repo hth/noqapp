@@ -74,7 +74,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     @Override
-    public void deleteAddress(String id, String qid) {
+    public void markAddressAsInactive(String id, String qid) {
         mongoTemplate.updateFirst(
             query(where("id").is(new ObjectId(id)).and("QID").is(qid)),
             entityUpdate(update("A", false)),

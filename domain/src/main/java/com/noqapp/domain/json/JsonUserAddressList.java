@@ -58,7 +58,7 @@ public class JsonUserAddressList extends AbstractDomain {
     }
 
     @Transient
-    public void markJsonUserAddressesPrimary(String id) {
+    public void markPrimaryJsonUserAddresses(String id) {
         jsonUserAddresses.forEach(f -> {
             if (f.getId().equalsIgnoreCase(id)) {
                 f.setPrimaryAddress(true);
