@@ -95,7 +95,14 @@ public class UserAddressService {
     @Async
     public void markAddressPrimary(String id, String qid) {
         Assert.hasText(id, "Id cannot be blank " + qid);
-        userAddressManager.markAddressPrimary(id, qid);
+        UserAddressEntity userAddress = userAddressManager.markAddressPrimary(id, qid);
+
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+        userProfile
+            .setAddress(userAddress.getAddress())
+            .setCountryShortName(userAddress.getCountryShortName())
+            .setAddressOrigin(AddressOriginEnum.G);
+        userProfileManager.save(userProfile);
     }
 
     @Mobile

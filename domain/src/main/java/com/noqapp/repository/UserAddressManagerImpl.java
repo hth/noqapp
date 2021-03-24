@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Update;
@@ -160,7 +161,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     @Override
-    public void markAddressPrimary(String id, String qid) {
+    public UserAddressEntity markAddressPrimary(String id, String qid) {
         mongoTemplate.updateMulti(
             query(where("QID").is(qid).and("A").is(true)),
             entityUpdate(new Update().unset("PA")),
@@ -168,9 +169,10 @@ public class UserAddressManagerImpl implements UserAddressManager {
             TABLE
         );
 
-        mongoTemplate.updateFirst(
+        mongoTemplate.findAndModify(
             query(where(id).is(id).and("QID").is(qid)),
             entityUpdate(update("PA", true)),
+            FindAndModifyOptions.options().returnNew(true),
             UserAddressEntity.class,
             TABLE
         );
