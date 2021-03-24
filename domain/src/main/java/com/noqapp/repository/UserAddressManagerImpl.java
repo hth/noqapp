@@ -169,7 +169,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
             TABLE
         );
 
-        mongoTemplate.findAndModify(
+        return mongoTemplate.findAndModify(
             query(where(id).is(id).and("QID").is(qid)),
             entityUpdate(update("PA", true)),
             FindAndModifyOptions.options().returnNew(true),
