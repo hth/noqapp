@@ -621,7 +621,8 @@ public class ITest extends RealMongoForITest {
             registeredDeviceManager,
             businessUserStoreService,
             purchaseOrderService,
-            userMedicalProfileService
+            userMedicalProfileService,
+            userAddressManager
         );
 
         medicalFileService = new MedicalFileService(
