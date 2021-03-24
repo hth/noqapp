@@ -122,7 +122,7 @@ public class UserAddressService {
 
     @Mobile
     @Async
-    public void addressLastUsed(String id, String qid) {
+    public void updateLastUsedAddress(String id, String qid) {
         if (StringUtils.isNotBlank(id)) {
             userAddressManager.updateLastUsedAddress(id, qid);
         }

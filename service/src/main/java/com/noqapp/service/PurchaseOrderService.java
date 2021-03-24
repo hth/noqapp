@@ -716,7 +716,7 @@ public class PurchaseOrderService {
                 .setExpectedServiceBegin(expectedServiceBegin);
             purchaseOrderManager.save(purchaseOrder);
             executorService.submit(() -> updatePurchaseOrderWithUserDetail(purchaseOrder));
-            userAddressService.addressLastUsed(jsonPurchaseOrder.getUserAddressId(), qid);
+            userAddressService.updateLastUsedAddress(jsonPurchaseOrder.getUserAddressId(), qid);
 
             /* Decrease inventory when purchase successful. */
             for (String productId : productPurchases.keySet()) {
