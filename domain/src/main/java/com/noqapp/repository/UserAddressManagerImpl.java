@@ -119,9 +119,10 @@ public class UserAddressManagerImpl implements UserAddressManager {
         );
     }
 
+    /** Primary Address is not considered in least used. */
     private UserAddressEntity leastUsedAddress(String qid) {
         return mongoTemplate.findOne(
-            query(where("QID").is(qid)).with(Sort.by(DESC, "LU")),
+            query(where("QID").is(qid).and("PA").is(false)).with(Sort.by(DESC, "LU")),
             UserAddressEntity.class,
             TABLE
         );
