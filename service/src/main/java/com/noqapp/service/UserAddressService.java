@@ -62,7 +62,7 @@ public class UserAddressService {
         String geoHash,
         double[] coordinate
     ) {
-        Assert.hasText(id, "Id cannot be blank");
+        Assert.hasText(id, "Id cannot be blank " + qid);
 
         long existing = userAddressManager.count(qid);
         UserAddressEntity userAddress = new UserAddressEntity(
@@ -94,14 +94,14 @@ public class UserAddressService {
     @Mobile
     @Async
     public void markAddressPrimary(String id, String qid) {
-        Assert.hasText(id, "Id cannot be blank");
-        UserAddressEntity userAddress = userAddressManager.markAddressPrimary(id, qid);
+        Assert.hasText(id, "Id cannot be blank " + qid);
+        userAddressManager.markAddressPrimary(id, qid);
     }
 
     @Mobile
     @Async
     public void deleteAddress(String id, String qid) {
-        Assert.hasText(id, "Id cannot be blank");
+        Assert.hasText(id, "Id cannot be blank " + qid);
         userAddressManager.deleteAddress(id, qid);
     }
 
