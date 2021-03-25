@@ -67,7 +67,7 @@ public class BusinessUserManagerImpl implements BusinessUserManager {
     @Override
     public BusinessUserEntity findById(String id) {
         return mongoTemplate.findOne(
-            query(where("_id").is(id)),
+            query(where("id").is(new ObjectId(id))),
             BusinessUserEntity.class,
             TABLE);
     }

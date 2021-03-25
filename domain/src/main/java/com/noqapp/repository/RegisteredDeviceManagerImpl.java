@@ -128,7 +128,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
             }
 
             return mongoTemplate.updateFirst(
-                query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
+                query(where("id").is(new ObjectId(id)).and("DID").is(did)),
                 update,
                 RegisteredDeviceEntity.class,
                 TABLE
@@ -151,7 +151,7 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
         }
 
         return mongoTemplate.updateFirst(
-            query(where("_id").is(new ObjectId(id)).and("DID").is(did)),
+            query(where("id").is(new ObjectId(id)).and("DID").is(did)),
             update,
             RegisteredDeviceEntity.class,
             TABLE

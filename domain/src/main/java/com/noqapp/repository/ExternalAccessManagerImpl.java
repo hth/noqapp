@@ -6,6 +6,8 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ExternalAccessEntity;
 
+import org.bson.types.ObjectId;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,18 +24,18 @@ import java.util.List;
  * 2/4/18 11:06 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class ExternalAccessManagerImpl implements ExternalAccessManager {
     private static final Logger LOG = LoggerFactory.getLogger(ExternalAccessManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            ExternalAccessEntity.class,
-            Document.class,
-            "collection");
+        ExternalAccessEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -53,17 +55,17 @@ public class ExternalAccessManagerImpl implements ExternalAccessManager {
     @Override
     public ExternalAccessEntity findById(String id) {
         return mongoTemplate.findOne(
-                query(where("_id").is(id)),
-                ExternalAccessEntity.class,
-                TABLE);
+            query(where("id").is(new ObjectId(id))),
+            ExternalAccessEntity.class,
+            TABLE);
     }
 
     @Override
     public List<ExternalAccessEntity> findAll(String bizId) {
         return mongoTemplate.find(
-                query(where("BN").is(bizId)).with(Sort.by(Sort.Direction.ASC, "QID")),
-                ExternalAccessEntity.class,
-                TABLE
+            query(where("BN").is(bizId)).with(Sort.by(Sort.Direction.ASC, "QID")),
+            ExternalAccessEntity.class,
+            TABLE
         );
     }
 
