@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import org.elasticsearch.common.geo.GeoPoint;
 
@@ -220,8 +219,12 @@ public class JsonUserAddress extends AbstractDomain {
             .add("countryShortName='" + countryShortName + "'")
             .add("area='" + area + "'")
             .add("town='" + town + "'")
+            .add("district='" + district + "'")
+            .add("state='" + state + "'")
+            .add("stateShortName='" + stateShortName + "'")
             .add("latitude='" + latitude + "'")
             .add("longitude='" + longitude + "'")
+            .add("primaryAddress=" + primaryAddress)
             .toString();
     }
 }
