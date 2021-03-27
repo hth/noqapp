@@ -7,6 +7,7 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.CouponEntity;
 import com.noqapp.domain.DiscountEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.CouponGroupEnum;
@@ -16,6 +17,7 @@ import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.CouponService;
 import com.noqapp.service.DiscountService;
+import com.noqapp.service.UserAddressService;
 import com.noqapp.view.flow.merchant.exception.CouponAlreadyExistsForClient;
 import com.noqapp.view.flow.merchant.exception.CouponGlobalAlreadyExistsException;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
@@ -48,6 +50,7 @@ public class CouponFlowActions {
     private BusinessUserService businessUserService;
     private BizService bizService;
     private AccountService accountService;
+    private UserAddressService userAddressService;
 
     @Autowired
     public CouponFlowActions(
@@ -55,13 +58,15 @@ public class CouponFlowActions {
         CouponService couponService,
         BusinessUserService businessUserService,
         BizService bizService,
-        AccountService accountService
+        AccountService accountService,
+        UserAddressService userAddressService
     ) {
         this.discountService = discountService;
         this.couponService = couponService;
         this.businessUserService = businessUserService;
         this.bizService = bizService;
         this.accountService = accountService;
+        this.userAddressService = userAddressService;
     }
 
     /* All coupon starts from here. */
@@ -120,10 +125,12 @@ public class CouponFlowActions {
         BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
         String phone = Formatter.phoneNumberWithCountryCode(couponForm.getPhoneRaw(), bizName.getCountryShortName());
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
+        UserAddressEntity userAddress = userAddressService.findOneUserAddress(userProfile.getQueueUserId());
+
         couponForm
             .setQid(userProfile.getQueueUserId())
             .setName(userProfile.getName())
-            .setAddress(userProfile.getAddress());
+            .setAddress(null == userAddress ? null : userAddress.getAddress());
 
         if (couponService.checkIfCouponExistsForQid(couponForm.getDiscountId(), couponForm.getQid())) {
             LOG.warn("Coupon already exists for {} {}", couponForm.getDiscountId(), couponForm.getQid());
@@ -146,10 +153,12 @@ public class CouponFlowActions {
         BizNameEntity bizName = bizService.getByBizNameId(couponForm.getBizNamedId());
         String phone = Formatter.phoneNumberWithCountryCode(couponForm.getPhoneRaw(), bizName.getCountryShortName());
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone(phone);
+        UserAddressEntity userAddress = userAddressService.findOneUserAddress(userProfile.getQueueUserId());
+
         couponForm
             .setQid(userProfile.getQueueUserId())
             .setName(userProfile.getName())
-            .setAddress(userProfile.getAddress());
+            .setAddress(null == userAddress ? null : userAddress.getAddress());
 
         couponForm.setUserProfiles(new LinkedList<>());
         List<String> qidOfDependents = userProfile.getQidOfDependents();
@@ -167,6 +176,7 @@ public class CouponFlowActions {
     public void populateClientCouponForm(CouponForm couponForm, MessageContext messageContext) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        UserAddressEntity userAddress = userAddressService.findOneUserAddress(couponForm.getQid());
         DiscountEntity discount = discountService.findById(couponForm.getDiscountId());
         if (couponService.checkIfCouponExistsForQid(couponForm.getDiscountId(), couponForm.getQid())) {
             LOG.warn("Coupon already exists for {} {}", couponForm.getDiscountId(), couponForm.getQid());
@@ -174,32 +184,17 @@ public class CouponFlowActions {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(couponForm.getQid());
             couponForm
                 .setQid(couponForm.getQid())
-                .setName(userProfile != null ? userProfile.getName() : null)
-                .setAddress(userProfile != null ? userProfile.getAddress() : null);
+                .setName(userProfile.getName())
+                .setAddress(null == userAddress ? null : userAddress.getAddress());
 
-            if (null != userProfile) {
-                messageContext.addMessage(
-                    new MessageBuilder()
-                        .error()
-                        .source("qid")
-                        .defaultText("Coupon " + discount.getDiscountName() + " already exists for " + userProfile.getName() + " ( Age " + userProfile.getAgeAsString() + ")")
-                        .build());
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("qid")
+                    .defaultText("Coupon " + discount.getDiscountName() + " already exists for " + userProfile.getName() + " ( Age " + userProfile.getAgeAsString() + ")")
+                    .build());
 
-                throw new CouponAlreadyExistsForClient("Coupon already exists. Previous coupon has to expire before creating new coupon");
-            } else {
-                /**
-                 * This condition will not be reached as {@link DiscountService#findAllActive(String)} method checks if discount
-                 * already exists.
-                 */
-                messageContext.addMessage(
-                    new MessageBuilder()
-                        .error()
-                        .source("qid")
-                        .defaultText("Coupon " + discount.getDiscountName() + " already exists")
-                        .build());
-
-                throw new CouponGlobalAlreadyExistsException("Coupon already exists. Previous coupon has to expire before creating new coupon");
-            }
+            throw new CouponAlreadyExistsForClient("Coupon already exists. Previous coupon has to expire before creating new coupon");
         }
 
         couponForm.setBizNamedId(discount.getBizNameId())
@@ -226,7 +221,7 @@ public class CouponFlowActions {
                 couponForm
                     .setQid(couponForm.getQid())
                     .setName(userProfile.getName())
-                    .setAddress(userProfile.getAddress());
+                    .setAddress(null == userAddress ? null : userAddress.getAddress());
                 break;
         }
     }

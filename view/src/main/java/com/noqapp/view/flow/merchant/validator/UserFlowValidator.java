@@ -6,6 +6,7 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.flow.RegisterUser;
+import com.noqapp.domain.json.JsonUserAddress;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.types.AddressOriginEnum;
@@ -188,16 +189,15 @@ public class UserFlowValidator {
         } else {
             DecodedAddress decodedAddress;
             if (registerUser.isSelectFoundAddress()) {
+                /* Use Google supplied address. */
                 decodedAddress = registerUser.getFoundAddresses().get(registerUser.getFoundAddressPlaceId());
                 registerUser.setAddress(new ScrubbedInput(decodedAddress.getFormattedAddress()));
-                registerUser.setAddressOrigin(AddressOriginEnum.G);
+                registerUser.setJsonUserAddress(JsonUserAddress.populateJsonUserAddressFromDecode(decodedAddress));
             } else if (registerUser.getFoundAddresses().isEmpty() || registerUser.hasUserEnteredAddressChanged()) {
                 /* This code would track if the address entered by user has changed. */
                 registerUser.setPlaceHolderAddress(registerUser.getAddress());
 
-                Geocode geocode = Geocode.newInstance(
-                    externalService.getGeocodingResults(registerUser.getAddress()),
-                    registerUser.getAddress());
+                Geocode geocode = Geocode.newInstance(externalService.getGeocodingResults(registerUser.getAddress()), registerUser.getAddress());
                 registerUser.setFoundAddresses(geocode.getFoundAddresses());
                 decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
 
@@ -222,12 +222,12 @@ public class UserFlowValidator {
                 }
             } else {
                 /*
-                 * Since user has choose to select the address entered by user, we take what we found and
+                 * Since user has preferred to use the address entered by user, we take what we found and
                  * replace the other parameter with decoded address and keep the original address same.
                  */
                 Map.Entry<String, DecodedAddress> entry = registerUser.getFoundAddresses().entrySet().iterator().next();
                 decodedAddress = entry.getValue();
-                registerUser.setAddressOrigin(AddressOriginEnum.S);
+                registerUser.setJsonUserAddress(JsonUserAddress.populateJsonUserAddressFromDecode(decodedAddress, registerUser.getAddress()));
             }
 
             if (!registerUser.getFoundAddresses().isEmpty()) {

@@ -12,7 +12,7 @@ public interface UserAddressManager extends RepositoryManager<UserAddressEntity>
 
     List<UserAddressEntity> getAll(String qid);
 
-    long count(String qid);
+    long countActive(String qid);
 
     void updateLastUsedAddress(String id, String qid);
 

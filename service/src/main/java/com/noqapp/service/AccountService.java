@@ -2,6 +2,7 @@ package com.noqapp.service;
 
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.HashText;
@@ -12,11 +13,13 @@ import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.GenerateUserIds;
 import com.noqapp.domain.InviteEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
 import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.flow.RegisterUser;
+import com.noqapp.domain.json.JsonUserAddress;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
 import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.domain.types.GenderEnum;
@@ -72,6 +75,7 @@ public class AccountService {
     private EmailValidateService emailValidateService;
     private InviteService inviteService;
     private ForgotRecoverManager forgotRecoverManager;
+    private UserAddressService userAddressService;
 
     private ExecutorService executorService;
 
@@ -87,7 +91,8 @@ public class AccountService {
         GenerateUserIdService generateUserIdService,
         EmailValidateService emailValidateService,
         InviteService inviteService,
-        ForgotRecoverManager forgotRecoverManager
+        ForgotRecoverManager forgotRecoverManager,
+        UserAddressService userAddressService
     ) {
         this.points = points;
 
@@ -99,6 +104,7 @@ public class AccountService {
         this.emailValidateService = emailValidateService;
         this.inviteService = inviteService;
         this.forgotRecoverManager = forgotRecoverManager;
+        this.userAddressService = userAddressService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -710,7 +716,24 @@ public class AccountService {
 
         userProfile.setGender(registerUser.getGender());
         if (StringUtils.isNotBlank(registerUser.getAddress())) {
-            userProfile.setAddress(registerUser.getAddress());
+            JsonUserAddress jsonUserAddress = registerUser.getJsonUserAddress();
+
+            if (null != jsonUserAddress && StringUtils.isNotBlank(jsonUserAddress.getAddress())) {
+                /* Note: Address set in the JsonUserAddress has higher preference. Always use that address. */
+                UserAddressEntity userAddress = userAddressService.findByAddress(registerUser.getQueueUserId(), jsonUserAddress.getAddress());
+                if (null == userAddress) {
+                    userAddressService.saveAddress(
+                        CommonUtil.generateHexFromObjectId(),
+                        registerUser.getQueueUserId(),
+                        jsonUserAddress
+                    );
+                } else {
+                    LOG.info("Address already exists for qid={} address=\"{}\"", registerUser.getQueueUserId(), jsonUserAddress.getAddress());
+                }
+            } else {
+                /* Should not reach this condition. */
+                LOG.warn("No address supplied condition reached for JsonUSerAddress qid={}", registerUser.getQueueUserId());
+            }
         }
         userProfile.setCountryShortName(registerUser.getCountryShortName());
         if (StringUtils.isBlank(userProfile.getGuardianPhone())) {
@@ -721,7 +744,6 @@ public class AccountService {
         }
         userProfile.setTimeZone(registerUser.getTimeZone());
         userProfile.setBirthday(registerUser.getBirthday());
-        userProfile.setAddressOrigin(registerUser.getAddressOrigin());
         save(userProfile);
 
         if (!userProfile.getName().equalsIgnoreCase(registerUser.getName())) {

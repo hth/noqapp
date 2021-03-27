@@ -12,6 +12,7 @@ import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.annotation.Television;
@@ -66,6 +67,7 @@ public class BusinessUserStoreService {
     private BizService bizService;
     private ProfessionalProfileService professionalProfileService;
     private StoreHourService storeHourService;
+    private UserAddressService userAddressService;
 
     @Autowired
     public BusinessUserStoreService(
@@ -79,7 +81,8 @@ public class BusinessUserStoreService {
         AccountService accountService,
         BizService bizService,
         ProfessionalProfileService professionalProfileService,
-        StoreHourService storeHourService
+        StoreHourService storeHourService,
+        UserAddressService userAddressService
     ) {
         this.queueLimit = queueLimit;
         this.businessUserStoreManager = businessUserStoreManager;
@@ -90,6 +93,7 @@ public class BusinessUserStoreService {
         this.bizService = bizService;
         this.professionalProfileService = professionalProfileService;
         this.storeHourService = storeHourService;
+        this.userAddressService = userAddressService;
     }
 
     public void save(BusinessUserStoreEntity businessUserStore) {
@@ -296,12 +300,14 @@ public class BusinessUserStoreService {
     private QueueSupervisor populateQueueSupervisorFromQid(String bizStoreId, String bizNameId, String qid) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
         UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
+        UserAddressEntity userAddress = userAddressService.findOneUserAddress(qid);
         BusinessUserEntity businessUser = businessUserService.findBusinessUser(qid, bizNameId);
+
         ProfessionalProfileEntity professionalProfile = null;
         if (BusinessTypeEnum.DO == businessUser.getBizName().getBusinessType()) {
             professionalProfile = professionalProfileService.findByQid(qid);
         }
-        return populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount, professionalProfile);
+        return populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount, userAddress, professionalProfile);
     }
 
     /**
@@ -318,11 +324,13 @@ public class BusinessUserStoreService {
         for (BusinessUserEntity businessUser : businessUsers) {
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(businessUser.getQueueUserId());
             UserAccountEntity userAccount = accountService.findByQueueUserId(businessUser.getQueueUserId());
+            UserAddressEntity userAddress = userAddressService.findOneUserAddress(businessUser.getQueueUserId());
+            
             ProfessionalProfileEntity professionalProfile = null;
             if (BusinessTypeEnum.DO == businessUser.getBizName().getBusinessType()) {
                 professionalProfile = professionalProfileService.findByQid(businessUser.getQueueUserId());
             }
-            queueSupervisors.add(populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount, professionalProfile));
+            queueSupervisors.add(populateQueueSupervisor(bizNameId, bizStoreId, businessUser, userProfile, userAccount, userAddress, professionalProfile));
         }
 
         /* Sort by name. */
@@ -336,6 +344,7 @@ public class BusinessUserStoreService {
         BusinessUserEntity businessUser,
         UserProfileEntity userProfile,
         UserAccountEntity userAccount,
+        UserAddressEntity userAddress,
         ProfessionalProfileEntity professionalProfile
     ) {
         QueueSupervisor queueSupervisor = new QueueSupervisor()
@@ -347,7 +356,7 @@ public class BusinessUserStoreService {
             .setPhone(userProfile.getPhone())
             .setPhoneValidated(userAccount.isPhoneValidated())
             .setCountryShortName(userProfile.getCountryShortName())
-            .setAddress(userProfile.getAddress())
+            .setAddress(null == userAddress ? null : userAddress.getAddress())
             .setEmail(userProfile.getEmail())
             .setQueueUserId(userProfile.getQueueUserId())
             .setUserLevel(userProfile.getLevel())

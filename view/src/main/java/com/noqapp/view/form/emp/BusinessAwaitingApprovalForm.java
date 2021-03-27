@@ -1,6 +1,7 @@
 package com.noqapp.view.form.emp;
 
 import com.noqapp.domain.BusinessUserEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
@@ -16,6 +17,7 @@ public class BusinessAwaitingApprovalForm {
 
     private BusinessUserEntity businessUser;
     private UserProfileEntity userProfile;
+    private UserAddressEntity userAddress;
     private UserProfileEntity inviteeUserProfile;
 
     @Transient
@@ -36,6 +38,15 @@ public class BusinessAwaitingApprovalForm {
 
     public BusinessAwaitingApprovalForm setUserProfile(UserProfileEntity userProfile) {
         this.userProfile = userProfile;
+        return this;
+    }
+
+    public UserAddressEntity getUserAddress() {
+        return userAddress;
+    }
+
+    public BusinessAwaitingApprovalForm setUserAddress(UserAddressEntity userAddress) {
+        this.userAddress = userAddress;
         return this;
     }
 

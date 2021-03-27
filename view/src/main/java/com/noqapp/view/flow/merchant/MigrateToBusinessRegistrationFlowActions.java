@@ -5,6 +5,7 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.MigrateToBusinessRegistration;
 import com.noqapp.domain.flow.Register;
@@ -29,6 +30,7 @@ import com.noqapp.service.MailService;
 import com.noqapp.service.StoreHourService;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.service.UserAddressService;
 import com.noqapp.service.emp.EmpLandingService;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessRegistrationException;
 
@@ -53,6 +55,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Profile registers for a business. Fills our the business information and awaits approval.
  * User: hitender
  * Date: 12/9/16 1:20 PM
  */
@@ -66,6 +69,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
     private AccountService accountService;
     private BusinessUserService businessUserService;
     private EmpLandingService empLandingService;
+    private UserAddressService userAddressService;
     private StoreHourService storeHourService;
 
     @SuppressWarnings("all")
@@ -84,6 +88,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         BizStoreElasticService bizStoreElasticService,
         MailService mailService,
         EmpLandingService empLandingService,
+        UserAddressService userAddressService,
         StoreProductService storeProductService,
         BusinessUserStoreService businessUserStoreService,
         StoreHourService storeHourService,
@@ -106,6 +111,7 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         this.autoApproveBusinessTurnedOn = autoApproveBusinessTurnedOn;
 
         this.empLandingService = empLandingService;
+        this.userAddressService = userAddressService;
         this.fetcherService = fetcherService;
         this.accountService = accountService;
         this.businessUserService = businessUserService;
@@ -133,12 +139,14 @@ public class MigrateToBusinessRegistrationFlowActions extends RegistrationFlowAc
         Register register = MigrateToBusinessRegistration.newInstance(businessUser, null);
         UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+        UserAddressEntity userAddress = userAddressService.findOneUserAddress(qid);
+
         register.getRegisterUser().setEmail(new ScrubbedInput(userProfile.getEmail()))
             .setGender(userProfile.getGender())
             .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
             .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
             .setLastName(new ScrubbedInput(userProfile.getLastName()))
-            .setAddress(new ScrubbedInput(userProfile.getAddress()))
+            .setAddress(null == userAddress ? new ScrubbedInput("") : new ScrubbedInput(userAddress.getAddress()))
             .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
             .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
             .setEmailValidated(userAccount.isAccountValidated())

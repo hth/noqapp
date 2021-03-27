@@ -85,10 +85,10 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="userProfile.address" cssErrorClass="lb_error">Your Address</form:label>
+                                        <form:label path="userAddress.address" cssErrorClass="lb_error">Your Address</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:textarea path="userProfile.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
+                                        <form:textarea path="userAddress.address" cols="" rows="3" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true" />
                                     </div>
                                     <div class="clearFix"></div>
                                 </li>
