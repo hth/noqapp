@@ -289,7 +289,7 @@
                                                 <form:hidden path="action" value="ADD" />
                                                 <form:hidden path="businessUserId" value="${queueSupervisor.businessUserId}" />
                                                 <form:hidden path="bizStoreId" value="${queueSupervisorForm.bizStoreId}" />
-                                                <input class="cancel-btn" value="Add" type="submit">
+                                                <input class="cancel-btn" value="Add &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" type="submit">
                                             </form:form>
                                         </td>
                                     </tr>
