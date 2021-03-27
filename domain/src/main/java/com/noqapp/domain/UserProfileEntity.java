@@ -79,9 +79,6 @@ public class UserProfileEntity extends BaseEntity {
     @Field("UL")
     private UserLevelEnum level = UserLevelEnum.CLIENT;
 
-    @Field("AD")
-    private String address;
-
     @Field("CS")
     private String countryShortName;
 
@@ -104,9 +101,6 @@ public class UserProfileEntity extends BaseEntity {
     @NotNull
     @Field("IC")
     private String inviteCode;
-
-    @Field("AO")
-    private AddressOriginEnum addressOrigin;
 
     @Field("BT")
     private BusinessTypeEnum businessType;
@@ -225,15 +219,6 @@ public class UserProfileEntity extends BaseEntity {
         return this;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public UserProfileEntity setAddress(String address) {
-        this.address = address;
-        return this;
-    }
-
     public String getCountryShortName() {
         return countryShortName;
     }
@@ -307,15 +292,6 @@ public class UserProfileEntity extends BaseEntity {
             this.qidOfDependents = new ArrayList<>();
         }
         this.qidOfDependents.add(qid);
-        return this;
-    }
-
-    public AddressOriginEnum getAddressOrigin() {
-        return addressOrigin;
-    }
-
-    public UserProfileEntity setAddressOrigin(AddressOriginEnum addressOrigin) {
-        this.addressOrigin = addressOrigin;
         return this;
     }
 
@@ -410,14 +386,12 @@ public class UserProfileEntity extends BaseEntity {
             ", timeZone='" + timeZone + '\'' +
             ", birthday='" + birthday + '\'' +
             ", level=" + level +
-            ", address='" + address + '\'' +
             ", countryShortName='" + countryShortName + '\'' +
             ", phone='" + phone + '\'' +
             ", phoneRaw='" + phoneRaw + '\'' +
             ", guardianPhone='" + guardianPhone + '\'' +
             ", qidOfDependents=" + qidOfDependents +
             ", inviteCode='" + inviteCode + '\'' +
-            ", addressOrigin=" + addressOrigin +
             ", businessType=" + businessType +
             ", mailOTP='" + mailOTP + '\'' +
             '}';

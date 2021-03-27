@@ -12,6 +12,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.AdvertisementService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.PublishArticleService;
+import com.noqapp.service.UserAddressService;
 import com.noqapp.service.emp.EmpLandingService;
 import com.noqapp.view.form.PublishArticleForm;
 import com.noqapp.view.form.emp.BusinessAwaitingApprovalForm;
@@ -59,6 +60,7 @@ public class EmpLandingController {
 
     private BusinessUserService businessUserService;
     private AccountService accountService;
+    private UserAddressService userAddressService;
     private EmpLandingService empLandingService;
     private PublishArticleService publishArticleService;
     private AdvertisementService advertisementService;
@@ -76,6 +78,7 @@ public class EmpLandingController {
 
         BusinessUserService businessUserService,
         AccountService accountService,
+        UserAddressService userAddressService,
         EmpLandingService empLandingService,
         PublishArticleService publishArticleService,
         AdvertisementService advertisementService
@@ -86,6 +89,7 @@ public class EmpLandingController {
 
         this.businessUserService = businessUserService;
         this.accountService = accountService;
+        this.userAddressService = userAddressService;
         this.empLandingService = empLandingService;
         this.publishArticleService = publishArticleService;
         this.advertisementService = advertisementService;
@@ -127,7 +131,8 @@ public class EmpLandingController {
 
         businessAwaitingApprovalForm
             .setBusinessUser(businessUser)
-            .setUserProfile(accountService.findProfileByQueueUserId(businessUser.getQueueUserId()));
+            .setUserProfile(accountService.findProfileByQueueUserId(businessUser.getQueueUserId()))
+            .setUserAddress(userAddressService.findOneUserAddress(businessUser.getQueueUserId()));
 
         return businessAwaitingApproval;
     }

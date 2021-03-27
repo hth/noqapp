@@ -64,7 +64,7 @@ public class UserAddressEntity extends BaseEntity {
     private Date lastUsed;
 
     @SuppressWarnings("unused")
-    private UserAddressEntity() {
+    public UserAddressEntity() {
         super();
     }
 

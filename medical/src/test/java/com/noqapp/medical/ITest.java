@@ -81,6 +81,7 @@ import com.noqapp.repository.TokenQueueManagerImpl;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAccountManagerImpl;
 import com.noqapp.repository.UserAddressManager;
+import com.noqapp.repository.UserAddressManagerImpl;
 import com.noqapp.repository.UserAuthenticationManager;
 import com.noqapp.repository.UserAuthenticationManagerImpl;
 import com.noqapp.repository.UserPreferenceManager;
@@ -281,6 +282,7 @@ public class ITest extends RealMongoForITest {
         statsBizStoreDailyManager = new StatsBizStoreDailyManagerImpl(getMongoTemplate());
         couponManager = new CouponManagerImpl(getMongoTemplate());
         businessCustomerPriorityManager = new BusinessCustomerPriorityManagerImpl(getMongoTemplate());
+        userAddressManager = new UserAddressManagerImpl(5, getMongoTemplate());
 
         userMedicalProfileService = new UserMedicalProfileService(userMedicalProfileManager, userMedicalProfileHistoryManager);
         firebaseMessageService = new FirebaseMessageService("", okHttpClient);
@@ -298,7 +300,7 @@ public class ITest extends RealMongoForITest {
         );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
         couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
-        userAddressService = new UserAddressService(userAddressManager, userProfileManager);
+        userAddressService = new UserAddressService(userAddressManager);
         purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC, userAddressService);
 
         accountService = new AccountService(
@@ -310,7 +312,8 @@ public class ITest extends RealMongoForITest {
             generateUserIdService,
             emailValidateService,
             inviteService,
-            forgotRecoverManager
+            forgotRecoverManager,
+            userAddressService
         );
 
         customTextToSpeechService = new CustomTextToSpeechService(customTextToSpeechManager);

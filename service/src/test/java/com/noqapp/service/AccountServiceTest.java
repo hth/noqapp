@@ -34,6 +34,7 @@ class AccountServiceTest {
     @Mock private EmailValidateService emailValidateService;
     @Mock private InviteService inviteService;
     @Mock private ForgotRecoverManager forgotRecoverManager;
+    @Mock private UserAddressService userAddressService;
 
     private AccountService accountService;
 
@@ -51,7 +52,8 @@ class AccountServiceTest {
             generateUserIdService,
             emailValidateService,
             inviteService,
-            forgotRecoverManager
+            forgotRecoverManager,
+            userAddressService
         );
     }
 

@@ -9,12 +9,16 @@ import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.helper.NameDatePair;
+import com.noqapp.domain.json.JsonUserAddress;
+import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.ExternalService;
 import com.noqapp.service.GenerateUserIdService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.view.form.MerchantRegistrationForm;
@@ -42,6 +46,7 @@ public class AddNewDoctorFlowActions {
     private BizService bizService;
     private ProfessionalProfileService professionalProfileService;
     private GenerateUserIdService generateUserIdService;
+    private ExternalService externalService;
 
     @Autowired
     public AddNewDoctorFlowActions(
@@ -49,13 +54,15 @@ public class AddNewDoctorFlowActions {
         BusinessUserStoreService businessUserStoreService,
         BizService bizService,
         ProfessionalProfileService professionalProfileService,
-        GenerateUserIdService generateUserIdService
+        GenerateUserIdService generateUserIdService,
+        ExternalService externalService
     ) {
         this.accountService = accountService;
         this.businessUserStoreService = businessUserStoreService;
         this.bizService = bizService;
         this.professionalProfileService = professionalProfileService;
         this.generateUserIdService = generateUserIdService;
+        this.externalService = externalService;
     }
 
     @SuppressWarnings("unused")
@@ -120,15 +127,21 @@ public class AddNewDoctorFlowActions {
         /* For updating address. */
         RegisterUser registerUser = new RegisterUser()
             .setEmail(merchantRegistrationForm.getMail())
-            .setGender(userProfile.getGender())
             .setAddress(new ScrubbedInput(bizStore.getAddress()))
             .setCountryShortName(new ScrubbedInput(bizStore.getCountryShortName()))
             .setPhone(new ScrubbedInput(merchantRegistrationForm.getPhoneCountryCode() + merchantRegistrationForm.getPhone()))
             .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
             .setBirthday(merchantRegistrationForm.getBirthday())
-            .setAddressOrigin(bizStore.getAddressOrigin())
             .setFirstName(merchantRegistrationForm.getFirstName())
-            .setLastName(merchantRegistrationForm.getLastName());
+            .setLastName(merchantRegistrationForm.getLastName())
+            .setGender(userProfile.getGender());
+
+        Geocode geocode = Geocode.newInstance(externalService.getGeocodingResults(registerUser.getAddress()), registerUser.getAddress());
+        registerUser.setFoundAddresses(geocode.getFoundAddresses());
+        DecodedAddress decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
+        JsonUserAddress jsonUserAddress = JsonUserAddress.populateJsonUserAddressFromDecode(decodedAddress, registerUser.getAddress());
+        registerUser.setJsonUserAddress(jsonUserAddress);
+
         accountService.updateUserProfile(registerUser, merchantRegistrationForm.getMail().getText());
 
         /* Mark phone validated to change role in next step. */

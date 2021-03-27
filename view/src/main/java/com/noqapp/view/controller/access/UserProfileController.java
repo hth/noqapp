@@ -8,6 +8,7 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.helper.NameDatePair;
@@ -18,6 +19,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.ProfessionalProfileService;
+import com.noqapp.service.UserAddressService;
 import com.noqapp.view.form.FileUploadForm;
 import com.noqapp.view.form.ProfessionalProfileEditForm;
 import com.noqapp.view.form.ProfessionalProfileForm;
@@ -86,6 +88,7 @@ public class UserProfileController {
     private ProfessionalProfileValidator professionalProfileValidator;
     private FileService fileService;
     private BusinessUserService businessUserService;
+    private UserAddressService userAddressService;
     private ImageValidator imageValidator;
 
     @Autowired
@@ -106,6 +109,7 @@ public class UserProfileController {
         ProfessionalProfileValidator professionalProfileValidator,
         FileService fileService,
         BusinessUserService businessUserService,
+        UserAddressService userAddressService,
         ImageValidator imageValidator
     ) {
         this.nextPage = nextPage;
@@ -119,6 +123,7 @@ public class UserProfileController {
         this.professionalProfileValidator = professionalProfileValidator;
         this.fileService = fileService;
         this.businessUserService = businessUserService;
+        this.userAddressService = userAddressService;
         this.imageValidator = imageValidator;
     }
 
@@ -204,6 +209,7 @@ public class UserProfileController {
     ) {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUserId);
         UserAccountEntity userAccount = accountService.findByQueueUserId(queueUserId);
+        UserAddressEntity userAddress = userAddressService.findOneUserAddress(userProfile.getQueueUserId());
 
         userProfileForm
             .setProfileImage(StringUtils.isBlank(userProfile.getProfileImage())
@@ -214,9 +220,9 @@ public class UserProfileController {
             .setLastName(new ScrubbedInput(userProfile.getLastName()))
             .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
             .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
-            .setAddress(new ScrubbedInput(userProfile.getAddress()))
+            .setAddress(null == userAddress ? new ScrubbedInput("") : new ScrubbedInput(userAddress.getAddress()))
             .setPhone(new ScrubbedInput(userProfile.getPhone()))
-            .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
+            .setTimeZone(StringUtils.isBlank(userProfile.getTimeZone()) ? new ScrubbedInput("N/A") : new ScrubbedInput(userProfile.getTimeZone()))
             .setEmailValidated(userAccount.isAccountValidated())
             .setPhoneValidated(userAccount.isPhoneValidated());
 
@@ -250,6 +256,7 @@ public class UserProfileController {
         LOG.info("Landed on next page");
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
+        UserAddressEntity userAddress = userAddressService.findOneUserAddress(userProfile.getQueueUserId());
 
         userProfileValidator.validate(userProfileForm, result);
         if (result.hasErrors()) {
@@ -261,12 +268,12 @@ public class UserProfileController {
         //TODO(hth) to support change of address, this will need to be changed to flow
         RegisterUser registerUser = new RegisterUser()
             .setEmail(new ScrubbedInput(userProfile.getEmail()))
-            .setAddress(new ScrubbedInput(userProfile.getAddress()))
+            .setAddress(null == userAddress ? new ScrubbedInput("") : new ScrubbedInput(userAddress.getAddress()))
             .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
             .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
             .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
+            /* Only the field below are modified. */
             .setBirthday(userProfileForm.getBirthday())
-            .setAddressOrigin(userProfile.getAddressOrigin())
             .setFirstName(userProfileForm.getFirstName())
             .setLastName(userProfileForm.getLastName())
             .setGender(userProfileForm.getGender())

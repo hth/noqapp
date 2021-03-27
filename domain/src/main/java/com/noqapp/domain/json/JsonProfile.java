@@ -56,9 +56,6 @@ public final class JsonProfile extends AbstractDomain {
     @JsonProperty ("cs")
     private String countryShortName;
 
-    @JsonProperty ("ad")
-    private String address;
-
     @JsonProperty ("pr")
     private String phoneRaw;
 
@@ -118,7 +115,6 @@ public final class JsonProfile extends AbstractDomain {
         String name,
         String mail,
         String countryShortName,
-        String address,
         String phoneRaw,
         String timeZone,
         String inviteCode,
@@ -135,7 +131,6 @@ public final class JsonProfile extends AbstractDomain {
         this.name = name;
         this.mail = mail;
         this.countryShortName = countryShortName;
-        this.address = address;
         this.phoneRaw = Formatter.phoneFormatter(phoneRaw, countryShortName);
         this.timeZone = timeZone;
         this.inviteCode = inviteCode;
@@ -159,7 +154,6 @@ public final class JsonProfile extends AbstractDomain {
             userProfile.getName(),
             userProfile.getEmail(),
             userProfile.getCountryShortName(),
-            userProfile.getAddress(),
             StringUtils.isBlank(userProfile.getGuardianPhone()) ? userProfile.getPhoneRaw() : userProfile.getGuardianPhone(),
             userProfile.getTimeZone(),
             userProfile.getInviteCode(),
@@ -191,10 +185,6 @@ public final class JsonProfile extends AbstractDomain {
 
     public String getCountryShortName() {
         return countryShortName;
-    }
-
-    public String getAddress() {
-        return address;
     }
 
     public String getPhoneRaw() {

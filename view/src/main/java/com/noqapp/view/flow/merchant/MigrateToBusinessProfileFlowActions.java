@@ -8,6 +8,7 @@ import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterUser;
@@ -24,6 +25,7 @@ import com.noqapp.service.MailService;
 import com.noqapp.service.StoreHourService;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.service.UserAddressService;
 import com.noqapp.view.flow.merchant.exception.MigrateToBusinessProfileException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -39,6 +41,8 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.ExecutorService;
 
 /**
+ * When migrating user profile to business. Like completing the user profile to be registered for business.
+ *
  * User: hitender
  * Date: 7/16/17 7:07 PM
  */
@@ -50,6 +54,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
     private BusinessUserService businessUserService;
     private MailService mailService;
     private EmailValidateService emailValidateService;
+    private UserAddressService userAddressService;
     private StoreHourService storeHourService;
 
     private ExecutorService executorService;
@@ -64,6 +69,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         BusinessUserService businessUserService,
         MailService mailService,
         EmailValidateService emailValidateService,
+        UserAddressService userAddressService,
         BizStoreElasticService bizStoreElasticService,
         StoreProductService storeProductService,
         BusinessUserStoreService businessUserStoreService,
@@ -87,6 +93,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
         this.businessUserService = businessUserService;
         this.mailService = mailService;
         this.emailValidateService = emailValidateService;
+        this.userAddressService = userAddressService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -99,6 +106,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
 
             UserAccountEntity userAccount = accountService.findByQueueUserId(qid);
             UserProfileEntity userProfile = accountService.findProfileByQueueUserId(qid);
+            UserAddressEntity userAddress = userAddressService.findOneUserAddress(qid);
 
             RegisterUser registerUser = new RegisterUser();
             registerUser.setQueueUserId(userAccount.getQueueUserId())
@@ -107,7 +115,7 @@ public class MigrateToBusinessProfileFlowActions extends RegistrationFlowActions
                 .setEmail(userProfile.getEmail().endsWith(MAIL_NOQAPP_COM) ? new ScrubbedInput("") : new ScrubbedInput(userProfile.getEmail()))
                 .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
                 .setLastName(new ScrubbedInput(userProfile.getLastName()))
-                .setAddress(new ScrubbedInput(userProfile.getAddress()))
+                .setAddress(null == userAddress ? new ScrubbedInput("") : new ScrubbedInput(userAddress.getAddress()))
                 .setCountryShortName(new ScrubbedInput(userProfile.getCountryShortName()))
                 .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
                 .setEmailValidated(userAccount.isAccountValidated())

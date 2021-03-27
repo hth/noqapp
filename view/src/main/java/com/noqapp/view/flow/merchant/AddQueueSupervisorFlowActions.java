@@ -10,9 +10,13 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.InviteQueueSupervisor;
 import com.noqapp.domain.flow.RegisterUser;
+import com.noqapp.domain.json.JsonUserAddress;
+import com.noqapp.domain.shared.DecodedAddress;
+import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
@@ -21,9 +25,11 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.TokenQueueService;
+import com.noqapp.service.UserAddressService;
 import com.noqapp.view.flow.merchant.exception.InviteSupervisorException;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import com.noqapp.view.flow.utils.WebFlowUtils;
@@ -62,6 +68,8 @@ public class AddQueueSupervisorFlowActions {
     private TokenQueueService tokenQueueService;
     private MailService mailService;
     private ProfessionalProfileService professionalProfileService;
+    private UserAddressService userAddressService;
+    private ExternalService externalService;
 
     private ExecutorService executorService;
 
@@ -80,7 +88,9 @@ public class AddQueueSupervisorFlowActions {
         BusinessUserStoreService businessUserStoreService,
         TokenQueueService tokenQueueService,
         MailService mailService,
-        ProfessionalProfileService professionalProfileService
+        ProfessionalProfileService professionalProfileService,
+        UserAddressService userAddressService,
+        ExternalService externalService
     ) {
         this.queueLimit = queueLimit;
         this.quickDataEntryByPassSwitch = quickDataEntryByPassSwitch;
@@ -93,6 +103,8 @@ public class AddQueueSupervisorFlowActions {
         this.tokenQueueService = tokenQueueService;
         this.mailService = mailService;
         this.professionalProfileService = professionalProfileService;
+        this.userAddressService = userAddressService;
+        this.externalService = externalService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -125,21 +137,21 @@ public class AddQueueSupervisorFlowActions {
         String internationalFormat;
         try {
             internationalFormat = Formatter.phoneInternationalFormat(
-                    inviteQueueSupervisor.getPhoneNumber(),
-                    inviteQueueSupervisor.getCountryShortName());
+                inviteQueueSupervisor.getPhoneNumber(),
+                inviteQueueSupervisor.getCountryShortName());
             
             LOG.info("International phone number={}", internationalFormat);
         } catch (Exception e) {
             LOG.error("Failed parsing international format phone={} countryShortName={}",
-                    inviteQueueSupervisor.getPhoneNumber(),
-                    inviteQueueSupervisor.getCountryShortName());
+                inviteQueueSupervisor.getPhoneNumber(),
+                inviteQueueSupervisor.getCountryShortName());
 
             messageContext.addMessage(
-                    new MessageBuilder()
-                            .error()
-                            .source("inviteQueueSupervisor.phoneNumber")
-                            .defaultText("Phone number " + inviteQueueSupervisor.getPhoneNumber() + " not valid.")
-                            .build());
+                new MessageBuilder()
+                    .error()
+                    .source("inviteQueueSupervisor.phoneNumber")
+                    .defaultText("Phone number " + inviteQueueSupervisor.getPhoneNumber() + " not valid.")
+                    .build());
 
             throw new InviteSupervisorException("Phone number not valid");
         }
@@ -328,7 +340,8 @@ public class AddQueueSupervisorFlowActions {
         if (null == businessUser) {
             LOG.info("Creating new businessUser qid={}", userProfile.getQueueUserId());
             businessUser = BusinessUserEntity.newInstance(userProfile.getQueueUserId(), userProfile.getLevel());
-            if (StringUtils.isBlank(userProfile.getAddress()) || userProfile.getQueueUserId().endsWith(MAIL_NOQAPP_COM)) {
+            UserAddressEntity userAddress = userAddressService.findOneUserAddress(userProfile.getQueueUserId());
+            if (null == userAddress || userProfile.getQueueUserId().endsWith(MAIL_NOQAPP_COM)) {
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.I);
             } else {
                 businessUser.setBusinessUserRegistrationStatus(BusinessUserRegistrationStatusEnum.C);
@@ -389,11 +402,16 @@ public class AddQueueSupervisorFlowActions {
                 .setPhone(new ScrubbedInput(userProfile.getPhoneRaw()))
                 .setTimeZone(new ScrubbedInput(userProfile.getTimeZone()))
                 .setBirthday(new ScrubbedInput(userProfile.getBirthday()))
-                .setAddressOrigin(businessUserOfInviteeCode.getBizName().getAddressOrigin())
                 .setFirstName(new ScrubbedInput(userProfile.getFirstName()))
                 .setLastName(new ScrubbedInput(userProfile.getLastName()))
                 .setGender(userProfile.getGender())
                 .setQueueUserId(userProfile.getQueueUserId());
+
+            Geocode geocode = Geocode.newInstance(externalService.getGeocodingResults(registerUser.getAddress()), registerUser.getAddress());
+            registerUser.setFoundAddresses(geocode.getFoundAddresses());
+            DecodedAddress decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
+            JsonUserAddress jsonUserAddress = JsonUserAddress.populateJsonUserAddressFromDecode(decodedAddress, registerUser.getAddress());
+            registerUser.setJsonUserAddress(jsonUserAddress);
 
             accountService.updateUserProfile(registerUser, userProfile.getEmail());
             businessUserService.markBusinessUserProfileCompleteOnProfileUpdate(userProfile.getQueueUserId(), bizStore.getBizName().getId());

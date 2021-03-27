@@ -1,13 +1,10 @@
 package com.noqapp.service;
 
 import com.noqapp.domain.UserAddressEntity;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonUserAddress;
 import com.noqapp.domain.json.JsonUserAddressList;
-import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.repository.UserAddressManager;
-import com.noqapp.repository.UserProfileManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,12 +22,10 @@ import java.util.List;
 @Service
 public class UserAddressService {
     private UserAddressManager userAddressManager;
-    private UserProfileManager userProfileManager;
 
     @Autowired
-    public UserAddressService(UserAddressManager userAddressManager, UserProfileManager userProfileManager) {
+    public UserAddressService(UserAddressManager userAddressManager) {
         this.userAddressManager = userAddressManager;
-        this.userProfileManager = userProfileManager;
     }
 
     @Mobile
@@ -63,8 +58,7 @@ public class UserAddressService {
         double[] coordinate
     ) {
         Assert.hasText(id, "Id cannot be blank " + qid);
-
-        long existing = userAddressManager.count(qid);
+        long countActiveRecords = userAddressManager.countActive(qid);
         UserAddressEntity userAddress = new UserAddressEntity(
             qid,
             address,
@@ -80,13 +74,9 @@ public class UserAddressService {
         userAddress.setId(id);
         userAddressManager.save(userAddress);
 
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
-        if (StringUtils.isBlank(userProfile.getAddress()) || 0 == existing) {
-            userProfile
-                .setAddress(address)
-                .setCountryShortName(countryShortName)
-                .setAddressOrigin(AddressOriginEnum.G);
-            userProfileManager.save(userProfile);
+        /* When there is no other address, then the current address should be marked as primary by default. */
+        if (0 == countActiveRecords) {
+            markAddressPrimary(userAddress.getId(), userAddress.getQueueUserId());
         }
         return userAddress;
     }
@@ -95,14 +85,7 @@ public class UserAddressService {
     @Async
     public void markAddressPrimary(String id, String qid) {
         Assert.hasText(id, "Id cannot be blank " + qid);
-        UserAddressEntity userAddress = userAddressManager.markAddressPrimary(id, qid);
-
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
-        userProfile
-            .setAddress(userAddress.getAddress())
-            .setCountryShortName(userAddress.getCountryShortName())
-            .setAddressOrigin(AddressOriginEnum.G);
-        userProfileManager.save(userProfile);
+        userAddressManager.markAddressPrimary(id, qid);
     }
 
     @Mobile
@@ -144,5 +127,39 @@ public class UserAddressService {
 
     public UserAddressEntity findByAddress(String qid, String address) {
         return userAddressManager.findByAddress(qid, address);
+    }
+
+    /** Needs to clean up when UserProfile address is removed. */
+    public UserAddressEntity findOneUserAddress(String qid, String address) {
+        String userAddressId;
+        if (StringUtils.isNotBlank(address)) {
+            UserAddressEntity userAddress = findByAddress(qid, address);
+            if (null != userAddress) {
+                return userAddress;
+            }
+        }
+
+        List<UserAddressEntity> userAddresses = getAll(qid);
+        for (UserAddressEntity userAddress : userAddresses) {
+            if (userAddress.isPrimaryAddress()) {
+                return userAddress;
+            }
+        }
+
+        return userAddresses.isEmpty() ? null : userAddresses.get(0);
+    }
+
+    public UserAddressEntity findOneUserAddress(List<UserAddressEntity> userAddresses) {
+        for (UserAddressEntity userAddress : userAddresses) {
+            if (userAddress.isPrimaryAddress()) {
+                return userAddress;
+            }
+        }
+
+        return userAddresses.isEmpty() ? null : userAddresses.get(0);
+    }
+
+    public UserAddressEntity findOneUserAddress(String qid) {
+        return findOneUserAddress(getAll(qid));
     }
 }

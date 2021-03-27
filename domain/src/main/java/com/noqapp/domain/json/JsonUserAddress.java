@@ -3,6 +3,7 @@ package com.noqapp.domain.json;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.UserAddressEntity;
+import com.noqapp.domain.shared.DecodedAddress;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -10,10 +11,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.data.annotation.Transient;
 
 import org.elasticsearch.common.geo.GeoPoint;
 
+import java.io.Serializable;
 import java.util.StringJoiner;
 
 /**
@@ -35,7 +39,7 @@ import java.util.StringJoiner;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonUserAddress extends AbstractDomain {
+public class JsonUserAddress extends AbstractDomain implements Serializable {
 
     @JsonProperty("id")
     private String id;
@@ -208,6 +212,34 @@ public class JsonUserAddress extends AbstractDomain {
             .setGeoHash(userAddress.getGeoHash())
             .setLatitude(String.valueOf(userAddress.getCoordinate()[1]))
             .setLongitude(String.valueOf(userAddress.getCoordinate()[0]));
+    }
+
+    @Transient
+    public static JsonUserAddress populateJsonUserAddressFromDecode(DecodedAddress decodedAddress) {
+        return new JsonUserAddress()
+            .setAddress(decodedAddress.getFormattedAddress())
+            .setArea(decodedAddress.getArea())
+            .setTown(decodedAddress.getTown())
+            .setDistrict(decodedAddress.getDistrict())
+            .setState(decodedAddress.getState())
+            .setStateShortName(decodedAddress.getStateShortName())
+            .setCountryShortName(decodedAddress.getCountryShortName())
+            .setLatitude(String.valueOf(decodedAddress.getCoordinate()[1]))
+            .setLongitude(String.valueOf(decodedAddress.getCoordinate()[0]));
+    }
+
+    @Transient
+    public static JsonUserAddress populateJsonUserAddressFromDecode(DecodedAddress decodedAddress, String userEnteredAddress) {
+        return new JsonUserAddress()
+            .setAddress(StringUtils.isBlank(userEnteredAddress) ? decodedAddress.getFormattedAddress() : userEnteredAddress)
+            .setArea(decodedAddress.getArea())
+            .setTown(decodedAddress.getTown())
+            .setDistrict(decodedAddress.getDistrict())
+            .setState(decodedAddress.getState())
+            .setStateShortName(decodedAddress.getStateShortName())
+            .setCountryShortName(decodedAddress.getCountryShortName())
+            .setLatitude(String.valueOf(decodedAddress.getCoordinate()[1]))
+            .setLongitude(String.valueOf(decodedAddress.getCoordinate()[0]));
     }
 
     @Override

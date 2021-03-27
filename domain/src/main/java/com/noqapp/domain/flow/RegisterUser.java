@@ -3,6 +3,7 @@ package com.noqapp.domain.flow;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.json.JsonUserAddress;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.GenderEnum;
@@ -46,6 +47,7 @@ public class RegisterUser implements Serializable {
     private HashMap<String, DecodedAddress> foundAddresses = new LinkedHashMap<>();
     private String foundAddressPlaceId;
     private boolean selectFoundAddress;
+    private JsonUserAddress jsonUserAddress;
     /* End of place holder of data. */
 
     public String getQueueUserId() {
@@ -224,15 +226,6 @@ public class RegisterUser implements Serializable {
         return this;
     }
 
-    public AddressOriginEnum getAddressOrigin() {
-        return addressOrigin;
-    }
-
-    public RegisterUser setAddressOrigin(AddressOriginEnum addressOrigin) {
-        this.addressOrigin = addressOrigin;
-        return this;
-    }
-
     public HashMap<String, DecodedAddress> getFoundAddresses() {
         return foundAddresses;
     }
@@ -257,6 +250,15 @@ public class RegisterUser implements Serializable {
 
     public RegisterUser setSelectFoundAddress(boolean selectFoundAddress) {
         this.selectFoundAddress = selectFoundAddress;
+        return this;
+    }
+
+    public JsonUserAddress getJsonUserAddress() {
+        return jsonUserAddress;
+    }
+
+    public RegisterUser setJsonUserAddress(JsonUserAddress jsonUserAddress) {
+        this.jsonUserAddress = jsonUserAddress;
         return this;
     }
 

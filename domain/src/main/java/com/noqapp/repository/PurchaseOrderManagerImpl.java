@@ -11,6 +11,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
@@ -509,17 +510,19 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
     }
 
     @Override
-    public PurchaseOrderEntity changePatient(String transactionId, UserProfileEntity userProfile) {
-        return mongoTemplate.findAndModify(
-            query(where("TI").is(transactionId)),
-            update("QID", userProfile.getQueueUserId())
+    public PurchaseOrderEntity changePatient(String transactionId, UserProfileEntity userProfile, UserAddressEntity userAddress) {
+        Update update;
+        if (null == userAddress) {
+            update = update("QID", userProfile.getQueueUserId())
                 .set("CN", userProfile.getName())
-                .set("DA", userProfile.getAddress())
-                .set("CP", StringUtils.isBlank(userProfile.getGuardianPhone()) ? userProfile.getPhone() : userProfile.getGuardianPhone()),
-            FindAndModifyOptions.options().returnNew(true),
-            PurchaseOrderEntity.class,
-            TABLE
-        );
+                .set("CP", StringUtils.isBlank(userProfile.getGuardianPhone()) ? userProfile.getPhone() : userProfile.getGuardianPhone());
+        } else {
+            update = update("QID", userProfile.getQueueUserId())
+                .set("CN", userProfile.getName())
+                .set("AI", userAddress.getId())
+                .set("CP", StringUtils.isBlank(userProfile.getGuardianPhone()) ? userProfile.getPhone() : userProfile.getGuardianPhone());
+        }
+        return mongoTemplate.findAndModify(query(where("TI").is(transactionId)), update, FindAndModifyOptions.options().returnNew(true), PurchaseOrderEntity.class, TABLE);
     }
 
     @Override

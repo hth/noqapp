@@ -61,7 +61,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
 
     @Override
     public void save(UserAddressEntity object) {
-        while (count(object.getQueueUserId()) >= numberOfAddressAllowed) {
+        while (countActive(object.getQueueUserId()) >= numberOfAddressAllowed) {
             UserAddressEntity leastUsed = leastUsedAddress(object.getQueueUserId());
             markAddressAsInactive(leastUsed.getId(), leastUsed.getQueueUserId());
         }
@@ -111,9 +111,9 @@ public class UserAddressManagerImpl implements UserAddressManager {
         );
     }
 
-    public long count(String qid) {
+    public long countActive(String qid) {
         return mongoTemplate.count(
-            query(where("QID").is(qid)),
+            query(where("QID").is(qid).and("A").is(true)),
             UserAddressEntity.class,
             TABLE
         );

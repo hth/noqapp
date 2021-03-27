@@ -757,7 +757,7 @@ public class PurchaseOrderService {
             UserProfileEntity guardianUserProfile = accountService.checkUserExistsByPhone(userProfile.getGuardianPhone());
             jsonPurchaseOrder.setCustomerPhone(guardianUserProfile.getPhone());
 
-            UserAddressEntity userAddress = userAddressService.findByAddress(guardianUserProfile.getQueueUserId(), guardianUserProfile.getAddress());
+            UserAddressEntity userAddress = userAddressService.findOneUserAddress(guardianUserProfile.getQueueUserId());
             jsonPurchaseOrder.setUserAddressId(null == userAddress ? null : userAddress.getId());
         } else {
             jsonPurchaseOrder.setCustomerPhone(userProfile.getPhone());
@@ -1851,7 +1851,8 @@ public class PurchaseOrderService {
     }
 
     public void changePatient(String transactionId, UserProfileEntity userProfile) {
-        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.changePatient(transactionId, userProfile);
+        UserAddressEntity userAddress = userAddressService.findOneUserAddress(userProfile.getQueueUserId());
+        PurchaseOrderEntity purchaseOrder = purchaseOrderManager.changePatient(transactionId, userProfile, userAddress);
         purchaseOrderProductManager.changePatient(purchaseOrder.getId(), userProfile.getQueueUserId());
     }
 
