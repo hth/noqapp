@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import com.noqapp.domain.PurchaseOrderEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -116,7 +117,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
         PaymentModeEnum paymentMode
     );
 
-    PurchaseOrderEntity changePatient(String transactionId, UserProfileEntity userProfile);
+    PurchaseOrderEntity changePatient(String transactionId, UserProfileEntity userProfile, UserAddressEntity userAddress);
 
     PurchaseOrderEntity updateWithPartialCounterPayment(String partialPayment, String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode, String partialPaymentAcceptedByQid);
     PurchaseOrderEntity updateWithCounterPayment(String transactionId, String bizStoreId, String transactionMessage, PaymentModeEnum paymentMode, String fullPaymentAcceptedByQid);
