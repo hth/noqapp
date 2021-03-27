@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Not stored in elasticsearch. Sent across as json for display on client.
+ * <p>
  * hitender
  * 12/24/20 3:48 PM
  */
