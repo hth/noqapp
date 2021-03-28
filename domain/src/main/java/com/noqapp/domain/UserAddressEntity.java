@@ -29,6 +29,7 @@ public class UserAddressEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
+    /* Can be null. Mostly provided during delivery address. */
     @Field("CN")
     private String customerName;
 
