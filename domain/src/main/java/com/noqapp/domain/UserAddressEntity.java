@@ -29,6 +29,9 @@ public class UserAddressEntity extends BaseEntity {
     @Field("QID")
     private String queueUserId;
 
+    @Field("CN")
+    private String customerName;
+
     @Field("AD")
     private String address;
 
@@ -70,6 +73,7 @@ public class UserAddressEntity extends BaseEntity {
 
     public UserAddressEntity(
         String queueUserId,
+        String customerName,
         String address,
         String area,
         String town,
@@ -81,6 +85,7 @@ public class UserAddressEntity extends BaseEntity {
         double[] coordinate
     ) {
         this.queueUserId = queueUserId;
+        this.customerName = customerName;
         this.address = address;
         this.area = area;
         this.town = town;
@@ -95,6 +100,10 @@ public class UserAddressEntity extends BaseEntity {
 
     public String getQueueUserId() {
         return queueUserId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
     }
 
     public String getAddress() {

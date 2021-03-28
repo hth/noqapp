@@ -44,6 +44,9 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
     @JsonProperty("id")
     private String id;
 
+    @JsonProperty("cn")
+    private String customerName;
+
     @JsonProperty("ad")
     private String address;
 
@@ -83,6 +86,15 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
 
     public JsonUserAddress setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public JsonUserAddress setCustomerName(String customerName) {
+        this.customerName = customerName;
         return this;
     }
 
@@ -201,6 +213,7 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
     public static JsonUserAddress populateAsJson(UserAddressEntity userAddress) {
         return new JsonUserAddress()
             .setId(userAddress.getId())
+            .setCustomerName(userAddress.getCustomerName())
             .setAddress(userAddress.getAddress())
             .setArea(userAddress.getArea())
             .setTown(userAddress.getTown())

@@ -33,6 +33,7 @@ public class UserAddressService {
        return saveAddress(
            id,
            qid,
+           jsonUserAddress.getCustomerName(),
            jsonUserAddress.getAddress(),
            jsonUserAddress.getArea(),
            jsonUserAddress.getTown(),
@@ -47,6 +48,7 @@ public class UserAddressService {
     private UserAddressEntity saveAddress(
         String id,
         String qid,
+        String customerName,
         String address,
         String area,
         String town,
@@ -61,6 +63,7 @@ public class UserAddressService {
         long countActiveRecords = userAddressManager.countActive(qid);
         UserAddressEntity userAddress = new UserAddressEntity(
             qid,
+            customerName,
             address,
             area,
             town,
