@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Stored in elasticsearch.
+ * <p>
  * hitender
  * 2/27/21 8:07 AM
  */

@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Stored in elasticsearch.
+ * <p>
  * User: hitender
  * Date: 11/27/19 7:06 AM
  */

@@ -41,7 +41,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Json for elastic search.
+ * Stored in elasticsearch.
  * <p>
  * User: hitender
  * Date: 11/15/17 4:28 PM
