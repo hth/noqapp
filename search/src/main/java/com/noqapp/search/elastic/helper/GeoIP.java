@@ -12,6 +12,8 @@ import org.elasticsearch.common.geo.GeoPoint;
  */
 public class GeoIP {
     private String ipAddress;
+    private String area;
+    private String town;
     private String cityName;
     private double latitude;
     private double longitude;
@@ -31,8 +33,26 @@ public class GeoIP {
         this.geoPoint = new GeoPoint(latitude, longitude);
     }
 
+    public GeoIP(String ipAddress, String area, String town, String cityName, double latitude, double longitude) {
+        this.area = area;
+        this.town = town;
+        this.cityName = cityName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+
+        this.geoPoint = new GeoPoint(latitude, longitude);
+    }
+
     public String getIpAddress() {
         return ipAddress;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public String getTown() {
+        return town;
     }
 
     public String getCityName() {
