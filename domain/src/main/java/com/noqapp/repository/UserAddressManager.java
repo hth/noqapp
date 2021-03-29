@@ -10,9 +10,13 @@ import java.util.List;
  */
 public interface UserAddressManager extends RepositoryManager<UserAddressEntity> {
 
+    void saveAndMarkInActive(UserAddressEntity object);
+
     List<UserAddressEntity> getAll(String qid);
 
     long countActive(String qid);
+
+    UserAddressEntity leastUsedAddress(String qid);
 
     void updateLastUsedAddress(String id, String qid);
 
