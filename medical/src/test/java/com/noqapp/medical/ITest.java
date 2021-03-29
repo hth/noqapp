@@ -300,7 +300,7 @@ public class ITest extends RealMongoForITest {
         );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
         couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
-        userAddressService = new UserAddressService(userAddressManager);
+        userAddressService = new UserAddressService(5, userAddressManager);
         purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC, userAddressService);
 
         accountService = new AccountService(
