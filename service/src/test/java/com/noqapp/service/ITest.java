@@ -284,7 +284,7 @@ public class ITest extends RealMongoForITest {
         inviteService = new InviteService(inviteManager);
         nlpService = new NLPService(stanfordCoreNLP, maxentTagger);
         businessCustomerPriorityService = new BusinessCustomerPriorityService(businessCustomerPriorityManager, bizNameManager, bizStoreManager);
-        userAddressService = new UserAddressService(userAddressManager);
+        userAddressService = new UserAddressService(5, userAddressManager);
 
         accountService = new AccountService(
             5,
