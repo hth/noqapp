@@ -61,6 +61,11 @@ public class UserAddressManagerImpl implements UserAddressManager {
 
     @Override
     public void save(UserAddressEntity object) {
+        mongoTemplate.save(object, TABLE);
+    }
+
+    @Override
+    public void saveAndMarkInActive(UserAddressEntity object) {
         while (countActive(object.getQueueUserId()) >= numberOfAddressAllowed) {
             UserAddressEntity leastUsed = leastUsedAddress(object.getQueueUserId());
             markAddressAsInactive(leastUsed.getId(), leastUsed.getQueueUserId());
@@ -120,7 +125,7 @@ public class UserAddressManagerImpl implements UserAddressManager {
     }
 
     /** Primary Address is not considered in least used. */
-    private UserAddressEntity leastUsedAddress(String qid) {
+    public UserAddressEntity leastUsedAddress(String qid) {
         return mongoTemplate.findOne(
             query(where("QID").is(qid).and("PA").is(false)).with(Sort.by(DESC, "LU")),
             UserAddressEntity.class,

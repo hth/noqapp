@@ -203,6 +203,16 @@ public class JsonUserAddress extends AbstractDomain implements Serializable {
     }
 
     @Transient
+    public boolean isValidCoordinate() {
+        double[] coordinate = getCoordinate();
+        if (coordinate[1] == coordinate[0] && coordinate[1] == 0.0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Transient
     public String geoHash() {
         /* Latitude and then Longitude. */
         double[] coordinate = getCoordinate();

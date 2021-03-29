@@ -9,6 +9,7 @@ import com.noqapp.repository.UserAddressManager;
 import org.apache.commons.lang3.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -21,14 +22,62 @@ import java.util.List;
  */
 @Service
 public class UserAddressService {
+
+    int numberOfAddressAllowed;
+
     private UserAddressManager userAddressManager;
 
     @Autowired
-    public UserAddressService(UserAddressManager userAddressManager) {
+    public UserAddressService(
+        @Value("${UserAddressManagerImpl.numberOfAddressAllowed}")
+        int numberOfAddressAllowed,
+
+        UserAddressManager userAddressManager
+    ) {
+        this.numberOfAddressAllowed = numberOfAddressAllowed;
+
         this.userAddressManager = userAddressManager;
     }
 
+    /**
+     * Adds from mobile, marks inactive, save and returns updated list.
+     */
     @Mobile
+    public JsonUserAddressList addAddress(String id, String qid, JsonUserAddress jsonUserAddress) {
+        Assert.hasText(id, "Id cannot be blank " + qid);
+        JsonUserAddressList jsonUserAddressList = getAllAsJson(qid);
+        if (jsonUserAddressList.getJsonUserAddresses().size() >= numberOfAddressAllowed) {
+            UserAddressEntity leastUsed = userAddressManager.leastUsedAddress(qid);
+            markAddressAsInactive(leastUsed.getId(), leastUsed.getQueueUserId());
+            jsonUserAddressList.getJsonUserAddresses().removeIf(i -> i.getId().equals(leastUsed.getId()));
+        }
+
+        UserAddressEntity userAddress = new UserAddressEntity(
+            qid,
+            jsonUserAddress.getCustomerName(),
+            jsonUserAddress.getAddress(),
+            jsonUserAddress.getArea(),
+            jsonUserAddress.getTown(),
+            jsonUserAddress.getDistrict(),
+            jsonUserAddress.getState(),
+            jsonUserAddress.getStateShortName(),
+            jsonUserAddress.getCountryShortName(),
+            jsonUserAddress.geoHash(),
+            jsonUserAddress.getCoordinate()
+        ).setLastUsed();
+        userAddress.setId(id);
+        userAddressManager.save(userAddress);
+
+        /* When there is no other address, then the current address should be marked as primary by default. */
+        if (jsonUserAddressList.getJsonUserAddresses().isEmpty()) {
+            markAddressPrimary(userAddress.getId(), userAddress.getQueueUserId());
+        }
+
+        jsonUserAddressList.addJsonUserAddresses(JsonUserAddress.populateAsJson(userAddress));
+        return jsonUserAddressList;
+    }
+
+    /** Mostly used in non mobile operation. */
     public UserAddressEntity saveAddress(String id, String qid, JsonUserAddress jsonUserAddress) {
        return saveAddress(
            id,
@@ -75,7 +124,7 @@ public class UserAddressService {
             coordinate
         ).setLastUsed();
         userAddress.setId(id);
-        userAddressManager.save(userAddress);
+        userAddressManager.saveAndMarkInActive(userAddress);
 
         /* When there is no other address, then the current address should be marked as primary by default. */
         if (0 == countActiveRecords) {
