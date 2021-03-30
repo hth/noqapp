@@ -403,10 +403,14 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public void updateRegisteredDevice(String did, String qid, DeviceTypeEnum deviceType, boolean sinceBegining) {
+    public void updateRegisteredDevice(String did, String qid, DeviceTypeEnum deviceType, boolean sinceBeginning) {
         mongoTemplate.updateFirst(
             query(where("DID").is(did)),
-            entityUpdate(update("QID", qid).set("DT", deviceType).set("SB", sinceBegining)),
+            entityUpdate(update("QID", qid).set("DT", deviceType).set("SB", sinceBeginning)),
+            RegisteredDeviceEntity.class,
+            TABLE
+        );
+    }
             RegisteredDeviceEntity.class,
             TABLE
         );
