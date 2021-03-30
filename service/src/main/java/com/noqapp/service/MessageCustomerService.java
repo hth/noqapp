@@ -14,6 +14,8 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
+import com.noqapp.repository.BizNameManager;
+import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.NotificationMessageManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.neo4j.NotificationN4jManager;
@@ -47,7 +49,8 @@ public class MessageCustomerService {
     private NotificationMessageManager notificationMessageManager;
     private RegisteredDeviceManager registeredDeviceManager;
     private FirebaseService firebaseService;
-    private BizService bizService;
+    private BizStoreManager bizStoreManager;
+    private BizNameManager bizNameManager;
 
     private GraphDetailOfPerson graphDetailOfPerson;
     private NotificationN4jManager notificationN4jManager;
@@ -66,8 +69,10 @@ public class MessageCustomerService {
         TokenQueueService tokenQueueService,
         NotificationMessageManager notificationMessageManager,
         RegisteredDeviceManager registeredDeviceManager,
+        BizStoreManager bizStoreManager,
+        BizNameManager bizNameManager,
+
         FirebaseService firebaseService,
-        BizService bizService,
 
         GraphDetailOfPerson graphDetailOfPerson,
         NotificationN4jManager notificationN4jManager
@@ -78,8 +83,10 @@ public class MessageCustomerService {
         this.tokenQueueService = tokenQueueService;
         this.notificationMessageManager = notificationMessageManager;
         this.registeredDeviceManager = registeredDeviceManager;
+        this.bizStoreManager = bizStoreManager;
+        this.bizNameManager = bizNameManager;
+
         this.firebaseService = firebaseService;
-        this.bizService = bizService;
 
         this.graphDetailOfPerson = graphDetailOfPerson;
         this.notificationN4jManager = notificationN4jManager;
@@ -100,7 +107,7 @@ public class MessageCustomerService {
     public void sendMessageToSubscribers(String title, String body, List<String> codeQRs, String qid) {
         try {
             for (String codeQR : codeQRs) {
-                BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+                BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
                 TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
                 NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
                     .setTitle(title)
@@ -197,7 +204,7 @@ public class MessageCustomerService {
 
     public int sendMessageToPastClients(String title, String body, String bizNameId, String qid) {
         try {
-            BizNameEntity bizName = bizService.getByBizNameId(bizNameId);
+            BizNameEntity bizName = bizNameManager.getById(bizNameId);
             NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
                 .setTitle(title)
                 .setBody(body)
