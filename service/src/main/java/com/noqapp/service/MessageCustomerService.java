@@ -129,6 +129,8 @@ public class MessageCustomerService {
         return queueService.countDistinctQIDsInBiz(bizNameId, limitMessageToCustomerVisitedInDays);
     }
 
+    /** Can be used for dynamic setting number of days. */
+    @SuppressWarnings("unused")
     public int sendMessageToPastClients(String bizNameId, int days) {
         return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? limitMessageToCustomerVisitedInDays : days);
     }
