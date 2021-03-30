@@ -134,8 +134,7 @@ public class MessageCustomerService {
     }
 
     public void sendMessageToAll(String title, String body, String qid, String subscribedTopic) {
-        //TODO change this from PA to ZZ after 1.2.700
-        sendMessageToAll(title, body, null, qid, subscribedTopic, BusinessTypeEnum.PA);
+        sendMessageToAll(title, body, null, qid, subscribedTopic, BusinessTypeEnum.ZZ);
     }
 
     public void sendMessageToAll(String title, String body, String imageURL, String qid, String subscribedTopic, BusinessTypeEnum businessType) {
