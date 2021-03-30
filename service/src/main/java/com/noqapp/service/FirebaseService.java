@@ -6,6 +6,7 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.repository.UserProfileManager;
 
 import com.google.api.core.ApiFuture;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -36,15 +37,15 @@ public class FirebaseService {
     private static final Logger LOG = LoggerFactory.getLogger(FirebaseService.class);
 
     private FirebaseConfig firebaseConfig;
-    private UserProfilePreferenceService userProfilePreferenceService;
+    private UserProfileManager userProfileManager;
 
     @Autowired
     public FirebaseService(
         FirebaseConfig firebaseConfig,
-        UserProfilePreferenceService userProfilePreferenceService
+        UserProfileManager userProfileManager
     ) {
         this.firebaseConfig = firebaseConfig;
-        this.userProfilePreferenceService = userProfilePreferenceService;
+        this.userProfileManager = userProfileManager;
     }
 
     /**
@@ -71,7 +72,7 @@ public class FirebaseService {
         String phoneNumber = userRecord.getProviderData()[0].getUid();
         if (StringUtils.isNotBlank(phoneNumber)) {
             LOG.info("Found phone={} for uid={}", phoneNumber, uid);
-            return userProfilePreferenceService.checkUserExistsByPhone(Formatter.phoneCleanup(phoneNumber));
+            return userProfileManager.findOneByPhone(Formatter.phoneCleanup(phoneNumber));
         }
 
         return null;

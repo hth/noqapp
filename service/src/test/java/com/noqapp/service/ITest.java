@@ -330,7 +330,7 @@ public class ITest extends RealMongoForITest {
         businessCustomerManager = new BusinessCustomerManagerImpl(getMongoTemplate());
         s3FileManager = new S3FileManagerImpl(getMongoTemplate());
         firebaseMessageService = new FirebaseMessageService("", okHttpClient);
-        firebaseService = new FirebaseService(firebaseConfig, userProfilePreferenceService);
+        firebaseService = new FirebaseService(firebaseConfig, userProfileManager);
         businessCustomerService = new BusinessCustomerService(
             businessCustomerManager,
             userProfileManager,

@@ -290,7 +290,7 @@ public class ITest extends RealMongoForITest {
         emailValidateService = new EmailValidateService(emailValidateManager);
         generateUserIdService = new GenerateUserIdService(generateUserIdManager);
         storeCategoryService = new StoreCategoryService(storeCategoryManager, storeProductManager);
-        firebaseService = new FirebaseService(firebaseConfig, userProfilePreferenceService);
+        firebaseService = new FirebaseService(firebaseConfig, userProfileManager);
         businessCustomerService = new BusinessCustomerService(
             businessCustomerManager,
             userProfileManager,
