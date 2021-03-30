@@ -520,7 +520,7 @@ public class ScheduleAppointmentService {
             qids = userProfileOfGuardian.getQidOfDependents();
             qids.add(qid);
         } else {
-            qids = new ArrayList<String>() {{add(qid);}};
+            qids = new ArrayList<>() {{add(qid);}};
         }
         return qids;
     }
