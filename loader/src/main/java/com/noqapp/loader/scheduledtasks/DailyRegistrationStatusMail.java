@@ -30,10 +30,10 @@ import java.util.Map;
  * 12/29/17 5:00 PM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Component
 public class DailyRegistrationStatusMail {

@@ -52,15 +52,15 @@ public class MessageCustomerService {
     private GraphDetailOfPerson graphDetailOfPerson;
     private NotificationN4jManager notificationN4jManager;
 
-    private int limitedToDays;
+    private int limitMessageToCustomerVisitedInDays;
 
     /* Supported max limit by Firebase. */
     private final static int maxTokenLimit = 1_000;
 
     @Autowired
     public MessageCustomerService(
-        @Value("${MessageCustomerService.limitedToDays}")
-        int limitedToDays,
+        @Value("${MessageCustomerService.limitMessageToCustomerVisitedInDays}")
+        int limitMessageToCustomerVisitedInDays,
 
         QueueService queueService,
         TokenQueueService tokenQueueService,
@@ -72,7 +72,7 @@ public class MessageCustomerService {
         GraphDetailOfPerson graphDetailOfPerson,
         NotificationN4jManager notificationN4jManager
     ) {
-        this.limitedToDays = limitedToDays;
+        this.limitMessageToCustomerVisitedInDays = limitMessageToCustomerVisitedInDays;
 
         this.queueService = queueService;
         this.tokenQueueService = tokenQueueService;
@@ -126,11 +126,13 @@ public class MessageCustomerService {
     }
 
     public int sendMessageToPastClients(String bizNameId) {
-        return queueService.countDistinctQIDsInBiz(bizNameId, limitedToDays);
+        return queueService.countDistinctQIDsInBiz(bizNameId, limitMessageToCustomerVisitedInDays);
     }
 
+    /** Can be used for dynamic setting number of days. */
+    @SuppressWarnings("unused")
     public int sendMessageToPastClients(String bizNameId, int days) {
-        return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? limitedToDays : days);
+        return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? limitMessageToCustomerVisitedInDays : days);
     }
 
     public void sendMessageToAll(String title, String body, String qid, String subscribedTopic) {
@@ -208,7 +210,7 @@ public class MessageCustomerService {
 
             List<String> tokens_A = new ArrayList<>();
             List<String> tokens_I = new ArrayList<>();
-            queueService.distinctQIDsInBiz(bizNameId, limitedToDays).stream().iterator()
+            queueService.distinctQIDsInBiz(bizNameId, limitMessageToCustomerVisitedInDays).stream().iterator()
                 .forEachRemaining(senderQid -> {
                     RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(senderQid);
                     try {

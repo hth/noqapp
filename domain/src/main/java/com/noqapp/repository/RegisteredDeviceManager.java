@@ -94,5 +94,6 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
 
     RegisteredDeviceEntity findByDid(String deviceId);
 
-    void updateRegisteredDevice(String did, String qid, DeviceTypeEnum deviceType, boolean sinceBegining);
+    @Mobile
+    void updateRegisteredDevice(String did, String qid, DeviceTypeEnum deviceType, boolean sinceBeginning);
 }
