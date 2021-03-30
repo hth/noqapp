@@ -70,8 +70,6 @@ import java.util.TimeZone;
 public class QueueService {
     private static final Logger LOG = LoggerFactory.getLogger(QueueService.class);
 
-    private int limitedToDays;
-
     private UserProfileManager userProfileManager;
     private BusinessCustomerService businessCustomerService;
     private BizStoreManager bizStoreManager;
@@ -88,9 +86,6 @@ public class QueueService {
 
     @Autowired
     public QueueService(
-        @Value("${limitedToDays:5}")
-        int limitedToDays,
-
         UserProfileManager userProfileManager,
         BusinessCustomerService businessCustomerService,
         BizStoreManager bizStoreManager,
@@ -105,8 +100,6 @@ public class QueueService {
         StoreHourService storeHourService,
         CouponService couponService
     ) {
-        this.limitedToDays = limitedToDays;
-
         this.userProfileManager = userProfileManager;
         this.businessCustomerService = businessCustomerService;
         this.bizStoreManager = bizStoreManager;
