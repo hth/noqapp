@@ -62,10 +62,6 @@ public class UserProfilePreferenceService {
         return userPreferenceManager.findByQueueUserId(qid);
     }
 
-    public UserProfileEntity checkUserExistsByPhone(String phone) {
-        return userProfileManager.findOneByPhone(phone);
-    }
-
     @Mobile
     @SuppressWarnings("unused")
     public UserProfileEntity getProfileUpdateSince(String qid, Date since) {
