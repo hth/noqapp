@@ -411,8 +411,4 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
             TABLE
         );
     }
-            RegisteredDeviceEntity.class,
-            TABLE
-        );
-    }
 }
