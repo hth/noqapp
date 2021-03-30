@@ -87,29 +87,31 @@ public class QueueService {
     @Autowired
     public QueueService(
         UserProfileManager userProfileManager,
-        BusinessCustomerService businessCustomerService,
         BizStoreManager bizStoreManager,
         QueueManager queueManager,
         QueueManagerJDBC queueManagerJDBC,
-        TokenQueueService tokenQueueService,
         BusinessUserStoreManager businessUserStoreManager,
         StatsBizStoreDailyManager statsBizStoreDailyManager,
         PurchaseOrderManager purchaseOrderManager,
         PurchaseOrderManagerJDBC purchaseOrderManagerJDBC,
+
+        BusinessCustomerService businessCustomerService,
+        TokenQueueService tokenQueueService,
         PurchaseOrderProductService purchaseOrderProductService,
         StoreHourService storeHourService,
         CouponService couponService
     ) {
         this.userProfileManager = userProfileManager;
-        this.businessCustomerService = businessCustomerService;
         this.bizStoreManager = bizStoreManager;
         this.queueManager = queueManager;
         this.queueManagerJDBC = queueManagerJDBC;
-        this.tokenQueueService = tokenQueueService;
         this.businessUserStoreManager = businessUserStoreManager;
         this.statsBizStoreDailyManager = statsBizStoreDailyManager;
         this.purchaseOrderManager = purchaseOrderManager;
         this.purchaseOrderManagerJDBC = purchaseOrderManagerJDBC;
+
+        this.businessCustomerService = businessCustomerService;
+        this.tokenQueueService = tokenQueueService;
         this.purchaseOrderProductService = purchaseOrderProductService;
         this.storeHourService = storeHourService;
         this.couponService = couponService;
