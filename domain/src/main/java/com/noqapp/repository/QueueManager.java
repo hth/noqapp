@@ -170,10 +170,12 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
 
     List<QueueEntity> findByBizNameId(String bizNameId);
 
+    @Mobile
     Set<String> filterByDistinctCodeQR(String bizNameId);
 
     long countByBizNameId(String bizNameId);
 
+    @Mobile
     void updateUnregisteredUserWithNameAndPhone(String codeQR, int tokenNumber, String customerName, String customerPhone);
 
     void updateCustomerPriorityAndCustomerAttributes(
