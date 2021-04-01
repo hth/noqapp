@@ -17,6 +17,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.BusinessUserStoreService;
+import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.TokenQueueService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +43,7 @@ public class EmpLandingService {
     private BizService bizService;
     private TokenQueueService tokenQueueService;
     private BusinessUserStoreService businessUserStoreService;
+    private MessageCustomerService messageCustomerService;
 
     @Autowired
     public EmpLandingService(
@@ -49,13 +51,15 @@ public class EmpLandingService {
         AccountService accountService,
         BizService bizService,
         TokenQueueService tokenQueueService,
-        BusinessUserStoreService businessUserStoreService
+        BusinessUserStoreService businessUserStoreService,
+        MessageCustomerService messageCustomerService
     ) {
         this.businessUserService = businessUserService;
         this.accountService = accountService;
         this.bizService = bizService;
         this.tokenQueueService = tokenQueueService;
         this.businessUserStoreService = businessUserStoreService;
+        this.messageCustomerService = messageCustomerService;
     }
 
     /**
@@ -134,7 +138,7 @@ public class EmpLandingService {
                     + "We are proud that you have helped " + businessName + " to join new movement of no more queues. "
                     + "You will soon receive an email with more details. "
                     + "This detail would also be available in your web account under Rewards.";
-                tokenQueueService.sendMessageToSpecificUser(title, body, userProfile.getQueueUserId(), MessageOriginEnum.D, businessType);
+                messageCustomerService.sendMessageToSpecificUser(title, body, userProfile.getQueueUserId(), MessageOriginEnum.D, businessType);
             } else {
                 LOG.warn("This facility is avail to just users with userLevel={} or userLevel={} and not userLevel={}",
                     UserLevelEnum.CLIENT,

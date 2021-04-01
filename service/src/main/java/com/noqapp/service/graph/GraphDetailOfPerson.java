@@ -12,12 +12,12 @@ import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.neo4j.StoreN4j;
 import com.noqapp.domain.neo4j.queryresult.BusinessDistanceFromUserLocation;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.neo4j.AnomalyN4jManager;
 import com.noqapp.repository.neo4j.BusinessCustomerN4jManager;
 import com.noqapp.repository.neo4j.NotificationN4jManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
-import com.noqapp.service.BizService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class GraphDetailOfPerson {
     private GraphQueue graphQueue;
     private GraphBusinessCustomer graphBusinessCustomer;
 
-    private BizService bizService;
+    private BizNameManager bizNameManager;
     private QueueManagerJDBC queueManagerJDBC;
 
     public GraphDetailOfPerson(
@@ -58,7 +58,7 @@ public class GraphDetailOfPerson {
         GraphQueue graphQueue,
         GraphBusinessCustomer graphBusinessCustomer,
 
-        BizService bizService,
+        BizNameManager bizNameManager,
         QueueManagerJDBC queueManagerJDBC
     ) {
         this.personN4jManager = personN4jManager;
@@ -69,7 +69,7 @@ public class GraphDetailOfPerson {
         this.graphQueue = graphQueue;
         this.graphBusinessCustomer = graphBusinessCustomer;
 
-        this.bizService = bizService;
+        this.bizNameManager = bizNameManager;
         this.queueManagerJDBC = queueManagerJDBC;
     }
 
@@ -124,8 +124,8 @@ public class GraphDetailOfPerson {
 
             /* When no queue is found then user has not moved. Just business id was registered under that business. That's why its an anomaly. */
             if (null != queue) {
-                BizNameEntity currentBizName = bizService.getByBizNameId(personN4j.getBizNameId());
-                BizNameEntity movedFromBizName = bizService.getByBizNameId(businessDistanceFromUserLocation.getBizNameId());
+                BizNameEntity currentBizName = bizNameManager.getById(personN4j.getBizNameId());
+                BizNameEntity movedFromBizName = bizNameManager.getById(businessDistanceFromUserLocation.getBizNameId());
 
                 logMe += String.format(" Moved qid=%s found bizNameId=%s currentBizName=%s area=%s bizName=%s area=%s lastVisited=%s",
                     personN4j.getQid(),

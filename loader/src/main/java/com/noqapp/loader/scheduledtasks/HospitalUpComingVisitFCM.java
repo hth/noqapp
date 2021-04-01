@@ -11,6 +11,7 @@ import com.noqapp.medical.repository.HospitalVisitScheduleManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.DeviceService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.TokenQueueService;
 
@@ -47,7 +48,8 @@ public class HospitalUpComingVisitFCM {
 
     private HospitalVisitScheduleManager hospitalVisitScheduleManager;
     private UserProfileManager userProfileManager;
-    private TokenQueueService tokenQueueService;
+
+    private MessageCustomerService messageCustomerService;
     private DeviceService deviceService;
     private MailService mailService;
     private StatsCronService statsCronService;
@@ -59,7 +61,8 @@ public class HospitalUpComingVisitFCM {
 
         HospitalVisitScheduleManager hospitalVisitScheduleManager,
         UserProfileManager userProfileManager,
-        TokenQueueService tokenQueueService,
+
+        MessageCustomerService messageCustomerService,
         DeviceService deviceService,
         MailService mailService,
         StatsCronService statsCronService
@@ -67,7 +70,8 @@ public class HospitalUpComingVisitFCM {
         this.notifyVisitSwitch = notifyVisitSwitch;
         this.hospitalVisitScheduleManager = hospitalVisitScheduleManager;
         this.userProfileManager = userProfileManager;
-        this.tokenQueueService = tokenQueueService;
+
+        this.messageCustomerService = messageCustomerService;
         this.deviceService = deviceService;
         this.mailService = mailService;
         this.statsCronService = statsCronService;
@@ -95,7 +99,7 @@ public class HospitalUpComingVisitFCM {
                     + "\n\n"
                     + "Note: This message is auto-generated based on your Date of Birth set in your profile or dependent's profile or Hospital/Doctor has scheduled a visit.";
                 RegisteredDeviceEntity registeredDevice = deviceService.findRegisteredDeviceByQid(hospitalVisitSchedule.getQueueUserId());
-                tokenQueueService.sendMessageToSpecificUser(title, body, null, registeredDevice, MessageOriginEnum.A, BusinessTypeEnum.DO);
+                messageCustomerService.sendMessageToSpecificUser(title, body, null, registeredDevice, MessageOriginEnum.A, BusinessTypeEnum.DO);
                 hospitalVisitScheduleManager.increaseNotificationCount(hospitalVisitSchedule.getId());
                 notificationSentCount.getAndIncrement();
 

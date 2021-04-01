@@ -167,7 +167,7 @@ public class NotificationController {
         SendNotificationForm sendNotificationForm
     ) {
         if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
-            tokenQueueService.sendMessageToSpecificUser(
+            messageCustomerService.sendMessageToSpecificUser(
                 sendNotificationForm.getTitle().getText(),
                 sendNotificationForm.getBody().getText(),
                 sendNotificationForm.getImageURL().getText(),
@@ -178,7 +178,7 @@ public class NotificationController {
             sentCount.getAndIncrement();
         } else {
             if (userProfile.getQueueUserId().equalsIgnoreCase("100000000095")) {
-                tokenQueueService.sendMessageToSpecificUser(
+                messageCustomerService.sendMessageToSpecificUser(
                     sendNotificationForm.getTitle().getText(),
                     sendNotificationForm.getBody().getText(),
                     sendNotificationForm.getImageURL().getText(),
