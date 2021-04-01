@@ -15,6 +15,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.DeviceService;
+import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.NotifyMobileService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreHourService;
@@ -51,13 +52,14 @@ public class AppointmentFlexAndWalkin {
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
     private BizStoreManager bizStoreManager;
+
     private TokenQueueService tokenQueueService;
     private DeviceService deviceService;
-    private BizService bizService;
     private StatsCronService statsCronService;
     private ComputeNextRunService computeNextRunService;
     private NotifyMobileService notifyMobileService;
     private StoreHourService storeHourService;
+    private MessageCustomerService messageCustomerService;
 
     private String moveScheduledAppointmentToWalkin;
     private StatsCronEntity statsCron;
@@ -69,13 +71,14 @@ public class AppointmentFlexAndWalkin {
 
         ScheduleAppointmentManager scheduleAppointmentManager,
         BizStoreManager bizStoreManager,
+
         TokenQueueService tokenQueueService,
         DeviceService deviceService,
-        BizService bizService,
         StatsCronService statsCronService,
         ComputeNextRunService computeNextRunService,
         NotifyMobileService notifyMobileService,
-        StoreHourService storeHourService
+        StoreHourService storeHourService,
+        MessageCustomerService messageCustomerService
     ) {
         this.moveScheduledAppointmentToWalkin = moveScheduledAppointmentToWalkin;
 
@@ -83,11 +86,11 @@ public class AppointmentFlexAndWalkin {
         this.bizStoreManager = bizStoreManager;
         this.tokenQueueService = tokenQueueService;
         this.deviceService = deviceService;
-        this.bizService = bizService;
         this.statsCronService = statsCronService;
         this.computeNextRunService = computeNextRunService;
         this.notifyMobileService = notifyMobileService;
         this.storeHourService = storeHourService;
+        this.messageCustomerService = messageCustomerService;
     }
 
     @Scheduled(fixedDelayString = "${loader.AppointmentFlexAndWalkin.scheduleToWalkin}")
@@ -187,7 +190,7 @@ public class AppointmentFlexAndWalkin {
                         bizStore.getCodeQR());
                 }
             } else {
-                tokenQueueService.sendMessageToSpecificUser(
+                messageCustomerService.sendMessageToSpecificUser(
                     bizStore.getDisplayName() + ": Token not issued",
                     jsonToken.getQueueJoinDenied().friendlyDescription(),
                     scheduleAppointment.getQueueUserId(),

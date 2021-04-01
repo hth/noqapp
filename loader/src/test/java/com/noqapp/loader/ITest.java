@@ -76,6 +76,8 @@ import com.noqapp.repository.GenerateUserIdManager;
 import com.noqapp.repository.GenerateUserIdManagerImpl;
 import com.noqapp.repository.InviteManager;
 import com.noqapp.repository.InviteManagerImpl;
+import com.noqapp.repository.NotificationMessageManager;
+import com.noqapp.repository.NotificationMessageManagerImpl;
 import com.noqapp.repository.PreferredBusinessManager;
 import com.noqapp.repository.PreferredBusinessManagerImpl;
 import com.noqapp.repository.ProfessionalProfileManager;
@@ -123,6 +125,7 @@ import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.UserProfileManagerImpl;
 import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.repository.market.PropertyRentalManagerImpl;
+import com.noqapp.repository.neo4j.NotificationN4jManager;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.BusinessCustomerPriorityService;
@@ -143,6 +146,7 @@ import com.noqapp.service.InviteService;
 import com.noqapp.service.JoinAbortService;
 import com.noqapp.service.LanguageTranslationService;
 import com.noqapp.service.MailService;
+import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.NotifyMobileService;
 import com.noqapp.service.PreferredBusinessService;
 import com.noqapp.service.ProfessionalProfileService;
@@ -160,6 +164,7 @@ import com.noqapp.service.TextToSpeechService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserAddressService;
 import com.noqapp.service.UserProfilePreferenceService;
+import com.noqapp.service.graph.GraphDetailOfPerson;
 import com.noqapp.service.nlp.NLPService;
 import com.noqapp.service.payment.CashfreeService;
 import com.noqapp.service.transaction.TransactionService;
@@ -236,6 +241,7 @@ public class ITest extends RealMongoForITest {
     protected TextToSpeechService textToSpeechService;
     protected CustomTextToSpeechService customTextToSpeechService;
     protected StoreHourService storeHourService;
+    protected MessageCustomerService messageCustomerService;
 
     protected MedicalRecordManager medicalRecordManager;
     protected MedicalPhysicalManager medicalPhysicalManager;
@@ -284,6 +290,7 @@ public class ITest extends RealMongoForITest {
     protected ScheduleAppointmentManager scheduleAppointmentManager;
     protected CouponManager couponManager;
     protected CustomTextToSpeechManager customTextToSpeechManager;
+    protected NotificationMessageManager notificationMessageManager;
 
     protected BusinessCustomerManager businessCustomerManager;
     protected BusinessCustomerService businessCustomerService;
@@ -314,6 +321,8 @@ public class ITest extends RealMongoForITest {
     @Mock protected TextToSpeechConfiguration textToSpeechConfiguration;
     @Mock protected SmsService smsService;
     @Mock protected LanguageTranslationService languageTranslationService;
+    @Mock protected GraphDetailOfPerson graphDetailOfPerson;
+    @Mock protected NotificationN4jManager notificationN4jManager;
 
     private MockEnvironment mockEnvironment;
 
@@ -436,6 +445,22 @@ public class ITest extends RealMongoForITest {
             customTextToSpeechService
         );
 
+        notificationMessageManager = new NotificationMessageManagerImpl(getMongoTemplate());
+        messageCustomerService = new MessageCustomerService(
+            1,
+            notificationMessageManager,
+            registeredDeviceManager,
+            bizStoreManager,
+            bizNameManager,
+            queueManagerJDBC,
+            tokenQueueManager,
+            firebaseService,
+            firebaseMessageService,
+            languageTranslationService,
+            graphDetailOfPerson,
+            notificationN4jManager
+        );
+
         tokenQueueService = new TokenQueueService(
             1,
             tokenQueueManager,
@@ -450,7 +475,7 @@ public class ITest extends RealMongoForITest {
             textToSpeechService,
             firebaseService,
             userProfilePreferenceService,
-            languageTranslationService,
+            messageCustomerService,
             apiHealthService
         );
 

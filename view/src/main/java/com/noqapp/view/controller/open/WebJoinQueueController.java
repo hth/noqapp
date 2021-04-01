@@ -20,6 +20,7 @@ import com.noqapp.service.AccountService;
 import com.noqapp.service.BizService;
 import com.noqapp.service.FirebaseService;
 import com.noqapp.service.JoinAbortService;
+import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.QueueService;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.TokenQueueService;
@@ -118,6 +119,7 @@ public class WebJoinQueueController {
     private RegisteredDeviceManager registeredDeviceManager;
     private FirebaseService firebaseService;
     private JoinAbortService joinAbortService;
+    private MessageCustomerService messageCustomerService;
 
     @Autowired
     public WebJoinQueueController(
@@ -129,7 +131,8 @@ public class WebJoinQueueController {
         GeoIPLocationService geoIPLocationService,
         RegisteredDeviceManager registeredDeviceManager,
         FirebaseService firebaseService,
-        JoinAbortService joinAbortService
+        JoinAbortService joinAbortService,
+        MessageCustomerService messageCustomerService
     ) {
         this.bizService = bizService;
         this.showHTMLService = showHTMLService;
@@ -140,6 +143,7 @@ public class WebJoinQueueController {
         this.registeredDeviceManager = registeredDeviceManager;
         this.firebaseService = firebaseService;
         this.joinAbortService = joinAbortService;
+        this.messageCustomerService = messageCustomerService;
     }
 
     /**
@@ -404,7 +408,7 @@ public class WebJoinQueueController {
         String topic = tokenQueue.getCorrectTopic(QueueStatusEnum.N) + UNDER_SCORE + registeredDevice.getDeviceType().name();
         firebaseService.subscribeToTopic(tokens, topic);
 
-        tokenQueueService.sendMessageToSpecificUser(
+        messageCustomerService.sendMessageToSpecificUser(
             "Joined Queue",
             "You have joined queue successfully",
             qid,

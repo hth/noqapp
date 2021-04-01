@@ -99,7 +99,7 @@ public class TokenQueueService {
     private TextToSpeechService textToSpeechService;
     private FirebaseService firebaseService;
     private UserProfilePreferenceService userProfilePreferenceService;
-    private LanguageTranslationService languageTranslationService;
+    private MessageCustomerService messageCustomerService;
     private ApiHealthService apiHealthService;
 
     private ExecutorService executorService;
@@ -124,7 +124,7 @@ public class TokenQueueService {
         TextToSpeechService textToSpeechService,
         FirebaseService firebaseService,
         UserProfilePreferenceService userProfilePreferenceService,
-        LanguageTranslationService languageTranslationService,
+        MessageCustomerService messageCustomerService,
         ApiHealthService apiHealthService
     ) {
         this.allowJoinAfterMinutes = allowJoinAfterMinutes;
@@ -141,7 +141,7 @@ public class TokenQueueService {
         this.textToSpeechService = textToSpeechService;
         this.firebaseService = firebaseService;
         this.userProfilePreferenceService = userProfilePreferenceService;
-        this.languageTranslationService = languageTranslationService;
+        this.messageCustomerService = messageCustomerService;
         this.apiHealthService = apiHealthService;
 
         this.executorService = newCachedThreadPool();
@@ -917,9 +917,7 @@ public class TokenQueueService {
         }
     }
 
-    /**
-     * Send FCM message to person with specific token number asynchronously.
-     */
+    /** Send FCM message to person with specific token number asynchronously. */
     private void sendMessageToSelectedTokenUser(String codeQR, QueueStatusEnum queueStatus, TokenQueueEntity tokenQueue, String goTo, int tokenNumber, String displayToken) {
         switch (tokenQueue.getBusinessType().getMessageOrigin()) {
             case Q:
@@ -931,154 +929,6 @@ public class TokenQueueService {
             default:
                 LOG.error("Reached unreachable condition {}", tokenQueue.getBusinessType().getMessageOrigin());
                 throw new UnsupportedOperationException("Reached unreachable condition");
-        }
-    }
-
-    /** Sends any message to a specific user. */
-    public void sendMessageToSpecificUser(String title, String body, String qid, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
-        LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
-        RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
-        if (null != registeredDevice) {
-            createMessageToSendToSpecificUserOrDevice(title, body, null, registeredDevice, messageOrigin, businessType);
-        } else {
-            LOG.warn("Skipped as no registered device found for qid={}", qid);
-        }
-    }
-
-    /** Sends any message to a specific user. */
-    public void sendMessageToSpecificUser(String title, String body, String imageURL, String qid, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
-        LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
-        RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
-        if (null != registeredDevice) {
-            createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin, businessType);
-        } else {
-            LOG.warn("Skipped as no registered device found for qid={}", qid);
-        }
-    }
-
-    /** Sends any message to a specific user. */
-    public void sendMessageToSpecificUser(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
-        LOG.debug("Sending message to specific user title={} body={} messageOrigin={}", title, body, messageOrigin);
-        if (null != registeredDevice) {
-            createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin, businessType);
-        }
-    }
-
-    private void createMessageToSendToSpecificUserOrDevice(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
-        String token = registeredDevice.getToken();
-        JsonMessage jsonMessage = new JsonMessage(token);
-        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
-        jsonData.setImageURL(imageURL);
-
-        if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
-            jsonMessage.getNotification()
-                .setTitle(title)
-                .setBody(body);
-        } else {
-            jsonMessage.setNotification(null);
-            jsonData.setTitle(title)
-                .setBody(body)
-                .setTranslatedBody(languageTranslationService.translateText(body));
-        }
-
-        jsonMessage.setData(jsonData);
-        LOG.info("Specific Message={}", jsonMessage.asJson());
-        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
-        if (!fcmMessageBroadcast) {
-            LOG.warn("Failed personal message={}", jsonMessage.asJson());
-        } else {
-            LOG.info("Sent personal message={}", jsonMessage.asJson());
-        }
-    }
-
-    public void sendBulkMessageToBusinessUser(String id, String title, String body, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType, BusinessTypeEnum businessType) {
-        JsonMessage jsonMessage = new JsonMessage(topic);
-        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
-        jsonData.setId(id);
-
-        if (DeviceTypeEnum.I == deviceType) {
-            jsonMessage.getNotification()
-                .setTitle(title)
-                .setBody(body);
-        } else {
-            jsonMessage.setNotification(null);
-            jsonData.setTitle(title)
-                .setBody(body)
-                .setTranslatedBody(languageTranslationService.translateText(body));
-        }
-
-        jsonMessage.setData(jsonData);
-        LOG.info("Specific Message={}", jsonMessage.asJson());
-        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
-        if (!fcmMessageBroadcast) {
-            LOG.warn("Failed bulk message={}", jsonMessage.asJson());
-        } else {
-            LOG.info("Sent bulk message={}", jsonMessage.asJson());
-        }
-    }
-
-    public void sendBulkMessageToBusinessUser(String id, String title, String body, String imageURL, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType, BusinessTypeEnum businessType) {
-        JsonMessage jsonMessage = new JsonMessage(topic);
-        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
-        jsonData
-            .setId(id)
-            .setImageURL(imageURL);
-
-        if (DeviceTypeEnum.I == deviceType) {
-            jsonMessage.getNotification()
-                .setTitle(title)
-                .setBody(body);
-        } else {
-            jsonMessage.setNotification(null);
-            jsonData.setTitle(title)
-                .setBody(body)
-                .setTranslatedBody(languageTranslationService.translateText(body));
-        }
-
-        jsonMessage.setData(jsonData);
-        LOG.info("Specific Message={}", jsonMessage.asJson());
-        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
-        if (!fcmMessageBroadcast) {
-            LOG.warn("Failed bulk message={}", jsonMessage.asJson());
-        } else {
-            LOG.info("Sent bulk message={}", jsonMessage.asJson());
-        }
-    }
-
-    /** Sends any message to all users subscribed to topic. This includes Client and Merchant. */
-    @Mobile
-    public void sendAlertMessageToAllOnSpecificTopic(String id, String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus) {
-        LOG.debug("Sending message to all title={} body={}", title, body);
-        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
-            String topic = tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name();
-            LOG.debug("Topic being sent to {}", topic);
-            JsonMessage jsonMessage = new JsonMessage(topic);
-            JsonData jsonData = new JsonTopicData(MessageOriginEnum.A, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(tokenQueue.getBusinessType())
-                //Added additional info to message for Android to not crash as it looks for CodeQR.
-                //TODO improve messaging to do some action on Client and Business app when status is Closed.
-                .setCodeQR(tokenQueue.getId());
-            jsonData
-                .setId(id);
-
-            if (DeviceTypeEnum.I == deviceType) {
-                jsonMessage.getNotification()
-                    .setTitle(title)
-                    .setBody(body);
-            } else {
-                jsonMessage.setNotification(null);
-                jsonData.setTitle(title)
-                    .setBody(body)
-                    .setTranslatedBody(languageTranslationService.translateText(body));
-            }
-
-            jsonMessage.setData(jsonData);
-            LOG.info("Broadcast Message={}", jsonMessage.asJson());
-            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
-            if (!fcmMessageBroadcast) {
-                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
-            } else {
-                LOG.info("Sent message to all subscriber of topic message={}", jsonMessage.asJson());
-            }
         }
     }
 
@@ -1318,7 +1168,7 @@ public class TokenQueueService {
         LOG.info("Time local={} start={}", DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()), storeHour.getStartHour());
         if (DateFormatter.getTimeIn24HourFormat(zonedDateTime.toLocalTime()) < storeHour.getStartHour()) {
             /* Send message to the user who aborted the position in queue. */
-            sendMessageToSpecificUser(
+            messageCustomerService.sendMessageToSpecificUser(
                 "Cancelled " + queue.getDisplayName(),
                 "You have cancelled your position in queue. If tokens are available, you have a short window to re-join to retain your spot. " +
                     "After short window has elapsed, you would be able to join again if tokens are available after service has started.",

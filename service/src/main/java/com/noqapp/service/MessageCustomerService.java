@@ -9,15 +9,21 @@ import com.noqapp.domain.NotificationMessageEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.json.fcm.JsonMessage;
+import com.noqapp.domain.json.fcm.data.JsonData;
+import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.neo4j.NotificationN4j;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
+import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.NotificationMessageManager;
+import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
+import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.neo4j.NotificationN4jManager;
 import com.noqapp.service.graph.GraphDetailOfPerson;
 
@@ -44,13 +50,16 @@ import java.util.List;
 public class MessageCustomerService {
     private static final Logger LOG = LoggerFactory.getLogger(MessageCustomerService.class);
 
-    private QueueService queueService;
-    private TokenQueueService tokenQueueService;
     private NotificationMessageManager notificationMessageManager;
     private RegisteredDeviceManager registeredDeviceManager;
-    private FirebaseService firebaseService;
     private BizStoreManager bizStoreManager;
     private BizNameManager bizNameManager;
+    private QueueManagerJDBC queueManagerJDBC;
+    private TokenQueueManager tokenQueueManager;
+
+    private FirebaseService firebaseService;
+    private FirebaseMessageService firebaseMessageService;
+    private LanguageTranslationService languageTranslationService;
 
     private GraphDetailOfPerson graphDetailOfPerson;
     private NotificationN4jManager notificationN4jManager;
@@ -65,28 +74,32 @@ public class MessageCustomerService {
         @Value("${MessageCustomerService.limitMessageToCustomerVisitedInDays}")
         int limitMessageToCustomerVisitedInDays,
 
-        QueueService queueService,
-        TokenQueueService tokenQueueService,
         NotificationMessageManager notificationMessageManager,
         RegisteredDeviceManager registeredDeviceManager,
         BizStoreManager bizStoreManager,
         BizNameManager bizNameManager,
+        QueueManagerJDBC queueManagerJDBC,
+        TokenQueueManager tokenQueueManager,
 
         FirebaseService firebaseService,
+        FirebaseMessageService firebaseMessageService,
+        LanguageTranslationService languageTranslationService,
 
         GraphDetailOfPerson graphDetailOfPerson,
         NotificationN4jManager notificationN4jManager
     ) {
         this.limitMessageToCustomerVisitedInDays = limitMessageToCustomerVisitedInDays;
 
-        this.queueService = queueService;
-        this.tokenQueueService = tokenQueueService;
         this.notificationMessageManager = notificationMessageManager;
         this.registeredDeviceManager = registeredDeviceManager;
         this.bizStoreManager = bizStoreManager;
         this.bizNameManager = bizNameManager;
+        this.queueManagerJDBC = queueManagerJDBC;
+        this.tokenQueueManager = tokenQueueManager;
 
         this.firebaseService = firebaseService;
+        this.firebaseMessageService = firebaseMessageService;
+        this.languageTranslationService = languageTranslationService;
 
         this.graphDetailOfPerson = graphDetailOfPerson;
         this.notificationN4jManager = notificationN4jManager;
@@ -108,7 +121,7 @@ public class MessageCustomerService {
         try {
             for (String codeQR : codeQRs) {
                 BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
-                TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
+                TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
                 NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
                     .setTitle(title)
                     .setBody(body)
@@ -129,17 +142,17 @@ public class MessageCustomerService {
     }
 
     private void sendMessageToSubscriber(String id, String title, String body, TokenQueueEntity tokenQueue) {
-        tokenQueueService.sendAlertMessageToAllOnSpecificTopic(id, title, body, tokenQueue, QueueStatusEnum.C);
+        sendAlertMessageToAllOnSpecificTopic(id, title, body, tokenQueue, QueueStatusEnum.C);
     }
 
     public int sendMessageToPastClients(String bizNameId) {
-        return queueService.countDistinctQIDsInBiz(bizNameId, limitMessageToCustomerVisitedInDays);
+        return queueManagerJDBC.countDistinctQIDsInBiz(bizNameId, limitMessageToCustomerVisitedInDays);
     }
 
     /** Can be used for dynamic setting number of days. */
     @SuppressWarnings("unused")
     public int sendMessageToPastClients(String bizNameId, int days) {
-        return queueService.countDistinctQIDsInBiz(bizNameId, days == 0 ? limitMessageToCustomerVisitedInDays : days);
+        return queueManagerJDBC.countDistinctQIDsInBiz(bizNameId, days == 0 ? limitMessageToCustomerVisitedInDays : days);
     }
 
     public void sendMessageToAll(String title, String body, String qid, String subscribedTopic) {
@@ -161,12 +174,12 @@ public class MessageCustomerService {
             if (StringUtils.isBlank(imageURL)) {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                     String topic = CommonUtil.buildTopic(subscribedTopic, deviceType.name());
-                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, businessType);
+                    sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, businessType);
                 }
             } else {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                     String topic = CommonUtil.buildTopic(subscribedTopic, deviceType.name());
-                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, imageURL, topic, MessageOriginEnum.A, deviceType, businessType);
+                    sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, imageURL, topic, MessageOriginEnum.A, deviceType, businessType);
                 }
             }
         } catch (Exception e) {
@@ -189,12 +202,12 @@ public class MessageCustomerService {
             if (StringUtils.isBlank(imageURL)) {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                     String topic = CommonUtil.buildTopic(businessType.getName(), deviceType.name());
-                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, businessType);
+                    sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, businessType);
                 }
             } else {
                 for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
                     String topic = CommonUtil.buildTopic(businessType.getName(), deviceType.name());
-                    tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, imageURL, topic, MessageOriginEnum.A, deviceType, businessType);
+                    sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, imageURL, topic, MessageOriginEnum.A, deviceType, businessType);
                 }
             }
         } catch (Exception e) {
@@ -217,7 +230,7 @@ public class MessageCustomerService {
 
             List<String> tokens_A = new ArrayList<>();
             List<String> tokens_I = new ArrayList<>();
-            queueService.distinctQIDsInBiz(bizNameId, limitMessageToCustomerVisitedInDays).stream().iterator()
+            queueManagerJDBC.distinctQIDsInBiz(bizNameId, limitMessageToCustomerVisitedInDays).stream().iterator()
                 .forEachRemaining(senderQid -> {
                     RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(senderQid);
                     try {
@@ -242,12 +255,12 @@ public class MessageCustomerService {
                 switch (deviceType) {
                     case A:
                         if (subscribeToTopic(tokens_A, topic)) {
-                            tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, bizName.getBusinessType());
+                            sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, bizName.getBusinessType());
                         }
                         break;
                     case I:
                         if (subscribeToTopic(tokens_I, topic)) {
-                            tokenQueueService.sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, bizName.getBusinessType());
+                            sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, bizName.getBusinessType());
                         }
                         break;
                     case W:
@@ -298,5 +311,153 @@ public class MessageCustomerService {
     public boolean increaseViewBusinessCount(String id, String qid) {
         graphDetailOfPerson.graphPersonWithNotification(id, qid);
         return notificationMessageManager.increaseViewBusinessCount(id);
+    }
+
+    /** Sends any message to a specific user. */
+    public void sendMessageToSpecificUser(String title, String body, String qid, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
+        LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
+        RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
+        if (null != registeredDevice) {
+            createMessageToSendToSpecificUserOrDevice(title, body, null, registeredDevice, messageOrigin, businessType);
+        } else {
+            LOG.warn("Skipped as no registered device found for qid={}", qid);
+        }
+    }
+
+    /** Sends any message to a specific user. */
+    public void sendMessageToSpecificUser(String title, String body, String imageURL, String qid, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
+        LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
+        RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
+        if (null != registeredDevice) {
+            createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin, businessType);
+        } else {
+            LOG.warn("Skipped as no registered device found for qid={}", qid);
+        }
+    }
+
+    /** Sends any message to a specific user. */
+    public void sendMessageToSpecificUser(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
+        LOG.debug("Sending message to specific user title={} body={} messageOrigin={}", title, body, messageOrigin);
+        if (null != registeredDevice) {
+            createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin, businessType);
+        }
+    }
+
+    private void createMessageToSendToSpecificUserOrDevice(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
+        String token = registeredDevice.getToken();
+        JsonMessage jsonMessage = new JsonMessage(token);
+        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
+        jsonData.setImageURL(imageURL);
+
+        if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
+            jsonMessage.getNotification()
+                .setTitle(title)
+                .setBody(body);
+        } else {
+            jsonMessage.setNotification(null);
+            jsonData.setTitle(title)
+                .setBody(body)
+                .setTranslatedBody(languageTranslationService.translateText(body));
+        }
+
+        jsonMessage.setData(jsonData);
+        LOG.info("Specific Message={}", jsonMessage.asJson());
+        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+        if (!fcmMessageBroadcast) {
+            LOG.warn("Failed personal message={}", jsonMessage.asJson());
+        } else {
+            LOG.info("Sent personal message={}", jsonMessage.asJson());
+        }
+    }
+
+    public void sendBulkMessageToBusinessUser(String id, String title, String body, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType, BusinessTypeEnum businessType) {
+        JsonMessage jsonMessage = new JsonMessage(topic);
+        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
+        jsonData.setId(id);
+
+        if (DeviceTypeEnum.I == deviceType) {
+            jsonMessage.getNotification()
+                .setTitle(title)
+                .setBody(body);
+        } else {
+            jsonMessage.setNotification(null);
+            jsonData.setTitle(title)
+                .setBody(body)
+                .setTranslatedBody(languageTranslationService.translateText(body));
+        }
+
+        jsonMessage.setData(jsonData);
+        LOG.info("Specific Message={}", jsonMessage.asJson());
+        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+        if (!fcmMessageBroadcast) {
+            LOG.warn("Failed bulk message={}", jsonMessage.asJson());
+        } else {
+            LOG.info("Sent bulk message={}", jsonMessage.asJson());
+        }
+    }
+
+    public void sendBulkMessageToBusinessUser(String id, String title, String body, String imageURL, String topic, MessageOriginEnum messageOrigin, DeviceTypeEnum deviceType, BusinessTypeEnum businessType) {
+        JsonMessage jsonMessage = new JsonMessage(topic);
+        JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
+        jsonData
+            .setId(id)
+            .setImageURL(imageURL);
+
+        if (DeviceTypeEnum.I == deviceType) {
+            jsonMessage.getNotification()
+                .setTitle(title)
+                .setBody(body);
+        } else {
+            jsonMessage.setNotification(null);
+            jsonData.setTitle(title)
+                .setBody(body)
+                .setTranslatedBody(languageTranslationService.translateText(body));
+        }
+
+        jsonMessage.setData(jsonData);
+        LOG.info("Specific Message={}", jsonMessage.asJson());
+        boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+        if (!fcmMessageBroadcast) {
+            LOG.warn("Failed bulk message={}", jsonMessage.asJson());
+        } else {
+            LOG.info("Sent bulk message={}", jsonMessage.asJson());
+        }
+    }
+
+    /** Sends any message to all users subscribed to topic. This includes Client and Merchant. */
+    @Mobile
+    public void sendAlertMessageToAllOnSpecificTopic(String id, String title, String body, TokenQueueEntity tokenQueue, QueueStatusEnum queueStatus) {
+        LOG.debug("Sending message to all title={} body={}", title, body);
+        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+            String topic = tokenQueue.getCorrectTopic(queueStatus) + UNDER_SCORE + deviceType.name();
+            LOG.debug("Topic being sent to {}", topic);
+            JsonMessage jsonMessage = new JsonMessage(topic);
+            JsonData jsonData = new JsonTopicData(MessageOriginEnum.A, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(tokenQueue.getBusinessType())
+                //Added additional info to message for Android to not crash as it looks for CodeQR.
+                //TODO improve messaging to do some action on Client and Business app when status is Closed.
+                .setCodeQR(tokenQueue.getId());
+            jsonData
+                .setId(id);
+
+            if (DeviceTypeEnum.I == deviceType) {
+                jsonMessage.getNotification()
+                    .setTitle(title)
+                    .setBody(body);
+            } else {
+                jsonMessage.setNotification(null);
+                jsonData.setTitle(title)
+                    .setBody(body)
+                    .setTranslatedBody(languageTranslationService.translateText(body));
+            }
+
+            jsonMessage.setData(jsonData);
+            LOG.info("Broadcast Message={}", jsonMessage.asJson());
+            boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
+            if (!fcmMessageBroadcast) {
+                LOG.warn("Broadcast failed message={}", jsonMessage.asJson());
+            } else {
+                LOG.info("Sent message to all subscriber of topic message={}", jsonMessage.asJson());
+            }
+        }
     }
 }
