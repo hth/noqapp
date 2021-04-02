@@ -302,7 +302,7 @@ public class MessageCustomerService {
      * joined the queue, as aborted queue could rise from closing the store. Mobile should support this unsubscription as message is sent
      * to mobile.
      */
-    public void unsubscribeAbortedQueues(List<QueueEntity> queues, BizStoreEntity bizStore) {
+    public void unsubscribeWhenUserInQueueHaveStatusAborted(List<QueueEntity> queues, BizStoreEntity bizStore) {
         if (queues.isEmpty()) {
             return;
         }

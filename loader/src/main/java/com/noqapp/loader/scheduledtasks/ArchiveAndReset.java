@@ -1,6 +1,5 @@
 package com.noqapp.loader.scheduledtasks;
 
-import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 import static com.noqapp.common.utils.DateUtil.DAY.TODAY;
 
 import com.noqapp.common.utils.CommonUtil;
@@ -11,16 +10,11 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.QueueEntity;
-import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StatsBizStoreDailyEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.StoreHourEntity;
-import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.DeviceTypeEnum;
-import com.noqapp.domain.types.MessageOriginEnum;
-import com.noqapp.domain.types.QueueStatusEnum;
 import com.noqapp.domain.types.QueueUserStateEnum;
 import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.repository.BizStoreManager;
@@ -30,12 +24,10 @@ import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
-import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.FileService;
-import com.noqapp.service.FirebaseService;
 import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreHourService;
@@ -59,7 +51,6 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -344,7 +335,7 @@ public class ArchiveAndReset {
                 LOG.info("Skipped daily queue store totalClient={} stat={}", statsBizStoreDaily.getTotalClient(), statsBizStoreDaily);
             }
 
-            messageCustomerService.unsubscribeAbortedQueues(queues, bizStore);
+            messageCustomerService.unsubscribeWhenUserInQueueHaveStatusAborted(queues, bizStore);
         } catch (DataIntegrityViolationException e) {
             LOG.error("Failed bulk update. Complete rollback bizStore={} codeQR={}", bizStore.getId(), bizStore.getCodeQR());
             queueManagerJDBC.rollbackQueues(queues);
