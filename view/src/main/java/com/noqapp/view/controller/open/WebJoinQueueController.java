@@ -162,15 +162,21 @@ public class WebJoinQueueController {
         HttpServletResponse response
     ) throws IOException {
         try {
-            LOG.info("Coded CodeQR={} ip={}", codeQR.getText(), HttpRequestResponseParser.getClientIpAddress(request));
+            String ip = HttpRequestResponseParser.getClientIpAddress(request);
             String codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText()), StandardCharsets.ISO_8859_1);
+            if (codeQR.getText().contains(".htm")) {
+                codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText().split("\\.")[0]), StandardCharsets.ISO_8859_1);
+                LOG.warn("Coded CodeQR={} ip={}", codeQR.getText(), ip);
+            } else {
+                LOG.info("Coded CodeQR={} ip={}", codeQR.getText(), ip);
+            }
 
             if (!bizService.isValidCodeQR(codeQRDecoded)) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid token");
                 return null;
             }
 
-            int requesterTime = geoIPLocationService.requestOriginatorTime(HttpRequestResponseParser.getClientIpAddress(request));
+            int requesterTime = geoIPLocationService.requestOriginatorTime(ip);
             LOG.info("Web requester originator time is {} codeQRDecoded={}", requesterTime, codeQRDecoded);
 
             BizStoreEntity bizStore = bizService.findByCodeQR(codeQRDecoded);
