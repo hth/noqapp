@@ -162,7 +162,7 @@ public class WebJoinQueueController {
         HttpServletResponse response
     ) throws IOException {
         try {
-            LOG.info("Coded CodeQR={}", codeQR.getText());
+            LOG.info("Coded CodeQR={} ip={}", codeQR.getText(), HttpRequestResponseParser.getClientIpAddress(request));
             String codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText()), StandardCharsets.ISO_8859_1);
 
             if (!bizService.isValidCodeQR(codeQRDecoded)) {
