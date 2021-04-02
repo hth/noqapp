@@ -6,6 +6,7 @@ import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.NotificationMessageEntity;
+import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.annotation.Mobile;
@@ -291,6 +292,78 @@ public class MessageCustomerService {
             }
         } else {
             firebaseService.subscribeToTopic(tokens, topic);
+        }
+
+        return true;
+    }
+
+    /**
+     * This is suppose to be a backup (currently this is only what works) to unsubscribe aborted queue when store closes after people have
+     * joined the queue, as aborted queue could rise from closing the store. Mobile should support this unsubscription as message is sent
+     * to mobile.
+     */
+    public void unsubscribeAbortedQueues(List<QueueEntity> queues, BizStoreEntity bizStore) {
+        if (queues.isEmpty()) {
+            return;
+        }
+
+        List<String> tokens_A = new ArrayList<>();
+        List<String> tokens_I = new ArrayList<>();
+        queues.forEach(queue -> {
+            switch (queue.getQueueUserState()) {
+                case A:
+                    RegisteredDeviceEntity registeredDevice = registeredDeviceManager.find(queue.getQueueUserId(), queue.getDid());
+                    try {
+                        switch (registeredDevice.getDeviceType()) {
+                            case A:
+                                tokens_A.add(registeredDevice.getToken());
+                                break;
+                            case I:
+                                tokens_I.add(registeredDevice.getToken());
+                                break;
+                            case W:
+                                //Do nothing
+                                break;
+                        }
+                    } catch (Exception e) {
+                        LOG.error("Failed unsubscribe token {} {} {} {} {}", queue.getDisplayName(), queue.getBizNameId(), queue.getCodeQR(), queue.getQueueUserId(), e.getMessage());
+                    }
+                    break;
+                default:
+                    //Ignore other conditions
+            }
+        });
+
+        TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(bizStore.getCodeQR());
+        for (DeviceTypeEnum deviceType : DeviceTypeEnum.values()) {
+            String topic = tokenQueue.getCorrectTopic(QueueStatusEnum.C) + UNDER_SCORE + deviceType.name();
+            switch (deviceType) {
+                case A:
+                    unsubscribeFromTopic(tokens_A, topic);
+                    break;
+                case I:
+                    unsubscribeFromTopic(tokens_I, topic);
+                    break;
+                case W:
+                    //Do nothing
+                    break;
+            }
+        }
+    }
+
+    public boolean unsubscribeFromTopic(List<String> tokens, String topic) {
+        int size = tokens.size();
+        if (size == 0) {
+            return false;
+        }
+
+        if (size > maxTokenLimit) {
+            Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens, maxTokenLimit);
+            for (List<String> collectionOfToken : collectionOfTokens) {
+                firebaseService.unsubscribeFromTopic(collectionOfToken, topic);
+            }
+        } else {
+            firebaseService.unsubscribeFromTopic(tokens, topic);
         }
 
         return true;

@@ -41,7 +41,8 @@ public class ArchiveAndResetITest extends ITest {
             purchaseOrderManagerJDBC,
             purchaseOrderProductManagerJDBC,
             fileService,
-            storeHourService
+            storeHourService,
+            messageCustomerService
         );
     }
 
