@@ -163,11 +163,12 @@ public class WebJoinQueueController {
     ) throws IOException {
         try {
             String ip = HttpRequestResponseParser.getClientIpAddress(request);
-            String codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText()), StandardCharsets.ISO_8859_1);
+            String codeQRDecoded;
             if (codeQR.getText().contains(".htm")) {
-                codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText().split("\\.")[0]), StandardCharsets.ISO_8859_1);
                 LOG.warn("Coded CodeQR={} ip={}", codeQR.getText(), ip);
+                codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText().split("\\.")[0]), StandardCharsets.ISO_8859_1);
             } else {
+                codeQRDecoded = new String(Base64.getDecoder().decode(codeQR.getText()), StandardCharsets.ISO_8859_1);
                 LOG.info("Coded CodeQR={} ip={}", codeQR.getText(), ip);
             }
 
