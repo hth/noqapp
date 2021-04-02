@@ -87,6 +87,15 @@ public class FirebaseService {
         }
     }
 
+    public void unsubscribeFromTopic(List<String> registrationTokens, String topic) {
+        try {
+            TopicManagementResponse response = firebaseConfig.getFirebaseMessaging().unsubscribeFromTopic(registrationTokens, topic);
+            LOG.info("Unsubscribed successCount={} topic={}", response.getSuccessCount(), topic);
+        } catch (FirebaseMessagingException e) {
+            LOG.error("Failed unsubscribing {} {} reason={}", topic, registrationTokens, e.getLocalizedMessage(), e);
+        }
+    }
+
     public boolean isFirebaseUserExists(String phone, String uid) {
         try {
             UserRecord userRecord = firebaseConfig.getFirebaseAuth().getUser(uid);

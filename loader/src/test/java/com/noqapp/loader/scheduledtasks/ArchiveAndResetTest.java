@@ -23,6 +23,7 @@ import com.noqapp.repository.StatsBizStoreDailyManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.BizService;
 import com.noqapp.service.FileService;
+import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreHourService;
 
@@ -63,6 +64,7 @@ class ArchiveAndResetTest {
     @Mock private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
     @Mock private FileService fileService;
     @Mock private StoreHourService storeHourService;
+    @Mock private MessageCustomerService messageCustomerService;
 
     private String codeQR = CommonUtil.generateHexFromObjectId();
     private String bizStoreId = CommonUtil.generateHexFromObjectId();
@@ -90,7 +92,8 @@ class ArchiveAndResetTest {
             purchaseOrderManagerJDBC,
             purchaseOrderProductManagerJDBC,
             fileService,
-            storeHourService
+            storeHourService,
+            messageCustomerService
         );
 
         QueueEntity a = new QueueEntity();
