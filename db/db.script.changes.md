@@ -1,3 +1,8 @@
+### Changed April 2, 2021
+
+    db.getCollection('USER_PROFILE').update({AD: {$exists : true}}, {$unset: {AD : ""}}, {multi: true});
+    db.getCollection('USER_PROFILE').update({AO: {$exists : true}}, {$unset: {AO : ""}}, {multi: true});
+
 ### Changed Mar 24, 2021
 
 For new version
