@@ -416,7 +416,7 @@ public class MessageCustomerService {
         }
     }
 
-    private void createMessageToSendToSpecificUserOrDevice(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
+    public void createMessageToSendToSpecificUserOrDevice(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
         String token = registeredDevice.getToken();
         JsonMessage jsonMessage = new JsonMessage(token);
         JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
