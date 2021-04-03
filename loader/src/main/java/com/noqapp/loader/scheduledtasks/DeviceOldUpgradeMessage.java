@@ -47,7 +47,7 @@ public class DeviceOldUpgradeMessage {
 
     /* Set cache parameters. */
     private static final Cache<String, String> cache = Caffeine.newBuilder()
-        .maximumSize(1000)
+        .maximumSize(100)
         .expireAfterWrite(24, TimeUnit.HOURS)
         .build();
 
@@ -87,11 +87,12 @@ public class DeviceOldUpgradeMessage {
                     cache.put(registeredDevice.getToken(), registeredDevice.getDeviceId());
                     messageCustomerService.createMessageToSendToSpecificUserOrDevice(
                         "Please Upgrade Your Phone",
-                        "Future version of NoQueue will not be supported on your phone. Please upgrade to a higher version to prevent NoQueue service disruption.",
+                        "Future version of NoQueue may not be supported on your phone. Please upgrade to a higher version to prevent NoQueue service disruption.",
                         null,
                         registeredDevice,
                         MessageOriginEnum.A,
                         BusinessTypeEnum.ZZ);
+                    LOG.info("Send upgrade message {} {}", did, registeredDevice.getQueueUserId());
 
                     sendCount++;
                 } else {
