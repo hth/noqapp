@@ -96,4 +96,6 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
 
     @Mobile
     void updateRegisteredDevice(String did, String qid, DeviceTypeEnum deviceType, boolean sinceBeginning);
+
+    List<RegisteredDeviceEntity> findAlmostObsoleteDevices();
 }
