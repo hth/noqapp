@@ -137,7 +137,7 @@ public class BizStoreSpatialElasticService {
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());
-            bizStoreElastics.setBusinessType(searchedOnBusinessType);
+            bizStoreElastics.setSearchedOnBusinessType(searchedOnBusinessType);
             populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
             return bizStoreElastics;
         } catch (IOException e) {
