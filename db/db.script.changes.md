@@ -1,3 +1,8 @@
+### Changed April 4, 2021
+
+    db.getCollection('REGISTERED_DEVICE').update({"DL" : {$exists : false}}, {$set: {DL : "en"}}, {multi: true});
+    db.getCollection('REGISTERED_DEVICE').remove({"U" : {$lt : ISODate("2020-11-30")}})
+
 ### Changed April 2, 2021
 
     db.getCollection('USER_PROFILE').update({AD: {$exists : true}}, {$unset: {AD : ""}}, {multi: true});
