@@ -53,7 +53,9 @@ public class LanguageTranslationService {
     public Map<String, String> translateText(String targetLanguage, String text) {
         if (StringUtils.isNotBlank(targetLanguage)) {
             Map<String, String> translatedBody = new HashMap<>();
-            translatedBody.put(targetLanguage, doTextTranslation(targetLanguage, text));
+            if (!"en".equals(targetLanguage)) {
+                translatedBody.put(targetLanguage, doTextTranslation(targetLanguage, text));
+            }
             translatedBody.put("en", text);
             return translatedBody;
         } else {
