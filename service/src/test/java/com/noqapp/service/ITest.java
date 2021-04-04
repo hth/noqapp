@@ -367,6 +367,7 @@ public class ITest extends RealMongoForITest {
             bizNameManager,
             queueManagerJDBC,
             tokenQueueManager,
+            userProfileManager,
             firebaseService,
             firebaseMessageService,
             languageTranslationService,
