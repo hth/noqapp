@@ -7,6 +7,8 @@ import com.google.cloud.translate.v3beta1.TranslateTextRequest;
 import com.google.cloud.translate.v3beta1.TranslateTextResponse;
 import com.google.cloud.translate.v3beta1.Translation;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,15 +43,26 @@ public class LanguageTranslationService {
     public Map<String, String> translateText(String text) {
         Map<String, String> translatedBody = new HashMap<>();
         for (String targetLanguage : targetLanguages) {
-            translatedBody.put(targetLanguage, translateText(targetLanguage, text));
+            translatedBody.put(targetLanguage, doTextTranslation(targetLanguage, text));
         }
 
         translatedBody.put("en", text);
         return translatedBody;
     }
 
+    public Map<String, String> translateText(String targetLanguage, String text) {
+        if (StringUtils.isNotBlank(targetLanguage)) {
+            Map<String, String> translatedBody = new HashMap<>();
+            translatedBody.put(targetLanguage, doTextTranslation(targetLanguage, text));
+            translatedBody.put("en", text);
+            return translatedBody;
+        } else {
+            return translateText(text);
+        }
+    }
+
     /** Translate text. */
-    private String translateText(String targetLanguage, String text) {
+    private String doTextTranslation(String targetLanguage, String text) {
         LocationName parent = LocationName.of(firebaseProjectId, "global");
 
         // Supported Mime Types: https://cloud.google.com/translate/docs/supported-formats

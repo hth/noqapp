@@ -9,6 +9,7 @@ import com.noqapp.domain.NotificationMessageEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.TokenQueueEntity;
+import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
@@ -25,6 +26,7 @@ import com.noqapp.repository.NotificationMessageManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
+import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.neo4j.NotificationN4jManager;
 import com.noqapp.service.graph.GraphDetailOfPerson;
 
@@ -57,6 +59,7 @@ public class MessageCustomerService {
     private BizNameManager bizNameManager;
     private QueueManagerJDBC queueManagerJDBC;
     private TokenQueueManager tokenQueueManager;
+    private UserProfileManager userProfileManager;
 
     private FirebaseService firebaseService;
     private FirebaseMessageService firebaseMessageService;
@@ -81,6 +84,7 @@ public class MessageCustomerService {
         BizNameManager bizNameManager,
         QueueManagerJDBC queueManagerJDBC,
         TokenQueueManager tokenQueueManager,
+        UserProfileManager userProfileManager,
 
         FirebaseService firebaseService,
         FirebaseMessageService firebaseMessageService,
@@ -97,6 +101,7 @@ public class MessageCustomerService {
         this.bizNameManager = bizNameManager;
         this.queueManagerJDBC = queueManagerJDBC;
         this.tokenQueueManager = tokenQueueManager;
+        this.userProfileManager = userProfileManager;
 
         this.firebaseService = firebaseService;
         this.firebaseMessageService = firebaseMessageService;
@@ -422,6 +427,12 @@ public class MessageCustomerService {
         JsonData jsonData = new JsonTopicData(messageOrigin, FirebaseMessageTypeEnum.P).getJsonAlertData().setBusinessType(businessType);
         jsonData.setImageURL(imageURL);
 
+        if (StringUtils.isNotBlank(registeredDevice.getQueueUserId())) {
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(registeredDevice.getQueueUserId());
+            body = userProfile.getName() + ", " + body;
+            LOG.info("Message personalized {}", body);
+        }
+
         if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
             jsonMessage.getNotification()
                 .setTitle(title)
@@ -430,7 +441,7 @@ public class MessageCustomerService {
             jsonMessage.setNotification(null);
             jsonData.setTitle(title)
                 .setBody(body)
-                .setTranslatedBody(languageTranslationService.translateText(body));
+                .setTranslatedBody(languageTranslationService.translateText(registeredDevice.getDeviceLanguage(), body));
         }
 
         jsonMessage.setData(jsonData);
