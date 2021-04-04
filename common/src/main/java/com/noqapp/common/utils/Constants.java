@@ -4,6 +4,8 @@ import okhttp3.MediaType;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -22,7 +24,6 @@ public class Constants {
     public static final Pattern WORD_PATTERN = Pattern.compile("^[A-Za-z .-]+");
     public static final String WORD_PATTERN_TEXT = " words 'A-to-Z', spaces ' ' and/or dots/dash '.', '-";
     public static final int PRIME_73 = 73;
-    public static final String[] FUTURE_LEAST_SUPPORTED_DEVICE_ANDROID = {"5.1", "5.1.1"};
     public static final String appendPrefix = "Q";
     public static final String DIRTY = "Y";
     public static final int PREVENT_JOINING_BEFORE_CLOSING = 30; //Minutes
@@ -36,6 +37,11 @@ public class Constants {
     public static final int MINUTES_IN_MILLISECOND = 60_000;      //1 minutes in milliseconds
     public static final int MINUTES_2_IN_MILLISECOND = MINUTES_IN_MILLISECOND * 2;
     public static final int HUNDRED_KMS_IN_METERS = 100 * 1000;
+
+    public static final Set<String> UNSUPPORTED_DEVICE_IN_FUTURE = new HashSet<>() {{
+        add("5.1");
+        add("5.1.1");
+    }};
 
     private Constants() {
     }

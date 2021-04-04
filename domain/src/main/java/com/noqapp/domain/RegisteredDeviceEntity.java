@@ -62,6 +62,9 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field("AV")
     private String appVersion;
 
+    @Field("DL")
+    private String deviceLanguage;
+
     @Field("CT")
     private String cityName;
 
@@ -131,6 +134,54 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.ipAddress = ipAddress;
     }
 
+    private RegisteredDeviceEntity(
+        String queueUserId,
+        String deviceId,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String appVersion,
+        String deviceLanguage,
+        String cityName,
+        double[] coordinate,
+        String ipAddress
+    ) {
+        super();
+        this.queueUserId = queueUserId;
+        this.deviceId = deviceId;
+        this.deviceType = deviceType;
+        this.appFlavor = appFlavor;
+        this.token = token;
+        this.appVersion = appVersion;
+        this.deviceLanguage = deviceLanguage;
+        this.cityName = cityName;
+        this.coordinate = coordinate;
+        this.ipAddress = ipAddress;
+    }
+
+    private RegisteredDeviceEntity(
+        String deviceId,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String appVersion,
+        String deviceLanguage,
+        String cityName,
+        double[] coordinate,
+        String ipAddress
+    ) {
+        super();
+        this.deviceId = deviceId;
+        this.deviceType = deviceType;
+        this.appFlavor = appFlavor;
+        this.token = token;
+        this.appVersion = appVersion;
+        this.deviceLanguage = deviceLanguage;
+        this.cityName = cityName;
+        this.coordinate = coordinate;
+        this.ipAddress = ipAddress;
+    }
+
     public static RegisteredDeviceEntity newInstance(
         String queueUserId,
         String deviceId,
@@ -146,6 +197,25 @@ public class RegisteredDeviceEntity extends BaseEntity {
             return new RegisteredDeviceEntity(deviceId, deviceType, appFlavor, token, appVersion, cityName, coordinate, ipAddress);
         } else {
             return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, appFlavor, token, appVersion, cityName, coordinate, ipAddress);
+        }
+    }
+
+    public static RegisteredDeviceEntity newInstance(
+        String queueUserId,
+        String deviceId,
+        DeviceTypeEnum deviceType,
+        AppFlavorEnum appFlavor,
+        String token,
+        String appVersion,
+        String deviceLanguage,
+        String cityName,
+        double[] coordinate,
+        String ipAddress
+    ) {
+        if (StringUtils.isBlank(queueUserId)) {
+            return new RegisteredDeviceEntity(deviceId, deviceType, appFlavor, token, appVersion, deviceLanguage, cityName, coordinate, ipAddress);
+        } else {
+            return new RegisteredDeviceEntity(queueUserId, deviceId, deviceType, appFlavor, token, appVersion, deviceLanguage, cityName, coordinate, ipAddress);
         }
     }
 
@@ -210,6 +280,15 @@ public class RegisteredDeviceEntity extends BaseEntity {
 
     public RegisteredDeviceEntity setAppVersion(String appVersion) {
         this.appVersion = appVersion;
+        return this;
+    }
+
+    public String getDeviceLanguage() {
+        return deviceLanguage;
+    }
+
+    public RegisteredDeviceEntity setDeviceLanguage(String deviceLanguage) {
+        this.deviceLanguage = deviceLanguage;
         return this;
     }
 
