@@ -2,6 +2,7 @@ package com.noqapp.search.elastic.domain;
 
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.json.JsonCategory;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.search.elastic.json.ElasticBizStoreSource;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -56,6 +57,9 @@ public class BizStoreElasticList extends AbstractDomain {
     @JsonProperty("result")
     private Collection<BizStoreElastic> bizStoreElastics = new ArrayList<>();
 
+    @JsonProperty("bt")
+    private BusinessTypeEnum searchedOnBusinessType;
+
     public String getScrollId() {
         return scrollId;
     }
@@ -99,6 +103,15 @@ public class BizStoreElasticList extends AbstractDomain {
 
     public BizStoreElasticList addBizStoreElastic(BizStoreElastic bizStoreElastic) {
         this.bizStoreElastics.add(bizStoreElastic);
+        return this;
+    }
+
+    public BusinessTypeEnum getSearchedOnBusinessType() {
+        return searchedOnBusinessType;
+    }
+
+    public BizStoreElasticList setSearchedOnBusinessType(BusinessTypeEnum searchedOnBusinessType) {
+        this.searchedOnBusinessType = searchedOnBusinessType;
         return this;
     }
 
