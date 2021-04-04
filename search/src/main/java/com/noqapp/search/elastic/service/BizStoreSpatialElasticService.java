@@ -86,6 +86,17 @@ public class BizStoreSpatialElasticService {
 
     @Mobile
     public BizStoreElasticList nearMeExcludedBusinessTypes(List<BusinessTypeEnum> filterMustNotBusinessTypes, List<BusinessTypeEnum> filteringFor, String geoHash, String scrollId) {
+        return nearMeExcludedBusinessTypes(filterMustNotBusinessTypes, filteringFor, BusinessTypeEnum.ZZ, geoHash, scrollId);
+    }
+
+    @Mobile
+    public BizStoreElasticList nearMeExcludedBusinessTypes(
+        List<BusinessTypeEnum> filterMustNotBusinessTypes,
+        List<BusinessTypeEnum> filteringFor,
+        BusinessTypeEnum searchedOnBusinessType,
+        String geoHash,
+        String scrollId
+    ) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
@@ -126,6 +137,7 @@ public class BizStoreSpatialElasticService {
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());
+            bizStoreElastics.setBusinessType(searchedOnBusinessType);
             populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
             return bizStoreElastics;
         } catch (IOException e) {
