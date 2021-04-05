@@ -96,6 +96,7 @@ public class DeviceOldUpgradeMessage {
 
                     sendCount++;
                 } else {
+                    LOG.info("Skipped upgrade message {}", did);
                     skippedCount++;
                 }
             }
