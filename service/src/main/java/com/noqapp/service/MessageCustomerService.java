@@ -430,7 +430,7 @@ public class MessageCustomerService {
         if (StringUtils.isNotBlank(registeredDevice.getQueueUserId())) {
             UserProfileEntity userProfile = userProfileManager.findByQueueUserId(registeredDevice.getQueueUserId());
             body = userProfile.getName() + ", " + body;
-            LOG.info("Message personalized {}", body);
+            LOG.info("Message personalized {} {}", registeredDevice.getQueueUserId(), body);
         }
 
         if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
