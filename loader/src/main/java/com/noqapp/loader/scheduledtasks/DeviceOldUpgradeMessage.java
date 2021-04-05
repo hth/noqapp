@@ -93,7 +93,6 @@ public class DeviceOldUpgradeMessage {
                         MessageOriginEnum.A,
                         BusinessTypeEnum.ZZ);
                     LOG.info("Send upgrade message {} {}", registeredDevice.getDeviceId(), registeredDevice.getQueueUserId());
-
                     sendCount++;
                 } else {
                     LOG.info("Skipped upgrade message {}", did);
