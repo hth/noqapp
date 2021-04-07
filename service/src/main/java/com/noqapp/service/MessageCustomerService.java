@@ -428,7 +428,7 @@ public class MessageCustomerService {
         jsonData.setImageURL(imageURL);
 
         if (StringUtils.isNotBlank(registeredDevice.getQueueUserId())) {
-            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(registeredDevice.getQueueUserId());
+            UserProfileEntity userProfile = userProfileManager.populateName(registeredDevice.getQueueUserId());
             body = userProfile.getName() + ", " + body;
             LOG.info("Message personalized {} {}", registeredDevice.getQueueUserId(), body);
         }
