@@ -33,17 +33,14 @@ public class BusinessCustomerPriorityService {
 
     private BusinessCustomerPriorityManager businessCustomerPriorityManager;
     private BizNameManager bizNameManager;
-    private BizStoreManager bizStoreManager;
 
     @Autowired
     public BusinessCustomerPriorityService(
         BusinessCustomerPriorityManager businessCustomerPriorityManager,
-        BizNameManager bizNameManager,
-        BizStoreManager bizStoreManager
+        BizNameManager bizNameManager
     ) {
         this.businessCustomerPriorityManager = businessCustomerPriorityManager;
         this.bizNameManager = bizNameManager;
-        this.bizStoreManager = bizStoreManager;
     }
 
     public void addCustomerPriority(String bizNameId, String priorityName, CustomerPriorityLevelEnum customerPriorityLevel) {

@@ -303,9 +303,7 @@ public class ITest extends RealMongoForITest {
         businessCustomerService = new BusinessCustomerService(
             businessCustomerManager,
             userProfileManager,
-            queueManager,
-            bizNameManager,
-            businessCustomerPriorityManager
+            queueManager
         );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
         couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);

@@ -32,20 +32,14 @@ import java.time.ZoneOffset;
 public class AddNewBusinessAdvertisementFlowActions {
     private static final Logger LOG = LoggerFactory.getLogger(AddNewBusinessAdvertisementFlowActions.class);
 
-    private AccountService accountService;
-    private MailService mailService;
     private BizService bizService;
     private AdvertisementService advertisementService;
 
     @Autowired
     public AddNewBusinessAdvertisementFlowActions(
-        AccountService accountService,
-        MailService mailService,
         BizService bizService,
         AdvertisementService advertisementService
     ) {
-        this.accountService = accountService;
-        this.mailService = mailService;
         this.bizService = bizService;
         this.advertisementService = advertisementService;
     }

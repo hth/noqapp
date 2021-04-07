@@ -66,7 +66,6 @@ public class AddQueueSupervisorFlowActions {
     private AccountService accountService;
     private BusinessUserService businessUserService;
     private BusinessUserStoreService businessUserStoreService;
-    private TokenQueueService tokenQueueService;
     private MailService mailService;
     private ProfessionalProfileService professionalProfileService;
     private UserAddressService userAddressService;
@@ -88,7 +87,6 @@ public class AddQueueSupervisorFlowActions {
         AccountService accountService,
         BusinessUserService businessUserService,
         BusinessUserStoreService businessUserStoreService,
-        TokenQueueService tokenQueueService,
         MailService mailService,
         ProfessionalProfileService professionalProfileService,
         UserAddressService userAddressService,
@@ -103,7 +101,6 @@ public class AddQueueSupervisorFlowActions {
         this.accountService = accountService;
         this.businessUserService = businessUserService;
         this.businessUserStoreService = businessUserStoreService;
-        this.tokenQueueService = tokenQueueService;
         this.mailService = mailService;
         this.professionalProfileService = professionalProfileService;
         this.userAddressService = userAddressService;
