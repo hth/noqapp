@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -162,7 +163,7 @@ public class NotificationController {
         AtomicInteger sentCount,
         SendNotificationForm sendNotificationForm
     ) {
-        if (environment.getProperty("build.env").equalsIgnoreCase("prod")) {
+        if (Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod")) {
             messageCustomerService.sendMessageToSpecificUser(
                 sendNotificationForm.getTitle().getText(),
                 sendNotificationForm.getBody().getText(),

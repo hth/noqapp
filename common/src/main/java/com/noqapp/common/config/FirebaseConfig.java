@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * User: hitender
@@ -45,15 +46,15 @@ public class FirebaseConfig {
         if (null == options) {
             LOG.info("FirebaseApp initialization started");
             /* JSON downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
-            String adminSdk = environment.getProperty("build.env").equalsIgnoreCase("prod")
+            String adminSdk = Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod")
                 ? "conf/noq-app-inc-firebase-adminsdk.json"
                 : "conf/noqueue-sandbox-firebase-adminsdk.json";
             InputStream credentialsStream = getClass().getClassLoader().getResourceAsStream(adminSdk);
             try {
-                GoogleCredentials googleCredentials = GoogleCredentials.fromStream(credentialsStream);
+                GoogleCredentials googleCredentials = GoogleCredentials.fromStream(Objects.requireNonNull(credentialsStream));
                 options = FirebaseOptions.builder()
                         .setCredentials(googleCredentials)
-                        .setDatabaseUrl(environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodDB : sandboxDB)
+                        .setDatabaseUrl(Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod") ? prodDB : sandboxDB)
                         .build();
             } catch (IOException e) {
                 LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);

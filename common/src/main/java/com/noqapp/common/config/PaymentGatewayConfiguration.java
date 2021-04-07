@@ -13,6 +13,7 @@ import org.springframework.core.env.Environment;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * hitender
@@ -84,16 +85,16 @@ public class PaymentGatewayConfiguration {
     @Bean
     public Map<String, String> cashfreeGateway(Environment environment) {
         return new HashMap<>() {{
-            put("api",  environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodCashfreeApiId : sandboxCashfreeApiId);
-            put("secretKey",  environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodCashfreeSecretKey : sandboxCashfreeSecretKey);
+            put("api",  Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod") ? prodCashfreeApiId : sandboxCashfreeApiId);
+            put("secretKey",  Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod") ? prodCashfreeSecretKey : sandboxCashfreeSecretKey);
         }};
     }
 
     @Bean
     public Map<String, String> cashfreePayoutGateway(Environment environment) {
         return new HashMap<>() {{
-            put("clientId", environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodClientId : sandboxClientId);
-            put("clientSecret", environment.getProperty("build.env").equalsIgnoreCase("prod") ? prodClientSecret : sandboxClientSecret);
+            put("clientId", Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod") ? prodClientId : sandboxClientId);
+            put("clientSecret", Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod") ? prodClientSecret : sandboxClientSecret);
         }};
     }
 
