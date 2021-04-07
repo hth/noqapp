@@ -77,4 +77,6 @@ public interface UserProfileManager extends RepositoryManager<UserProfileEntity>
     void markProfileVerified(String qid);
 
     boolean isProfileVerified(String qid);
+
+    UserProfileEntity populateName(String qid);
 }
