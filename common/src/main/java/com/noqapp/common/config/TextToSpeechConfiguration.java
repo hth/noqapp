@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * User: hitender
@@ -36,12 +37,12 @@ public class TextToSpeechConfiguration {
     private TextToSpeechConfiguration(Environment environment) throws IOException {
         LOG.info("TextToSpeech initialization started");
         /* JSON downloaded from IAM & Admin --> firebase-adminsdk ---> then click ---> Create Key. */
-        String adminSdk = environment.getProperty("build.env").equalsIgnoreCase("prod")
+        String adminSdk = Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod")
             ? "conf/noq-app-inc-firebase-adminsdk.json"
             : "conf/noqueue-sandbox-firebase-adminsdk.json";
         InputStream credentialsStream = getClass().getClassLoader().getResourceAsStream(adminSdk);
 
-        CredentialsProvider credentialsProvider = FixedCredentialsProvider.create(ServiceAccountCredentials.fromStream(credentialsStream));
+        CredentialsProvider credentialsProvider = FixedCredentialsProvider.create(ServiceAccountCredentials.fromStream(Objects.requireNonNull(credentialsStream)));
         TextToSpeechSettings settings = TextToSpeechSettings.newBuilder().setCredentialsProvider(credentialsProvider).build();
 
         textToSpeechClient = TextToSpeechClient.create(settings);

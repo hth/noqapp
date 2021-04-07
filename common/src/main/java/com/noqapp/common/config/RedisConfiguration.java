@@ -20,6 +20,7 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 
 import java.time.Duration;
+import java.util.Objects;
 
 /**
  * User: hitender
@@ -61,7 +62,7 @@ public class RedisConfiguration extends CachingConfigurerSupport {
             .readFrom(REPLICA_PREFERRED)
             .build();
 
-        if (environment.getProperty("build.env").equalsIgnoreCase("dev")) {
+        if (Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("dev")) {
             return new LettuceConnectionFactory(new RedisStandaloneConfiguration(redisHost, redisPort), clientConfig);
         } else {
             return new LettuceConnectionFactory(redisClusterConfiguration(), clientConfig);
