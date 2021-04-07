@@ -34,22 +34,16 @@ public class BusinessCustomerService {
     private BusinessCustomerManager businessCustomerManager;
     private UserProfileManager userProfileManager;
     private QueueManager queueManager;
-    private BizNameManager bizNameManager;
-    private BusinessCustomerPriorityManager businessCustomerPriorityManager;
 
     @Autowired
     public BusinessCustomerService(
         BusinessCustomerManager businessCustomerManager,
         UserProfileManager userProfileManager,
-        QueueManager queueManager,
-        BizNameManager bizNameManager,
-        BusinessCustomerPriorityManager businessCustomerPriorityManager
+        QueueManager queueManager
     ) {
         this.businessCustomerManager = businessCustomerManager;
         this.userProfileManager = userProfileManager;
         this.queueManager = queueManager;
-        this.bizNameManager = bizNameManager;
-        this.businessCustomerPriorityManager = businessCustomerPriorityManager;
     }
 
     /**
