@@ -6,7 +6,6 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.MessageCustomerService;
-import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.form.admin.SendNotificationForm;
 import com.noqapp.view.validator.SendNotificationValidator;
 
