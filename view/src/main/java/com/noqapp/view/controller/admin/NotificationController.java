@@ -44,7 +44,6 @@ public class NotificationController {
 
     private Environment environment;
     private SendNotificationValidator sendNotificationValidator;
-    private TokenQueueService tokenQueueService;
     private UserProfileManager userProfileManager;
     private MessageCustomerService messageCustomerService;
 
@@ -58,7 +57,6 @@ public class NotificationController {
 
         Environment environment,
         SendNotificationValidator sendNotificationValidator,
-        TokenQueueService tokenQueueService,
         UserProfileManager userProfileManager,
         MessageCustomerService messageCustomerService
     ) {
@@ -67,7 +65,6 @@ public class NotificationController {
 
         this.environment = environment;
         this.sendNotificationValidator = sendNotificationValidator;
-        this.tokenQueueService = tokenQueueService;
         this.userProfileManager = userProfileManager;
         this.messageCustomerService = messageCustomerService;
     }
