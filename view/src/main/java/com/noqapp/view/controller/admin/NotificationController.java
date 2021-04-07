@@ -6,7 +6,6 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.MessageCustomerService;
-import com.noqapp.service.TokenQueueService;
 import com.noqapp.view.form.admin.SendNotificationForm;
 import com.noqapp.view.validator.SendNotificationValidator;
 
@@ -44,7 +43,6 @@ public class NotificationController {
 
     private Environment environment;
     private SendNotificationValidator sendNotificationValidator;
-    private TokenQueueService tokenQueueService;
     private UserProfileManager userProfileManager;
     private MessageCustomerService messageCustomerService;
 
@@ -58,7 +56,6 @@ public class NotificationController {
 
         Environment environment,
         SendNotificationValidator sendNotificationValidator,
-        TokenQueueService tokenQueueService,
         UserProfileManager userProfileManager,
         MessageCustomerService messageCustomerService
     ) {
@@ -67,7 +64,6 @@ public class NotificationController {
 
         this.environment = environment;
         this.sendNotificationValidator = sendNotificationValidator;
-        this.tokenQueueService = tokenQueueService;
         this.userProfileManager = userProfileManager;
         this.messageCustomerService = messageCustomerService;
     }
