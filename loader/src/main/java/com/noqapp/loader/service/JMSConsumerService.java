@@ -69,7 +69,7 @@ public class JMSConsumerService {
             "Feedback Received",
             "A reply would be sent to your email address. Please keep checking your inbox.",
             feedbackMail.getQid(),
-            MessageOriginEnum.D,
+            MessageOriginEnum.A,
             BusinessTypeEnum.ZZ
         );
     }
