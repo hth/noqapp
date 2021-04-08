@@ -198,6 +198,7 @@ public class ShowHTMLService {
         rootMap.put("domain", domain);
         rootMap.put("https", https);
         rootMap.put("bizName", bizStore.getBizName().getBusinessName());
+        rootMap.put("businessType", bizStore.getBusinessType().name());
         String address;
         switch (bizStore.getBusinessType()) {
             case CD:
@@ -222,6 +223,18 @@ public class ShowHTMLService {
         rootMap.put("codeQR", bizStore.getCodeQRInBase64());
         rootMap.put("walkIn", bizStore.getWalkInState() == null ? WalkInStateEnum.E.getName() : bizStore.getWalkInState().getName());
         rootMap.put("reviews", getStoreReviews(bizStore));
+        switch (bizStore.getBusinessType().getBusinessSupport()) {
+            case OD:
+                rootMap.put("isOrderPlacingAllowed", true);
+                break;
+            case OQ:
+            case QQ:
+                rootMap.put("isOrderPlacingAllowed", false);
+                break;
+            case MP:
+            default:
+                LOG.warn("BizStore incorrectly set {} {}", bizStore.getId(), bizStore.getBusinessType().getBusinessSupport());
+        }
 
         int i = zonedDateTime.getDayOfWeek().getValue();
         StoreHourEntity storeHour = bizStore.getStoreHours().get(i - 1);
@@ -266,7 +279,7 @@ public class ShowHTMLService {
     private List<JsonReview> getStoreReviews(BizStoreEntity bizStore) {
         List<JsonReview> jsonReviews = new LinkedList<>();
 
-        List<QueueEntity> queues = queueManagerJDBC.findReviews(bizStore.getCodeQR(), 365);
+        List<QueueEntity> queues = queueManagerJDBC.findReviews(bizStore.getCodeQR(), 120);
         if (queues.size() == 0) {
             return jsonReviews;
         }
