@@ -56,6 +56,7 @@ public class LanguageTranslationService {
             if (!"en".equals(targetLanguage)) {
                 translatedBody.put(targetLanguage, doTextTranslation(targetLanguage, text));
             }
+
             translatedBody.put("en", text);
             return translatedBody;
         } else {
