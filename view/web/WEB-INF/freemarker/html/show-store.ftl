@@ -7,7 +7,13 @@
     <title>${bizName} ${displayName} - NoQueue</title>
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
-    <meta name="description" content="Complete your booking on NoQueue. Get instant token and real-time status. Search for items, look for store timing, get updates on store. Place online orders, get your order delivered at home.">
+    <#if businessType == "CD" || businessType == "CDQ">
+        <meta name="description" content="Complete your canteen booking on NoQueue. Get instant token and real-time status. Search for items, look for store timing, get updates on store.">
+    <#elseif businessType == "DO" || businessType == "HS">
+        <meta name="description" content="Complete your booking on NoQueue. Get instant token and real-time status. Search for doctors, medical services. Book your doctors appointment. Place online orders, get your order delivered at home.">
+    <#else>
+        <meta name="description" content="Place online orders, get your order delivered at home. Get instant token and real-time status. Search for items, look for store timing, get updates on store.">
+    </#if>
 
     <link rel="stylesheet" href="${parentHost}/static/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${parentHost}/static/internal/css/phone-style.css" type='text/css' media="screen"/>

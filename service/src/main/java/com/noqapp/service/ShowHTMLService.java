@@ -198,6 +198,7 @@ public class ShowHTMLService {
         rootMap.put("domain", domain);
         rootMap.put("https", https);
         rootMap.put("bizName", bizStore.getBizName().getBusinessName());
+        rootMap.put("businessType", bizStore.getBusinessType().name());
         String address;
         switch (bizStore.getBusinessType()) {
             case CD:
