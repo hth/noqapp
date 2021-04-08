@@ -67,7 +67,7 @@ public class JMSConsumerService {
 
         messageCustomerService.sendMessageToSpecificUser(
             "Feedback Received",
-            "A reply would be sent to your email address. Please check your mail box.",
+            "A reply would be sent to your email address. Please keep checking your inbox.",
             feedbackMail.getQid(),
             MessageOriginEnum.D,
             BusinessTypeEnum.ZZ
