@@ -4,7 +4,10 @@ import com.noqapp.domain.jms.ChangeMailOTP;
 import com.noqapp.domain.jms.FeedbackMail;
 import com.noqapp.domain.jms.ReviewSentiment;
 import com.noqapp.domain.jms.SignupUserInfo;
+import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.service.MailService;
+import com.noqapp.service.MessageCustomerService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +28,12 @@ public class JMSConsumerService {
     private static final Logger LOG = LoggerFactory.getLogger(JMSConsumerService.class);
 
     private MailService mailService;
+    private MessageCustomerService messageCustomerService;
 
     @Autowired
-    public JMSConsumerService(MailService mailService) {
+    public JMSConsumerService(MailService mailService, MessageCustomerService messageCustomerService) {
         this.mailService = mailService;
+        this.messageCustomerService = messageCustomerService;
     }
 
     @JmsListener(destination = "${activemq.destination.mail.signup}", containerFactory = "jmsMailSingUpListenerContainerFactory")
@@ -59,6 +64,14 @@ public class JMSConsumerService {
             "Feedback from: " + feedbackMail.getName(),
             rootMap,
             "mail/feedback.ftl");
+
+        messageCustomerService.sendMessageToSpecificUser(
+            "Feedback Received",
+            "A reply would be sent to your email address. Please keep checking your inbox.",
+            feedbackMail.getQid(),
+            MessageOriginEnum.D,
+            BusinessTypeEnum.ZZ
+        );
     }
 
     @JmsListener(destination = "${activemq.destination.review.negative}", containerFactory = "jmsReviewNegativeListenerContainerFactory")
