@@ -1,6 +1,7 @@
 package com.noqapp.service;
 
 import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
+import static com.noqapp.domain.types.BusinessSupportEnum.OD;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
@@ -10,12 +11,14 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.json.JsonProfessionalProfile;
 import com.noqapp.domain.json.JsonReview;
+import com.noqapp.domain.types.BusinessSupportEnum;
 import com.noqapp.domain.types.WalkInStateEnum;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.QueueManagerJDBC;
@@ -67,6 +70,7 @@ public class ShowHTMLService {
     private TokenQueueService tokenQueueService;
     private CodeQRGeneratorService codeQRGeneratorService;
     private StoreHourService storeHourService;
+    private StoreProductService storeProductService;
 
     private UserProfileManager userProfileManager;
     private QueueManagerJDBC queueManagerJDBC;
@@ -96,6 +100,7 @@ public class ShowHTMLService {
         TokenQueueService tokenQueueService,
         CodeQRGeneratorService codeQRGeneratorService,
         StoreHourService storeHourService,
+        StoreProductService storeProductService,
 
         UserProfileManager userProfileManager,
         QueueManagerJDBC queueManagerJDBC
@@ -111,6 +116,7 @@ public class ShowHTMLService {
         this.tokenQueueService = tokenQueueService;
         this.codeQRGeneratorService = codeQRGeneratorService;
         this.storeHourService = storeHourService;
+        this.storeProductService = storeProductService;
 
         this.userProfileManager = userProfileManager;
         this.queueManagerJDBC = queueManagerJDBC;
@@ -204,6 +210,29 @@ public class ShowHTMLService {
             case CD:
             case CDQ:
                 address = "-";
+                break;
+            case RS:
+            case RSQ:
+            case FT:
+            case FTQ:
+            case BA:
+            case BAQ:
+            case ST:
+            case STQ:
+            case GS:
+            case GSQ:
+            case CF:
+            case CFQ:
+                switch (bizStore.getBusinessType().getBusinessSupport()) {
+                    case OD:
+                    case OQ:
+                        List<StoreProductEntity> storeProducts = storeProductService.findAll(bizStore.getId());
+                        rootMap.put("storeProducts", storeProducts);
+                        break;
+                    default:
+                        //Do nothing
+                }
+                address = bizStore.getAddressWrappedFunky();
                 break;
             default:
                 address = bizStore.getAddressWrappedFunky();

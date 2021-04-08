@@ -103,6 +103,26 @@
                         </div>
                     </div>
 
+                    <#if storeProducts??>
+                         <#list storeProducts as storeProduct>
+                             <table width="100%" border="1">
+                                 <tr>
+                                     <td>
+                                         <p style="font-weight: normal; font-size: medium; padding-bottom: 20px; color: #1c1c1c;">${storeProduct.productName}</p>
+                                     </td>
+                                     <td>
+                                         <p style="font-weight: normal; font-size: medium; padding-bottom: 20px; color: #1c1c1c; text-align: right;">${storeProduct.productPrice}</p>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td>
+                                         <p style="font-weight: normal; font-size: medium; padding-bottom: 30px;">${storeProduct.productInfo}</p>
+                                     </td>
+                                 </tr>
+                             </table>
+                         </#list>
+                    </#if>
+
                     <div class="download-app-icon">
                         <p>Get NoQueue</p>
                         <div>
