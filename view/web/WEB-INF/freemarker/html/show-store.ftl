@@ -8,7 +8,7 @@
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
     <#if businessType == "CD" || businessType == "CDQ">
-        <meta name="description" content="Complete your canteen booking on NoQueue. Get instant token and real-time status. Search for items, look for store timing, get updates on store.">
+        <meta name="description" content="Complete your canteen booking on NoQueue. Servicemen and Ex-Servicemen get instant token and real-time status on mobile. Search for items, look for store timing, get updates on store.">
     <#elseif businessType == "DO" || businessType == "HS">
         <meta name="description" content="Complete your booking on NoQueue. Get instant token and real-time status. Search for doctors, medical services. Book your doctors appointment. Place online orders, get your order delivered at home.">
     <#else>
@@ -103,6 +103,26 @@
                         </div>
                     </div>
 
+                    <#if storeProducts??>
+                         <#list storeProducts as storeProduct>
+                             <table width="100%" border="1">
+                                 <tr>
+                                     <td>
+                                         <p style="font-weight: normal; font-size: medium; padding-bottom: 20px; color: #1c1c1c;">${storeProduct.productName}</p>
+                                     </td>
+                                     <td>
+                                         <p style="font-weight: normal; font-size: medium; padding-bottom: 20px; color: #1c1c1c; text-align: right;">${storeProduct.productPrice}</p>
+                                     </td>
+                                 </tr>
+                                 <tr>
+                                     <td>
+                                         <p style="font-weight: normal; font-size: medium; padding-bottom: 30px;">${storeProduct.productInfo}</p>
+                                     </td>
+                                 </tr>
+                             </table>
+                         </#list>
+                    </#if>
+
                     <div class="download-app-icon">
                         <p>Get NoQueue</p>
                         <div>
@@ -191,8 +211,8 @@
     // Bind progress buttons and simulate loading progress
     Ladda.bind('.progress-demo button', {
         callback: function (instance) {
-            var progress = 0;
-            var interval = setInterval(function () {
+            let progress = 0;
+            let interval = setInterval(function () {
                 progress = Math.min(progress + Math.random() * 0.1, 1);
                 instance.setProgress(progress);
 
