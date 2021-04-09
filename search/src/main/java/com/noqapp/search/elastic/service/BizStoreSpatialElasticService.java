@@ -35,6 +35,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -82,6 +83,11 @@ public class BizStoreSpatialElasticService {
     public void delete(String id) {
         LOG.info("Deleting store from elastic id={}", id);
         bizStoreSpatialElasticManager.delete(id);
+    }
+
+    @Mobile
+    public BizStoreElasticList nearMeExcludedBusinessTypes(String geoHash, String scrollId) {
+        return nearMeExcludedBusinessTypes(new ArrayList<>(), new ArrayList<>(), BusinessTypeEnum.ZZ, geoHash, scrollId);
     }
 
     @Mobile
