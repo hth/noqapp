@@ -78,7 +78,11 @@
 
                         <div class="button-btn" style="margin-bottom: 100px;">
                             <#if claimed == "No">
-                                <p style="padding: 20px 20px 20px 0; color: #9f1313">Not accepting Walk-ins</p>
+                                <#if isOrderPlacingAllowed??>
+                                    <p style="padding: 20px 20px 20px 0; color: #9f1313">Not accepting Online Order</p>
+                                <#else>
+                                    <p style="padding: 20px 20px 20px 0; color: #9f1313">Not accepting Walk-ins</p>
+                                </#if>
                             <#else>
                                 <#if isOrderPlacingAllowed??>
                                     <#if isOrderPlacingAllowed>
