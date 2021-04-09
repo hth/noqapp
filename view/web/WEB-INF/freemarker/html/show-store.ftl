@@ -111,7 +111,7 @@
                                          <p style="font-weight: normal; font-size: medium; padding-bottom: 20px; color: #1c1c1c;">${storeProduct.productName}</p>
                                      </td>
                                      <td>
-                                         <p style="font-weight: normal; font-size: medium; padding-bottom: 20px; color: #1c1c1c; text-align: right;">${storeProduct.productPrice}</p>
+                                         <p style="font-weight: normal; font-size: medium; padding-bottom: 20px; color: #1c1c1c; text-align: right;">${storeProduct.displayPrice}</p>
                                      </td>
                                  </tr>
                                  <tr>
