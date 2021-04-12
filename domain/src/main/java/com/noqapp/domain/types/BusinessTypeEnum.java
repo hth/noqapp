@@ -68,7 +68,7 @@ public enum BusinessTypeEnum {
     HI("HI", "Household Items", M, "Marketplace", MP, TNS),
 
     //For All, to support when sending to all
-    ZZ("ZZ", "Global", Q, "Queue", QQ, TNS);
+    ZZ("ZZ", "Z-To-A", Q, "Queue", QQ, TNS);
 
     private final String description;
     private final String name;
