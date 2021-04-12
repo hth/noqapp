@@ -203,8 +203,32 @@ public class ShowHTMLService {
         rootMap.put("parentHost", parentHost);
         rootMap.put("domain", domain);
         rootMap.put("https", https);
+
+        rootMap.put("linkId", bizStore.getCodeQRInALink());
         rootMap.put("bizName", bizStore.getBizName().getBusinessName());
         rootMap.put("businessType", bizStore.getBusinessType().name());
+        rootMap.put("businessTypeDescription", bizStore.getBusinessType().getDescription());
+
+        rootMap.put("addressLocality", bizStore.getArea());
+        if (StringUtils.isNotBlank(bizStore.getStateShortName())) {
+            rootMap.put("addressRegion", bizStore.getStateShortName());
+        }
+        if (StringUtils.isNotBlank(bizStore.getPostalCode())) {
+            rootMap.put("postalCode", bizStore.getPostalCode());
+        }
+        rootMap.put("addressCountry", bizStore.getCountry());
+        rootMap.put("latitude", bizStore.getCoordinate()[1]);
+        rootMap.put("longitude", bizStore.getCoordinate()[0]);
+
+        String image = CommonHelper.getBannerImage(bizStore);
+        if (StringUtils.isNotBlank(image)) {
+            rootMap.put("images", awsEndPoint + awsBucket + "/" + image);
+        }
+
+        if (StringUtils.isNotBlank(bizStore.getFamousFor())) {
+            rootMap.put("famousFor", bizStore.getFamousFor());
+        }
+
         String address;
         switch (bizStore.getBusinessType()) {
             case CD:
