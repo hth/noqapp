@@ -119,7 +119,11 @@
                         </#if>
 
                         </br>
-                        <p><strong>Queue Status: </strong>${queueStatus}</p>
+                        <#if isOrderPlacingAllowed??>
+                            <p><strong>Order Status: </strong>${queueStatus}</p>
+                        <#else>
+                            <p><strong>Queue Status: </strong>${queueStatus}</p>
+                        </#if>
                         <p><strong>Currently Serving: </strong>${currentlyServing}</p>
                         <p><strong>People in Queue: </strong>${peopleInQueue}</p>
 
