@@ -222,7 +222,7 @@ public class ShowHTMLService {
 
         String image = CommonHelper.getBannerImage(bizStore);
         if (StringUtils.isNotBlank(image)) {
-            rootMap.put("images", awsEndPoint + awsBucket + "/" + image);
+            rootMap.put("image", awsEndPoint + awsBucket + "/" + image);
         }
 
         if (StringUtils.isNotBlank(bizStore.getFamousFor())) {
