@@ -195,6 +195,13 @@ public class CommonHelper {
                     bannerImage = bizStore.getStoreServiceImages().isEmpty()
                         ? null
                         : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
+
+                    if (StringUtils.isBlank(bannerImage)) {
+                        bannerImage = bizStore.getStoreInteriorImages().isEmpty()
+                            ? bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next()
+                            : bizStore.getCodeQR() + "/" + bizStore.getStoreInteriorImages().iterator().next();
+                    }
+
                     if (StringUtils.isBlank(bannerImage)) {
                         /* If none is found, then get image from bizName. */
                         bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty()
@@ -202,7 +209,7 @@ public class CommonHelper {
                             : bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next();
                     }
             }
-            LOG.info("bizStore Id={} name=\"{}\" bannerImage={}", bizStore.getId(), bizStore.getDisplayName(), bannerImage);
+            LOG.info("Banner Image for bizStore Id={} name=\"{}\" bannerImage={}", bizStore.getId(), bizStore.getDisplayName(), bannerImage);
             return bannerImage;
         } catch (Exception e) {
             LOG.error("Failed getting banner image for bizStoreId={} displayName=\"{}\" reason={}",
