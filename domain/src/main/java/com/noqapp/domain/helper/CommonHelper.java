@@ -195,13 +195,6 @@ public class CommonHelper {
                     bannerImage = bizStore.getStoreServiceImages().isEmpty()
                         ? null
                         : bizStore.getCodeQR() + "/" + bizStore.getStoreServiceImages().iterator().next();
-
-                    if (StringUtils.isBlank(bannerImage)) {
-                        bannerImage = bizStore.getStoreInteriorImages().isEmpty()
-                            ? bizStore.getBizName().getCodeQR() + "/" + bizStore.getBizName().getBusinessServiceImages().iterator().next()
-                            : bizStore.getCodeQR() + "/" + bizStore.getStoreInteriorImages().iterator().next();
-                    }
-
                     if (StringUtils.isBlank(bannerImage)) {
                         /* If none is found, then get image from bizName. */
                         bannerImage = bizStore.getBizName().getBusinessServiceImages().isEmpty()
