@@ -192,6 +192,7 @@ public class StoreManagerLandingController {
                 case ACTIVE:
                     bizStore.active();
                     bizService.saveStore(bizStore, "Store is now online");
+                    LOG.error("Store online {} of {} ", bizStore.getDisplayName(), bizStore.getBizName().getBusinessName());
                     BizStoreElastic bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, storeHourService.findAllStoreHours(bizStore.getId()));
                     bizStoreElasticService.save(bizStoreElastic);
                     bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
@@ -199,6 +200,7 @@ public class StoreManagerLandingController {
                 case INACTIVE:
                     bizStore.inActive();
                     bizService.saveStore(bizStore, "Store is now offline");
+                    LOG.error("Store offline {} of {} ", bizStore.getDisplayName(), bizStore.getBizName().getBusinessName());
                     bizStoreElasticService.delete(bizStore.getId());
                     bizService.deleteAllManagingStore(bizStore.getId());
                     bizStoreElasticService.updateSpatial(bizStore.getBizName().getId());
