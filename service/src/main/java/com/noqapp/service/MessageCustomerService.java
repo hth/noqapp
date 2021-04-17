@@ -375,20 +375,23 @@ public class MessageCustomerService {
     }
 
     @Mobile
-    public boolean increaseViewClientCount(String id, String qid) {
+    @Async
+    public void increaseViewClientCount(String id, String qid) {
         graphDetailOfPerson.graphPersonWithNotification(id, qid);
-        return notificationMessageManager.increaseViewClientCount(id);
+        notificationMessageManager.increaseViewClientCount(id);
     }
 
     @Mobile
-    public boolean increaseViewUnregisteredCount(String id) {
-        return notificationMessageManager.increaseViewUnregisteredCount(id);
+    @Async
+    public void increaseViewUnregisteredCount(String id) {
+        notificationMessageManager.increaseViewUnregisteredCount(id);
     }
 
     @Mobile
-    public boolean increaseViewBusinessCount(String id, String qid) {
+    @Async
+    public void increaseViewBusinessCount(String id, String qid) {
         graphDetailOfPerson.graphPersonWithNotification(id, qid);
-        return notificationMessageManager.increaseViewBusinessCount(id);
+        notificationMessageManager.increaseViewBusinessCount(id);
     }
 
     /** Sends any message to a specific user. */
