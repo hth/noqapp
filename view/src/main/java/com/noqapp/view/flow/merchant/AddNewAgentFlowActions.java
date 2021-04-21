@@ -1,5 +1,7 @@
 package com.noqapp.view.flow.merchant;
 
+import static com.noqapp.common.utils.RandomString.MANAGER_NOQAPP_COM;
+
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.BizStoreEntity;
@@ -99,9 +101,17 @@ public class AddNewAgentFlowActions {
 
     @SuppressWarnings("unused")
     public String sendMailVerificationOTP(MerchantRegistrationForm merchantRegistration) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String emailSendTo = merchantRegistration.getMail().getText();
+        String message = "email address";
+        if (merchantRegistration.getMail().getText().endsWith(MANAGER_NOQAPP_COM)) {
+            emailSendTo = queueUser.getUsername();
+            message = "agent account";
+        }
+
         String mailOTP = RandomString.newInstance(6).nextString().toUpperCase();
         String name = WordUtils.capitalize(merchantRegistration.getFirstName().getText()) + " " + WordUtils.capitalize(merchantRegistration.getLastName().getText());
-        mailService.sendOTPMail(merchantRegistration.getMail().getText(), name, mailOTP, "email address");
+        mailService.sendOTPMail(emailSendTo, name, mailOTP, message);
         return mailOTP;
     }
 

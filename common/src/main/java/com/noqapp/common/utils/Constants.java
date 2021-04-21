@@ -5,6 +5,8 @@ import okhttp3.MediaType;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -26,21 +28,30 @@ public class Constants {
     public static final int PRIME_73 = 73;
     public static final String appendPrefix = "Q";
     public static final String DIRTY = "Y";
-    public static final int PREVENT_JOINING_BEFORE_CLOSING = 30; //Minutes
+    public static final int PREVENT_JOINING_BEFORE_CLOSING = 30;    //Minutes
     public static final int MINUTES_01 = 1;
     public static final int MINUTES_05 = MINUTES_01 * 5;
-    public static final int MINUTES_15 = MINUTES_05 * 3;    //Minutes
-    public static final int MINUTES_30 = MINUTES_15 * 2;    //Minutes
-    public static final int MINUTES_45 = MINUTES_15 * 3;    //Minutes
-    public static final int MINUTES_60 = MINUTES_30 * 2;    //Minutes
-    public static final int MINUTES_59 = MINUTES_60 - 1;    //Minutes
-    public static final int MINUTES_IN_MILLISECOND = 60_000;      //1 minutes in milliseconds
+    public static final int MINUTES_15 = MINUTES_05 * 3;            //Minutes
+    public static final int MINUTES_30 = MINUTES_15 * 2;            //Minutes
+    public static final int MINUTES_45 = MINUTES_15 * 3;            //Minutes
+    public static final int MINUTES_60 = MINUTES_30 * 2;            //Minutes
+    public static final int MINUTES_59 = MINUTES_60 - 1;            //Minutes
+    public static final int MINUTES_IN_MILLISECOND = 60_000;        //1 minutes in milliseconds
     public static final int MINUTES_2_IN_MILLISECOND = MINUTES_IN_MILLISECOND * 2;
     public static final int HUNDRED_KMS_IN_METERS = 100 * 1000;
 
     public static final Set<String> UNSUPPORTED_DEVICE_IN_FUTURE = new HashSet<>() {{
         add("5.1");
         add("5.1.1");
+    }};
+
+    public static final List<String> SUGGESTED_SEARCH = new LinkedList<>() {{
+        add("URC");
+        add("Bani Camp");
+        add("AFSSR");
+        add("URC 54 ASP");
+        add("URC CHAF Bangalore");
+        add("URC Adampur");
     }};
 
     private Constants() {

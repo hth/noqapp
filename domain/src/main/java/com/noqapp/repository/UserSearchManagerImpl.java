@@ -1,16 +1,22 @@
 package com.noqapp.repository;
 
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.UserSearchEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * hitender
@@ -44,6 +50,15 @@ public class UserSearchManagerImpl implements UserSearchManager{
             object.setUpdated();
         }
         mongoTemplate.save(object, TABLE);
+    }
+
+    @Override
+    public List<String> lastFewSearches(String qid, int limit) {
+        return mongoTemplate.findDistinct(
+            query(where("QID").is(qid)).with(Sort.by(DESC, "C")).limit(limit),
+            "QY",
+            UserSearchEntity.class,
+            String.class);
     }
 
     @Override
