@@ -67,28 +67,28 @@ public class MailService {
         @Value("${parentHost}")
         String parentHost,
 
-        @Value ("${dev.sent.to}")
+        @Value("${dev.sent.to}")
         String devSentTo,
 
-        @Value ("${domain}")
+        @Value("${domain}")
         String domain,
 
-        @Value ("${https}")
+        @Value("${https}")
         String https,
 
-        @Value ("${mail.invite.queue.supervisor.subject}")
+        @Value("${mail.invite.queue.supervisor.subject}")
         String mailInviteQueueSupervisorSubject,
 
-        @Value ("${mail.recover.subject}")
+        @Value("${mail.recover.subject}")
         String mailRecoverSubject,
 
-        @Value ("${mail.validate.subject}")
+        @Value("${mail.validate.subject}")
         String mailValidateSubject,
 
-        @Value ("${mail.account.not.found.subject}")
+        @Value("${mail.account.not.found.subject}")
         String accountNotFoundSubject,
 
-        @Value ("${do.not.reply.email}")
+        @Value("${do.not.reply.email}")
         String doNotReplyEmail,
 
         AccountService accountService,
@@ -379,6 +379,9 @@ public class MailService {
             Map<String, Object> rootMap = new HashMap<>();
             rootMap.put("mailOTP", otp);
             rootMap.put("message", message);
+            if (message.equalsIgnoreCase("agent account")) {
+                rootMap.put("agent", "YES");
+            }
             sendAnyMail(userId, name, "Confirmation mail for NoQueue", rootMap, "mail/mail-otp.ftl");
         } else {
             LOG.warn("Could not send mail verification {} {} {}", userId, name, otp);
