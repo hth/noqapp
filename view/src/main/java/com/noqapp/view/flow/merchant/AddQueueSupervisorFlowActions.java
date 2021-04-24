@@ -29,13 +29,10 @@ import com.noqapp.service.ExternalService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.ProfessionalProfileService;
-import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserAddressService;
 import com.noqapp.view.flow.merchant.exception.InviteSupervisorException;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import com.noqapp.view.flow.utils.WebFlowUtils;
-
-import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,10 +122,10 @@ public class AddQueueSupervisorFlowActions {
         BizStoreEntity bizStore = bizService.getByStoreId(bizStoreId);
 
         InviteQueueSupervisor inviteQueueSupervisor = new InviteQueueSupervisor()
-                .setBizStoreId(bizStoreId)
-                .setCountryShortName(bizStore.getCountryShortName())
-                .setCountryCode(Formatter.findCountryCodeFromCountryShortCode(bizStore.getCountryShortName()))
-                .setBusinessType(bizStore.getBusinessType());
+            .setBizStoreId(bizStoreId)
+            .setCountryShortName(bizStore.getCountryShortName())
+            .setCountryCode(Formatter.findCountryCodeFromCountryShortCode(bizStore.getCountryShortName()))
+            .setBusinessType(bizStore.getBusinessType());
 
         return inviteQueueSupervisor;
     }
