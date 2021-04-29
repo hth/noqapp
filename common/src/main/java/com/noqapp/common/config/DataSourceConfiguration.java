@@ -21,6 +21,9 @@ public class DataSourceConfiguration {
     @Value("${mysql-host}")
     private String mysql_host;
 
+    @Value("${mysql-port}")
+    private String mysql_port;
+
     @Value("${mysql.username}")
     private String mysqlUsername;
 
@@ -31,7 +34,7 @@ public class DataSourceConfiguration {
     DataSource dataSource() {
         HikariDataSource ds = new HikariDataSource();
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        ds.setJdbcUrl("jdbc:mysql://" + mysql_host + ":3306/" + mysql_db);
+        ds.setJdbcUrl("jdbc:mysql://" + mysql_host + ":" + mysql_port + "/" + mysql_db);
         ds.setUsername(mysqlUsername);
         ds.setPassword(mysqlPassword);
         ds.addDataSourceProperty("cachePrepStmts", true);
