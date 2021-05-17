@@ -76,7 +76,6 @@ public class NoQueueInitializationCheckBean {
     private FtpService ftpService;
     private PaymentGatewayService paymentGatewayService;
     private StanfordCoreNLP stanfordCoreNLP;
-    private Neo4jTransactionManager neo4jTransactionManager;
     private SmsService smsService;
     private LettuceConnectionFactory lettuceConnectionFactory;
 
@@ -99,7 +98,6 @@ public class NoQueueInitializationCheckBean {
         FtpService ftpService,
         PaymentGatewayService paymentGatewayService,
         StanfordCoreNLP stanfordCoreNLP,
-        Neo4jTransactionManager neo4jTransactionManager,
         SmsService smsService,
         LettuceConnectionFactory lettuceConnectionFactory
     ) {
@@ -118,7 +116,6 @@ public class NoQueueInitializationCheckBean {
         this.ftpService = ftpService;
         this.paymentGatewayService = paymentGatewayService;
         this.stanfordCoreNLP = stanfordCoreNLP;
-        this.neo4jTransactionManager = neo4jTransactionManager;
         this.smsService = smsService;
         this.lettuceConnectionFactory = lettuceConnectionFactory;
     }
