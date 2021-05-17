@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.data.neo4j.transaction.Neo4jTransactionManager;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
@@ -76,7 +75,6 @@ public class NoQueueInitializationCheckBean {
     private FtpService ftpService;
     private PaymentGatewayService paymentGatewayService;
     private StanfordCoreNLP stanfordCoreNLP;
-    private Neo4jTransactionManager neo4jTransactionManager;
     private SmsService smsService;
     private LettuceConnectionFactory lettuceConnectionFactory;
 
@@ -99,7 +97,6 @@ public class NoQueueInitializationCheckBean {
         FtpService ftpService,
         PaymentGatewayService paymentGatewayService,
         StanfordCoreNLP stanfordCoreNLP,
-        Neo4jTransactionManager neo4jTransactionManager,
         SmsService smsService,
         LettuceConnectionFactory lettuceConnectionFactory
     ) {
@@ -118,7 +115,6 @@ public class NoQueueInitializationCheckBean {
         this.ftpService = ftpService;
         this.paymentGatewayService = paymentGatewayService;
         this.stanfordCoreNLP = stanfordCoreNLP;
-        this.neo4jTransactionManager = neo4jTransactionManager;
         this.smsService = smsService;
         this.lettuceConnectionFactory = lettuceConnectionFactory;
     }
