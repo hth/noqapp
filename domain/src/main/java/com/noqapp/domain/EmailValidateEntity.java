@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 })
 @Document (collection = "EMAIL_VALIDATE")
 @CompoundIndexes (value = {
-        @CompoundIndex (name = "email_valid_idx", def = "{'AUTH': 1}", unique = true),
+    @CompoundIndex (name = "email_valid_idx", def = "{'AUTH': 1}", unique = true),
 })
 public class EmailValidateEntity extends BaseEntity {
 
