@@ -50,9 +50,9 @@ public class ApiHealthService {
 
     private void invokeThreadToInsert(String apiName, String methodName, String clazzName, long duration, HealthStatusEnum healthStatus) {
         if (healthStatus == HealthStatusEnum.F) {
-            LOG.error("{} {} {} {} {}ms", apiName, methodName, clazzName, healthStatus, duration);
+            LOG.error("{} {} {} {} {}ms", apiName, methodName, clazzName.substring(clazzName.lastIndexOf(".") + 1), healthStatus, duration);
         } else {
-            LOG.info("{} {} {} {} {}ms", apiName, methodName, clazzName, healthStatus, duration);
+            LOG.info("{} {} {} {} {}ms", apiName, methodName, clazzName.substring(clazzName.lastIndexOf(".") + 1), healthStatus, duration);
         }
         apiHealthNowManager.save(
                 new ApiHealthNowEntity()
