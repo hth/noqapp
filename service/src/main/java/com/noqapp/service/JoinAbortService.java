@@ -226,8 +226,9 @@ public class JoinAbortService {
     @Mobile
     public void abort(String id, String codeQR) {
         queueManager.abort(id);
-        /* Irrespective of Queue with order or without order, notify business of abort by just sending a refresh notification. */
+        /* This is dynamic update of queue when someone aborts their position in queue. */
         //tokenQueueService.updateServingTimeForAllWhenAborted(id);
+        /* Irrespective of Queue with order or without order, notify business of abort by just sending a refresh notification. */
         tokenQueueService.forceRefreshOnSomeActivity(codeQR);
     }
 
