@@ -1,3 +1,7 @@
+### Changed May 22, 2021
+    
+    db.getCollection('REGISTERED_DEVICE').remove({"COR" : {$exists : false}})
+
 ### Changed April 4, 2021
 
     db.getCollection('REGISTERED_DEVICE').update({"DL" : {$exists : false}}, {$set: {DL : "en"}}, {multi: true});
