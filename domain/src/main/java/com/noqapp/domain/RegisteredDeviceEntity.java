@@ -314,10 +314,6 @@ public class RegisteredDeviceEntity extends BaseEntity {
         return this;
     }
 
-    public Set<double[]> getCoordinateHistorical() {
-        return coordinateHistorical;
-    }
-
     public String getIpAddress() {
         return ipAddress;
     }
