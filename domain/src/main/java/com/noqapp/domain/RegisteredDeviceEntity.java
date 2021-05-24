@@ -314,15 +314,6 @@ public class RegisteredDeviceEntity extends BaseEntity {
         return this;
     }
 
-    public double[] getCoordinate() {
-        return coordinate;
-    }
-
-    public RegisteredDeviceEntity setCoordinate(double[] coordinate) {
-        this.coordinate = coordinate;
-        return this;
-    }
-
     public Set<double[]> getCoordinateHistorical() {
         return coordinateHistorical;
     }
