@@ -459,19 +459,4 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
 
         return mongoTemplate.geoNear(query, RegisteredDeviceEntity.class, TABLE).getContent().stream();
     }
-
-    @Override
-    public Stream<RegisteredDeviceEntity> findAll() {
-        return mongoTemplate.findAll(RegisteredDeviceEntity.class, TABLE).stream();
-    }
-
-    @Override
-    public void addGeoPoint(String id, GeoJsonPoint point) {
-        mongoTemplate.updateFirst(
-            query(where("id").is(id)),
-            update("PN", point),
-            RegisteredDeviceEntity.class,
-            TABLE
-        );
-    }
 }
