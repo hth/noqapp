@@ -6,8 +6,11 @@ import com.noqapp.domain.types.DeviceTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -72,6 +75,10 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field("COR")
     private double[] coordinate;
 
+    @Field("PN")
+    @GeoSpatialIndexed(name = "registered_device_point_idx", type = GeoSpatialIndexType.GEO_2DSPHERE)
+    private GeoJsonPoint point;
+
     /* Format Longitude and then Latitude. */
     @Field("CH")
     private Set<double[]> coordinateHistorical = new HashSet<>();
@@ -110,6 +117,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.appVersion = appVersion;
         this.cityName = cityName;
         this.coordinate = coordinate;
+        this.point = new GeoJsonPoint(coordinate[0], coordinate[1]);
         this.ipAddress = ipAddress;
     }
 
@@ -131,6 +139,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.appVersion = appVersion;
         this.cityName = cityName;
         this.coordinate = coordinate;
+        this.point = new GeoJsonPoint(coordinate[0], coordinate[1]);
         this.ipAddress = ipAddress;
     }
 
@@ -156,6 +165,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.deviceLanguage = deviceLanguage;
         this.cityName = cityName;
         this.coordinate = coordinate;
+        this.point = new GeoJsonPoint(coordinate[0], coordinate[1]);
         this.ipAddress = ipAddress;
     }
 
@@ -179,6 +189,7 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.deviceLanguage = deviceLanguage;
         this.cityName = cityName;
         this.coordinate = coordinate;
+        this.point = new GeoJsonPoint(coordinate[0], coordinate[1]);
         this.ipAddress = ipAddress;
     }
 
