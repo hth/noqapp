@@ -72,6 +72,8 @@ public class RegisteredDeviceEntity extends BaseEntity {
     private String cityName;
 
     /* Format Longitude and then Latitude. */
+    @Deprecated(forRemoval = true, since = "1.3.120")
+    /* Old style, mongo recommends saving as GEO_2DSPHERE. */
     @Field("COR")
     private double[] coordinate;
 
