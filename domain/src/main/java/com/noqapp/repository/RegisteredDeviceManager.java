@@ -5,6 +5,10 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.AppFlavorEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.GeoResults;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -100,4 +104,10 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
     void updateRegisteredDevice(String did, String qid, DeviceTypeEnum deviceType, boolean sinceBeginning);
 
     List<RegisteredDeviceEntity> findAlmostObsoleteDevices();
+
+    Stream<GeoResult<RegisteredDeviceEntity>> findDevicesWithinVicinity(double[] coordinate, int distanceToPropagateInformation);
+
+    Stream<RegisteredDeviceEntity> findAll();
+
+    void addGeoPoint(String id, GeoJsonPoint point);
 }

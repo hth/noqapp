@@ -29,9 +29,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
@@ -444,5 +450,28 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .first("updated").as("U"));
 
         return mongoTemplate.aggregate(agg, TABLE, RegisteredDeviceEntity.class).getMappedResults();
+    }
+
+    @Override
+    public Stream<GeoResult<RegisteredDeviceEntity>> findDevicesWithinVicinity(double[] coordinate, int distanceToPropagateInformation) {
+        Point location = new Point(coordinate[0], coordinate[1]);
+        NearQuery query = NearQuery.near(location).maxDistance(new Distance(distanceToPropagateInformation, Metrics.KILOMETERS));
+
+        return mongoTemplate.geoNear(query, RegisteredDeviceEntity.class, TABLE).getContent().stream();
+    }
+
+    @Override
+    public Stream<RegisteredDeviceEntity> findAll() {
+        return mongoTemplate.findAll(RegisteredDeviceEntity.class, TABLE).stream();
+    }
+
+    @Override
+    public void addGeoPoint(String id, GeoJsonPoint point) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            update("PN", point),
+            RegisteredDeviceEntity.class,
+            TABLE
+        );
     }
 }
