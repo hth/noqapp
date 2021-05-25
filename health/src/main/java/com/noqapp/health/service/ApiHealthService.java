@@ -20,10 +20,10 @@ import java.util.concurrent.ExecutorService;
  * Date: 11/07/17 11:01 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Service
 public class ApiHealthService {
@@ -55,12 +55,12 @@ public class ApiHealthService {
             LOG.info("{} {} {} {} {}ms", apiName, methodName, clazzName.substring(clazzName.lastIndexOf(".") + 1), healthStatus, duration);
         }
         apiHealthNowManager.save(
-                new ApiHealthNowEntity()
-                        .setApi(apiName)
-                        .setMethodName(methodName)
-                        .setClazzName(clazzName)
-                        .setDuration(duration)
-                        .setHealthStatus(healthStatus)
+            new ApiHealthNowEntity()
+                .setApi(apiName)
+                .setMethodName(methodName)
+                .setClazzName(clazzName)
+                .setDuration(duration)
+                .setHealthStatus(healthStatus)
         );
     }
 }
