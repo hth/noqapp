@@ -49,7 +49,7 @@ public class DataSourceConfiguration {
         ds.addDataSourceProperty("elideSetAutoCommits", true);
         ds.addDataSourceProperty("maintainTimeStats", false);
         /* Public Key Retrieval is not allowed. */
-        ds.addDataSourceProperty("allowPublicKeyRetrieval", true);
+//        ds.addDataSourceProperty("allowPublicKeyRetrieval", true);
         /* Since the time new driver class is com.mysql.cj.jdbc.Driver. */
         ds.addDataSourceProperty("verifyServerCertificate", false);
         ds.addDataSourceProperty("useSSL", false);
