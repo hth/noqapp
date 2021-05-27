@@ -31,7 +31,7 @@ import java.util.StringJoiner;
 @Document(collection = "TOKEN_QUEUE")
 public class TokenQueueEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(TokenQueueEntity.class);
-    private static final String TOPICS = "/topics/";
+    protected static final String TOPICS = "/topics/";
 
     @Field("LN")
     private int lastNumber;

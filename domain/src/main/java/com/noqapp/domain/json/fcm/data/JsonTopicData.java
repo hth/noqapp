@@ -38,6 +38,7 @@ public class JsonTopicData {
     private JsonTopicAppointmentData jsonTopicAppointmentData;
     private JsonAlertData jsonAlertData;
     private JsonMedicalFollowUp jsonMedicalFollowUp;
+    private JsonIncidentEventData jsonIncidentEventData;
 
     /**
      * When FirebaseMessageTypeEnum.P is Personal for Merchant, it saves in DB otherwise it processes the message it receives.
@@ -64,6 +65,12 @@ public class JsonTopicData {
                 break;
             case MF:
                 jsonMedicalFollowUp = new JsonMedicalFollowUp(firebaseMessageType, messageOrigin);
+                break;
+            case M:
+                //TODO
+                break;
+            case IE:
+                jsonIncidentEventData = new JsonIncidentEventData(firebaseMessageType, messageOrigin);
                 break;
             default:
                 LOG.error("Reached unreachable condition {}", messageOrigin);
@@ -113,6 +120,15 @@ public class JsonTopicData {
 
     public JsonTopicData setJsonMedicalFollowUp(JsonMedicalFollowUp jsonMedicalFollowUp) {
         this.jsonMedicalFollowUp = jsonMedicalFollowUp;
+        return this;
+    }
+
+    public JsonIncidentEventData getJsonIncidentEventData() {
+        return jsonIncidentEventData;
+    }
+
+    public JsonTopicData setJsonIncidentEventData(JsonIncidentEventData jsonIncidentEventData) {
+        this.jsonIncidentEventData = jsonIncidentEventData;
         return this;
     }
 }

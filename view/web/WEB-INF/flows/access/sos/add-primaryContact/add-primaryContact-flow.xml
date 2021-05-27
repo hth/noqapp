@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.springframework.org/schema/webflow"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+      http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+    <secured attributes="ROLE_CLIENT" match="any"/>
+
+    <on-start>
+        <evaluate expression="addPrimaryContactMessageSOSFlowActions.create()"
+                  result="flowScope.addPrimaryContactMessageSOSForm"/>
+    </on-start>
+
+    <view-state id="addPrimaryContactStart" model="addPrimaryContactMessageSOSForm">
+        <transition on="submit" to="validateStartOfAddingPrimaryContact"/>
+        <transition on="cancel" to="addPrimaryContactCancel"/>
+    </view-state>
+
+    <action-state id="validateStartOfAddingPrimaryContact">
+        <evaluate expression="primaryContactFlowValidator.validatePhoneNumber(addPrimaryContactMessageSOSForm, messageContext)"/>
+        <transition on="success" to="addPrimaryContactReview"/>
+        <transition on="failure" to="addPrimaryContactStart"/>
+    </action-state>
+
+    <view-state id="addPrimaryContactReview">
+        <!-- discard history to prevent back flow, invalidate to prevent back flow for all states -->
+        <transition on="confirm" to="completeAdditionOfPrimaryContact" history="invalidate"/>
+        <transition on="revise" to="addPrimaryContactStart"/>
+        <transition on="cancel" to="addPrimaryContactCancel"/>
+    </view-state>
+
+    <action-state id="completeAdditionOfPrimaryContact">
+        <!-- Need the result to show correct message on JSP -->
+        <evaluate result="addPrimaryContactMessageSOSForm"
+                  expression="addPrimaryContactMessageSOSFlowActions.completeAdditionOfPrimaryContact(addPrimaryContactMessageSOSForm, messageContext)"/>
+
+        <transition on-exception="com.noqapp.view.flow.access.exception.AddPrimaryContactException"
+                    to="addPrimaryContactStart"/>
+
+        <transition to="addPrimaryContactComplete"/>
+    </action-state>
+
+    <view-state id="addPrimaryContactCancel"
+                view="externalRedirect:contextRelative:/access/sos"/>
+    <view-state id="addPrimaryContactComplete"
+                view="externalRedirect:contextRelative:/access/sos"/>
+</flow>

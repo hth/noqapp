@@ -70,9 +70,6 @@ public class MessageCustomerService {
 
     private int limitMessageToCustomerVisitedInDays;
 
-    /* Supported max limit by Firebase. */
-    private final static int maxTokenLimit = 1_000;
-
     @Autowired
     public MessageCustomerService(
         @Value("${MessageCustomerService.limitMessageToCustomerVisitedInDays}")
@@ -260,12 +257,12 @@ public class MessageCustomerService {
                 String topic = CommonUtil.buildTopic(bizName.getCountryShortName() + UNDER_SCORE + bizNameId, deviceType.name());
                 switch (deviceType) {
                     case A:
-                        if (subscribeToTopic(tokens_A, topic)) {
+                        if (firebaseService.subscribeTokenToTopic(tokens_A, topic)) {
                             sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, bizName.getBusinessType());
                         }
                         break;
                     case I:
-                        if (subscribeToTopic(tokens_I, topic)) {
+                        if (firebaseService.subscribeTokenToTopic(tokens_I, topic)) {
                             sendBulkMessageToBusinessUser(notificationMessage.getId(), title, body, topic, MessageOriginEnum.A, deviceType, bizName.getBusinessType());
                         }
                         break;
@@ -282,24 +279,6 @@ public class MessageCustomerService {
             LOG.error("Failed sending message {} {} reason={}", bizNameId, qid, e.getMessage(), e);
             return 0;
         }
-    }
-
-    public boolean subscribeToTopic(List<String> tokens, String topic) {
-        int size = tokens.size();
-        if (size == 0) {
-            return false;
-        }
-
-        if (size > maxTokenLimit) {
-            Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens, maxTokenLimit);
-            for (List<String> collectionOfToken : collectionOfTokens) {
-                firebaseService.subscribeToTopic(collectionOfToken, topic);
-            }
-        } else {
-            firebaseService.subscribeToTopic(tokens, topic);
-        }
-
-        return true;
     }
 
     /**
@@ -344,34 +323,16 @@ public class MessageCustomerService {
             String topic = tokenQueue.getCorrectTopic(QueueStatusEnum.C) + UNDER_SCORE + deviceType.name();
             switch (deviceType) {
                 case A:
-                    unsubscribeFromTopic(tokens_A, topic);
+                    firebaseService.unsubscribeTokensFromTopic(tokens_A, topic);
                     break;
                 case I:
-                    unsubscribeFromTopic(tokens_I, topic);
+                    firebaseService.unsubscribeTokensFromTopic(tokens_I, topic);
                     break;
                 case W:
                     //Do nothing
                     break;
             }
         }
-    }
-
-    public boolean unsubscribeFromTopic(List<String> tokens, String topic) {
-        int size = tokens.size();
-        if (size == 0) {
-            return false;
-        }
-
-        if (size > maxTokenLimit) {
-            Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens, maxTokenLimit);
-            for (List<String> collectionOfToken : collectionOfTokens) {
-                firebaseService.unsubscribeFromTopic(collectionOfToken, topic);
-            }
-        } else {
-            firebaseService.unsubscribeFromTopic(tokens, topic);
-        }
-
-        return true;
     }
 
     @Mobile

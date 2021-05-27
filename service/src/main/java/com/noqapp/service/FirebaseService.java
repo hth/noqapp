@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -38,6 +39,9 @@ public class FirebaseService {
 
     private FirebaseConfig firebaseConfig;
     private UserProfileManager userProfileManager;
+
+    /* Supported max limit by Firebase. */
+    private final static int maxTokenLimit = 1_000;
 
     @Autowired
     public FirebaseService(
@@ -116,5 +120,41 @@ public class FirebaseService {
 
     public void subscribeToTopic(BusinessTypeEnum businessType, RegisteredDeviceEntity registeredDevice) {
         subscribeToTopic(businessType.getName(), registeredDevice);
+    }
+
+    public boolean subscribeTokenToTopic(List<String> tokens, String topic) {
+        int size = tokens.size();
+        if (size == 0) {
+            return false;
+        }
+
+        if (size > maxTokenLimit) {
+            Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens, maxTokenLimit);
+            for (List<String> collectionOfToken : collectionOfTokens) {
+                subscribeToTopic(collectionOfToken, topic);
+            }
+        } else {
+            subscribeToTopic(tokens, topic);
+        }
+
+        return true;
+    }
+
+    public boolean unsubscribeTokensFromTopic(List<String> tokens, String topic) {
+        int size = tokens.size();
+        if (size == 0) {
+            return false;
+        }
+
+        if (size > maxTokenLimit) {
+            Collection<List<String>> collectionOfTokens = CommonUtil.partitionBasedOnSize(tokens, maxTokenLimit);
+            for (List<String> collectionOfToken : collectionOfTokens) {
+                unsubscribeFromTopic(collectionOfToken, topic);
+            }
+        } else {
+            unsubscribeFromTopic(tokens, topic);
+        }
+
+        return true;
     }
 }
