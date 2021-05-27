@@ -3,6 +3,7 @@ package com.noqapp.service;
 import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.json.JsonProfile;
 import com.noqapp.domain.json.JsonUserPreference;
 import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
@@ -20,6 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * User: hitender
@@ -151,5 +155,29 @@ public class UserProfilePreferenceService {
     @Mobile
     public void removeFavorite(String qid, String codeQR) {
         userPreferenceManager.removeFavorite(qid, codeQR);
+    }
+
+    /** Gets profile of SOS users registered in user preferences. */
+    public List<UserProfileEntity> findSOSUsers(String qid) {
+        UserPreferenceEntity userPreference = userPreferenceManager.findByQueueUserId(qid);
+        Set<String> sosReceiverQids = userPreference.getSosReceiverQids();
+
+        List<UserProfileEntity> userProfiles = new LinkedList<>();
+        for (String sosReceiverQid : sosReceiverQids) {
+            userProfiles.add(userProfileManager.findByQueueUserId(sosReceiverQid));
+        }
+
+        return userProfiles;
+    }
+
+    public void removeSOSUser(String phoneNumber, String queueUserId) {
+        UserPreferenceEntity userPreference = userPreferenceManager.findByQueueUserId(queueUserId);
+        UserProfileEntity userProfile = userProfileManager.findOneByPhone(phoneNumber);
+        if (null != userProfile) {
+            if (userPreference.getSosReceiverQids().contains(userProfile.getQueueUserId())) {
+                userPreference.getSosReceiverQids().remove(userProfile.getQueueUserId());
+                userPreferenceManager.save(userPreference);
+            }
+        }
     }
 }

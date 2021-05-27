@@ -17,4 +17,5 @@ public enum MessageOriginEnum {
     CQO,//Current Queue And Order   (In App DB)
     AU, //Auth                      (NOT In App DB)
     M,  //Marketplace               (In App DB)
+    IE, //IncidentEvent             (In App DB)
 }

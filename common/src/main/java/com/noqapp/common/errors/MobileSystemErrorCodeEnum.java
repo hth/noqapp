@@ -119,6 +119,10 @@ public enum MobileSystemErrorCodeEnum {
     COUPON_NOT_APPLICABLE("7003", ALERT),
     COUPON_REMOVAL_FAILED("7006", ALERT),
 
+    /** Incident Events. */
+    INCIDENT_EVENT_NOT_FOUND("8404", ERROR),
+    INCIDENT_EVENT_INCORRECT("8405", ERROR),
+
     /** Not mobile web application. */
     WEB_APPLICATION("9000", ERROR);
 

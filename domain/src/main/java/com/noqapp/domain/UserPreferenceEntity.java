@@ -58,6 +58,10 @@ public class UserPreferenceEntity extends BaseEntity {
     @Field("FS")
     private Set<String> favoriteSuggested = new HashSet<>();
 
+    /** SOS receivers. */
+    @Field("SQ")
+    private Set<String> sosReceiverQids = new HashSet<>();
+
     /**
      * To make bean happy
      */
@@ -153,6 +157,15 @@ public class UserPreferenceEntity extends BaseEntity {
 
     public UserPreferenceEntity addFavoriteSuggested(String favoriteSuggested) {
         this.favoriteSuggested.add(favoriteSuggested);
+        return this;
+    }
+
+    public Set<String> getSosReceiverQids() {
+        return sosReceiverQids;
+    }
+
+    public UserPreferenceEntity addSosReceiverQid(String sosReceiverQid) {
+        this.sosReceiverQids.add(sosReceiverQid);
         return this;
     }
 }

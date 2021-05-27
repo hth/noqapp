@@ -1,6 +1,7 @@
 package com.noqapp.domain.common;
 
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.domain.IncidentEventEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
@@ -194,6 +195,66 @@ public class ComposeMessagesForFCM {
                 .setTitle(displayName + " follow-up");
         }
 
+        jsonMessage.setData(jsonData);
+        return jsonMessage;
+    }
+
+    public static JsonMessage composeMessageForIncidentEvent(IncidentEventEntity incidentEvent, DeviceTypeEnum deviceType) {
+        JsonMessage jsonMessage = new JsonMessage(incidentEvent.getTopicWellFormatted());
+        JsonData jsonData = new JsonTopicData(MessageOriginEnum.IE, FirebaseMessageTypeEnum.C).getJsonIncidentEventData()
+            .setIncidentEvent(incidentEvent.getIncidentEvent())
+            .setCoordinate(incidentEvent.getCoordinate())
+            .setAddress(incidentEvent.getAddress())
+            .setArea(incidentEvent.getArea())
+            .setTown(incidentEvent.getTown())
+            .setDistrict(incidentEvent.getDistrict())
+            .setState(incidentEvent.getState())
+            .setStateShortName(incidentEvent.getStateShortName())
+            .setPostalCode(incidentEvent.getPostalCode())
+            .setCountry(incidentEvent.getCountry())
+            .setCountryShortName(incidentEvent.getCountryShortName());
+
+        if (DeviceTypeEnum.I == deviceType) {
+            jsonMessage.getNotification()
+                .setTitle(incidentEvent.getTitle())
+                .setBody(incidentEvent.getDescription());
+        } else {
+            jsonMessage.setNotification(null);
+            jsonData.setTitle(incidentEvent.getTitle())
+                .setBody(incidentEvent.getDescription());
+        }
+
+        jsonData.setId(incidentEvent.getId());
+        jsonMessage.setData(jsonData);
+        return jsonMessage;
+    }
+
+    public static JsonMessage composeMessageForSOSIncidentEvent(IncidentEventEntity incidentEvent, RegisteredDeviceEntity registeredDevice) {
+        JsonMessage jsonMessage = new JsonMessage(registeredDevice.getToken());
+        JsonData jsonData = new JsonTopicData(MessageOriginEnum.IE, FirebaseMessageTypeEnum.C).getJsonIncidentEventData()
+            .setIncidentEvent(incidentEvent.getIncidentEvent())
+            .setCoordinate(incidentEvent.getCoordinate())
+            .setAddress(incidentEvent.getAddress())
+            .setArea(incidentEvent.getArea())
+            .setTown(incidentEvent.getTown())
+            .setDistrict(incidentEvent.getDistrict())
+            .setState(incidentEvent.getState())
+            .setStateShortName(incidentEvent.getStateShortName())
+            .setPostalCode(incidentEvent.getPostalCode())
+            .setCountry(incidentEvent.getCountry())
+            .setCountryShortName(incidentEvent.getCountryShortName());
+
+        if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
+            jsonMessage.getNotification()
+                .setTitle(incidentEvent.getTitle())
+                .setBody(incidentEvent.getDescription());
+        } else {
+            jsonMessage.setNotification(null);
+            jsonData.setTitle(incidentEvent.getTitle())
+                .setBody(incidentEvent.getDescription());
+        }
+
+        jsonData.setId(incidentEvent.getId());
         jsonMessage.setData(jsonData);
         return jsonMessage;
     }
