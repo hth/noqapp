@@ -56,7 +56,7 @@ public class DataSourceConfiguration {
         ds.addDataSourceProperty("serverTimezone", "UTC");
         /* End of changes since new driver class. */
         ds.setConnectionInitSql("SET NAMES utf8mb4");
-        ds.setMaximumPoolSize(10);
+        ds.setMaximumPoolSize(20);
         ds.setMinimumIdle(2);
         /* 30 seconds. */
         ds.setIdleTimeout(30000);
