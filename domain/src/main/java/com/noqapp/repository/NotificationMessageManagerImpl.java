@@ -3,6 +3,7 @@ package com.noqapp.repository;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.NotificationMessageEntity;
 
@@ -86,5 +87,14 @@ public class NotificationMessageManagerImpl implements NotificationMessageManage
         );
 
         return updateFirst.wasAcknowledged();
+    }
+
+    @Override
+    public boolean findPreviouslySentMessages(String title, String body, String topic, String qid) {
+        return mongoTemplate.exists(
+            query(where("TP").is(topic).and("QID").is(qid).and("TL").is(title).and("BD").is(body).and("C").gte(DateUtil.inLastOneHour())),
+            NotificationMessageEntity.class,
+            TABLE
+        );
     }
 }

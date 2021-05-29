@@ -305,6 +305,10 @@ public final class DateUtil {
         return Date.from(instant);
     }
 
+    public static Date inLastOneHour() {
+        return minusHours(1);
+    }
+
     public static Date minusHours(long hours) {
         Instant instant = new Date().toInstant().minus(hours, ChronoUnit.HOURS).atZone(ZoneId.systemDefault()).toInstant();
         return Date.from(instant);

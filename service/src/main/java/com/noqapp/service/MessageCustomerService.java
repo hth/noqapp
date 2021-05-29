@@ -28,6 +28,8 @@ import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.neo4j.NotificationN4jManager;
+import com.noqapp.service.exceptions.DuplicateAccountException;
+import com.noqapp.service.exceptions.DuplicateMessageException;
 import com.noqapp.service.graph.GraphDetailOfPerson;
 
 import org.apache.commons.lang3.StringUtils;
@@ -221,10 +223,16 @@ public class MessageCustomerService {
     public int sendMessageToPastClients(String title, String body, String bizNameId, String qid) {
         try {
             BizNameEntity bizName = bizNameManager.getById(bizNameId);
+            String topicForLogging = CommonUtil.buildTopic(bizName.getCountryShortName() + UNDER_SCORE + bizNameId, DeviceTypeEnum.onlyForLogging());
+            if (notificationMessageManager.findPreviouslySentMessages(title, body, topicForLogging, qid)) {
+                LOG.info("Sending duplicate message ignored {} {} {} {}", qid, bizNameId, title, body);
+                throw new DuplicateMessageException("Previously Sent Message");
+            }
+
             NotificationMessageEntity notificationMessage = new NotificationMessageEntity()
                 .setTitle(title)
                 .setBody(body)
-                .setTopic(CommonUtil.buildTopic(bizName.getCountryShortName() + UNDER_SCORE + bizNameId, DeviceTypeEnum.onlyForLogging()))
+                .setTopic(topicForLogging)
                 .setQueueUserId(qid);
             save(notificationMessage);
 
@@ -275,6 +283,8 @@ public class MessageCustomerService {
             notificationMessage.setMessageSendCount(sendMessageCount);
             save(notificationMessage);
             return sendMessageCount;
+        } catch (DuplicateMessageException e) {
+            throw e;
         } catch (Exception e) {
             LOG.error("Failed sending message {} {} reason={}", bizNameId, qid, e.getMessage(), e);
             return 0;

@@ -13,4 +13,7 @@ public interface NotificationMessageManager extends RepositoryManager<Notificati
     boolean increaseViewUnregisteredCount(String id);
 
     boolean increaseViewBusinessCount(String id);
+
+    /** Find similar message sent in X hours. */
+    boolean findPreviouslySentMessages(String title, String body, String topic, String qid);
 }

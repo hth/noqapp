@@ -5,6 +5,7 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.MessageCustomerService;
+import com.noqapp.service.exceptions.DuplicateMessageException;
 import com.noqapp.view.form.admin.SendNotificationForm;
 import com.noqapp.view.validator.SendNotificationValidator;
 
@@ -119,6 +120,14 @@ public class MessageCustomerController {
                 sendMessageCount,
                 sendNotificationForm.getTitle(),
                 sendNotificationForm.getBody());
+        } catch (DuplicateMessageException e) {
+            LOG.warn("Failed sending message reason={}", e.getLocalizedMessage());
+            sendNotificationForm
+                .setSentCount(0)
+                .setSuccess(false)
+                .setFailedReason("Duplicate message. This message has already been sent.")
+                .setIgnoreSentiments(false);
+            redirectAttrs.addFlashAttribute("sendNotificationForm", sendNotificationForm);
         } catch (Exception e) {
             LOG.error("Failed sending message reason={}", e.getLocalizedMessage(), e);
         }
