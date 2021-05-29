@@ -73,7 +73,7 @@ public abstract class BaseEntity implements Serializable {
             try {
                 value = (String) annotation.annotationType().getMethod(attributeName).invoke(annotation);
             } catch (Exception annotationException) {
-                LOG.error("annotation reading error={}", annotationException);
+                LOG.error("Annotation reading error={}", annotationException.getLocalizedMessage(), annotationException);
             }
         }
 
