@@ -72,9 +72,9 @@ public class GeoIPLocationService {
             InetAddress ipAddress = InetAddress.getByName(ip);
             return dbReader.city(ipAddress);
         } catch (IOException e) {
-            LOG.warn("Failed parsing ip={} reason={}", ip, e.getLocalizedMessage());
+            LOG.warn("Failed cityResponse parsing ip={} reason=\"{}\"", ip, e.getLocalizedMessage());
         } catch (GeoIp2Exception e) {
-            LOG.warn("Failed fetching geoIP for ip={} reason={}", ip, e.getLocalizedMessage());
+            LOG.warn("Failed cityResponse fetching geoIP for ip={} reason=\"{}\"", ip, e.getLocalizedMessage());
         }
 
         return null;
@@ -88,9 +88,9 @@ public class GeoIPLocationService {
             CityResponse response = dbReader.city(ipAddress);
             return response.getLocation().getTimeZone();
         } catch (IOException e) {
-            LOG.warn("Failed parsing ip={} reason={}", ip, e.getLocalizedMessage());
+            LOG.warn("Failed timeZone parsing ip={} reason=\"{}\"", ip, e.getLocalizedMessage());
         } catch (GeoIp2Exception e) {
-            LOG.warn("Failed fetching geoIP for ip={} reason={}", ip, e.getLocalizedMessage());
+            LOG.warn("Failed timeZone fetching geoIP for ip={} reason=\"{}\"", ip, e.getLocalizedMessage());
         }
 
         return null;
