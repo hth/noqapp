@@ -17,6 +17,7 @@ public class SendNotificationForm {
     private boolean ignoreSentiments;
     private int sentCount;
     private boolean success;
+    private String failedReason;
     private ScrubbedInput qid;
     private String businessName;
     private BusinessTypeEnum businessType;
@@ -74,6 +75,15 @@ public class SendNotificationForm {
 
     public SendNotificationForm setSuccess(boolean success) {
         this.success = success;
+        return this;
+    }
+
+    public String getFailedReason() {
+        return failedReason;
+    }
+
+    public SendNotificationForm setFailedReason(String failedReason) {
+        this.failedReason = failedReason;
         return this;
     }
 

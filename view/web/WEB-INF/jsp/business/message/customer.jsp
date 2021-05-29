@@ -133,7 +133,14 @@
                                             Message delivered successfully to ${sendNotificationForm.sentCount} people
                                         </c:when>
                                         <c:otherwise>
-                                            Your message will reach to ${sendNotificationForm.sentCount} people. Your reach depends on daily usage.
+                                            <c:choose>
+                                            <c:when test="${fn:length(sendNotificationForm.failedReason) gt 0}">
+                                                <span style="color: #9f1313;">${sendNotificationForm.failedReason}</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                Your message will reach to ${sendNotificationForm.sentCount} people. Your reach depends on daily usage.
+                                            </c:otherwise>
+                                            </c:choose>
                                         </c:otherwise>
                                     </c:choose>
                                     </p>
