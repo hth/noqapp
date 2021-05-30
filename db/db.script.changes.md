@@ -1,3 +1,15 @@
+### Changed May 29, 2021
+
+    ALTER TABLE `noqapp_test`.`QUEUE`
+    MODIFY DT CHAR(5) NOT NULL;   
+
+TS had status as 'C', removed only for noqapp_test and noqapp table did not have 'C' as default
+
+    ALTER TABLE `noqapp_test`.`QUEUE`
+    MODIFY TS VARCHAR(1) NOT NULL;   
+
+    ALTER TABLE `noqapp_test`.`QUEUE` ADD INDEX `queue_qid_idx` (`QID`);
+
 ### Changed May 22, 2021
     
     db.getCollection('REGISTERED_DEVICE').remove({"COR" : {$exists : false}})
