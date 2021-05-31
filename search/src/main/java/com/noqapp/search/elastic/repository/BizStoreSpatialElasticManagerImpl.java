@@ -81,7 +81,7 @@ public class BizStoreSpatialElasticManagerImpl implements BizStoreSpatialElastic
         } catch (IOException e) {
             LOG.error("Failed saving id={} reason={}", bizStoreElastic.getId(), e.getLocalizedMessage(), e);
         } catch (ElasticsearchException e) {
-            if (e.status() == RestStatus.CONFLICT) {
+            if (RestStatus.CONFLICT == e.status()) {
                 LOG.error("Failed on version conflict id={} reason={}", bizStoreElastic.getId(), e.getDetailedMessage(), e);
             } else {
                 LOG.error("Failed saving id={} reason={}", bizStoreElastic.getId(), e.getDetailedMessage(), e);
@@ -117,7 +117,7 @@ public class BizStoreSpatialElasticManagerImpl implements BizStoreSpatialElastic
         } catch (IOException e) {
             LOG.error("Failed deleting id={} reason={}", id, e.getLocalizedMessage(), e);
         } catch (ElasticsearchException e) {
-            if (e.status() == RestStatus.CONFLICT) {
+            if (RestStatus.CONFLICT == e.status()) {
                 LOG.error("Failed on version conflict id={} reason={}", id, e.getDetailedMessage(), e);
             } else {
                 LOG.error("Failed saving id={} reason={}", id, e.getDetailedMessage(), e);
