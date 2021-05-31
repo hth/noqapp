@@ -1,0 +1,32 @@
+{
+  "mappings": {
+    "dynamic": false,
+    "properties": {
+      "IE": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 4,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "GH": {
+        "type": "geo_point"
+      },
+      "TI": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "C": {
+        "format": "epoch_millis",
+        "type": "date"
+      }
+    }
+  }
+}

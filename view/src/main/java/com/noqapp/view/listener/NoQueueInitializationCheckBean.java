@@ -3,9 +3,11 @@ package com.noqapp.view.listener;
 import com.noqapp.common.config.FirebaseConfig;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
+import com.noqapp.search.elastic.domain.IncidentEventElastic;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
+import com.noqapp.search.elastic.service.IncidentEventElasticService;
 import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.SmsService;
@@ -70,6 +72,7 @@ public class NoQueueInitializationCheckBean {
     private ElasticAdministrationService elasticAdministrationService;
     private BizStoreElasticService bizStoreElasticService;
     private MarketplaceElasticService marketplaceElasticService;
+    private IncidentEventElasticService incidentEventElasticService;
     private JmsTemplate jmsMailSignUpTemplate;
     private DatabaseReader databaseReader;
     private FtpService ftpService;
@@ -90,6 +93,7 @@ public class NoQueueInitializationCheckBean {
         ElasticAdministrationService elasticAdministrationService,
         BizStoreElasticService bizStoreElasticService,
         MarketplaceElasticService marketplaceElasticService,
+        IncidentEventElasticService incidentEventElasticService,
 
         @Qualifier("jmsMailSignUpTemplate")
         JmsTemplate jmsMailSignUpTemplate,
@@ -109,6 +113,7 @@ public class NoQueueInitializationCheckBean {
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreElasticService = bizStoreElasticService;
         this.marketplaceElasticService = marketplaceElasticService;
+        this.incidentEventElasticService = incidentEventElasticService;
 
         this.jmsMailSignUpTemplate = jmsMailSignUpTemplate;
         this.databaseReader = databaseReader;
@@ -216,6 +221,20 @@ public class NoQueueInitializationCheckBean {
             }
         } else {
             LOG.info("Elastic Index={} found", MarketplaceElastic.INDEX);
+        }
+
+        if (!elasticAdministrationService.doesIndexExists(IncidentEventElastic.INDEX)) {
+            LOG.info("Elastic Index={} not found. Building Indexes... please wait", IncidentEventElastic.INDEX);
+            boolean createdIncidentEventMappingSuccessfully = elasticAdministrationService.addMapping(
+                IncidentEventElastic.INDEX,
+                IncidentEventElastic.TYPE);
+
+            if (createdIncidentEventMappingSuccessfully) {
+                LOG.info("Created Index and Mapping {} successfully. Adding data to Index/Type", IncidentEventElastic.INDEX);
+                incidentEventElasticService.addAllIncidentEventToElastic();
+            }
+        } else {
+            LOG.info("Elastic Index={} found", IncidentEventElastic.INDEX);
         }
     }
 

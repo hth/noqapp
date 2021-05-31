@@ -7,19 +7,13 @@ import java.util.List;
  * 3/1/21 11:33 AM
  */
 public interface MarketplaceElasticManager<MarketplaceElastic> {
-    /**
-     * Save single object.
-     */
+    /** Save single object. */
     void save(MarketplaceElastic marketplaceElastic);
 
-    /**
-     * Bulk save operation.
-     */
+    /** Bulk save operation. */
     void save(List<MarketplaceElastic> marketplaceElastics);
 
-    /**
-     * Delete by id.
-     */
+    /** Delete by id. */
     void delete(String id);
 
     boolean exists(String id);
