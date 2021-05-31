@@ -3,11 +3,14 @@ package com.noqapp.domain;
 import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 import static com.noqapp.domain.TokenQueueEntity.TOPICS;
 
+import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.IncidentEventEnum;
 
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import org.elasticsearch.common.geo.GeoPoint;
 
 import java.util.List;
 
@@ -249,5 +252,17 @@ public class IncidentEventEntity extends BaseEntity {
     @Transient
     public String getTopicWellFormatted() {
         return TOPICS + incidentEvent.getAppendTopic() + UNDER_SCORE + incidentEvent.name() + UNDER_SCORE + id;
+    }
+
+    @Transient
+    public GeoPointOfQ getGeoPointOfQ() {
+        /* Latitude and then Longitude. */
+        return new GeoPointOfQ(coordinate[1], coordinate[0]);
+    }
+
+    @Transient
+    public GeoPoint getGeoPoint() {
+        /* Longitude and then Latitude. */
+        return new GeoPoint(coordinate[1], coordinate[0]);
     }
 }

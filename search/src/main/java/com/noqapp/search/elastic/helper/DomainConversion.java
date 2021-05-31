@@ -3,11 +3,13 @@ package com.noqapp.search.elastic.helper;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.IncidentEventEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
+import com.noqapp.search.elastic.domain.IncidentEventElastic;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
 import com.noqapp.search.elastic.domain.StoreHourElastic;
 
@@ -202,5 +204,14 @@ public class DomainConversion {
         }
 
         return marketplaceElastic;
+    }
+
+    public static IncidentEventElastic getAsIncidentEventElastic(IncidentEventEntity incidentEvent) {
+        return new IncidentEventElastic()
+            .setId(incidentEvent.getId())
+            .setIncidentEvent(incidentEvent.getIncidentEvent())
+            .setGeoHash(incidentEvent.getGeoPoint().getGeohash())
+            .setTitle(incidentEvent.getTitle())
+            .setCreated(incidentEvent.getCreated());
     }
 }

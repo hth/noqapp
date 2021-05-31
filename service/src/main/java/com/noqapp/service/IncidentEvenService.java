@@ -65,24 +65,7 @@ public class IncidentEvenService {
     }
 
     @Async
-    public void add(JsonIncidentEvent jsonIncidentEvent, String qid) {
-        IncidentEventEntity incidentEvent = new IncidentEventEntity()
-            .setIncidentEvent(jsonIncidentEvent.getIncidentEvent())
-            .setQid(qid)
-            .setCoordinate(jsonIncidentEvent.getCoordinate())
-            .setAddress(jsonIncidentEvent.getAddress())
-            .setArea(jsonIncidentEvent.getArea())
-            .setTown(jsonIncidentEvent.getTown())
-            .setDistrict(jsonIncidentEvent.getDistrict())
-            .setState(jsonIncidentEvent.getState())
-            .setStateShortName(jsonIncidentEvent.getStateShortName())
-            .setPostalCode(jsonIncidentEvent.getPostalCode())
-            .setCountry(jsonIncidentEvent.getCountry())
-            .setCountryShortName(jsonIncidentEvent.getCountryShortName())
-            .setTitle(jsonIncidentEvent.getTitle())
-            .setDescription(jsonIncidentEvent.getDescription());
-        incidentEvent.setId(CommonUtil.generateHexFromObjectId());
-
+    public void save(IncidentEventEntity incidentEvent) {
         int expectedView;
         if (SOSP == incidentEvent.getIncidentEvent()) {
             expectedView = alertSOSReceiver(incidentEvent);
@@ -91,8 +74,6 @@ public class IncidentEvenService {
         }
         incidentEvent.setExpectedView(expectedView);
         incidentEventManager.save(incidentEvent);
-
-        //TODO add to elastic
     }
 
     private int alertSOSReceiver(IncidentEventEntity incidentEvent) {
