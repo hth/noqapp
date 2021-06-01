@@ -389,7 +389,7 @@ public class TokenQueueService {
         }
     }
 
-    private void addSubscribedTopic(String qid, BizStoreEntity bizStore) {
+    protected void addSubscribedTopic(String qid, BizStoreEntity bizStore) {
         try {
             RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
             firebaseService.subscribeToTopic(bizStore.getBusinessType(), registeredDevice);
