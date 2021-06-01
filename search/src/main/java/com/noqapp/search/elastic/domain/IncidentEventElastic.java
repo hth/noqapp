@@ -49,6 +49,9 @@ public class IncidentEventElastic extends AbstractDomain {
     @JsonProperty("IE")
     private IncidentEventEnum incidentEvent;
 
+    @JsonProperty("IED")
+    private String incidentEventDescription;
+
     @JsonProperty("GH")
     private String geoHash;
 
@@ -73,7 +76,12 @@ public class IncidentEventElastic extends AbstractDomain {
 
     public IncidentEventElastic setIncidentEvent(IncidentEventEnum incidentEvent) {
         this.incidentEvent = incidentEvent;
+        this.incidentEventDescription = incidentEvent.getDescription();
         return this;
+    }
+
+    public String getIncidentEventDescription() {
+        return incidentEventDescription;
     }
 
     public String getGeoHash() {
