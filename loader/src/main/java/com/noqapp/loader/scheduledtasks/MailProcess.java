@@ -300,6 +300,8 @@ public class MailProcess {
         dkimSigner.setSigningAlgorithm(SigningAlgorithm.SHA256_WITH_RSA);
         dkimSigner.setLengthParam(true);
         dkimSigner.setZParam(false);
+        /* Stop domain check. To Start check, set the value as true. */
+        dkimSigner.setCheckDomainKey(false);
         return new DkimMessage(message, dkimSigner);
     }
 
