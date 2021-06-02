@@ -285,6 +285,13 @@ public class MailProcess {
     /**
      * Signing message with dkim.
      *
+     * Save it like
+     * Name: noqapp._domainkey
+     * Value: v=DKIM1;g=*;k=rsa;p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCf4lvV
+     *        llV2eoDqxartI0bUiJXDv+TVhFoGcheKocQyLGrTi8BKamhoDt8yKiecpCm1rZ/n
+     *        llV2eoDqxartI0bUiJXDv+TVhFoGcheKocQyLGrTi8BKamhoDt8yKiecpCm1rZ/n
+     *        hwcR1hzavGeY/AVxpEeIvixQNmunxkdaqHCLuQIDAQAB;s=email;t=s
+     *
      * @param message
      * @param dkimPath
      * @param signingDomain
@@ -299,9 +306,7 @@ public class MailProcess {
         dkimSigner.setBodyCanonicalization(Canonicalization.RELAXED);
         dkimSigner.setSigningAlgorithm(SigningAlgorithm.SHA256_WITH_RSA);
         dkimSigner.setLengthParam(true);
-        dkimSigner.setZParam(false);
-        /* Stop domain check. To Start check, set the value as true. */
-        dkimSigner.setCheckDomainKey(false);
+        dkimSigner.setCopyHeaderFields(false);
         return new DkimMessage(message, dkimSigner);
     }
 
