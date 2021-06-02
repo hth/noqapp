@@ -82,7 +82,6 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="phoneNumber" cssClass="form-fe" cssErrorClass="form-fe lb_error" readonly="true"/>
-                                            <span class="info-txt">(Must be a registered user)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
@@ -93,7 +92,6 @@
                                         </div>
                                         <div class="col-fields">
                                             <form:input path="inviteeCode" cssClass="form-field-admin" cssStyle="text-transform: lowercase;" cssErrorClass="form-field-admin lb_error" readonly="true"/>
-                                            <span class="info-txt">(Owner of the Phone Number has to share invite code with you)</span>
                                         </div>
                                         <div class="clearFix"></div>
                                     </li>
