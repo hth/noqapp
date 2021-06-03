@@ -38,6 +38,14 @@ public class PropertyRentalMarketplaceValidator {
                     .defaultText("Posting for cannot be empty")
                     .build());
             status = "failure";
+        } else if (BusinessTypeEnum.PR != marketplaceForm.getBusinessType()) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("businessType")
+                    .defaultText("Please select " + BusinessTypeEnum.PR.getDescription() + " to continue")
+                    .build());
+            status = "failure";
         }
 
         return status;
