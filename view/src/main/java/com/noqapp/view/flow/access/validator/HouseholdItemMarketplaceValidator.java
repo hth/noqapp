@@ -38,6 +38,14 @@ public class HouseholdItemMarketplaceValidator {
                     .defaultText("Posting for cannot be empty")
                     .build());
             status = "failure";
+        } else if (BusinessTypeEnum.HI != marketplaceForm.getBusinessType()) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("businessType")
+                    .defaultText("Please select " + BusinessTypeEnum.HI.getDescription() + " to continue")
+                    .build());
+            status = "failure";
         }
 
         return status;

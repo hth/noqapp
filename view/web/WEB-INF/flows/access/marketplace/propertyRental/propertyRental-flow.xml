@@ -22,7 +22,7 @@
     <action-state id="validateStartOfMarketplacePost">
         <evaluate expression="propertyRentalMarketplaceValidator.validateStartOfMarketplace(marketplaceForm, messageContext)"/>
         <transition on="success" to="titleDescriptionOfPost"/>
-        <transition on="failure" to="selectTypeOfPost"/>
+        <transition on="failure" to="typeOfPost"/>
     </action-state>
 
     <view-state id="titleDescriptionOfPost" model="marketplaceForm">
