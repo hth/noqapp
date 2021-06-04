@@ -55,6 +55,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -92,6 +95,8 @@ public class ArchiveAndReset {
     private FileService fileService;
     private StoreHourService storeHourService;
     private MessageCustomerService messageCustomerService;
+
+    private ScheduledExecutorService executorService;
 
     private StatsCronEntity statsCron;
 
@@ -137,6 +142,8 @@ public class ArchiveAndReset {
         this.fileService = fileService;
         this.storeHourService = storeHourService;
         this.messageCustomerService = messageCustomerService;
+
+        this.executorService = Executors.newScheduledThreadPool(2);
     }
 
     @Scheduled(fixedDelayString = "${loader.ArchiveAndReset.queuePastData}")
@@ -281,7 +288,8 @@ public class ArchiveAndReset {
         switch (bizStore.getBusinessType().getMessageOrigin()) {
             case Q:
                 queueRemoveAllWithQueueUserStateAsInitial(bizStore);
-                queueArchiveAndReset(bizStore);
+                queueManager.duringArchiveMarkAllAsServedInQueue(bizStore.getCodeQR());
+                executorService.schedule(() -> queueArchiveAndReset(bizStore), 20, TimeUnit.SECONDS);
                 break;
             case O:
                 orderArchiveAndReset(bizStore);

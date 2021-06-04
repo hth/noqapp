@@ -251,8 +251,19 @@ public class QueueManagerImpl implements QueueManager {
             entityUpdate(update("QS", queueUserState).set("A", false).set("SE", new Date())),
             QueueEntity.class,
             TABLE).getModifiedCount() > 1;
-        LOG.info("serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
+        LOG.info("Serving status={} codeQR={} tokenNumber={}", status, codeQR, tokenNumber);
         return status;
+    }
+
+    @Override
+    public void duringArchiveMarkAllAsServedInQueue(String codeQR) {
+        UpdateResult updateResult = mongoTemplate.updateMulti(
+            /* Do not update if user aborted between beginning of service and before completion of service. */
+            query(where("QR").is(codeQR).and("QS").ne(QueueUserStateEnum.A)),
+            entityUpdate(update("QS", QueueUserStateEnum.S).set("A", false).set("SB", new Date()).set("SE", new Date())),
+            QueueEntity.class,
+            TABLE);
+        LOG.info("Marking all queued as serviced codeQR={} count={}", codeQR, updateResult.getModifiedCount());
     }
 
     @Override

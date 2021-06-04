@@ -129,7 +129,6 @@ public class ServicedPersonalFCM {
                     registeredDevice = registeredDeviceManager.findFCMToken(queue.getQueueUserId(), queue.getDid());
                 }
 
-                //TODO add cache Redis.
                 if (null == registeredDevice || StringUtils.isBlank(registeredDevice.getToken())) {
                     LOG.info("Skipped sending serviced/skipped message qid={} did={}", queue.getQueueUserId(), queue.getDid());
                     skipped++;
@@ -158,7 +157,7 @@ public class ServicedPersonalFCM {
                 statsCronService.save(statsCron);
 
                 /* Without if condition its too noisy. */
-                LOG.info("Complete found={} failure={} sentServicedClientFCM={}", found, failure, sent);
+                LOG.info("Complete sending personalized message on service found={} failure={} sentServicedClientFCM={}", found, failure, sent);
             }
         }
     }
