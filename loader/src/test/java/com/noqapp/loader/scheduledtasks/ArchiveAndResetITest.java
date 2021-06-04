@@ -1,6 +1,6 @@
 package com.noqapp.loader.scheduledtasks;
 
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateUtil;
@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * hitender
@@ -57,9 +58,14 @@ public class ArchiveAndResetITest extends ITest {
             bizService.saveStore(bizStore, "Updated QH");
         }
         archiveAndReset.doArchiveAndReset();
-        List<BizStoreEntity> bizStores_updated = bizService.getAllBizStores(bizName.getId());
-        for (BizStoreEntity bizStore : bizStores_updated) {
-            assertNotEquals(bizStore.getAverageServiceTime(), Constants.MINUTES_IN_MILLISECOND);
+        try {
+            TimeUnit.SECONDS.sleep(22);
+            List<BizStoreEntity> bizStores_updated = bizService.getAllBizStores(bizName.getId());
+            for (BizStoreEntity bizStore : bizStores_updated) {
+                assertNotEquals(bizStore.getAverageServiceTime(), Constants.MINUTES_IN_MILLISECOND);
+            }
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
         }
     }
 }
