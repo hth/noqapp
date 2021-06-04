@@ -30,7 +30,7 @@ public enum RoleEnum {
     /** A Business bursar for a business. */
     ROLE_M_ACCOUNTANT,
 
-    /** A Busness admin for a business. */
+    /** A Business admin for a business. */
     ROLE_M_ADMIN,
 
     /** Validate and process data. */
