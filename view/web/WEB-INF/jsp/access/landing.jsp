@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.BusinessTypeEnum" %>
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum, com.noqapp.domain.types.UserLevelEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -68,26 +68,27 @@
                         <h3>Welcome <sec:authentication property="principal.userShortName"/></h3>
 
                         <sec:authorize access="hasRole('ROLE_CLIENT')">
-                            <c:choose>
-                                <c:when test="${!empty landingForm.businessUserRegistrationStatus}">
-                                    <c:if test="${landingForm.businessUserRegistrationStatus eq 'C'}">
-                                        Awaiting approval for business account. <br/>
-                                        Since: ${landingForm.businessAccountSignedUp}
-                                    </c:if>
-                                    <c:if test="${landingForm.businessUserRegistrationStatus eq 'N'}">
-                                        Application marked as not complete.
-                                        <a href="/access/landing/business/migrate" class="add-btn">Please modify your application for approval</a>
-                                    </c:if>
-                                </c:when>
-                                <c:otherwise>
-                                    <a href="/access/landing/business/migrate" class="add-btn">Do you own a business which you would like to register?</a>
-                                </c:otherwise>
-                            </c:choose>
+                        <c:choose>
+                            <c:when test="${!empty landingForm.businessUserRegistrationStatus}">
+                                <c:if test="${landingForm.businessUserRegistrationStatus eq 'C'}">
+                                    Awaiting approval for business account. <br/>
+                                    Since: ${landingForm.businessAccountSignedUp}
+                                </c:if>
+                                <c:if test="${landingForm.businessUserRegistrationStatus eq 'N'}">
+                                    Application marked as not complete.
+                                    <a href="/access/landing/business/migrate" class="add-btn">Please modify your application for approval</a>
+                                </c:if>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="/access/landing/business/migrate" class="add-btn">Do you own a business which you would like to register?</a>
+                            </c:otherwise>
+                        </c:choose>
                         </sec:authorize>
                     </div>
                     <p>&nbsp;</p>
                     </c:if>
 
+                    <sec:authorize access="!hasRole('ROLE_M_ADMIN')">
                     <div class="store">
                         <div class="add-store">
                             <div class="store-table">
@@ -95,6 +96,7 @@
                             </div>
                         </div>
                     </div>
+                    </sec:authorize>
 
                     <div class="store">
                         <c:if test="${!empty landingForm.minorUserProfiles}">
@@ -157,6 +159,7 @@
                             </div>
                         </div>
 
+                        <sec:authorize access="!hasRole('ROLE_M_ADMIN')">
                         <h3>Listed on Marketplace</h3>
                         <div class="add-store">
                             <div class="store-table">
@@ -231,6 +234,7 @@
                             </div>
 
                         </div>
+                        </sec:authorize>
 
                         <h3>Historical Queue</h3>
                         <div class="add-store">
