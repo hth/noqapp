@@ -27,6 +27,7 @@ public class HouseholdItemMarketplaceValidator {
     public HouseholdItemMarketplaceValidator() {
     }
 
+    @SuppressWarnings("unused")
     public String validateStartOfMarketplace(HouseholdItemMarketplaceForm marketplaceForm, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
@@ -51,6 +52,7 @@ public class HouseholdItemMarketplaceValidator {
         return status;
     }
 
+    @SuppressWarnings("unused")
     public String validateTitleDescription(HouseholdItemMarketplaceForm marketplaceForm, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 

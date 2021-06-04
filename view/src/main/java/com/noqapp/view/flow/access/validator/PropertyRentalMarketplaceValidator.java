@@ -27,6 +27,7 @@ public class PropertyRentalMarketplaceValidator {
     public PropertyRentalMarketplaceValidator() {
     }
 
+    @SuppressWarnings("unused")
     public String validateStartOfMarketplace(PropertyRentalMarketplaceForm marketplaceForm, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
@@ -51,6 +52,7 @@ public class PropertyRentalMarketplaceValidator {
         return status;
     }
 
+    @SuppressWarnings("unused")
     public String validateTitleDescription(PropertyRentalMarketplaceForm marketplaceForm, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
