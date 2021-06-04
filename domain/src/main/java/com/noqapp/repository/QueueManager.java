@@ -62,6 +62,8 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
             String sid,
             TokenServiceEnum tokenService);
 
+    void duringArchiveMarkAllAsServedInQueue(String codeQR);
+
     /**
      * Gets next token. By default this gets the next token in sequence/order of ascending .
      *
