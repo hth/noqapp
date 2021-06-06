@@ -59,6 +59,7 @@ public class ArchiveAndResetITest extends ITest {
         }
         archiveAndReset.doArchiveAndReset();
         try {
+            /* Added sleep because of delay added -> executorService.schedule(() -> queueArchiveAndReset(bizStore), 20, TimeUnit.SECONDS); */
             TimeUnit.SECONDS.sleep(22);
             List<BizStoreEntity> bizStores_updated = bizService.getAllBizStores(bizName.getId());
             for (BizStoreEntity bizStore : bizStores_updated) {
