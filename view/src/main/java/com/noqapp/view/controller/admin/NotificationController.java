@@ -137,8 +137,7 @@ public class NotificationController {
                         sendNotificationForm.getImageURL().getText(),
                         queueUser.getQueueUserId(),
                         information,
-                        //Change from PA to ZZ after 1.2.700
-                        BusinessTypeEnum.PA);
+                        BusinessTypeEnum.ZZ);
                 }
 
                 sendNotificationForm
