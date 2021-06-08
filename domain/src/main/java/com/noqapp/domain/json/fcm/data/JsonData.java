@@ -1,7 +1,5 @@
 package com.noqapp.domain.json.fcm.data;
 
-import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 
@@ -60,16 +58,12 @@ public abstract class JsonData {
 
     JsonData(FirebaseMessageTypeEnum firebaseMessageType) {
         this.firebaseMessageType = firebaseMessageType;
-
-        /* Added id to save the message to db on mobile device. */
-        this.id = CommonUtil.generateHexFromObjectId();
     }
 
     public String getId() {
         return id;
     }
 
-    /* Set the mongoId when message needs to be validated. */
     public JsonData setId(String id) {
         this.id = id;
         return this;
