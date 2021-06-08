@@ -37,7 +37,7 @@ public abstract class JsonData {
     @JsonProperty("f")
     private FirebaseMessageTypeEnum firebaseMessageType;
 
-    /* For reference to message id. */
+    /* For reference to message id. Populate only when has to be referenced to read receipt of message. */
     @JsonProperty("id")
     private String id;
 
