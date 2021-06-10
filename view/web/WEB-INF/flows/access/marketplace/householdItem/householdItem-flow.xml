@@ -4,7 +4,7 @@
       xsi:schemaLocation="http://www.springframework.org/schema/webflow
       http://www.springframework.org/schema/webflow/spring-webflow.xsd">
 
-    <secured attributes="ROLE_CLIENT" match="any"/>
+    <secured attributes="ROLE_CLIENT, ROLE_Q_SUPERVISOR, ROLE_S_MANAGER, ROLE_M_ADMIN, " match="any"/>
 
     <on-start>
         <evaluate expression="webFlowUtils.getFlashAttribute(externalContext, 'postId')" result="conversationScope.postId" />

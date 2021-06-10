@@ -15,11 +15,11 @@ import java.util.StringJoiner;
  * User: hitender
  * Date: 11/18/16 9:55 AM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 public final class QueueUser extends User {
 
@@ -31,23 +31,23 @@ public final class QueueUser extends User {
     private String emailWithoutDomain;
 
     public QueueUser(
-            String username,
-            String password,
-            Collection<? extends GrantedAuthority> authorities
+        String username,
+        String password,
+        Collection<? extends GrantedAuthority> authorities
     ) {
         super(username, password, authorities);
     }
 
     public QueueUser(
-            String username,
-            String password,
-            Collection<? extends GrantedAuthority> authorities,
-            String queueUserId,
-            UserLevelEnum userLevel,
-            boolean active,
-            boolean accountValidated,
-            String countryShortName,
-            String userShortName
+        String username,
+        String password,
+        Collection<? extends GrantedAuthority> authorities,
+        String queueUserId,
+        UserLevelEnum userLevel,
+        boolean active,
+        boolean accountValidated,
+        String countryShortName,
+        String userShortName
     ) {
         super(username, password, active, true, true, true, authorities);
         this.queueUserId = queueUserId;
@@ -59,27 +59,27 @@ public final class QueueUser extends User {
     }
 
     public QueueUser(
-            String username,
-            String password,
-            boolean enabled,
-            boolean accountNonExpired,
-            boolean credentialsNonExpired,
-            boolean accountNonLocked,
-            Collection<? extends GrantedAuthority> authorities
+        String username,
+        String password,
+        boolean enabled,
+        boolean accountNonExpired,
+        boolean credentialsNonExpired,
+        boolean accountNonLocked,
+        Collection<? extends GrantedAuthority> authorities
     ) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
     public QueueUser(
-            String username,
-            String password,
-            boolean enabled,
-            boolean accountNonExpired,
-            boolean credentialsNonExpired,
-            boolean accountNonLocked,
-            Collection<? extends GrantedAuthority> authorities,
-            String queueUserId,
-            UserLevelEnum userLevel
+        String username,
+        String password,
+        boolean enabled,
+        boolean accountNonExpired,
+        boolean credentialsNonExpired,
+        boolean accountNonLocked,
+        Collection<? extends GrantedAuthority> authorities,
+        String queueUserId,
+        UserLevelEnum userLevel
     ) {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
         this.queueUserId = queueUserId;
@@ -88,6 +88,7 @@ public final class QueueUser extends User {
 
     /**
      * Gets NoQueue user id.
+     *
      * @return queueUserId
      */
     public String getQueueUserId() {
@@ -112,6 +113,17 @@ public final class QueueUser extends User {
 
     public String getEmailWithoutDomain() {
         return emailWithoutDomain;
+    }
+
+    /** Checks if the email ends with these domain. Since these domain have no email, they are limited from access. */
+    public boolean hasNonOperationalEmailDomain() {
+        switch (getUsername().split("@")[1]) {
+            case "mail.noqapp.com":
+            case "m.noqapp.com":
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override

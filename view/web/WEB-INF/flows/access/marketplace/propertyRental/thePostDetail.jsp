@@ -63,173 +63,173 @@
     <div class="content">
         <div class="warp-inner">
             <!-- Add New Supervisor -->
-            <sec:authorize access="hasAnyRole('ROLE_CLIENT')">
-                <div class="admin-main">
-                    <form:form modelAttribute="marketplaceForm">
-                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                        <div class="admin-title">
-                            <c:choose>
-                                <c:when test="${editMode}">
-                                    <h2>Edit Post on ${marketplaceForm.businessType.description}</h2>
-                                </c:when>
-                                <c:otherwise>
-                                    <h2>Post on Marketplace for ${marketplaceForm.businessType.description}</h2>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-                        <div class="error-box">
-                            <div class="error-txt">
-                                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                    <ul>
-                                        <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                            <li>${message.text}</li>
-                                        </c:forEach>
-                                    </ul>
-                                </c:if>
-                            </div>
-                        </div>
-                        <div class="admin-content">
-                            <div class="add-new">
-                                <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.productPrice" cssErrorClass="lb_error">Rent per Month</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="Rent on this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.rentalType" cssErrorClass="lb_error">Rental Type</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:select path="marketplace.rentalType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                <form:options items="${marketplaceForm.rentalTypes}" itemValue="name" itemLabel="description" disabled="${editMode}"/>
-                                            </form:select>
-                                        </div>
-                                        <span class="tooltip" title="Type of rental property" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
+            <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_S_MANAGER', 'ROLE_Q_SUPERVISOR', 'ROLE_CLIENT')">
+            <div class="admin-main">
+                <form:form modelAttribute="marketplaceForm">
+                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                    <div class="admin-title">
+                        <c:choose>
+                            <c:when test="${editMode}">
+                                <h2>Edit Post on ${marketplaceForm.businessType.description}</h2>
+                            </c:when>
+                            <c:otherwise>
+                                <h2>Post on Marketplace for ${marketplaceForm.businessType.description}</h2>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <div class="error-box">
+                        <div class="error-txt">
+                            <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                                <ul>
+                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                        <li>${message.text}</li>
+                                    </c:forEach>
                                 </ul>
-                            </div>
+                            </c:if>
                         </div>
-                        <div class="admin-content">
-                            <div class="add-new">
-                                <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.bedroom" cssErrorClass="lb_error">Number of bedrooms</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.bedroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="Number of bedrooms available" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.bathroom" cssErrorClass="lb_error">Number of bathrooms</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.bathroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="Number of bathrooms available" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.carpetArea" cssErrorClass="lb_error">Carpet Area (sq. ft.)</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.carpetArea" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="Size of this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.address" cssErrorClass="lb_error">Rental Address</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.address" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" disabled="${editMode}"/>
-                                        </div>
-                                        <span class="tooltip" title="Address of the rental place. This is not <b><u>visible</u></b> to others. Cannot change this information later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="admin-content">
-                            <div class="add-new">
-                                <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.city" cssErrorClass="lb_error">City/Area</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.city" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="City the property is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.town" cssErrorClass="lb_error">Town/Locality/Sector</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.town" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="Town or Sector the property is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="marketplace.landmark" cssErrorClass="lb_error">Close by Landmark</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:input path="marketplace.landmark" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
-                                        </div>
-                                        <span class="tooltip" title="Any close by landmark" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;"></sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                </ul>
-
-                                <div class="col-lable3"></div>
-                                <div class="col-fields">
-                                    <c:choose>
-                                        <c:when test="${marketplaceForm.validateByQid}">
-                                            <div class="button-btn">
-                                                <button name="_eventId_edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
-                                                <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="button-btn">
-                                                <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
-                                                <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
+                    </div>
+                    <div class="admin-content">
+                        <div class="add-new">
+                            <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="marketplace.productPrice" cssErrorClass="lb_error">Rent per Month</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="marketplace.productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <span class="tooltip" title="Rent on this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
-                                </div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="marketplace.rentalType" cssErrorClass="lb_error">Rental Type</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:select path="marketplace.rentalType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                            <form:options items="${marketplaceForm.rentalTypes}" itemValue="name" itemLabel="description" disabled="${editMode}"/>
+                                        </form:select>
+                                    </div>
+                                    <span class="tooltip" title="Type of rental property" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                    <div class="clearFix"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="admin-content">
+                        <div class="add-new">
+                            <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="marketplace.bedroom" cssErrorClass="lb_error">Number of bedrooms</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="marketplace.bedroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <span class="tooltip" title="Number of bedrooms available" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="marketplace.bathroom" cssErrorClass="lb_error">Number of bathrooms</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="marketplace.bathroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <span class="tooltip" title="Number of bathrooms available" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="marketplace.carpetArea" cssErrorClass="lb_error">Carpet Area (sq. ft.)</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="marketplace.carpetArea" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <span class="tooltip" title="Size of this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="marketplace.address" cssErrorClass="lb_error">Rental Address</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="marketplace.address" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" disabled="${editMode}"/>
+                                    </div>
+                                    <span class="tooltip" title="Address of the rental place. This is not <b><u>visible</u></b> to others. Cannot change this information later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                    <div class="clearFix"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="admin-content">
+                        <div class="add-new">
+                            <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="marketplace.city" cssErrorClass="lb_error">City/Area</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="marketplace.city" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <span class="tooltip" title="City the property is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="marketplace.town" cssErrorClass="lb_error">Town/Locality/Sector</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="marketplace.town" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <span class="tooltip" title="Town or Sector the property is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="marketplace.landmark" cssErrorClass="lb_error">Close by Landmark</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="marketplace.landmark" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                    </div>
+                                    <span class="tooltip" title="Any close by landmark" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;"></sup>
+                                    <div class="clearFix"></div>
+                                </li>
+                            </ul>
+
+                            <div class="col-lable3"></div>
+                            <div class="col-fields">
+                                <c:choose>
+                                    <c:when test="${marketplaceForm.validateByQid}">
+                                        <div class="button-btn">
+                                            <button name="_eventId_edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
+                                            <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="button-btn">
+                                            <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
+                                            <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                                 <div class="clearFix"></div>
                             </div>
+                            <div class="clearFix"></div>
                         </div>
-                    </form:form>
-                </div>
-                <!-- Add New Supervisor -->
+                    </div>
+                </form:form>
+            </div>
+            <!-- Add New Supervisor -->
             </sec:authorize>
         </div>
     </div>

@@ -63,12 +63,12 @@
     <div class="content">
         <div class="warp-inner">
             <!-- Add New Supervisor -->
-            <sec:authorize access="hasAnyRole('ROLE_CLIENT')">
+            <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_S_MANAGER', 'ROLE_Q_SUPERVISOR', 'ROLE_CLIENT')">
             <div class="admin-main">
                 <form:form modelAttribute="marketplaceForm">
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                     <div class="admin-title">
-                        <h2>Review your post</h2>
+                        <h2>Review your ${marketplaceForm.businessType.description} post</h2>
                     </div>
                     <div class="error-box">
                         <div class="error-txt">

@@ -63,79 +63,79 @@
     <div class="content">
         <div class="warp-inner">
             <!-- Add New Supervisor -->
-            <sec:authorize access="hasAnyRole('ROLE_CLIENT')">
-                <div class="admin-main">
-                    <form:form modelAttribute="marketplaceForm">
-                        <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
-                        <div class="admin-title">
-                            <c:choose>
-                                <c:when test="${editMode}">
-                                    <h2>Edit Post</h2>
-                                </c:when>
-                                <c:otherwise>
-                                    <h2>Post on Marketplace</h2>
-                                </c:otherwise>
-                            </c:choose>
+            <sec:authorize access="hasAnyRole('ROLE_M_ADMIN', 'ROLE_S_MANAGER', 'ROLE_Q_SUPERVISOR', 'ROLE_CLIENT')">
+            <div class="admin-main">
+                <form:form modelAttribute="marketplaceForm">
+                    <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                    <div class="admin-title">
+                        <c:choose>
+                            <c:when test="${editMode}">
+                                <h2>Edit Post</h2>
+                            </c:when>
+                            <c:otherwise>
+                                <h2>Post on Marketplace</h2>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <div class="error-box">
+                        <div class="error-txt">
+                            <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
+                            <ul>
+                                <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
+                                <li>${message.text}</li>
+                                </c:forEach>
+                            </ul>
+                            </c:if>
                         </div>
-                        <div class="error-box">
-                            <div class="error-txt">
-                                <c:if test="${!empty flowRequestContext.messageContext.allMessages}">
-                                <ul>
-                                    <c:forEach items="${flowRequestContext.messageContext.allMessages}" var="message">
-                                    <li>${message.text}</li>
-                                    </c:forEach>
-                                </ul>
-                                </c:if>
-                            </div>
-                        </div>
-                        <div class="admin-content">
-                            <div class="add-new">
-                                <ul class="list-form">
-                                    <li>
-                                        <div class="col-lable3">
-                                            <form:label path="businessType" cssErrorClass="lb_error">Posting For</form:label>
-                                        </div>
-                                        <div class="col-fields">
-                                            <form:select path="businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
-                                                <form:options items="${marketplaceForm.marketPlaces}" itemValue="name" itemLabel="description" disabled="${editMode}"/>
-                                            </form:select>
-                                        </div>
-                                        <span class="tooltip" title="Your post will be listed on the market places selected here. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
-                                        <sup style="color: #9f1313; font-size: 150%;">*</sup>
-                                        <div class="clearFix"></div>
-                                    </li>
-                                </ul>
-
-                                <div class="col-lable3"></div>
-                                <div class="col-fields">
-                                    <c:choose>
-                                        <c:when test="${marketplaceForm.validateByQid}">
-                                            <div class="button-btn">
-                                                <button name="_eventId_edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
-                                                <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="button-btn" style="padding-bottom: 50px">
-                                                <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
-                                                <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
-                                            </div>
-
-                                            <c:if test="${!postingAllowed}">
-                                            <div class="alert-info">
-                                                <p>Your market place posting could be delayed. Remember to validate your email account.</p>
-                                            </div>
-                                            </c:if>
-                                        </c:otherwise>
-                                    </c:choose>
+                    </div>
+                    <div class="admin-content">
+                        <div class="add-new">
+                            <ul class="list-form">
+                                <li>
+                                    <div class="col-lable3">
+                                        <form:label path="businessType" cssErrorClass="lb_error">Posting For</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:select path="businessType" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false">
+                                            <form:options items="${marketplaceForm.marketPlaces}" itemValue="name" itemLabel="description" disabled="${editMode}"/>
+                                        </form:select>
+                                    </div>
+                                    <span class="tooltip" title="Your post will be listed on the market places selected here. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                     <div class="clearFix"></div>
-                                </div>
+                                </li>
+                            </ul>
+
+                            <div class="col-lable3"></div>
+                            <div class="col-fields">
+                                <c:choose>
+                                    <c:when test="${marketplaceForm.validateByQid}">
+                                        <div class="button-btn">
+                                            <button name="_eventId_edit" class="ladda-button next-btn" style="width:48%; float: left">Edit</button>
+                                            <button name="_eventId_editCancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="button-btn" style="padding-bottom: 50px">
+                                            <button name="_eventId_submit" class="ladda-button next-btn" style="width:48%; float: left">Next</button>
+                                            <button name="_eventId_cancel" class="ladda-button cancel-btn" style="width:48%; float: right">Cancel</button>
+                                        </div>
+
+                                        <c:if test="${!postingAllowed}">
+                                        <div class="alert-info">
+                                            <p>Your market place posting could be delayed. Remember to validate your email account.</p>
+                                        </div>
+                                        </c:if>
+                                    </c:otherwise>
+                                </c:choose>
                                 <div class="clearFix"></div>
                             </div>
+                            <div class="clearFix"></div>
                         </div>
-                    </form:form>
-                </div>
-                <!-- Add New Supervisor -->
+                    </div>
+                </form:form>
+            </div>
+            <!-- Add New Supervisor -->
             </sec:authorize>
         </div>
     </div>

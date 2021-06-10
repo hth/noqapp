@@ -88,7 +88,6 @@
                     <p>&nbsp;</p>
                     </c:if>
 
-                    <sec:authorize access="!hasRole('ROLE_M_ADMIN')">
                     <div class="store">
                         <div class="add-store">
                             <div class="store-table">
@@ -96,7 +95,6 @@
                             </div>
                         </div>
                     </div>
-                    </sec:authorize>
 
                     <div class="store">
                         <c:if test="${!empty landingForm.minorUserProfiles}">
@@ -159,7 +157,6 @@
                             </div>
                         </div>
 
-                        <sec:authorize access="!hasRole('ROLE_M_ADMIN')">
                         <h3>Listed on Marketplace</h3>
                         <div class="add-store">
                             <div class="store-table">
@@ -234,7 +231,6 @@
                             </div>
 
                         </div>
-                        </sec:authorize>
 
                         <h3>Historical Queue</h3>
                         <div class="add-store">
