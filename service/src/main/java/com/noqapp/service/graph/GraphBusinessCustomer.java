@@ -92,7 +92,7 @@ public class GraphBusinessCustomer {
             bizNameN4jManager.save(bizNameN4j);
 
             userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
-            markAsApproved = isMarkAsApproved(userProfile, markAsApproved, businessCustomer, bizName.getBusinessType());
+            markAsApproved = isProfileApproved(userProfile, markAsApproved, businessCustomer, bizName.getBusinessType());
             BusinessCustomerN4j businessCustomerN4j = new BusinessCustomerN4j()
                 .setBizNameN4j(bizNameN4j)
                 .setName(userProfile.getName())
@@ -112,7 +112,7 @@ public class GraphBusinessCustomer {
         }
     }
 
-    private boolean isMarkAsApproved(UserProfileEntity userProfile, boolean markAsApproved, BusinessCustomerEntity businessCustomer, BusinessTypeEnum businessTyp) {
+    private boolean isProfileApproved(UserProfileEntity userProfile, boolean markAsApproved, BusinessCustomerEntity businessCustomer, BusinessTypeEnum businessTyp) {
         if (!userProfile.isProfileVerified()) {
             switch (businessTyp) {
                 case CD:
