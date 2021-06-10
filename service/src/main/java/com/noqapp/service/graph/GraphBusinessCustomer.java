@@ -7,6 +7,7 @@ import com.noqapp.domain.neo4j.BizNameN4j;
 import com.noqapp.domain.neo4j.BusinessCustomerN4j;
 import com.noqapp.domain.neo4j.LocationN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
+import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BusinessCustomerManager;
@@ -71,6 +72,8 @@ public class GraphBusinessCustomer {
     void graphBusinessCustomer(PersonN4j personN4j) {
         List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(personN4j.getQid());
         UserProfileEntity userProfile = null;
+
+        boolean markAsApproved = false;
         for (BusinessCustomerEntity businessCustomer : businessCustomers) {
             BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
 
@@ -89,6 +92,7 @@ public class GraphBusinessCustomer {
             bizNameN4jManager.save(bizNameN4j);
 
             userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
+            markAsApproved = isMarkAsApproved(userProfile, markAsApproved, businessCustomer, bizName.getBusinessType());
             BusinessCustomerN4j businessCustomerN4j = new BusinessCustomerN4j()
                 .setBizNameN4j(bizNameN4j)
                 .setName(userProfile.getName())
@@ -99,13 +103,31 @@ public class GraphBusinessCustomer {
             personN4j.addBusinessCustomerN4j(businessCustomerN4j);
         }
 
-        if (!businessCustomers.isEmpty()) {
+        if (!businessCustomers.isEmpty() && markAsApproved) {
             personN4j.isVerified();
             personN4jManager.save(personN4j);
             if (!userProfile.isProfileVerified()) {
                 userProfileManager.markProfileVerified(personN4j.getQid());
             }
         }
+    }
+
+    private boolean isMarkAsApproved(UserProfileEntity userProfile, boolean markAsApproved, BusinessCustomerEntity businessCustomer, BusinessTypeEnum businessTyp) {
+        if (!userProfile.isProfileVerified()) {
+            switch (businessTyp) {
+                case CD:
+                case CDQ:
+                    if (!markAsApproved && businessCustomer.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)) {
+                        markAsApproved = true;
+                    }
+                    break;
+                default:
+                    if (!markAsApproved) {
+                        markAsApproved = true;
+                    }
+            }
+        }
+        return markAsApproved;
     }
 
     /** Logs specific anomaly associated to business type. */
