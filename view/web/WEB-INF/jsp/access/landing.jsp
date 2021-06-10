@@ -172,6 +172,7 @@
                                                 <th>Expires On</th>
                                                 <th>Stats</th>
                                                 <th></th>
+                                                <th></th>
                                             </tr>
                                             <c:forEach items="${landingForm.marketplaceForms}" var="marketplaceForm" varStatus="status">
                                             <tr>
@@ -214,11 +215,19 @@
                                                 </td>
                                                 <c:choose>
                                                     <c:when test="${empty marketplaceForm.marketplace.postImages}">
-                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Images"></i></a></td>
+                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Shared Images"></i></a></td>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage">${marketplaceForm.marketplace.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Images"></i></a></td>
+                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage">${marketplaceForm.marketplace.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Shared Images"></i></a></td>
                                                     </c:otherwise>
+                                                </c:choose>
+                                                <c:choose>
+                                                <c:when test="${empty marketplaceForm.marketplace.validateByQid}">
+                                                    <td><i class="fas fa-ban" style="color:#4e4d4d;" title="Awaiting Approval"></i></td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td><i class="fas fa-check-circle" style="color:#4e4d4d;" title="Approved"></i></td>
+                                                </c:otherwise>
                                                 </c:choose>
                                             </tr>
                                             </c:forEach>
