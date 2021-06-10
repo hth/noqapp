@@ -73,7 +73,7 @@ public class GraphBusinessCustomer {
         List<BusinessCustomerEntity> businessCustomers = businessCustomerManager.findAll(personN4j.getQid());
         UserProfileEntity userProfile = null;
 
-        boolean markAsApproved = false;
+        boolean profileToBeMarkedVerified = false;
         for (BusinessCustomerEntity businessCustomer : businessCustomers) {
             BizNameEntity bizName = bizNameManager.getById(businessCustomer.getBizNameId());
 
@@ -92,7 +92,7 @@ public class GraphBusinessCustomer {
             bizNameN4jManager.save(bizNameN4j);
 
             userProfile = userProfileManager.findByQueueUserId(personN4j.getQid());
-            markAsApproved = isProfileApproved(userProfile, markAsApproved, businessCustomer, bizName.getBusinessType());
+            profileToBeMarkedVerified = isProfileThirdPartyVerified(userProfile, profileToBeMarkedVerified, businessCustomer, bizName.getBusinessType());
             BusinessCustomerN4j businessCustomerN4j = new BusinessCustomerN4j()
                 .setBizNameN4j(bizNameN4j)
                 .setName(userProfile.getName())
@@ -103,31 +103,33 @@ public class GraphBusinessCustomer {
             personN4j.addBusinessCustomerN4j(businessCustomerN4j);
         }
 
-        if (!businessCustomers.isEmpty() && markAsApproved) {
-            personN4j.isVerified();
-            personN4jManager.save(personN4j);
-            if (!userProfile.isProfileVerified()) {
+        /* Mark profile as verified when third party business has added them to their customer based and approved. */
+        /* Note: Profile verification status can reset at the end of each year or when the profile was created. */
+        if (!businessCustomers.isEmpty()) {
+            if (profileToBeMarkedVerified) {
+                personN4j.isVerified();
+                LOG.info("Profile marked verified qid={} from {} to true", userProfile.getQueueUserId(), userProfile.isProfileVerified());
                 userProfileManager.markProfileVerified(personN4j.getQid());
             }
+            personN4jManager.save(personN4j);
         }
     }
 
-    private boolean isProfileApproved(UserProfileEntity userProfile, boolean markAsApproved, BusinessCustomerEntity businessCustomer, BusinessTypeEnum businessTyp) {
+    private boolean isProfileThirdPartyVerified(UserProfileEntity userProfile, boolean profileToBeMarkedVerified, BusinessCustomerEntity businessCustomer, BusinessTypeEnum businessTyp) {
+        /* If not verified then only go through loop. */
         if (!userProfile.isProfileVerified()) {
             switch (businessTyp) {
                 case CD:
                 case CDQ:
-                    if (!markAsApproved && businessCustomer.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)) {
-                        markAsApproved = true;
+                    if (!profileToBeMarkedVerified && businessCustomer.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)) {
+                        profileToBeMarkedVerified = true;
                     }
                     break;
                 default:
-                    if (!markAsApproved) {
-                        markAsApproved = true;
-                    }
+                    profileToBeMarkedVerified = false;
             }
         }
-        return markAsApproved;
+        return profileToBeMarkedVerified;
     }
 
     /** Logs specific anomaly associated to business type. */
