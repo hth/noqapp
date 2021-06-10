@@ -1,4 +1,4 @@
-### Change April 28 2019
+### Change April 28, 2019
 
     Set DOB as 1900-01-01 for 15 patients
     
@@ -18,12 +18,12 @@
     100000000135
     100000000138
 
-### Change April 03 2019
+### Change April 03, 2019
 
     db.BIZ_STORE.update({"SP" : "N"},  { $set : {"SP" : "O"}}, false, true);
     drop index m_record_qr_idx and it re-creates with sparse
 
-### Change March 11 2019
+### Change March 11, 2019
 
     db.BIZ_STORE.update({}, {$unset:{"CQ":1}}, false, true);   
 
