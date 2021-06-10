@@ -1,6 +1,7 @@
 package com.noqapp.view.flow.access.validator;
 
 import com.noqapp.domain.market.HouseholdItemEntity;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.view.controller.access.LandingController;
 import com.noqapp.view.form.marketplace.HouseholdItemMarketplaceForm;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -45,6 +47,17 @@ public class HouseholdItemMarketplaceValidator {
                     .error()
                     .source("businessType")
                     .defaultText("Please select " + BusinessTypeEnum.HI.getDescription() + " to continue")
+                    .build());
+            status = "failure";
+        }
+
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (queueUser.hasNonOperationalEmailDomain()) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("businessType")
+                    .defaultText("Your email address is not verified to post here. Please change your mail address or contact support.")
                     .build());
             status = "failure";
         }
@@ -95,6 +108,7 @@ public class HouseholdItemMarketplaceValidator {
         return status;
     }
 
+    @SuppressWarnings("unused")
     public String validateReadyToPostMarketplace(HouseholdItemMarketplaceForm marketplaceForm, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 

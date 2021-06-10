@@ -68,7 +68,7 @@
                 <form:form modelAttribute="marketplaceForm">
                     <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
                     <div class="admin-title">
-                        <h2>Review your post</h2>
+                        <h2>Review your ${marketplaceForm.businessType.description} post</h2>
                     </div>
                     <div class="error-box">
                         <div class="error-txt">

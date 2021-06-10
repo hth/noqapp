@@ -94,19 +94,14 @@ public class LandingController {
                 .setBusinessAccountSignedUp(businessUser.getUpdated());
         }
 
-        if (UserLevelEnum.M_ADMIN != queueUser.getUserLevel()) {
-            landingForm
-                .setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
-                .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()))
-                .setMinorUserProfiles(accountService.findDependentProfiles(queueUser.getQueueUserId()))
-                .addPropertyMarketplaceForm(propertyRentalService.findPostedProperties(queueUser.getQueueUserId()))
-                .addHouseholdItemMarketplaceForm(householdItemService.findPostedProperties(queueUser.getQueueUserId()));
+        landingForm
+            .setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
+            .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()))
+            .setMinorUserProfiles(accountService.findDependentProfiles(queueUser.getQueueUserId()))
+            .addPropertyMarketplaceForm(propertyRentalService.findPostedProperties(queueUser.getQueueUserId()))
+            .addHouseholdItemMarketplaceForm(householdItemService.findPostedProperties(queueUser.getQueueUserId()));
 
-            LOG.info("Current size={} and Historical size={}",
-                landingForm.getCurrentQueues().size(),
-                landingForm.getHistoricalQueues().size());
-        }
-
+        LOG.info("Current size={} and Historical size={}", landingForm.getCurrentQueues().size(), landingForm.getHistoricalQueues().size());
         apiHealthService.insert(
             "/landing",
             "landing",
