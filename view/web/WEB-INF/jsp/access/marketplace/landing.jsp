@@ -68,7 +68,7 @@
                                 <a href="/access/marketplace/property/post" style="text-transform: capitalize; font-size: large"><i class="fas fa-home add-btn"></i>&nbsp;Property (Rental, Sell)</a>
                             </div>
                             <div class="store-table">
-                                <a href="/access/marketplace/household/post" style="text-transform: capitalize; font-size: large"><i class="fas fa-ellipsis-h add-btn"></i>&nbsp;Household Items</a>
+                                <a href="/access/marketplace/household/post" style="text-transform: capitalize; font-size: large"><i class="fas fa-chair add-btn"></i>&nbsp;Household Items</a>
                             </div>
                         </div>
                     </div>

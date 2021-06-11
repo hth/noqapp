@@ -166,7 +166,6 @@
                                             <tr>
                                                 <th>&nbsp;</th>
                                                 <th>Name</th>
-                                                <th>Posted For</th>
                                                 <th>Price</th>
                                                 <th>City/Area</th>
                                                 <th>Expires On</th>
@@ -180,14 +179,15 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.PR}">
+                                                            <i class="fas fa-home" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
                                                             <a href="/access/marketplace/property/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
                                                         </c:when>
                                                         <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.HI}">
+                                                            <i class="fas fa-chair" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
                                                             <a href="/access/marketplace/household/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
                                                         </c:when>
                                                     </c:choose>
                                                 </td>
-                                                <td>${marketplaceForm.marketplace.businessType.description}</td>
                                                 <td>${marketplaceForm.marketplace.priceForDisplay}</td>
                                                 <td>${marketplaceForm.marketplace.city}</td>
                                                 <td>
@@ -223,10 +223,10 @@
                                                 </c:choose>
                                                 <c:choose>
                                                 <c:when test="${empty marketplaceForm.marketplace.validateByQid}">
-                                                    <td><i class="fas fa-ban" style="color:#4e4d4d;" title="Awaiting Approval"></i></td>
+                                                    <td><i class="fas fa-ban" style="color:#4e4d4d;" title="Awaiting Approval"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <td><i class="fas fa-check-circle" style="color:#4e4d4d;" title="Approved"></i></td>
+                                                    <td><i class="fas fa-check-circle" style="color:#4e4d4d;" title="Approved"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
                                                 </c:otherwise>
                                                 </c:choose>
                                             </tr>
