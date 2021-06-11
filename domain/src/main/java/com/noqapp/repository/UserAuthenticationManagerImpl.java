@@ -22,6 +22,7 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -83,11 +84,11 @@ public final class UserAuthenticationManagerImpl implements UserAuthenticationMa
     }
 
     @Override
-    public List<UserAuthenticationEntity> listAll(Date sinceThen) {
+    public Stream<UserAuthenticationEntity> listAll(Date sinceThen) {
         return mongoTemplate.find(
             query(where("C").gte(sinceThen)).with(Sort.by(ASC, "C")),
             UserAuthenticationEntity.class,
-            TABLE);
+            TABLE).stream();
     }
 }
 
