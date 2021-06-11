@@ -34,11 +34,19 @@ public class HouseholdItemService {
         return householdItemManager.findByQid(queueUserId);
     }
 
+    public List<HouseholdItemEntity> findAllPendingApproval() {
+        return householdItemManager.findAllPendingApproval();
+    }
+
     public HouseholdItemEntity findOneById(String id) {
         return householdItemManager.findOneById(id);
     }
 
     public HouseholdItemEntity findOneByIdAndExpressInterest(String id) {
         return householdItemManager.findOneByIdAndExpressInterest(id);
+    }
+
+    public long findAllPendingApprovalCount() {
+        return householdItemManager.findAllPendingApprovalCount();
     }
 }

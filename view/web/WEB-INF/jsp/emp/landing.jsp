@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum, com.noqapp.domain.types.ValidateStatusEnum" %>
 <%@ include file="../include.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -13,6 +14,17 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+
+    <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/fontawesome/css/fontawesome.css" type='text/css'>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/fontawesome/css/brands.css" type='text/css'>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/fontawesome/css/solid.css" type='text/css'>
+
+    <!-- custom styling for all icons -->
+    i.fas,
+    i.fab {
+    border: 1px solid red;
+    }
 </head>
 
 <body>
@@ -181,6 +193,61 @@
                         </c:choose>
                     </div>
                 </div>
+                <br/>
+                <div class="admin-content">
+                    <div class="store">
+                        <h3>Total marketplace awaiting approvals: <span>${empLandingForm.awaitingMarketplaceApprovals.size()}</span></h3>
+                        <c:choose>
+                        <c:when test="${!empty empLandingForm.awaitingMarketplaceApprovals}">
+                            <div class="add-store">
+                                <div class="store-table">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>City/Area</th>
+                                            <th>Expires On</th>
+                                            <th></th>
+                                        </tr>
+                                        <c:forEach items="${empLandingForm.awaitingMarketplaceApprovals}" var="marketplaceForm" varStatus="status">
+                                        <tr>
+                                            <td>${status.count}&nbsp;</td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.PR}">
+                                                        <i class="fas fa-home" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
+                                                        <a href="/access/marketplace/property/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                    </c:when>
+                                                    <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.HI}">
+                                                        <i class="fas fa-chair" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
+                                                        <a href="/access/marketplace/household/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                    </c:when>
+                                                </c:choose>
+                                            </td>
+                                            <td>${marketplaceForm.marketplace.priceForDisplay}</td>
+                                            <td>${marketplaceForm.marketplace.city}</td>
+                                            <td>
+                                                <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost">
+                                                    <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
+                                                </a>
+                                            </td>
+                                            <td><a href="${pageContext.request.contextPath}/emp/marketplace/approval/${marketplaceForm.marketplace.id}/${marketplaceForm.marketplace.businessType}/preview" class="add-btn" style="margin: 0px;">Preview</a></td>
+                                        </tr>
+                                        </c:forEach>
+                                    </table>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                        <div class="alert-info">
+                            <div class="no-approve">There are no new marketplace to approve.</div>
+                        </div>
+                        </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+                <br/>
             </div>
             <!-- Add New Supervisor -->
 

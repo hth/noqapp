@@ -3,6 +3,11 @@ package com.noqapp.view.form.emp;
 import com.noqapp.domain.AdvertisementEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.PublishArticleEntity;
+import com.noqapp.domain.market.HouseholdItemEntity;
+import com.noqapp.domain.market.MarketplaceEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
+import com.noqapp.view.form.LandingForm;
+import com.noqapp.view.form.marketplace.MarketplaceForm;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +21,7 @@ public class EmpLandingForm {
     private List<BusinessUserEntity> businessUsers;
     private List<PublishArticleEntity> publishArticles = new LinkedList<>();
     private List<AdvertisementEntity> awaitingAdvertisementApprovals = new LinkedList<>();
+    private List<MarketplaceForm> awaitingMarketplaceApprovals = new LinkedList<>();
 
     public long getAwaitingApprovalCount() {
         return awaitingApprovalCount;
@@ -50,6 +56,24 @@ public class EmpLandingForm {
 
     public EmpLandingForm setAwaitingAdvertisementApprovals(List<AdvertisementEntity> awaitingAdvertisementApprovals) {
         this.awaitingAdvertisementApprovals = awaitingAdvertisementApprovals;
+        return this;
+    }
+
+    public List<MarketplaceForm> getAwaitingMarketplaceApprovals() {
+        return awaitingMarketplaceApprovals;
+    }
+
+    public EmpLandingForm addPropertyMarketplaceForm(List<PropertyRentalEntity> marketplaces) {
+        for (MarketplaceEntity marketplace : marketplaces) {
+            this.awaitingMarketplaceApprovals.add(new MarketplaceForm().setMarketplace(marketplace));
+        }
+        return this;
+    }
+
+    public EmpLandingForm addHouseholdItemMarketplaceForm(List<HouseholdItemEntity> marketplaces) {
+        for (MarketplaceEntity marketplace : marketplaces) {
+            this.awaitingMarketplaceApprovals.add(new MarketplaceForm().setMarketplace(marketplace));
+        }
         return this;
     }
 }

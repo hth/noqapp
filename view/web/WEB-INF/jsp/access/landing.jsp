@@ -1,4 +1,4 @@
-<%@ page import="com.noqapp.domain.types.BusinessTypeEnum, com.noqapp.domain.types.UserLevelEnum" %>
+<%@ page import="com.noqapp.domain.types.BusinessTypeEnum, com.noqapp.domain.types.ValidateStatusEnum" %>
 <%@ include file="../include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -222,12 +222,21 @@
                                                     </c:otherwise>
                                                 </c:choose>
                                                 <c:choose>
-                                                <c:when test="${empty marketplaceForm.marketplace.validateByQid}">
-                                                    <td><i class="fas fa-ban" style="color:#4e4d4d;" title="Awaiting Approval"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <td><i class="fas fa-check-circle" style="color:#4e4d4d;" title="Approved"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
-                                                </c:otherwise>
+                                                    <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.P}">
+                                                        <td><i class="fas fa-ban" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
+                                                    </c:when>
+                                                    <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.A}">
+                                                        <td><i class="fas fa-check-circle" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
+                                                    </c:when>
+                                                    <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.R}">
+                                                        <td><i class="fas fa-redo" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
+                                                    </c:when>
+                                                    <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.D}">
+                                                        <td><i class="fas fa-trash-alt" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <td><i class="fas fa-trash-alt" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
+                                                    </c:otherwise>
                                                 </c:choose>
                                             </tr>
                                             </c:forEach>

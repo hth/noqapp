@@ -5,6 +5,7 @@ import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.ValidateStatusEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +84,9 @@ public abstract class MarketplaceEntity extends BaseEntity {
 
     @Field ("VB")
     private String validateByQid;
+
+    @Field ("VS")
+    private ValidateStatusEnum validateStatus = ValidateStatusEnum.I;
 
     @Field("IP")
     private String ipAddress;
@@ -237,6 +241,15 @@ public abstract class MarketplaceEntity extends BaseEntity {
 
     public MarketplaceEntity setValidateByQid(String validateByQid) {
         this.validateByQid = validateByQid;
+        return this;
+    }
+
+    public ValidateStatusEnum getValidateStatus() {
+        return validateStatus;
+    }
+
+    public MarketplaceEntity setValidateStatus(ValidateStatusEnum validateStatus) {
+        this.validateStatus = validateStatus;
         return this;
     }
 

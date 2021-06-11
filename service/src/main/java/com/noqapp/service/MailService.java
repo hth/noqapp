@@ -325,6 +325,7 @@ public class MailService {
         long awaitingBusinessApproval,
         long awaitingPublishArticleApproval,
         long awaitingAdvertisementApproval,
+        long pendingMarketplaceApproval,
         long registeredUser,
         long deviceRegistered,
         long androidDeviceRegistered,
@@ -337,6 +338,7 @@ public class MailService {
         rootMap.put("awaitingBusinessApproval", Long.toString(awaitingBusinessApproval));
         rootMap.put("awaitingPublishArticleApproval", Long.toString(awaitingPublishArticleApproval));
         rootMap.put("awaitingAdvertisementApproval", Long.toString(awaitingAdvertisementApproval));
+        rootMap.put("pendingMarketplaceApproval", Long.toString(pendingMarketplaceApproval));
         rootMap.put("deviceRegistered", Long.toString(deviceRegistered));
         rootMap.put("androidDeviceRegistered", Long.toString(androidDeviceRegistered));
         rootMap.put("androidFlavoredDevices", androidFlavoredDevices);

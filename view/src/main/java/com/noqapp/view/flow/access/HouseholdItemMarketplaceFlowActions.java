@@ -6,6 +6,7 @@ import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.HouseholdItemManager;
 import com.noqapp.search.elastic.helper.DomainConversion;
@@ -174,7 +175,8 @@ public class HouseholdItemMarketplaceFlowActions {
                 }
                 DecodedAddress decodedAddress = DecodedAddress.newInstance(geocode.getResults(), 0);
                 marketplace.setCoordinate(decodedAddress.getCoordinate())
-                    .setCountryShortName(decodedAddress.getCountryShortName());
+                    .setCountryShortName(decodedAddress.getCountryShortName())
+                    .setValidateStatus(ValidateStatusEnum.P);
 
                 householdItemManager.save(marketplace);
                 marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
