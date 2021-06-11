@@ -1,5 +1,9 @@
 ##Mongo Helpful Queries
 
+Search within email `nel`
+
+    db.getCollection('USER_PROFILE').find({"EM": /^.*nel.*$/})
+
 Search by starting first Capital letter
 
     db.getCollection('USER_ACCOUNT').find({"UID" : {$regex : "([A-Z][a-zA-Z]*\s*)+"}})

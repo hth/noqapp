@@ -115,10 +115,15 @@ public class GraphBusinessCustomer {
         }
     }
 
-    private boolean isProfileThirdPartyVerified(UserProfileEntity userProfile, boolean profileToBeMarkedVerified, BusinessCustomerEntity businessCustomer, BusinessTypeEnum businessTyp) {
+    private boolean isProfileThirdPartyVerified(
+        UserProfileEntity userProfile,
+        boolean profileToBeMarkedVerified,
+        BusinessCustomerEntity businessCustomer,
+        BusinessTypeEnum businessType
+    ) {
         /* If not verified then only go through loop. */
         if (!userProfile.isProfileVerified()) {
-            switch (businessTyp) {
+            switch (businessType) {
                 case CD:
                 case CDQ:
                     if (!profileToBeMarkedVerified && businessCustomer.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.AP)) {
@@ -133,30 +138,15 @@ public class GraphBusinessCustomer {
     }
 
     /** Logs specific anomaly associated to business type. */
-    public boolean hasDataAnomaly(String qid) {
-        Map<BusinessTypeEnum, Set<String>> numberOfCustomerIds = changeBusinessCustomerToMap(businessCustomerN4jManager.findCustomerRegisteredToAllBusiness(qid));
-
-        for (BusinessTypeEnum businessType : numberOfCustomerIds.keySet()) {
-            switch (businessType) {
-                case CD:
-                case CDQ:
-                    if (hasRuleValidationFailedForCDQ(qid, numberOfCustomerIds)) {
-                        return true;
-                    }
-
-                    break;
-                default:
-                    //Do nothing
-            }
-        }
-
-        return false;
-    }
-
-    /** Logs specific anomaly associated to business type. */
     public boolean hasDataAnomaly(String qid, BusinessTypeEnum businessType) {
         Collection<BusinessCustomerN4j> businessCustomerN4js = businessCustomerN4jManager.findCustomerRegisteredToSpecificBusinessType(qid, businessType);
-        return hasRuleValidationFailedForCDQ(qid, changeBusinessCustomerToMap(businessCustomerN4js));
+        switch (businessType) {
+            case CD:
+            case CDQ:
+                return hasRuleValidationFailedForCDQ(qid, changeBusinessCustomerToMap(businessCustomerN4js));
+            default:
+                return false;
+        }
     }
 
     private boolean hasRuleValidationFailedForCDQ(String qid, Map<BusinessTypeEnum, Set<String>> numberOfCustomerIds) {
