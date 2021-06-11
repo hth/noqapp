@@ -18,4 +18,8 @@ public interface HouseholdItemManager extends RepositoryManager<HouseholdItemEnt
     Stream<HouseholdItemEntity> findAllWithStream();
 
     HouseholdItemEntity findOneByIdAndExpressInterest(String id);
+
+    List<HouseholdItemEntity> findAllPendingApproval();
+
+    long findAllPendingApprovalCount();
 }

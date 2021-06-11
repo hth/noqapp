@@ -12,6 +12,8 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.PublishArticleService;
 import com.noqapp.service.StatsCronService;
+import com.noqapp.service.market.HouseholdItemService;
+import com.noqapp.service.market.PropertyRentalService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +49,8 @@ public class DailyRegistrationStatusMail {
     private AdvertisementService advertisementService;
     private RegisteredDeviceManager registeredDeviceManager;
     private MailService mailService;
+    private PropertyRentalService propertyRentalService;
+    private HouseholdItemService householdItemService;
     private StatsCronService statsCronService;
 
     @Autowired
@@ -60,6 +64,8 @@ public class DailyRegistrationStatusMail {
         AdvertisementService advertisementService,
         RegisteredDeviceManager registeredDeviceManager,
         MailService mailService,
+        PropertyRentalService propertyRentalService,
+        HouseholdItemService householdItemService,
         StatsCronService statsCronService
     ) {
         this.registrationStatusSwitch = registrationStatusSwitch;
@@ -70,6 +76,8 @@ public class DailyRegistrationStatusMail {
         this.advertisementService = advertisementService;
         this.registeredDeviceManager = registeredDeviceManager;
         this.mailService = mailService;
+        this.propertyRentalService = propertyRentalService;
+        this.householdItemService = householdItemService;
         this.statsCronService = statsCronService;
     }
 
@@ -94,6 +102,7 @@ public class DailyRegistrationStatusMail {
         long deviceRegistered = 0;
         long androidDeviceRegistered = 0;
         long iPhoneDeviceRegistered = 0;
+        long pendingMarketplaceApproval = 0;
         MailTypeEnum mailType;
 
         Date from = DateUtil.minusDays(1);
@@ -103,6 +112,7 @@ public class DailyRegistrationStatusMail {
             awaitingBusinessApproval = businessUserService.awaitingBusinessApprovalCount();
             awaitingPublishArticleApproval = publishArticleService.findPendingApprovalCount();
             awaitingAdvertisementApproval = advertisementService.findApprovalPendingAdvertisementCount();
+            pendingMarketplaceApproval = propertyRentalService.findAllPendingApprovalCount() + householdItemService.findAllPendingApprovalCount();
             deviceRegistered = registeredDeviceManager.countRegisteredBetweenDates(from, to, null);
             androidDeviceRegistered = registeredDeviceManager.countRegisteredBetweenDates(from, to, DeviceTypeEnum.A);
             Map<String, Long> androidFlavoredDevices = new LinkedHashMap<>();
@@ -124,6 +134,7 @@ public class DailyRegistrationStatusMail {
                 awaitingBusinessApproval,
                 awaitingPublishArticleApproval,
                 awaitingAdvertisementApproval,
+                pendingMarketplaceApproval,
                 registeredUser,
                 deviceRegistered,
                 androidDeviceRegistered,

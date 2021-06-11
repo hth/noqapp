@@ -5,6 +5,7 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
+import com.noqapp.domain.types.ValidateStatusEnum;
 
 import com.mongodb.DuplicateKeyException;
 
@@ -98,5 +99,23 @@ public class PropertyRentalManagerImpl implements PropertyRentalManager {
             FindAndModifyOptions.options().returnNew(true),
             PropertyRentalEntity.class,
             TABLE);
+    }
+
+    @Override
+    public List<PropertyRentalEntity> findAllPendingApproval() {
+        return mongoTemplate.find(
+            query(where("VS").is(ValidateStatusEnum.P)).with(Sort.by(Sort.Direction.DESC, "C")).limit(5),
+            PropertyRentalEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public long findAllPendingApprovalCount() {
+        return mongoTemplate.count(
+            query(where("VS").is(ValidateStatusEnum.P)),
+            PropertyRentalEntity.class,
+            TABLE
+        );
     }
 }

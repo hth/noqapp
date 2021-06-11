@@ -14,6 +14,8 @@ import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.PublishArticleService;
 import com.noqapp.service.UserAddressService;
 import com.noqapp.service.emp.EmpLandingService;
+import com.noqapp.service.market.HouseholdItemService;
+import com.noqapp.service.market.PropertyRentalService;
 import com.noqapp.view.form.PublishArticleForm;
 import com.noqapp.view.form.emp.BusinessAwaitingApprovalForm;
 import com.noqapp.view.form.emp.EmpLandingForm;
@@ -44,10 +46,10 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 12/11/16 8:18 AM
  */
 @SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Controller
 @RequestMapping (value = "/emp/landing")
@@ -64,6 +66,8 @@ public class EmpLandingController {
     private EmpLandingService empLandingService;
     private PublishArticleService publishArticleService;
     private AdvertisementService advertisementService;
+    private PropertyRentalService propertyRentalService;
+    private HouseholdItemService householdItemService;
 
     @Autowired
     public EmpLandingController(
@@ -81,7 +85,9 @@ public class EmpLandingController {
         UserAddressService userAddressService,
         EmpLandingService empLandingService,
         PublishArticleService publishArticleService,
-        AdvertisementService advertisementService
+        AdvertisementService advertisementService,
+        PropertyRentalService propertyRentalService,
+        HouseholdItemService householdItemService
     ) {
         this.bucketName = bucketName;
         this.empLanding = empLanding;
@@ -93,6 +99,8 @@ public class EmpLandingController {
         this.empLandingService = empLandingService;
         this.publishArticleService = publishArticleService;
         this.advertisementService = advertisementService;
+        this.propertyRentalService = propertyRentalService;
+        this.householdItemService = householdItemService;
     }
 
     @GetMapping
@@ -106,7 +114,9 @@ public class EmpLandingController {
             .setAwaitingApprovalCount(businessUserService.awaitingBusinessApprovalCount())
             .setBusinessUsers(businessUserService.awaitingBusinessApprovals())
             .setPublishArticles(publishArticleService.findPendingApprovals())
-            .setAwaitingAdvertisementApprovals(advertisementService.findApprovalPendingAdvertisements());
+            .setAwaitingAdvertisementApprovals(advertisementService.findApprovalPendingAdvertisements())
+            .addPropertyMarketplaceForm(propertyRentalService.findAllPendingApproval())
+            .addHouseholdItemMarketplaceForm(householdItemService.findAllPendingApproval());
         return empLanding;
     }
 

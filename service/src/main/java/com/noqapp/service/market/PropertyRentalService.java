@@ -34,11 +34,19 @@ public class PropertyRentalService {
         return propertyRentalManager.findByQid(queueUserId);
     }
 
+    public List<PropertyRentalEntity> findAllPendingApproval() {
+        return propertyRentalManager.findAllPendingApproval();
+    }
+
     public PropertyRentalEntity findOneById(String id) {
         return propertyRentalManager.findOneById(id);
     }
 
     public PropertyRentalEntity findOneByIdAndExpressInterest(String id) {
         return propertyRentalManager.findOneByIdAndExpressInterest(id);
+    }
+
+    public long findAllPendingApprovalCount() {
+        return propertyRentalManager.findAllPendingApprovalCount();
     }
 }

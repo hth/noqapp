@@ -5,6 +5,8 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.market.HouseholdItemEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
+import com.noqapp.domain.types.ValidateStatusEnum;
 
 import com.mongodb.DuplicateKeyException;
 
@@ -96,5 +98,23 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
             FindAndModifyOptions.options().returnNew(true),
             HouseholdItemEntity.class,
             TABLE);
+    }
+
+    @Override
+    public List<HouseholdItemEntity> findAllPendingApproval() {
+        return mongoTemplate.find(
+            query(where("VS").is(ValidateStatusEnum.P)).with(Sort.by(Sort.Direction.DESC, "C")).limit(5),
+            HouseholdItemEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public long findAllPendingApprovalCount() {
+        return mongoTemplate.count(
+            query(where("VS").is(ValidateStatusEnum.P)),
+            HouseholdItemEntity.class,
+            TABLE
+        );
     }
 }

@@ -18,4 +18,8 @@ public interface PropertyRentalManager extends RepositoryManager<PropertyRentalE
     Stream<PropertyRentalEntity> findAllWithStream();
 
     PropertyRentalEntity findOneByIdAndExpressInterest(String id);
+
+    List<PropertyRentalEntity> findAllPendingApproval();
+
+    long findAllPendingApprovalCount();
 }
