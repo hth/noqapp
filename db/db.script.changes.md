@@ -1,3 +1,16 @@
+### Changed Jun 11, 2021
+
+Delete record as not referenced anywhere 
+
+    c.n.s.a.UserAuthenticationAnomaly.lambda$listOrphanData$0 Message=5fab8cfdb83d170ef6f1beab created Tue Nov 10 23:04:29 PST 2020 not being used
+
+    c.n.s.a.MissingGeneratedUserId.populateWithMissingQID Message=Found missed QID=100000028449
+    c.n.s.a.MissingGeneratedUserId.populateWithMissingQID Message=Found missed QID=100000031739
+
+    db.getCollection('USER_ACCOUNT').find({"USER_AUTHENTICATION.$id" : ObjectId("5fab8cfdb83d170ef6f1beab")})
+    db.getCollection('USER_AUTHENTICATION').find({_id : ObjectId("5fab8cfdb83d170ef6f1beab")})
+    db.getCollection('USER_AUTHENTICATION').remove({_id : ObjectId("5fab8cfdb83d170ef6f1beab")})
+
 ### Changed May 29, 2021
 
     ALTER TABLE `noqapp_test`.`QUEUE`
