@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 /**
@@ -35,13 +36,16 @@ public class UserAuthenticationAnomaly {
     }
 
     public void listOrphanData() {
-        try (Stream<UserAuthenticationEntity> stream = userAuthenticationManager.listAll(DateUtil.minusDays(30))) {
+        AtomicInteger countOrphan = new AtomicInteger();
+        try (Stream<UserAuthenticationEntity> stream = userAuthenticationManager.listAll(DateUtil.minusDays(2000))) {
             stream.iterator().forEachRemaining(userAuthenticationEntity -> {
                 boolean exists = userAccountManager.existWithAuth(userAuthenticationEntity.getId());
                 if (!exists) {
                     LOG.warn("{} created {} not being used", userAuthenticationEntity.getId(), userAuthenticationEntity.getCreated());
+                    countOrphan.getAndIncrement();
                 }
             });
         }
+        LOG.error("Orphan UserAuthenticationEntity record count={}", countOrphan);
     }
 }
