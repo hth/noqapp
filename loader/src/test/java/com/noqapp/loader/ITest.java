@@ -173,6 +173,7 @@ import com.noqapp.service.transaction.TransactionService;
 
 import org.bson.types.ObjectId;
 
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -332,6 +333,7 @@ public class ITest extends RealMongoForITest {
     @Mock protected LanguageTranslationService languageTranslationService;
     @Mock protected GraphDetailOfPerson graphDetailOfPerson;
     @Mock protected NotificationN4jManager notificationN4jManager;
+    @Mock protected StringRedisTemplate stringRedisTemplate;
 
     private MockEnvironment mockEnvironment;
 
@@ -400,7 +402,8 @@ public class ITest extends RealMongoForITest {
             emailValidateService,
             inviteService,
             forgotRecoverManager,
-            userAddressService
+            userAddressService,
+            stringRedisTemplate
         );
 
         reviewService = new ReviewService(
