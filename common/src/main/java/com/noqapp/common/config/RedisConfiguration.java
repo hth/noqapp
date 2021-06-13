@@ -18,6 +18,7 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -54,6 +55,11 @@ public class RedisConfiguration extends CachingConfigurerSupport {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(lettuceConnectionFactory());
         return redisTemplate;
+    }
+
+    @Bean
+    StringRedisTemplate stringRedisTemplate() {
+        return new StringRedisTemplate(lettuceConnectionFactory());
     }
 
     @Bean

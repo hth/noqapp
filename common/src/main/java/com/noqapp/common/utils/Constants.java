@@ -39,6 +39,7 @@ public class Constants {
     public static final int MINUTES_IN_MILLISECOND = 60_000;        //1 minutes in milliseconds
     public static final int MINUTES_2_IN_MILLISECOND = MINUTES_IN_MILLISECOND * 2;
     public static final int HUNDRED_KMS_IN_METERS = 100 * 1000;
+    public static final String MISSING_QUEUE_IDS = "missingQids";
 
     public static final Set<String> UNSUPPORTED_DEVICE_IN_FUTURE = new HashSet<>() {{
         add("5.1");

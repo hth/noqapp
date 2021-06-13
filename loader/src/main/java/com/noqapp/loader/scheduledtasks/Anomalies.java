@@ -1,5 +1,6 @@
 package com.noqapp.loader.scheduledtasks;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.service.anomaly.MissingGeneratedUserId;
 import com.noqapp.service.anomaly.UserAuthenticationAnomaly;
 
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +33,7 @@ public class Anomalies {
     private Environment environment;
     private UserAuthenticationAnomaly userAuthenticationAnomaly;
     private MissingGeneratedUserId missingGeneratedUserId;
+    private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     public Anomalies(
@@ -39,7 +42,8 @@ public class Anomalies {
 
         Environment environment,
         UserAuthenticationAnomaly userAuthenticationAnomaly,
-        MissingGeneratedUserId missingGeneratedUserId
+        MissingGeneratedUserId missingGeneratedUserId,
+        StringRedisTemplate stringRedisTemplate
     ) {
         this.oneTimeStatusSwitch = oneTimeStatusSwitch;
 
@@ -48,6 +52,7 @@ public class Anomalies {
 
         this.userAuthenticationAnomaly = userAuthenticationAnomaly;
         this.missingGeneratedUserId = missingGeneratedUserId;
+        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     /**
@@ -58,6 +63,7 @@ public class Anomalies {
     @Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
     public void someTask() {
         if ("OFF".equalsIgnoreCase(oneTimeStatusSwitch)) {
+            LOG.info("Missing qids={}", stringRedisTemplate.opsForValue().get(Constants.MISSING_QUEUE_IDS));
             return;
         }
 
