@@ -312,7 +312,11 @@ public class AccountService {
             qid = missingQids.iterator().next();
             LOG.warn("Using missing qid={}", qid);
             List<String> filteredCollection = missingQids.stream().filter(e -> !e.equalsIgnoreCase(qid)).collect(Collectors.toList());
-            stringRedisTemplate.opsForValue().set(Constants.MISSING_QUEUE_IDS, filteredCollection.toString());
+            if (filteredCollection.isEmpty()) {
+                stringRedisTemplate.delete(Constants.MISSING_QUEUE_IDS);
+            } else {
+                stringRedisTemplate.opsForValue().set(Constants.MISSING_QUEUE_IDS, filteredCollection.toString());
+            }
         }
         return qid;
     }
