@@ -37,7 +37,7 @@ public class UserAuthenticationAnomaly {
 
     public void listOrphanData() {
         AtomicInteger countOrphan = new AtomicInteger();
-        try (Stream<UserAuthenticationEntity> stream = userAuthenticationManager.listAll(DateUtil.minusDays(2000))) {
+        try (Stream<UserAuthenticationEntity> stream = userAuthenticationManager.listAll(DateUtil.minusDays(15))) {
             stream.iterator().forEachRemaining(userAuthenticationEntity -> {
                 boolean exists = userAccountManager.existWithAuth(userAuthenticationEntity.getId());
                 if (!exists) {
@@ -46,6 +46,6 @@ public class UserAuthenticationAnomaly {
                 }
             });
         }
-        LOG.error("Orphan UserAuthenticationEntity record count={}", countOrphan);
+        LOG.warn("Orphan UserAuthenticationEntity record count={}", countOrphan);
     }
 }
