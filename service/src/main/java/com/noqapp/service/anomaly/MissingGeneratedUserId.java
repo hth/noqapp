@@ -53,7 +53,7 @@ public class MissingGeneratedUserId {
     public void populateWithMissingQID() {
         List<String> qidsThatWereMissed = new LinkedList<>();
         long lastNumber = generateUserIdManager.getLastGenerateUserId();
-        for (long i = lastNumber - 10_000; i <= lastNumber; i++) {
+        for (long i = lastNumber - 2_000; i <= lastNumber; i++) {
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(String.valueOf(i));
             if (null == userAccount) {
                 qidsThatWereMissed.add(String.valueOf(i));
