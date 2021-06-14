@@ -299,8 +299,8 @@ public class AccountService {
                 String[] a = elements.split(",");
                 missingQids = Arrays.asList(a);
                 if (missingQids.isEmpty()) {
-                    LOG.info("Found empty {} removing the keys", Constants.MISSING_QUEUE_IDS);
-                    stringRedisTemplate.delete(Constants.MISSING_QUEUE_IDS);
+                    boolean status = stringRedisTemplate.delete(Constants.MISSING_QUEUE_IDS);
+                    LOG.info("Found empty {} removing the keys {}", Constants.MISSING_QUEUE_IDS, status);
                 }
             }
         } catch (NullPointerException e) {
