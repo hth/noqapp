@@ -298,6 +298,10 @@ public class AccountService {
 
                 String[] a = elements.split(",");
                 missingQids = Arrays.asList(a);
+                if (missingQids.isEmpty()) {
+                    LOG.info("Found empty {} removing the keys", Constants.MISSING_QUEUE_IDS);
+                    stringRedisTemplate.delete(Constants.MISSING_QUEUE_IDS);
+                }
             }
         } catch (NullPointerException e) {
             LOG.error("Failed with NPE reading from redis {}", e.getLocalizedMessage(), e);
