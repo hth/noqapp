@@ -63,7 +63,7 @@ public class Anomalies {
     @Scheduled(fixedDelayString = "${loader.MailProcess.sendMail}")
     public void someTask() {
         if ("OFF".equalsIgnoreCase(oneTimeStatusSwitch)) {
-            LOG.info("Missing qids={}", stringRedisTemplate.opsForValue().get(Constants.MISSING_QUEUE_IDS));
+            LOG.info("Missing qids={}", stringRedisTemplate.opsForValue().get(Constants.MISSING_QUEUE_IDS).substring(0, 20));
             return;
         }
 
