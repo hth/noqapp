@@ -298,6 +298,10 @@ public class AccountService {
 
                 String[] a = elements.split(",");
                 missingQids = Arrays.asList(a);
+                if (missingQids.isEmpty()) {
+                    LOG.info("Found empty {} removing the keys", Constants.MISSING_QUEUE_IDS);
+                    stringRedisTemplate.delete(Constants.MISSING_QUEUE_IDS);
+                }
             }
         } catch (NullPointerException e) {
             LOG.error("Failed with NPE reading from redis {}", e.getLocalizedMessage(), e);
@@ -312,11 +316,7 @@ public class AccountService {
             qid = missingQids.iterator().next();
             LOG.warn("Using missing qid={}", qid);
             List<String> filteredCollection = missingQids.stream().filter(e -> !e.equalsIgnoreCase(qid)).collect(Collectors.toList());
-            if (filteredCollection.isEmpty()) {
-                stringRedisTemplate.delete(Constants.MISSING_QUEUE_IDS);
-            } else {
-                stringRedisTemplate.opsForValue().set(Constants.MISSING_QUEUE_IDS, filteredCollection.toString());
-            }
+            stringRedisTemplate.opsForValue().set(Constants.MISSING_QUEUE_IDS, filteredCollection.toString());
         }
         return qid;
     }
