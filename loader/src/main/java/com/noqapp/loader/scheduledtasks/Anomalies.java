@@ -47,7 +47,7 @@ public class Anomalies {
         LOG.info("AnyTask environment={}", this.environment.getProperty("build.env"));
 
         this.userAuthenticationAnomaly = userAuthenticationAnomaly;
-        this.missingGeneratedUserId = missingGeneratedUserId
+        this.missingGeneratedUserId = missingGeneratedUserId;
     }
 
     /**
