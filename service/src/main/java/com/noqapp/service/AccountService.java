@@ -294,10 +294,14 @@ public class AccountService {
                 String elements = stringOfMissingQids
                     .replaceAll("\\[", "")
                     .replaceAll("\\]", "")
-                    .replaceAll(" ", "");
+                    .replaceAll(" ", "")
+                    .trim();
 
-                String[] a = elements.split(",");
-                missingQids = Arrays.asList(a);
+                if (StringUtils.isNotBlank(elements) && elements.contains(",")) {
+                    String[] a = elements.split(",");
+                    missingQids = Arrays.asList(a);
+                }
+
                 if (missingQids.isEmpty()) {
                     boolean status = stringRedisTemplate.delete(Constants.MISSING_QUEUE_IDS);
                     LOG.info("Found empty {} removing the keys {}", Constants.MISSING_QUEUE_IDS, status);
