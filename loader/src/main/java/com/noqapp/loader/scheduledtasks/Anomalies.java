@@ -60,9 +60,10 @@ public class Anomalies {
                 return;
             }
 
-            LOG.info("Running anomaly task to find anomalies");
+            LOG.info("Started account anomaly lookup task to find anomalies");
             userAuthenticationAnomaly.listOrphanData();
             missingGeneratedUserId.populateWithMissingQID();
+            LOG.info("Completed anomaly task");
         } catch (Exception e) {
             LOG.error("Failed task to look for account anomalies {}", e.getLocalizedMessage(), e);
         }

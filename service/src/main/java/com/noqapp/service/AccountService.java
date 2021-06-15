@@ -305,6 +305,8 @@ public class AccountService {
                 if (missingQids.isEmpty()) {
                     boolean status = stringRedisTemplate.delete(Constants.MISSING_QUEUE_IDS);
                     LOG.info("Found empty {} removing the keys {}", Constants.MISSING_QUEUE_IDS, status);
+                } else {
+                    LOG.info("Found missing qids={} {}", missingQids.toArray(), elements);
                 }
             }
         } catch (NullPointerException e) {
