@@ -1,9 +1,10 @@
 package com.noqapp.view.controller.emp;
 
 import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.domain.market.MarketplaceEntity;
+import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.service.exceptions.NotAValidObjectIdException;
 import com.noqapp.service.market.HouseholdItemService;
 import com.noqapp.service.market.PropertyRentalService;
 
@@ -34,20 +35,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MarketplaceValidateController {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceValidateController.class);
 
-    private String nextPage;
+    private String nextPagePropertyRental;
+    private String nextPageHouseholdItem;
 
     private PropertyRentalService propertyRentalService;
     private HouseholdItemService householdItemService;
 
     @Autowired
     public MarketplaceValidateController(
-        @Value("${nextPage:/emp/marketplace/preview}")
-        String nextPage,
+        @Value("${nextPage:/emp/marketplace/preview/propertyRental}")
+        String nextPagePropertyRental,
+
+        @Value("${nextPage:/emp/marketplace/preview/householdItem}")
+        String nextPageHouseholdItem,
 
         PropertyRentalService propertyRentalService,
         HouseholdItemService householdItemService
     ) {
-        this.nextPage = nextPage;
+        this.nextPagePropertyRental = nextPagePropertyRental;
+        this.nextPageHouseholdItem = nextPageHouseholdItem;
 
         this.propertyRentalService = propertyRentalService;
         this.householdItemService = householdItemService;
@@ -67,21 +73,23 @@ public class MarketplaceValidateController {
         LOG.info("Landed to marketplace approval for {} {} by {}", id, businessTypeEnum, queueUser.getQueueUserId());
 
         try {
+            if (!Validate.isValidObjectId(id.getText())) {
+                LOG.error("Marketplace id should be ObjectId but is {}", id.getText());
+                throw new NotAValidObjectIdException("Failed to validated id " + id.getText());
+            }
+
             BusinessTypeEnum businessType = BusinessTypeEnum.valueOf(businessTypeEnum.getText().toUpperCase());
-            MarketplaceEntity marketplace;
             switch (businessType) {
                 case PR:
-                    marketplace = propertyRentalService.findOneById(id.getText());
-                    break;
+                    model.addAttribute("marketplace", propertyRentalService.findOneById(id.getText()));
+                    return nextPagePropertyRental;
                 case HI:
-                    marketplace = householdItemService.findOneById(id.getText());
-                    break;
+                    model.addAttribute("marketplace", householdItemService.findOneById(id.getText()));
+                    return nextPageHouseholdItem;
                 default:
                     LOG.error("Reached unsupported condition {}", businessTypeEnum.getText());
                     throw new UnsupportedOperationException("Reached un-supported condition");
             }
-            model.addAttribute("marketplace", marketplace);
-            return nextPage;
         } catch (Exception e) {
             LOG.error("Failed updated status for marketplace id={} businessType={} qid={} reason={}",
                 id.getText(),
