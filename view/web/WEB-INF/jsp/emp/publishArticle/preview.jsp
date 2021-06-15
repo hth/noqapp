@@ -92,25 +92,23 @@
                                 <li class="mB0">
                                     <div class="col-lable3"></div>
                                     <div class="col-fields">
-                                        <div class="button-btn">
-                                            <form:form action="${pageContext.request.contextPath}/emp/landing/publishArticle/preview" method="post">
-                                                <input type="hidden" name="publishId" value="${publishArticleForm.publishId}"/>
-                                                <input type="hidden" name="validateStatus" value="${ValidateStatusEnum.A}"/>
-                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                                <div class="left-btn">
-                                                    <input name="approve" class="ladda-button next-btn" value="APPROVE" type="submit" style="font-weight: 500;">
-                                                </div>
-                                            </form:form>
+                                        <form:form action="${pageContext.request.contextPath}/emp/landing/publishArticle/preview" method="post">
+                                            <input type="hidden" name="publishId" value="${publishArticleForm.publishId}"/>
+                                            <input type="hidden" name="validateStatus" value="${ValidateStatusEnum.A}"/>
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                            <div class="left-btn">
+                                                <input name="approve" class="ladda-button next-btn" value="APPROVE" type="submit" style="font-weight: 500;">
+                                            </div>
+                                        </form:form>
 
-                                            <form:form action="${pageContext.request.contextPath}/emp/landing/publishArticle/preview" method="post">
-                                                <input type="hidden" name="publishId" value="${publishArticleForm.publishId}"/>
-                                                <input type="hidden" name="validateStatus" value="${ValidateStatusEnum.R}"/>
-                                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                                <div class="right-btn">
-                                                    <input name="reject" class="ladda-button next-btn" value="REJECT" type="submit" style="font-weight: 500;">
-                                                </div>
-                                            </form:form>
-                                        </div>
+                                        <form:form action="${pageContext.request.contextPath}/emp/landing/publishArticle/preview" method="post">
+                                            <input type="hidden" name="publishId" value="${publishArticleForm.publishId}"/>
+                                            <input type="hidden" name="validateStatus" value="${ValidateStatusEnum.R}"/>
+                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                            <div class="right-btn">
+                                                <input name="reject" class="ladda-button next-btn" value="REJECT" type="submit" style="font-weight: 500;">
+                                            </div>
+                                        </form:form>
                                         <div class="clearFix"></div>
                                     </div>
                                     <div class="clearFix"></div>
