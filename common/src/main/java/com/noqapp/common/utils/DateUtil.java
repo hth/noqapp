@@ -236,6 +236,10 @@ public final class DateUtil {
         return DTF_DD_MMM_YYYY.format(date.toInstant().atZone(ZoneId.of(timeZone)));
     }
 
+    public static String convertDateToStringOf_DTF_DD_MMM_YYYY(Date date) {
+        return convertDateToStringOf_DTF_DD_MMM_YYYY(date, ZoneOffset.UTC.getId());
+    }
+
     public static String convertDateToStringOf_DTF_YYYY_MM_DD_KK_MM_SS(Date date, String timeZone) {
         return DTF_YYYY_MM_DD_KK_MM_SS.format(date.toInstant().atZone(ZoneId.of(timeZone)));
     }

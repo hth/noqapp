@@ -7,6 +7,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.service.exceptions.NotAValidObjectIdException;
 import com.noqapp.service.market.HouseholdItemService;
 import com.noqapp.service.market.PropertyRentalService;
+import com.noqapp.view.form.marketplace.MarketplaceForm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +18,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * hitender
@@ -67,6 +71,9 @@ public class MarketplaceValidateController {
         @PathVariable("businessTypeEnum")
         ScrubbedInput businessTypeEnum,
 
+        @ModelAttribute ("marketplaceForm")
+        MarketplaceForm marketplaceForm,
+
         Model model
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -100,5 +107,32 @@ public class MarketplaceValidateController {
 
             return "redirect:/emp/landing";
         }
+    }
+
+    @PostMapping(value = "/action")
+    public String action(
+        @ModelAttribute("marketplaceForm")
+        MarketplaceForm marketplaceForm
+    ) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Action on marketplaceId={} action={} qid={}", marketplaceForm.getMarketplaceId(), marketplaceForm.getActionType(), queueUser.getQueueUserId());
+
+        if (!Validate.isValidObjectId(marketplaceForm.getMarketplaceId().getText())) {
+            LOG.error("Marketplace id should be ObjectId but is {}", marketplaceForm.getMarketplaceId().getText());
+            throw new NotAValidObjectIdException("Failed to validated id " + marketplaceForm.getMarketplaceId().getText());
+        }
+
+        switch (marketplaceForm.getBusinessType()) {
+            case HI:
+                householdItemService.changeStatusOfMarketplace(marketplaceForm.getMarketplaceId().getText(), marketplaceForm.getActionType(), queueUser.getQueueUserId());
+                break;
+            case PR:
+                propertyRentalService.changeStatusOfMarketplace(marketplaceForm.getMarketplaceId().getText(), marketplaceForm.getActionType(), queueUser.getQueueUserId());
+                break;
+            default:
+                LOG.warn("Reached un-reachable condition {}", marketplaceForm.getActionType());
+                throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
+        }
+        return "redirect:/emp/landing";
     }
 }

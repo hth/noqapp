@@ -1,11 +1,13 @@
 package com.noqapp.repository.market;
 
+import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.market.HouseholdItemEntity;
-import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.ValidateStatusEnum;
 
 import com.mongodb.DuplicateKeyException;
@@ -113,6 +115,17 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
     public long findAllPendingApprovalCount() {
         return mongoTemplate.count(
             query(where("VS").is(ValidateStatusEnum.P)),
+            HouseholdItemEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public HouseholdItemEntity changeStatus(String marketplaceId, ValidateStatusEnum validateStatus, String validatedByQid) {
+        return mongoTemplate.findAndModify(
+            query(where("id").is(marketplaceId)),
+            entityUpdate(update("VS", validateStatus).set("VB", validatedByQid).set("PU", DateUtil.plusDays(10))),
+            FindAndModifyOptions.options().returnNew(true),
             HouseholdItemEntity.class,
             TABLE
         );

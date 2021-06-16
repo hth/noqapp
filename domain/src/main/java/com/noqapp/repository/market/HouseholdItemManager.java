@@ -1,6 +1,7 @@
 package com.noqapp.repository.market;
 
 import com.noqapp.domain.market.HouseholdItemEntity;
+import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.repository.RepositoryManager;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface HouseholdItemManager extends RepositoryManager<HouseholdItemEnt
     List<HouseholdItemEntity> findAllPendingApproval();
 
     long findAllPendingApprovalCount();
+
+    HouseholdItemEntity changeStatus(String marketplaceId, ValidateStatusEnum validateStatus, String qid);
 }
