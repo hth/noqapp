@@ -1,6 +1,8 @@
 package com.noqapp.view.form.marketplace;
 
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.market.MarketplaceEntity;
+import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 
 import org.slf4j.Logger;
@@ -24,6 +26,11 @@ import java.util.List;
 public class MarketplaceForm implements Serializable {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceForm.class);
 
+    /** For validating marketplace post. */
+    private ScrubbedInput marketplaceId;
+    private ActionTypeEnum actionType;
+    /** For validating marketplace post ends. */
+
     private String ip;
     private String countryCode;
     private String city;
@@ -39,6 +46,24 @@ public class MarketplaceForm implements Serializable {
 
     @Transient
     private List<BusinessTypeEnum> marketPlaces = BusinessTypeEnum.marketPlaces();
+
+    public ScrubbedInput getMarketplaceId() {
+        return marketplaceId;
+    }
+
+    public MarketplaceForm setMarketplaceId(ScrubbedInput marketplaceId) {
+        this.marketplaceId = marketplaceId;
+        return this;
+    }
+
+    public ActionTypeEnum getActionType() {
+        return actionType;
+    }
+
+    public MarketplaceForm setActionType(ActionTypeEnum actionType) {
+        this.actionType = actionType;
+        return this;
+    }
 
     public String getIp() {
         return ip;

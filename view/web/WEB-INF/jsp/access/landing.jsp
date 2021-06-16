@@ -229,7 +229,7 @@
                                                         <td><i class="fas fa-check-circle" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
                                                     </c:when>
                                                     <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.R}">
-                                                        <td><i class="fas fa-redo" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
+                                                        <td><i class="fas fa-redo" style="color:#4e4d4d;" title="Re-Submit"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
                                                     </c:when>
                                                     <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.D}">
                                                         <td><i class="fas fa-trash-alt" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
