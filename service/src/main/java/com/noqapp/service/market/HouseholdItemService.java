@@ -73,7 +73,7 @@ public class HouseholdItemService {
                 LOG.warn("Reached un-reachable condition {}", actionType);
                 throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
         }
-        
+
         MarketplaceEntity marketplace = householdItemManager.changeStatus(marketplaceId, validateStatus, qid);
         if (null != marketplace) {
             String title , body;
