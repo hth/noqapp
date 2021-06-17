@@ -29,6 +29,7 @@ public class MarketplaceForm implements Serializable {
     /** For validating marketplace post. */
     private ScrubbedInput marketplaceId;
     private ActionTypeEnum actionType;
+    //TODO(hth) rejectionReason
     /** For validating marketplace post ends. */
 
     private String ip;

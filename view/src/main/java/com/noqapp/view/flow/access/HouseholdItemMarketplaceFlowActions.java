@@ -9,8 +9,6 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.HouseholdItemManager;
-import com.noqapp.search.elastic.helper.DomainConversion;
-import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.view.form.marketplace.HouseholdItemMarketplaceForm;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
@@ -51,7 +49,6 @@ public class HouseholdItemMarketplaceFlowActions {
     private DatabaseReader databaseReader;
     private HouseholdItemManager householdItemManager;
     private UserProfileManager userProfileManager;
-    private MarketplaceElasticService marketplaceElasticService;
     private ExternalService externalService;
 
     @Autowired
@@ -60,14 +57,12 @@ public class HouseholdItemMarketplaceFlowActions {
         DatabaseReader databaseReader,
         HouseholdItemManager householdItemManager,
         UserProfileManager userProfileManager,
-        MarketplaceElasticService marketplaceElasticService,
         ExternalService externalService
     ) {
         this.environment = environment;
         this.databaseReader = databaseReader;
         this.householdItemManager = householdItemManager;
         this.userProfileManager = userProfileManager;
-        this.marketplaceElasticService = marketplaceElasticService;
         this.externalService = externalService;
     }
 
@@ -179,7 +174,6 @@ public class HouseholdItemMarketplaceFlowActions {
                     .setValidateStatus(ValidateStatusEnum.P);
 
                 householdItemManager.save(marketplace);
-                marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
                 return "success";
             default:
                 LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());

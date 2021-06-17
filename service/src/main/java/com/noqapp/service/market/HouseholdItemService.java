@@ -60,7 +60,7 @@ public class HouseholdItemService {
         return householdItemManager.findAllPendingApprovalCount();
     }
 
-    public void changeStatusOfMarketplace(String marketplaceId, ActionTypeEnum actionType, String qid) {
+    public MarketplaceEntity changeStatusOfMarketplace(String marketplaceId, ActionTypeEnum actionType, String qid) {
         ValidateStatusEnum validateStatus;
         switch (actionType) {
             case APPROVE:
@@ -73,7 +73,7 @@ public class HouseholdItemService {
                 LOG.warn("Reached un-reachable condition {}", actionType);
                 throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
         }
-        
+
         MarketplaceEntity marketplace = householdItemManager.changeStatus(marketplaceId, validateStatus, qid);
         if (null != marketplace) {
             String title , body;
@@ -98,6 +98,9 @@ public class HouseholdItemService {
                 marketplace.getQueueUserId(),
                 MessageOriginEnum.A,
                 marketplace.getBusinessType());
+            return marketplace;
         }
+
+        return null;
     }
 }

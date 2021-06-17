@@ -201,6 +201,9 @@ public class DomainConversion {
                     .setTag(marketplace.getFieldValueForTag())
                     .setFieldTags(marketplace.getFieldTags());
                 break;
+            default:
+                LOG.warn("Reached un-reachable condition businessType={}", marketplace.getBusinessType());
+                throw new UnsupportedOperationException("Reached unsupported condition " + marketplace.getBusinessType());
         }
 
         return marketplaceElastic;

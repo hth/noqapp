@@ -2,8 +2,12 @@ package com.noqapp.view.controller.emp;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
+import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.ValidateStatusEnum;
+import com.noqapp.search.elastic.helper.DomainConversion;
+import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.service.exceptions.NotAValidObjectIdException;
 import com.noqapp.service.market.HouseholdItemService;
 import com.noqapp.service.market.PropertyRentalService;
@@ -44,6 +48,7 @@ public class MarketplaceValidateController {
 
     private PropertyRentalService propertyRentalService;
     private HouseholdItemService householdItemService;
+    private MarketplaceElasticService marketplaceElasticService;
 
     @Autowired
     public MarketplaceValidateController(
@@ -54,13 +59,15 @@ public class MarketplaceValidateController {
         String nextPageHouseholdItem,
 
         PropertyRentalService propertyRentalService,
-        HouseholdItemService householdItemService
+        HouseholdItemService householdItemService,
+        MarketplaceElasticService marketplaceElasticService
     ) {
         this.nextPagePropertyRental = nextPagePropertyRental;
         this.nextPageHouseholdItem = nextPageHouseholdItem;
 
         this.propertyRentalService = propertyRentalService;
         this.householdItemService = householdItemService;
+        this.marketplaceElasticService = marketplaceElasticService;
     }
 
     @GetMapping(value = "/approval/{id}/{businessTypeEnum}/preview", produces = "text/html;charset=UTF-8")
@@ -122,12 +129,19 @@ public class MarketplaceValidateController {
             throw new NotAValidObjectIdException("Failed to validated id " + marketplaceForm.getMarketplaceId().getText());
         }
 
+        MarketplaceEntity marketplace;
         switch (marketplaceForm.getBusinessType()) {
             case HI:
-                householdItemService.changeStatusOfMarketplace(marketplaceForm.getMarketplaceId().getText(), marketplaceForm.getActionType(), queueUser.getQueueUserId());
+                marketplace = householdItemService.changeStatusOfMarketplace(marketplaceForm.getMarketplaceId().getText(), marketplaceForm.getActionType(), queueUser.getQueueUserId());
+                if (ValidateStatusEnum.A == marketplace.getValidateStatus()) {
+                    marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
+                }
                 break;
             case PR:
-                propertyRentalService.changeStatusOfMarketplace(marketplaceForm.getMarketplaceId().getText(), marketplaceForm.getActionType(), queueUser.getQueueUserId());
+                marketplace = propertyRentalService.changeStatusOfMarketplace(marketplaceForm.getMarketplaceId().getText(), marketplaceForm.getActionType(), queueUser.getQueueUserId());
+                if (ValidateStatusEnum.A == marketplace.getValidateStatus()) {
+                    marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
+                }
                 break;
             default:
                 LOG.warn("Reached un-reachable condition {}", marketplaceForm.getActionType());

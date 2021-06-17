@@ -23,6 +23,7 @@ import com.noqapp.domain.StoreCategoryEntity;
 import com.noqapp.domain.StoreProductEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ProductTypeEnum;
@@ -37,6 +38,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.PublishArticleManager;
 import com.noqapp.repository.S3FileManager;
 import com.noqapp.repository.StoreProductManager;
+import com.noqapp.repository.market.HouseholdItemManager;
 import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.service.exceptions.CSVParsingException;
 import com.noqapp.service.exceptions.CSVProcessingException;
@@ -152,6 +154,7 @@ public class FileService {
     private PublishArticleManager publishArticleManager;
     private AdvertisementManager advertisementManager;
     private PropertyRentalManager propertyRentalManager;
+    private HouseholdItemManager householdItemManager;
     private BizService bizService;
     private StoreCategoryService storeCategoryService;
 
@@ -178,6 +181,7 @@ public class FileService {
         PublishArticleManager publishArticleManager,
         AdvertisementManager advertisementManager,
         PropertyRentalManager propertyRentalManager,
+        HouseholdItemManager householdItemManager,
         BizService bizService,
         StoreCategoryService storeCategoryService
     ) {
@@ -195,6 +199,7 @@ public class FileService {
         this.publishArticleManager = publishArticleManager;
         this.advertisementManager = advertisementManager;
         this.propertyRentalManager = propertyRentalManager;
+        this.householdItemManager = householdItemManager;
         this.bizService = bizService;
         this.storeCategoryService = storeCategoryService;
     }
@@ -472,35 +477,69 @@ public class FileService {
     }
 
     @Async
-    public void addPropertyImage(String qid, String postId, String filename, BufferedImage bufferedImage) {
+    public void addMarketplaceImage(String qid, String postId, String filename, BusinessTypeEnum businessType, BufferedImage bufferedImage) {
         File toFile = null;
         File decreaseResolution = null;
         File tempFile = null;
 
         try {
-            PropertyRentalEntity propertyRental = propertyRentalManager.findOneById(postId);
-            Set<String> images = propertyRental.getPostImages();
+            Set<String> images;
+            String toFileAbsolutePath;
+            switch (businessType) {
+                case PR:
+                    PropertyRentalEntity propertyRental = propertyRentalManager.findOneById(postId);
+                    images = propertyRental.getPostImages();
 
-            while (images.size() >= 10) {
-                String lastImage = images.stream().findFirst().get();
-                deleteMarketImage(qid, lastImage, postId, propertyRental.getBusinessType());
-                /* Delete local reference. */
-                images.remove(lastImage);
+                    while (images.size() >= 10) {
+                        String lastImage = images.stream().findFirst().get();
+                        deleteMarketImage(qid, lastImage, postId, propertyRental.getBusinessType());
+                        /* Delete local reference. */
+                        images.remove(lastImage);
+                    }
+
+                    toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
+                    decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
+
+                    // /java/temp/directory/filename.extension
+                    toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
+                    tempFile = new File(toFileAbsolutePath);
+                    writeToFile(tempFile, ImageIO.read(decreaseResolution));
+                    ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY);
+
+                    images.add(filename);
+                    propertyRentalManager.save(propertyRental);
+
+                    LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
+                    break;
+                case HI:
+                    HouseholdItemEntity householdItem = householdItemManager.findOneById(postId);
+                    images = householdItem.getPostImages();
+
+                    while (images.size() >= 10) {
+                        String lastImage = images.stream().findFirst().get();
+                        deleteMarketImage(qid, lastImage, postId, householdItem.getBusinessType());
+                        /* Delete local reference. */
+                        images.remove(lastImage);
+                    }
+
+                    toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
+                    decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
+
+                    // /java/temp/directory/filename.extension
+                    toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
+                    tempFile = new File(toFileAbsolutePath);
+                    writeToFile(tempFile, ImageIO.read(decreaseResolution));
+                    ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY);
+
+                    images.add(filename);
+                    householdItemManager.save(householdItem);
+
+                    LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
+                    break;
+                default:
+                    LOG.warn("Reached un-reachable condition businessType={}", businessType);
+                    throw new UnsupportedOperationException("Reached unsupported condition " + businessType);
             }
-
-            toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
-            decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
-
-            // /java/temp/directory/filename.extension
-            String toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
-            tempFile = new File(toFileAbsolutePath);
-            writeToFile(tempFile, ImageIO.read(decreaseResolution));
-            ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY);
-
-            images.add(filename);
-            propertyRentalManager.save(propertyRental);
-
-            LOG.debug("Uploaded store service file={}", toFileAbsolutePath);
         } catch (IOException e) {
             LOG.error("Failed adding store image={} reason={}", filename, e.getLocalizedMessage(), e);
         } finally {
@@ -598,6 +637,7 @@ public class FileService {
     public void deleteMarketImage(String qid, String imageName, String postId, BusinessTypeEnum businessType) {
         switch (businessType) {
             case PR:
+            case HI:
                 /* Delete existing file business service image before the upload process began. */
                 ftpService.delete(imageName, postId, FtpService.MARKETPLACE_PROPERTY);
 
@@ -606,7 +646,8 @@ public class FileService {
                 s3FileManager.save(s3File);
                 break;
             default:
-                //
+                LOG.warn("Reached un-reachable condition businessType={}", businessType);
+                throw new UnsupportedOperationException("Reached unsupported condition " + businessType);
         }
     }
 

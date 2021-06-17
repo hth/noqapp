@@ -5,6 +5,7 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.site.QueueUser;
@@ -14,6 +15,7 @@ import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FtpService;
+import com.noqapp.service.market.HouseholdItemService;
 import com.noqapp.service.market.PropertyRentalService;
 import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.controller.business.store.PublishArticleController;
@@ -71,6 +73,7 @@ public class MarketplaceController {
 
     private AccountService accountService;
     private PropertyRentalService propertyRentalService;
+    private HouseholdItemService householdItemService;
     private FileService fileService;
     private ImageValidator imageValidator;
     private ApiHealthService apiHealthService;
@@ -85,6 +88,7 @@ public class MarketplaceController {
 
         AccountService accountService,
         PropertyRentalService propertyRentalService,
+        HouseholdItemService householdItemService,
         FileService fileService,
         ImageValidator imageValidator,
         ApiHealthService apiHealthService
@@ -94,6 +98,7 @@ public class MarketplaceController {
 
         this.accountService = accountService;
         this.propertyRentalService = propertyRentalService;
+        this.householdItemService = householdItemService;
         this.fileService = fileService;
         this.imageValidator = imageValidator;
         this.apiHealthService = apiHealthService;
@@ -145,7 +150,7 @@ public class MarketplaceController {
                     marketplace = propertyRentalService.findOneById(postId);
                     break;
                 case HI:
-                    marketplace = null;
+                    marketplace = householdItemService.findOneById(postId);
                     break;
                 default:
                     LOG.error("Reached unsupported condition={}", businessTypeAsString);
@@ -176,6 +181,7 @@ public class MarketplaceController {
         model.addAttribute("images", marketplace.getPostImages());
         model.addAttribute("postId", marketplace.getId());
         model.addAttribute("businessType", marketplace.getBusinessType().name());
+        model.addAttribute("businessTypeAsString", marketplace.getBusinessType().getDescription());
         return "/access/marketplace/photo";
     }
 
@@ -195,7 +201,7 @@ public class MarketplaceController {
         /* Above condition to make sure users with right roles and access gets access. */
 
         String postId = httpServletRequest.getParameter("postId");
-        String businessType = httpServletRequest.getParameter("businessType");
+        String businessType = httpServletRequest.getParameter("businessType").toUpperCase();
 
         boolean isMultipart = ServletFileUpload.isMultipartContent(httpServletRequest);
         if (isMultipart) {
@@ -214,7 +220,7 @@ public class MarketplaceController {
                 }
 
                 try {
-                    processImage(queueUser.getQueueUserId(), postId, multipartFile);
+                    processImage(queueUser.getQueueUserId(), postId, BusinessTypeEnum.valueOf(businessType), multipartFile);
                     return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage";
                 } catch (Exception e) {
                     LOG.error("Failed store image upload reason={} qid={}", e.getLocalizedMessage(), queueUser.getQueueUserId(), e);
@@ -258,6 +264,15 @@ public class MarketplaceController {
                     propertyRentalService.save(propertyRental);
                 }
                 break;
+            case HI:
+                HouseholdItemEntity householdItem = householdItemService.findOneById(postId);
+                if (householdItem.getPostImages().contains(imageId)) {
+                    fileService.deleteMarketImage(queueUser.getQueueUserId(), imageId, postId, householdItem.getBusinessType());
+
+                    householdItem.getPostImages().remove(imageId);
+                    householdItemService.save(householdItem);
+                }
+                break;
             default:
                 LOG.error("Reached unsupported condition={}", businessType);
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessType);
@@ -266,14 +281,15 @@ public class MarketplaceController {
         return "redirect:/access/marketplace/" + businessType + "/" + postId + "/uploadImage";
     }
 
-    private void processImage(String qid, String postId, MultipartFile multipartFile) throws IOException {
+    private void processImage(String qid, String postId, BusinessTypeEnum businessType, MultipartFile multipartFile) throws IOException {
         BufferedImage bufferedImage = fileService.bufferedImage(multipartFile.getInputStream());
         String mimeType = FileUtil.detectMimeType(multipartFile.getInputStream());
         if (mimeType.equalsIgnoreCase(multipartFile.getContentType())) {
-            fileService.addPropertyImage(
+            fileService.addMarketplaceImage(
                 qid,
                 postId,
                 FileUtil.createRandomFilenameOf24Chars() + FileUtil.getImageFileExtension(multipartFile.getOriginalFilename(), mimeType),
+                businessType,
                 bufferedImage);
         }
     }

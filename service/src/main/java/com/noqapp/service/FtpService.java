@@ -292,9 +292,10 @@ public class FtpService {
     public static String marketBucketName(String bucketName, BusinessTypeEnum businessType) {
         switch (businessType) {
             case PR:
+            case HI:
                 return bucketName + FtpService.MARKETPLACE_PROPERTY;
             default:
-                //
+                LOG.warn("Reached un-reachable condition businessType={}", businessType);
         }
         return null;
     }
