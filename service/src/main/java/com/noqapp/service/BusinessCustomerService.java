@@ -123,7 +123,8 @@ public class BusinessCustomerService {
         } catch (DuplicateKeyException e) {
             messageCustomerService.sendMessageToSpecificUser(
                 "Contact NoQueue",
-                "Your account was not updated successfully. Click on top left of the app(menu) and then select Contact Us to resolve account issue.",
+                "Your account was not updated successfully. " +
+                    "Click on top left of the app(menu) and then select 'Contact Us' to resolve account issue.",
                 qid,
                 MessageOriginEnum.A,
                 BusinessTypeEnum.ZZ);
