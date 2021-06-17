@@ -8,6 +8,7 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.MarketplaceElasticService;
+import com.noqapp.service.FtpService;
 import com.noqapp.service.exceptions.NotAValidObjectIdException;
 import com.noqapp.service.market.HouseholdItemService;
 import com.noqapp.service.market.PropertyRentalService;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 /**
  * hitender
@@ -43,6 +44,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MarketplaceValidateController {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceValidateController.class);
 
+    private String bucketName;
     private String nextPagePropertyRental;
     private String nextPageHouseholdItem;
 
@@ -52,6 +54,9 @@ public class MarketplaceValidateController {
 
     @Autowired
     public MarketplaceValidateController(
+        @Value("${aws.s3.bucketName}")
+        String bucketName,
+
         @Value("${nextPage:/emp/marketplace/preview/propertyRental}")
         String nextPagePropertyRental,
 
@@ -62,6 +67,7 @@ public class MarketplaceValidateController {
         HouseholdItemService householdItemService,
         MarketplaceElasticService marketplaceElasticService
     ) {
+        this.bucketName = bucketName;
         this.nextPagePropertyRental = nextPagePropertyRental;
         this.nextPageHouseholdItem = nextPageHouseholdItem;
 
@@ -93,6 +99,7 @@ public class MarketplaceValidateController {
             }
 
             BusinessTypeEnum businessType = BusinessTypeEnum.valueOf(businessTypeEnum.getText().toUpperCase());
+            model.addAttribute("bucketName", FtpService.marketBucketName(bucketName, businessType));
             switch (businessType) {
                 case PR:
                     model.addAttribute("marketplace", propertyRentalService.findOneById(id.getText()));

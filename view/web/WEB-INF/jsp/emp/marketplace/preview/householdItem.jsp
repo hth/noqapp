@@ -178,6 +178,35 @@
                         </ul>
                     </div>
                 </div>
+
+                <div class="admin-title">
+                    <h2>Image of ${marketplace.businessType.description}</h2>
+                </div>
+                <div class="admin-content">
+                    <div class="add-new">
+                        <c:choose>
+                            <c:when test="${!empty marketplace.postImages}">
+                                <ul class="list-form">
+                                    <c:forEach items="${marketplace.postImages}" var="image" varStatus="status">
+                                        <li>
+                                            <div class="col-fields">
+                                                <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/${marketplace.id}/${image}"
+                                                        onerror="this.src='/static/internal/img/pending-image.png'"
+                                                        class="img-profile-circle" />
+                                            </div>
+                                            <div class="clearFix"></div>
+                                        </li>
+                                    </c:forEach>
+                                </ul>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="alert-info">
+                                    <div class="no-approve">No images. Reject</div>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
                 </form:form>
 
                 <div class="admin-content">
