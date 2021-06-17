@@ -119,7 +119,7 @@ public class HouseholdItemMarketplaceValidator {
                     new MessageBuilder()
                         .error()
                         .source("marketplace.productPrice")
-                        .defaultText("Please provide List Price")
+                        .defaultText("Please provide List Price greater than zero")
                         .build());
                 status = "failure";
             }
