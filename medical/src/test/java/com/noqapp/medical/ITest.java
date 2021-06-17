@@ -306,11 +306,6 @@ public class ITest extends RealMongoForITest {
         generateUserIdService = new GenerateUserIdService(generateUserIdManager);
         storeCategoryService = new StoreCategoryService(storeCategoryManager, storeProductManager);
         firebaseService = new FirebaseService(firebaseConfig, userProfileManager);
-        businessCustomerService = new BusinessCustomerService(
-            businessCustomerManager,
-            userProfileManager,
-            queueManager
-        );
         apiHealthService = new ApiHealthService(apiHealthNowManager);
         couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
         userAddressService = new UserAddressService(5, userAddressManager);
@@ -353,6 +348,13 @@ public class ITest extends RealMongoForITest {
             languageTranslationService,
             graphDetailOfPerson,
             notificationN4jManager
+        );
+
+        businessCustomerService = new BusinessCustomerService(
+            businessCustomerManager,
+            userProfileManager,
+            queueManager,
+            messageCustomerService
         );
 
         tokenQueueService = new TokenQueueService(

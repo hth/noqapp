@@ -342,11 +342,6 @@ public class ITest extends RealMongoForITest {
         s3FileManager = new S3FileManagerImpl(getMongoTemplate());
         firebaseMessageService = new FirebaseMessageService("", okHttpClient);
         firebaseService = new FirebaseService(firebaseConfig, userProfileManager);
-        businessCustomerService = new BusinessCustomerService(
-            businessCustomerManager,
-            userProfileManager,
-            queueManager
-        );
 
         couponService = new CouponService(couponManager, bizStoreManager, userProfileManager);
         purchaseOrderProductService = new PurchaseOrderProductService(couponService, purchaseOrderProductManager, purchaseOrderProductManagerJDBC, userAddressService);
@@ -374,6 +369,13 @@ public class ITest extends RealMongoForITest {
             languageTranslationService,
             graphDetailOfPerson,
             notificationN4jManager
+        );
+
+        businessCustomerService = new BusinessCustomerService(
+            businessCustomerManager,
+            userProfileManager,
+            queueManager,
+            messageCustomerService
         );
 
         tokenQueueService = new TokenQueueService(

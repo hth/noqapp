@@ -5,7 +5,9 @@ import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessCustomerAttributeEnum;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.CustomerPriorityLevelEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.repository.BizNameManager;
 import com.noqapp.repository.BusinessCustomerManager;
 import com.noqapp.repository.BusinessCustomerPriorityManager;
@@ -35,15 +37,19 @@ public class BusinessCustomerService {
     private UserProfileManager userProfileManager;
     private QueueManager queueManager;
 
+    private MessageCustomerService messageCustomerService;
+
     @Autowired
     public BusinessCustomerService(
         BusinessCustomerManager businessCustomerManager,
         UserProfileManager userProfileManager,
-        QueueManager queueManager
+        QueueManager queueManager,
+        MessageCustomerService messageCustomerService
     ) {
         this.businessCustomerManager = businessCustomerManager;
         this.userProfileManager = userProfileManager;
         this.queueManager = queueManager;
+        this.messageCustomerService = messageCustomerService;
     }
 
     /**
@@ -115,7 +121,13 @@ public class BusinessCustomerService {
                 return businessCustomer.getId();
             }
         } catch (DuplicateKeyException e) {
-            LOG.warn("Record duplicate exists for business customer {} {} by {}", customerId, bizNameId, qid);
+            messageCustomerService.sendMessageToSpecificUser(
+                "Contact NoQueue",
+                "Your account was not updated successfully. Click on top left of the app(menu) and then select Contact Us to resolve account issue.",
+                qid,
+                MessageOriginEnum.A,
+                BusinessTypeEnum.ZZ);
+            LOG.warn("Record duplicate exists for business customer {} {} by {} sent message", customerId, bizNameId, qid);
         } catch (Exception e) {
             LOG.error("Error creating business customer {} {} by {}", customerId, bizNameId, qid);
         }
