@@ -193,12 +193,19 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${empty marketplaceForm.marketplace.publishUntil}">
-                                                            Pending Approval
+                                                            <c:choose>
+                                                                <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.R}">
+                                                                    Re-Submit
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    Pending Approval
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </c:when>
                                                         <c:otherwise>
-                                                        <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost">
-                                                            <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
-                                                        </a>
+                                                            <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost">
+                                                                <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
+                                                            </a>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
