@@ -536,6 +536,9 @@ public class FileService {
 
                     LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
                     break;
+                default:
+                    LOG.warn("Reached un-reachable condition businessType={}", businessType);
+                    throw new UnsupportedOperationException("Reached unsupported condition " + businessType);
             }
         } catch (IOException e) {
             LOG.error("Failed adding store image={} reason={}", filename, e.getLocalizedMessage(), e);

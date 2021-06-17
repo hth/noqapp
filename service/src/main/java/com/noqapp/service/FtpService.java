@@ -295,7 +295,7 @@ public class FtpService {
             case HI:
                 return bucketName + FtpService.MARKETPLACE_PROPERTY;
             default:
-                LOG.error("Un-supported status reached bt={}", businessType);
+                LOG.warn("Reached un-reachable condition businessType={}", businessType);
         }
         return null;
     }
