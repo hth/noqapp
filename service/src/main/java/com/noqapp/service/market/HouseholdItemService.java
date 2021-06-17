@@ -6,7 +6,6 @@ import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
-import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.market.HouseholdItemManager;
 import com.noqapp.service.MessageCustomerService;
 

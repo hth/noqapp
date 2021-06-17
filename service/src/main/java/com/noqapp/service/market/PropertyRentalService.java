@@ -1,16 +1,11 @@
 package com.noqapp.service.market;
 
-import static com.noqapp.domain.types.ActionTypeEnum.APPROVE;
-
 import com.noqapp.common.utils.DateUtil;
-import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
-import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
-import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.service.MessageCustomerService;
 
