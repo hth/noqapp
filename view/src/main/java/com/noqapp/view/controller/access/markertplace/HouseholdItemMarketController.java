@@ -50,13 +50,13 @@ public class HouseholdItemMarketController {
     @GetMapping(value = "/post")
     public String postOnMarketplace(RedirectAttributes redirectAttributes) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        LOG.info("Requested post on marketplace {}", queueUser.getQueueUserId());
+        LOG.info("Requested post on householdItem marketplace {}", queueUser.getQueueUserId());
 
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUser.getQueueUserId());
         if (accountService.accountOpenedInLast10Days(queueUser.getQueueUserId()) || userProfile.isProfileVerified()) {
             redirectAttributes.addFlashAttribute("postingAllowed", true);
         } else {
-            LOG.error("Restricted posting to market place {}", queueUser.getQueueUserId());
+            LOG.error("Restricted posting to householdItem market place {}", queueUser.getQueueUserId());
             redirectAttributes.addFlashAttribute("postingAllowed", false);
         }
         redirectAttributes.addFlashAttribute("businessTypeAsString", BusinessTypeEnum.HI.name());
