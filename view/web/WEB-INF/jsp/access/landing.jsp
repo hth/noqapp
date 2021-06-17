@@ -168,7 +168,7 @@
                                                 <th>Name</th>
                                                 <th>Price</th>
                                                 <th>City/Area</th>
-                                                <th>Expires On</th>
+                                                <th>Visible Until</th>
                                                 <th>Stats</th>
                                                 <th></th>
                                                 <th></th>
@@ -191,9 +191,23 @@
                                                 <td>${marketplaceForm.marketplace.priceForDisplay}</td>
                                                 <td>${marketplaceForm.marketplace.city}</td>
                                                 <td>
-                                                    <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost">
-                                                    <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
-                                                    </a>
+                                                    <c:choose>
+                                                        <c:when test="${empty marketplaceForm.marketplace.publishUntil}">
+                                                            <c:choose>
+                                                                <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.R}">
+                                                                    Re-Submit
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    Pending Approval
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost">
+                                                                <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
+                                                            </a>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </td>
                                                 <td>
                                                     <c:choose>
@@ -226,7 +240,7 @@
                                                         <td><i class="fas fa-ban" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
                                                     </c:when>
                                                     <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.A}">
-                                                        <td><i class="fas fa-check-circle" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
+                                                        <td><i class="fas fa-check-circle" style="color:#ff217c;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>
                                                     </c:when>
                                                     <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.R}">
                                                         <td><i class="fas fa-redo" style="color:#4e4d4d;" title="Re-Submit"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a></td>

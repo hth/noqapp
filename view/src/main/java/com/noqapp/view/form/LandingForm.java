@@ -1,5 +1,6 @@
 package com.noqapp.view.form;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.market.HouseholdItemEntity;
@@ -8,6 +9,7 @@ import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,7 +74,10 @@ public class LandingForm {
     /** Sorted by publishing date descending. */
     @SuppressWarnings("unused")
     public List<MarketplaceForm> getMarketplaceForms() {
-        return marketplaceForms.stream().sorted((s1, s2) -> s2.getMarketplace().getPublishUntil().compareTo(s1.getMarketplace().getPublishUntil())).collect(Collectors.toList());
+        return marketplaceForms.stream().sorted((s1, s2) ->
+            (s2.getMarketplace().getPublishUntil() == null ? DateUtil.plusDays(10) : s2.getMarketplace().getPublishUntil())
+                .compareTo(s1.getMarketplace().getPublishUntil() == null ? DateUtil.plusDays(10) : s1.getMarketplace().getPublishUntil()))
+                .collect(Collectors.toList());
     }
 
     public LandingForm setMarketplaceForms(List<MarketplaceForm> marketplaceForms) {

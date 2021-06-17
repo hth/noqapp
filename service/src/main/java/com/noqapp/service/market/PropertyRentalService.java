@@ -1,16 +1,11 @@
 package com.noqapp.service.market;
 
-import static com.noqapp.domain.types.ActionTypeEnum.APPROVE;
-
 import com.noqapp.common.utils.DateUtil;
-import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
-import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
-import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.service.MessageCustomerService;
 
@@ -20,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -77,33 +73,32 @@ public class PropertyRentalService {
                 throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
         }
 
-        MarketplaceEntity marketplace = propertyRentalManager.changeStatus(marketplaceId, validateStatus, qid);
-        if (null != marketplace) {
-            String title, body;
-            switch (actionType) {
-                case APPROVE:
-                    title = "Active: " + (marketplace.getTitle().length() > 25 ? marketplace.getTitle().substring(0, 25) + "..." : marketplace.getTitle());
-                    body = "Your marketplace posting is live and available until " + DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(marketplace.getPublishUntil()) + ". "
-                        + "There is a free boost after a week. Visit website to boost your posting.";
-                    break;
-                case REJECT:
-                    title = "Your marketplace posting requires attention";
-                    body = "Please rectify marketplace posting and submit again. Ref: " + marketplace.getTitle();
-                    break;
-                default:
-                    LOG.warn("Reached un-reachable condition {}", actionType);
-                    throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
-            }
+        MarketplaceEntity marketplace = propertyRentalManager.findOneById(marketplaceId);
+        Date publishUntil = null == marketplace.getPublishUntil() ? DateUtil.plusDays(10) : marketplace.getPublishUntil();
+        marketplace = propertyRentalManager.changeStatus(marketplaceId, validateStatus, publishUntil, qid);
 
-            messageCustomerService.sendMessageToSpecificUser(
-                title,
-                body,
-                marketplace.getQueueUserId(),
-                MessageOriginEnum.A,
-                marketplace.getBusinessType());
-            return marketplace;
+        String title, body;
+        switch (actionType) {
+            case APPROVE:
+                title = "Active: " + (marketplace.getTitle().length() > 25 ? marketplace.getTitle().substring(0, 25) + "..." : marketplace.getTitle());
+                body = "Your marketplace posting is live and available until " + DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(marketplace.getPublishUntil()) + ". "
+                    + "There is a free boost after a week. Visit website to boost your posting.";
+                break;
+            case REJECT:
+                title = "Your marketplace posting requires attention";
+                body = "Please rectify marketplace posting and submit again. Ref: " + marketplace.getTitle();
+                break;
+            default:
+                LOG.warn("Reached un-reachable condition {}", actionType);
+                throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
         }
 
-        return null;
+        messageCustomerService.sendMessageToSpecificUser(
+            title,
+            body,
+            marketplace.getQueueUserId(),
+            MessageOriginEnum.A,
+            marketplace.getBusinessType());
+        return marketplace;
     }
 }

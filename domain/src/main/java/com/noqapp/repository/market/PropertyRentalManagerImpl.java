@@ -123,13 +123,18 @@ public class PropertyRentalManagerImpl implements PropertyRentalManager {
     }
 
     @Override
-    public PropertyRentalEntity changeStatus(String marketplaceId, ValidateStatusEnum validateStatus, String validatedByQid) {
+    public PropertyRentalEntity changeStatus(String marketplaceId, ValidateStatusEnum validateStatus, Date publishUntil, String validatedByQid) {
+        Update update;
+        if (ValidateStatusEnum.A == validateStatus) {
+            update = entityUpdate(update("VS", validateStatus).set("VB", validatedByQid).set("PU", publishUntil));
+        } else {
+            update = entityUpdate(update("VS", validateStatus).set("VB", validatedByQid));
+        }
         return mongoTemplate.findAndModify(
             query(where("id").is(marketplaceId)),
-            entityUpdate(update("VS", validateStatus).set("VB", validatedByQid).set("PU", DateUtil.plusDays(10))),
+            update,
             FindAndModifyOptions.options().returnNew(true),
             PropertyRentalEntity.class,
-            TABLE
-        );
+            TABLE);
     }
 }
