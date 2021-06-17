@@ -292,9 +292,10 @@ public class FtpService {
     public static String marketBucketName(String bucketName, BusinessTypeEnum businessType) {
         switch (businessType) {
             case PR:
+            case HI:
                 return bucketName + FtpService.MARKETPLACE_PROPERTY;
             default:
-                //
+                LOG.error("Un-supported status reached bt={}", businessType);
         }
         return null;
     }

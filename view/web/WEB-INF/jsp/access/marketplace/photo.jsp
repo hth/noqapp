@@ -57,7 +57,7 @@
                     <input type="hidden" name="postId" value="${postId}"/>
                     <input type="hidden" name="businessType" value="${businessType}"/>
                     <div class="admin-title">
-                        <h2>Add Image</h2>
+                        <h2>Add Image of ${businessTypeAsString}</h2>
                     </div>
 
                     <spring:hasBindErrors name="fileUploadForm">
@@ -65,7 +65,7 @@
                         <div class="error-txt">
                             <ul>
                                 <c:if test="${errors.hasFieldErrors('file')}">
-                                    <li><form:errors path="file"/></li>
+                                <li><form:errors path="file"/></li>
                                 </c:if>
                             </ul>
                         </div>
@@ -112,7 +112,7 @@
                 </form:form>
 
                 <div class="admin-title">
-                    <h2>Image</h2>
+                    <h2>Image of ${businessTypeAsString}</h2>
                 </div>
                 <div class="admin-content">
                     <div class="add-new">

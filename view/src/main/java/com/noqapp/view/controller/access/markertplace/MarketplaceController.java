@@ -181,6 +181,7 @@ public class MarketplaceController {
         model.addAttribute("images", marketplace.getPostImages());
         model.addAttribute("postId", marketplace.getId());
         model.addAttribute("businessType", marketplace.getBusinessType().name());
+        model.addAttribute("businessTypeAsString", marketplace.getBusinessType().getDescription());
         return "/access/marketplace/photo";
     }
 
