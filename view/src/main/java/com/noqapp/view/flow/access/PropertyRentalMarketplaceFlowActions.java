@@ -50,7 +50,6 @@ public class PropertyRentalMarketplaceFlowActions {
     private DatabaseReader databaseReader;
     private PropertyRentalManager propertyRentalManager;
     private UserProfileManager userProfileManager;
-    private MarketplaceElasticService marketplaceElasticService;
     private ExternalService externalService;
 
     @Autowired
@@ -59,14 +58,12 @@ public class PropertyRentalMarketplaceFlowActions {
         DatabaseReader databaseReader,
         PropertyRentalManager propertyRentalManager,
         UserProfileManager userProfileManager,
-        MarketplaceElasticService marketplaceElasticService,
         ExternalService externalService
     ) {
         this.environment = environment;
         this.databaseReader = databaseReader;
         this.propertyRentalManager = propertyRentalManager;
         this.userProfileManager = userProfileManager;
-        this.marketplaceElasticService = marketplaceElasticService;
         this.externalService = externalService;
     }
 
@@ -178,7 +175,6 @@ public class PropertyRentalMarketplaceFlowActions {
                     .setValidateStatus(ValidateStatusEnum.P);
 
                 propertyRentalManager.save(marketplace);
-                marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
                 return "success";
             default:
                 LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());
