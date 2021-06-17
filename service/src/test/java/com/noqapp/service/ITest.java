@@ -457,6 +457,7 @@ public class ITest extends RealMongoForITest {
             publishArticleManager,
             advertisementManager,
             propertyRentalManager,
+            householdItemManager,
             bizService,
             storeCategoryService
         );

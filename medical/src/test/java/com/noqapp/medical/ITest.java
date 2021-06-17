@@ -90,6 +90,8 @@ import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserPreferenceManagerImpl;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.UserProfileManagerImpl;
+import com.noqapp.repository.market.HouseholdItemManager;
+import com.noqapp.repository.market.HouseholdItemManagerImpl;
 import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.repository.market.PropertyRentalManagerImpl;
 import com.noqapp.repository.neo4j.NotificationN4jManager;
@@ -217,6 +219,7 @@ public class ITest extends RealMongoForITest {
     protected MasterLabManager masterLabManager;
     protected AdvertisementManager advertisementManager;
     protected PropertyRentalManager propertyRentalManager;
+    protected HouseholdItemManager householdItemManager;
     protected CouponManager couponManager;
     protected CustomTextToSpeechManager customTextToSpeechManager;
     protected NotificationMessageManager notificationMessageManager;
@@ -286,6 +289,7 @@ public class ITest extends RealMongoForITest {
         publishArticleManager = new PublishArticleManagerImpl(getMongoTemplate());
         advertisementManager = new AdvertisementManagerImpl(getMongoTemplate());
         propertyRentalManager = new PropertyRentalManagerImpl(getMongoTemplate());
+        householdItemManager = new HouseholdItemManagerImpl(getMongoTemplate());
 
         medicalRecordManager = new MedicalRecordManagerImpl(getMongoTemplate());
         medicalRadiologyManager = new MedicalRadiologyManagerImpl(getMongoTemplate());
@@ -415,6 +419,7 @@ public class ITest extends RealMongoForITest {
             publishArticleManager,
             advertisementManager,
             propertyRentalManager,
+            householdItemManager,
             bizService,
             storeCategoryService
         );
