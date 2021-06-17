@@ -228,9 +228,7 @@
                                             <td>${marketplaceForm.marketplace.priceForDisplay}</td>
                                             <td>${marketplaceForm.marketplace.city}</td>
                                             <td>
-                                                <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost">
-                                                    <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
-                                                </a>
+                                                <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/>
                                             </td>
                                             <td><a href="${pageContext.request.contextPath}/emp/marketplace/approval/${marketplaceForm.marketplace.id}/${marketplaceForm.marketplace.businessType}/preview" class="add-btn" style="margin: 0px;">Preview</a></td>
                                         </tr>
