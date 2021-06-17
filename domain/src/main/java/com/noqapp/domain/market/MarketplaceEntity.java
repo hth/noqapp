@@ -1,7 +1,6 @@
 package com.noqapp.domain.market;
 
 import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -80,7 +79,7 @@ public abstract class MarketplaceEntity extends BaseEntity {
     private String landmark;
 
     @Field("PU")
-    private Date publishUntil = DateUtil.plusDays(10);
+    private Date publishUntil;
 
     @Field ("VB")
     private String validateByQid;
