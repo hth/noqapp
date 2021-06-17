@@ -643,7 +643,8 @@ public class FileService {
                 s3FileManager.save(s3File);
                 break;
             default:
-                //
+                LOG.warn("Reached un-reachable condition businessType={}", businessType);
+                throw new UnsupportedOperationException("Reached unsupported condition " + businessType);
         }
     }
 
