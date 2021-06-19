@@ -65,6 +65,7 @@ public class FirebaseService {
         try {
             userRecord = future.get(4, TimeUnit.SECONDS);
         } catch (TimeoutException | InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt();
             LOG.error("Failed to get UserRecord for uid={} reason={}", uid, e.getLocalizedMessage(), e);
             return null;
         }
