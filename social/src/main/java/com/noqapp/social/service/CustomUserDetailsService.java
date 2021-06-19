@@ -1,5 +1,6 @@
 package com.noqapp.social.service;
 
+import com.noqapp.common.utils.IntRandomNumberGenerator;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
@@ -7,6 +8,8 @@ import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.UserProfilePreferenceService;
 import com.noqapp.social.exception.AccountNotActiveException;
+
+import org.apache.commons.lang3.RandomUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +26,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +49,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserProfilePreferenceService userProfilePreferenceService;
     private AccountService accountService;
 
+    private ScheduledExecutorService executorService;
+
     @Autowired
     public CustomUserDetailsService(
         UserProfilePreferenceService userProfilePreferenceService,
@@ -49,6 +58,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     ) {
         this.userProfilePreferenceService = userProfilePreferenceService;
         this.accountService = accountService;
+
+        this.executorService = Executors.newScheduledThreadPool(1);
     }
 
     /**
@@ -121,6 +132,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                 case ADP:
                     LOG.warn("Account Not Active {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
                     throw new AccountNotActiveException(userAccount.getAccountInactiveReason().getDescription() + ". Contact support.");
+                case LIM:
+                    LOG.warn("Account Active access limited {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
+                    IntRandomNumberGenerator intRandomNumberGenerator = IntRandomNumberGenerator.newInstanceExclusiveOfMaxRange(2, 6);
+                    executorService.schedule(() -> accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId()), intRandomNumberGenerator.nextInt(), TimeUnit.MINUTES);
                 default:
                     LOG.error("Reached condition for invalid account qid={} {}", userAccount.getQueueUserId(), userAccount.getAccountInactiveReason());
                     throw new AccountNotActiveException("Account is blocked. Contact support.");
