@@ -135,8 +135,10 @@ public class CustomUserDetailsService implements UserDetailsService {
                         throw new AccountNotActiveException(userAccount.getAccountInactiveReason().getDescription() + ". Contact support.");
                     case LIM:
                         LOG.warn("Account Active access limited {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
-                        IntRandomNumberGenerator intRandomNumberGenerator = IntRandomNumberGenerator.newInstanceExclusiveOfMaxRange(2, 6);
-                        executorService.schedule(() -> accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId()), intRandomNumberGenerator.nextInt(), TimeUnit.MINUTES);
+                        executorService.schedule(() ->
+                            accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId()),
+                            IntRandomNumberGenerator.newInstanceExclusiveOfMaxRange(2, 6).nextInt(),
+                            TimeUnit.MINUTES);
                     default:
                         LOG.error("Reached condition for invalid account qid={} {}", userAccount.getQueueUserId(), userAccount.getAccountInactiveReason());
                         throw new AccountNotActiveException("Account is blocked. Contact support.");
