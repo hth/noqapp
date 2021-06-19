@@ -1003,6 +1003,7 @@ public class TokenQueueService {
                             TimeUnit.SECONDS.sleep(timeout);
                             timeout = 0;
                         } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
                             LOG.error("Failed adding delay reason={}", e.getLocalizedMessage());
                         }
                     }
