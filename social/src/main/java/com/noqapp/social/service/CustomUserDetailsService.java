@@ -122,24 +122,28 @@ public class CustomUserDetailsService implements UserDetailsService {
      * @return
      */
     public void doesUserHasInActiveReason(UserAccountEntity userAccount) {
-        if (null != userAccount.getAccountInactiveReason()) {
-            switch (userAccount.getAccountInactiveReason()) {
-                case ANV:
-                case BOC:
-                case BUP:
-                    LOG.warn("Account Not Active {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
-                    throw new AccountNotActiveException("Account is blocked for " + userAccount.getAccountInactiveReason().getDescription() + ". Contact support.");
-                case ADP:
-                    LOG.warn("Account Not Active {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
-                    throw new AccountNotActiveException(userAccount.getAccountInactiveReason().getDescription() + ". Contact support.");
-                case LIM:
-                    LOG.warn("Account Active access limited {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
-                    IntRandomNumberGenerator intRandomNumberGenerator = IntRandomNumberGenerator.newInstanceExclusiveOfMaxRange(2, 6);
-                    executorService.schedule(() -> accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId()), intRandomNumberGenerator.nextInt(), TimeUnit.MINUTES);
-                default:
-                    LOG.error("Reached condition for invalid account qid={} {}", userAccount.getQueueUserId(), userAccount.getAccountInactiveReason());
-                    throw new AccountNotActiveException("Account is blocked. Contact support.");
+        try {
+            if (null != userAccount.getAccountInactiveReason()) {
+                switch (userAccount.getAccountInactiveReason()) {
+                    case ANV:
+                    case BOC:
+                    case BUP:
+                        LOG.warn("Account Not Active {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
+                        throw new AccountNotActiveException("Account is blocked for " + userAccount.getAccountInactiveReason().getDescription() + ". Contact support.");
+                    case ADP:
+                        LOG.warn("Account Not Active {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
+                        throw new AccountNotActiveException(userAccount.getAccountInactiveReason().getDescription() + ". Contact support.");
+                    case LIM:
+                        LOG.warn("Account Active access limited {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
+                        IntRandomNumberGenerator intRandomNumberGenerator = IntRandomNumberGenerator.newInstanceExclusiveOfMaxRange(2, 6);
+                        executorService.schedule(() -> accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId()), intRandomNumberGenerator.nextInt(), TimeUnit.MINUTES);
+                    default:
+                        LOG.error("Reached condition for invalid account qid={} {}", userAccount.getQueueUserId(), userAccount.getAccountInactiveReason());
+                        throw new AccountNotActiveException("Account is blocked. Contact support.");
+                }
             }
+        } catch (Exception e) {
+            LOG.error("Failed on checking account inactive qid={} reason={}", userAccount.getQueueUserId(), e.getLocalizedMessage(), e);
         }
     }
 
