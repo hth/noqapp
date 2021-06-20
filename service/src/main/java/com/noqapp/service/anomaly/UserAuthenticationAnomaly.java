@@ -41,7 +41,7 @@ public class UserAuthenticationAnomaly {
             stream.iterator().forEachRemaining(userAuthenticationEntity -> {
                 boolean exists = userAccountManager.existWithAuth(userAuthenticationEntity.getId());
                 if (!exists) {
-                    LOG.warn("Orphan {} created {} not being used", userAuthenticationEntity.getId(), userAuthenticationEntity.getCreated());
+                    LOG.error("Orphan {} created {} not being used", userAuthenticationEntity.getId(), userAuthenticationEntity.getCreated());
                     countOrphan.getAndIncrement();
                 }
             });
