@@ -2,9 +2,9 @@ package com.noqapp.domain;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
-import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
+import com.noqapp.domain.types.PersonalityTraitsEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -110,6 +110,10 @@ public class UserProfileEntity extends BaseEntity {
 
     @Field("PV")
     private boolean profileVerified;
+
+    /** To be used for posting. */
+    @Field("PT")
+    private PersonalityTraitsEnum personalityTraits;
 
     /** To make bean happy. */
     public UserProfileEntity() {
@@ -319,6 +323,15 @@ public class UserProfileEntity extends BaseEntity {
 
     public UserProfileEntity setProfileVerified(boolean profileVerified) {
         this.profileVerified = profileVerified;
+        return this;
+    }
+
+    public PersonalityTraitsEnum getPersonalityTraits() {
+        return personalityTraits;
+    }
+
+    public UserProfileEntity setPersonalityTraits(PersonalityTraitsEnum personalityTraits) {
+        this.personalityTraits = personalityTraits;
         return this;
     }
 

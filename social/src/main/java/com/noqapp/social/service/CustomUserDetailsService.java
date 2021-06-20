@@ -4,6 +4,7 @@ import com.noqapp.common.utils.IntRandomNumberGenerator;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.PersonalityTraitsEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.UserProfilePreferenceService;
@@ -134,11 +135,11 @@ public class CustomUserDetailsService implements UserDetailsService {
                         LOG.warn("Account Not Active {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
                         throw new AccountNotActiveException(userAccount.getAccountInactiveReason().getDescription() + ". Contact support.");
                     case LIM:
-                        LOG.warn("Account Active access limited {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
-                        executorService.schedule(() ->
-                            accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId()),
-                            IntRandomNumberGenerator.newInstanceExclusiveOfMaxRange(2, 6).nextInt(),
-                            TimeUnit.MINUTES);
+                        IntRandomNumberGenerator intRandomNumberGenerator = IntRandomNumberGenerator.newInstanceExclusiveOfMaxRange(2, 6);
+                        int minutes = intRandomNumberGenerator.nextInt();
+                        LOG.warn("Account Active access limited {} qid={} {}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId(), minutes);
+                        executorService.schedule(() -> accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId()), minutes, TimeUnit.MINUTES);
+                        accountService.updatePersonalityTrait(userAccount.getUserAuthentication().getId(), PersonalityTraitsEnum.NTW);
                     default:
                         LOG.error("Reached condition for invalid account qid={} {}", userAccount.getQueueUserId(), userAccount.getAccountInactiveReason());
                         throw new AccountNotActiveException("Account is blocked. Contact support.");
