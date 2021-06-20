@@ -45,7 +45,7 @@ public abstract class JsonMarketplace extends AbstractDomain {
     private double[] coordinate;
 
     @JsonProperty("pp")
-    private int productPrice;
+    private String productPrice;
 
     @JsonProperty("ti")
     private String title;
@@ -120,11 +120,11 @@ public abstract class JsonMarketplace extends AbstractDomain {
         return this;
     }
 
-    public int getProductPrice() {
+    public String getProductPrice() {
         return productPrice;
     }
 
-    public JsonMarketplace setProductPrice(int productPrice) {
+    public JsonMarketplace setProductPrice(String productPrice) {
         this.productPrice = productPrice;
         return this;
     }
