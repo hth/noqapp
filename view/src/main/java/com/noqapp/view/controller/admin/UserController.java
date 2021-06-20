@@ -98,22 +98,26 @@ public class UserController {
         UserAccountEntity userAccount = accountService.findByQueueUserId(searchUserForm.getQid().getText());
         if (null != userAccount) {
             if (searchUserForm.getAccountInactiveReason() != null) {
-                userAccount.inActive();
                 switch (searchUserForm.getAccountInactiveReason()) {
                     case ANV:
                         userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.ANV);
+                        userAccount.inActive();
                         break;
                     case BOC:
                         userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.BOC);
+                        userAccount.inActive();
                         break;
                     case BUP:
                         userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.BUP);
+                        userAccount.inActive();
                         break;
                     case ADP:
                         userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.ADP);
+                        userAccount.inActive();
                         break;
                     case LIM:
                         userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.LIM);
+                        userAccount.active();
                         break;
                     default:
                         LOG.error("Reached unsupported condition actionType={}", searchUserForm.getAccountInactiveReason());

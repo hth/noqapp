@@ -24,6 +24,7 @@ import com.noqapp.domain.json.JsonUserAddress;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
 import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.domain.types.GenderEnum;
+import com.noqapp.domain.types.PersonalityTraitsEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.ForgotRecoverManager;
@@ -817,6 +818,12 @@ public class AccountService {
         String updatedAuthenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
         userAuthenticationManager.updateAuthenticationKey(id, updatedAuthenticationKey);
         return updatedAuthenticationKey;
+    }
+
+    public void updatePersonalityTrait(String qid, PersonalityTraitsEnum personalityTraits) {
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+        userProfile.setPersonalityTraits(personalityTraits);
+        userProfileManager.save(userProfile);
     }
 
     @Mobile
