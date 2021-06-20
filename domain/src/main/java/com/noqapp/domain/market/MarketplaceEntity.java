@@ -302,6 +302,10 @@ public abstract class MarketplaceEntity extends BaseEntity {
 
     @Transient
     public boolean isPostingExpired() {
-        return DateUtil.getUTCDate().after(publishUntil);
+        if (null != publishUntil) {
+            return DateUtil.getUTCDate().after(publishUntil);
+        }
+
+        return false;
     }
 }

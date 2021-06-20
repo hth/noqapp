@@ -63,6 +63,18 @@ public class PropertyRentalMarketplaceValidator {
             status = "failure";
         }
 
+        if (null != marketplaceForm.getMarketplace()) {
+            if (null != marketplaceForm.getMarketplace().getPublishUntil() && marketplaceForm.getMarketplace().isPostingExpired()) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("businessType")
+                        .defaultText("Cannot edit expired post")
+                        .build());
+                status = "failure";
+            }
+        }
+
         return status;
     }
 
