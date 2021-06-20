@@ -5,6 +5,7 @@ import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
+import com.noqapp.domain.types.PersonalityTraitsEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.view.form.admin.SearchUserForm;
 
@@ -118,6 +119,7 @@ public class UserController {
                     case LIM:
                         userAccount.setAccountInactiveReason(AccountInactiveReasonEnum.LIM);
                         userAccount.active();
+                        accountService.updatePersonalityTrait(userAccount.getQueueUserId(), PersonalityTraitsEnum.NTW);
                         break;
                     default:
                         LOG.error("Reached unsupported condition actionType={}", searchUserForm.getAccountInactiveReason());
