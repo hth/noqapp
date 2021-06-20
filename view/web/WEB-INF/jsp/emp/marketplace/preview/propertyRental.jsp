@@ -105,8 +105,8 @@
                                 <div class="col-lable3">
                                     <form:label path="productPrice" cssErrorClass="lb_error">Rent per Month</form:label>
                                 </div>
-                                <div class="col-fields">
-                                    <form:input path="productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                <div class="col-fields" style="margin-top: 10px;">
+                                    ${marketplace.priceForDisplay}
                                 </div>
                                 <span class="tooltip" title="Rent on this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -117,7 +117,7 @@
                                     <form:label path="rentalType" cssErrorClass="lb_error">Rental Type</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="rentalType" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="rentalType.description" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Type of rental property" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>

@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.access;
 
+import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
@@ -8,8 +9,6 @@ import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.PropertyRentalManager;
-import com.noqapp.search.elastic.helper.DomainConversion;
-import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.service.ExternalService;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 import com.noqapp.view.form.marketplace.PropertyRentalMarketplaceForm;
@@ -105,11 +104,12 @@ public class PropertyRentalMarketplaceFlowActions {
         if (StringUtils.isNotBlank(postId)) {
             switch (BusinessTypeEnum.valueOf(businessTypeAsString)) {
                 case PR:
-                    PropertyRentalEntity propertyRental = propertyRentalManager.findOneById(postId);
-                    marketplaceForm.setMarketplace(propertyRental)
-                        .setBusinessType(propertyRental.getBusinessType())
-                        .setCity(propertyRental.getCity())
-                        .setCoordinate(propertyRental.getCoordinate());
+                    MarketplaceEntity marketplace = propertyRentalManager.findOneById(postId);
+                    marketplaceForm.setMarketplace(marketplace)
+                        .setBusinessType(marketplace.getBusinessType())
+                        .setCity(marketplace.getCity())
+                        .setCoordinate(marketplace.getCoordinate())
+                        .setListPrice(marketplace.productPriceForDisplay());
                     break;
                 default:
                     LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());
@@ -151,6 +151,8 @@ public class PropertyRentalMarketplaceFlowActions {
         switch (marketplaceForm.getBusinessType()) {
             case PR:
                 PropertyRentalEntity marketplace = (PropertyRentalEntity) marketplaceForm.getMarketplace();
+                marketplace.setProductPrice(marketplaceForm.getListPriceForDB());
+
                 boolean isUserProfileVerified = userProfileManager.isProfileVerified(queueUser.getQueueUserId());
                 marketplace.setBusinessType(marketplaceForm.getBusinessType())
                     .setQueueUserId(queueUser.getQueueUserId())

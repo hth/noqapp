@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.access.validator;
 
+import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -112,19 +113,6 @@ public class HouseholdItemMarketplaceValidator {
     public String validateReadyToPostMarketplace(HouseholdItemMarketplaceForm marketplaceForm, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
-        if (BusinessTypeEnum.HI == marketplaceForm.getBusinessType()) {
-            HouseholdItemEntity householdItem = (HouseholdItemEntity) marketplaceForm.getMarketplace();
-            if (householdItem.getProductPrice() <= 0) {
-                messageContext.addMessage(
-                    new MessageBuilder()
-                        .error()
-                        .source("marketplace.productPrice")
-                        .defaultText("Please provide List Price greater than zero")
-                        .build());
-                status = "failure";
-            }
-        }
-
         if (StringUtils.isBlank(marketplaceForm.getMarketplace().getCity())) {
             messageContext.addMessage(
                 new MessageBuilder()
@@ -143,6 +131,30 @@ public class HouseholdItemMarketplaceValidator {
                     .defaultText("Please provide town/locality/sector where item  is located")
                     .build());
             status = "failure";
+        }
+
+        if (BusinessTypeEnum.HI == marketplaceForm.getBusinessType()) {
+            HouseholdItemEntity householdItem = (HouseholdItemEntity) marketplaceForm.getMarketplace();
+            if (!Validate.isValidPrice(marketplaceForm.getListPrice())) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("listPrice")
+                        .defaultText("Please correct List Price to match format ####.## and without ','")
+                        .build());
+                status = "failure";
+                return status;
+            }
+
+            if (marketplaceForm.isListPriceValid()) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("listPrice")
+                        .defaultText("List Price should be greater than zero")
+                        .build());
+                status = "failure";
+            }
         }
 
         return status;

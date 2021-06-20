@@ -1,10 +1,14 @@
 package com.noqapp.domain.market;
 
 import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
+
+import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +18,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import org.elasticsearch.common.geo.GeoPoint;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -42,7 +47,7 @@ public abstract class MarketplaceEntity extends BaseEntity {
     private double[] coordinate;
 
     @Field("PP")
-    private int productPrice;
+    private String productPrice;
 
     @Field("TI")
     private String title;
@@ -117,11 +122,11 @@ public abstract class MarketplaceEntity extends BaseEntity {
         return this;
     }
 
-    public int getProductPrice() {
+    public String getProductPrice() {
         return productPrice;
     }
 
-    public MarketplaceEntity setProductPrice(int productPrice) {
+    public MarketplaceEntity setProductPrice(String productPrice) {
         this.productPrice = productPrice;
         return this;
     }
@@ -261,9 +266,20 @@ public abstract class MarketplaceEntity extends BaseEntity {
         return this;
     }
 
+    /** Shifting decimal point. */
+    @Transient
+    public String productPriceForDisplay() {
+        BigDecimal transactionAmount = new BigDecimal(productPrice);
+        return correctPriceForPost(transactionAmount);
+    }
+
+    private static String correctPriceForPost(final BigDecimal transactionAmount) {
+        return transactionAmount.scaleByPowerOfTen(-2).toString();
+    }
+
     @Transient
     public String getPriceForDisplay() {
-        return CommonUtil.displayWithCurrencyCode(productPrice, countryShortName);
+        return CommonUtil.displayWithCurrencyCode(MathUtil.displayPrice(productPrice), countryShortName);
     }
 
     @Transient
@@ -283,4 +299,9 @@ public abstract class MarketplaceEntity extends BaseEntity {
 
     @Transient
     abstract public String[] getFieldTags();
+
+    @Transient
+    public boolean isPostingExpired() {
+        return DateUtil.getUTCDate().after(publishUntil);
+    }
 }

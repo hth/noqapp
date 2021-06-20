@@ -29,4 +29,12 @@ public class MathUtil {
     public static String displayPrice(int number) {
         return new BigDecimal(number).scaleByPowerOfTen(-2).toString();
     }
+
+    public static String correctPriceForDB(final BigDecimal number) {
+        return number.scaleByPowerOfTen(2).toString();
+    }
+
+    public static String correctPriceForDB(String number) {
+        return correctPriceForDB(new BigDecimal(number));
+    }
 }

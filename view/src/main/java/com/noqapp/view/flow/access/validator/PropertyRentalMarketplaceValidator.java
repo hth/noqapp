@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.access.validator;
 
+import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -112,6 +113,36 @@ public class PropertyRentalMarketplaceValidator {
     public String validateReadyToPostMarketplace(PropertyRentalMarketplaceForm marketplaceForm, MessageContext messageContext) {
         String status = LandingController.SUCCESS;
 
+        if (StringUtils.isBlank(marketplaceForm.getMarketplace().getAddress())) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("marketplace.address")
+                    .defaultText("Please provide rental address where rental unit is located. Address stays private.")
+                    .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isBlank(marketplaceForm.getMarketplace().getCity())) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("marketplace.city")
+                    .defaultText("Please provide city/area where rental unit is located")
+                    .build());
+            status = "failure";
+        }
+
+        if (StringUtils.isBlank(marketplaceForm.getMarketplace().getTown())) {
+            messageContext.addMessage(
+                new MessageBuilder()
+                    .error()
+                    .source("marketplace.town")
+                    .defaultText("Please provide town/locality/sector where rental unit is located")
+                    .build());
+            status = "failure";
+        }
+
         if (BusinessTypeEnum.PR == marketplaceForm.getBusinessType()) {
             PropertyRentalEntity propertyRental = (PropertyRentalEntity) marketplaceForm.getMarketplace();
             if (propertyRental.getBedroom() <= 0) {
@@ -144,45 +175,26 @@ public class PropertyRentalMarketplaceValidator {
                 status = "failure";
             }
 
-            if (propertyRental.getProductPrice() <= 0) {
+            if (!Validate.isValidPrice(marketplaceForm.getListPrice())) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()
-                        .source("marketplace.productPrice")
-                        .defaultText("Please provide Rent per Month")
+                        .source("listPrice")
+                        .defaultText("Please correct Rent per Month to match format ####.## and without ','")
+                        .build());
+                status = "failure";
+                return status;
+            }
+
+            if (marketplaceForm.isListPriceValid()) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("listPrice")
+                        .defaultText("Rent per Month should be greater than zero")
                         .build());
                 status = "failure";
             }
-        }
-
-        if (StringUtils.isBlank(marketplaceForm.getMarketplace().getAddress())) {
-            messageContext.addMessage(
-                new MessageBuilder()
-                    .error()
-                    .source("marketplace.address")
-                    .defaultText("Please provide rental address where rental unit is located. Address stays private.")
-                    .build());
-            status = "failure";
-        }
-
-        if (StringUtils.isBlank(marketplaceForm.getMarketplace().getCity())) {
-            messageContext.addMessage(
-                new MessageBuilder()
-                    .error()
-                    .source("marketplace.city")
-                    .defaultText("Please provide city/area where rental unit is located")
-                    .build());
-            status = "failure";
-        }
-
-        if (StringUtils.isBlank(marketplaceForm.getMarketplace().getTown())) {
-            messageContext.addMessage(
-                new MessageBuilder()
-                    .error()
-                    .source("marketplace.town")
-                    .defaultText("Please provide town/locality/sector where rental unit is located")
-                    .build());
-            status = "failure";
         }
 
         return status;

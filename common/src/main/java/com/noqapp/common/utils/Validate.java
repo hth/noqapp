@@ -2,6 +2,7 @@ package com.noqapp.common.utils;
 
 import org.springframework.util.Assert;
 
+import java.math.BigDecimal;
 import java.util.regex.Pattern;
 
 /**
@@ -48,5 +49,14 @@ public class Validate {
     public static boolean isValidPhoneWithInternationalCode(String text) {
         Assert.hasText(text, "Not a valid text");
         return text.startsWith("+");
+    }
+
+    public static boolean isValidPrice(String text) {
+        try {
+            new BigDecimal(text);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
