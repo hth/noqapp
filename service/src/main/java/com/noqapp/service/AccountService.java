@@ -129,7 +129,6 @@ public class AccountService {
         return userAccountManager.findByQueueUserId(qid);
     }
 
-    @Mobile
     public UserAccountEntity findByUserId(String userId) {
         return userAccountManager.findByUserId(userId);
     }
@@ -414,7 +413,6 @@ public class AccountService {
         }
     }
 
-    @Mobile
     public UserProfileEntity findProfileByInviteCode(String inviteCode) {
         return userProfileManager.inviteCodeExists(inviteCode);
     }
@@ -680,8 +678,6 @@ public class AccountService {
      * @return
      * @see com.noqapp.service.MailService#accountValidationMail(String, String, String) ()
      */
-    @Mobile
-    @SuppressWarnings ("unused")
     public UserAccountEntity updateUID(String existingUserId, String newUserId) {
         if (null != findByQueueUserId(newUserId)) {
             LOG.info("Account already exists with email {} {}", newUserId, existingUserId);
@@ -813,7 +809,6 @@ public class AccountService {
         return userAccountManager.countRegisteredBetweenDates(from, to);
     }
 
-    @Mobile
     public String updateAuthenticationKey(String id) {
         String updatedAuthenticationKey = HashText.computeBCrypt(RandomString.newInstance().nextString());
         userAuthenticationManager.updateAuthenticationKey(id, updatedAuthenticationKey);
@@ -826,7 +821,6 @@ public class AccountService {
         userProfileManager.save(userProfile);
     }
 
-    @Mobile
     public String updatePhoneNumber(String qid, String newPhone, String countryShortName, String timeZone) {
         RegisterUser registerUser = new RegisterUser();
         registerUser.setPhone(new ScrubbedInput(newPhone))
