@@ -105,6 +105,13 @@ public class PropertyRentalMarketplaceFlowActions {
             switch (BusinessTypeEnum.valueOf(businessTypeAsString)) {
                 case PR:
                     MarketplaceEntity marketplace = propertyRentalManager.findOneById(postId);
+
+                    /* Logout user when editing other user post. */
+                    QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    if (!marketplace.getQueueUserId().equalsIgnoreCase(queueUser.getQueueUserId())) {
+                        SecurityContextHolder.clearContext();
+                    }
+
                     marketplaceForm.setMarketplace(marketplace)
                         .setBusinessType(marketplace.getBusinessType())
                         .setCity(marketplace.getCity())

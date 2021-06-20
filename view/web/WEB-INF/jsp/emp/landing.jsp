@@ -217,11 +217,11 @@
                                                 <c:choose>
                                                     <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.PR}">
                                                         <i class="fas fa-home" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
-                                                        <a href="/access/marketplace/property/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                        ${marketplaceForm.marketplace.title}
                                                     </c:when>
                                                     <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.HI}">
                                                         <i class="fas fa-chair" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
-                                                        <a href="/access/marketplace/household/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                        ${marketplaceForm.marketplace.title}
                                                     </c:when>
                                                 </c:choose>
                                             </td>
