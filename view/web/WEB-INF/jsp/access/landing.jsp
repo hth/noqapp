@@ -178,14 +178,30 @@
                                                 <td>${status.count}&nbsp;</td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.PR}">
-                                                            <i class="fas fa-home" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
-                                                            <a href="/access/marketplace/property/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                        <c:when test="${marketplaceForm.marketplace.postingExpired}">
+                                                            <c:choose>
+                                                                <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.PR}">
+                                                                    <i class="fas fa-home" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
+                                                                    ${marketplaceForm.marketplace.title}
+                                                                </c:when>
+                                                                <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.HI}">
+                                                                    <i class="fas fa-chair" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
+                                                                    ${marketplaceForm.marketplace.title}
+                                                                </c:when>
+                                                            </c:choose>
                                                         </c:when>
-                                                        <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.HI}">
-                                                            <i class="fas fa-chair" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
-                                                            <a href="/access/marketplace/household/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
-                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <c:choose>
+                                                                <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.PR}">
+                                                                    <i class="fas fa-home" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
+                                                                    <a href="/access/marketplace/property/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                                </c:when>
+                                                                <c:when test="${marketplaceForm.marketplace.businessType eq BusinessTypeEnum.HI}">
+                                                                    <i class="fas fa-chair" style="color:#ff217c;" title="${marketplaceForm.marketplace.businessType.description}"></i>
+                                                                    <a href="/access/marketplace/household/edit/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}" target="_blank">${marketplaceForm.marketplace.title}</a>
+                                                                </c:when>
+                                                            </c:choose>
+                                                        </c:otherwise>
                                                     </c:choose>
                                                 </td>
                                                 <td>${marketplaceForm.marketplace.priceForDisplay}</td>
@@ -195,9 +211,12 @@
                                                         <c:when test="${empty marketplaceForm.marketplace.publishUntil}">
                                                             NA
                                                         </c:when>
+                                                        <c:when test="${marketplaceForm.marketplace.postingExpired}">
+                                                            <fmt:formatDate pattern="MMMM dd" value="${marketplaceForm.marketplace.publishUntil}"/> <span style="font-size: x-small">(Expired)</span>
+                                                        </c:when>
                                                         <c:otherwise>
                                                             <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost">
-                                                                <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
+                                                                <fmt:formatDate pattern="MMMM dd" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
                                                             </a>
                                                         </c:otherwise>
                                                     </c:choose>

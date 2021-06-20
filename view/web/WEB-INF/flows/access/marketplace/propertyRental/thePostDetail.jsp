@@ -93,10 +93,10 @@
                             <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
                                 <li>
                                     <div class="col-lable3">
-                                        <form:label path="marketplace.productPrice" cssErrorClass="lb_error">Rent per Month</form:label>
+                                        <form:label path="listPrice" cssErrorClass="lb_error">Rent per Month</form:label>
                                     </div>
                                     <div class="col-fields">
-                                        <form:input path="marketplace.productPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
+                                        <form:input path="listPrice" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field"/>
                                     </div>
                                     <span class="tooltip" title="Rent on this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                     <sup style="color: #9f1313; font-size: 150%;">*</sup>

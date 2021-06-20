@@ -2,6 +2,7 @@ package com.noqapp.view.flow.access;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.market.HouseholdItemEntity;
+import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
 import com.noqapp.domain.site.QueueUser;
@@ -104,11 +105,19 @@ public class HouseholdItemMarketplaceFlowActions {
         if (StringUtils.isNotBlank(postId)) {
             switch (BusinessTypeEnum.valueOf(businessTypeAsString)) {
                 case HI:
-                    HouseholdItemEntity property = householdItemManager.findOneById(postId);
-                    marketplaceForm.setMarketplace(property)
-                        .setBusinessType(property.getBusinessType())
-                        .setCity(property.getCity())
-                        .setCoordinate(marketplaceForm.getCoordinate());
+                    MarketplaceEntity marketplace = householdItemManager.findOneById(postId);
+
+                    /* Logout user when editing other user post. */
+                    QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                    if (!marketplace.getQueueUserId().equalsIgnoreCase(queueUser.getQueueUserId())) {
+                        SecurityContextHolder.clearContext();
+                    }
+
+                    marketplaceForm.setMarketplace(marketplace)
+                        .setBusinessType(marketplace.getBusinessType())
+                        .setCity(marketplace.getCity())
+                        .setCoordinate(marketplaceForm.getCoordinate())
+                        .setListPrice(marketplace.productPriceForDisplay());
                     break;
                 default:
                     LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());
@@ -150,6 +159,8 @@ public class HouseholdItemMarketplaceFlowActions {
         switch (marketplaceForm.getBusinessType()) {
             case HI:
                 HouseholdItemEntity marketplace = (HouseholdItemEntity) marketplaceForm.getMarketplace();
+                marketplace.setProductPrice(marketplaceForm.getListPriceForDB());
+
                 boolean isUserProfileVerified = userProfileManager.isProfileVerified(queueUser.getQueueUserId());
                 marketplace.setBusinessType(marketplaceForm.getBusinessType())
                     .setQueueUserId(queueUser.getQueueUserId())

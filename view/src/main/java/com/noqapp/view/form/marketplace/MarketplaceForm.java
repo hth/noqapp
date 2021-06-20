@@ -1,5 +1,6 @@
 package com.noqapp.view.form.marketplace;
 
+import com.noqapp.common.utils.MathUtil;
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -38,6 +40,7 @@ public class MarketplaceForm implements Serializable {
     /* Format Longitude and then Latitude. */
     private double[] coordinate;
 
+    private String listPrice;
     private BusinessTypeEnum businessType;
     private boolean postingAllowed;
 
@@ -102,6 +105,15 @@ public class MarketplaceForm implements Serializable {
         return this;
     }
 
+    public String getListPrice() {
+        return listPrice;
+    }
+
+    public MarketplaceForm setListPrice(String listPrice) {
+        this.listPrice = listPrice;
+        return this;
+    }
+
     public BusinessTypeEnum getBusinessType() {
         return businessType;
     }
@@ -145,5 +157,15 @@ public class MarketplaceForm implements Serializable {
     public MarketplaceForm setMarketPlaces(List<BusinessTypeEnum> marketPlaces) {
         this.marketPlaces = marketPlaces;
         return this;
+    }
+
+    @Transient
+    public String getListPriceForDB() {
+        return MathUtil.correctPriceForDB(listPrice);
+    }
+
+    @Transient
+    public boolean isListPriceValid() {
+        return new BigDecimal(listPrice).intValue() < 1;
     }
 }
