@@ -134,9 +134,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     case LIM:
                         IntRandomNumberGenerator intRandomNumberGenerator = IntRandomNumberGenerator.newInstanceExclusiveOfMaxRange(2, 6);
                         int minutes = intRandomNumberGenerator.nextInt();
-                        LOG.warn("Account Active access limited {} qid={} {}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId(), minutes);
+                        LOG.error("Account Active access limited {} qid={} {}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId(), minutes);
                         executorService.schedule(() -> accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId()), minutes, TimeUnit.MINUTES);
-                        accountService.updatePersonalityTrait(userAccount.getUserAuthentication().getId(), PersonalityTraitsEnum.NTW);
                     default:
                         LOG.error("Reached condition for invalid account qid={} {}", userAccount.getQueueUserId(), userAccount.getAccountInactiveReason());
                         throw new AccountNotActiveException("Account is blocked. Contact support.");
