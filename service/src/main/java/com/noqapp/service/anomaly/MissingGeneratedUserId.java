@@ -9,13 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Objects;
 
 /**
  * User: hitender
@@ -31,12 +31,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class MissingGeneratedUserId {
     private static final Logger LOG = LoggerFactory.getLogger(MissingGeneratedUserId.class);
 
+    private int lookBackForQids;
+
     private UserAccountManager userAccountManager;
     private GenerateUserIdManager generateUserIdManager;
     private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     public MissingGeneratedUserId(
+        Environment environment,
         UserAccountManager userAccountManager,
         GenerateUserIdManager generateUserIdManager,
         StringRedisTemplate stringRedisTemplate
@@ -44,6 +47,8 @@ public class MissingGeneratedUserId {
         this.userAccountManager = userAccountManager;
         this.generateUserIdManager = generateUserIdManager;
         this.stringRedisTemplate = stringRedisTemplate;
+
+        this.lookBackForQids = Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod") ? 2_000 : 10;
     }
 
     /**
@@ -53,11 +58,11 @@ public class MissingGeneratedUserId {
     public void populateWithMissingQID() {
         List<String> qidsThatWereMissed = new LinkedList<>();
         long lastNumber = generateUserIdManager.getLastGenerateUserId();
-        for (long i = lastNumber - 2_000; i <= lastNumber; i++) {
+        for (long i = lastNumber - lookBackForQids; i <= lastNumber; i++) {
             UserAccountEntity userAccount = userAccountManager.findByQueueUserId(String.valueOf(i));
             if (null == userAccount) {
                 qidsThatWereMissed.add(String.valueOf(i));
-                LOG.warn("Found missed QID={}", i);
+                LOG.error("Found missed QID={}", i);
             }
         }
 
