@@ -469,7 +469,8 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     @Override
     public Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInMeters) {
         Date date = Date.from(Instant.now().minus(Duration.ofDays(90)));
-        NearQuery query = NearQuery.near(point).maxDistance(new Distance(distanceInMeters, Metrics.KILOMETERS)).query(query(where("U").gte(date)));
+        NearQuery query = NearQuery.near(point).maxDistance(new Distance(distanceInMeters, Metrics.KILOMETERS))
+            .query(query(where("QID").exists(true).and("U").gte(date)));
         return mongoTemplate.geoNear(query, RegisteredDeviceEntity.class, TABLE).getContent().stream();
     }
 }
