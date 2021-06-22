@@ -44,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.util.CloseableIterator;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -56,6 +57,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -889,5 +891,9 @@ public class AccountService {
         }
 
         return DateUtil.getDaysBetween(userAccount.getCreated()) >= 10;
+    }
+
+    public Stream<UserAccountEntity> getAccountsWithLimitedAccess(AccountInactiveReasonEnum accountInactiveReason) {
+        return userAccountManager.getAccountsWithLimitedAccess(accountInactiveReason);
     }
 }

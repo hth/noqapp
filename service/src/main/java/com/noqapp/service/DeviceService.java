@@ -13,7 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.GeoResult;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -79,5 +83,9 @@ public class DeviceService {
         }
 
         return registeredDevice;
+    }
+
+    public Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInMeters) {
+        return registeredDeviceManager.findInProximity(point, distanceInMeters);
     }
 }

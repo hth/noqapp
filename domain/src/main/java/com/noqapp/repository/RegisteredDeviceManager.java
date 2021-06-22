@@ -6,6 +6,7 @@ import com.noqapp.domain.types.AppFlavorEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 
 import org.springframework.data.geo.GeoResult;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 
 import java.util.Date;
 import java.util.List;
@@ -103,5 +104,7 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
 
     List<RegisteredDeviceEntity> findAlmostObsoleteDevices();
 
-    Stream<GeoResult<RegisteredDeviceEntity>> findDevicesWithinVicinity(double[] coordinate, int distanceToPropagateInformation);
+    Stream<GeoResult<RegisteredDeviceEntity>> findDevicesWithinVicinity(double[] coordinate, double distanceToPropagateInformation);
+
+    Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInMeters);
 }

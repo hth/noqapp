@@ -64,9 +64,9 @@ public enum IncidentEventEnum {
     private final String name;
     private final String appendTopic;
     private final BrahmandEnum brahmand;
-    private final int distanceToPropagateInformation;
+    private final double distanceToPropagateInformation;
 
-    IncidentEventEnum(String name, String description, String appendTopic, BrahmandEnum brahmand, int distanceToPropagateInformation) {
+    IncidentEventEnum(String name, String description, String appendTopic, BrahmandEnum brahmand, double distanceToPropagateInformation) {
         this.name = name;
         this.description = description;
         this.appendTopic = appendTopic;
@@ -90,7 +90,7 @@ public enum IncidentEventEnum {
         return brahmand;
     }
 
-    public int getDistanceToPropagateInformation() {
+    public double getDistanceToPropagateInformation() {
         return distanceToPropagateInformation;
     }
 
