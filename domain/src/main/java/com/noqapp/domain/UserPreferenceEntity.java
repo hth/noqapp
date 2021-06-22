@@ -50,11 +50,11 @@ public class UserPreferenceEntity extends BaseEntity {
     @Field("ST")
     private Set<String> subscriptionTopics = new HashSet<>();
 
-    /** Store codeQR. */
+    /** BizStore codeQR. */
     @Field("FT")
     private Set<String> favoriteTagged = new HashSet<>();
 
-    /** Store codeQR. */
+    /** BizStore codeQR. */
     @Field("FS")
     private Set<String> favoriteSuggested = new HashSet<>();
 
