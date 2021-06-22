@@ -42,6 +42,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -458,15 +460,18 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
 
     @Override
     public Stream<GeoResult<RegisteredDeviceEntity>> findDevicesWithinVicinity(double[] coordinate, double distanceToPropagateInformation) {
+        Date date = Date.from(Instant.now().minus(Duration.ofDays(90)));
         Point location = new Point(coordinate[0], coordinate[1]);
-        NearQuery query = NearQuery.near(location).maxDistance(new Distance(distanceToPropagateInformation, Metrics.KILOMETERS));
-
+        NearQuery query = NearQuery.near(location).maxDistance(new Distance(distanceToPropagateInformation, Metrics.KILOMETERS))
+            .query(query(where("QID").exists(true).and("U").gte(date)));
         return mongoTemplate.geoNear(query, RegisteredDeviceEntity.class, TABLE).getContent().stream();
     }
 
     @Override
     public Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInMeters) {
-        NearQuery query = NearQuery.near(point).maxDistance(new Distance(distanceInMeters, Metrics.KILOMETERS));
+        Date date = Date.from(Instant.now().minus(Duration.ofDays(90)));
+        NearQuery query = NearQuery.near(point).maxDistance(new Distance(distanceInMeters, Metrics.KILOMETERS))
+            .query(query(where("QID").exists(true).and("U").gte(date)));
         return mongoTemplate.geoNear(query, RegisteredDeviceEntity.class, TABLE).getContent().stream();
     }
 }
