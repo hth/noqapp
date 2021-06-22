@@ -314,6 +314,10 @@ public class RegisteredDeviceEntity extends BaseEntity {
         return this;
     }
 
+    public GeoJsonPoint getPoint() {
+        return point;
+    }
+
     public String getIpAddress() {
         return ipAddress;
     }

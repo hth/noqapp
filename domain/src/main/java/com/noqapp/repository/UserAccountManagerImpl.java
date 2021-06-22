@@ -24,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -157,6 +158,15 @@ public class UserAccountManagerImpl implements UserAccountManager {
             UserAccountEntity.class,
             TABLE
         );
+    }
+
+    @Override
+    public Stream<UserAccountEntity> getAccountsWithLimitedAccess(AccountInactiveReasonEnum accountInactiveReason) {
+        return mongoTemplate.stream(
+            query(where("AIR").is(accountInactiveReason)),
+            UserAccountEntity.class,
+            TABLE
+        ).stream();
     }
 }
 

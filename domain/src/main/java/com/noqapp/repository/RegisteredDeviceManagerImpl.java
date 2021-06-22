@@ -457,10 +457,16 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public Stream<GeoResult<RegisteredDeviceEntity>> findDevicesWithinVicinity(double[] coordinate, int distanceToPropagateInformation) {
+    public Stream<GeoResult<RegisteredDeviceEntity>> findDevicesWithinVicinity(double[] coordinate, double distanceToPropagateInformation) {
         Point location = new Point(coordinate[0], coordinate[1]);
         NearQuery query = NearQuery.near(location).maxDistance(new Distance(distanceToPropagateInformation, Metrics.KILOMETERS));
 
+        return mongoTemplate.geoNear(query, RegisteredDeviceEntity.class, TABLE).getContent().stream();
+    }
+
+    @Override
+    public Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInMeters) {
+        NearQuery query = NearQuery.near(point).maxDistance(new Distance(distanceInMeters, Metrics.KILOMETERS));
         return mongoTemplate.geoNear(query, RegisteredDeviceEntity.class, TABLE).getContent().stream();
     }
 }

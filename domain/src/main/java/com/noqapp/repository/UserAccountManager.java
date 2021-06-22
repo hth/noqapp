@@ -4,6 +4,7 @@ import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.types.AccountInactiveReasonEnum;
 
 import java.util.Date;
+import java.util.stream.Stream;
 
 /**
  * User: hitender
@@ -31,4 +32,6 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
     void increaseOTPCount(String qid);
 
     void resetOTPCount(String qid);
+
+    Stream<UserAccountEntity> getAccountsWithLimitedAccess(AccountInactiveReasonEnum accountInactiveReason);
 }
