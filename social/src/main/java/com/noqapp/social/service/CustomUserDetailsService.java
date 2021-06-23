@@ -132,7 +132,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                         LOG.warn("Account Not Active {} qid={}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId());
                         throw new AccountNotActiveException(userAccount.getAccountInactiveReason().getDescription() + ". Contact support.");
                     case LIM:
-                        IntRandomNumberGenerator intRandomNumberGenerator = IntRandomNumberGenerator.newInstanceExclusiveOfMaxRange(2, 6);
+                        IntRandomNumberGenerator intRandomNumberGenerator = IntRandomNumberGenerator.newInstanceInclusiveOfMaxRange(2, 6);
                         int minutes = intRandomNumberGenerator.nextInt();
                         LOG.error("Account Active access limited {} qid={} {}", userAccount.getAccountInactiveReason(), userAccount.getQueueUserId(), minutes);
                         executorService.schedule(() -> accountService.updateAuthenticationKey(userAccount.getUserAuthentication().getId()), minutes, TimeUnit.MINUTES);
