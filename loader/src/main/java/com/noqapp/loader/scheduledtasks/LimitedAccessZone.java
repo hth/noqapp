@@ -51,7 +51,7 @@ public class LimitedAccessZone {
         this.statsCronService = statsCronService;
     }
 
-    @Scheduled(cron = "${loader.DailyRegistrationStatusMail.registrationStatusMail}")
+    @Scheduled(fixedDelayString = "${loader.BusinessStatsMail.businessStatusMail}")
     public void listDevicesInLimitedZone() {
         StatsCronEntity statsCron = new StatsCronEntity(
             ExpireRecordsProcess.class.getName(),
