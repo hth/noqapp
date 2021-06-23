@@ -86,6 +86,7 @@ public class DeviceService {
     }
 
     public Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInMeters) {
+        LOG.info("Finding in proximity x={} y={}", point.getX(), point.getY());
         return registeredDeviceManager.findInProximity(point, distanceInMeters);
     }
 }
