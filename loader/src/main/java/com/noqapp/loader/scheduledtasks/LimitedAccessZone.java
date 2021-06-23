@@ -65,6 +65,7 @@ public class LimitedAccessZone {
         AtomicInteger failure = new AtomicInteger();
         AtomicLong recordsFound = new AtomicLong();
         try {
+            LOG.info("Finding proximity devices");
             try (Stream<UserAccountEntity> userAccounts = accountService.getAccountsWithLimitedAccess(AccountInactiveReasonEnum.LIM)) {
                 userAccounts.iterator().forEachRemaining(userAccount -> {
                     RegisteredDeviceEntity registeredDevice = deviceService.findRecentDevice(userAccount.getQueueUserId());
