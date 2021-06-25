@@ -71,8 +71,9 @@ public class PointEarnedComputation {
                         success.getAndIncrement();
                     } catch (Exception e) {
                         failure.getAndIncrement();
-                        LOG.error("Failed to insert in elastic data={} reason={}",
+                        LOG.error("Failed to update point earned in userPreference id={} qid={} reason={}",
                             pointEarned.getId(),
+                            pointEarned.getQueueUserId(),
                             e.getLocalizedMessage(),
                             e);
                     }

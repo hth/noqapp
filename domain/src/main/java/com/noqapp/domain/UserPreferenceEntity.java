@@ -62,6 +62,7 @@ public class UserPreferenceEntity extends BaseEntity {
     @Field("SQ")
     private Set<String> sosReceiverQids = new HashSet<>();
 
+    /** Net point earned. */
     @Field("EP")
     private int earnedPoint = 0;
 
