@@ -1,3 +1,12 @@
+### Changed Jun 25, 2021
+
+    Drop collection of INVITE
+
+Reset of FT and FS
+
+    db.getCollection('USER_PREFERENCE').update({"FS" : {$gt: []}}, {$set : {"FS" : []}}, {multi: true});
+    db.getCollection('USER_PREFERENCE').update({"FT" : {$gt: []}}, {$set : {"FT" : []}}, {multi: true});
+
 ### Changed Jun 11, 2021
 
 Delete record as not referenced anywhere 
