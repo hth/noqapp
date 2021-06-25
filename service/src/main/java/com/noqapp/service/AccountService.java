@@ -9,6 +9,7 @@ import com.noqapp.common.utils.Formatter;
 import com.noqapp.common.utils.HashText;
 import com.noqapp.common.utils.RandomString;
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.GenerateUserIds;
@@ -804,9 +805,11 @@ public class AccountService {
     }
 
     public void updatePersonalityTrait(String qid, PersonalityTraitsEnum personalityTraits) {
-        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
-        userProfile.setPersonalityTraits(personalityTraits);
-        userProfileManager.save(userProfile);
+        if (null != personalityTraits && Validate.isValidQid(qid)) {
+            UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+            userProfile.setPersonalityTraits(personalityTraits);
+            userProfileManager.save(userProfile);
+        }
     }
 
     public String updatePhoneNumber(String qid, String newPhone, String countryShortName, String timeZone) {
