@@ -13,6 +13,7 @@ import com.noqapp.domain.ScheduledTaskEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonProfile;
@@ -34,6 +35,7 @@ import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.UserAccountManager;
+import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.exceptions.AppointmentBookingException;
 import com.noqapp.service.exceptions.AppointmentCancellationException;
@@ -75,6 +77,7 @@ public class ScheduleAppointmentService {
     private StoreHourManager storeHourManager;
     private UserProfileManager userProfileManager;
     private UserAccountManager userAccountManager;
+    private UserPreferenceManager userPreferenceManager;
     private RegisteredDeviceManager registeredDeviceManager;
     private TokenQueueManager tokenQueueManager;
     private ScheduledTaskManager scheduledTaskManager;
@@ -107,6 +110,7 @@ public class ScheduleAppointmentService {
         StoreHourManager storeHourManager,
         UserProfileManager userProfileManager,
         UserAccountManager userAccountManager,
+        UserPreferenceManager userPreferenceManager,
         RegisteredDeviceManager registeredDeviceManager,
         TokenQueueManager tokenQueueManager,
         ScheduledTaskManager scheduledTaskManager,
@@ -126,6 +130,7 @@ public class ScheduleAppointmentService {
         this.storeHourManager = storeHourManager;
         this.userProfileManager = userProfileManager;
         this.userAccountManager = userAccountManager;
+        this.userPreferenceManager = userPreferenceManager;
         this.registeredDeviceManager = registeredDeviceManager;
         this.tokenQueueManager = tokenQueueManager;
         this.scheduledTaskManager = scheduledTaskManager;
@@ -194,7 +199,8 @@ public class ScheduleAppointmentService {
 
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+        int earnedPoint = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, earnedPoint);
 
         if (AppointmentStatusEnum.A == appointmentStatus) {
             switch (bizStore.getAppointmentState()) {
@@ -275,7 +281,8 @@ public class ScheduleAppointmentService {
     public JsonSchedule populateJsonSchedule(ScheduleAppointmentEntity scheduleAppointment) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+        int earnedPoint = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, earnedPoint);
 
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile);
     }
@@ -371,7 +378,8 @@ public class ScheduleAppointmentService {
             for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
                 UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
                 UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-                JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+                int earnedPoint = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
+                JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, earnedPoint);
                 jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile));
             }
 
@@ -421,7 +429,8 @@ public class ScheduleAppointmentService {
         }
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+        int earnedPoint = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount,earnedPoint);
         BizStoreEntity bizStore = bizService.findByCodeQR(scheduleAppointment.getCodeQR());
 
         switch (appointmentStatus) {
@@ -527,12 +536,13 @@ public class ScheduleAppointmentService {
 
     private void populateJsonScheduleList(
         JsonScheduleList jsonScheduleList,
-        String queueUserId, 
+        String queueUserId,
         List<ScheduleAppointmentEntity> scheduleAppointments
     ) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
-        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount);
+        int earnedPoint = userPreferenceManager.getEarnedPoint(queueUserId);
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, earnedPoint);
 
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             BizStoreEntity bizStore = bizService.findByCodeQR(scheduleAppointment.getCodeQR());

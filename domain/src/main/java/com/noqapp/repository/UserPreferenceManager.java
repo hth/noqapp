@@ -26,5 +26,9 @@ public interface UserPreferenceManager extends RepositoryManager<UserPreferenceE
     void addFavorite(String qid, String codeQR);
 
     void removeFavorite(String qid, String codeQR);
+
+    void updatePoint(String qid, int point);
+
+    int getEarnedPoint(String qid);
 }
 

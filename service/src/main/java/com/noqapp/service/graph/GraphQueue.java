@@ -3,13 +3,12 @@ package com.noqapp.service.graph;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.UserProfileEntity;
-import com.noqapp.domain.neo4j.LocationN4j;
 import com.noqapp.domain.neo4j.PersonN4j;
 import com.noqapp.domain.neo4j.StoreN4j;
 import com.noqapp.repository.BizStoreManager;
-import com.noqapp.repository.InviteManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
+import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.neo4j.PersonN4jManager;
 import com.noqapp.repository.neo4j.StoreN4jManager;
@@ -36,7 +35,7 @@ public class GraphQueue {
     private QueueManagerJDBC queueManagerJDBC;
     private UserProfileManager userProfileManager;
     private BizStoreManager bizStoreManager;
-    private InviteManager inviteManager;
+    private UserPreferenceManager userPreferenceManager;
 
     @Autowired
     public GraphQueue(
@@ -47,7 +46,7 @@ public class GraphQueue {
         QueueManagerJDBC queueManagerJDBC,
         UserProfileManager userProfileManager,
         BizStoreManager bizStoreManager,
-        InviteManager inviteManager
+        UserPreferenceManager userPreferenceManager
     ) {
         this.storeN4jManager = storeN4jManager;
         this.personN4jManager = personN4jManager;
@@ -56,7 +55,7 @@ public class GraphQueue {
         this.queueManagerJDBC = queueManagerJDBC;
         this.userProfileManager = userProfileManager;
         this.bizStoreManager = bizStoreManager;
-        this.inviteManager = inviteManager;
+        this.userPreferenceManager = userPreferenceManager;
     }
 
     public PersonN4j graphUser(String qid) {
@@ -68,7 +67,7 @@ public class GraphQueue {
             .setQid(qid)
             .setName(userProfile.getName())
             .setLastAccessed(new Date())
-            .setPoints(inviteManager.computePoints(qid));
+            .setEarnedPoint(userPreferenceManager.getEarnedPoint(qid));
 
         String codeQR = queueManagerJDBC.clientLatestVisit(qid);
         if (StringUtils.isNotBlank(codeQR)) {

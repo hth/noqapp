@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import com.noqapp.domain.GenerateUserIds;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.repository.ForgotRecoverManager;
+import com.noqapp.repository.PointEarnedManager;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAuthenticationManager;
 import com.noqapp.repository.UserPreferenceManager;
@@ -27,7 +28,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,9 +40,9 @@ class AccountServiceTest {
     @Mock private UserAuthenticationManager userAuthenticationManager;
     @Mock private UserPreferenceManager userPreferenceManager;
     @Mock private UserProfileManager userProfileManager;
+    @Mock private PointEarnedManager pointEarnedManager;
     @Mock private GenerateUserIdService generateUserIdService;
     @Mock private EmailValidateService emailValidateService;
-    @Mock private InviteService inviteService;
     @Mock private ForgotRecoverManager forgotRecoverManager;
     @Mock private UserAddressService userAddressService;
 
@@ -55,14 +55,13 @@ class AccountServiceTest {
     void setup() {
         MockitoAnnotations.openMocks(this);
         accountService = new AccountService(
-            5,
             userAccountManager,
             userAuthenticationManager,
             userPreferenceManager,
             userProfileManager,
+            pointEarnedManager,
             generateUserIdService,
             emailValidateService,
-            inviteService,
             forgotRecoverManager,
             userAddressService,
             stringRedisTemplate

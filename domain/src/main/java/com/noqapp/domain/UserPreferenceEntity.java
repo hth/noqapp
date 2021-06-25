@@ -62,6 +62,9 @@ public class UserPreferenceEntity extends BaseEntity {
     @Field("SQ")
     private Set<String> sosReceiverQids = new HashSet<>();
 
+    @Field("EP")
+    private int earnedPoint = 0;
+
     /**
      * To make bean happy
      */
@@ -167,5 +170,9 @@ public class UserPreferenceEntity extends BaseEntity {
     public UserPreferenceEntity addSosReceiverQid(String sosReceiverQid) {
         this.sosReceiverQids.add(sosReceiverQid);
         return this;
+    }
+
+    public int getEarnedPoint() {
+        return earnedPoint;
     }
 }
