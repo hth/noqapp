@@ -65,8 +65,8 @@ public final class JsonProfile extends AbstractDomain {
     @JsonProperty ("ic")
     private String inviteCode;
 
-    @JsonProperty("ps")
-    private int points;
+    @JsonProperty("ep")
+    private int earnedPoint;
 
     @JsonProperty ("bd")
     private String birthday;
@@ -124,7 +124,7 @@ public final class JsonProfile extends AbstractDomain {
         BusinessTypeEnum businessType,
         boolean accountValidated,
         boolean profileVerified,
-        int points
+        int earnedPoint
     ) {
         this.queueUserId = queueUserId;
         this.profileImage = profileImage;
@@ -140,14 +140,10 @@ public final class JsonProfile extends AbstractDomain {
         this.businessType = businessType;
         this.accountValidated = accountValidated;
         this.profileVerified = profileVerified;
-        this.points = points;
+        this.earnedPoint = earnedPoint;
     }
 
-    public static JsonProfile newInstance(UserProfileEntity userProfile, UserAccountEntity userAccount) {
-        return newInstance(userProfile, userAccount, 0);
-    }
-
-    public static JsonProfile newInstance(UserProfileEntity userProfile, UserAccountEntity userAccount, int points) {
+    public static JsonProfile newInstance(UserProfileEntity userProfile, UserAccountEntity userAccount, int earnedPoint) {
         return new JsonProfile(
             userProfile.getQueueUserId(),
             userProfile.getProfileImage(),
@@ -163,7 +159,7 @@ public final class JsonProfile extends AbstractDomain {
             userProfile.getBusinessType(),
             userAccount.isAccountValidated(),
             userProfile.isProfileVerified(),
-            points
+            earnedPoint
         );
     }
 
@@ -219,8 +215,8 @@ public final class JsonProfile extends AbstractDomain {
         return accountValidated;
     }
 
-    public int getPoints() {
-        return points;
+    public int getEarnedPoint() {
+        return earnedPoint;
     }
 
     public JsonUserMedicalProfile getJsonUserMedicalProfile() {

@@ -72,7 +72,9 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -395,9 +397,27 @@ public class TokenQueueService {
             firebaseService.subscribeToTopic(bizStore.getBusinessType(), registeredDevice);
             UserPreferenceEntity userPreference = userProfilePreferenceService.findByQueueUserId(qid);
 
-            /* If not tagged to favorite then add to suggestion. */
-            if (!userPreference.getFavoriteTagged().contains(bizStore.getCodeQR())) {
-                userPreference.addFavoriteSuggested(bizStore.getCodeQR());
+            /* Always add to suggested. */
+            switch (bizStore.getBusinessType()) {
+                case DO:
+                case CD:
+                case CDQ:
+                case BK:
+                case HS:
+                case PW:
+                    Set<String> codeQRs = new HashSet<>();
+                    List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizStore.getBizName().getId());
+                    for (BizStoreEntity bizStoreFound : bizStores) {
+                        codeQRs.add(bizStoreFound.getCodeQR());
+                    }
+
+                    codeQRs.retainAll(userPreference.getFavoriteSuggested());
+                    if (codeQRs.isEmpty()) {
+                        userPreference.addFavoriteSuggested(bizStore.getCodeQR());
+                    }
+                    break;
+                default:
+                    userPreference.addFavoriteSuggested(bizStore.getCodeQR());
             }
 
             /* When user signs up with new device or token, subscribe to these topics by default. */

@@ -36,6 +36,11 @@ public class PreferredBusinessEntity extends BaseEntity {
     @Transient
     private String preferredBusinessName;
 
+    @SuppressWarnings("unused")
+    public PreferredBusinessEntity() {
+        //Default constructor, required to keep bean happy
+    }
+
     public PreferredBusinessEntity(String bizNameId, String preferredBizNameId, BusinessTypeEnum businessType) {
         this.bizNameId = bizNameId;
         this.preferredBizNameId = preferredBizNameId;

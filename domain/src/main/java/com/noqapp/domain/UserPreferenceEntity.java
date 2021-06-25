@@ -50,17 +50,20 @@ public class UserPreferenceEntity extends BaseEntity {
     @Field("ST")
     private Set<String> subscriptionTopics = new HashSet<>();
 
-    /** BizStore codeQR. */
+    /** BizStore codeQR when marked favorite by user. */
     @Field("FT")
     private Set<String> favoriteTagged = new HashSet<>();
 
-    /** BizStore codeQR. */
+    /** BizStore codeQR for recent. */
     @Field("FS")
     private Set<String> favoriteSuggested = new HashSet<>();
 
     /** SOS receivers. */
     @Field("SQ")
     private Set<String> sosReceiverQids = new HashSet<>();
+
+    @Field("EP")
+    private int earnedPoint = 0;
 
     /**
      * To make bean happy
@@ -167,5 +170,9 @@ public class UserPreferenceEntity extends BaseEntity {
     public UserPreferenceEntity addSosReceiverQid(String sosReceiverQid) {
         this.sosReceiverQids.add(sosReceiverQid);
         return this;
+    }
+
+    public int getEarnedPoint() {
+        return earnedPoint;
     }
 }

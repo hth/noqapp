@@ -180,4 +180,8 @@ public class UserProfilePreferenceService {
             }
         }
     }
+
+    public int getEarnedPoint(String qid) {
+        return userPreferenceManager.getEarnedPoint(qid);
+    }
 }

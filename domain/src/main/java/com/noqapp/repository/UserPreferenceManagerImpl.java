@@ -125,7 +125,24 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
 
     @Override
     public void deleteHard(UserPreferenceEntity object) {
-        mongoTemplate.remove(object, TABLE);
+        throw new UnsupportedOperationException("This method is not supported");
+    }
+
+    @Override
+    public void updatePoint(String qid, int point) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            new Update().inc("EP", point),
+            UserPreferenceEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public int getEarnedPoint(String qid) {
+        Query query = query(where("QID").is(qid));
+        query.fields().include("EP");
+        return mongoTemplate.findOne(query, UserPreferenceEntity.class, TABLE).getEarnedPoint();
     }
 }
 

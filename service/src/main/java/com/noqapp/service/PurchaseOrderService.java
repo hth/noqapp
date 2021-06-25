@@ -10,6 +10,7 @@ import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.CouponEntity;
+import com.noqapp.domain.PointEarnedEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.PurchaseOrderProductEntity;
 import com.noqapp.domain.QueueEntity;
@@ -40,6 +41,7 @@ import com.noqapp.domain.types.FirebaseMessageTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.PaymentModeEnum;
 import com.noqapp.domain.types.PaymentStatusEnum;
+import com.noqapp.domain.types.PointActivityEnum;
 import com.noqapp.domain.types.PurchaseOrderStateEnum;
 import com.noqapp.domain.types.QueueJoinDeniedEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
@@ -48,6 +50,7 @@ import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessUserManager;
+import com.noqapp.repository.PointEarnedManager;
 import com.noqapp.repository.PurchaseOrderManager;
 import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.PurchaseOrderProductManager;
@@ -131,6 +134,7 @@ public class PurchaseOrderService {
     private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
     private QueueManager queueManager;
     private QueueManagerJDBC queueManagerJDBC;
+    private PointEarnedManager pointEarnedManager;
     private CouponService couponService;
     private UserAddressService userAddressService;
     private FirebaseMessageService firebaseMessageService;
@@ -159,6 +163,7 @@ public class PurchaseOrderService {
         PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC,
         QueueManager queueManager,
         QueueManagerJDBC queueManagerJDBC,
+        PointEarnedManager pointEarnedManager,
         CouponService couponService,
         UserAddressService userAddressService,
         FirebaseMessageService firebaseMessageService,
@@ -186,6 +191,7 @@ public class PurchaseOrderService {
         this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
         this.queueManager = queueManager;
         this.queueManagerJDBC = queueManagerJDBC;
+        this.pointEarnedManager = pointEarnedManager;
         this.couponService = couponService;
         this.userAddressService = userAddressService;
         this.firebaseMessageService = firebaseMessageService;
@@ -1495,7 +1501,7 @@ public class PurchaseOrderService {
                     message = "Your order was cancelled.";
                     break;
                 default:
-                    LOG.error("Failed condition={} device is of type={} did={} token={}",
+                    LOG.error("Failed condition=\"{}\" device is of type={} did={} token={}",
                         purchaseOrder.getPresentOrderState(),
                         registeredDevice.getDeviceType(),
                         registeredDevice.getDeviceId(),
@@ -1798,6 +1804,12 @@ public class PurchaseOrderService {
             //TODO(hth) make sure for Guardian this is taken care. Right now its ignore "GQ" add to MySQL Table
             reviewSubmitStatus = reviewHistoricalService(codeQR, token, qid, ratingCount, review, sentimentType);
         }
+
+        /* Add points on review submission. */
+        if (reviewSubmitStatus && StringUtils.isNotBlank(review)) {
+            pointEarnedManager.save(new PointEarnedEntity(qid, PointActivityEnum.REV));
+        }
+
         sendMailWhenSentimentIsNegative(codeQR, token, ratingCount, review, sentimentType);
 
         LOG.info("Review update status={} codeQR={} token={} ratingCount={} did={} qid={} review={}",

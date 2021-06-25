@@ -8,8 +8,10 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.BusinessUserStoreEntity;
+import com.noqapp.domain.PointEarnedEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -45,10 +47,10 @@ import com.noqapp.repository.ForgotRecoverManager;
 import com.noqapp.repository.ForgotRecoverManagerImpl;
 import com.noqapp.repository.GenerateUserIdManager;
 import com.noqapp.repository.GenerateUserIdManagerImpl;
-import com.noqapp.repository.InviteManager;
-import com.noqapp.repository.InviteManagerImpl;
 import com.noqapp.repository.NotificationMessageManager;
 import com.noqapp.repository.NotificationMessageManagerImpl;
+import com.noqapp.repository.PointEarnedManager;
+import com.noqapp.repository.PointEarnedManagerImpl;
 import com.noqapp.repository.PreferredBusinessManager;
 import com.noqapp.repository.PreferredBusinessManagerImpl;
 import com.noqapp.repository.ProfessionalProfileManager;
@@ -109,6 +111,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mock.env.MockEnvironment;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -123,6 +126,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -148,7 +152,6 @@ public class ITest extends RealMongoForITest {
 
     protected AccountService accountService;
     protected UserProfilePreferenceService userProfilePreferenceService;
-    protected InviteService inviteService;
     protected TokenQueueService tokenQueueService;
     protected BizService bizService;
     protected QueueService queueService;
@@ -183,11 +186,11 @@ public class ITest extends RealMongoForITest {
     protected UserAuthenticationManager userAuthenticationManager;
     protected UserPreferenceManager userPreferenceManager;
     protected UserProfileManager userProfileManager;
+    protected PointEarnedManager pointEarnedManager;
     protected GenerateUserIdService generateUserIdService;
     protected EmailValidateManager emailValidateManager;
     protected EmailValidateService emailValidateService;
     protected ForgotRecoverManager forgotRecoverManager;
-    protected InviteManager inviteManager;
     protected RegisteredDeviceManager registeredDeviceManager;
     protected BizNameManager bizNameManager;
     protected BusinessCustomerPriorityManager businessCustomerPriorityManager;
@@ -268,9 +271,9 @@ public class ITest extends RealMongoForITest {
         userAuthenticationManager = new UserAuthenticationManagerImpl(getMongoTemplate());
         userPreferenceManager = new UserPreferenceManagerImpl(getMongoTemplate());
         userProfileManager = new UserProfileManagerImpl(getMongoTemplate());
+        pointEarnedManager = new PointEarnedManagerImpl(getMongoTemplate());
         generateUserIdManager = new GenerateUserIdManagerImpl(getMongoTemplate());
         emailValidateManager = new EmailValidateManagerImpl(getMongoTemplate());
-        inviteManager = new InviteManagerImpl(getMongoTemplate());
         forgotRecoverManager = new ForgotRecoverManagerImpl(getMongoTemplate());
         registeredDeviceManager = new RegisteredDeviceManagerImpl(getMongoTemplate());
         purchaseOrderManager = new PurchaseOrderManagerImpl(getMongoTemplate());
@@ -291,20 +294,18 @@ public class ITest extends RealMongoForITest {
 
         generateUserIdService = new GenerateUserIdService(generateUserIdManager);
         emailValidateService = new EmailValidateService(emailValidateManager);
-        inviteService = new InviteService(inviteManager);
         nlpService = new NLPService(stanfordCoreNLP, maxentTagger);
         businessCustomerPriorityService = new BusinessCustomerPriorityService(businessCustomerPriorityManager, bizNameManager);
         userAddressService = new UserAddressService(5, userAddressManager);
 
         accountService = new AccountService(
-            5,
             userAccountManager,
             userAuthenticationManager,
             userPreferenceManager,
             userProfileManager,
+            pointEarnedManager,
             generateUserIdService,
             emailValidateService,
-            inviteService,
             forgotRecoverManager,
             userAddressService,
             stringRedisTemplate
@@ -476,6 +477,7 @@ public class ITest extends RealMongoForITest {
             purchaseOrderProductManagerJDBC,
             queueManager,
             queueManagerJDBC,
+            pointEarnedManager,
             couponService,
             userAddressService,
             firebaseMessageService,
@@ -513,6 +515,7 @@ public class ITest extends RealMongoForITest {
             storeHourManager,
             userProfileManager,
             userAccountManager,
+            userPreferenceManager,
             registeredDeviceManager,
             tokenQueueManager,
             scheduledTaskManager,
@@ -595,7 +598,7 @@ public class ITest extends RealMongoForITest {
             false
         );
 
-        accountService.createNewAccount(
+        UserAccountEntity userAccountOf_Damuscus = accountService.createNewAccount(
             "+9118000001111",
             "Damuscus",
             null,
@@ -610,7 +613,8 @@ public class ITest extends RealMongoForITest {
             false
         );
 
-        accountService.createNewAccount(
+        UserProfileEntity userProfileOf_Damuscus = accountService.findProfileByQueueUserId(userAccountOf_Damuscus.getQueueUserId());
+        UserAccountEntity userAccountOf_Sita = accountService.createNewAccount(
             "+9118000001112",
             "Sita",
             null,
@@ -620,10 +624,23 @@ public class ITest extends RealMongoForITest {
             "IN",
             "Asia/Calcutta",
             "password",
-            "",
+            userProfileOf_Damuscus.getInviteCode(),
             true,
             false
         );
+
+        try (Stream<PointEarnedEntity> stream =  pointEarnedManager.findAllNotMarkedComputed()) {
+            stream.iterator().forEachRemaining(pointEarned -> {
+                pointEarnedManager.markComputedById(pointEarned.getId());
+                userPreferenceManager.updatePoint(pointEarned.getQueueUserId(), pointEarned.getPoint());
+            });
+        }
+
+        UserPreferenceEntity userPreference_Damuscus  = userPreferenceManager.findByQueueUserId(userProfileOf_Damuscus.getQueueUserId());
+        UserPreferenceEntity userPreference_Sita = userPreferenceManager.findByQueueUserId(userAccountOf_Sita.getQueueUserId());
+
+        Assertions.assertEquals(1000, userPreference_Damuscus.getEarnedPoint());
+        Assertions.assertEquals(1000, userPreference_Sita.getEarnedPoint());
     }
 
     private void addSystemUsers() {

@@ -21,6 +21,7 @@ import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.UserAccountManager;
+import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.exceptions.AppointmentBookingException;
 
@@ -43,6 +44,7 @@ class ScheduleAppointmentServiceTest {
     @Mock private StoreHourManager storeHourManager;
     @Mock private UserProfileManager userProfileManager;
     @Mock private UserAccountManager userAccountManager;
+    @Mock private UserPreferenceManager userPreferenceManager;
     @Mock private RegisteredDeviceManager registeredDeviceManager;
     @Mock private TokenQueueManager tokenQueueManager;
     @Mock private ScheduledTaskManager scheduledTaskManager;
@@ -72,6 +74,7 @@ class ScheduleAppointmentServiceTest {
             storeHourManager,
             userProfileManager,
             userAccountManager,
+            userPreferenceManager,
             registeredDeviceManager,
             tokenQueueManager,
             scheduledTaskManager,

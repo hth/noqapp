@@ -12,7 +12,7 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.GenerateUserIds;
-import com.noqapp.domain.InviteEntity;
+import com.noqapp.domain.PointEarnedEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserAuthenticationEntity;
@@ -25,9 +25,11 @@ import com.noqapp.domain.types.AccountInactiveReasonEnum;
 import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.PersonalityTraitsEnum;
+import com.noqapp.domain.types.PointActivityEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.ForgotRecoverManager;
+import com.noqapp.repository.PointEarnedManager;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAuthenticationManager;
 import com.noqapp.repository.UserPreferenceManager;
@@ -41,10 +43,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.util.CloseableIterator;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -72,15 +72,14 @@ import java.util.stream.Stream;
 @Service
 public class AccountService {
     private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
-    private int points;
 
     private UserAccountManager userAccountManager;
     private UserAuthenticationManager userAuthenticationManager;
     private UserPreferenceManager userPreferenceManager;
     private UserProfileManager userProfileManager;
+    private PointEarnedManager pointEarnedManager;
     private GenerateUserIdService generateUserIdService;
     private EmailValidateService emailValidateService;
-    private InviteService inviteService;
     private ForgotRecoverManager forgotRecoverManager;
     private UserAddressService userAddressService;
     private StringRedisTemplate stringRedisTemplate;
@@ -89,29 +88,24 @@ public class AccountService {
 
     @Autowired
     public AccountService(
-        @Value("${AccountService.points}")
-        int points,
-
         UserAccountManager userAccountManager,
         UserAuthenticationManager userAuthenticationManager,
         UserPreferenceManager userPreferenceManager,
         UserProfileManager userProfileManager,
+        PointEarnedManager pointEarnedManager,
         GenerateUserIdService generateUserIdService,
         EmailValidateService emailValidateService,
-        InviteService inviteService,
         ForgotRecoverManager forgotRecoverManager,
         UserAddressService userAddressService,
         StringRedisTemplate stringRedisTemplate
     ) {
-        this.points = points;
-
         this.userAccountManager = userAccountManager;
         this.userAuthenticationManager = userAuthenticationManager;
         this.userPreferenceManager = userPreferenceManager;
         this.userProfileManager = userProfileManager;
+        this.pointEarnedManager = pointEarnedManager;
         this.generateUserIdService = generateUserIdService;
         this.emailValidateService = emailValidateService;
-        this.inviteService = inviteService;
         this.forgotRecoverManager = forgotRecoverManager;
         this.userAddressService = userAddressService;
         this.stringRedisTemplate = stringRedisTemplate;
@@ -269,16 +263,10 @@ public class AccountService {
             createPreferences(userProfile.getQueueUserId());
             if (StringUtils.isNotBlank(inviteCode)) {
                 UserProfileEntity userProfileOfInvitee = findProfileByInviteCode(inviteCode);
-                InviteEntity invite;
                 if (null != userProfileOfInvitee) {
-                    invite = new InviteEntity(qid, userProfileOfInvitee.getQueueUserId(), inviteCode, points);
-                } else {
-                    invite = new InviteEntity(qid, null, null, points);
+                    pointEarnedManager.save(new PointEarnedEntity(qid, PointActivityEnum.INV));
+                    pointEarnedManager.save(new PointEarnedEntity(userProfileOfInvitee.getQueueUserId(), PointActivityEnum.ISU));
                 }
-                inviteService.save(invite);
-            } else {
-                InviteEntity invite = new InviteEntity(qid, null, null, points);
-                inviteService.save(invite);
             }
             return userAccount;
         } else {
@@ -406,8 +394,6 @@ public class AccountService {
             }
 
             createPreferences(userProfile.getQueueUserId());
-            InviteEntity invite = new InviteEntity(qid, userProfileOfAdmin.getQueueUserId(), userProfileOfAdmin.getInviteCode(), points);
-            inviteService.save(invite);
             return userAccount;
         } else {
             LOG.error("Account creation failed as it already exists for mail={}", mail);
@@ -895,5 +881,9 @@ public class AccountService {
 
     public Stream<UserAccountEntity> getAccountsWithLimitedAccess(AccountInactiveReasonEnum accountInactiveReason) {
         return userAccountManager.getAccountsWithLimitedAccess(accountInactiveReason);
+    }
+
+    public int getEarnedPoint(String qid) {
+        return userPreferenceManager.getEarnedPoint(qid);
     }
 }

@@ -55,8 +55,8 @@ public class PersonN4j {
     @Property("lat")
     private double latitude;
 
-    @Property("points")
-    private int points;
+    @Property("earnedPoint")
+    private int earnedPoint;
 
     @Property("pv")
     private boolean profileVerified;
@@ -175,12 +175,12 @@ public class PersonN4j {
         return this;
     }
 
-    public int getPoints() {
-        return points;
+    public int getEarnedPoint() {
+        return earnedPoint;
     }
 
-    public PersonN4j setPoints(int points) {
-        this.points = points;
+    public PersonN4j setEarnedPoint(int earnedPoint) {
+        this.earnedPoint = earnedPoint;
         return this;
     }
 
