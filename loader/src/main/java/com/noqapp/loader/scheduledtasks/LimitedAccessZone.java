@@ -19,6 +19,8 @@ import org.springframework.data.geo.GeoResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
@@ -77,14 +79,11 @@ public class LimitedAccessZone {
             try (Stream<UserAccountEntity> userAccounts = accountService.getAccountsWithLimitedAccess(AccountInactiveReasonEnum.LIM)) {
                 userAccounts.iterator().forEachRemaining(userAccount -> {
                     RegisteredDeviceEntity registeredDevice = deviceService.findRecentDevice(userAccount.getQueueUserId());
+                    Map<String, String> found = new HashMap<>();
                     try (Stream<GeoResult<RegisteredDeviceEntity>> geoResults = deviceService.findInProximity(registeredDevice.getPoint(), TEN_METERS_IN_KILOMETER)) {
                         geoResults.iterator().forEachRemaining(registeredDeviceEntityGeoResult -> {
                             try {
-                                LOG.info("Proximity device of {} for {} are {} {}",
-                                    userAccount.getAccountInactiveReason().name(),
-                                    userAccount.getQueueUserId(),
-                                    registeredDeviceEntityGeoResult.getContent().getDeviceId(),
-                                    registeredDeviceEntityGeoResult.getContent().getQueueUserId());
+                                found.put(registeredDeviceEntityGeoResult.getContent().getDeviceId(), registeredDeviceEntityGeoResult.getContent().getQueueUserId());
                                 recordsFound.getAndIncrement();
                             } catch (Exception e) {
                                 failure.getAndIncrement();
@@ -95,6 +94,12 @@ public class LimitedAccessZone {
                             }
                         });
                     }
+
+                    StringBuilder text = new StringBuilder();
+                    for (String key : found.keySet()) {
+                        text.append(key).append(" - ").append(found.get(key))
+                    }
+                    LOG.info("Proximity device of {} for {} are {}", userAccount.getAccountInactiveReason().name(), userAccount.getQueueUserId(), text);
                 });
             }
         } catch (Exception e) {
