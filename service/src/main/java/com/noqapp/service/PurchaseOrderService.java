@@ -1501,7 +1501,7 @@ public class PurchaseOrderService {
                     message = "Your order was cancelled.";
                     break;
                 default:
-                    LOG.error("Failed condition={} device is of type={} did={} token={}",
+                    LOG.error("Failed condition=\"{}\" device is of type={} did={} token={}",
                         purchaseOrder.getPresentOrderState(),
                         registeredDevice.getDeviceType(),
                         registeredDevice.getDeviceId(),
