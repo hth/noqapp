@@ -1,5 +1,6 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
 import com.noqapp.domain.types.PaymentMethodEnum;
@@ -152,6 +153,7 @@ public class UserPreferenceEntity extends BaseEntity {
         return favoriteTagged;
     }
 
+    @Mobile
     public UserPreferenceEntity addFavoriteTagged(String favoriteTagged) {
         this.favoriteTagged.add(0, favoriteTagged);
 
