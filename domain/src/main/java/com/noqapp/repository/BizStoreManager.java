@@ -47,7 +47,7 @@ public interface BizStoreManager extends RepositoryManager<BizStoreEntity> {
     BizStoreEntity findOne(String bizNameId);
 
     /** Find all stores associated to codeQRs. */
-    List<BizStoreEntity> findBizStoresByCodeQRs(Set<String> codeQRs);
+    List<BizStoreEntity> findBizStoresByCodeQRs(List<String> codeQRs);
 
     /** This is mostly being used when data is corrupted, like missing addresses or lat or lng. */
     List<BizStoreEntity> getAllActive(int skip, int limit);

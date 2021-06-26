@@ -9,7 +9,9 @@ import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -52,11 +54,11 @@ public class UserPreferenceEntity extends BaseEntity {
 
     /** BizStore codeQR when marked favorite by user. */
     @Field("FT")
-    private Set<String> favoriteTagged = new HashSet<>();
+    private List<String> favoriteTagged = new ArrayList<>();
 
     /** BizStore codeQR for recent. */
     @Field("FS")
-    private Set<String> favoriteSuggested = new HashSet<>();
+    private List<String> favoriteSuggested = new ArrayList<>();
 
     /** SOS receivers. */
     @Field("SQ")
@@ -146,21 +148,29 @@ public class UserPreferenceEntity extends BaseEntity {
         return this;
     }
 
-    public Set<String> getFavoriteTagged() {
+    public List<String> getFavoriteTagged() {
         return favoriteTagged;
     }
 
     public UserPreferenceEntity addFavoriteTagged(String favoriteTagged) {
-        this.favoriteTagged.add(favoriteTagged);
+        this.favoriteTagged.add(0, favoriteTagged);
+
+        if (this.favoriteTagged.size() > 10) {
+            this.favoriteTagged.remove(this.favoriteTagged.size() - 1);
+        }
         return this;
     }
 
-    public Set<String> getFavoriteSuggested() {
+    public List<String> getFavoriteSuggested() {
         return favoriteSuggested;
     }
 
     public UserPreferenceEntity addFavoriteSuggested(String favoriteSuggested) {
-        this.favoriteSuggested.add(favoriteSuggested);
+        this.favoriteSuggested.add(0, favoriteSuggested);
+
+        if (this.favoriteSuggested.size() > 10) {
+            this.favoriteSuggested.remove(this.favoriteSuggested.size() - 1);
+        }
         return this;
     }
 
