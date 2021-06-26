@@ -41,8 +41,6 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -227,7 +225,7 @@ public class BizStoreManagerImpl implements BizStoreManager {
     }
 
     @Override
-    public List<BizStoreEntity> findBizStoresByCodeQRs(Set<String> codeQRs) {
+    public List<BizStoreEntity> findBizStoresByCodeQRs(List<String> codeQRs) {
         return mongoTemplate.find(
             query(where("QR").in(codeQRs).and("A").is(true).and("D").is(false)),
             BizStoreEntity.class,

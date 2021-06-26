@@ -42,10 +42,10 @@ public class FavoriteElastic extends AbstractDomain {
     private List<BizStoreElastic> favoriteTagged = new ArrayList<>();
 
     @JsonProperty("fsb")
-    private Set<String> favoriteSuggestedBizNameIds = new HashSet<>();
+    private List<String> favoriteSuggestedBizNameIds = new ArrayList<>();
 
     @JsonProperty("ftb")
-    private Set<String> favoriteTaggedBizNameIds = new HashSet<>();
+    private List<String> favoriteTaggedBizNameIds = new ArrayList<>();
 
     @JsonProperty("at")
     private ActionTypeEnum actionType;
@@ -71,11 +71,11 @@ public class FavoriteElastic extends AbstractDomain {
         return this;
     }
 
-    public Set<String> getFavoriteSuggestedBizNameIds() {
+    public List<String> getFavoriteSuggestedBizNameIds() {
         return favoriteSuggestedBizNameIds;
     }
 
-    public FavoriteElastic setFavoriteSuggestedBizNameIds(Set<String> favoriteSuggestedBizNameIds) {
+    public FavoriteElastic setFavoriteSuggestedBizNameIds(List<String> favoriteSuggestedBizNameIds) {
         this.favoriteSuggestedBizNameIds = favoriteSuggestedBizNameIds;
         return this;
     }
@@ -85,11 +85,11 @@ public class FavoriteElastic extends AbstractDomain {
         return this;
     }
 
-    public Set<String> getFavoriteTaggedBizNameIds() {
+    public List<String> getFavoriteTaggedBizNameIds() {
         return favoriteTaggedBizNameIds;
     }
 
-    public FavoriteElastic setFavoriteTaggedBizNameIds(Set<String> favoriteTaggedBizNameIds) {
+    public FavoriteElastic setFavoriteTaggedBizNameIds(List<String> favoriteTaggedBizNameIds) {
         this.favoriteTaggedBizNameIds = favoriteTaggedBizNameIds;
         return this;
     }
