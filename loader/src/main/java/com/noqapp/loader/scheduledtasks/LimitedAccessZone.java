@@ -97,7 +97,7 @@ public class LimitedAccessZone {
 
                     StringBuilder text = new StringBuilder();
                     for (String key : found.keySet()) {
-                        text.append(key).append(" - ").append(found.get(key));
+                        text.append("\n").append(key).append(" - ").append(found.get(key));
                     }
                     LOG.info("Proximity device of {} for {} are {}", userAccount.getAccountInactiveReason().name(), userAccount.getQueueUserId(), text);
                 });

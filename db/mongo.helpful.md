@@ -1,5 +1,15 @@
 ##Mongo Helpful Queries
 
+Search null data and other [Types](https://docs.mongodb.com/manual/reference/operator/query/type/).
+For null, it is type 10
+
+    db.getCollection('USER_PREFERENCE').find({UAI: {$type: 10}}).limit(2);
+    db.getCollection('USER_PREFERENCE').update({UAI: {$type: 10}}, {$unset: {UAI: ""}}, {multi: true});
+
+For other types 
+
+    db.getCollection('USER_PREFERENCE').find({UAI: {$type: 2}, $where: "this.UAI.length > 1"}).limit(2);
+
 Search within email `nel`
 
     db.getCollection('USER_PROFILE').find({"EM": /^.*nel.*$/})

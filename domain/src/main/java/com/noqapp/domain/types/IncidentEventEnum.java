@@ -4,6 +4,7 @@ import static com.noqapp.domain.types.BrahmandEnum.Event;
 import static com.noqapp.domain.types.BrahmandEnum.Human;
 import static com.noqapp.domain.types.BrahmandEnum.Nature;
 import static com.noqapp.domain.types.BrahmandEnum.Personal;
+import static com.noqapp.domain.types.BrahmandEnum.Utilities;
 
 import java.util.Comparator;
 import java.util.List;
@@ -29,6 +30,12 @@ public enum IncidentEventEnum {
     SNOW("SNOW", "Snow", "N", Nature, 15),
     STRM("STRM", "Storm", "N", Nature, 15),
     VOLC("VOLC", "Volcano", "N", Nature, 15),
+
+    //Utilities
+    ELEC("ELEC", "No Electricity", "U", Utilities, 5),
+    WATR("WATR", "No Water", "U", Utilities, 5),
+    PHON("PHON", "Phone Disrupted", "U", Utilities, 5),
+    INTR("INTR", "No Internet", "U", Utilities, 5),
 
     //Human - 15km radius
     VACD("ACDN", "Accident", "H", Human, 15),

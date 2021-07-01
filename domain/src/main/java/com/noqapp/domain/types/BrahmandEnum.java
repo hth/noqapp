@@ -7,6 +7,7 @@ package com.noqapp.domain.types;
  */
 public enum BrahmandEnum {
     Nature,
+    Utilities,
     Human,
     Personal,
     Event

@@ -1,3 +1,9 @@
+### Changed Jun 26, 2021
+
+Remove null from UAI field
+
+     db.getCollection('USER_PREFERENCE').update({UAI: {$type: 10}}, {$unset: {UAI: ""}}, {multi: true});
+
 ### Changed Jun 25, 2021
 
     Drop collection of INVITE
