@@ -393,10 +393,9 @@ public class TokenQueueService {
 
     protected void addSubscribedTopic(String qid, BizStoreEntity bizStore) {
         try {
-            RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
-            firebaseService.subscribeToTopic(bizStore.getBusinessType(), registeredDevice);
             UserPreferenceEntity userPreference = userProfilePreferenceService.findByQueueUserId(qid);
 
+            boolean userPreferenceDirty = false;
             /* Always add to suggested. */
             switch (bizStore.getBusinessType()) {
                 case DO:
@@ -414,17 +413,29 @@ public class TokenQueueService {
                     codeQRs.retainAll(userPreference.getFavoriteSuggested());
                     if (codeQRs.isEmpty()) {
                         userPreference.addFavoriteSuggested(bizStore.getCodeQR());
+                        userPreferenceDirty = true;
                     }
                     break;
                 default:
-                    userPreference.addFavoriteSuggested(bizStore.getCodeQR());
+                    if (!userPreference.getFavoriteSuggested().contains(bizStore.getCodeQR())) {
+                        userPreference.addFavoriteSuggested(bizStore.getCodeQR());
+                        userPreferenceDirty = true;
+                    }
             }
 
             /* When user signs up with new device or token, subscribe to these topics by default. */
-            userPreference.addSubscriptionTopic(bizStore.getBusinessType().getName());
+            if (!userPreference.getSubscriptionTopics().contains(bizStore.getBusinessType().getName())) {
+                userPreference.addSubscriptionTopic(bizStore.getBusinessType().getName());
+                userPreferenceDirty = true;
 
-            userProfilePreferenceService.save(userPreference);
-            LOG.info("Updated preference with {} subscription={} recommended={}", qid, bizStore.getBusinessType().getName(), bizStore.getBizName().getBusinessName());
+                RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
+                firebaseService.subscribeToTopic(bizStore.getBusinessType(), registeredDevice);
+            }
+
+            if (userPreferenceDirty) {
+                userProfilePreferenceService.save(userPreference);
+                LOG.info("Updated preference with {} subscription={} recommended={}", qid, bizStore.getBusinessType().getName(), bizStore.getBizName().getBusinessName());
+            }
         } catch (Exception e) {
             LOG.error("Failed subscribing or adding to recommended {} {}", qid, e.getLocalizedMessage(), e);
         }
