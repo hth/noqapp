@@ -300,7 +300,7 @@ public final class UserProfileManagerImpl implements UserProfileManager {
     @Override
     public UserProfileEntity populateName(String qid) {
         Query query = query(where("QID").is(qid));
-        query.fields().include("FN").include("LN");
+        query.fields().include("FN", "LN");
         return mongoTemplate.findOne(query, UserProfileEntity.class, TABLE);
     }
 }
