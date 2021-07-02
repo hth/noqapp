@@ -129,6 +129,16 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     }
 
     @Override
+    public void updatePointHistorical(String qid, int earnedPointPreviously) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            new Update().set("EPP", earnedPointPreviously),
+            UserPreferenceEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public void updatePoint(String qid, int point) {
         mongoTemplate.updateFirst(
             query(where("QID").is(qid)),

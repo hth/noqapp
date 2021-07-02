@@ -181,7 +181,8 @@ public class UserProfilePreferenceService {
         }
     }
 
-    public int getEarnedPoint(String qid) {
+    @Mobile
+    public UserPreferenceEntity getEarnedPoint(String qid) {
         return userPreferenceManager.getEarnedPoint(qid);
     }
 }

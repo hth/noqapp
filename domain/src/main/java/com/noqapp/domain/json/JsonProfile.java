@@ -3,6 +3,7 @@ package com.noqapp.domain.json;
 import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.json.medical.JsonUserMedicalProfile;
 import com.noqapp.domain.types.BusinessTypeEnum;
@@ -68,6 +69,9 @@ public final class JsonProfile extends AbstractDomain {
     @JsonProperty("ep")
     private int earnedPoint;
 
+    @JsonProperty("epp")
+    private int earnedPointPreviously;
+
     @JsonProperty ("bd")
     private String birthday;
 
@@ -124,7 +128,8 @@ public final class JsonProfile extends AbstractDomain {
         BusinessTypeEnum businessType,
         boolean accountValidated,
         boolean profileVerified,
-        int earnedPoint
+        int earnedPoint,
+        int earnedPointPreviously
     ) {
         this.queueUserId = queueUserId;
         this.profileImage = profileImage;
@@ -141,9 +146,10 @@ public final class JsonProfile extends AbstractDomain {
         this.accountValidated = accountValidated;
         this.profileVerified = profileVerified;
         this.earnedPoint = earnedPoint;
+        this.earnedPointPreviously = earnedPointPreviously;
     }
 
-    public static JsonProfile newInstance(UserProfileEntity userProfile, UserAccountEntity userAccount, int earnedPoint) {
+    public static JsonProfile newInstance(UserProfileEntity userProfile, UserAccountEntity userAccount, UserPreferenceEntity userPreference) {
         return new JsonProfile(
             userProfile.getQueueUserId(),
             userProfile.getProfileImage(),
@@ -159,7 +165,8 @@ public final class JsonProfile extends AbstractDomain {
             userProfile.getBusinessType(),
             userAccount.isAccountValidated(),
             userProfile.isProfileVerified(),
-            earnedPoint
+            userPreference.getEarnedPoint(),
+            userPreference.getEarnedPointPreviously()
         );
     }
 

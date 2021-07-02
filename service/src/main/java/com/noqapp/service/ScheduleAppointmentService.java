@@ -199,8 +199,8 @@ public class ScheduleAppointmentService {
 
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-        int earnedPoint = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
-        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, earnedPoint);
+        UserPreferenceEntity userPreference = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, userPreference);
 
         if (AppointmentStatusEnum.A == appointmentStatus) {
             switch (bizStore.getAppointmentState()) {
@@ -281,8 +281,8 @@ public class ScheduleAppointmentService {
     public JsonSchedule populateJsonSchedule(ScheduleAppointmentEntity scheduleAppointment) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-        int earnedPoint = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
-        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, earnedPoint);
+        UserPreferenceEntity userPreference = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, userPreference);
 
         return JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile);
     }
@@ -378,8 +378,8 @@ public class ScheduleAppointmentService {
             for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
                 UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
                 UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-                int earnedPoint = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
-                JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, earnedPoint);
+                UserPreferenceEntity userPreference = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
+                JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, userPreference);
                 jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, jsonProfile));
             }
 
@@ -429,8 +429,8 @@ public class ScheduleAppointmentService {
         }
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(scheduleAppointment.getQueueUserId());
-        int earnedPoint = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
-        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount,earnedPoint);
+        UserPreferenceEntity userPreference = userPreferenceManager.getEarnedPoint(scheduleAppointment.getQueueUserId());
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, userPreference);
         BizStoreEntity bizStore = bizService.findByCodeQR(scheduleAppointment.getCodeQR());
 
         switch (appointmentStatus) {
@@ -541,8 +541,8 @@ public class ScheduleAppointmentService {
     ) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(queueUserId);
         UserAccountEntity userAccount = userAccountManager.findByQueueUserId(queueUserId);
-        int earnedPoint = userPreferenceManager.getEarnedPoint(queueUserId);
-        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, earnedPoint);
+        UserPreferenceEntity userPreference = userPreferenceManager.getEarnedPoint(queueUserId);
+        JsonProfile jsonProfile = JsonProfile.newInstance(userProfile, userAccount, userPreference);
 
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
             BizStoreEntity bizStore = bizService.findByCodeQR(scheduleAppointment.getCodeQR());

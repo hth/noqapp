@@ -27,8 +27,10 @@ public interface UserPreferenceManager extends RepositoryManager<UserPreferenceE
 
     void removeFavorite(String qid, String codeQR);
 
+    void updatePointHistorical(String qid, int earnedPointPreviously);
+
     void updatePoint(String qid, int point);
 
-    int getEarnedPoint(String qid);
+    UserPreferenceEntity getEarnedPoint(String qid);
 }
 

@@ -67,7 +67,7 @@ public class GraphQueue {
             .setQid(qid)
             .setName(userProfile.getName())
             .setLastAccessed(new Date())
-            .setEarnedPoint(userPreferenceManager.getEarnedPoint(qid));
+            .setEarnedPoint(userPreferenceManager.getEarnedPoint(qid).getEarnedPoint());
 
         String codeQR = queueManagerJDBC.clientLatestVisit(qid);
         if (StringUtils.isNotBlank(codeQR)) {

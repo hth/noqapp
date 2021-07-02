@@ -886,7 +886,8 @@ public class AccountService {
         return userAccountManager.getAccountsWithLimitedAccess(accountInactiveReason);
     }
 
-    public int getEarnedPoint(String qid) {
+    @Mobile
+    public UserPreferenceEntity getEarnedPoint(String qid) {
         return userPreferenceManager.getEarnedPoint(qid);
     }
 }

@@ -69,6 +69,9 @@ public class UserPreferenceEntity extends BaseEntity {
     @Field("EP")
     private int earnedPoint = 0;
 
+    @Field("EPP")
+    private int earnedPointPreviously= 0;
+
     /**
      * To make bean happy
      */
@@ -187,5 +190,9 @@ public class UserPreferenceEntity extends BaseEntity {
 
     public int getEarnedPoint() {
         return earnedPoint;
+    }
+
+    public int getEarnedPointPreviously() {
+        return earnedPointPreviously;
     }
 }
