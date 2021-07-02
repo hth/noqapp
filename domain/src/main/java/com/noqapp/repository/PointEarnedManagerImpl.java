@@ -1,6 +1,7 @@
 package com.noqapp.repository;
 
 import static com.noqapp.repository.util.AppendAdditionalFields.entityUpdate;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
@@ -58,9 +59,19 @@ public class PointEarnedManagerImpl implements PointEarnedManager {
     }
 
     @Override
+    public Stream<String> findUniqueAllNotMarkedComputed() {
+        return mongoTemplate.findDistinct(
+            query(where("MC").is(false)),
+            "QID",
+            PointEarnedEntity.class,
+            String.class
+        ).stream();
+    }
+
+    @Override
     public Stream<PointEarnedEntity> findAllNotMarkedComputed() {
         return mongoTemplate.stream(
-            query(where("MC").is(false)).with(Sort.by(Sort.Direction.ASC, "C")),
+            query(where("MC").is(false)).with(Sort.by(ASC, "C")),
             PointEarnedEntity.class,
             TABLE
         ).stream();

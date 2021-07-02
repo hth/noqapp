@@ -10,6 +10,9 @@ import java.util.stream.Stream;
  */
 public interface PointEarnedManager extends RepositoryManager<PointEarnedEntity> {
 
+    /** Find records that are supposed to be changed. */
+    Stream<String> findUniqueAllNotMarkedComputed();
+
     Stream<PointEarnedEntity> findAllNotMarkedComputed();
 
     void markComputedById(String id);

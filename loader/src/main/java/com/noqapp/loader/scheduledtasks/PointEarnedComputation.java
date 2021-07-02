@@ -2,6 +2,7 @@ package com.noqapp.loader.scheduledtasks;
 
 import com.noqapp.domain.PointEarnedEntity;
 import com.noqapp.domain.StatsCronEntity;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.repository.PointEarnedManager;
 import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.service.StatsCronService;
@@ -62,6 +63,20 @@ public class PointEarnedComputation {
         AtomicInteger failure = new AtomicInteger();
         try {
             LOG.info("Creating preferred business product tar file");
+
+            try (Stream<String> qids = pointEarnedManager.findUniqueAllNotMarkedComputed()) {
+                qids.iterator().forEachRemaining(qid -> {
+                    try {
+                        UserPreferenceEntity userPreference = userPreferenceManager.findByQueueUserId(qid);
+                        userPreferenceManager.updatePointHistorical(userPreference.getQueueUserId(), userPreference.getEarnedPoint());
+                    } catch (Exception e) {
+                        LOG.error("Failed to update point earned previously in userPreference qid={} reason={}",
+                            qid,
+                            e.getLocalizedMessage(),
+                            e);
+                    }
+                });
+            }
 
             try (Stream<PointEarnedEntity> stream =  pointEarnedManager.findAllNotMarkedComputed()) {
                 stream.iterator().forEachRemaining(pointEarned -> {

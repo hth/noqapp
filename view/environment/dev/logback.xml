@@ -35,7 +35,8 @@
 
         <encoder>
             <!--<pattern>%d{HH:mm:ss} %-4relative [%thread] %-5level %C{46}.%M Message=%msg%n%ex{full}</pattern>-->
-            <pattern>%d{mm:ss:SSS} %-5level %C{26}.%M Message=%msg%n%ex{full}</pattern>
+            <!--<pattern>%d{mm:ss:SSS} %-5level %C{26}.%M Message=%msg%n%ex{full}</pattern>-->
+            <pattern>%black(%d{HH:mm:ss.SSS}) %highlight(%-5level) %magenta([%thread]) %yellow(%logger{26}.%M\(%class{0}.java:%line\)) - %msg%throwable%n</pattern>
         </encoder>
     </appender>
 

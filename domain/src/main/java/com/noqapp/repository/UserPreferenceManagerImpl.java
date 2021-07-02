@@ -99,7 +99,7 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     @Override
     public UserPreferenceEntity favorite(String qid) {
         Query query = query(where("QID").is(qid));
-        query.fields().include("FT").include("FS");
+        query.fields().include("FT", "FS");
         return mongoTemplate.findOne(query, UserPreferenceEntity.class, TABLE);
     }
 
@@ -129,6 +129,16 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     }
 
     @Override
+    public void updatePointHistorical(String qid, int earnedPointPreviously) {
+        mongoTemplate.updateFirst(
+            query(where("QID").is(qid)),
+            new Update().set("EPP", earnedPointPreviously),
+            UserPreferenceEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public void updatePoint(String qid, int point) {
         mongoTemplate.updateFirst(
             query(where("QID").is(qid)),
@@ -139,10 +149,10 @@ public final class UserPreferenceManagerImpl implements UserPreferenceManager {
     }
 
     @Override
-    public int getEarnedPoint(String qid) {
+    public UserPreferenceEntity getEarnedPoint(String qid) {
         Query query = query(where("QID").is(qid));
-        query.fields().include("EP");
-        return mongoTemplate.findOne(query, UserPreferenceEntity.class, TABLE).getEarnedPoint();
+        query.fields().include("EP", "EPP");
+        return mongoTemplate.findOne(query, UserPreferenceEntity.class, TABLE);
     }
 }
 
