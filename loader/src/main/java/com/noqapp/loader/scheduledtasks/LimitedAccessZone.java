@@ -75,7 +75,7 @@ public class LimitedAccessZone {
         AtomicInteger failure = new AtomicInteger();
         AtomicLong recordsFound = new AtomicLong();
         try {
-            LOG.info("Finding proximity devices");
+            LOG.info("Finding proximity devices {} meters", TEN_METERS_IN_KILOMETER * 1000);
             try (Stream<UserAccountEntity> userAccounts = accountService.getAccountsWithLimitedAccess(AccountInactiveReasonEnum.LIM)) {
                 userAccounts.iterator().forEachRemaining(userAccount -> {
                     RegisteredDeviceEntity registeredDevice = deviceService.findRecentDevice(userAccount.getQueueUserId());
@@ -99,7 +99,7 @@ public class LimitedAccessZone {
                     for (String key : found.keySet()) {
                         text.append("\n").append(key).append(" - ").append(found.get(key));
                     }
-                    LOG.info("Proximity device of {} for {} are {}", userAccount.getAccountInactiveReason().name(), userAccount.getQueueUserId(), text);
+                    LOG.info("Proximity found={} device of {} for {} are {}", found.size(), userAccount.getAccountInactiveReason().name(), userAccount.getQueueUserId(), text);
                 });
             }
         } catch (Exception e) {
