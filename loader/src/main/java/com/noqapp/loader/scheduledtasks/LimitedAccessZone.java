@@ -2,6 +2,7 @@ package com.noqapp.loader.scheduledtasks;
 
 import static com.noqapp.common.utils.Constants.TEN_METERS_IN_KILOMETER;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.UserAccountEntity;
@@ -79,11 +80,11 @@ public class LimitedAccessZone {
             try (Stream<UserAccountEntity> userAccounts = accountService.getAccountsWithLimitedAccess(AccountInactiveReasonEnum.LIM)) {
                 userAccounts.iterator().forEachRemaining(userAccount -> {
                     RegisteredDeviceEntity registeredDevice = deviceService.findRecentDevice(userAccount.getQueueUserId());
-                    Map<String, String> found = new HashMap<>();
+                    Map<String, RegisteredDeviceEntity> found = new HashMap<>();
                     try (Stream<GeoResult<RegisteredDeviceEntity>> geoResults = deviceService.findInProximity(registeredDevice.getPoint(), TEN_METERS_IN_KILOMETER)) {
                         geoResults.iterator().forEachRemaining(registeredDeviceEntityGeoResult -> {
                             try {
-                                found.put(registeredDeviceEntityGeoResult.getContent().getDeviceId(), registeredDeviceEntityGeoResult.getContent().getQueueUserId());
+                                found.put(registeredDeviceEntityGeoResult.getContent().getDeviceId(), registeredDeviceEntityGeoResult.getContent());
                                 recordsFound.getAndIncrement();
                             } catch (Exception e) {
                                 failure.getAndIncrement();
@@ -97,7 +98,7 @@ public class LimitedAccessZone {
 
                     StringBuilder text = new StringBuilder();
                     for (String key : found.keySet()) {
-                        text.append("\n").append(key).append(" - ").append(found.get(key));
+                        text.append("\n").append(key).append(" - ").append(found.get(key).getDeviceId()).append(" ").append(DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(found.get(key).getUpdated()));
                     }
                     LOG.info("Proximity found={} device of {} for {} are {}", found.size(), userAccount.getAccountInactiveReason().name(), userAccount.getQueueUserId(), text);
                 });
