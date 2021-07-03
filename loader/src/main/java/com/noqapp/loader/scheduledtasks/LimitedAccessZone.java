@@ -2,6 +2,7 @@ package com.noqapp.loader.scheduledtasks;
 
 import static com.noqapp.common.utils.Constants.TEN_METERS_IN_KILOMETER;
 
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StatsCronEntity;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.geo.GeoResult;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -80,6 +82,8 @@ public class LimitedAccessZone {
             try (Stream<UserAccountEntity> userAccounts = accountService.getAccountsWithLimitedAccess(AccountInactiveReasonEnum.LIM)) {
                 userAccounts.iterator().forEachRemaining(userAccount -> {
                     RegisteredDeviceEntity registeredDevice = deviceService.findRecentDevice(userAccount.getQueueUserId());
+                    GeoJsonPoint from = registeredDevice.getPoint();
+
                     Map<String, RegisteredDeviceEntity> found = new HashMap<>();
                     try (Stream<GeoResult<RegisteredDeviceEntity>> geoResults = deviceService.findInProximity(registeredDevice.getPoint(), TEN_METERS_IN_KILOMETER)) {
                         geoResults.iterator().forEachRemaining(registeredDeviceEntityGeoResult -> {
@@ -98,9 +102,19 @@ public class LimitedAccessZone {
 
                     StringBuilder text = new StringBuilder();
                     for (String key : found.keySet()) {
-                        text.append("\n").append(key).append(" - ").append(found.get(key).getDeviceId()).append(" ").append(DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(found.get(key).getUpdated()));
+                        RegisteredDeviceEntity toRegisteredDevice = found.get(key);
+
+                        text.append("\n").append(key).append(" - ")
+                            .append(toRegisteredDevice.getDeviceId()).append(" ")
+                            .append(CommonUtil.distanceInMeters(from, toRegisteredDevice.getPoint())).append(" m, ")
+                            .append(DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(toRegisteredDevice.getUpdated()));
                     }
-                    LOG.info("Proximity found={} device of {} for {} are {}", found.size(), userAccount.getAccountInactiveReason().name(), userAccount.getQueueUserId(), text);
+
+                    LOG.info("Proximity found={} device of {} for {} are {}",
+                        found.size(),
+                        userAccount.getAccountInactiveReason().name(),
+                        userAccount.getQueueUserId(),
+                        text);
                 });
             }
         } catch (Exception e) {
