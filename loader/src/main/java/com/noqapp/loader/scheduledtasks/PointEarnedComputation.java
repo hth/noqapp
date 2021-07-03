@@ -62,7 +62,7 @@ public class PointEarnedComputation {
         AtomicInteger success = new AtomicInteger();
         AtomicInteger failure = new AtomicInteger();
         try {
-            LOG.info("Creating preferred business product tar file");
+            LOG.info("Computing points earned");
 
             try (Stream<String> qids = pointEarnedManager.findUniqueAllNotMarkedComputed()) {
                 qids.iterator().forEachRemaining(qid -> {
