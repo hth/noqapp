@@ -47,6 +47,8 @@ public class Constants {
         add("5.1.1");
     }};
 
+    /* Used in mobile. */
+    @SuppressWarnings("unused")
     public static final List<String> SUGGESTED_SEARCH = new LinkedList<>() {{
         add("URC");
         add("Bani Camp");
