@@ -2,6 +2,8 @@ package com.noqapp.loader.scheduledtasks;
 
 import static com.noqapp.common.utils.Constants.TEN_METERS_IN_KILOMETER;
 
+import com.noqapp.common.utils.CommonUtil;
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.UserAccountEntity;
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.geo.GeoResult;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -75,15 +78,17 @@ public class LimitedAccessZone {
         AtomicInteger failure = new AtomicInteger();
         AtomicLong recordsFound = new AtomicLong();
         try {
-            LOG.info("Finding proximity devices");
+            LOG.info("Finding proximity devices {} meters", TEN_METERS_IN_KILOMETER * 1000);
             try (Stream<UserAccountEntity> userAccounts = accountService.getAccountsWithLimitedAccess(AccountInactiveReasonEnum.LIM)) {
                 userAccounts.iterator().forEachRemaining(userAccount -> {
                     RegisteredDeviceEntity registeredDevice = deviceService.findRecentDevice(userAccount.getQueueUserId());
-                    Map<String, String> found = new HashMap<>();
+                    GeoJsonPoint from = registeredDevice.getPoint();
+
+                    Map<String, RegisteredDeviceEntity> found = new HashMap<>();
                     try (Stream<GeoResult<RegisteredDeviceEntity>> geoResults = deviceService.findInProximity(registeredDevice.getPoint(), TEN_METERS_IN_KILOMETER)) {
                         geoResults.iterator().forEachRemaining(registeredDeviceEntityGeoResult -> {
                             try {
-                                found.put(registeredDeviceEntityGeoResult.getContent().getDeviceId(), registeredDeviceEntityGeoResult.getContent().getQueueUserId());
+                                found.put(registeredDeviceEntityGeoResult.getContent().getDeviceId(), registeredDeviceEntityGeoResult.getContent());
                                 recordsFound.getAndIncrement();
                             } catch (Exception e) {
                                 failure.getAndIncrement();
@@ -97,9 +102,19 @@ public class LimitedAccessZone {
 
                     StringBuilder text = new StringBuilder();
                     for (String key : found.keySet()) {
-                        text.append("\n").append(key).append(" - ").append(found.get(key));
+                        RegisteredDeviceEntity toRegisteredDevice = found.get(key);
+
+                        text.append("\n").append(key).append(" - ")
+                            .append(toRegisteredDevice.getDeviceId()).append(" ")
+                            .append(CommonUtil.distanceInMeters(from, toRegisteredDevice.getPoint())).append(" m, ")
+                            .append(DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(toRegisteredDevice.getUpdated()));
                     }
-                    LOG.info("Proximity device of {} for {} are {}", userAccount.getAccountInactiveReason().name(), userAccount.getQueueUserId(), text);
+
+                    LOG.info("Proximity found={} device of {} for {} are {}",
+                        found.size(),
+                        userAccount.getAccountInactiveReason().name(),
+                        userAccount.getQueueUserId(),
+                        text);
                 });
             }
         } catch (Exception e) {
