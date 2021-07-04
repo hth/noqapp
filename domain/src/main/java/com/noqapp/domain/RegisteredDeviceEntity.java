@@ -71,12 +71,6 @@ public class RegisteredDeviceEntity extends BaseEntity {
     @Field("CT")
     private String cityName;
 
-    /* Format Longitude and then Latitude. */
-    @Deprecated(forRemoval = true, since = "1.3.120")
-    /* Old style, mongo recommends saving as GEO_2DSPHERE. */
-    @Field("COR")
-    private double[] coordinate;
-
     @Field("PN")
     @GeoSpatialIndexed(name = "registered_device_point_idx", type = GeoSpatialIndexType.GEO_2DSPHERE)
     private GeoJsonPoint point;
@@ -118,7 +112,6 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.token = token;
         this.appVersion = appVersion;
         this.cityName = cityName;
-        this.coordinate = coordinate;
         this.point = new GeoJsonPoint(coordinate[0], coordinate[1]);
         this.ipAddress = ipAddress;
     }
@@ -140,7 +133,6 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.token = token;
         this.appVersion = appVersion;
         this.cityName = cityName;
-        this.coordinate = coordinate;
         this.point = new GeoJsonPoint(coordinate[0], coordinate[1]);
         this.ipAddress = ipAddress;
     }
@@ -166,7 +158,6 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.appVersion = appVersion;
         this.deviceLanguage = deviceLanguage;
         this.cityName = cityName;
-        this.coordinate = coordinate;
         this.point = new GeoJsonPoint(coordinate[0], coordinate[1]);
         this.ipAddress = ipAddress;
     }
@@ -190,7 +181,6 @@ public class RegisteredDeviceEntity extends BaseEntity {
         this.appVersion = appVersion;
         this.deviceLanguage = deviceLanguage;
         this.cityName = cityName;
-        this.coordinate = coordinate;
         this.point = new GeoJsonPoint(coordinate[0], coordinate[1]);
         this.ipAddress = ipAddress;
     }
