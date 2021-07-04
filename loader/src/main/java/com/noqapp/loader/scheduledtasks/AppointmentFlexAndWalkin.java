@@ -13,7 +13,6 @@ import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
-import com.noqapp.service.BizService;
 import com.noqapp.service.DeviceService;
 import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.NotifyMobileService;
