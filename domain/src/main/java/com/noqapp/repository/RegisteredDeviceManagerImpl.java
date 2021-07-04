@@ -133,7 +133,6 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .set("MO", model)
                 .set("OS", osVersion)
                 .set("DL", deviceLanguage)
-                .set("COR", coordinate)
                 .set("PN", new GeoJsonPoint(coordinate[0], coordinate[1]))
                 .addToSet("CH", coordinate)
                 .set("IP", ipAddress)
@@ -158,7 +157,6 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
             .set("MO", model)
             .set("OS", osVersion)
             .set("DL", deviceLanguage)
-            .set("COR", coordinate)
             .set("PN", new GeoJsonPoint(coordinate[0], coordinate[1]))
             .addToSet("CH", coordinate)
             .set("IP", ipAddress)
@@ -310,7 +308,6 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .set("OS", osVersion)
                 .set("DL", deviceLanguage)
                 .set("AF", appFlavor)
-                .set("COR", coordinate)
                 .set("PN", new GeoJsonPoint(coordinate[0], coordinate[1]))
                 .addToSet("CH", coordinate)
                 .set("IP", ipAddress)
@@ -324,7 +321,6 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
                 .set("OS", osVersion)
                 .set("DL", deviceLanguage)
                 .set("AF", appFlavor)
-                .set("COR", coordinate)
                 .set("PN", new GeoJsonPoint(coordinate[0], coordinate[1]))
                 .addToSet("CH", coordinate)
                 .set("IP", ipAddress)
@@ -471,7 +467,9 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     public Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInMeters) {
         Date date = Date.from(Instant.now().minus(Duration.ofDays(90)));
         NearQuery query = NearQuery.near(point).maxDistance(new Distance(distanceInMeters, Metrics.KILOMETERS))
-            .query(query(where("QID").exists(true).and("U").gte(date)));
+            .query(
+                query(where("QID").exists(true).and("U").gte(date))
+                    .with(Sort.by(Sort.Direction.DESC, "U")));
         return mongoTemplate.geoNear(query, RegisteredDeviceEntity.class, TABLE).getContent().stream();
     }
 }
