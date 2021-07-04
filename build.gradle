@@ -532,7 +532,7 @@ project(':loader') {
     }
 }
 
-task copyJars(type: Copy) {
+task copyJars(type: Copy, dependsOn: [':common:jar', ':domain:jar', ':health:jar', ':security:jar', ':inventory:jar', ':medical:jar', ':service:jar', ':search:jar', ':social:jar', ':view:jar']) {
     from 'common/build/libs'
     from 'domain/build/libs'
     from 'health/build/libs'
