@@ -207,14 +207,16 @@ public class AppointmentFlexAndWalkin {
         if (scheduleAppointments.size() > 0) {
             TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(bizStore.getCodeQR());
             if (scheduleAppointments.size() != tokenQueue.getLastNumber()) {
-                LOG.error("Walkin scheduleAppointment={} issuedToken={} {} for \"{}\" \"{}\"",
+                LOG.error("Walkin on {} scheduleAppointment={} issuedToken={} {} for \"{}\" \"{}\"",
+                    DateUtil.dateToString(now),
                     scheduleAppointments.size(),
                     tokenQueue.getLastNumber(),
                     bizStore.getCodeQR(),
                     bizStore.getDisplayName(),
                     bizStore.getBizName().getBusinessName());
             } else {
-                LOG.info("Walkin scheduleAppointment={} issuedToken={} {} for \"{}\" \"{}\"",
+                LOG.info("Walkin on {} scheduleAppointment={} issuedToken={} {} for \"{}\" \"{}\"",
+                    DateUtil.dateToString(now),
                     scheduleAppointments.size(),
                     tokenQueue.getLastNumber(),
                     bizStore.getCodeQR(),
