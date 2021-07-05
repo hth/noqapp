@@ -32,6 +32,9 @@ import com.noqapp.repository.ScheduledTaskManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
+import com.noqapp.service.cache.BizNameValidCodeQRCache;
+import com.noqapp.service.cache.BizStoreCodeQRCache;
+import com.noqapp.service.cache.BizStoreValidCodeQRCache;
 import com.noqapp.service.utils.ServiceUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -370,19 +373,19 @@ public class BizService {
         return bizStoreManager.getAllBizStoresMatchingAddress(bizStoreAddress, bizNameId);
     }
 
-    @Cacheable(value = "bizStore-codeQR", key = "#codeQR")
+    @BizStoreCodeQRCache
     public BizStoreEntity findByCodeQR(String codeQR) {
         return bizStoreManager.findByCodeQR(codeQR);
     }
 
     @Mobile
-    @Cacheable(value = "bizStore-valid-codeQR", key = "#codeQR")
+    @BizStoreValidCodeQRCache
     public boolean isValidCodeQR(String codeQR) {
         return Validate.isValidObjectId(codeQR) && bizStoreManager.isValidCodeQR(codeQR);
     }
 
     @Mobile
-    @Cacheable(value = "bizName-valid-codeQR", key = "#codeQR")
+    @BizNameValidCodeQRCache
     public boolean isValidBizNameCodeQR(String codeQR) {
         return Validate.isValidObjectId(codeQR) && bizNameManager.isValidCodeQR(codeQR);
     }

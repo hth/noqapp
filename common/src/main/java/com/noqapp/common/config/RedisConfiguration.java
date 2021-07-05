@@ -2,6 +2,9 @@ package com.noqapp.common.config;
 
 import static io.lettuce.core.ReadFrom.REPLICA_PREFERRED;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -21,6 +24,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -30,11 +36,12 @@ import java.util.Objects;
 @Configuration
 @EnableCaching
 public class RedisConfiguration extends CachingConfigurerSupport {
+    private static final Logger LOG = LoggerFactory.getLogger(RedisConfiguration.class);
 
-    @Value ("${redis.host}")
+    @Value("${redis.host}")
     private String redisHost;
 
-    @Value ("${redis.port}")
+    @Value("${redis.port}")
     private int redisPort;
 
     @Value("${redis.cache.duration}")
@@ -42,6 +49,9 @@ public class RedisConfiguration extends CachingConfigurerSupport {
 
     @Value("${redis.clusters}")
     private String redisCluster;
+
+    @Value("#{'${redis.cacheNames}'.split(',')}")
+    private List<String> cacheNames;
 
     private Environment environment;
 
@@ -103,7 +113,44 @@ public class RedisConfiguration extends CachingConfigurerSupport {
 
     @Bean
     RedisCacheManager cacheManager(RedisCacheWriter redisCacheWriter, RedisCacheConfiguration redisCacheConfiguration) {
-        return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration);
+        Map<String, RedisCacheConfiguration> cacheNamesConfigurationMap = new HashMap<>();
+        for (String cacheName : cacheNames) {
+            switch (cacheName) {
+                case "access-codeQR":
+                    cacheNamesConfigurationMap.put("access-codeQR", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(redisCacheDuration)));
+                    LOG.info("Setting time for cacheName={} duration={} minutes", cacheName, redisCacheDuration);
+                    break;
+                case "access-store":
+                    cacheNamesConfigurationMap.put("access-store", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(redisCacheDuration)));
+                    LOG.info("Setting time for cacheName={} duration={} minutes", cacheName, redisCacheDuration);
+                    break;
+                case "bizName-valid-codeQR":
+                    cacheNamesConfigurationMap.put("bizName-valid-codeQR", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(redisCacheDuration)));
+                    LOG.info("Setting time for cacheName={} duration={} minutes", cacheName, redisCacheDuration);
+                    break;
+                case "bizStore-codeQR":
+                    cacheNamesConfigurationMap.put("bizStore-codeQR", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(redisCacheDuration)));
+                    LOG.info("Setting time for cacheName={} duration={} minutes", cacheName, redisCacheDuration);
+                    break;
+                case "bizStore-valid-codeQR":
+                    cacheNamesConfigurationMap.put("bizStore-valid-codeQR", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(redisCacheDuration)));
+                    LOG.info("Setting time for cacheName={} duration={} minutes", cacheName, redisCacheDuration);
+                    break;
+                case "flexAppointment":
+                    cacheNamesConfigurationMap.put("flexAppointment", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1)));
+                    LOG.info("Setting time for cacheName={} duration={} hour", cacheName, 1);
+                    break;
+                case "mail-auth":
+                    cacheNamesConfigurationMap.put("mail-auth", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(redisCacheDuration)));
+                    LOG.info("Setting time for cacheName={} duration={} minutes", cacheName, redisCacheDuration);
+                    break;
+                default:
+                    LOG.error("Reached unreachable condition {}", cacheName);
+                    throw new UnsupportedOperationException("Reached unreachable condition");
+            }
+        }
+
+        return new RedisCacheManager(redisCacheWriter, redisCacheConfiguration, cacheNamesConfigurationMap);
     }
 
     /**
