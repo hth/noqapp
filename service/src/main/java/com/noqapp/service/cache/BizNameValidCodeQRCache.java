@@ -13,6 +13,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-@Cacheable(value = "bizName-valid-codeQR", key = "#codeQR")
+@Cacheable(cacheNames = "bizName-valid-codeQR", key = "#codeQR")
 public @interface BizNameValidCodeQRCache {
 }
