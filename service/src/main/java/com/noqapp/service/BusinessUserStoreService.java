@@ -26,6 +26,8 @@ import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.CommonStatusEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.repository.BusinessUserStoreManager;
+import com.noqapp.service.cache.AccessCodeQRCache;
+import com.noqapp.service.cache.AccessStoreCache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,12 +121,12 @@ public class BusinessUserStoreService {
     }
 
     @Mobile
-    @Cacheable(value = "access-codeQR")
+    @AccessCodeQRCache
     public boolean hasAccess(String qid, String codeQR) {
         return businessUserStoreManager.hasAccess(qid, codeQR);
     }
 
-    @Cacheable(value = "access-store")
+    @AccessStoreCache
     public boolean hasAccessUsingStoreId(String qid, String bizStoreId) {
         return businessUserStoreManager.hasAccessUsingStoreId(qid, bizStoreId);
     }
