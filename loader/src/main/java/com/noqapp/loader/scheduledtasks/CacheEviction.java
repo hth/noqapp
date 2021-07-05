@@ -31,7 +31,7 @@ public class CacheEviction {
         this.cacheManager = cacheManager;
     }
 
-    @Scheduled(fixedDelayString = "${loader.CacheEviction.evictAllCachesAtIntervals}")
+    @Scheduled(cron = "${loader.CacheEviction.evictAllCachesAtIntervals}")
     public void evictAllCachesAtIntervals() {
         evictAllCaches();
     }
