@@ -303,9 +303,7 @@ public class JoinAbortService {
 
     @Mobile
     public void authenticateMessageToClient(String qid, String title, String body, String codeQR) {
-        executorService.execute(() -> composeMessageForClientAuth(
-            deviceService.findRegisteredDeviceByQid(qid), title, body, codeQR)
-        );
+        executorService.execute(() -> composeMessageForClientAuth(deviceService.findRegisteredDeviceByQid(qid), title, body, codeQR));
     }
 
     /** Sends personal message with all the current queue and orders. */
