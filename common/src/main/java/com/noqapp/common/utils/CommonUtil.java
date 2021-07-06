@@ -154,9 +154,7 @@ public final class CommonUtil {
         return l.getDisplayCountry();
     }
 
-    /**
-     * SN is prefix when not on Prod. This is to distinguish from Prod QR code. SN means Sandbox.
-     */
+    /** SN is prefix when not on Prod. This is to distinguish from Prod QR code. SN means Sandbox. */
     public static String generateCodeQR(String environment) {
         switch (environment) {
             case "dev":
@@ -175,24 +173,18 @@ public final class CommonUtil {
         return map;
     }
 
-    /**
-     * Used when business is dispensing token for people without app.
-     */
+    /** Used when business is dispensing token for people without app. */
     public static String appendRandomToDeviceId(String did) {
         return did + "-" + RandomString.newInstance(6).nextString();
     }
 
-    /**
-     * Get time in 24 hour format.
-     */
+    /** Get time in 24 hour format. */
     public static int getTimeIn24HourFormat(ZonedDateTime zonedDateTime) {
         /* To make sure minute in time 11:06 AM is not represented as 116 but as 1106 hence string formatting. */
         return Integer.parseInt(zonedDateTime.getHour() + String.format(Locale.US, "%02d", zonedDateTime.getMinute()));
     }
 
-    /**
-     * This will get you system time in 24 hour format.
-     */
+    /** This will get you system time in 24 hour format. */
     public static int getTimeIn24HourFormat() {
         return getTimeIn24HourFormat(ZonedDateTime.now());
     }
