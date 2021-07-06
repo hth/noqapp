@@ -262,7 +262,7 @@ public final class Formatter {
     }
 
     /**
-     * Converts military time like '10' to 12:10 AM' and '1000' to '10:00 AM' and '2345' to '11:45 PM'.
+     * Converts military time like '0010' to 12:10 AM' and '1000' to '10:00 AM' and '2345' to '11:45 PM'.
      *
      * @param rawTimestamp
      * @return
