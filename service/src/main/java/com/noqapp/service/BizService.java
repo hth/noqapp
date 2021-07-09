@@ -37,6 +37,8 @@ import com.noqapp.service.cache.BizStoreCodeQRCache;
 import com.noqapp.service.cache.BizStoreValidCodeQRCache;
 import com.noqapp.service.utils.ServiceUtils;
 
+import com.google.common.collect.Ordering;
+
 import org.apache.commons.lang3.StringUtils;
 
 import org.slf4j.Logger;
@@ -707,13 +709,21 @@ public class BizService {
     @Mobile
     public List<BizStoreEntity> favoriteSuggested(String qid) {
         UserPreferenceEntity userPreference = userPreferenceManager.favorite(qid);
-        return bizStoreManager.findBizStoresByCodeQRs(userPreference.getFavoriteSuggested());
+        List<BizStoreEntity> bizStores = bizStoreManager.findBizStoresByCodeQRs(userPreference.getFavoriteSuggested());
+
+        /* Order based in list found. */
+        bizStores.sort(Ordering.explicit(userPreference.getFavoriteSuggested()).onResultOf(BizStoreEntity::getCodeQR));
+        return bizStores;
     }
 
     @Mobile
     public List<BizStoreEntity> favoriteTagged(String qid) {
         UserPreferenceEntity userPreference = userPreferenceManager.favorite(qid);
-        return bizStoreManager.findBizStoresByCodeQRs(userPreference.getFavoriteTagged());
+        List<BizStoreEntity> bizStores = bizStoreManager.findBizStoresByCodeQRs(userPreference.getFavoriteTagged());
+
+        /* Order based in list found. */
+        bizStores.sort(Ordering.explicit(userPreference.getFavoriteTagged()).onResultOf(BizStoreEntity::getCodeQR));
+        return bizStores;
     }
 
     @Mobile

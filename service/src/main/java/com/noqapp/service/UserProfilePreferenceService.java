@@ -3,7 +3,6 @@ package com.noqapp.service;
 import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.json.JsonProfile;
 import com.noqapp.domain.json.JsonUserPreference;
 import com.noqapp.domain.types.CommunicationModeEnum;
 import com.noqapp.domain.types.DeliveryModeEnum;
