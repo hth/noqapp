@@ -5,13 +5,11 @@ import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.AppointmentStatusEnum;
-import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
-import com.noqapp.service.MessageCustomerService;
-import com.noqapp.service.NotifyMobileService;
+import com.noqapp.service.SystemNotifyOnGettingTokenService;
 import com.noqapp.service.TokenQueueService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,8 +31,7 @@ import java.util.List;
 public class FlexAppointmentToTokenService {
     private static final Logger LOG = LoggerFactory.getLogger(FlexAppointmentToTokenService.class);
 
-    private NotifyMobileService notifyMobileService;
-    private MessageCustomerService messageCustomerService;
+    private SystemNotifyOnGettingTokenService systemNotifyOnGettingTokenService;
     private TokenQueueService tokenQueueService;
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
@@ -43,16 +40,14 @@ public class FlexAppointmentToTokenService {
 
     @Autowired
     public FlexAppointmentToTokenService(
-        NotifyMobileService notifyMobileService,
-        MessageCustomerService messageCustomerService,
+        SystemNotifyOnGettingTokenService systemNotifyOnGettingTokenService,
         TokenQueueService tokenQueueService,
 
         ScheduleAppointmentManager scheduleAppointmentManager,
         BizStoreManager bizStoreManager,
         RegisteredDeviceManager registeredDeviceManager
     ) {
-        this.notifyMobileService = notifyMobileService;
-        this.messageCustomerService = messageCustomerService;
+        this.systemNotifyOnGettingTokenService = systemNotifyOnGettingTokenService;
         this.tokenQueueService = tokenQueueService;
 
         this.scheduleAppointmentManager = scheduleAppointmentManager;
@@ -87,31 +82,7 @@ public class FlexAppointmentToTokenService {
                 scheduleAppointmentManager.changeAppointmentStatusOnTokenIssued(scheduleAppointment.getId(), AppointmentStatusEnum.R);
             }
 
-            if (0 != jsonToken.getToken()) {
-                notifyMobileService.autoSubscribeClientToTopic(
-                    jsonToken.getCodeQR(),
-                    registeredDevice.getToken(),
-                    registeredDevice.getDeviceType());
-
-                notifyMobileService.notifyClient(
-                    registeredDevice,
-                    "Joined " + bizStore.getDisplayName() + " Queue",
-                    "Your token number is " + jsonToken.getToken(),
-                    bizStore.getCodeQR());
-            } else {
-                messageCustomerService.sendMessageToSpecificUser(
-                    bizStore.getDisplayName() + ": Token not issued",
-                    jsonToken.getQueueJoinDenied().friendlyDescription(),
-                    registeredDeviceOfQid,
-                    MessageOriginEnum.A,
-                    bizStore.getBusinessType());
-
-                LOG.warn("Token not received for {} {} {} reason={}",
-                    bizStore.getCodeQR(),
-                    bizStore.getDisplayName(),
-                    bizStore.getBizName().getBusinessName(),
-                    jsonToken.getQueueStatus() != null ? jsonToken.getQueueStatus().getDescription() : jsonToken.getQueueStatus());
-            }
+            systemNotifyOnGettingTokenService.notifyAfterGettingToken(bizStore, registeredDeviceOfQid, jsonToken);
         }
     }
 }

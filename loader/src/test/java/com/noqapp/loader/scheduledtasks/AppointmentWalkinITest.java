@@ -41,6 +41,7 @@ class AppointmentWalkinITest extends ITest {
             bizStoreManager,
             registeredDeviceManager,
 
+            systemNotifyOnGettingTokenService,
             notifyMobileService,
             messageCustomerService,
             tokenQueueService,

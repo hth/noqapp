@@ -2,13 +2,11 @@ package com.noqapp.loader.scheduledtasks;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
-import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.AppointmentStatusEnum;
-import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.repository.BizStoreManager;
@@ -19,6 +17,7 @@ import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.NotifyMobileService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreHourService;
+import com.noqapp.service.SystemNotifyOnGettingTokenService;
 import com.noqapp.service.TokenQueueService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -55,6 +54,7 @@ public class AppointmentWalkin {
     private BizStoreManager bizStoreManager;
     private RegisteredDeviceManager registeredDeviceManager;
 
+    private SystemNotifyOnGettingTokenService systemNotifyOnGettingTokenService;
     private NotifyMobileService notifyMobileService;
     private MessageCustomerService messageCustomerService;
     private TokenQueueService tokenQueueService;
@@ -75,6 +75,7 @@ public class AppointmentWalkin {
         BizStoreManager bizStoreManager,
         RegisteredDeviceManager registeredDeviceManager,
 
+        SystemNotifyOnGettingTokenService systemNotifyOnGettingTokenService,
         NotifyMobileService notifyMobileService,
         MessageCustomerService messageCustomerService,
         TokenQueueService tokenQueueService,
@@ -89,6 +90,7 @@ public class AppointmentWalkin {
         this.bizStoreManager = bizStoreManager;
         this.registeredDeviceManager = registeredDeviceManager;
 
+        this.systemNotifyOnGettingTokenService = systemNotifyOnGettingTokenService;
         this.notifyMobileService = notifyMobileService;
         this.messageCustomerService = messageCustomerService;
         this.tokenQueueService = tokenQueueService;
@@ -184,34 +186,7 @@ public class AppointmentWalkin {
                 scheduleAppointmentManager.changeAppointmentStatusOnTokenIssued(scheduleAppointment.getId(), AppointmentStatusEnum.R);
             }
 
-            if (0 != jsonToken.getToken()) {
-                RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(registeredDeviceOfQid);
-                if (null != registeredDevice) {
-                    notifyMobileService.autoSubscribeClientToTopic(
-                        jsonToken.getCodeQR(),
-                        registeredDevice.getToken(),
-                        registeredDevice.getDeviceType());
-
-                    notifyMobileService.notifyClient(
-                        registeredDevice,
-                        "Joined " + bizStore.getDisplayName() + " Queue",
-                        "Your token number is " + jsonToken.getToken(),
-                        bizStore.getCodeQR());
-                }
-            } else {
-                messageCustomerService.sendMessageToSpecificUser(
-                    bizStore.getDisplayName() + ": Token not issued",
-                    jsonToken.getQueueJoinDenied().friendlyDescription(),
-                    registeredDeviceOfQid,
-                    MessageOriginEnum.A,
-                    bizStore.getBusinessType());
-
-                LOG.warn("Token not received for {} {} {} reason={}",
-                    bizStore.getCodeQR(),
-                    bizStore.getDisplayName(),
-                    bizStore.getBizName().getBusinessName(),
-                    jsonToken.getQueueStatus() != null ? jsonToken.getQueueStatus().getDescription() : jsonToken.getQueueStatus());
-            }
+            systemNotifyOnGettingTokenService.notifyAfterGettingToken(bizStore, registeredDeviceOfQid, jsonToken);
         }
 
         if (scheduleAppointments.size() > 0) {
