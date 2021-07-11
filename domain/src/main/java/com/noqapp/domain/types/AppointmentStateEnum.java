@@ -11,8 +11,6 @@ public enum AppointmentStateEnum {
     O("O", "Off", "No Appointment"),
     A("A", "Traditional Appointments", "Appointment"),
     S("S", "Walk-in Appointments", "Slots"),
-
-    /* Mixture of Walk-ins and traditional appointments. To be implemented. */
     F("F", "Flex Appointments", "Flex");
 
     private final String description;
@@ -52,12 +50,15 @@ public enum AppointmentStateEnum {
             case OD:
                 map.remove(A.name);
                 map.remove(S.name);
+                map.remove(F.name);
                 break;
             case QQ:
+                map.remove(F.name);
                 //Show all
                 break;
             case OQ:
                 map.remove(A.name);
+                map.remove(F.name);
                 break;
         }
 

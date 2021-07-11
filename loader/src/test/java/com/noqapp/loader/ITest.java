@@ -24,6 +24,7 @@ import com.noqapp.domain.types.catgeory.CanteenStoreDepartmentEnum;
 import com.noqapp.health.repository.ApiHealthNowManager;
 import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.loader.service.AfterAppointmentToTokenService;
 import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.medical.repository.HospitalVisitScheduleManager;
 import com.noqapp.medical.repository.HospitalVisitScheduleManagerImpl;
@@ -146,6 +147,7 @@ import com.noqapp.service.FirebaseMessageService;
 import com.noqapp.service.FirebaseService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.GenerateUserIdService;
+import com.noqapp.service.JMSProducerService;
 import com.noqapp.service.JoinAbortService;
 import com.noqapp.service.LanguageTranslationService;
 import com.noqapp.service.MailService;
@@ -163,6 +165,7 @@ import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreCategoryService;
 import com.noqapp.service.StoreHourService;
 import com.noqapp.service.StoreProductService;
+import com.noqapp.service.SubscribeTopicService;
 import com.noqapp.service.TextToSpeechService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserAddressService;
@@ -311,6 +314,7 @@ public class ITest extends RealMongoForITest {
     protected HospitalVisitScheduleService hospitalVisitScheduleService;
     protected NLPService nlpService;
     protected BusinessCustomerPriorityService businessCustomerPriorityService;
+    protected AfterAppointmentToTokenService afterAppointmentToTokenService;
 
     protected ApiHealthService apiHealthService;
     protected ApiHealthNowManager apiHealthNowManager;
@@ -335,6 +339,8 @@ public class ITest extends RealMongoForITest {
     @Mock protected GraphDetailOfPerson graphDetailOfPerson;
     @Mock protected NotificationN4jManager notificationN4jManager;
     @Mock protected StringRedisTemplate stringRedisTemplate;
+    @Mock protected JMSProducerService jmsProducerService;
+    @Mock protected SubscribeTopicService subscribeTopicService;
 
     private MockEnvironment mockEnvironment;
 
@@ -485,9 +491,9 @@ public class ITest extends RealMongoForITest {
             bizStoreManager,
             businessCustomerService,
             textToSpeechService,
-            firebaseService,
-            userProfilePreferenceService,
             messageCustomerService,
+            jmsProducerService,
+            subscribeTopicService,
             apiHealthService
         );
 
@@ -584,7 +590,8 @@ public class ITest extends RealMongoForITest {
             nlpService,
             mailService,
             cashfreeService,
-            purchaseOrderProductService
+            purchaseOrderProductService,
+            subscribeTopicService
         );
 
         joinAbortService = new JoinAbortService(
@@ -689,11 +696,18 @@ public class ITest extends RealMongoForITest {
         deviceService = new DeviceService(registeredDeviceManager, userProfileManager);
         notifyMobileService = new NotifyMobileService(
             purchaseOrderService,
-            purchaseOrderProductService,
             firebaseMessageService,
             firebaseService,
-            tokenQueueService,
+            tokenQueueManager,
             queueService
+        );
+
+        afterAppointmentToTokenService = new AfterAppointmentToTokenService(
+            subscribeTopicService,
+            tokenQueueService,
+            scheduleAppointmentManager,
+            bizStoreManager,
+            registeredDeviceManager
         );
 
         registerUser();

@@ -1,6 +1,8 @@
 package com.noqapp.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.UserAccountEntity;
@@ -22,11 +24,11 @@ class AccountServiceITest extends ITest {
     @Test
     void validateAccount() {
         UserAccountEntity userAccount1 = accountService.findByUserId("rocketd@r.com");
-        assertEquals(false, userAccount1.isAccountValidated(), "Account is not validated");
+        assertFalse(userAccount1.isAccountValidated(), "Account is not validated");
 
         EmailValidateEntity emailValidate1 = emailValidateService.saveAccountValidate(userAccount1.getQueueUserId(), userAccount1.getUserId());
         accountService.validateAccount(emailValidate1, userAccount1.getQueueUserId());
         UserAccountEntity userAccount1_after_validation = accountService.findByQueueUserId(userAccount1.getQueueUserId());
-        assertEquals(true, userAccount1_after_validation.isAccountValidated(), "Account is validated");
+        assertTrue(userAccount1_after_validation.isAccountValidated(), "Account is validated");
     }
 }

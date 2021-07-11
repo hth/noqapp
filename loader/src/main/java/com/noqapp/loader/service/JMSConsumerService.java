@@ -2,12 +2,18 @@ package com.noqapp.loader.service;
 
 import com.noqapp.domain.jms.ChangeMailOTP;
 import com.noqapp.domain.jms.FeedbackMail;
+import com.noqapp.domain.jms.FlexAppointment;
 import com.noqapp.domain.jms.ReviewSentiment;
 import com.noqapp.domain.jms.SignupUserInfo;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.service.MailService;
 import com.noqapp.service.MessageCustomerService;
+import com.noqapp.service.TokenQueueService;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * hitender
@@ -27,13 +34,27 @@ import java.util.Map;
 public class JMSConsumerService {
     private static final Logger LOG = LoggerFactory.getLogger(JMSConsumerService.class);
 
+    /* Set cache parameters. */
+    private static Cache<String, OnOffEnum> cache;
+
     private MailService mailService;
     private MessageCustomerService messageCustomerService;
+    private AfterAppointmentToTokenService afterAppointmentToTokenService;
 
     @Autowired
-    public JMSConsumerService(MailService mailService, MessageCustomerService messageCustomerService) {
+    public JMSConsumerService(
+        MailService mailService,
+        MessageCustomerService messageCustomerService,
+        AfterAppointmentToTokenService afterAppointmentToTokenService
+    ) {
         this.mailService = mailService;
         this.messageCustomerService = messageCustomerService;
+        this.afterAppointmentToTokenService = afterAppointmentToTokenService;
+
+        cache = Caffeine.newBuilder()
+            .maximumSize(100)
+            .expireAfterWrite(2, TimeUnit.MINUTES)
+            .build();
     }
 
     @JmsListener(destination = "${activemq.destination.mail.signup}", containerFactory = "jmsMailSingUpListenerContainerFactory")
@@ -92,5 +113,19 @@ public class JMSConsumerService {
             "Review for: " + reviewSentiment.getStoreName(),
             rootMap,
             "mail/reviewSentiment.ftl");
+    }
+
+    @JmsListener(destination = "${activemq.destination.flexAppointment}", containerFactory = "jmsFlexAppointmentListenerContainerFactory")
+    public void sendFlexAppointment(FlexAppointment flexAppointment) {
+        if (null == cache.getIfPresent(flexAppointment.key())) {
+            cache.put(flexAppointment.key(), OnOffEnum.O);
+            LOG.info("ActiveMQ received flex appointment key={}", flexAppointment.key());
+            afterAppointmentToTokenService.changeFromFlexToWalkin(
+                flexAppointment.getCodeQR(),
+                flexAppointment.getScheduleDate(),
+                flexAppointment.getStartTime());
+        } else {
+            LOG.info("ActiveMQ skipped flex appointment key={}", flexAppointment.key());
+        }
     }
 }

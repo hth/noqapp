@@ -146,6 +146,7 @@ public class PurchaseOrderService {
     private MailService mailService;
     private CashfreeService cashfreeService;
     private PurchaseOrderProductService purchaseOrderProductService;
+    private SubscribeTopicService subscribeTopicService;
 
     private ExecutorService executorService;
 
@@ -176,7 +177,8 @@ public class PurchaseOrderService {
         NLPService nlpService,
         MailService mailService,
         CashfreeService cashfreeService,
-        PurchaseOrderProductService purchaseOrderProductService
+        PurchaseOrderProductService purchaseOrderProductService,
+        SubscribeTopicService subscribeTopicService
     ) {
         this.limitedToDays = limitedToDays;
 
@@ -203,6 +205,7 @@ public class PurchaseOrderService {
         this.mailService = mailService;
         this.cashfreeService = cashfreeService;
         this.purchaseOrderProductService = purchaseOrderProductService;
+        this.subscribeTopicService = subscribeTopicService;
 
         this.executorService = newCachedThreadPool();
     }
@@ -742,7 +745,7 @@ public class PurchaseOrderService {
                 .setBizStoreId(bizStore.getId())
                 .setBusinessType(bizStore.getBusinessType())
                 .setPaymentStatus(purchaseOrder.getPaymentStatus());
-            executorService.execute(() -> tokenQueueService.addSubscribedTopic(qid, bizStore));
+            subscribeTopicService.addSubscribedTopic(qid, bizStore);
             LOG.debug("JsonPurchaseOrder={}", jsonPurchaseOrder);
         } catch (FailedTransactionException e) {
             LOG.error("Failed transaction on creating order reason={}", e.getLocalizedMessage(), e);

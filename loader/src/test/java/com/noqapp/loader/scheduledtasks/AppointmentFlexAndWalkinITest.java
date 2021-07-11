@@ -40,13 +40,12 @@ class AppointmentFlexAndWalkinITest extends ITest {
             scheduleAppointmentManager,
             bizStoreManager,
 
+            subscribeTopicService,
             tokenQueueService,
             deviceService,
             statsCronService,
             computeNextRunService,
-            notifyMobileService,
-            storeHourService,
-            messageCustomerService
+            storeHourService
         );
     }
 
