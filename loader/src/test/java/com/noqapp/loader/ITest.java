@@ -24,7 +24,7 @@ import com.noqapp.domain.types.catgeory.CanteenStoreDepartmentEnum;
 import com.noqapp.health.repository.ApiHealthNowManager;
 import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.loader.service.AfterAppointmentToTokenService;
+import com.noqapp.loader.service.FlexAppointmentToTokenService;
 import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.medical.repository.HospitalVisitScheduleManager;
 import com.noqapp.medical.repository.HospitalVisitScheduleManagerImpl;
@@ -314,7 +314,7 @@ public class ITest extends RealMongoForITest {
     protected HospitalVisitScheduleService hospitalVisitScheduleService;
     protected NLPService nlpService;
     protected BusinessCustomerPriorityService businessCustomerPriorityService;
-    protected AfterAppointmentToTokenService afterAppointmentToTokenService;
+    protected FlexAppointmentToTokenService flexAppointmentToTokenService;
 
     protected ApiHealthService apiHealthService;
     protected ApiHealthNowManager apiHealthNowManager;
@@ -702,7 +702,7 @@ public class ITest extends RealMongoForITest {
             queueService
         );
 
-        afterAppointmentToTokenService = new AfterAppointmentToTokenService(
+        flexAppointmentToTokenService = new FlexAppointmentToTokenService(
             notifyMobileService,
             messageCustomerService,
             tokenQueueService,

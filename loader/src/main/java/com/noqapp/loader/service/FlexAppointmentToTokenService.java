@@ -10,10 +10,8 @@ import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
-import com.noqapp.service.DeviceService;
 import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.NotifyMobileService;
-import com.noqapp.service.SubscribeTopicService;
 import com.noqapp.service.TokenQueueService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,8 +30,8 @@ import java.util.List;
  * 7/6/21 5:29 PM
  */
 @Service
-public class AfterAppointmentToTokenService {
-    private static final Logger LOG = LoggerFactory.getLogger(AfterAppointmentToTokenService.class);
+public class FlexAppointmentToTokenService {
+    private static final Logger LOG = LoggerFactory.getLogger(FlexAppointmentToTokenService.class);
 
     private NotifyMobileService notifyMobileService;
     private MessageCustomerService messageCustomerService;
@@ -44,7 +42,7 @@ public class AfterAppointmentToTokenService {
     private RegisteredDeviceManager registeredDeviceManager;
 
     @Autowired
-    public AfterAppointmentToTokenService(
+    public FlexAppointmentToTokenService(
         NotifyMobileService notifyMobileService,
         MessageCustomerService messageCustomerService,
         TokenQueueService tokenQueueService,
