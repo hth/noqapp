@@ -52,10 +52,7 @@ public class SurveyService {
     private ExecutorService executorService;
 
     /* Set cache parameters. */
-    private static final Cache<String, String> cache = Caffeine.newBuilder()
-        .maximumSize(100)
-        .expireAfterWrite(2, TimeUnit.HOURS)
-        .build();
+    private static Cache<String, String> cache;
 
     public SurveyService(
         SurveyManager surveyManager,
@@ -69,6 +66,10 @@ public class SurveyService {
         this.nlpService = nlpService;
 
         this.executorService = newCachedThreadPool();
+        cache = Caffeine.newBuilder()
+            .maximumSize(100)
+            .expireAfterWrite(2, TimeUnit.HOURS)
+            .build();
     }
 
     public QuestionnaireEntity saveSurveyQuestionnaire(QuestionnaireEntity questionnaire) {

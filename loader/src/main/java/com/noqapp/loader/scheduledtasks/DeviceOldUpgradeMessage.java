@@ -46,10 +46,7 @@ public class DeviceOldUpgradeMessage {
     private StatsCronService statsCronService;
 
     /* Set cache parameters. */
-    private static final Cache<String, String> cache = Caffeine.newBuilder()
-        .maximumSize(100)
-        .expireAfterWrite(24, TimeUnit.HOURS)
-        .build();
+    private static Cache<String, String> cache;
 
     @Autowired
     public DeviceOldUpgradeMessage(
@@ -65,6 +62,11 @@ public class DeviceOldUpgradeMessage {
         this.registeredDeviceManager = registeredDeviceManager;
         this.messageCustomerService = messageCustomerService;
         this.statsCronService = statsCronService;
+
+        cache = Caffeine.newBuilder()
+            .maximumSize(100)
+            .expireAfterWrite(24, TimeUnit.HOURS)
+            .build();
     }
 
     @Scheduled(fixedDelayString = "${loader.DeviceOldUpgradeMessage.messageOldDevices}")
