@@ -1,5 +1,7 @@
 package com.noqapp.common.config;
 
+import com.noqapp.common.errorHandler.JMSErrorHandler;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +38,9 @@ public class JMSConfiguration {
     @Value("${activemq.destination.review.negative}")
     private String activemqDestinationReviewNegative;
 
+
+    private JMSErrorHandler jmsErrorHandler = new JMSErrorHandler();
+
     @Bean
     public ActiveMQConnectionFactory connectionFactory() {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
@@ -49,6 +54,7 @@ public class JMSConfiguration {
     public DefaultJmsListenerContainerFactory jmsMailSingUpListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
+        factory.setErrorHandler(jmsErrorHandler);
         return factory;
     }
 
@@ -64,6 +70,7 @@ public class JMSConfiguration {
     public DefaultJmsListenerContainerFactory jmsMailChangeListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
+        factory.setErrorHandler(jmsErrorHandler);
         return factory;
     }
 
@@ -79,6 +86,7 @@ public class JMSConfiguration {
     public DefaultJmsListenerContainerFactory jmsFeedbackListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
+        factory.setErrorHandler(jmsErrorHandler);
         return factory;
     }
 
@@ -94,6 +102,7 @@ public class JMSConfiguration {
     public DefaultJmsListenerContainerFactory jmsReviewNegativeListenerContainerFactory() {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory());
+        factory.setErrorHandler(jmsErrorHandler);
         return factory;
     }
 
