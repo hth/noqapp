@@ -2,22 +2,23 @@ package com.noqapp.loader.scheduledtasks;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizStoreEntity;
+import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StatsCronEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.AppointmentStatusEnum;
+import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.repository.BizStoreManager;
+import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
-import com.noqapp.loader.service.AfterAppointmentToTokenService;
 import com.noqapp.service.DeviceService;
 import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.NotifyMobileService;
 import com.noqapp.service.StatsCronService;
 import com.noqapp.service.StoreHourService;
-import com.noqapp.service.SubscribeTopicService;
 import com.noqapp.service.TokenQueueService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * Issues token to Walkin appointments.
  * User: hitender
  * Date: 2019-08-22 11:03
  */
@@ -46,13 +48,15 @@ import java.util.List;
     "PMD.LongVariable"
 })
 @Component
-public class AppointmentFlexAndWalkin {
-    private static final Logger LOG = LoggerFactory.getLogger(AppointmentFlexAndWalkin.class);
+public class AppointmentWalkin {
+    private static final Logger LOG = LoggerFactory.getLogger(AppointmentWalkin.class);
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
     private BizStoreManager bizStoreManager;
+    private RegisteredDeviceManager registeredDeviceManager;
 
-    private SubscribeTopicService subscribeTopicService;
+    private NotifyMobileService notifyMobileService;
+    private MessageCustomerService messageCustomerService;
     private TokenQueueService tokenQueueService;
     private DeviceService deviceService;
     private StatsCronService statsCronService;
@@ -63,14 +67,16 @@ public class AppointmentFlexAndWalkin {
     private StatsCronEntity statsCron;
 
     @Autowired
-    public AppointmentFlexAndWalkin(
+    public AppointmentWalkin(
         @Value("${AppointmentFlexAndWalkin.moveScheduledAppointmentToWalkin}")
         String moveScheduledAppointmentToWalkin,
 
         ScheduleAppointmentManager scheduleAppointmentManager,
         BizStoreManager bizStoreManager,
+        RegisteredDeviceManager registeredDeviceManager,
 
-        SubscribeTopicService subscribeTopicService,
+        NotifyMobileService notifyMobileService,
+        MessageCustomerService messageCustomerService,
         TokenQueueService tokenQueueService,
         DeviceService deviceService,
         StatsCronService statsCronService,
@@ -81,7 +87,10 @@ public class AppointmentFlexAndWalkin {
 
         this.scheduleAppointmentManager = scheduleAppointmentManager;
         this.bizStoreManager = bizStoreManager;
-        this.subscribeTopicService = subscribeTopicService;
+        this.registeredDeviceManager = registeredDeviceManager;
+
+        this.notifyMobileService = notifyMobileService;
+        this.messageCustomerService = messageCustomerService;
         this.tokenQueueService = tokenQueueService;
         this.deviceService = deviceService;
         this.statsCronService = statsCronService;
@@ -92,7 +101,7 @@ public class AppointmentFlexAndWalkin {
     @Scheduled(fixedDelayString = "${loader.AppointmentFlexAndWalkin.scheduleToWalkin}")
     public void scheduleToWalkin() {
         statsCron = new StatsCronEntity(
-            AppointmentFlexAndWalkin.class.getName(),
+            AppointmentWalkin.class.getName(),
             "scheduleToWalkin",
             moveScheduledAppointmentToWalkin);
 
@@ -156,7 +165,7 @@ public class AppointmentFlexAndWalkin {
             DateUtil.dateToString(now));
 
         for (ScheduleAppointmentEntity scheduleAppointment : scheduleAppointments) {
-            String registeredDeviceOfQid =  StringUtils.isNotBlank(scheduleAppointment.getGuardianQid())
+            String registeredDeviceOfQid = StringUtils.isNotBlank(scheduleAppointment.getGuardianQid())
                 ? scheduleAppointment.getGuardianQid()
                 : scheduleAppointment.getQueueUserId();
 
@@ -175,7 +184,34 @@ public class AppointmentFlexAndWalkin {
                 scheduleAppointmentManager.changeAppointmentStatusOnTokenIssued(scheduleAppointment.getId(), AppointmentStatusEnum.R);
             }
 
-            subscribeTopicService.notifyAfterGettingToken(bizStore, registeredDeviceOfQid, jsonToken);
+            if (0 != jsonToken.getToken()) {
+                RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(registeredDeviceOfQid);
+                if (null != registeredDevice) {
+                    notifyMobileService.autoSubscribeClientToTopic(
+                        jsonToken.getCodeQR(),
+                        registeredDevice.getToken(),
+                        registeredDevice.getDeviceType());
+
+                    notifyMobileService.notifyClient(
+                        registeredDevice,
+                        "Joined " + bizStore.getDisplayName() + " Queue",
+                        "Your token number is " + jsonToken.getToken(),
+                        bizStore.getCodeQR());
+                }
+            } else {
+                messageCustomerService.sendMessageToSpecificUser(
+                    bizStore.getDisplayName() + ": Token not issued",
+                    jsonToken.getQueueJoinDenied().friendlyDescription(),
+                    registeredDeviceOfQid,
+                    MessageOriginEnum.A,
+                    bizStore.getBusinessType());
+
+                LOG.warn("Token not received for {} {} {} reason={}",
+                    bizStore.getCodeQR(),
+                    bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName(),
+                    jsonToken.getQueueStatus() != null ? jsonToken.getQueueStatus().getDescription() : jsonToken.getQueueStatus());
+            }
         }
 
         if (scheduleAppointments.size() > 0) {

@@ -35,7 +35,8 @@ import java.util.List;
 public class AfterAppointmentToTokenService {
     private static final Logger LOG = LoggerFactory.getLogger(AfterAppointmentToTokenService.class);
 
-    private SubscribeTopicService subscribeTopicService;
+    private NotifyMobileService notifyMobileService;
+    private MessageCustomerService messageCustomerService;
     private TokenQueueService tokenQueueService;
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
@@ -44,14 +45,16 @@ public class AfterAppointmentToTokenService {
 
     @Autowired
     public AfterAppointmentToTokenService(
-        SubscribeTopicService subscribeTopicService,
+        NotifyMobileService notifyMobileService,
+        MessageCustomerService messageCustomerService,
         TokenQueueService tokenQueueService,
 
         ScheduleAppointmentManager scheduleAppointmentManager,
         BizStoreManager bizStoreManager,
         RegisteredDeviceManager registeredDeviceManager
     ) {
-        this.subscribeTopicService = subscribeTopicService;
+        this.notifyMobileService = notifyMobileService;
+        this.messageCustomerService = messageCustomerService;
         this.tokenQueueService = tokenQueueService;
 
         this.scheduleAppointmentManager = scheduleAppointmentManager;
@@ -86,7 +89,31 @@ public class AfterAppointmentToTokenService {
                 scheduleAppointmentManager.changeAppointmentStatusOnTokenIssued(scheduleAppointment.getId(), AppointmentStatusEnum.R);
             }
 
-            subscribeTopicService.notifyAfterGettingToken(bizStore, registeredDeviceOfQid, jsonToken);
+            if (0 != jsonToken.getToken()) {
+                notifyMobileService.autoSubscribeClientToTopic(
+                    jsonToken.getCodeQR(),
+                    registeredDevice.getToken(),
+                    registeredDevice.getDeviceType());
+
+                notifyMobileService.notifyClient(
+                    registeredDevice,
+                    "Joined " + bizStore.getDisplayName() + " Queue",
+                    "Your token number is " + jsonToken.getToken(),
+                    bizStore.getCodeQR());
+            } else {
+                messageCustomerService.sendMessageToSpecificUser(
+                    bizStore.getDisplayName() + ": Token not issued",
+                    jsonToken.getQueueJoinDenied().friendlyDescription(),
+                    registeredDeviceOfQid,
+                    MessageOriginEnum.A,
+                    bizStore.getBusinessType());
+
+                LOG.warn("Token not received for {} {} {} reason={}",
+                    bizStore.getCodeQR(),
+                    bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName(),
+                    jsonToken.getQueueStatus() != null ? jsonToken.getQueueStatus().getDescription() : jsonToken.getQueueStatus());
+            }
         }
     }
 }

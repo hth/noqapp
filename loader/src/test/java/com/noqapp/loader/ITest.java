@@ -703,7 +703,8 @@ public class ITest extends RealMongoForITest {
         );
 
         afterAppointmentToTokenService = new AfterAppointmentToTokenService(
-            subscribeTopicService,
+            notifyMobileService,
+            messageCustomerService,
             tokenQueueService,
             scheduleAppointmentManager,
             bizStoreManager,
