@@ -38,17 +38,17 @@ public class JMSConsumerService {
 
     private MailService mailService;
     private MessageCustomerService messageCustomerService;
-    private AfterAppointmentToTokenService afterAppointmentToTokenService;
+    private FlexAppointmentToTokenService flexAppointmentToTokenService;
 
     @Autowired
     public JMSConsumerService(
         MailService mailService,
         MessageCustomerService messageCustomerService,
-        AfterAppointmentToTokenService afterAppointmentToTokenService
+        FlexAppointmentToTokenService flexAppointmentToTokenService
     ) {
         this.mailService = mailService;
         this.messageCustomerService = messageCustomerService;
-        this.afterAppointmentToTokenService = afterAppointmentToTokenService;
+        this.flexAppointmentToTokenService = flexAppointmentToTokenService;
 
         cache = Caffeine.newBuilder()
             .maximumSize(100)
@@ -119,7 +119,7 @@ public class JMSConsumerService {
         if (null == cache.getIfPresent(flexAppointment.key())) {
             cache.put(flexAppointment.key(), OnOffEnum.O);
             LOG.info("ActiveMQ received flex appointment key={}", flexAppointment.key());
-            afterAppointmentToTokenService.changeFromFlexToWalkin(
+            flexAppointmentToTokenService.changeFromFlexToWalkin(
                 flexAppointment.getCodeQR(),
                 flexAppointment.getScheduleDate(),
                 flexAppointment.getStartTime());

@@ -45,7 +45,6 @@ import java.math.MathContext;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,7 +79,7 @@ class JMSConsumerServiceITest extends ITest {
         jmsConsumerService = new JMSConsumerService(
             mailService,
             messageCustomerService,
-            afterAppointmentToTokenService);
+            flexAppointmentToTokenService);
 
         registerStore();
         registerUsers();

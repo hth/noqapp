@@ -29,18 +29,20 @@ import java.util.UUID;
  * 10/5/20 6:58 PM
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AppointmentFlexAndWalkinITest extends ITest {
+class AppointmentWalkinITest extends ITest {
 
-    private AppointmentFlexAndWalkin appointmentFlexAndWalkin;
+    private AppointmentWalkin appointmentWalkin;
 
     @BeforeEach
     void setUp() {
-        appointmentFlexAndWalkin = new AppointmentFlexAndWalkin(
+        appointmentWalkin = new AppointmentWalkin(
             "ON",
             scheduleAppointmentManager,
             bizStoreManager,
+            registeredDeviceManager,
 
-            subscribeTopicService,
+            notifyMobileService,
+            messageCustomerService,
             tokenQueueService,
             deviceService,
             statsCronService,
@@ -69,7 +71,7 @@ class AppointmentFlexAndWalkinITest extends ITest {
         ScheduleAppointmentEntity scheduleAppointment2 = scheduleAppointment(bizStore, userProfile2);
         scheduleAppointmentManager.cancelAppointment(scheduleAppointment2.getId(), scheduleAppointment2.getQueueUserId(), scheduleAppointment2.getCodeQR());
 
-        appointmentFlexAndWalkin.scheduleToWalkin();
+        appointmentWalkin.scheduleToWalkin();
 
         ScheduleAppointmentEntity updateAppointment1 = scheduleAppointmentManager.findAppointment(scheduleAppointment1.getId(), scheduleAppointment1.getQueueUserId(), scheduleAppointment1.getCodeQR());
         assertEquals(updateAppointment1.getAppointmentStatus(), AppointmentStatusEnum.W);

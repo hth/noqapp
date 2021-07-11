@@ -10,10 +10,8 @@ import com.noqapp.domain.types.TokenServiceEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.ScheduleAppointmentManager;
-import com.noqapp.service.DeviceService;
 import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.NotifyMobileService;
-import com.noqapp.service.SubscribeTopicService;
 import com.noqapp.service.TokenQueueService;
 
 import org.apache.commons.lang3.StringUtils;
@@ -32,10 +30,11 @@ import java.util.List;
  * 7/6/21 5:29 PM
  */
 @Service
-public class AfterAppointmentToTokenService {
-    private static final Logger LOG = LoggerFactory.getLogger(AfterAppointmentToTokenService.class);
+public class FlexAppointmentToTokenService {
+    private static final Logger LOG = LoggerFactory.getLogger(FlexAppointmentToTokenService.class);
 
-    private SubscribeTopicService subscribeTopicService;
+    private NotifyMobileService notifyMobileService;
+    private MessageCustomerService messageCustomerService;
     private TokenQueueService tokenQueueService;
 
     private ScheduleAppointmentManager scheduleAppointmentManager;
@@ -43,15 +42,17 @@ public class AfterAppointmentToTokenService {
     private RegisteredDeviceManager registeredDeviceManager;
 
     @Autowired
-    public AfterAppointmentToTokenService(
-        SubscribeTopicService subscribeTopicService,
+    public FlexAppointmentToTokenService(
+        NotifyMobileService notifyMobileService,
+        MessageCustomerService messageCustomerService,
         TokenQueueService tokenQueueService,
 
         ScheduleAppointmentManager scheduleAppointmentManager,
         BizStoreManager bizStoreManager,
         RegisteredDeviceManager registeredDeviceManager
     ) {
-        this.subscribeTopicService = subscribeTopicService;
+        this.notifyMobileService = notifyMobileService;
+        this.messageCustomerService = messageCustomerService;
         this.tokenQueueService = tokenQueueService;
 
         this.scheduleAppointmentManager = scheduleAppointmentManager;
@@ -79,14 +80,38 @@ public class AfterAppointmentToTokenService {
                 bizStore.getAverageServiceTime(),
                 TokenServiceEnum.S);
 
-            /* Do not change the state if token is not issued. Will help in rerun of the appointment. */
+            /* Change the state if token is issued or not issued. */
             if (0 != jsonToken.getToken()) {
                 scheduleAppointmentManager.changeAppointmentStatusOnTokenIssued(scheduleAppointment.getId(), AppointmentStatusEnum.W);
             } else {
                 scheduleAppointmentManager.changeAppointmentStatusOnTokenIssued(scheduleAppointment.getId(), AppointmentStatusEnum.R);
             }
 
-            subscribeTopicService.notifyAfterGettingToken(bizStore, registeredDeviceOfQid, jsonToken);
+            if (0 != jsonToken.getToken()) {
+                notifyMobileService.autoSubscribeClientToTopic(
+                    jsonToken.getCodeQR(),
+                    registeredDevice.getToken(),
+                    registeredDevice.getDeviceType());
+
+                notifyMobileService.notifyClient(
+                    registeredDevice,
+                    "Joined " + bizStore.getDisplayName() + " Queue",
+                    "Your token number is " + jsonToken.getToken(),
+                    bizStore.getCodeQR());
+            } else {
+                messageCustomerService.sendMessageToSpecificUser(
+                    bizStore.getDisplayName() + ": Token not issued",
+                    jsonToken.getQueueJoinDenied().friendlyDescription(),
+                    registeredDeviceOfQid,
+                    MessageOriginEnum.A,
+                    bizStore.getBusinessType());
+
+                LOG.warn("Token not received for {} {} {} reason={}",
+                    bizStore.getCodeQR(),
+                    bizStore.getDisplayName(),
+                    bizStore.getBizName().getBusinessName(),
+                    jsonToken.getQueueStatus() != null ? jsonToken.getQueueStatus().getDescription() : jsonToken.getQueueStatus());
+            }
         }
     }
 }

@@ -33,22 +33,13 @@ public class SubscribeTopicService {
     private RegisteredDeviceManager registeredDeviceManager;
     private FirebaseService firebaseService;
 
-    private NotifyMobileService notifyMobileService;
-    private MessageCustomerService messageCustomerService;
-
     @Autowired
     public SubscribeTopicService(
-        NotifyMobileService notifyMobileService,
-        MessageCustomerService messageCustomerService,
-
         UserPreferenceManager userPreferenceManager,
         BizStoreManager bizStoreManager,
         RegisteredDeviceManager registeredDeviceManager,
         FirebaseService firebaseService
     ) {
-        this.notifyMobileService = notifyMobileService;
-        this.messageCustomerService = messageCustomerService;
-
         this.userPreferenceManager = userPreferenceManager;
         this.bizStoreManager = bizStoreManager;
         this.registeredDeviceManager = registeredDeviceManager;
@@ -102,37 +93,6 @@ public class SubscribeTopicService {
             LOG.info("Updated preference with {} subscription={} recommended={}", qid, bizStore.getBusinessType().getName(), bizStore.getBizName().getBusinessName());
         } catch (Exception e) {
             LOG.error("Failed subscribing or adding to recommended {} {}", qid, e.getLocalizedMessage(), e);
-        }
-    }
-
-    public void notifyAfterGettingToken(BizStoreEntity bizStore, String registeredDeviceOfQid, JsonToken jsonToken) {
-        if (0 != jsonToken.getToken()) {
-            RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(registeredDeviceOfQid);
-            if (null != registeredDevice) {
-                notifyMobileService.autoSubscribeClientToTopic(
-                    jsonToken.getCodeQR(),
-                    registeredDevice.getToken(),
-                    registeredDevice.getDeviceType());
-
-                notifyMobileService.notifyClient(
-                    registeredDevice,
-                    "Joined " + bizStore.getDisplayName() + " Queue",
-                    "Your token number is " + jsonToken.getToken(),
-                    bizStore.getCodeQR());
-            }
-        } else {
-            messageCustomerService.sendMessageToSpecificUser(
-                bizStore.getDisplayName() + ": Token not issued",
-                jsonToken.getQueueJoinDenied().friendlyDescription(),
-                registeredDeviceOfQid,
-                MessageOriginEnum.A,
-                bizStore.getBusinessType());
-
-            LOG.warn("Token not received for {} {} {} reason={}",
-                bizStore.getCodeQR(),
-                bizStore.getDisplayName(),
-                bizStore.getBizName().getBusinessName(),
-                jsonToken.getQueueStatus() != null ? jsonToken.getQueueStatus().getDescription() : jsonToken.getQueueStatus());
         }
     }
 }
