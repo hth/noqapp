@@ -243,6 +243,8 @@ public class ITest extends RealMongoForITest {
     @Mock protected GraphDetailOfPerson graphDetailOfPerson;
     @Mock protected NotificationN4jManager notificationN4jManager;
     @Mock protected StringRedisTemplate stringRedisTemplate;
+    @Mock protected JMSProducerService jmsProducerService;
+    @Mock protected SubscribeTopicService subscribeTopicService;
 
     private MockEnvironment mockEnvironment;
 
@@ -391,9 +393,9 @@ public class ITest extends RealMongoForITest {
             bizStoreManager,
             businessCustomerService,
             textToSpeechService,
-            firebaseService,
-            userProfilePreferenceService,
             messageCustomerService,
+            jmsProducerService,
+            subscribeTopicService,
             apiHealthService
         );
 
@@ -490,7 +492,8 @@ public class ITest extends RealMongoForITest {
             nlpService,
             mailService,
             cashfreeService,
-            purchaseOrderProductService
+            purchaseOrderProductService,
+            subscribeTopicService
         );
 
         joinAbortService = new JoinAbortService(
@@ -547,10 +550,9 @@ public class ITest extends RealMongoForITest {
         deviceService = new DeviceService(registeredDeviceManager, userProfileManager);
         notifyMobileService = new NotifyMobileService(
             purchaseOrderService,
-            purchaseOrderProductService,
             firebaseMessageService,
             firebaseService,
-            tokenQueueService,
+            tokenQueueManager,
             queueService
         );
 

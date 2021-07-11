@@ -12,6 +12,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
+import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 
 import com.mongodb.client.result.UpdateResult;
@@ -27,6 +28,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -86,6 +88,20 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
         LOG.info("ScheduleDate={} codeQR={}", scheduleDate, codeQR);
         return mongoTemplate.find(
             query(where("QR").is(codeQR).and("SD").is(scheduleDate)
+                .andOperator(
+                    where("AS").in(AppointmentStatusEnum.A, AppointmentStatusEnum.U),
+                    where("AS").ne(AppointmentStatusEnum.W)
+                )
+            ).with(Sort.by(ASC, "ST")),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<ScheduleAppointmentEntity> findBookedFlexAppointmentsForDay(String codeQR, String scheduleDate, int startTime) {
+        return mongoTemplate.find(
+            query(where("QR").is(codeQR).and("PS").is(AppointmentStateEnum.F).and("ST").lte(startTime).and("SD").is(scheduleDate)
                 .andOperator(
                     where("AS").in(AppointmentStatusEnum.A, AppointmentStatusEnum.U),
                     where("AS").ne(AppointmentStatusEnum.W)
@@ -221,5 +237,15 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
             ScheduleAppointmentEntity.class,
             TABLE
         ).stream();
+    }
+
+    @Override
+    public void changeAppointmentStatusOnTokenIssued(String id, AppointmentStatusEnum appointmentStatus) {
+        mongoTemplate.updateFirst(
+            query(where("id").is(id)),
+            update("AS", appointmentStatus),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        );
     }
 }

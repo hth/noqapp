@@ -6,6 +6,7 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
+import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
@@ -145,6 +146,8 @@ public class ScheduleAppointmentService {
 
     @Mobile
     public JsonSchedule bookAppointment(String guardianQid, JsonSchedule jsonSchedule) {
+        Validate.isValidQid(guardianQid);
+
         BizStoreEntity bizStore = bizService.findByCodeQR(jsonSchedule.getCodeQR());
         if (bizStore.getAppointmentState() == AppointmentStateEnum.O) {
             LOG.warn("Appointment is not enabled {} for {}", jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
@@ -338,11 +341,11 @@ public class ScheduleAppointmentService {
         return status;
     }
 
-    private List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate) {
+    public List<ScheduleAppointmentEntity> findBookedAppointmentsForDay(String codeQR, String scheduleDate) {
         return scheduleAppointmentManager.findBookedAppointmentsForDay(codeQR, scheduleDate);
     }
 
-    private List<ScheduleAppointmentEntity> findScheduleForDay(String codeQR, String scheduleDate) {
+    public List<ScheduleAppointmentEntity> findScheduleForDay(String codeQR, String scheduleDate) {
         return scheduleAppointmentManager.findScheduleForDay(codeQR, scheduleDate);
     }
 
@@ -443,11 +446,20 @@ public class ScheduleAppointmentService {
                             "Walkin Appointment Confirmed",
                             "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
                                 + "On Date: " + scheduleAppointment.getScheduleDate() + ". A token number will be issued on this day. "
-                                + "You will be serviced based on your position in the queue. "
+                                + "You will be serviced based on your position and time-slot in the queue. "
+                                + "Please arrive 30 minutes before your token number is called.");
+                        break;
+                    case F:
+                        sendMessageToSelectedTokenUser(
+                            scheduleAppointment.getCodeQR(),
+                            jsonProfile.getQueueUserId(),
+                            "Timed Appointment Confirmed",
+                            "Appointment has been confirmed by " + bizStore.getDisplayName() + "\n\n"
+                                + "On Date: " + scheduleAppointment.getScheduleDate() + " & Time: " + Formatter.convertMilitaryTo12HourFormat(scheduleAppointment.getStartTime()) + ". A token number will be issued on this day . "
+                                + "You will be serviced based on your position and time-slot in the queue. "
                                 + "Please arrive 30 minutes before your token number is called.");
                         break;
                     case A:
-                    case F:
                         sendMessageToSelectedTokenUser(
                             scheduleAppointment.getCodeQR(),
                             jsonProfile.getQueueUserId(),

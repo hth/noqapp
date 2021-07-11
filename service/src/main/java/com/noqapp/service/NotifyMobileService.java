@@ -7,6 +7,7 @@ import com.noqapp.domain.json.JsonTokenAndQueueList;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
+import com.noqapp.repository.TokenQueueManager;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,26 +29,23 @@ public class NotifyMobileService {
     private static final Logger LOG = LoggerFactory.getLogger(NotifyMobileService.class);
 
     private PurchaseOrderService purchaseOrderService;
-    private PurchaseOrderProductService purchaseOrderProductService;
     private FirebaseMessageService firebaseMessageService;
     private FirebaseService firebaseService;
-    private TokenQueueService tokenQueueService;
+    private TokenQueueManager tokenQueueManager;
     private QueueService queueService;
 
     @Autowired
     public NotifyMobileService(
         PurchaseOrderService purchaseOrderService,
-        PurchaseOrderProductService purchaseOrderProductService,
         FirebaseMessageService firebaseMessageService,
         FirebaseService firebaseService,
-        TokenQueueService tokenQueueService,
+        TokenQueueManager tokenQueueManager,
         QueueService queueService
     ) {
         this.purchaseOrderService = purchaseOrderService;
-        this.purchaseOrderProductService = purchaseOrderProductService;
         this.firebaseMessageService = firebaseMessageService;
         this.firebaseService = firebaseService;
-        this.tokenQueueService = tokenQueueService;
+        this.tokenQueueManager = tokenQueueManager;
         this.queueService = queueService;
     }
 
@@ -73,7 +71,7 @@ public class NotifyMobileService {
     @Async
     public void autoSubscribeClientToTopic(String codeQR, String token, DeviceTypeEnum deviceType) {
         if (StringUtils.isNotBlank(token)) {
-            TokenQueueEntity tokenQueue = tokenQueueService.findByCodeQR(codeQR);
+            TokenQueueEntity tokenQueue = tokenQueueManager.findByCodeQR(codeQR);
             firebaseService.subscribeToTopic(new ArrayList<>() {{ add(token); }}, tokenQueue.getTopic() + "_" + deviceType.getName());
         }
     }

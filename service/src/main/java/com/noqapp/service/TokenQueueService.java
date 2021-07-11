@@ -13,6 +13,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
+import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
 import com.noqapp.domain.UserPreferenceEntity;
@@ -21,11 +22,14 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonQueueChangeServiceTime;
 import com.noqapp.domain.json.JsonToken;
+import com.noqapp.domain.json.JsonTokenAndQueueList;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
+import com.noqapp.domain.types.AppointmentStateEnum;
+import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
@@ -41,6 +45,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
+import com.noqapp.repository.ScheduleAppointmentManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
@@ -71,9 +76,11 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
@@ -90,6 +97,7 @@ public class TokenQueueService {
     private static final Logger LOG = LoggerFactory.getLogger(TokenQueueService.class);
 
     private TokenQueueManager tokenQueueManager;
+
     private FirebaseMessageService firebaseMessageService;
     private QueueManager queueManager;
     private AccountService accountService;
@@ -99,9 +107,9 @@ public class TokenQueueService {
     private BizStoreManager bizStoreManager;
     private BusinessCustomerService businessCustomerService;
     private TextToSpeechService textToSpeechService;
-    private FirebaseService firebaseService;
-    private UserProfilePreferenceService userProfilePreferenceService;
     private MessageCustomerService messageCustomerService;
+    private JMSProducerService jmsProducerService;
+    private SubscribeTopicService subscribeTopicService;
     private ApiHealthService apiHealthService;
 
     private ExecutorService executorService;
@@ -124,9 +132,9 @@ public class TokenQueueService {
         BizStoreManager bizStoreManager,
         BusinessCustomerService businessCustomerService,
         TextToSpeechService textToSpeechService,
-        FirebaseService firebaseService,
-        UserProfilePreferenceService userProfilePreferenceService,
         MessageCustomerService messageCustomerService,
+        JMSProducerService jmsProducerService,
+        SubscribeTopicService subscribeTopicService,
         ApiHealthService apiHealthService
     ) {
         this.allowJoinAfterMinutes = allowJoinAfterMinutes;
@@ -141,9 +149,9 @@ public class TokenQueueService {
         this.bizStoreManager = bizStoreManager;
         this.businessCustomerService = businessCustomerService;
         this.textToSpeechService = textToSpeechService;
-        this.firebaseService = firebaseService;
-        this.userProfilePreferenceService = userProfilePreferenceService;
         this.messageCustomerService = messageCustomerService;
+        this.jmsProducerService = jmsProducerService;
+        this.subscribeTopicService = subscribeTopicService;
         this.apiHealthService = apiHealthService;
 
         this.executorService = newCachedThreadPool();
@@ -356,6 +364,13 @@ public class TokenQueueService {
                                 /* Subtract cancelled token to improve computation on time slot. */
                                 tokenQueue.getLastNumber() - bizStore.getAvailableTokenAfterCancellation());
                         }
+
+                        if (AppointmentStateEnum.F == bizStore.getAppointmentState()) {
+                            ZonedDateTime zonedDateTime = expectedServiceBegin.withZoneSameInstant(zoneId);
+                            String scheduleDate = DateUtil.getZonedDateTimeAtUTC().format(DateUtil.DTF_YYYY_MM_DD);
+                            jmsProducerService.invokeFlexAppointment(bizStore.getCodeQR(), scheduleDate, CommonUtil.getTimeIn24HourFormat(zonedDateTime));
+                        }
+
                         String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour);
                         queue.setExpectedServiceBegin(Date.from(expectedServiceBegin.toInstant()))
                             .setBizNameId(bizStore.getBizName().getId())
@@ -367,7 +382,7 @@ public class TokenQueueService {
                     }
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
-                    executorService.execute(() -> addSubscribedTopic(qid, bizStore));
+                    subscribeTopicService.addSubscribedTopic(qid, bizStore);
                 } catch (DuplicateKeyException e) {
                     LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
                     return new JsonToken(codeQR, tokenQueue.getBusinessType());
@@ -388,56 +403,6 @@ public class TokenQueueService {
         } catch (Exception e) {
             LOG.error("Failed getting token qid={} codeQR={} reason={}", qid, codeQR, e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
-        }
-    }
-
-    protected void addSubscribedTopic(String qid, BizStoreEntity bizStore) {
-        try {
-            UserPreferenceEntity userPreference = userProfilePreferenceService.findByQueueUserId(qid);
-
-            boolean userPreferenceDirty = false;
-            /* Always add to suggested. */
-            switch (bizStore.getBusinessType()) {
-                case DO:
-                case CD:
-                case CDQ:
-                case BK:
-                case HS:
-                case PW:
-                    Set<String> codeQRs = new HashSet<>();
-                    List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizStore.getBizName().getId());
-                    for (BizStoreEntity bizStoreFound : bizStores) {
-                        codeQRs.add(bizStoreFound.getCodeQR());
-                    }
-
-                    codeQRs.retainAll(userPreference.getFavoriteSuggested());
-                    if (codeQRs.isEmpty()) {
-                        userPreference.addFavoriteSuggested(bizStore.getCodeQR());
-                        userPreferenceDirty = true;
-                    }
-                    break;
-                default:
-                    if (!userPreference.getFavoriteSuggested().contains(bizStore.getCodeQR())) {
-                        userPreference.addFavoriteSuggested(bizStore.getCodeQR());
-                        userPreferenceDirty = true;
-                    }
-            }
-
-            /* When user signs up with new device or token, subscribe to these topics by default. */
-            if (!userPreference.getSubscriptionTopics().contains(bizStore.getBusinessType().getName())) {
-                userPreference.addSubscriptionTopic(bizStore.getBusinessType().getName());
-                userPreferenceDirty = true;
-
-                RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
-                firebaseService.subscribeToTopic(bizStore.getBusinessType(), registeredDevice);
-            }
-
-            if (userPreferenceDirty) {
-                userProfilePreferenceService.save(userPreference);
-                LOG.info("Updated preference with {} subscription={} recommended={}", qid, bizStore.getBusinessType().getName(), bizStore.getBizName().getBusinessName());
-            }
-        } catch (Exception e) {
-            LOG.error("Failed subscribing or adding to recommended {} {}", qid, e.getLocalizedMessage(), e);
         }
     }
 

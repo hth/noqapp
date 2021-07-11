@@ -38,6 +38,8 @@ public class JMSConfiguration {
     @Value("${activemq.destination.review.negative}")
     private String activemqDestinationReviewNegative;
 
+    @Value("${activemq.destination.flexAppointment}")
+    private String activemqDestinationFlexAppointment;
 
     private JMSErrorHandler jmsErrorHandler = new JMSErrorHandler();
 
@@ -111,6 +113,22 @@ public class JMSConfiguration {
         JmsTemplate template = new JmsTemplate();
         template.setConnectionFactory(connectionFactory());
         template.setDefaultDestinationName(activemqDestinationReviewNegative);
+        return template;
+    }
+
+    @Bean
+    public DefaultJmsListenerContainerFactory jmsFlexAppointmentListenerContainerFactory() {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory());
+        factory.setErrorHandler(jmsErrorHandler);
+        return factory;
+    }
+
+    @Bean(name = "jmsFlexAppointmentTemplate")
+    public JmsTemplate jmsFlexAppointmentTemplate() {
+        JmsTemplate template = new JmsTemplate();
+        template.setConnectionFactory(connectionFactory());
+        template.setDefaultDestinationName(activemqDestinationFlexAppointment);
         return template;
     }
 }

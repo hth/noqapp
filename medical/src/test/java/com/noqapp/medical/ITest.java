@@ -109,6 +109,7 @@ import com.noqapp.service.FirebaseMessageService;
 import com.noqapp.service.FirebaseService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.GenerateUserIdService;
+import com.noqapp.service.JMSProducerService;
 import com.noqapp.service.LanguageTranslationService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.MessageCustomerService;
@@ -121,6 +122,7 @@ import com.noqapp.service.ReviewService;
 import com.noqapp.service.StoreCategoryService;
 import com.noqapp.service.StoreHourService;
 import com.noqapp.service.StoreProductService;
+import com.noqapp.service.SubscribeTopicService;
 import com.noqapp.service.TextToSpeechService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserAddressService;
@@ -254,6 +256,8 @@ public class ITest extends RealMongoForITest {
     @Mock protected GraphDetailOfPerson graphDetailOfPerson;
     @Mock protected NotificationN4jManager notificationN4jManager;
     @Mock protected StringRedisTemplate stringRedisTemplate;
+    @Mock protected JMSProducerService jmsProducerService;
+    @Mock protected SubscribeTopicService subscribeTopicService;
 
     @BeforeAll
     public void globalISetup() {
@@ -365,9 +369,9 @@ public class ITest extends RealMongoForITest {
             bizStoreManager,
             businessCustomerService,
             textToSpeechService,
-            firebaseService,
-            userProfilePreferenceService,
             messageCustomerService,
+            jmsProducerService,
+            subscribeTopicService,
             apiHealthService
         );
 
@@ -466,7 +470,8 @@ public class ITest extends RealMongoForITest {
             nlpService,
             mailService,
             cashfreeService,
-            purchaseOrderProductService
+            purchaseOrderProductService,
+            subscribeTopicService
         );
     }
 }
