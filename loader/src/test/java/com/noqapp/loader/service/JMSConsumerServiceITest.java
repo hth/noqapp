@@ -70,7 +70,8 @@ class JMSConsumerServiceITest extends ITest {
     private final int registeredUser = 210;
     private final int flexAppointmentUser = 50;
 
-    private String timeZone = "Asia/Calcutta";
+//    private String timeZone = "Asia/Calcutta";
+    private String timeZone = "Pacific/Honolulu";
 
     @BeforeEach
     void setUp() {
