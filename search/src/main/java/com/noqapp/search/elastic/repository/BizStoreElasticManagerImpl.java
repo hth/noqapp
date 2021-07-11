@@ -69,14 +69,16 @@ public class BizStoreElasticManagerImpl implements BizStoreElasticManager<BizSto
     private RestHighLevelClient restHighLevelClient;
 
     /* Set cache parameters. */
-    private static final Cache<BusinessTypeEnum, Map<String, String>> categoryCache = Caffeine.newBuilder()
-        .maximumSize(1000)
-        .expireAfterWrite(2, TimeUnit.MINUTES)
-        .build();
+    private static Cache<BusinessTypeEnum, Map<String, String>> categoryCache;
 
     @Autowired
     public BizStoreElasticManagerImpl(RestHighLevelClient restHighLevelClient) {
         this.restHighLevelClient = restHighLevelClient;
+
+        categoryCache = Caffeine.newBuilder()
+            .maximumSize(1000)
+            .expireAfterWrite(2, TimeUnit.MINUTES)
+            .build();
     }
 
     @Override

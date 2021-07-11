@@ -25,12 +25,13 @@ public final class CachedUserAgentStringParser {
     private static final Logger LOG = LoggerFactory.getLogger(CachedUserAgentStringParser.class);
 
     /* Set cache parameters. */
-    private final Cache<String, UserAgentDetectionResult> cache = Caffeine.newBuilder()
-        .maximumSize(100)
-        .expireAfterWrite(2, TimeUnit.HOURS)
-        .build();
+    private final Cache<String, UserAgentDetectionResult> cache;
 
     private CachedUserAgentStringParser() {
+        this.cache = Caffeine.newBuilder()
+            .maximumSize(100)
+            .expireAfterWrite(2, TimeUnit.HOURS)
+            .build();
     }
 
     /**

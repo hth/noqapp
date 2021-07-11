@@ -10,7 +10,6 @@ import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.service.MailService;
 import com.noqapp.service.MessageCustomerService;
-import com.noqapp.service.TokenQueueService;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
