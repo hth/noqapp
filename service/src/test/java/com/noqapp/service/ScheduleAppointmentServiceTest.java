@@ -54,7 +54,6 @@ class ScheduleAppointmentServiceTest {
     @Mock private MailService mailService;
     @Mock private StoreHourService storeHourService;
 
-    private ExecutorService executorService;
     private ScheduleAppointmentService scheduleAppointmentService;
     private JsonSchedule jsonSchedule;
     private BizStoreEntity bizStoreEntity;
