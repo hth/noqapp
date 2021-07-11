@@ -3,8 +3,6 @@ package com.noqapp.service;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.UserPreferenceEntity;
-import com.noqapp.domain.json.JsonToken;
-import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.UserPreferenceManager;
@@ -21,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Mostly subscribe user to a topic and updates users preferences with recent queue or purchase.
  * hitender
  * 7/9/21 2:28 PM
  */

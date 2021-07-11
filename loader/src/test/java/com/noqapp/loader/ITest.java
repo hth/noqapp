@@ -166,6 +166,7 @@ import com.noqapp.service.StoreCategoryService;
 import com.noqapp.service.StoreHourService;
 import com.noqapp.service.StoreProductService;
 import com.noqapp.service.SubscribeTopicService;
+import com.noqapp.service.SystemNotifyOnGettingTokenService;
 import com.noqapp.service.TextToSpeechService;
 import com.noqapp.service.TokenQueueService;
 import com.noqapp.service.UserAddressService;
@@ -341,6 +342,7 @@ public class ITest extends RealMongoForITest {
     @Mock protected StringRedisTemplate stringRedisTemplate;
     @Mock protected JMSProducerService jmsProducerService;
     @Mock protected SubscribeTopicService subscribeTopicService;
+    @Mock protected SystemNotifyOnGettingTokenService systemNotifyOnGettingTokenService;
 
     private MockEnvironment mockEnvironment;
 
@@ -703,8 +705,7 @@ public class ITest extends RealMongoForITest {
         );
 
         flexAppointmentToTokenService = new FlexAppointmentToTokenService(
-            notifyMobileService,
-            messageCustomerService,
+            systemNotifyOnGettingTokenService,
             tokenQueueService,
             scheduleAppointmentManager,
             bizStoreManager,
