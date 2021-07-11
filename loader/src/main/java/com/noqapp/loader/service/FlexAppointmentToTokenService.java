@@ -80,7 +80,7 @@ public class FlexAppointmentToTokenService {
                 bizStore.getAverageServiceTime(),
                 TokenServiceEnum.S);
 
-            /* Do not change the state if token is not issued. Will help in rerun of the appointment. */
+            /* Change the state if token is issued or not issued. */
             if (0 != jsonToken.getToken()) {
                 scheduleAppointmentManager.changeAppointmentStatusOnTokenIssued(scheduleAppointment.getId(), AppointmentStatusEnum.W);
             } else {
