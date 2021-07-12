@@ -2,6 +2,7 @@ package com.noqapp.repository;
 
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStatusEnum;
+import com.noqapp.domain.types.QueueJoinDeniedEnum;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -42,5 +43,6 @@ public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAp
 
     Stream<ScheduleAppointmentEntity> findAllUpComingAppointmentsByBizStore(String codeQR, String day);
 
-    void changeAppointmentStatusOnTokenIssued(String id, AppointmentStatusEnum appointmentStatus);
+    void changeAppointmentStatusOnTokenIssued(String id);
+    void changeAppointmentStatusOnTokenNotIssued(String id, QueueJoinDeniedEnum queueJoinDenied);
 }

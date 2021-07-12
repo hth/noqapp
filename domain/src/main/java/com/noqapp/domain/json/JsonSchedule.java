@@ -4,6 +4,7 @@ import com.noqapp.common.utils.AbstractDomain;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
+import com.noqapp.domain.types.QueueJoinDeniedEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -61,6 +62,9 @@ public class JsonSchedule extends AbstractDomain {
 
     @JsonProperty("as")
     private AppointmentStatusEnum appointmentStatus;
+
+    @JsonProperty("qjd")
+    private QueueJoinDeniedEnum queueJoinDenied;
 
     @JsonProperty("cc")
     private String chiefComplain;
@@ -155,6 +159,15 @@ public class JsonSchedule extends AbstractDomain {
         return this;
     }
 
+    public QueueJoinDeniedEnum getQueueJoinDenied() {
+        return queueJoinDenied;
+    }
+
+    public JsonSchedule setQueueJoinDenied(QueueJoinDeniedEnum queueJoinDenied) {
+        this.queueJoinDenied = queueJoinDenied;
+        return this;
+    }
+
     public String getChiefComplain() {
         return chiefComplain;
     }
@@ -202,6 +215,7 @@ public class JsonSchedule extends AbstractDomain {
             .setQueueUserId(scheduleAppointment.getQueueUserId())
             .setGuardianQid(scheduleAppointment.getGuardianQid())
             .setAppointmentStatus(scheduleAppointment.getAppointmentStatus())
+            .setQueueJoinDenied(scheduleAppointment.getQueueJoinDenied())
             .setChiefComplain(scheduleAppointment.getChiefComplain())
             .setAppointmentState(scheduleAppointment.getAppointmentState())
             .setJsonProfile(jsonProfile);

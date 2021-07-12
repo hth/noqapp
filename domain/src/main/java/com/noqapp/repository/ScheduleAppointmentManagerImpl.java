@@ -14,6 +14,7 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
+import com.noqapp.domain.types.QueueJoinDeniedEnum;
 
 import com.mongodb.client.result.UpdateResult;
 
@@ -240,12 +241,12 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
-    public void changeAppointmentStatusOnTokenIssued(String id, AppointmentStatusEnum appointmentStatus) {
-        mongoTemplate.updateFirst(
-            query(where("id").is(id)),
-            update("AS", appointmentStatus),
-            ScheduleAppointmentEntity.class,
-            TABLE
-        );
+    public void changeAppointmentStatusOnTokenIssued(String id) {
+        mongoTemplate.updateFirst(query(where("id").is(id)), update("AS",  AppointmentStatusEnum.W), ScheduleAppointmentEntity.class, TABLE);
+    }
+
+    @Override
+    public void changeAppointmentStatusOnTokenNotIssued(String id, QueueJoinDeniedEnum queueJoinDenied) {
+        mongoTemplate.updateFirst(query(where("id").is(id)), update("AS", AppointmentStatusEnum.R).set("QJD", queueJoinDenied), ScheduleAppointmentEntity.class, TABLE);
     }
 }

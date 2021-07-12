@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
+import com.noqapp.domain.types.QueueJoinDeniedEnum;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -48,6 +49,9 @@ public class ScheduleAppointmentEntity extends BaseEntity {
 
     @Field("AS")
     private AppointmentStatusEnum appointmentStatus;
+
+    @Field("QJD")
+    private QueueJoinDeniedEnum queueJoinDenied;
 
     @Field("CC")
     private String chiefComplain;
@@ -122,6 +126,15 @@ public class ScheduleAppointmentEntity extends BaseEntity {
 
     public ScheduleAppointmentEntity setAppointmentStatus(AppointmentStatusEnum appointmentStatus) {
         this.appointmentStatus = appointmentStatus;
+        return this;
+    }
+
+    public QueueJoinDeniedEnum getQueueJoinDenied() {
+        return queueJoinDenied;
+    }
+
+    public ScheduleAppointmentEntity setQueueJoinDenied(QueueJoinDeniedEnum queueJoinDenied) {
+        this.queueJoinDenied = queueJoinDenied;
         return this;
     }
 
