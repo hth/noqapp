@@ -709,20 +709,24 @@ public class BizService {
     @Mobile
     public List<BizStoreEntity> favoriteSuggested(String qid) {
         UserPreferenceEntity userPreference = userPreferenceManager.favorite(qid);
-        List<BizStoreEntity> bizStores = bizStoreManager.findBizStoresByCodeQRs(userPreference.getFavoriteSuggested());
+        List<String> codeQRs = userPreference.getFavoriteSuggested();
+        LOG.info("Favorite Suggested {} {}", qid, codeQRs);
+        List<BizStoreEntity> bizStores = bizStoreManager.findBizStoresByCodeQRs(codeQRs);
 
         /* Order based in list found. */
-        bizStores.sort(Ordering.explicit(userPreference.getFavoriteSuggested()).onResultOf(BizStoreEntity::getCodeQR));
+        bizStores.sort(Ordering.explicit(codeQRs).onResultOf(BizStoreEntity::getCodeQR));
         return bizStores;
     }
 
     @Mobile
     public List<BizStoreEntity> favoriteTagged(String qid) {
         UserPreferenceEntity userPreference = userPreferenceManager.favorite(qid);
-        List<BizStoreEntity> bizStores = bizStoreManager.findBizStoresByCodeQRs(userPreference.getFavoriteTagged());
+        List<String> codeQRs = userPreference.getFavoriteTagged();
+        LOG.info("Favorite Tagged {} {}", qid, codeQRs);
+        List<BizStoreEntity> bizStores = bizStoreManager.findBizStoresByCodeQRs(codeQRs);
 
         /* Order based in list found. */
-        bizStores.sort(Ordering.explicit(userPreference.getFavoriteTagged()).onResultOf(BizStoreEntity::getCodeQR));
+        bizStores.sort(Ordering.explicit(codeQRs).onResultOf(BizStoreEntity::getCodeQR));
         return bizStores;
     }
 
