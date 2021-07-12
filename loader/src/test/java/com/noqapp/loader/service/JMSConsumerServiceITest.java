@@ -70,12 +70,18 @@ class JMSConsumerServiceITest extends ITest {
     private final int registeredUser = 210;
     private final int flexAppointmentUser = 50;
 
-//    private String timeZone = "Asia/Calcutta";
-    private String timeZone = "Pacific/Honolulu";
+    private String timeZone;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        ZonedDateTime zonedDateTime = DateUtil.getZonedDateTimeAtUTC();
+        if (zonedDateTime.getHour() < 12) {
+            timeZone = "Asia/Calcutta";
+        } else {
+            timeZone = "Pacific/Honolulu";
+        }
 
         jmsConsumerService = new JMSConsumerService(
             mailService,

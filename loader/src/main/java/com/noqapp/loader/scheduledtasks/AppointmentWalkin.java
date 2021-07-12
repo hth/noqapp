@@ -181,9 +181,9 @@ public class AppointmentWalkin {
 
             /* Change the state if token is issued or not issued. */
             if (0 != jsonToken.getToken()) {
-                scheduleAppointmentManager.changeAppointmentStatusOnTokenIssued(scheduleAppointment.getId(), AppointmentStatusEnum.W);
+                scheduleAppointmentManager.changeAppointmentStatusOnTokenIssued(scheduleAppointment.getId());
             } else {
-                scheduleAppointmentManager.changeAppointmentStatusOnTokenIssued(scheduleAppointment.getId(), AppointmentStatusEnum.R);
+                scheduleAppointmentManager.changeAppointmentStatusOnTokenNotIssued(scheduleAppointment.getId(), jsonToken.getQueueJoinDenied());
             }
 
             systemNotifyOnGettingTokenService.notifyAfterGettingToken(bizStore, registeredDeviceOfQid, jsonToken);
