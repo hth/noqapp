@@ -93,7 +93,7 @@ class JMSConsumerServiceITest extends ITest {
         preAuthorizeUser();
     }
 
-    /** Registers new users. */
+    /** Registers store. */
     private void registerStore() {
         BizNameEntity bizName = bizService.findByPhone("9118000000041");
         bizStore = bizService.findOneBizStore(bizName.getId());
