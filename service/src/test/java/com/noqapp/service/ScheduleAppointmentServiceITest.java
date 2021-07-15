@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.Constants.FLEX_APPOINTMENT_LOAD_FACTOR;
 import static com.noqapp.common.utils.DateUtil.DTF_YYYY_MM_DD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -15,17 +16,25 @@ import com.noqapp.domain.json.JsonScheduleList;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.service.exceptions.AppointmentBookingException;
+import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
 import com.noqapp.service.utils.ServiceUtils;
 
-import org.jetbrains.annotations.NotNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.mockito.Mockito;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * hitender
@@ -53,6 +62,12 @@ class ScheduleAppointmentServiceITest extends ITest {
 
         registerStore();
         dateAsString = DateUtil.getZonedDateTimeAtUTC().format(DTF_YYYY_MM_DD);
+
+        Authentication authentication = Mockito.mock(Authentication.class);
+        // Mockito.whens() for your authorization object
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
     }
 
     /** Registers store. */
@@ -144,5 +159,18 @@ class ScheduleAppointmentServiceITest extends ITest {
             dateAsString);
         assertEquals(jsonScheduleList.getJsonSchedules().size(), 1);
         assertTrue(scheduleAppointmentService.doesAppointmentExists(userProfile.getQueueUserId(), bizStore.getCodeQR(), dateAsString));
+    }
+
+    @Test
+    void computeFlexAppointment() {
+        bizStore = bizService.findByCodeQR(bizStore.getCodeQR());
+        bizStore
+            .setTimeZone(timeZone)
+            .setAppointmentState(AppointmentStateEnum.F);
+        bizService.saveStore(bizStore, "Changed appointment type");
+
+        String modifiedDate = DateUtil.getZonedDateTimeAtUTC().format(DTF_YYYY_MM_DD);
+        Map<String, Integer> timeSlots = scheduleAppointmentService.computeFlexAppointment(modifiedDate, bizStore);
+        assertTrue(timeSlots.size() > 0);
     }
 }

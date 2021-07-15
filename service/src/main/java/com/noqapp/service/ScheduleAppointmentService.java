@@ -1,5 +1,6 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.Constants.FLEX_APPOINTMENT_LOAD_FACTOR;
 import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -40,6 +41,8 @@ import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.service.exceptions.AppointmentBookingException;
 import com.noqapp.service.exceptions.AppointmentCancellationException;
+import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
+import com.noqapp.service.utils.ServiceUtils;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -52,9 +55,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -355,6 +361,7 @@ public class ScheduleAppointmentService {
         JsonScheduleList jsonScheduleList = new JsonScheduleList();
         try {
             BizStoreEntity bizStore = bizService.findByCodeQR(codeQR);
+            jsonScheduleList.setAppointmentState(bizStore.getAppointmentState());
             checkIfAcceptingAppointment(scheduleDate, bizStore);
 
             List<ScheduleAppointmentEntity> scheduleAppointments = findBookedAppointmentsForDay(codeQR, scheduleDate);
@@ -362,10 +369,56 @@ public class ScheduleAppointmentService {
                 jsonScheduleList.addJsonSchedule(JsonSchedule.populateJsonSchedule(scheduleAppointment, null));
             }
 
+            if (AppointmentStateEnum.F == bizStore.getAppointmentState()) {
+                computeFlexAppointment(scheduleDate, bizStore);
+            }
+
             return jsonScheduleList;
         } catch (AppointmentBookingException e) {
+            LOG.error("Failed getting schedule {}", e.getLocalizedMessage(), e);
             return jsonScheduleList.setAppointmentState(AppointmentStateEnum.O);
         }
+    }
+
+    public Map<String, Integer> computeFlexAppointment(String scheduleDate, BizStoreEntity bizStore) {
+        LocalDate localDate = DateUtil.convertDateStringOf_YYYY_MM_DD_ToLocalDate(scheduleDate);
+        StoreHourEntity storeHour = storeHourService.findStoreHour(bizStore.getId(), localDate.getDayOfWeek());
+        ZoneId zone = ZoneId.of(bizStore.getTimeZone());
+
+        Map<String, Integer> timeSlots = new LinkedHashMap<>();
+        for (int i = 1; i <= bizStore.getAvailableTokenCount(); i++) {
+            try {
+                ZonedDateTime expectedServiceBegin_UTC = ServiceUtils.computeExpectedServiceBeginTime(
+                    bizStore.getAverageServiceTime(),
+                    bizStore,
+                    storeHour,
+                    i
+                );
+                String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, zone, storeHour);
+                if (timeSlots.containsKey(timeSlot)) {
+                    timeSlots.put(timeSlot, timeSlots.get(timeSlot) + 1);
+                } else {
+                    timeSlots.put(timeSlot, 1);
+                }
+            } catch (ExpectedServiceBeyondStoreClosingHour e) {
+                LOG.error("Can service {} {} {}", --i, bizStore.getCodeQR(), bizStore.getDisplayName());
+                throw e;
+            }
+        }
+
+        for (String key : timeSlots.keySet()) {
+            LOG.debug("Expected Service: for token {}, time slot={}", key, timeSlots.get(key));
+
+            if (timeSlots.containsKey(key)) {
+                timeSlots.put(key, Double.valueOf(timeSlots.get(key) * FLEX_APPOINTMENT_LOAD_FACTOR).intValue());
+            }
+        }
+
+        for (String key : timeSlots.keySet()) {
+            LOG.debug("Available flex: for token {}, time slot={}", key, timeSlots.get(key));
+        }
+
+        return timeSlots;
     }
 
     /** Contains profile information. To be used by business only. */

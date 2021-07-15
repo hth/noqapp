@@ -3,6 +3,7 @@ package com.noqapp.service;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
@@ -52,6 +53,8 @@ class TokenQueueServiceTest {
 
     private TokenQueueService tokenQueueService;
 
+    private String timeZone;
+
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
@@ -73,6 +76,13 @@ class TokenQueueServiceTest {
             subscribeTopicService,
             apiHealthService
         );
+
+        ZonedDateTime zonedDateTime = DateUtil.getZonedDateTimeAtUTC();
+        if (zonedDateTime.getHour() < 12) {
+            timeZone = "Asia/Calcutta";
+        } else {
+            timeZone = "Pacific/Honolulu";
+        }
     }
 
     @Test
@@ -85,32 +95,28 @@ class TokenQueueServiceTest {
             .setLunchTimeStart(1300)
             .setLunchTimeEnd(1400);
 
-        String[] basedOnTimeZones = {"America/New_York", "America/Los_Angeles", "Pacific/Honolulu"};
-        for (String basedOnTimeZone : basedOnTimeZones) {
-            ZoneId zone = ZoneId.of(basedOnTimeZone);
-
-            Map<String, String> timeSlots = new LinkedHashMap<>();
-            Assertions.assertThrows(ExpectedServiceBeyondStoreClosingHour.class, () -> {
-                for (int i = 1; i < 100; i++) {
-                    try {
-                        ZonedDateTime expectedServiceBegin_UTC = tokenQueueService.computeExpectedServiceBeginTime(
-                            300000,
-                            zone,
-                            storeHour,
-                            i
-                        );
-                        String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, zone, storeHour);
-                        timeSlots.put(String.valueOf(i), timeSlot);
-                    } catch (ExpectedServiceBeyondStoreClosingHour e) {
-                        System.err.println("Can service " + --i);
-                        throw e;
-                    }
+        ZoneId zone = ZoneId.of(timeZone);
+        Map<String, String> timeSlots = new LinkedHashMap<>();
+        Assertions.assertThrows(ExpectedServiceBeyondStoreClosingHour.class, () -> {
+            for (int i = 1; i < 100; i++) {
+                try {
+                    ZonedDateTime expectedServiceBegin_UTC = tokenQueueService.computeExpectedServiceBeginTime(
+                        300000,
+                        zone,
+                        storeHour,
+                        i
+                    );
+                    String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, zone, storeHour);
+                    timeSlots.put(String.valueOf(i), timeSlot);
+                } catch (ExpectedServiceBeyondStoreClosingHour e) {
+                    System.err.println("Can service " + --i);
+                    throw e;
                 }
-            });
-
-            for (String key : timeSlots.keySet()) {
-                System.out.println("Expected Service: for token " + key + ", time slot = " + timeSlots.get(key));
             }
+        });
+
+        for (String key : timeSlots.keySet()) {
+            System.out.println("Expected Service: for token " + key + ", time slot = " + timeSlots.get(key));
         }
     }
 }

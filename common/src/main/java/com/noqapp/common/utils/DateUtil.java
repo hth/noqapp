@@ -156,6 +156,11 @@ public final class DateUtil {
         return LocalTime.now(timeZone.toZoneId());
     }
 
+    public static ZonedDateTime getMidnightAtTimeZone(String forTimeZone) {
+        TimeZone timeZone = StringUtils.isBlank(forTimeZone) ? TimeZone.getTimeZone(ZoneId.systemDefault()) : TimeZone.getTimeZone(forTimeZone);
+        return ZonedDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT, timeZone.toZoneId());
+    }
+
     /**
      * Inclusive of the days the campaign is going to run.
      *
