@@ -159,25 +159,8 @@ public class ServiceUtils {
 
         ZonedDateTime expectedServiceBegin;
         if (0 != bizStore.getAverageServiceTime()) {
-            ZonedDateTime zonedServiceTime = ServiceUtils.computeZonedServiceTime(bizStore.getAverageServiceTime(), zoneId, storeHour, lastNumber);
-            ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
-            if (zonedServiceTime.isBefore(currentTime)) {
-                if (storeHour.isLunchTimeEnabled()) {
-                    ZonedDateTime zonedLunchStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
-                    ZonedDateTime zonedLunchEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
-                    if (currentTime.isAfter(zonedLunchStartHour) && currentTime.isBefore(zonedLunchEndHour)) {
-                        zonedServiceTime = zonedLunchEndHour.plusMinutes(zonedServiceTime.getMinute());
-                    } else {
-                        zonedServiceTime = currentTime;
-                    }
-                } else {
-                    zonedServiceTime = currentTime;
-                }
-            }
-
-            /* Changed to UTC time before saving. */
-            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
-            LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
+            ZonedDateTime zonedServiceTime = computeZonedServiceTime(bizStore.getAverageServiceTime(), zoneId, storeHour, lastNumber);
+            expectedServiceBegin = expectedServiceTimeWhenAverageServiceTimeIsPopulated(storeHour, lastNumber, zoneId, zonedServiceTime);
         } else {
             LOG.error("Business invoked averageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
             ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
@@ -211,24 +194,7 @@ public class ServiceUtils {
                 throw new ExpectedServiceBeyondStoreClosingHour("Serving time exceeds after store closing time");
             }
 
-            ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
-            if (zonedServiceTime.isBefore(currentTime)) {
-                if (storeHour.isLunchTimeEnabled()) {
-                    ZonedDateTime zonedLunchStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
-                    ZonedDateTime zonedLunchEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
-                    if (currentTime.isAfter(zonedLunchStartHour) && currentTime.isBefore(zonedLunchEndHour)) {
-                        zonedServiceTime = zonedLunchEndHour.plusMinutes(zonedServiceTime.getMinute());
-                    } else {
-                        zonedServiceTime = currentTime;
-                    }
-                } else {
-                    zonedServiceTime = currentTime;
-                }
-            }
-
-            /* Changed to UTC time before saving. */
-            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
-            LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
+            expectedServiceBegin = expectedServiceTimeWhenAverageServiceTimeIsPopulated(storeHour, lastNumber, zoneId, zonedServiceTime);
         } else {
             LOG.error("Client invoked averageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
             ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
@@ -262,6 +228,33 @@ public class ServiceUtils {
             }
         }
         return zonedServiceTime;
+    }
+    
+    private static ZonedDateTime expectedServiceTimeWhenAverageServiceTimeIsPopulated(
+        StoreHourEntity storeHour,
+        int lastNumber,
+        ZoneId zoneId,
+        ZonedDateTime zonedServiceTime
+    ) {
+        ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
+        if (zonedServiceTime.isBefore(currentTime)) {
+            if (storeHour.isLunchTimeEnabled()) {
+                ZonedDateTime zonedLunchStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+                ZonedDateTime zonedLunchEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
+                if (currentTime.isAfter(zonedLunchStartHour) && currentTime.isBefore(zonedLunchEndHour)) {
+                    zonedServiceTime = zonedLunchEndHour.plusMinutes(zonedServiceTime.getMinute());
+                } else {
+                    zonedServiceTime = currentTime;
+                }
+            } else {
+                zonedServiceTime = currentTime;
+            }
+        }
+
+        /* Changed to UTC time before saving. */
+        ZonedDateTime expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
+        LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
+        return expectedServiceBegin;
     }
 
     /** This is used to display live status on mobile. */
