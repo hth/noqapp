@@ -344,11 +344,10 @@ public class WebJoinQueueController {
                 }
 
                 jsonToken = tokenQueueService.getNextToken(
-                    codeQRDecoded,
                     did,
                     userProfile.getQueueUserId(),
                     null,
-                    bizStore.getAverageServiceTime(),
+                    bizStore,
                     TokenServiceEnum.W
                 );
 

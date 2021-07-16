@@ -1,6 +1,5 @@
 package com.noqapp.service;
 
-import static com.noqapp.common.utils.Constants.PREVENT_JOINING_BEFORE_CLOSING;
 import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -8,28 +7,23 @@ import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
-import com.noqapp.common.utils.GetTimeAgoUtils;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.BusinessCustomerEntity;
 import com.noqapp.domain.QueueEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
-import com.noqapp.domain.ScheduleAppointmentEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.TokenQueueEntity;
-import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonQueueChangeServiceTime;
 import com.noqapp.domain.json.JsonToken;
-import com.noqapp.domain.json.JsonTokenAndQueueList;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonChangeServiceTimeData;
 import com.noqapp.domain.json.fcm.data.JsonData;
 import com.noqapp.domain.json.fcm.data.JsonTopicData;
 import com.noqapp.domain.json.fcm.data.speech.JsonTextToSpeech;
 import com.noqapp.domain.types.AppointmentStateEnum;
-import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.FirebaseMessageTypeEnum;
@@ -45,7 +39,6 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.QueueManager;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
-import com.noqapp.repository.ScheduleAppointmentManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
@@ -64,24 +57,15 @@ import org.springframework.stereotype.Service;
 
 import org.junit.jupiter.api.Assertions;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -221,23 +205,19 @@ public class TokenQueueService {
      */
     @Mobile
     public JsonToken getNextToken(
-        String codeQR,
         String did,
         String qid,
         String guardianQid,
-        long averageServiceTime,
+        BizStoreEntity bizStore,
         TokenServiceEnum tokenService
     ) {
         try {
+            String codeQR = bizStore.getCodeQR();
+            long averageServiceTime = bizStore.getAverageServiceTime();
             QueueEntity queue = queueManager.findQueuedOne(codeQR, did, qid);
 
             /* When not Queued or has been serviced which will not show anyway in the above query, get a new token. */
             if (null == queue) {
-                /*
-                 * Find storeHour early, helps prevent issuing token when queue is closed or due to some obstruction.
-                 * To eliminate this, we need to let business know about queue closed and prevent clients from joining.
-                 */
-                BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
                 /* This condition exists only for non paid system. */
                 if (0 < bizStore.getBizName().getLimitServiceByDays()
                     && StringUtils.isNotBlank(qid)
@@ -245,6 +225,10 @@ public class TokenQueueService {
                     return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.X, bizStore);
                 }
 
+                /*
+                 * Find storeHour early, helps prevent issuing token when queue is closed or due to some obstruction.
+                 * To eliminate this, we need to let business know about queue closed and prevent clients from joining.
+                 */
                 ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
                 DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
                 StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
@@ -350,16 +334,14 @@ public class TokenQueueService {
                     if (bizStore.getAvailableTokenCount() > 0) {
                         ZonedDateTime expectedServiceBegin;
                         if (tokenService == TokenServiceEnum.M) {
-                            expectedServiceBegin = computeExpectedServiceBeginTimeWhenInitiatedByMerchant(
-                                averageServiceTime,
-                                zoneId,
+                            expectedServiceBegin = ServiceUtils.computeExpectedServiceBeginTimeWhenInitiatedByMerchant(
+                                bizStore,
                                 storeHour,
                                 /* Subtract cancelled token to improve computation on time slot. */
                                 tokenQueue.getLastNumber() - bizStore.getAvailableTokenAfterCancellation());
                         } else {
-                            expectedServiceBegin = computeExpectedServiceBeginTime(
-                                averageServiceTime,
-                                zoneId,
+                            expectedServiceBegin = ServiceUtils.computeExpectedServiceBeginTime(
+                                bizStore,
                                 storeHour,
                                 /* Subtract cancelled token to improve computation on time slot. */
                                 tokenQueue.getLastNumber() - bizStore.getAvailableTokenAfterCancellation());
@@ -401,7 +383,7 @@ public class TokenQueueService {
             doActionBasedOnQueueStatus(codeQR, tokenQueue);
             return getJsonToken(codeQR, queue, tokenQueue);
         } catch (Exception e) {
-            LOG.error("Failed getting token qid={} codeQR={} reason={}", qid, codeQR, e.getLocalizedMessage(), e);
+            LOG.error("Failed getting token qid={} codeQR={} reason={}", qid, bizStore.getCodeQR(), e.getLocalizedMessage(), e);
             throw new RuntimeException("Failed getting token");
         }
     }
@@ -564,7 +546,7 @@ public class TokenQueueService {
         ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
         DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
-        ZonedDateTime expectedServiceBegin = computeExpectedServiceBeginTime(bizStore.getAverageServiceTime(), zoneId, storeHour, tokenQueue.getLastNumber());
+        ZonedDateTime expectedServiceBegin = ServiceUtils.computeExpectedServiceBeginTime(bizStore, storeHour, tokenQueue.getLastNumber());
         if (queue.getTokenNumber() > existingStateOfTokenQueue.getLastNumber()) {
             /*
              * Update expectedServiceBegin and Token Number when payment is being made while getting a new token.
@@ -588,157 +570,6 @@ public class TokenQueueService {
             .setQueueStatus(tokenQueue.getQueueStatus())
             .setExpectedServiceBegin(expectedServiceBegin)
             .setTransactionId(queue.getTransactionId());
-    }
-
-    /** Calculate based on zone and then save the expected service time based on UTC. */
-    ZonedDateTime computeExpectedServiceBeginTimeWhenInitiatedByMerchant(
-        long averageServiceTime,
-        ZoneId zoneId,
-        StoreHourEntity storeHour,
-        int lastNumber
-    ) {
-        ZonedDateTime expectedServiceBegin;
-        if (0 != averageServiceTime) {
-            ZonedDateTime zonedServiceTime = computeZonedServiceTime(averageServiceTime, zoneId, storeHour, lastNumber);
-            ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
-            if (zonedServiceTime.isBefore(currentTime)) {
-                if (storeHour.isLunchTimeEnabled()) {
-                    ZonedDateTime zonedLunchStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
-                    ZonedDateTime zonedLunchEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
-                    if (currentTime.isAfter(zonedLunchStartHour) && currentTime.isBefore(zonedLunchEndHour)) {
-                        zonedServiceTime = zonedLunchEndHour.plusMinutes(zonedServiceTime.getMinute());
-                    } else {
-                        zonedServiceTime = currentTime;
-                    }
-                } else {
-                    zonedServiceTime = currentTime;
-                }
-            }
-
-            /* Changed to UTC time before saving. */
-            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
-            LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
-        } else {
-            LOG.error("Business invoked averageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
-            ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
-            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
-        }
-        return expectedServiceBegin;
-    }
-
-    /** Calculate based on zone and then save the expected service time based on UTC. */
-    public ZonedDateTime computeExpectedServiceBeginTime(
-        long averageServiceTime,
-        ZoneId zoneId,
-        StoreHourEntity storeHour,
-        int lastNumber
-    ) throws ExpectedServiceBeyondStoreClosingHour {
-        ZonedDateTime expectedServiceBegin;
-        if (0 != averageServiceTime) {
-            ZonedDateTime zonedServiceTime = computeZonedServiceTime(averageServiceTime, zoneId, storeHour, lastNumber);
-
-            ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId)
-                .minusMinutes(PREVENT_JOINING_BEFORE_CLOSING)
-                .plusMinutes(storeHour.getDelayedInMinutes());
-
-            if (zonedServiceTime.isAfter(zonedEndHour)) {
-                BizStoreEntity bizStore = bizStoreManager.getById(storeHour.getBizStoreId());
-                LOG.warn("After closing hour token {} for {} {} zonedServiceTime={} endHour={} bizStoreId={} codeQR={}",
-                    lastNumber,
-                    bizStore.getBizName().getBusinessName(),
-                    bizStore.getDisplayName(),
-                    zonedServiceTime,
-                    zonedEndHour,
-                    storeHour.getBizStoreId(),
-                    bizStore.getCodeQR());
-                throw new ExpectedServiceBeyondStoreClosingHour("Serving time exceeds after store closing time");
-            }
-
-            ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
-            if (zonedServiceTime.isBefore(currentTime)) {
-                if (storeHour.isLunchTimeEnabled()) {
-                    ZonedDateTime zonedLunchStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
-                    ZonedDateTime zonedLunchEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
-                    if (currentTime.isAfter(zonedLunchStartHour) && currentTime.isBefore(zonedLunchEndHour)) {
-                        zonedServiceTime = zonedLunchEndHour.plusMinutes(zonedServiceTime.getMinute());
-                    } else {
-                        zonedServiceTime = currentTime;
-                    }
-                } else {
-                    zonedServiceTime = currentTime;
-                }
-            }
-
-            /* Changed to UTC time before saving. */
-            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
-            LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
-        } else {
-            LOG.error("Client invoked averageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
-            ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
-            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
-        }
-        return expectedServiceBegin;
-    }
-
-    private ZonedDateTime computeZonedServiceTime(long averageServiceTime, ZoneId zoneId, StoreHourEntity storeHour, int lastNumber) {
-        ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
-        LOG.debug("Time zonedNow={} at zoneId={} bizStoreId={}", zonedNow, zoneId.getId(), storeHour.getBizStoreId());
-        ZonedDateTime zonedStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.startHour()), zoneId);
-
-        long serviceInSeconds = new BigDecimal(averageServiceTime)
-            .divide(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING)
-            .multiply(new BigDecimal(lastNumber)).longValue();
-        LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
-
-        /* Compute from start of the store hour. */
-        ZonedDateTime zonedServiceTime = zonedStartHour
-            .plusSeconds(serviceInSeconds)
-            .plusMinutes(storeHour.getDelayedInMinutes());
-
-        if (storeHour.isLunchTimeEnabled()) {
-            ZonedDateTime zonedLunchStart = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
-            ZonedDateTime zonedLunchEnd = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
-            Duration breakTime = Duration.between(zonedLunchStart, zonedLunchEnd);
-            LOG.debug("Expected ServiceTime={} lunchTimeStart={}", zonedServiceTime, zonedLunchStart);
-            if (zonedServiceTime.isAfter(zonedLunchStart)) {
-                zonedServiceTime = zonedServiceTime.plusMinutes(breakTime.toMinutes());
-            }
-        }
-        return zonedServiceTime;
-    }
-
-    /** This is used to display live status on mobile. */
-    public String expectedService(
-        long averageServiceTime,
-        ZoneId zoneId,
-        StoreHourEntity storeHour,
-        int lastNumber
-    ) {
-        if (storeHour.isDayClosed()) {
-            return "Closed today";
-        }
-
-        if (storeHour.isTempDayClosed()) {
-            return "Closed temporarily";
-        }
-
-        if (storeHour.isPreventJoining()) {
-            return "Closing soon";
-        }
-
-        ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
-        ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId);
-        if (zonedNow.isAfter(zonedEndHour)) {
-            return "Closed now";
-        }
-
-        try {
-            ZonedDateTime zonedDateTime = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, lastNumber);
-            return ServiceUtils.timeSlot(zonedDateTime, zoneId, storeHour);
-        } catch (ExpectedServiceBeyondStoreClosingHour e) {
-            LOG.warn("After closing live status sending {} reason={}", "Capacity reached", e.getLocalizedMessage());
-            return "Capacity reached";
-        }
     }
 
     /** Invokes a refresh when some event or activity happens that needs to be notified. */
@@ -1211,7 +1042,7 @@ public class TokenQueueService {
                             if (QueueUserStateEnum.A == inQueue.getQueueUserState()) {
                                 abortCount ++;
                             } else {
-                                expectedServiceBegin = computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, inQueue.getTokenNumber() - abortCount);
+                                expectedServiceBegin = ServiceUtils.computeExpectedServiceBeginTime(bizStore, storeHour, inQueue.getTokenNumber() - abortCount);
                                 String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin, ZoneId.of(bizStore.getTimeZone()), storeHour);
                                 if (!inQueue.getTimeSlotMessage().equalsIgnoreCase(timeSlot)) {
                                     LOG.info("Changed Expected Service new={} previous={} {} {} {} {}",

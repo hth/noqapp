@@ -100,12 +100,8 @@ class TokenQueueServiceTest {
         Assertions.assertThrows(ExpectedServiceBeyondStoreClosingHour.class, () -> {
             for (int i = 1; i < 100; i++) {
                 try {
-                    ZonedDateTime expectedServiceBegin_UTC = tokenQueueService.computeExpectedServiceBeginTime(
-                        300000,
-                        zone,
-                        storeHour,
-                        i
-                    );
+                    bizStore.setAverageServiceTime(300000).setTimeZone(timeZone);
+                    ZonedDateTime expectedServiceBegin_UTC = ServiceUtils.computeExpectedServiceBeginTime(bizStore, storeHour, i);
                     String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, zone, storeHour);
                     timeSlots.put(String.valueOf(i), timeSlot);
                 } catch (ExpectedServiceBeyondStoreClosingHour e) {

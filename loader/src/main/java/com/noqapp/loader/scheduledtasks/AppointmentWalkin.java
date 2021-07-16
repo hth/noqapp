@@ -172,11 +172,10 @@ public class AppointmentWalkin {
                 : scheduleAppointment.getQueueUserId();
 
             JsonToken jsonToken = tokenQueueService.getNextToken(
-                bizStore.getCodeQR(),
                 deviceService.findRegisteredDeviceByQid(registeredDeviceOfQid).getDeviceId(),
                 scheduleAppointment.getQueueUserId(),
                 scheduleAppointment.getGuardianQid(),
-                bizStore.getAverageServiceTime(),
+                bizStore,
                 TokenServiceEnum.S);
 
             /* Change the state if token is issued or not issued. */

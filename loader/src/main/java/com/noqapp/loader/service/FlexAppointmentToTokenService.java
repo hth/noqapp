@@ -68,11 +68,10 @@ public class FlexAppointmentToTokenService {
             RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(registeredDeviceOfQid);
 
             JsonToken jsonToken = tokenQueueService.getNextToken(
-                codeQR,
                 registeredDevice.getDeviceId(),
                 scheduleAppointment.getQueueUserId(),
                 scheduleAppointment.getGuardianQid(),
-                bizStore.getAverageServiceTime(),
+                bizStore,
                 TokenServiceEnum.S);
 
             /* Change the state if token is issued or not issued. */

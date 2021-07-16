@@ -210,11 +210,11 @@ public class PurchaseOrderService {
         this.executorService = newCachedThreadPool();
     }
 
-    private JsonToken getNextOrder(String codeQR, long averageServiceTime) {
-        BizStoreEntity bizStore = bizStoreManager.findByCodeQR(codeQR);
+    private JsonToken getNextOrder(BizStoreEntity bizStore) {
         ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
         DayOfWeek dayOfWeek = ZonedDateTime.now(zoneId).getDayOfWeek();
         StoreHourEntity storeHour = storeHourManager.findOne(bizStore.getId(), dayOfWeek);
+        String codeQR = bizStore.getCodeQR();
 
         if (!bizStore.isActive() || storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
             LOG.warn("When store closed or prevent joining, attempting to create new order");
@@ -244,7 +244,7 @@ public class PurchaseOrderService {
                 return ServiceUtils.blankJsonToken(codeQR, QueueJoinDeniedEnum.L, bizStore);
             }
             LOG.info("Assigned order number with codeQR={} with new token={}", codeQR, tokenQueue.getLastNumber());
-            ZonedDateTime expectedServiceBegin = tokenQueueService.computeExpectedServiceBeginTime(averageServiceTime, zoneId, storeHour, tokenQueue.getLastNumber());
+            ZonedDateTime expectedServiceBegin = ServiceUtils.computeExpectedServiceBeginTime(bizStore, storeHour, tokenQueue.getLastNumber());
 
             return new JsonToken(codeQR, tokenQueue.getBusinessType())
                 .setToken(tokenQueue.getLastNumber())
@@ -693,7 +693,7 @@ public class PurchaseOrderService {
         JsonToken jsonToken;
         try {
             if (DeliveryModeEnum.QS != jsonPurchaseOrder.getDeliveryMode()) {
-                jsonToken = getNextOrder(bizStore.getCodeQR(), bizStore.getAverageServiceTime());
+                jsonToken = getNextOrder(bizStore);
             } else {
                 jsonToken = new JsonToken(jsonPurchaseOrder.getCodeQR(), jsonPurchaseOrder.getBusinessType());
                 jsonToken.setToken(jsonPurchaseOrder.getToken())

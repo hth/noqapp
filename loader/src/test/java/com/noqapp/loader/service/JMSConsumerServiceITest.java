@@ -306,11 +306,10 @@ class JMSConsumerServiceITest extends ITest {
 
         joinAbortService.checkCustomerApprovedForTheQueue(userAccount.getQueueUserId(), bizStore);
         JsonToken jsonToken = joinAbortService.joinQueue(
-            bizStore.getCodeQR(),
             UUID.randomUUID().toString(),
             userAccount.getQueueUserId(),
             null,
-            bizStore.getAverageServiceTime(),
+            bizStore,
             TokenServiceEnum.C);
 
         //{"error":{"reason":"CSD Liquor for Ex-Servicemen has not started. Please correct time on your device.","systemErrorCode":"4071","systemError":"DEVICE_TIMEZONE_OFF"}}
