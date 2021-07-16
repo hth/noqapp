@@ -1,6 +1,8 @@
 package com.noqapp.service;
 
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
+import static org.apiguardian.api.API.Status.DEPRECATED;
+import static org.apiguardian.api.API.Status.STABLE;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
@@ -48,6 +50,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import org.apiguardian.api.API;
 
 import java.math.BigDecimal;
 import java.time.LocalTime;
@@ -108,16 +112,17 @@ public class JoinAbortService {
         this.executorService = newSingleThreadExecutor();
     }
 
+    @API(status = DEPRECATED, since = "1.3.121")
     @Mobile
-    public JsonToken joinQueue(String codeQR, String did, long averageServiceTime, TokenServiceEnum tokenService) {
-        return joinQueue(codeQR, did, null, null, averageServiceTime, tokenService);
+    public JsonToken joinQueueObsolete(String did, BizStoreEntity bizStore, TokenServiceEnum tokenService) {
+        return joinQueue(did, null, null, bizStore, tokenService);
     }
 
     @Mobile
-    public JsonToken joinQueue(String codeQR, String did, String qid, String guardianQid, long averageServiceTime, TokenServiceEnum tokenService) {
-        LOG.info("joinQueue codeQR={} did={} qid={} guardianQid={}", codeQR, did, qid, guardianQid);
-        JsonToken jsonToken = tokenQueueService.getNextToken(codeQR, did, qid, guardianQid, averageServiceTime, tokenService);
-        checkLimitationEncountered(codeQR, jsonToken);
+    public JsonToken joinQueue(String did, String qid, String guardianQid, BizStoreEntity bizStore, TokenServiceEnum tokenService) {
+        LOG.info("joinQueue codeQR={} did={} qid={} guardianQid={}", bizStore.getCodeQR(), did, qid, guardianQid);
+        JsonToken jsonToken = tokenQueueService.getNextToken(did, qid, guardianQid, bizStore, tokenService);
+        checkLimitationEncountered(bizStore.getCodeQR(), jsonToken);
 
         return jsonToken;
     }

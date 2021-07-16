@@ -388,12 +388,7 @@ public class ScheduleAppointmentService {
         Map<String, Integer> timeSlots = new LinkedHashMap<>();
         for (int i = 1; i <= bizStore.getAvailableTokenCount(); i++) {
             try {
-                ZonedDateTime expectedServiceBegin_UTC = ServiceUtils.computeExpectedServiceBeginTime(
-                    bizStore.getAverageServiceTime(),
-                    bizStore,
-                    storeHour,
-                    i
-                );
+                ZonedDateTime expectedServiceBegin_UTC = ServiceUtils.computeExpectedServiceBeginTime(bizStore, storeHour, i);
                 String timeSlot = ServiceUtils.timeSlot(expectedServiceBegin_UTC, zone, storeHour);
                 if (timeSlots.containsKey(timeSlot)) {
                     timeSlots.put(timeSlot, timeSlots.get(timeSlot) + 1);

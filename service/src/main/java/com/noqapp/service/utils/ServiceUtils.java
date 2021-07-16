@@ -15,15 +15,20 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.json.JsonToken;
 import com.noqapp.domain.types.QueueJoinDeniedEnum;
 import com.noqapp.domain.types.QueueStatusEnum;
+import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -146,5 +151,146 @@ public class ServiceUtils {
 
     public static long availableStoreOpenDurationInSeconds(StoreHourEntity storeHour) {
         return (storeHour.storeOpenDurationInMinutes() - PREVENT_JOINING_BEFORE_CLOSING) * DateUtil.MINUTE_IN_SECONDS;
+    }
+
+    /** Calculate based on zone and then save the expected service time based on UTC. */
+    public static ZonedDateTime computeExpectedServiceBeginTimeWhenInitiatedByMerchant(BizStoreEntity bizStore, StoreHourEntity storeHour, int lastNumber) {
+        ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
+
+        ZonedDateTime expectedServiceBegin;
+        if (0 != bizStore.getAverageServiceTime()) {
+            ZonedDateTime zonedServiceTime = ServiceUtils.computeZonedServiceTime(bizStore.getAverageServiceTime(), zoneId, storeHour, lastNumber);
+            ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
+            if (zonedServiceTime.isBefore(currentTime)) {
+                if (storeHour.isLunchTimeEnabled()) {
+                    ZonedDateTime zonedLunchStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+                    ZonedDateTime zonedLunchEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
+                    if (currentTime.isAfter(zonedLunchStartHour) && currentTime.isBefore(zonedLunchEndHour)) {
+                        zonedServiceTime = zonedLunchEndHour.plusMinutes(zonedServiceTime.getMinute());
+                    } else {
+                        zonedServiceTime = currentTime;
+                    }
+                } else {
+                    zonedServiceTime = currentTime;
+                }
+            }
+
+            /* Changed to UTC time before saving. */
+            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
+            LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
+        } else {
+            LOG.error("Business invoked averageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
+            ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
+            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
+        }
+        return expectedServiceBegin;
+    }
+
+    /** Calculate based on zone and then save the expected service time based on UTC. */
+    public static ZonedDateTime computeExpectedServiceBeginTime(BizStoreEntity bizStore, StoreHourEntity storeHour, int lastNumber) throws ExpectedServiceBeyondStoreClosingHour {
+        ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
+        long averageServiceTime = bizStore.getAverageServiceTime();
+
+        ZonedDateTime expectedServiceBegin;
+        if (0 != averageServiceTime) {
+            ZonedDateTime zonedServiceTime = computeZonedServiceTime(averageServiceTime, zoneId, storeHour, lastNumber);
+
+            ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId)
+                .minusMinutes(PREVENT_JOINING_BEFORE_CLOSING)
+                .plusMinutes(storeHour.getDelayedInMinutes());
+
+            if (zonedServiceTime.isAfter(zonedEndHour)) {
+                LOG.warn("After closing hour token {} for {} {} zonedServiceTime={} endHour={} bizStoreId={} codeQR={}",
+                    lastNumber,
+                    bizStore.getBizName().getBusinessName(),
+                    bizStore.getDisplayName(),
+                    zonedServiceTime,
+                    zonedEndHour,
+                    storeHour.getBizStoreId(),
+                    bizStore.getCodeQR());
+                throw new ExpectedServiceBeyondStoreClosingHour("Serving time exceeds after store closing time");
+            }
+
+            ZonedDateTime currentTime = ZonedDateTime.now(zoneId);
+            if (zonedServiceTime.isBefore(currentTime)) {
+                if (storeHour.isLunchTimeEnabled()) {
+                    ZonedDateTime zonedLunchStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+                    ZonedDateTime zonedLunchEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
+                    if (currentTime.isAfter(zonedLunchStartHour) && currentTime.isBefore(zonedLunchEndHour)) {
+                        zonedServiceTime = zonedLunchEndHour.plusMinutes(zonedServiceTime.getMinute());
+                    } else {
+                        zonedServiceTime = currentTime;
+                    }
+                } else {
+                    zonedServiceTime = currentTime;
+                }
+            }
+
+            /* Changed to UTC time before saving. */
+            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
+            LOG.debug("Expected service time for token {} UTC {} {}", lastNumber, expectedServiceBegin, zonedServiceTime);
+        } else {
+            LOG.error("Client invoked averageServiceTime is not set bizStoreId={}", storeHour.getBizStoreId());
+            ZonedDateTime zonedServiceTime = ZonedDateTime.now(zoneId);
+            expectedServiceBegin = zonedServiceTime.withZoneSameInstant(ZoneOffset.UTC);
+        }
+        return expectedServiceBegin;
+    }
+
+    public static ZonedDateTime computeZonedServiceTime(long averageServiceTime, ZoneId zoneId, StoreHourEntity storeHour, int lastNumber) {
+        ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
+        LOG.debug("Time zonedNow={} at zoneId={} bizStoreId={}", zonedNow, zoneId.getId(), storeHour.getBizStoreId());
+        ZonedDateTime zonedStartHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.startHour()), zoneId);
+
+        long serviceInSeconds = new BigDecimal(averageServiceTime)
+            .divide(new BigDecimal(GetTimeAgoUtils.SECOND_MILLIS), MathContext.DECIMAL64).setScale(2, RoundingMode.CEILING)
+            .multiply(new BigDecimal(lastNumber)).longValue();
+        LOG.debug("Service in serviceInSeconds={} averageServiceTime={}", serviceInSeconds, averageServiceTime);
+
+        /* Compute from start of the store hour. */
+        ZonedDateTime zonedServiceTime = zonedStartHour
+            .plusSeconds(serviceInSeconds)
+            .plusMinutes(storeHour.getDelayedInMinutes());
+
+        if (storeHour.isLunchTimeEnabled()) {
+            ZonedDateTime zonedLunchStart = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchStartHour()), zoneId);
+            ZonedDateTime zonedLunchEnd = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.lunchEndHour()), zoneId);
+            Duration breakTime = Duration.between(zonedLunchStart, zonedLunchEnd);
+            LOG.debug("Expected ServiceTime={} lunchTimeStart={}", zonedServiceTime, zonedLunchStart);
+            if (zonedServiceTime.isAfter(zonedLunchStart)) {
+                zonedServiceTime = zonedServiceTime.plusMinutes(breakTime.toMinutes());
+            }
+        }
+        return zonedServiceTime;
+    }
+
+    /** This is used to display live status on mobile. */
+    public static String expectedService(BizStoreEntity bizStore, StoreHourEntity storeHour, int lastNumber) {
+        if (storeHour.isDayClosed()) {
+            return "Closed today";
+        }
+
+        if (storeHour.isTempDayClosed()) {
+            return "Closed temporarily";
+        }
+
+        if (storeHour.isPreventJoining()) {
+            return "Closing soon";
+        }
+
+        ZoneId zoneId = TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId();
+        ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
+        ZonedDateTime zonedEndHour = ZonedDateTime.of(LocalDateTime.of(LocalDate.now(zoneId), storeHour.endHour()), zoneId);
+        if (zonedNow.isAfter(zonedEndHour)) {
+            return "Closed now";
+        }
+
+        try {
+            ZonedDateTime zonedDateTime = computeExpectedServiceBeginTime(bizStore, storeHour, lastNumber);
+            return ServiceUtils.timeSlot(zonedDateTime, zoneId, storeHour);
+        } catch (ExpectedServiceBeyondStoreClosingHour e) {
+            LOG.warn("After closing live status sending {} reason={}", "Capacity reached", e.getLocalizedMessage());
+            return "Capacity reached";
+        }
     }
 }

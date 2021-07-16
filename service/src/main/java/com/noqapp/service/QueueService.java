@@ -851,9 +851,8 @@ public class QueueService {
                 jsonQueue.setTown(FileUtil.DASH);
 
                 if (bizStore.getAvailableTokenCount() > 0) {
-                    timeSlotMessage = tokenQueueService.expectedService(
-                        bizStore.getAverageServiceTime(),
-                        TimeZone.getTimeZone(bizStore.getTimeZone()).toZoneId(),
+                    timeSlotMessage = ServiceUtils.expectedService(
+                        bizStore,
                         storeHour,
                         tokenQueue.getLastNumber() - bizStore.getAvailableTokenAfterCancellation());
                 } else {

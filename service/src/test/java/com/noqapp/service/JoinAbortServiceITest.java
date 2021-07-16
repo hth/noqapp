@@ -127,11 +127,10 @@ class JoinAbortServiceITest extends ITest {
             businessCustomerService.addAuthorizedUserForDoingBusiness("L" + StringUtils.leftPad(String.valueOf(userAccount.getQueueUserId()), 18, '0'), bizStore.getBizName().getId(), userAccount.getQueueUserId());
 
             String jsonToken_String = joinAbortService.joinQueue(
-                bizStore.getCodeQR(),
                 UUID.randomUUID().toString(),
                 userAccount.getQueueUserId(),
                 null,
-                bizStore.getAverageServiceTime(),
+                bizStore,
                 TokenServiceEnum.C
             ).asJson();
 
@@ -213,11 +212,10 @@ class JoinAbortServiceITest extends ITest {
             businessCustomerService.addAuthorizedUserForDoingBusiness("L" + StringUtils.leftPad(String.valueOf(userAccount.getQueueUserId()), 18, '0'), bizStore.getBizName().getId(), userAccount.getQueueUserId());
 
             String jsonToken_String = joinAbortService.joinQueue(
-                bizStore.getCodeQR(),
                 UUID.randomUUID().toString(),
                 userAccount.getQueueUserId(),
                 null,
-                bizStore.getAverageServiceTime(),
+                bizStore,
                 TokenServiceEnum.C
             ).asJson();
 
