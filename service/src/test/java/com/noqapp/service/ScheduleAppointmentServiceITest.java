@@ -176,7 +176,7 @@ class ScheduleAppointmentServiceITest extends ITest {
         JsonScheduleList jsonScheduleList = scheduleAppointmentService.findBookedAppointmentsForDayAsJson(
             bizStore.getCodeQR(),
             dateAsString);
-        assertEquals(jsonScheduleList.getJsonSchedules().size(), 1);
+        assertEquals(jsonScheduleList.getJsonSchedules().size(), 2);
         assertTrue(jsonScheduleList.getJsonScheduleFlexes().size() > 0);
         assertTrue(scheduleAppointmentService.doesAppointmentExists(userProfile.getQueueUserId(), bizStore.getCodeQR(), dateAsString));
     }
