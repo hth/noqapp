@@ -1,6 +1,5 @@
 package com.noqapp.service;
 
-import static com.noqapp.common.utils.Constants.FLEX_APPOINTMENT_LOAD_FACTOR;
 import static com.noqapp.common.utils.DateUtil.DTF_YYYY_MM_DD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,7 +16,6 @@ import com.noqapp.domain.json.JsonScheduleList;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
 import com.noqapp.service.exceptions.AppointmentBookingException;
-import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
 import com.noqapp.service.utils.ServiceUtils;
 
 import org.springframework.security.core.Authentication;
@@ -31,11 +29,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mockito;
 
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -181,7 +176,7 @@ class ScheduleAppointmentServiceITest extends ITest {
         JsonScheduleList jsonScheduleList = scheduleAppointmentService.findBookedAppointmentsForDayAsJson(
             bizStore.getCodeQR(),
             dateAsString);
-        assertEquals(jsonScheduleList.getJsonSchedules().size(), 1);
+        assertEquals(jsonScheduleList.getJsonSchedules().size(), 2);
         assertTrue(jsonScheduleList.getJsonScheduleFlexes().size() > 0);
         assertTrue(scheduleAppointmentService.doesAppointmentExists(userProfile.getQueueUserId(), bizStore.getCodeQR(), dateAsString));
     }
