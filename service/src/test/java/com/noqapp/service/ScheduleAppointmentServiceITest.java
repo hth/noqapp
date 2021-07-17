@@ -12,6 +12,7 @@ import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.json.JsonSchedule;
+import com.noqapp.domain.json.JsonScheduleFlex;
 import com.noqapp.domain.json.JsonScheduleList;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.AppointmentStatusEnum;
@@ -35,6 +36,7 @@ import java.time.ZonedDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * hitender
@@ -134,10 +136,7 @@ class ScheduleAppointmentServiceITest extends ITest {
     }
 
     @Test
-    void findBookedAppointmentsForDay() {
-        long averageServiceTime = bizStore.getAverageServiceTime();
-        String averageServiceTimeAsString = bizStore.getAverageServiceTimeFormatted();
-
+    void findBookedAppointmentsForDayAsJson_TraditionalAppointments() {
         UserProfileEntity userProfile = accountService.checkUserExistsByPhone("9118000000001");
         JsonSchedule jsonSchedule = new JsonSchedule()
             .setCodeQR(bizStore.getCodeQR())
@@ -162,6 +161,32 @@ class ScheduleAppointmentServiceITest extends ITest {
     }
 
     @Test
+    void findBookedAppointmentsForDayAsJson_FlexAppointments() {
+        UserProfileEntity userProfile = accountService.checkUserExistsByPhone("9118000000001");
+        JsonSchedule jsonSchedule = new JsonSchedule()
+            .setCodeQR(bizStore.getCodeQR())
+            .setScheduleDate(dateAsString)
+            .setStartTime(1000)
+            .setEndTime(1030)
+            .setQueueUserId(userProfile.getQueueUserId());
+        bizStore = bizService.findByCodeQR(bizStore.getCodeQR());
+        bizStore
+            .setTimeZone(timeZone)
+            .setAppointmentState(AppointmentStateEnum.F);
+        bizService.saveStore(bizStore, "Changed appointment type");
+
+        JsonSchedule jsonScheduleAfterAppointment = scheduleAppointmentService.bookAppointment(userProfile.getQueueUserId(), jsonSchedule);
+        assertEquals(AppointmentStatusEnum.A, jsonScheduleAfterAppointment.getAppointmentStatus());
+
+        JsonScheduleList jsonScheduleList = scheduleAppointmentService.findBookedAppointmentsForDayAsJson(
+            bizStore.getCodeQR(),
+            dateAsString);
+        assertEquals(jsonScheduleList.getJsonSchedules().size(), 1);
+        assertTrue(jsonScheduleList.getJsonScheduleFlexes().size() > 0);
+        assertTrue(scheduleAppointmentService.doesAppointmentExists(userProfile.getQueueUserId(), bizStore.getCodeQR(), dateAsString));
+    }
+
+    @Test
     void computeFlexAppointment() {
         bizStore = bizService.findByCodeQR(bizStore.getCodeQR());
         bizStore
@@ -170,7 +195,7 @@ class ScheduleAppointmentServiceITest extends ITest {
         bizService.saveStore(bizStore, "Changed appointment type");
 
         String modifiedDate = DateUtil.getZonedDateTimeAtUTC().format(DTF_YYYY_MM_DD);
-        Map<String, Integer> timeSlots = scheduleAppointmentService.computeFlexAppointment(modifiedDate, bizStore);
-        assertTrue(timeSlots.size() > 0);
+        Set<JsonScheduleFlex> jsonScheduleFlexes = scheduleAppointmentService.computeFlexAppointment(modifiedDate, bizStore);
+        assertTrue(jsonScheduleFlexes.size() > 0);
     }
 }

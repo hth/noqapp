@@ -19,6 +19,7 @@ public interface ScheduleAppointmentManager extends RepositoryManager<ScheduleAp
     List<ScheduleAppointmentEntity> findBookedWalkinAppointmentsForDay(String codeQR, String scheduleDate);
 
     List<ScheduleAppointmentEntity> findBookedFlexAppointmentsForDay(String codeQR, String scheduleDate, int startTime);
+    long countBookedFlexAppointmentsForDay(String codeQR, String scheduleDate, int startTime);
 
     /** Schedule is for merchant. */
     List<ScheduleAppointmentEntity> findScheduleForDay(String codeQR, String scheduleDate);

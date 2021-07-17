@@ -114,6 +114,20 @@ public class ScheduleAppointmentManagerImpl implements ScheduleAppointmentManage
     }
 
     @Override
+    public long countBookedFlexAppointmentsForDay(String codeQR, String scheduleDate, int startTime) {
+        return mongoTemplate.count(
+            query(where("QR").is(codeQR).and("PS").is(AppointmentStateEnum.F).and("ST").lte(startTime).and("SD").is(scheduleDate)
+                .andOperator(
+                    where("AS").in(AppointmentStatusEnum.A, AppointmentStatusEnum.U),
+                    where("AS").ne(AppointmentStatusEnum.W)
+                )
+            ).with(Sort.by(ASC, "ST")),
+            ScheduleAppointmentEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<ScheduleAppointmentEntity> findScheduleForDay(String codeQR, String scheduleDate) {
         LOG.info("ScheduleDate={} codeQR={}", scheduleDate, codeQR);
         return mongoTemplate.find(
