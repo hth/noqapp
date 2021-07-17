@@ -157,8 +157,6 @@ public class ScheduleAppointmentService {
 
     @Mobile
     public JsonSchedule bookAppointment(String guardianQid, JsonSchedule jsonSchedule) {
-        Validate.isValidQid(guardianQid);
-
         BizStoreEntity bizStore = bizService.findByCodeQR(jsonSchedule.getCodeQR());
         if (bizStore.getAppointmentState() == AppointmentStateEnum.O) {
             LOG.warn("Appointment is not enabled {} for {}", jsonSchedule.getQueueUserId(), jsonSchedule.getCodeQR());
