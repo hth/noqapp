@@ -1,6 +1,7 @@
 package com.noqapp.service;
 
 import static com.noqapp.common.utils.Constants.FLEX_APPOINTMENT_LOAD_FACTOR;
+import static com.noqapp.common.utils.Constants.TIME_SLOT_PATTERN;
 import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 import static java.util.concurrent.Executors.newCachedThreadPool;
 
@@ -21,6 +22,7 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonProfile;
 import com.noqapp.domain.json.JsonQueueDisplay;
 import com.noqapp.domain.json.JsonSchedule;
+import com.noqapp.domain.json.JsonScheduleFlex;
 import com.noqapp.domain.json.JsonScheduleList;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.json.fcm.data.JsonData;
@@ -39,6 +41,7 @@ import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
+import com.noqapp.service.cache.FlexAppointmentCache;
 import com.noqapp.service.exceptions.AppointmentBookingException;
 import com.noqapp.service.exceptions.AppointmentCancellationException;
 import com.noqapp.service.exceptions.ExpectedServiceBeyondStoreClosingHour;
@@ -61,8 +64,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Stream;
 
@@ -370,7 +375,12 @@ public class ScheduleAppointmentService {
             }
 
             if (AppointmentStateEnum.F == bizStore.getAppointmentState()) {
-                computeFlexAppointment(scheduleDate, bizStore);
+                Set<JsonScheduleFlex> jsonScheduleFlexes = computeFlexAppointment(scheduleDate, bizStore);
+                for (JsonScheduleFlex jsonScheduleFlex : jsonScheduleFlexes) {
+                    jsonScheduleFlex.setBookedAppointments(scheduleAppointmentManager.countBookedFlexAppointmentsForDay(codeQR, scheduleDate, jsonScheduleFlex.getStartTime()));
+                }
+
+                jsonScheduleList.setJsonScheduleFlexes(jsonScheduleFlexes);
             }
 
             return jsonScheduleList;
@@ -380,7 +390,8 @@ public class ScheduleAppointmentService {
         }
     }
 
-    public Map<String, Integer> computeFlexAppointment(String scheduleDate, BizStoreEntity bizStore) {
+    @FlexAppointmentCache
+    public Set<JsonScheduleFlex> computeFlexAppointment(String scheduleDate, BizStoreEntity bizStore) {
         LocalDate localDate = DateUtil.convertDateStringOf_YYYY_MM_DD_ToLocalDate(scheduleDate);
         StoreHourEntity storeHour = storeHourService.findStoreHour(bizStore.getId(), localDate.getDayOfWeek());
         ZoneId zone = ZoneId.of(bizStore.getTimeZone());
@@ -401,11 +412,18 @@ public class ScheduleAppointmentService {
             }
         }
 
+        Set<JsonScheduleFlex> jsonScheduleFlexes = new LinkedHashSet<>();
         for (String key : timeSlots.keySet()) {
             LOG.debug("Expected Service: for token {}, time slot={}", key, timeSlots.get(key));
-
-            if (timeSlots.containsKey(key)) {
+            if (TIME_SLOT_PATTERN.matcher(key).matches()) {
                 timeSlots.put(key, Double.valueOf(timeSlots.get(key) * FLEX_APPOINTMENT_LOAD_FACTOR).intValue());
+
+                JsonScheduleFlex jsonScheduleFlex = new JsonScheduleFlex()
+                    .setTimeSlot(key)
+                    .setTotalAppointments(Double.valueOf(timeSlots.get(key) * FLEX_APPOINTMENT_LOAD_FACTOR).intValue())
+                    .setStartTime(Formatter.getStartTimeFromTimeSlot(key));
+
+                jsonScheduleFlexes.add(jsonScheduleFlex);
             }
         }
 
@@ -413,7 +431,8 @@ public class ScheduleAppointmentService {
             LOG.debug("Available flex: for token {}, time slot={}", key, timeSlots.get(key));
         }
 
-        return timeSlots;
+        LOG.info("Flex schedule codeQR={} {} {}", bizStore.getCodeQR(), scheduleDate, jsonScheduleFlexes.size());
+        return jsonScheduleFlexes;
     }
 
     /** Contains profile information. To be used by business only. */

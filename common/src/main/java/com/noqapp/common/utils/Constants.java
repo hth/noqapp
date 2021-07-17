@@ -24,6 +24,7 @@ public class Constants {
     public static final String UNDER_SCORE = "_";
     public static final Charset CHAR_SET_UTF8 = StandardCharsets.UTF_8;
     public static final Pattern WORD_PATTERN = Pattern.compile("^[A-Za-z .-]+");
+    public static final Pattern TIME_SLOT_PATTERN = Pattern.compile("^[0-9:\\s-]+$");
     public static final String WORD_PATTERN_TEXT = " words 'A-to-Z', spaces ' ' and/or dots/dash '.', '-";
     public static final int PRIME_73 = 73;
     public static final String appendPrefix = "Q";

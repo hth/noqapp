@@ -1,6 +1,7 @@
 package com.noqapp.common.utils;
 
 import static com.google.i18n.phonenumbers.PhoneNumberUtil.getInstance;
+import static com.noqapp.common.utils.Constants.TIME_SLOT_PATTERN;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -44,11 +45,11 @@ enum FormatterSingleton {
  * User: hitender
  * Date: 11/18/16 6:10 PM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 public final class Formatter {
     private static final Logger LOG = LoggerFactory.getLogger(Formatter.class);
@@ -135,11 +136,11 @@ public final class Formatter {
         try {
             Phonenumber.PhoneNumber phoneNumber = PHONE_INSTANCE.parse(phone, countryShortName);
             LOG.info("PhoneNumber with phone={} countryShortName={} countryCode={} nationalNumber={} leadingZeros={}",
-                    phone,
-                    countryShortName,
-                    phoneNumber.getCountryCode(),
-                    phoneNumber.getNationalNumber(),
-                    phoneNumber.getNumberOfLeadingZeros());
+                phone,
+                countryShortName,
+                phoneNumber.getCountryCode(),
+                phoneNumber.getNationalNumber(),
+                phoneNumber.getNumberOfLeadingZeros());
 
             return phoneNumber.getCountryCode() + String.valueOf(phoneNumber.getNationalNumber());
         } catch (Exception e) {
@@ -244,12 +245,7 @@ public final class Formatter {
         return countryShortName;
     }
 
-    /**
-     * Gets ISO country short name for international number supplied.
-     *
-     * @param phone
-     * @return
-     */
+    /** Gets ISO country short name for international number supplied. */
     public static String getCountryShortNameFromInternationalPhone(String phone) {
         /* Added for making phone number as international. */
         return getCountryShortNameFromCountryCode(findCountryCode("+" + phone));
@@ -261,13 +257,16 @@ public final class Formatter {
         return outputFormatter.format(temporalAccessor);
     }
 
-    /**
-     * Converts military time like '0010' to 12:10 AM' and '1000' to '10:00 AM' and '2345' to '11:45 PM'.
-     *
-     * @param rawTimestamp
-     * @return
-     */
+    /** Converts military time like '0010' to 12:10 AM' and '1000' to '10:00 AM' and '2345' to '11:45 PM'. */
     public static String convertMilitaryTo12HourFormat(int rawTimestamp) {
         return convertMilitaryTo12HourFormat(String.format(Locale.US, "%04d", rawTimestamp));
+    }
+
+    /** Converts timeSlot from 14:00 - 15:00 to 1400 */
+    public static int getStartTimeFromTimeSlot(String timeSlot) {
+        if (TIME_SLOT_PATTERN.matcher(timeSlot).matches()) {
+            return Integer.parseInt(timeSlot.split(" ")[0].replace(":", ""));
+        }
+        return 0;
     }
 }
