@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
  */
 public class Constants {
 
+    public static final String TOPICS = "/topics/";
     public static final Pattern AGE_RANGE = Pattern.compile("^(\\d?[0-9]|[0-9])?(-\\d?[0-9]|[0-9])");
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String MAX_Q_SEARCH_DISTANCE = "4000"; //Close to 93 Miles or 150 KM
