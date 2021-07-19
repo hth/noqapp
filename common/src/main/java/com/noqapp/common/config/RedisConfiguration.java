@@ -136,6 +136,10 @@ public class RedisConfiguration extends CachingConfigurerSupport {
                     cacheNamesConfigurationMap.put("bizStore-valid-codeQR", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(redisCacheDuration)));
                     LOG.info("Setting time for cacheName={} duration={} minutes", cacheName, redisCacheDuration);
                     break;
+                case "flexAppointment":
+                    cacheNamesConfigurationMap.put("flexAppointment", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(2)));
+                    LOG.info("Setting time for cacheName={} duration={} minutes", cacheName, redisCacheDuration);
+                    break;
                 case "mail-auth":
                     cacheNamesConfigurationMap.put("mail-auth", RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(redisCacheDuration)));
                     LOG.info("Setting time for cacheName={} duration={} minutes", cacheName, redisCacheDuration);
