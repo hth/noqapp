@@ -31,7 +31,6 @@ import java.util.StringJoiner;
 @Document(collection = "TOKEN_QUEUE")
 public class TokenQueueEntity extends BaseEntity {
     private static final Logger LOG = LoggerFactory.getLogger(TokenQueueEntity.class);
-    protected static final String TOPICS = "/topics/";
 
     @Field("LN")
     private int lastNumber;
@@ -144,12 +143,12 @@ public class TokenQueueEntity extends BaseEntity {
 
     @Transient
     private String getTopicWellFormatted() {
-        return TOPICS + topic;
+        return Constants.TOPICS + topic;
     }
 
     @Transient
     private String getMerchantTopicWellFormatted() {
-        return TOPICS + topic + "_M";
+        return Constants.TOPICS + topic + "_M";
     }
 
     @Transient

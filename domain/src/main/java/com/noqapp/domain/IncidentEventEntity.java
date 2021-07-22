@@ -1,8 +1,8 @@
 package com.noqapp.domain;
 
 import static com.noqapp.common.utils.Constants.UNDER_SCORE;
-import static com.noqapp.domain.TokenQueueEntity.TOPICS;
 
+import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.IncidentEventEnum;
 
@@ -251,7 +251,7 @@ public class IncidentEventEntity extends BaseEntity {
 
     @Transient
     public String getTopicWellFormatted() {
-        return TOPICS + incidentEvent.getAppendTopic() + UNDER_SCORE + incidentEvent.name() + UNDER_SCORE + id;
+        return Constants.TOPICS + incidentEvent.getAppendTopic() + UNDER_SCORE + incidentEvent.name() + UNDER_SCORE + id;
     }
 
     @Transient
