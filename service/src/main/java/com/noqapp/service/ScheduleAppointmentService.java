@@ -763,13 +763,13 @@ public class ScheduleAppointmentService {
             Date until = DateUtil.convertToDate(scheduledTask.getUntil(), bizStore.getTimeZone());
             Date expectedAppointmentDate = DateUtil.convertToDate(scheduleDate, bizStore.getTimeZone());
             if (DateUtil.isThisDayBetween(expectedAppointmentDate, from, until)) {
-                LOG.warn("Scheduled closed cannot book {} {} {}", scheduleDate, from, until);
+                LOG.warn("Scheduled closed cannot book {} {} {} codeQR={}", scheduleDate, from, until, bizStore.getCodeQR());
                 throw new AppointmentBookingException("Booking failed as " + bizStore.getDisplayName() + " is closed on that day");
             }
         }
 
         if (bizStore.getBizName().isDayClosed()) {
-            LOG.warn("Scheduled business is closed {}", scheduleDate);
+            LOG.warn("Scheduled business is closed {} codeQR={}", scheduleDate, bizStore.getCodeQR());
             throw new AppointmentBookingException("Booking failed as " + bizStore.getBizName().getBusinessName() + " is closed on that day");
         }
     }
