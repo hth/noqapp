@@ -29,9 +29,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     /** Find all clients serviced to send messages. */
     List<PurchaseOrderEntity> findAllClientOrderDelivered(int numberOfAttemptsToSendFCM);
 
-    /** Orders that have been delivered. */
-    List<PurchaseOrderEntity> findAllDeliveredHistoricalOrder(String qid);
-
     /** Orders that have been delivered or cancelled. */
     List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid, BusinessTypeEnum ignoreBusinessType);
 
