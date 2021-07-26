@@ -1,7 +1,6 @@
 package com.noqapp.health.domain.json;
 
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.domain.json.JsonQueue;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -37,7 +36,7 @@ import java.util.List;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JsonSiteHealth extends AbstractDomain {
-    private static final Logger LOG = LoggerFactory.getLogger(JsonQueue.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JsonSiteHealth.class);
 
     @JsonIgnore
     private Instant created = Instant.now();
