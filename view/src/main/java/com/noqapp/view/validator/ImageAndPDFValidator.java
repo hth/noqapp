@@ -22,7 +22,7 @@ import java.util.Arrays;
 })
 @Component
 public class ImageAndPDFValidator implements Validator {
-    private static final Logger LOG = LoggerFactory.getLogger(ImageValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ImageAndPDFValidator.class);
 
     private String[] supportedFormat = new String[]{"image/jpg", "image/jpeg", "image/png"};
     private String[] supportedPDFFormat = new String[]{"image/jpg", "image/jpeg", "image/png", "application/pdf"};

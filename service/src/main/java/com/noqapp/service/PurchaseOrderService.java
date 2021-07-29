@@ -1171,28 +1171,6 @@ public class PurchaseOrderService {
         return jsonTokenAndQueues;
     }
 
-    private List<PurchaseOrderEntity> findAllDeliveredHistoricalOrder(String qid) {
-        return purchaseOrderManager.findAllDeliveredHistoricalOrder(qid);
-    }
-
-    @Mobile
-    public List<JsonTokenAndQueue> findAllDeliveredHistoricalOrderAsJson(String qid) {
-        Assert.isTrue(Validate.isValidQid(qid), "Should be a valid qid " + qid);
-
-        List<PurchaseOrderEntity> purchaseOrders = findAllDeliveredHistoricalOrder(qid);
-        LOG.info("Total purchase orders completed count={}", purchaseOrders.size());
-        List<JsonTokenAndQueue> jsonTokenAndQueues = new ArrayList<>();
-        for (PurchaseOrderEntity purchaseOrder : purchaseOrders) {
-            BizStoreEntity bizStore = bizStoreManager.findByCodeQR(purchaseOrder.getCodeQR());
-            bizStore.setStoreHours(storeHourManager.findAll(bizStore.getId()));
-
-            JsonTokenAndQueue jsonTokenAndQueue = new JsonTokenAndQueue(purchaseOrder, bizStore);
-            jsonTokenAndQueues.add(jsonTokenAndQueue);
-        }
-
-        return jsonTokenAndQueues;
-    }
-
     private List<PurchaseOrderEntity> findAllOpenOrderByCodeQR(String codeQR) {
         return purchaseOrderManager.findAllOpenOrderByCodeQR(codeQR);
     }

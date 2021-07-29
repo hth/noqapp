@@ -31,7 +31,7 @@ import java.time.temporal.ChronoUnit;
  */
 @Component
 public class UserRegistrationValidation {
-    private static final Logger LOG = LoggerFactory.getLogger(MigrateToBusinessProfileValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserRegistrationValidation.class);
 
     @Value("${AccountValidator.mailLength}")
     private int mailLength;

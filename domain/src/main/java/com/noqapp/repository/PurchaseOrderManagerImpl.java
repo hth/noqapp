@@ -122,13 +122,6 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
             TABLE);
     }
 
-    public List<PurchaseOrderEntity> findAllDeliveredHistoricalOrder(String qid) {
-        return mongoTemplate.find(
-            query(where("QID").is(qid).and("PS").is(PurchaseOrderStateEnum.OD)),
-            PurchaseOrderEntity.class,
-            TABLE);
-    }
-
     @Override
     public List<PurchaseOrderEntity> findAllPastDeliveredOrCancelledOrders(String qid, BusinessTypeEnum ignoreBusinessType) {
         return mongoTemplate.find(

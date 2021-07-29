@@ -1,5 +1,7 @@
 package com.noqapp.domain.json;
 
+import static org.apiguardian.api.API.Status.DEPRECATED;
+
 import com.noqapp.common.utils.AbstractDomain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -7,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import org.apiguardian.api.API;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,8 @@ import java.util.List;
 @JsonInclude (JsonInclude.Include.NON_NULL)
 public class JsonTokenAndQueueList extends AbstractDomain {
 
+    @API(status = DEPRECATED, since = "1.3.122")
+    @Deprecated
     @JsonProperty ("sb")
     private boolean sinceBeginning;
 
