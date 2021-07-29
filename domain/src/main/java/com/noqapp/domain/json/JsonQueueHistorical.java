@@ -157,4 +157,20 @@ public class JsonQueueHistorical extends AbstractDomain {
         this.displayImage = displayImage;
         return this;
     }
+
+    public String getCodeQR() {
+        return codeQR;
+    }
+
+    public int getTokenNumber() {
+        return tokenNumber;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public QueueUserStateEnum getQueueUserState() {
+        return queueUserState;
+    }
 }
