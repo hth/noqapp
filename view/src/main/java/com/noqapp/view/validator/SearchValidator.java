@@ -1,6 +1,5 @@
 package com.noqapp.view.validator;
 
-import com.noqapp.view.form.ForgotRecoverForm;
 import com.noqapp.view.form.SearchForm;
 
 import org.slf4j.Logger;
@@ -25,14 +24,14 @@ import org.springframework.validation.Validator;
 })
 @Component
 public class SearchValidator implements Validator {
-    private static final Logger LOG = LoggerFactory.getLogger(ForgotRecoverValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SearchValidator.class);
 
     @Value("${SearchValidator.searchLength}")
     private int searchLength;
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return ForgotRecoverForm.class.equals(clazz);
+        return SearchForm.class.equals(clazz);
     }
 
     @Override
