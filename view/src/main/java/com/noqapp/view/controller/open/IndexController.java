@@ -51,7 +51,7 @@ public class IndexController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LOG.info("Auth {}", authentication.getPrincipal().toString());
         if (authentication instanceof AnonymousAuthenticationToken) {
-            return "index";
+            return "redirect:/open/login";
         }
 
 //        UserDetails userDetails = (UserDetails) authentication.getPrincipal();

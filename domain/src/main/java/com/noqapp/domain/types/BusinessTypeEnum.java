@@ -171,9 +171,26 @@ public enum BusinessTypeEnum {
         return list;
     }
 
-    public static List<BusinessTypeEnum> marketPlaces() {
+    public static List<BusinessTypeEnum> excludePropertyRental() {
+        List<BusinessTypeEnum> list = Stream.of(BusinessTypeEnum.values()).collect(Collectors.toList());
+        list.remove(PR);
+        return list;
+    }
+
+    public static List<BusinessTypeEnum> excludeHouseholdItem() {
+        List<BusinessTypeEnum> list = Stream.of(BusinessTypeEnum.values()).collect(Collectors.toList());
+        list.remove(HI);
+        return list;
+    }
+
+    public static List<BusinessTypeEnum> includePropertyRental() {
         return new ArrayList<>() {{
             add(PR);
+        }};
+    }
+
+    public static List<BusinessTypeEnum> includeHouseholdItem() {
+        return new ArrayList<>() {{
             add(HI);
         }};
     }
@@ -202,6 +219,13 @@ public enum BusinessTypeEnum {
     public static List<BusinessTypeEnum> includePlaceOfWorship() {
         return new ArrayList<>() {{
             add(PW);
+        }};
+    }
+
+    public static List<BusinessTypeEnum> marketPlaces() {
+        return new ArrayList<>() {{
+            add(PR);
+            add(HI);
         }};
     }
 
