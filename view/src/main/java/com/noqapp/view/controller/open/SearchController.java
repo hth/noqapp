@@ -1,8 +1,6 @@
 package com.noqapp.view.controller.open;
 
 import com.noqapp.common.utils.ScrubbedInput;
-import com.noqapp.search.elastic.json.ElasticBizStoreSearchSource;
-import com.noqapp.search.elastic.json.ElasticMarketplaceSearchSource;
 import com.noqapp.search.elastic.service.BizStoreSearchElasticService;
 import com.noqapp.search.elastic.service.GeoIPLocationService;
 import com.noqapp.search.elastic.service.MarketplaceSearchElasticService;
@@ -24,8 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -40,8 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 })
 @Controller
 @RequestMapping(value = "/open/search")
-public class SearchBusinessStoreController {
-    private static final Logger LOG = LoggerFactory.getLogger(SearchBusinessStoreController.class);
+public class SearchController {
+    private static final Logger LOG = LoggerFactory.getLogger(SearchController.class);
 
     private BizStoreSearchElasticService bizStoreSearchElasticService;
     private MarketplaceSearchElasticService marketplaceSearchElasticService;
@@ -51,7 +47,7 @@ public class SearchBusinessStoreController {
     private String nextPage;
 
     @Autowired
-    public SearchBusinessStoreController(
+    public SearchController(
         @Value("${nextPage:/search}")
         String nextPage,
 
