@@ -46,6 +46,14 @@ public class BizStoreSearchElasticList extends AbstractDomain {
     @JsonProperty("si")
     private String scrollId;
 
+    @Transient
+    @JsonProperty("from")
+    private int from;
+
+    @Transient
+    @JsonProperty("size")
+    private int size;
+
     @JsonProperty("cityName")
     private String cityName;
 
@@ -62,6 +70,24 @@ public class BizStoreSearchElasticList extends AbstractDomain {
 
     public BizStoreSearchElasticList setScrollId(String scrollId) {
         this.scrollId = scrollId;
+        return this;
+    }
+
+    public int getFrom() {
+        return from;
+    }
+
+    public BizStoreSearchElasticList setFrom(int from) {
+        this.from = from;
+        return this;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public BizStoreSearchElasticList setSize(int size) {
+        this.size = size;
         return this;
     }
 
@@ -114,6 +140,7 @@ public class BizStoreSearchElasticList extends AbstractDomain {
                     elastic.setAddress(FileUtil.DASH);
                     elastic.setArea(FileUtil.DASH);
                     elastic.setTown(FileUtil.DASH);
+                    elastic.setPhone(FileUtil.DASH);
                 default:
                     //Do nothing
             }
