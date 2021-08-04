@@ -46,6 +46,14 @@ public class BizStoreSpatialElasticList extends AbstractDomain {
     @JsonProperty("si")
     private String scrollId;
 
+    @Transient
+    @JsonProperty("from")
+    private int from;
+
+    @Transient
+    @JsonProperty("size")
+    private int size;
+
     @JsonProperty("cityName")
     private String cityName;
 
@@ -62,6 +70,24 @@ public class BizStoreSpatialElasticList extends AbstractDomain {
 
     public BizStoreSpatialElasticList setScrollId(String scrollId) {
         this.scrollId = scrollId;
+        return this;
+    }
+
+    public int getFrom() {
+        return from;
+    }
+
+    public BizStoreSpatialElasticList setFrom(int from) {
+        this.from = from;
+        return this;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public BizStoreSpatialElasticList setSize(int size) {
+        this.size = size;
         return this;
     }
 
