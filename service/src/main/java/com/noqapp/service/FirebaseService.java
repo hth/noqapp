@@ -88,7 +88,7 @@ public class FirebaseService {
             TopicManagementResponse response = firebaseConfig.getFirebaseMessaging().subscribeToTopic(registrationTokens, topic);
             LOG.info("Subscribed successCount={} topic={}", response.getSuccessCount(), topic);
         } catch (FirebaseMessagingException e) {
-            LOG.error("Failed subscribing {} {} reason={}", topic, registrationTokens, e.getLocalizedMessage(), e);
+            LOG.error("Failed subscribing {} {} reason={}", topic, registrationTokens, e.getLocalizedMessage());
         }
     }
 
@@ -97,7 +97,7 @@ public class FirebaseService {
             TopicManagementResponse response = firebaseConfig.getFirebaseMessaging().unsubscribeFromTopic(registrationTokens, topic);
             LOG.info("Unsubscribed successCount={} topic={}", response.getSuccessCount(), topic);
         } catch (FirebaseMessagingException e) {
-            LOG.error("Failed unsubscribing {} {} reason={}", topic, registrationTokens, e.getLocalizedMessage(), e);
+            LOG.error("Failed unsubscribing {} {} reason={}", topic, registrationTokens, e.getLocalizedMessage());
         }
     }
 
