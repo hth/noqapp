@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import org.elasticsearch.common.geo.GeoPoint;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -181,15 +182,14 @@ public class DomainConversion {
             .setProductPrice(MathUtil.displayPrice(marketplace.getProductPrice()))
             .setTitle(marketplace.getTitle())
             .setDescription(marketplace.getDescription())
-            .setPostImages(marketplace.getPostImages())
+            .setPostImages(List.copyOf(marketplace.getPostImages()))
             .setLikeCount(marketplace.getLikeCount())
             .setExpressedInterestCount(marketplace.getExpressedInterestCount())
             .setGeoPointOfQ(marketplace.getCoordinate() == null ? new GeoPointOfQ(0.0, 0.0) : marketplace.getGeoPointOfQ())
             .setGeoHash(marketplace.getCoordinate() == null ? new GeoPoint(0.0, 0.0).getGeohash() : marketplace.getGeoPoint().getGeohash())
             .setCity(marketplace.getCity())
             .setTown(marketplace.getTown())
-            .setCountryShortName(marketplace.getCountryShortName())
-            .setPublishUntil(marketplace.getPublishUntil());
+            .setCountryShortName(marketplace.getCountryShortName());
         switch (marketplace.getBusinessType()) {
             case PR:
                 marketplaceElastic

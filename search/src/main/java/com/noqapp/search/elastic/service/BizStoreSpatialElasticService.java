@@ -52,7 +52,7 @@ import java.util.Set;
 @Service
 public class BizStoreSpatialElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreSpatialElasticService.class);
-    private static final long SECONDS = 10L;
+    static final long SECONDS = 10L;
 
     private BizStoreSpatialElasticManager<BizStoreElastic> bizStoreSpatialElasticManager;
     private ElasticsearchClientConfiguration elasticsearchClientConfiguration;

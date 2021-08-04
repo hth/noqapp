@@ -17,9 +17,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Stored in elasticsearch.
@@ -64,7 +63,7 @@ public class MarketplaceElastic extends AbstractDomain {
     private String description;
 
     @JsonProperty("PI")
-    private Set<String> postImages = new LinkedHashSet<>();
+    private List<String> postImages = new ArrayList<>();
 
     /** Tags are going to be category under business type. Like Rent has category of Apartment, House. */
     @JsonProperty("TG")
@@ -90,9 +89,6 @@ public class MarketplaceElastic extends AbstractDomain {
 
     @JsonProperty("CS")
     private String countryShortName;
-
-    @JsonProperty("PU")
-    private Date publishUntil;
 
     /** Mostly used for display as most of the common data is listed as text here. */
     @JsonProperty("TS")
@@ -143,11 +139,11 @@ public class MarketplaceElastic extends AbstractDomain {
         return this;
     }
 
-    public Set<String> getPostImages() {
+    public List<String> getPostImages() {
         return postImages;
     }
 
-    public MarketplaceElastic setPostImages(Set<String> postImages) {
+    public MarketplaceElastic setPostImages(List<String> postImages) {
         this.postImages = postImages;
         return this;
     }
@@ -221,15 +217,6 @@ public class MarketplaceElastic extends AbstractDomain {
 
     public MarketplaceElastic setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
-        return this;
-    }
-
-    public Date getPublishUntil() {
-        return publishUntil;
-    }
-
-    public MarketplaceElastic setPublishUntil(Date publishUntil) {
-        this.publishUntil = publishUntil;
         return this;
     }
 
