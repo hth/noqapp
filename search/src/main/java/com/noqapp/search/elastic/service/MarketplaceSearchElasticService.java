@@ -1,12 +1,22 @@
 package com.noqapp.search.elastic.service;
 
+import static com.noqapp.search.elastic.service.BizStoreSpatialElasticService.SECONDS;
+import static com.noqapp.search.elastic.service.MarketplaceElasticService.excludeFields;
+import static com.noqapp.search.elastic.service.MarketplaceElasticService.includeFields;
+import static com.noqapp.search.elastic.service.MarketplaceElasticService.populateSearchData;
+import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
+
 import com.noqapp.common.utils.Constants;
+import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PaginationEnum;
+import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
-import com.noqapp.search.elastic.dsl.MarketplaceQueryString;
+import com.noqapp.search.elastic.domain.MarketplaceElasticList;
 import com.noqapp.search.elastic.dsl.Conditions;
 import com.noqapp.search.elastic.dsl.Filter;
 import com.noqapp.search.elastic.dsl.GeoDistance;
+import com.noqapp.search.elastic.dsl.MarketplaceQueryString;
 import com.noqapp.search.elastic.dsl.Options;
 import com.noqapp.search.elastic.dsl.Query;
 import com.noqapp.search.elastic.dsl.Search;
@@ -25,6 +35,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +58,20 @@ public class MarketplaceSearchElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceSearchElasticService.class);
 
     private ElasticAdministrationService elasticAdministrationService;
+    private ElasticsearchClientConfiguration elasticsearchClientConfiguration;
 
     private ObjectMapper objectMapper;
 
     @Autowired
-    public MarketplaceSearchElasticService(ElasticAdministrationService elasticAdministrationService) {
+    public MarketplaceSearchElasticService(
+        ElasticAdministrationService elasticAdministrationService,
+        ElasticsearchClientConfiguration elasticsearchClientConfiguration
+    ) {
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         this.elasticAdministrationService = elasticAdministrationService;
+        this.elasticsearchClientConfiguration = elasticsearchClientConfiguration;
     }
 
     /** Search executed through website or mobile. */
@@ -108,11 +133,59 @@ public class MarketplaceSearchElasticService {
         LOG.info("DSL dslQuery={}", dslQuery);
         String result = elasticAdministrationService.executeDSLQuerySearch(
             MarketplaceElastic.INDEX
-                + "/_search?pretty&filter_path=hits.hits._source&_source=BT,PP,TI,DS,PI,TG,TS,LC,EC,COR,MC,TO,CS,PU",
+                + "/_search?pretty&filter_path=hits.hits._source&_source=BT,COR,CS,DS,EC,GH,LC,MC,PI,PP,TG,TI,TO,TS",
             dslQuery
         );
 
         LOG.debug("DSL Query result={}", result);
         return result;
+    }
+
+    @Mobile
+    public MarketplaceElasticList nearMeExcludedMarketTypes(
+        List<BusinessTypeEnum> filterMustNotBusinessTypes,
+        List<BusinessTypeEnum> filteringFor,
+        BusinessTypeEnum searchedOnBusinessType,
+        String geoHash,
+        String scrollId
+    ) {
+        MarketplaceElasticList marketplaceElastics = new MarketplaceElasticList();
+        try {
+            SearchResponse searchResponse;
+            if (StringUtils.isNotBlank(scrollId)) {
+                SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+                scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+            } else {
+                SearchRequest searchRequest = new SearchRequest(MarketplaceElastic.INDEX);
+                SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+                searchSourceBuilder.fetchSource(includeFields, excludeFields);
+
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                boolQueryBuilder.must(QueryBuilders.matchAllQuery());
+                for (BusinessTypeEnum businessType : filterMustNotBusinessTypes) {
+                    boolQueryBuilder.mustNot(QueryBuilders.matchQuery("BT", businessType.name()));
+                }
+
+                boolQueryBuilder.filter(geoDistanceQuery("GH")
+                    .geohash(geoHash)
+                    .distance("200", DistanceUnit.KILOMETERS));
+                searchSourceBuilder.query(boolQueryBuilder);
+
+                searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
+                searchRequest.source(searchSourceBuilder);
+                searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
+
+                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+            }
+
+            marketplaceElastics.setScrollId(searchResponse.getScrollId());
+            marketplaceElastics.setSearchedOnBusinessType(searchedOnBusinessType);
+            populateSearchData(marketplaceElastics, searchResponse.getHits().getHits());
+            return marketplaceElastics;
+        } catch (IOException e) {
+            LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
+            return marketplaceElastics;
+        }
     }
 }

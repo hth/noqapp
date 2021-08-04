@@ -2,11 +2,13 @@ package com.noqapp.search.elastic.service;
 
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
 import com.noqapp.repository.market.HouseholdItemManager;
 import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
+import com.noqapp.search.elastic.domain.MarketplaceElasticList;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.repository.MarketplaceElasticManager;
 
@@ -17,10 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import org.elasticsearch.search.SearchHit;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -36,6 +42,10 @@ import java.util.stream.Stream;
 @Service
 public class MarketplaceElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceElasticService.class);
+
+    /** Include field are the fields to be included upon completing the search. */
+    static String[] includeFields = new String[]{"BT", "CS", "DS", "EC", "GH", "LC", "MC", "PI", "PP", "TG", "TI", "TO", "TS"};
+    static String[] excludeFields = new String[]{"_type"};
 
     private PropertyRentalManager propertyRentalManager;
     private HouseholdItemManager householdItemManager;
@@ -127,5 +137,30 @@ public class MarketplaceElasticService {
             countPropertyRentalElastic,
             countHouseholdElastic,
             Duration.between(start, Instant.now()).toMillis());
+    }
+
+    static void populateSearchData(MarketplaceElasticList marketplaceElastics, SearchHit[] searchHits) {
+        if (searchHits != null && searchHits.length > 0) {
+            for (SearchHit hit : searchHits) {
+                Map<String, Object> map = hit.getSourceAsMap();
+                MarketplaceElastic marketplaceElastic = new MarketplaceElastic()
+                    .setId(map.containsKey("id") ? map.get("id").toString() : "")
+                    .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ZZ)
+                    .setCountryShortName(map.containsKey("CS") ? map.get("CS").toString() : "")
+                    .setDescription(map.containsKey("DS") ? map.get("DS").toString() : "")
+                    .setExpressedInterestCount(map.containsKey("EC") ? Integer.parseInt(map.get("EC").toString()) : 0)
+                    .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
+                    .setLikeCount(map.containsKey("LC") ? Integer.parseInt(map.get("LC").toString()) : 0)
+                    .setCity(map.containsKey("MC") ? map.get("MC").toString() : "")
+                    .setPostImages(map.containsKey("PI") ? Arrays.asList(map.get("PI").toString()) : new ArrayList<>())
+                    .setProductPrice(map.containsKey("PP") ? map.get("PP").toString() : "NA")
+                    .setTag(map.containsKey("TG") ? map.get("TG").toString() : "")
+                    .setTitle(map.containsKey("TI") ? map.get("TI").toString() : "")
+                    .setTown(map.containsKey("TO") ? map.get("TO").toString() : "")
+                    .setFieldTags(map.containsKey("TS") ? map.get("TS").toString().split(",") : new String[]{});
+
+                marketplaceElastics.addMarketplaceElastic(marketplaceElastic);
+            }
+        }
     }
 }

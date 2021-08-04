@@ -68,10 +68,6 @@
         },
         "type": "text"
       },
-      "PU": {
-        "format": "epoch_millis",
-        "type": "date"
-      },
       "TG": {
         "fields": {
           "keyword": {
