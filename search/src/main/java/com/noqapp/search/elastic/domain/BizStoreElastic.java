@@ -118,7 +118,7 @@ public class BizStoreElastic extends AbstractDomain {
     @JsonProperty("PH")
     private String phone;
 
-    /* To not loose user entered phone number. */
+    /* To not lose user entered phone number. */
     @JsonProperty("PR")
     private String phoneRaw;
 
