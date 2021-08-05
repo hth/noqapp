@@ -1,6 +1,7 @@
 package com.noqapp.search.elastic.service;
 
-import static com.noqapp.search.elastic.service.BizStoreSpatialElasticService.SECONDS;
+import static com.noqapp.search.elastic.service.BizStoreSearchElasticService.MINUTES_FOR_SEARCH;
+import static com.noqapp.search.elastic.service.BizStoreSpatialElasticService.SECONDS_FOR_NEAR_ME;
 import static com.noqapp.search.elastic.service.MarketplaceElasticService.excludeFields;
 import static com.noqapp.search.elastic.service.MarketplaceElasticService.includeFields;
 import static com.noqapp.search.elastic.service.MarketplaceElasticService.populateSearchData;
@@ -147,14 +148,15 @@ public class MarketplaceSearchElasticService {
         List<BusinessTypeEnum> filteringFor,
         BusinessTypeEnum searchedOnBusinessType,
         String geoHash,
-        String scrollId
+        String scrollId,
+        int from
     ) {
         MarketplaceElasticList marketplaceElastics = new MarketplaceElasticList();
         try {
             SearchResponse searchResponse;
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
-                scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
+                scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES_FOR_SEARCH));
                 searchResponse = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(MarketplaceElastic.INDEX);
@@ -174,15 +176,20 @@ public class MarketplaceSearchElasticService {
 
                 searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
                 searchRequest.source(searchSourceBuilder);
-                searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
+                if (from > 0) {
+                    searchSourceBuilder.from(from);
+                } else {
+                    searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES_FOR_SEARCH));
+                }
 
                 searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             }
 
-            marketplaceElastics.setScrollId(searchResponse.getScrollId());
-            marketplaceElastics.setSearchedOnBusinessType(searchedOnBusinessType);
             populateSearchData(marketplaceElastics, searchResponse.getHits().getHits());
-            return marketplaceElastics;
+            return marketplaceElastics.setScrollId(searchResponse.getScrollId())
+                .setFrom(from + PaginationEnum.THIRTY.getLimit())
+                .setSize(PaginationEnum.THIRTY.getLimit())
+                .setSearchedOnBusinessType(searchedOnBusinessType);
         } catch (IOException e) {
             LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
             return marketplaceElastics;

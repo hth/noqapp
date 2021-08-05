@@ -9,7 +9,6 @@ import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PaginationEnum;
-import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreElasticList;
 import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
@@ -53,7 +52,7 @@ import java.util.Set;
 @Service
 public class BizStoreSpatialElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreSpatialElasticService.class);
-    static final long SECONDS = 10L;
+    static final long SECONDS_FOR_NEAR_ME = 10L;
 
     private BizStoreSpatialElasticManager<BizStoreElastic> bizStoreSpatialElasticManager;
     private RestHighLevelClient restHighLevelClient;
@@ -87,13 +86,13 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList nearMeExcludedBusinessTypes(String geoHash, String scrollId) {
-        return nearMeExcludedBusinessTypes(new ArrayList<>(), new ArrayList<>(), BusinessTypeEnum.ZZ, geoHash, scrollId);
+    public BizStoreElasticList nearMeExcludedBusinessTypes(String geoHash, String scrollId, int from) {
+        return nearMeExcludedBusinessTypes(new ArrayList<>(), new ArrayList<>(), BusinessTypeEnum.ZZ, geoHash, scrollId, from);
     }
 
     @Mobile
-    public BizStoreElasticList nearMeExcludedBusinessTypes(List<BusinessTypeEnum> filterMustNotBusinessTypes, List<BusinessTypeEnum> filteringFor, String geoHash, String scrollId) {
-        return nearMeExcludedBusinessTypes(filterMustNotBusinessTypes, filteringFor, BusinessTypeEnum.ZZ, geoHash, scrollId);
+    public BizStoreElasticList nearMeExcludedBusinessTypes(List<BusinessTypeEnum> filterMustNotBusinessTypes, List<BusinessTypeEnum> filteringFor, String geoHash, String scrollId, int from) {
+        return nearMeExcludedBusinessTypes(filterMustNotBusinessTypes, filteringFor, BusinessTypeEnum.ZZ, geoHash, scrollId, from);
     }
 
     @Mobile
@@ -102,14 +101,15 @@ public class BizStoreSpatialElasticService {
         List<BusinessTypeEnum> filteringFor,
         BusinessTypeEnum searchedOnBusinessType,
         String geoHash,
-        String scrollId
+        String scrollId,
+        int from
     ) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
-                scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
+                scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS_FOR_NEAR_ME));
                 searchResponse = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreSpatialElastic.INDEX);
@@ -138,15 +138,20 @@ public class BizStoreSpatialElasticService {
 
                 searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
                 searchRequest.source(searchSourceBuilder);
-                searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
+                if (from > 0) {
+                    searchSourceBuilder.from(from);
+                } else {
+                    searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS_FOR_NEAR_ME));
+                }
 
                 searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             }
 
-            bizStoreElastics.setScrollId(searchResponse.getScrollId());
-            bizStoreElastics.setSearchedOnBusinessType(searchedOnBusinessType);
             populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
-            return bizStoreElastics;
+            return bizStoreElastics.setScrollId(searchResponse.getScrollId())
+                .setFrom(from + PaginationEnum.THIRTY.getLimit())
+                .setSize(PaginationEnum.THIRTY.getLimit())
+                .setSearchedOnBusinessType(searchedOnBusinessType);
         } catch (IOException e) {
             LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
             return bizStoreElastics;
@@ -154,13 +159,18 @@ public class BizStoreSpatialElasticService {
     }
 
     @Mobile
-    public BizStoreElasticList nearMeByBusinessTypes(List<BusinessTypeEnum> filterOnBusinessTypes, String geoHash, String scrollId) {
+    public BizStoreElasticList nearMeByBusinessTypes(
+        List<BusinessTypeEnum> filterOnBusinessTypes,
+        String geoHash,
+        String scrollId,
+        int from
+    ) {
         BizStoreElasticList bizStoreElastics = new BizStoreElasticList();
         try {
             SearchResponse searchResponse;
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
-                scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
+                scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS_FOR_NEAR_ME));
                 searchResponse = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreSpatialElastic.INDEX);
@@ -178,14 +188,19 @@ public class BizStoreSpatialElasticService {
 
                 searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
                 searchRequest.source(searchSourceBuilder);
-                searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
+                if (from > 0) {
+                    searchSourceBuilder.from(from);
+                } else {
+                    searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS_FOR_NEAR_ME));
+                }
 
                 searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             }
 
-            bizStoreElastics.setScrollId(searchResponse.getScrollId());
             populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
-            return bizStoreElastics;
+            return bizStoreElastics.setScrollId(searchResponse.getScrollId())
+                .setFrom(from + PaginationEnum.THIRTY.getLimit())
+                .setSize(PaginationEnum.THIRTY.getLimit());
         } catch (IOException e) {
             LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
             return bizStoreElastics;

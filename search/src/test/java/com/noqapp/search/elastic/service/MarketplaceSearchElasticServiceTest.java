@@ -24,6 +24,8 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -102,15 +104,61 @@ class MarketplaceSearchElasticServiceTest extends ITest {
     @Test
     void nearMeExcludedMarketTypes() {
         GeoIP geoIp = new GeoIP("0.0.0.0", "Mumbai", Double.parseDouble("28.6858"), Double.parseDouble("77.231"));
+        Collection<MarketplaceElastic> e;
 
         MarketplaceElasticList marketplaceElasticList = marketplaceSearchElasticService.nearMeExcludedMarketTypes(
             BusinessTypeEnum.excludePropertyRental(),
             BusinessTypeEnum.includePropertyRental(),
             BusinessTypeEnum.PR,
             geoIp.getGeoHash(),
-            null
+            null,
+            0
         );
 
         Assertions.assertEquals(30, marketplaceElasticList.getMarketplaceElastics().size());
+        Collection<MarketplaceElastic> a = marketplaceElasticList.getMarketplaceElastics();
+        e = new ArrayList<>(marketplaceElasticList.getMarketplaceElastics());
+
+        marketplaceElasticList = marketplaceSearchElasticService.nearMeExcludedMarketTypes(
+            BusinessTypeEnum.excludePropertyRental(),
+            BusinessTypeEnum.includePropertyRental(),
+            BusinessTypeEnum.PR,
+            geoIp.getGeoHash(),
+            null,
+            marketplaceElasticList.getFrom()
+        );
+
+        Assertions.assertEquals(30, marketplaceElasticList.getMarketplaceElastics().size());
+        Collection<MarketplaceElastic> b = marketplaceElasticList.getMarketplaceElastics();
+        e.addAll(b);
+        Assertions.assertEquals(60, e.size());
+
+        marketplaceElasticList = marketplaceSearchElasticService.nearMeExcludedMarketTypes(
+            BusinessTypeEnum.excludePropertyRental(),
+            BusinessTypeEnum.includePropertyRental(),
+            BusinessTypeEnum.PR,
+            geoIp.getGeoHash(),
+            null,
+            marketplaceElasticList.getFrom()
+        );
+
+        Assertions.assertEquals(30, marketplaceElasticList.getMarketplaceElastics().size());
+        Collection<MarketplaceElastic> c = marketplaceElasticList.getMarketplaceElastics();
+        e.addAll(c);
+        Assertions.assertEquals(90, e.size());
+
+        marketplaceElasticList = marketplaceSearchElasticService.nearMeExcludedMarketTypes(
+            BusinessTypeEnum.excludePropertyRental(),
+            BusinessTypeEnum.includePropertyRental(),
+            BusinessTypeEnum.PR,
+            geoIp.getGeoHash(),
+            null,
+            marketplaceElasticList.getFrom()
+        );
+
+        Assertions.assertEquals(10, marketplaceElasticList.getMarketplaceElastics().size());
+        Collection<MarketplaceElastic> d = marketplaceElasticList.getMarketplaceElastics();
+        e.addAll(d);
+        Assertions.assertEquals(100, e.size());
     }
 }
