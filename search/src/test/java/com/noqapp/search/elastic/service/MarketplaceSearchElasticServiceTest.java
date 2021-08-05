@@ -1,9 +1,8 @@
 package com.noqapp.search.elastic.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.noqapp.common.utils.CommonUtil;
-import com.noqapp.common.utils.Constants;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.GenerateUserIds;
 import com.noqapp.domain.market.MarketplaceEntity;
@@ -11,13 +10,11 @@ import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.domain.types.catgeory.RentalTypeEnum;
-import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.search.ITest;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
 import com.noqapp.search.elastic.domain.MarketplaceElasticList;
 import com.noqapp.search.elastic.helper.GeoIP;
-
-import org.apache.cxf.Bus;
+import com.noqapp.search.elastic.json.ElasticMarketplaceSearchSource;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -27,6 +24,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -96,7 +94,9 @@ class MarketplaceSearchElasticServiceTest extends ITest {
 
     @Test
     void createMarketplaceSearchDSLQuery() {
-//        marketplaceSearchElasticService.createMarketplaceSearchDSLQuery()
+        GeoIP geoIp = new GeoIP("0.0.0.0", "Mumbai", Double.parseDouble("28.6858"), Double.parseDouble("77.231"));
+        List<ElasticMarketplaceSearchSource> list = marketplaceSearchElasticService.createMarketplaceSearchDSLQuery("1_BE", geoIp.getGeoHash());
+        Assertions.assertEquals(30, list.size());
     }
 
     @Test
@@ -111,6 +111,6 @@ class MarketplaceSearchElasticServiceTest extends ITest {
             null
         );
 
-        Assertions.assertTrue(marketplaceElasticList.getSize() > 0);
+        Assertions.assertEquals(30, marketplaceElasticList.getMarketplaceElastics().size());
     }
 }
