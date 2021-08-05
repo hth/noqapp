@@ -39,6 +39,7 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -67,20 +68,20 @@ public class BizStoreSearchElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreSearchElasticService.class);
 
     private ElasticAdministrationService elasticAdministrationService;
-    private ElasticsearchClientConfiguration elasticsearchClientConfiguration;
+    private RestHighLevelClient restHighLevelClient;
 
     private ObjectMapper objectMapper;
 
     @Autowired
     public BizStoreSearchElasticService(
         ElasticAdministrationService elasticAdministrationService,
-        ElasticsearchClientConfiguration elasticsearchClientConfiguration
+        RestHighLevelClient restHighLevelClient
     ) {
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         this.elasticAdministrationService = elasticAdministrationService;
-        this.elasticsearchClientConfiguration = elasticsearchClientConfiguration;
+        this.restHighLevelClient = restHighLevelClient;
     }
 
     /** Search executed through website or mobile. */
@@ -164,7 +165,7 @@ public class BizStoreSearchElasticService {
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
                 scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+                searchResponse = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -188,7 +189,7 @@ public class BizStoreSearchElasticService {
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+                searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
                 LOG.info("Search query={} geoHash={} searchSourceBuilder={}", query, geoHash, searchSourceBuilder);
             }
 
@@ -213,7 +214,7 @@ public class BizStoreSearchElasticService {
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
                 scrollRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+                searchResponse = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreElastic.INDEX);
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -229,7 +230,7 @@ public class BizStoreSearchElasticService {
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueMinutes(MINUTES));
 
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+                searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
                 LOG.info("Search query={} searchSourceBuilder={}", query, searchSourceBuilder);
             }
 

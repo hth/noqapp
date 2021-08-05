@@ -5,7 +5,6 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
-import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.ValidateStatusEnum;
