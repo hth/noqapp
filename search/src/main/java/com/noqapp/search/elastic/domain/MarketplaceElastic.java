@@ -50,6 +50,9 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonIgnore
     private String id;
 
+    @JsonProperty("EI")
+    private String entityId;
+
     @JsonProperty("BT")
     private BusinessTypeEnum businessType;
 
@@ -100,6 +103,15 @@ public class MarketplaceElastic extends AbstractDomain {
 
     public MarketplaceElastic setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getEntityId() {
+        return entityId;
+    }
+
+    public MarketplaceElastic setEntityId(String entityId) {
+        this.entityId = entityId;
         return this;
     }
 
