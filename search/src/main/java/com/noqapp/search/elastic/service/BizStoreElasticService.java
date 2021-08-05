@@ -50,7 +50,6 @@ import java.util.stream.Stream;
 @Service
 public class BizStoreElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(BizStoreElasticService.class);
-    static final long MINUTES = 10L;
 
     /** Include field are the fields to be included upon completing the search. */
     static String[] includeFields = new String[]{
