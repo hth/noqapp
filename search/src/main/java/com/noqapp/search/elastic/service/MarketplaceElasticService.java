@@ -24,7 +24,6 @@ import org.elasticsearch.search.SearchHit;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -152,7 +151,7 @@ public class MarketplaceElasticService {
                     .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
                     .setLikeCount(map.containsKey("LC") ? Integer.parseInt(map.get("LC").toString()) : 0)
                     .setCity(map.containsKey("MC") ? map.get("MC").toString() : "")
-                    .setPostImages(map.containsKey("PI") ? Arrays.asList(map.get("PI").toString()) : new ArrayList<>())
+                    .setPostImages(map.containsKey("PI") ? List.of(map.get("PI").toString()) : new ArrayList<>())
                     .setProductPrice(map.containsKey("PP") ? map.get("PP").toString() : "NA")
                     .setTag(map.containsKey("TG") ? map.get("TG").toString() : "")
                     .setTitle(map.containsKey("TI") ? map.get("TI").toString() : "")
