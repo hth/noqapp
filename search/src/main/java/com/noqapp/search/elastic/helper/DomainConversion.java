@@ -178,6 +178,7 @@ public class DomainConversion {
     public static MarketplaceElastic getAsMarketplaceElastic(MarketplaceEntity marketplace) {
         MarketplaceElastic marketplaceElastic = new MarketplaceElastic()
             .setId(marketplace.getId())
+            .setEntityId(marketplace.getId())
             .setBusinessType(marketplace.getBusinessType())
             .setProductPrice(MathUtil.displayPrice(marketplace.getProductPrice()))
             .setTitle(marketplace.getTitle())

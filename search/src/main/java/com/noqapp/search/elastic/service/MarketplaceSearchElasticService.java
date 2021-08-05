@@ -133,7 +133,7 @@ public class MarketplaceSearchElasticService {
         LOG.info("DSL dslQuery={}", dslQuery);
         String result = elasticAdministrationService.executeDSLQuerySearch(
             MarketplaceElastic.INDEX
-                + "/_search?pretty&filter_path=hits.hits._source&_source=BT,COR,CS,DS,EC,GH,LC,MC,PI,PP,TG,TI,TO,TS",
+                + "/_search?pretty&filter_path=hits.hits._source&_source=BT,COR,CS,DS,EC,EI,GH,LC,MC,PI,PP,TG,TI,TO,TS",
             dslQuery
         );
 
