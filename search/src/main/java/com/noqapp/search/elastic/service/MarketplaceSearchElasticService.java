@@ -10,7 +10,6 @@ import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.PaginationEnum;
-import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
 import com.noqapp.search.elastic.domain.MarketplaceElasticList;
 import com.noqapp.search.elastic.dsl.Conditions;
