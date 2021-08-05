@@ -28,6 +28,7 @@ import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchScrollRequest;
 import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -55,15 +56,15 @@ public class BizStoreSpatialElasticService {
     static final long SECONDS = 10L;
 
     private BizStoreSpatialElasticManager<BizStoreElastic> bizStoreSpatialElasticManager;
-    private ElasticsearchClientConfiguration elasticsearchClientConfiguration;
+    private RestHighLevelClient restHighLevelClient;
 
     @Autowired
     public BizStoreSpatialElasticService(
         BizStoreSpatialElasticManager<BizStoreElastic> bizStoreSpatialElasticManager,
-        ElasticsearchClientConfiguration elasticsearchClientConfiguration
+        RestHighLevelClient restHighLevelClient
     ) {
         this.bizStoreSpatialElasticManager = bizStoreSpatialElasticManager;
-        this.elasticsearchClientConfiguration = elasticsearchClientConfiguration;
+        this.restHighLevelClient = restHighLevelClient;
     }
 
     @Async
@@ -109,7 +110,7 @@ public class BizStoreSpatialElasticService {
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
                 scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+                searchResponse = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreSpatialElastic.INDEX);
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -139,7 +140,7 @@ public class BizStoreSpatialElasticService {
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
 
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+                searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());
@@ -160,7 +161,7 @@ public class BizStoreSpatialElasticService {
             if (StringUtils.isNotBlank(scrollId)) {
                 SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
                 scrollRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().scroll(scrollRequest, RequestOptions.DEFAULT);
+                searchResponse = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
             } else {
                 SearchRequest searchRequest = new SearchRequest(BizStoreSpatialElastic.INDEX);
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -179,7 +180,7 @@ public class BizStoreSpatialElasticService {
                 searchRequest.source(searchSourceBuilder);
                 searchRequest.scroll(TimeValue.timeValueSeconds(SECONDS));
 
-                searchResponse = elasticsearchClientConfiguration.createRestHighLevelClient().search(searchRequest, RequestOptions.DEFAULT);
+                searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             }
 
             bizStoreElastics.setScrollId(searchResponse.getScrollId());
