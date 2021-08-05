@@ -23,11 +23,11 @@ import java.util.Objects;
  * User: hitender
  * Date: 6/22/17 7:45 AM
  */
-@SuppressWarnings ({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+@SuppressWarnings({
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Service
 public class FirebaseConfig {
@@ -53,9 +53,9 @@ public class FirebaseConfig {
             try {
                 GoogleCredentials googleCredentials = GoogleCredentials.fromStream(Objects.requireNonNull(credentialsStream));
                 options = FirebaseOptions.builder()
-                        .setCredentials(googleCredentials)
-                        .setDatabaseUrl(Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod") ? prodDB : sandboxDB)
-                        .build();
+                    .setCredentials(googleCredentials)
+                    .setDatabaseUrl(Objects.requireNonNull(environment.getProperty("build.env")).equalsIgnoreCase("prod") ? prodDB : sandboxDB)
+                    .build();
             } catch (IOException e) {
                 LOG.error("Failed to initialize reason={}", e.getLocalizedMessage(), e);
             }
@@ -93,7 +93,7 @@ public class FirebaseConfig {
         }
 
         try {
-            if(null == firebaseMessaging) {
+            if (null == firebaseMessaging) {
                 firebaseMessaging = FirebaseMessaging.getInstance(firebaseApp);
             }
         } catch (Exception e) {
