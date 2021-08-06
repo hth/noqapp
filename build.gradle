@@ -875,7 +875,7 @@ task prepWar(dependsOn: [
         }
 
         copy {
-            from("search/resources/elastic_mapping") {
+            from("search/src/main/resources/elastic_mapping") {
                 include "**/*.json"
             }
             into warMappingDir
