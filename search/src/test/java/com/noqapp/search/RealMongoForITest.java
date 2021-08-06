@@ -26,6 +26,7 @@ import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,7 +90,7 @@ public abstract class RealMongoForITest extends ElasticForITest {
     }
 
     @AfterAll
-    public void tearDown() {
+    public void tearDown() throws IOException {
         try {
             mongodProcess.stop();
             mongodExecutable.stop();
@@ -102,7 +103,7 @@ public abstract class RealMongoForITest extends ElasticForITest {
         return mongoClient;
     }
 
-    MongoTemplate getMongoTemplate() {
+    public MongoTemplate getMongoTemplate() {
         if (null == mongoTemplate) {
             mongoTemplate = new MongoTemplate(mongoClient, DATABASE_NAME);
         }

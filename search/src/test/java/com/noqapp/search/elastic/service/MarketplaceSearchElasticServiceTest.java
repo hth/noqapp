@@ -16,7 +16,11 @@ import com.noqapp.search.elastic.domain.MarketplaceElasticList;
 import com.noqapp.search.elastic.helper.GeoIP;
 import com.noqapp.search.elastic.json.ElasticMarketplaceSearchSource;
 
-import org.junit.jupiter.api.AfterAll;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.reindex.BulkByScrollResponse;
+import org.elasticsearch.index.reindex.DeleteByQueryRequest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +28,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -89,20 +94,21 @@ class MarketplaceSearchElasticServiceTest extends ITest {
         marketplaceElasticService.addAllMarketplaceToElastic();
     }
 
-    @AfterAll
-    public void tearDown() {
-        assertTrue(elasticAdministrationService.deleteAllIndices(), "Deleted successfully elastic index");
+    @AfterEach
+    public void cleanUp() throws IOException {
+        cleanUpIndex();
+        getMongoTemplate().dropCollection(PropertyRentalEntity.class);
     }
 
     @Test
-    void createMarketplaceSearchDSLQuery() {
+    void createMarketplaceSearchDSLQuery() throws IOException {
         GeoIP geoIp = new GeoIP("0.0.0.0", "Mumbai", Double.parseDouble("28.6858"), Double.parseDouble("77.231"));
         List<ElasticMarketplaceSearchSource> list = marketplaceSearchElasticService.createMarketplaceSearchDSLQuery("1_BE", geoIp.getGeoHash());
         Assertions.assertEquals(30, list.size());
     }
 
     @Test
-    void nearMeExcludedMarketTypes() {
+    void nearMeExcludedMarketTypes() throws IOException {
         GeoIP geoIp = new GeoIP("0.0.0.0", "Mumbai", Double.parseDouble("28.6858"), Double.parseDouble("77.231"));
         Collection<MarketplaceElastic> e;
 
@@ -160,5 +166,12 @@ class MarketplaceSearchElasticServiceTest extends ITest {
         Collection<MarketplaceElastic> d = marketplaceElasticList.getMarketplaceElastics();
         e.addAll(d);
         Assertions.assertEquals(100, e.size());
+    }
+
+    private void cleanUpIndex() throws IOException {
+        DeleteByQueryRequest request = new DeleteByQueryRequest(MarketplaceElastic.INDEX);
+        request.setQuery(QueryBuilders.matchAllQuery());
+        BulkByScrollResponse response = restHighLevelClient.deleteByQuery(request, RequestOptions.DEFAULT);
+        Assertions.assertEquals(100, response.getStatus().getDeleted());
     }
 }
