@@ -109,6 +109,7 @@ public class ElasticAdministrationService {
      * @return
      */
     public boolean createIndex(String index) {
+        LOG.info("Create index {}", index);
         Instant start = Instant.now();
         try {
             if (!doesIndexExists(index)) {
@@ -118,7 +119,7 @@ public class ElasticAdministrationService {
                     .build();
                 boolean result = parseResponse(request);
                 if (!result) {
-                    LOG.error("Failed to created index");
+                    LOG.error("Failed to created index {}", index);
                 }
                 return result;
             }
@@ -151,7 +152,7 @@ public class ElasticAdministrationService {
      * @param index Name of index to be deleted
      * @return
      */
-    private boolean deleteIndex(String index) {
+    public boolean deleteIndex(String index) {
         Instant start = Instant.now();
         try {
             Request request = new Request.Builder()
@@ -160,7 +161,7 @@ public class ElasticAdministrationService {
                 .build();
             boolean result = parseResponse(request);
             if (!result) {
-                LOG.error("Failed to delete");
+                LOG.error("Failed to delete {}", index);
             }
             return result;
         } finally {
@@ -189,10 +190,10 @@ public class ElasticAdministrationService {
         try {
             response = okHttpClient.newCall(request).execute();
         } catch (UnknownHostException e) {
-            LOG.error("Failed connecting to Elastic host reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed connecting to Elastic host index={} reason={}", index, e.getLocalizedMessage(), e);
             return false;
         } catch (IOException e) {
-            LOG.error("Failed making Elastic request reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed making Elastic request index={} reason={}", index, e.getLocalizedMessage(), e);
             return false;
         } finally {
             apiHealthService.insert(
