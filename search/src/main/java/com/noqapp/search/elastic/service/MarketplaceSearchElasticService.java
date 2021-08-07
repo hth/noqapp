@@ -1,7 +1,6 @@
 package com.noqapp.search.elastic.service;
 
 import static com.noqapp.search.elastic.service.BizStoreSearchElasticService.MINUTES_FOR_SEARCH;
-import static com.noqapp.search.elastic.service.BizStoreSpatialElasticService.SECONDS_FOR_NEAR_ME;
 import static com.noqapp.search.elastic.service.MarketplaceElasticService.excludeFields;
 import static com.noqapp.search.elastic.service.MarketplaceElasticService.includeFields;
 import static com.noqapp.search.elastic.service.MarketplaceElasticService.populateSearchData;
@@ -120,7 +119,7 @@ public class MarketplaceSearchElasticService {
         LOG.info("Elastic query q={}", q.asJson());
         Search search = new Search()
             .setFrom(0)
-            .setSize(PaginationEnum.THIRTY.getLimit())
+            .setSize(PaginationEnum.THREE.getLimit())
             .setQuery(q);
 
         return executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
@@ -174,7 +173,7 @@ public class MarketplaceSearchElasticService {
                     .distance("200", DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder);
 
-                searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
+                searchSourceBuilder.size(PaginationEnum.THREE.getLimit());
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
                     searchSourceBuilder.from(from);
@@ -187,8 +186,8 @@ public class MarketplaceSearchElasticService {
 
             populateSearchData(marketplaceElastics, searchResponse.getHits().getHits());
             return marketplaceElastics.setScrollId(searchResponse.getScrollId())
-                .setFrom(from + PaginationEnum.THIRTY.getLimit())
-                .setSize(PaginationEnum.THIRTY.getLimit())
+                .setFrom(from + PaginationEnum.THREE.getLimit())
+                .setSize(PaginationEnum.THREE.getLimit())
                 .setSearchedOnBusinessType(searchedOnBusinessType);
         } catch (IOException e) {
             LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
