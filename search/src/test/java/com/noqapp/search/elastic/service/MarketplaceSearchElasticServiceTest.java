@@ -56,6 +56,7 @@ class MarketplaceSearchElasticServiceTest extends ITest {
         );
 
         marketplaceSearchElasticService = new MarketplaceSearchElasticService(
+            30,
             elasticAdministrationService,
             restHighLevelClient
         );

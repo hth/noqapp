@@ -7,7 +7,6 @@ import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
 
 import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.annotation.Mobile;
-import com.noqapp.domain.types.PaginationEnum;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreElasticList;
 import com.noqapp.search.elastic.dsl.BizStoreQueryString;
@@ -30,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.elasticsearch.action.search.SearchRequest;
@@ -68,18 +68,24 @@ public class BizStoreSearchElasticService {
     private ElasticAdministrationService elasticAdministrationService;
     private RestHighLevelClient restHighLevelClient;
 
+    private int paginationSize;
     private ObjectMapper objectMapper;
 
     @Autowired
     public BizStoreSearchElasticService(
+        @Value("${BizStoreSearch.paginationSize}")
+        int paginationSize,
+
         ElasticAdministrationService elasticAdministrationService,
         RestHighLevelClient restHighLevelClient
     ) {
-        objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        this.paginationSize = paginationSize;
 
         this.elasticAdministrationService = elasticAdministrationService;
         this.restHighLevelClient = restHighLevelClient;
+
+        objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     /** Search executed through website or mobile. */
@@ -127,7 +133,7 @@ public class BizStoreSearchElasticService {
         LOG.info("Elastic query q={}", q.asJson());
         Search search = new Search()
             .setFrom(0)
-            .setSize(PaginationEnum.THIRTY.getLimit())
+            .setSize(paginationSize)
             .setQuery(q);
 
         return executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
@@ -184,7 +190,7 @@ public class BizStoreSearchElasticService {
                     .geohash(geoHash)
                     .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.DESC));
-                searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
+                searchSourceBuilder.size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
                     searchSourceBuilder.from(from);
@@ -198,8 +204,8 @@ public class BizStoreSearchElasticService {
 
             populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
             return bizStoreElastics.setScrollId(searchResponse.getScrollId())
-                .setFrom(from + PaginationEnum.THIRTY.getLimit())
-                .setSize(PaginationEnum.THIRTY.getLimit());
+                .setFrom(from + paginationSize)
+                .setSize(paginationSize);
         } catch (IOException e) {
             LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
             return bizStoreElastics;
@@ -231,7 +237,7 @@ public class BizStoreSearchElasticService {
                 boolQueryBuilder.filter(QueryBuilders.multiMatchQuery(query, "N", "DN", "BC"));
                 searchSourceBuilder.query(boolQueryBuilder);
                 searchSourceBuilder.sort(new FieldSortBuilder("DN").order(SortOrder.ASC));
-                searchSourceBuilder.size(PaginationEnum.THIRTY.getLimit());
+                searchSourceBuilder.size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
                     searchSourceBuilder.from(from);
@@ -245,8 +251,8 @@ public class BizStoreSearchElasticService {
 
             populateSearchData(bizStoreElastics, searchResponse.getHits().getHits());
             return bizStoreElastics.setScrollId(searchResponse.getScrollId())
-                .setFrom(from + PaginationEnum.THIRTY.getLimit())
-                .setSize(PaginationEnum.THIRTY.getLimit());
+                .setFrom(from + paginationSize)
+                .setSize(paginationSize);
         } catch (IOException e) {
             LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
             return bizStoreElastics;
