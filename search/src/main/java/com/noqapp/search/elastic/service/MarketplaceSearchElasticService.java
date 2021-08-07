@@ -9,7 +9,6 @@ import static org.elasticsearch.index.query.QueryBuilders.geoDistanceQuery;
 import com.noqapp.common.utils.Constants;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.PaginationEnum;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
 import com.noqapp.search.elastic.domain.MarketplaceElasticList;
 import com.noqapp.search.elastic.dsl.Conditions;
@@ -32,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import org.elasticsearch.action.search.SearchRequest;
@@ -60,18 +60,24 @@ public class MarketplaceSearchElasticService {
     private ElasticAdministrationService elasticAdministrationService;
     private RestHighLevelClient restHighLevelClient;
 
+    private int paginationSize;
     private ObjectMapper objectMapper;
 
     @Autowired
     public MarketplaceSearchElasticService(
+        @Value("${MarketplaceSearch.paginationSize}")
+        int paginationSize,
+
         ElasticAdministrationService elasticAdministrationService,
         RestHighLevelClient restHighLevelClient
     ) {
-        objectMapper = new ObjectMapper();
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        this.paginationSize = paginationSize;
 
         this.elasticAdministrationService = elasticAdministrationService;
         this.restHighLevelClient = restHighLevelClient;
+
+        objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     /** Search executed through website or mobile. */
@@ -119,7 +125,7 @@ public class MarketplaceSearchElasticService {
         LOG.info("Elastic query q={}", q.asJson());
         Search search = new Search()
             .setFrom(0)
-            .setSize(PaginationEnum.THREE.getLimit())
+            .setSize(paginationSize)
             .setQuery(q);
 
         return executeSearchOnBizStoreUsingDSLFilteredData(search.asJson());
@@ -173,7 +179,7 @@ public class MarketplaceSearchElasticService {
                     .distance("200", DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder);
 
-                searchSourceBuilder.size(PaginationEnum.THREE.getLimit());
+                searchSourceBuilder.size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
                     searchSourceBuilder.from(from);
@@ -186,8 +192,8 @@ public class MarketplaceSearchElasticService {
 
             populateSearchData(marketplaceElastics, searchResponse.getHits().getHits());
             return marketplaceElastics.setScrollId(searchResponse.getScrollId())
-                .setFrom(from + PaginationEnum.THREE.getLimit())
-                .setSize(PaginationEnum.THREE.getLimit())
+                .setFrom(from + paginationSize)
+                .setSize(paginationSize)
                 .setSearchedOnBusinessType(searchedOnBusinessType);
         } catch (IOException e) {
             LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
