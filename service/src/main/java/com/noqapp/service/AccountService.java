@@ -668,7 +668,7 @@ public class AccountService {
      * @see com.noqapp.service.MailService#accountValidationMail(String, String, String) ()
      */
     public UserAccountEntity updateUID(String existingUserId, String newUserId) {
-        if (null != findByQueueUserId(newUserId)) {
+        if (null != findByUserId(newUserId)) {
             LOG.info("Account already exists with email {} {}", newUserId, existingUserId);
             throw new DuplicateAccountException("Account already exists " + newUserId);
         }

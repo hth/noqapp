@@ -1,10 +1,12 @@
 package com.noqapp.service;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.service.exceptions.DuplicateAccountException;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -29,5 +31,17 @@ class AccountServiceITest extends ITest {
         accountService.validateAccount(emailValidate1, userAccount1.getQueueUserId());
         UserAccountEntity userAccount1_after_validation = accountService.findByQueueUserId(userAccount1.getQueueUserId());
         assertTrue(userAccount1_after_validation.isAccountValidated(), "Account is validated");
+    }
+
+    @Test
+    void updateUID() {
+        Exception exception = assertThrows(DuplicateAccountException.class, () -> {
+            accountService.updateUID("pintod@r.com", "rocketd@r.com");
+        });
+
+        String expectedMessage = "Account already exists " + "rocketd@r.com";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
     }
 }
