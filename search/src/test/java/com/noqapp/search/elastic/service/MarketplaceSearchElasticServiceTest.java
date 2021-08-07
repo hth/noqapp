@@ -56,14 +56,14 @@ class MarketplaceSearchElasticServiceTest extends ITest {
         );
 
         marketplaceSearchElasticService = new MarketplaceSearchElasticService(
-            30,
+            3,
             elasticAdministrationService,
             restHighLevelClient
         );
 
         assertTrue(elasticAdministrationService.deleteAllIndices(), "Deleted successfully elastic index");
         elasticAdministrationService.addMapping(MarketplaceElastic.INDEX, MarketplaceElastic.TYPE);
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= 10; i++) {
             MarketplaceEntity marketplaceEntity = new PropertyRentalEntity()
                 .setRentalType(RentalTypeEnum.A)
                 .setBathroom(1)
@@ -105,7 +105,7 @@ class MarketplaceSearchElasticServiceTest extends ITest {
     void createMarketplaceSearchDSLQuery() throws IOException {
         GeoIP geoIp = new GeoIP("0.0.0.0", "Mumbai", Double.parseDouble("28.6858"), Double.parseDouble("77.231"));
         List<ElasticMarketplaceSearchSource> list = marketplaceSearchElasticService.createMarketplaceSearchDSLQuery("1_BE", geoIp.getGeoHash());
-        Assertions.assertEquals(30, list.size());
+        Assertions.assertEquals(3, list.size());
     }
 
     @Test
@@ -122,7 +122,7 @@ class MarketplaceSearchElasticServiceTest extends ITest {
             0
         );
 
-        Assertions.assertEquals(30, marketplaceElasticList.getMarketplaceElastics().size());
+        Assertions.assertEquals(3, marketplaceElasticList.getMarketplaceElastics().size());
         Collection<MarketplaceElastic> a = marketplaceElasticList.getMarketplaceElastics();
         e = new ArrayList<>(marketplaceElasticList.getMarketplaceElastics());
 
@@ -135,10 +135,10 @@ class MarketplaceSearchElasticServiceTest extends ITest {
             marketplaceElasticList.getFrom()
         );
 
-        Assertions.assertEquals(30, marketplaceElasticList.getMarketplaceElastics().size());
+        Assertions.assertEquals(3, marketplaceElasticList.getMarketplaceElastics().size());
         Collection<MarketplaceElastic> b = marketplaceElasticList.getMarketplaceElastics();
         e.addAll(b);
-        Assertions.assertEquals(60, e.size());
+        Assertions.assertEquals(6, e.size());
 
         marketplaceElasticList = marketplaceSearchElasticService.nearMeExcludedMarketTypes(
             BusinessTypeEnum.excludePropertyRental(),
@@ -149,10 +149,10 @@ class MarketplaceSearchElasticServiceTest extends ITest {
             marketplaceElasticList.getFrom()
         );
 
-        Assertions.assertEquals(30, marketplaceElasticList.getMarketplaceElastics().size());
+        Assertions.assertEquals(3, marketplaceElasticList.getMarketplaceElastics().size());
         Collection<MarketplaceElastic> c = marketplaceElasticList.getMarketplaceElastics();
         e.addAll(c);
-        Assertions.assertEquals(90, e.size());
+        Assertions.assertEquals(9, e.size());
 
         marketplaceElasticList = marketplaceSearchElasticService.nearMeExcludedMarketTypes(
             BusinessTypeEnum.excludePropertyRental(),
@@ -163,16 +163,16 @@ class MarketplaceSearchElasticServiceTest extends ITest {
             marketplaceElasticList.getFrom()
         );
 
-        Assertions.assertEquals(10, marketplaceElasticList.getMarketplaceElastics().size());
+        Assertions.assertEquals(1, marketplaceElasticList.getMarketplaceElastics().size());
         Collection<MarketplaceElastic> d = marketplaceElasticList.getMarketplaceElastics();
         e.addAll(d);
-        Assertions.assertEquals(100, e.size());
+        Assertions.assertEquals(10, e.size());
     }
 
     private void cleanUpIndex() throws IOException {
         DeleteByQueryRequest request = new DeleteByQueryRequest(MarketplaceElastic.INDEX);
         request.setQuery(QueryBuilders.matchAllQuery());
         BulkByScrollResponse response = restHighLevelClient.deleteByQuery(request, RequestOptions.DEFAULT);
-        Assertions.assertEquals(100, response.getStatus().getDeleted());
+        Assertions.assertEquals(10, response.getStatus().getDeleted());
     }
 }
