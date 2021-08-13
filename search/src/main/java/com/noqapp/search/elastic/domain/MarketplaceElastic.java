@@ -47,7 +47,7 @@ public class MarketplaceElastic extends AbstractDomain {
     public static final String TYPE = "MARKETPLACE".toLowerCase();
     public static final String INDEX = ElasticsearchClientConfiguration.INDEX + UNDER_SCORE + TYPE;
 
-    @JsonIgnore
+    @JsonProperty("id")
     private String id;
 
     @JsonProperty("BT")
