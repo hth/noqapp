@@ -48,7 +48,8 @@ public class FtpService {
 
     /** Marketplace. */
     static String MARKETPLACE_AWS = "marketplace";
-    static String MARKETPLACE_PROPERTY_AWS = MARKETPLACE_AWS + FileUtil.getFileSeparator() + "property";
+    static String MARKETPLACE_PROPERTY_RENTAL_AWS = MARKETPLACE_AWS + FileUtil.getFileSeparator() + BusinessTypeEnum.PR.name().toLowerCase();
+    static String MARKETPLACE_HOUSEHOLD_ITEM_AWS = MARKETPLACE_AWS + FileUtil.getFileSeparator() + BusinessTypeEnum.HI.name().toLowerCase();
 
     /** FTP needs with file separator. */
     public static String PROFILE = FileUtil.getFileSeparator() + PROFILE_AWS;
@@ -56,7 +57,8 @@ public class FtpService {
     public static String PRODUCT = FileUtil.getFileSeparator() + PRODUCT_AWS;
     public static String ARTICLE = FileUtil.getFileSeparator() + ARTICLE_AWS;
     public static String VIGYAPAN = FileUtil.getFileSeparator() + VIGYAPAN_AWS;
-    public static String MARKETPLACE_PROPERTY = FileUtil.getFileSeparator() + MARKETPLACE_PROPERTY_AWS;
+    public static String MARKETPLACE_PROPERTY_RENTAL = FileUtil.getFileSeparator() + MARKETPLACE_PROPERTY_RENTAL_AWS;
+    public static String MARKETPLACE_HOUSEHOLD_ITEM = FileUtil.getFileSeparator() + MARKETPLACE_HOUSEHOLD_ITEM_AWS;
 
     /** TODO(hth) Medical stores all medical record related images. */
     public static String MEDICAL = FileUtil.getFileSeparator() + MEDICAL_AWS;
@@ -67,7 +69,8 @@ public class FtpService {
         FtpService.MEDICAL,
         FtpService.ARTICLE,
         FtpService.VIGYAPAN,
-        FtpService.MARKETPLACE_PROPERTY};
+        FtpService.MARKETPLACE_PROPERTY_RENTAL,
+        FtpService.MARKETPLACE_HOUSEHOLD_ITEM};
 
     public static String PREFERRED_STORE = FileUtil.getFileSeparator() + "preferredStore";
     public static String MASTER_MEDICAL = FileUtil.getFileSeparator() + "masterMedical";
@@ -292,8 +295,9 @@ public class FtpService {
     public static String marketBucketName(String bucketName, BusinessTypeEnum businessType) {
         switch (businessType) {
             case PR:
+                return bucketName + FtpService.MARKETPLACE_PROPERTY_RENTAL;
             case HI:
-                return bucketName + FtpService.MARKETPLACE_PROPERTY;
+                return bucketName + FtpService.MARKETPLACE_HOUSEHOLD_ITEM;
             default:
                 LOG.warn("Reached un-reachable condition businessType={}", businessType);
         }

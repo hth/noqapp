@@ -504,7 +504,7 @@ public class FileService {
                     toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
                     tempFile = new File(toFileAbsolutePath);
                     writeToFile(tempFile, ImageIO.read(decreaseResolution));
-                    ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY);
+                    ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY_RENTAL);
 
                     images.add(filename);
                     propertyRentalManager.save(propertyRental);
@@ -529,7 +529,7 @@ public class FileService {
                     toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
                     tempFile = new File(toFileAbsolutePath);
                     writeToFile(tempFile, ImageIO.read(decreaseResolution));
-                    ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY);
+                    ftpService.upload(filename, postId, FtpService.MARKETPLACE_HOUSEHOLD_ITEM);
 
                     images.add(filename);
                     householdItemManager.save(householdItem);
@@ -637,12 +637,19 @@ public class FileService {
     public void deleteMarketImage(String qid, String imageName, String postId, BusinessTypeEnum businessType) {
         switch (businessType) {
             case PR:
-            case HI:
                 /* Delete existing file business service image before the upload process began. */
-                ftpService.delete(imageName, postId, FtpService.MARKETPLACE_PROPERTY);
+                ftpService.delete(imageName, postId, FtpService.MARKETPLACE_PROPERTY_RENTAL);
 
                 /* Delete from S3. */
-                S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.MARKETPLACE_PROPERTY_AWS).setCodeQR(postId);
+                S3FileEntity s3File = new S3FileEntity(qid, imageName, FtpService.MARKETPLACE_PROPERTY_RENTAL_AWS).setCodeQR(postId);
+                s3FileManager.save(s3File);
+                break;
+            case HI:
+                /* Delete existing file business service image before the upload process began. */
+                ftpService.delete(imageName, postId, FtpService.MARKETPLACE_HOUSEHOLD_ITEM);
+
+                /* Delete from S3. */
+                s3File = new S3FileEntity(qid, imageName, FtpService.MARKETPLACE_HOUSEHOLD_ITEM_AWS).setCodeQR(postId);
                 s3FileManager.save(s3File);
                 break;
             default:

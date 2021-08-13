@@ -111,7 +111,7 @@ public class MarketplaceController {
         return nextPage;
     }
 
-    /** For uploading article image. */
+    /** For uploading image. */
     @GetMapping(value = "/{businessTypeAsString}/{postId}/uploadImage")
     public String upload(
         @PathVariable("businessTypeAsString")
