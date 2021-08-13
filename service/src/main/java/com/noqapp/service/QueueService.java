@@ -847,8 +847,7 @@ public class QueueService {
             case CD:
             case CDQ:
                 jsonQueue.setStoreAddress(FileUtil.DASH);
-                jsonQueue.setArea(FileUtil.DASH);
-                jsonQueue.setTown(FileUtil.DASH);
+                jsonQueue.setStorePhone(FileUtil.DASH);
 
                 if (bizStore.getAvailableTokenCount() > 0) {
                     timeSlotMessage = ServiceUtils.expectedService(

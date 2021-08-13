@@ -218,8 +218,6 @@ public class BizStoreElasticService {
                     case CD:
                     case CDQ:
                         bizStoreElastic.setAddress(FileUtil.DASH);
-//                        bizStoreElastic.setArea(FileUtil.DASH);
-//                        bizStoreElastic.setTown(FileUtil.DASH);
                         bizStoreElastic.setPhone(FileUtil.DASH);
                     default:
                         //Do nothing

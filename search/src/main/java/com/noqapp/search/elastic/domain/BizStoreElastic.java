@@ -737,8 +737,7 @@ public class BizStoreElastic extends AbstractDomain {
             case CD:
             case CDQ:
                 bizStoreElastic.setAddress(FileUtil.DASH);
-                bizStoreElastic.setArea(FileUtil.DASH);
-                bizStoreElastic.setTown(FileUtil.DASH);
+                bizStoreElastic.setPhone(FileUtil.DASH);
 
                 /* Hardly used. Mostly used in search. */
                 bizStoreElastic.setTag(bizStore.getBizName().getTag());

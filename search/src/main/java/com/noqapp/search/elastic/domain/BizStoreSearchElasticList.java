@@ -138,8 +138,6 @@ public class BizStoreSearchElasticList extends AbstractDomain {
                 case CD:
                 case CDQ:
                     elastic.setAddress(FileUtil.DASH);
-                    elastic.setArea(FileUtil.DASH);
-                    elastic.setTown(FileUtil.DASH);
                     elastic.setPhone(FileUtil.DASH);
                 default:
                     //Do nothing
