@@ -144,6 +144,7 @@ public class MarketplaceElasticService {
             for (SearchHit hit : searchHits) {
                 Map<String, Object> map = hit.getSourceAsMap();
                 MarketplaceElastic marketplaceElastic = new MarketplaceElastic()
+                    /* Marketplace id value is set and is transmitted over the wire as it is marked to be used for fetching images. */
                     .setId(hit.getId())
                     .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ZZ)
                     .setCountryShortName(map.containsKey("CS") ? map.get("CS").toString() : "")
