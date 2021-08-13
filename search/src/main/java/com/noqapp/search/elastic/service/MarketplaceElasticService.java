@@ -152,12 +152,12 @@ public class MarketplaceElasticService {
                     .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
                     .setLikeCount(map.containsKey("LC") ? Integer.parseInt(map.get("LC").toString()) : 0)
                     .setCity(map.containsKey("MC") ? map.get("MC").toString() : "")
-                    .setPostImages(map.containsKey("PI") ? List.of(map.get("PI").toString()) : new ArrayList<>())
+                    .setPostImages(map.containsKey("PI") ? (List<String>) map.get("PI") : new ArrayList<>())
                     .setProductPrice(map.containsKey("PP") ? map.get("PP").toString() : "NA")
                     .setTag(map.containsKey("TG") ? map.get("TG").toString() : "")
                     .setTitle(map.containsKey("TI") ? map.get("TI").toString() : "")
                     .setTown(map.containsKey("TO") ? map.get("TO").toString() : "")
-                    .setFieldTags(map.containsKey("TS") ? map.get("TS").toString().split(",") : new String[]{});
+                    .setFieldTags(map.containsKey("TS") ? ((List<String>) map.get("TS")).toArray(new String[0]) : new String[]{});
 
                 marketplaceElastics.addMarketplaceElastic(marketplaceElastic);
             }
