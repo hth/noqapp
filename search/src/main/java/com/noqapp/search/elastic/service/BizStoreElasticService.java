@@ -185,6 +185,7 @@ public class BizStoreElasticService {
             for (SearchHit hit : searchHits) {
                 Map<String, Object> map = hit.getSourceAsMap();
                 BizStoreElastic bizStoreElastic = new BizStoreElastic()
+                    /* Even though it is not transmitted over the wire as its marked to be ignored. */
                     .setId(hit.getId())
                     .setBusinessName(map.containsKey("N") ? map.get("N").toString() : "")
                     .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ST)
