@@ -35,9 +35,6 @@
       "EC": {
         "type": "integer"
       },
-      "EI" : {
-        "type": "text"
-      },
       "GH": {
         "type": "geo_point"
       },

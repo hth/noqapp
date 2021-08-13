@@ -24,6 +24,7 @@ import org.elasticsearch.search.SearchHit;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -143,7 +144,7 @@ public class MarketplaceElasticService {
             for (SearchHit hit : searchHits) {
                 Map<String, Object> map = hit.getSourceAsMap();
                 MarketplaceElastic marketplaceElastic = new MarketplaceElastic()
-                    .setEntityId(map.containsKey("EI") ? map.get("EI").toString() : "")
+                    .setId(hit.getId())
                     .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ZZ)
                     .setCountryShortName(map.containsKey("CS") ? map.get("CS").toString() : "")
                     .setDescription(map.containsKey("DS") ? map.get("DS").toString() : "")
