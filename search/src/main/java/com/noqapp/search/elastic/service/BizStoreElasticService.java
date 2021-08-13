@@ -185,7 +185,7 @@ public class BizStoreElasticService {
             for (SearchHit hit : searchHits) {
                 Map<String, Object> map = hit.getSourceAsMap();
                 BizStoreElastic bizStoreElastic = new BizStoreElastic()
-                    .setId(map.containsKey("id") ? map.get("id").toString() : "")
+                    .setId(hit.getId())
                     .setBusinessName(map.containsKey("N") ? map.get("N").toString() : "")
                     .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ST)
                     .setBizCategoryName(map.containsKey("BC") ? map.get("BC").toString() : "")
@@ -218,8 +218,8 @@ public class BizStoreElasticService {
                     case CD:
                     case CDQ:
                         bizStoreElastic.setAddress(FileUtil.DASH);
-                        bizStoreElastic.setArea(FileUtil.DASH);
-                        bizStoreElastic.setTown(FileUtil.DASH);
+//                        bizStoreElastic.setArea(FileUtil.DASH);
+//                        bizStoreElastic.setTown(FileUtil.DASH);
                         bizStoreElastic.setPhone(FileUtil.DASH);
                     default:
                         //Do nothing
