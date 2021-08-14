@@ -4,7 +4,6 @@ import com.noqapp.common.utils.FileUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.types.AppointmentStateEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
-import com.noqapp.domain.types.PaginationEnum;
 import com.noqapp.domain.types.WalkInStateEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
@@ -20,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -67,8 +67,13 @@ public class BizStoreElasticService {
 
     private ScheduledExecutorService executorService;
 
+    private int paginationSize;
+
     @Autowired
     public BizStoreElasticService(
+        @Value("${BizStoreSearch.paginationSize}")
+        int paginationSize,
+
         BizStoreElasticManager<BizStoreElastic> bizStoreElasticManager,
         ElasticAdministrationService elasticAdministrationService,
         BizStoreManager bizStoreManager,
@@ -76,6 +81,8 @@ public class BizStoreElasticService {
         BizStoreSpatialElasticService bizStoreSpatialElasticService,
         ApiHealthService apiHealthService
     ) {
+        this.paginationSize = paginationSize;
+
         this.bizStoreElasticManager = bizStoreElasticManager;
         this.elasticAdministrationService = elasticAdministrationService;
         this.bizStoreManager = bizStoreManager;
@@ -160,7 +167,7 @@ public class BizStoreElasticService {
      */
     public List<BizStoreElastic> searchByBusinessName(String businessName) {
         LOG.info("Searching for {}", businessName);
-        return bizStoreElasticManager.searchByBusinessName(businessName, PaginationEnum.THIRTY.getLimit());
+        return bizStoreElasticManager.searchByBusinessName(businessName, paginationSize);
     }
 
     /**
