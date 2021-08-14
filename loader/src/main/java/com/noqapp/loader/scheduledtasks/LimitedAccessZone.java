@@ -126,7 +126,7 @@ public class LimitedAccessZone {
                 statsCron.addStats("success", recordsFound.get());
                 statsCronService.save(statsCron);
 
-                /* Without if condition its too noisy. */
+                /* Without if condition it is too noisy. */
                 LOG.info("Complete recordsFound={} failure={}", recordsFound, failure);
             }
         }

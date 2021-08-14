@@ -106,5 +106,5 @@ public interface RegisteredDeviceManager extends RepositoryManager<RegisteredDev
 
     Stream<GeoResult<RegisteredDeviceEntity>> findDevicesWithinVicinity(double[] coordinate, double distanceToPropagateInformation);
 
-    Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInMeters);
+    Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInKiloMeters);
 }
