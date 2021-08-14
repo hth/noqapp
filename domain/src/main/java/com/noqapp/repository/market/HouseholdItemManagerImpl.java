@@ -97,6 +97,16 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
     public HouseholdItemEntity findOneByIdAndExpressInterest(String id) {
         return mongoTemplate.findAndModify(
             query(where("id").is(id)),
+            new Update().inc("EC", 1),
+            FindAndModifyOptions.options().returnNew(true),
+            HouseholdItemEntity.class,
+            TABLE);
+    }
+
+    @Override
+    public HouseholdItemEntity findOneByIdAndLikeCount(String id) {
+        return mongoTemplate.findAndModify(
+            query(where("id").is(id)),
             new Update().inc("LC", 1),
             FindAndModifyOptions.options().returnNew(true),
             HouseholdItemEntity.class,

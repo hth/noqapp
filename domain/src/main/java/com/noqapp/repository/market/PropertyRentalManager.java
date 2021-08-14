@@ -21,6 +21,8 @@ public interface PropertyRentalManager extends RepositoryManager<PropertyRentalE
 
     PropertyRentalEntity findOneByIdAndExpressInterest(String id);
 
+    PropertyRentalEntity findOneByIdAndLikeCount(String id);
+
     List<PropertyRentalEntity> findAllPendingApproval();
 
     long findAllPendingApprovalCount();

@@ -97,6 +97,16 @@ public class PropertyRentalManagerImpl implements PropertyRentalManager {
     public PropertyRentalEntity findOneByIdAndExpressInterest(String id) {
         return mongoTemplate.findAndModify(
             query(where("id").is(id)),
+            new Update().inc("EC", 1),
+            FindAndModifyOptions.options().returnNew(true),
+            PropertyRentalEntity.class,
+            TABLE);
+    }
+
+    @Override
+    public PropertyRentalEntity findOneByIdAndLikeCount(String id) {
+        return mongoTemplate.findAndModify(
+            query(where("id").is(id)),
             new Update().inc("LC", 1),
             FindAndModifyOptions.options().returnNew(true),
             PropertyRentalEntity.class,

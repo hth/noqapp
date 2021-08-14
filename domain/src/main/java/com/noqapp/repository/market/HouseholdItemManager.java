@@ -1,6 +1,7 @@
 package com.noqapp.repository.market;
 
 import com.noqapp.domain.market.HouseholdItemEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.repository.RepositoryManager;
 
@@ -20,6 +21,8 @@ public interface HouseholdItemManager extends RepositoryManager<HouseholdItemEnt
     Stream<HouseholdItemEntity> findAllWithStream();
 
     HouseholdItemEntity findOneByIdAndExpressInterest(String id);
+
+    HouseholdItemEntity findOneByIdAndLikeCount(String id);
 
     List<HouseholdItemEntity> findAllPendingApproval();
 
