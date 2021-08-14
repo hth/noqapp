@@ -65,6 +65,10 @@ public class HouseholdItemService {
         return householdItemManager.findOneByIdAndExpressInterest(id);
     }
 
+    public HouseholdItemEntity findOneByIdAndLikeCount(String id) {
+        return householdItemManager.findOneByIdAndLikeCount(id);
+    }
+
     public long findAllPendingApprovalCount() {
         return householdItemManager.findAllPendingApprovalCount();
     }
