@@ -464,9 +464,9 @@ public class RegisteredDeviceManagerImpl implements RegisteredDeviceManager {
     }
 
     @Override
-    public Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInMeters) {
-        Date date = Date.from(Instant.now().minus(Duration.ofDays(90)));
-        NearQuery query = NearQuery.near(point).maxDistance(new Distance(distanceInMeters, Metrics.KILOMETERS))
+    public Stream<GeoResult<RegisteredDeviceEntity>> findInProximity(GeoJsonPoint point, double distanceInKiloMeters) {
+        Date date = Date.from(Instant.now().minus(Duration.ofDays(15)));
+        NearQuery query = NearQuery.near(point).maxDistance(new Distance(distanceInKiloMeters, Metrics.KILOMETERS))
             .query(
                 query(where("QID").exists(true).and("U").gte(date))
                     .with(Sort.by(Sort.Direction.DESC, "U")));
