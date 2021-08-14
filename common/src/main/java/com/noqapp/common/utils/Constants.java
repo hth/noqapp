@@ -44,6 +44,7 @@ public class Constants {
     public static final String MISSING_QUEUE_IDS = "missingQids";
     public static final double TEN_METERS_IN_KILOMETER = 0.01;
     public static final double FLEX_APPOINTMENT_LOAD_FACTOR = 0.4;
+    public static final int DAYS_15 = 15;
 
     public static final Set<String> UNSUPPORTED_DEVICE_IN_FUTURE = new HashSet<>() {{
         add("5.1");
