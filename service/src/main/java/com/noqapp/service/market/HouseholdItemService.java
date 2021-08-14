@@ -49,7 +49,7 @@ public class HouseholdItemService {
         householdItemManager.save(householdItem);
     }
 
-    public List<HouseholdItemEntity> findPostedProperties(String queueUserId) {
+    public List<HouseholdItemEntity> findPostedByMeOnMarketplace(String queueUserId) {
         return householdItemManager.findByQid(queueUserId);
     }
 

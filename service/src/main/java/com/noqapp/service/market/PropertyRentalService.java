@@ -48,7 +48,7 @@ public class PropertyRentalService {
         propertyRentalManager.save(propertyRental);
     }
 
-    public List<PropertyRentalEntity> findPostedProperties(String queueUserId) {
+    public List<PropertyRentalEntity> findPostedByMeOnMarketplace(String queueUserId) {
         return propertyRentalManager.findByQid(queueUserId);
     }
 
