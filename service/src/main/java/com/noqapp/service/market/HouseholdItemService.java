@@ -1,11 +1,15 @@
 package com.noqapp.service.market;
 
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.json.marketplace.JsonMarketplace;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
+import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.HouseholdItemManager;
 import com.noqapp.service.MessageCustomerService;
 
@@ -28,12 +32,17 @@ public class HouseholdItemService {
 
     private HouseholdItemManager householdItemManager;
     private MessageCustomerService messageCustomerService;
-
+    private UserProfileManager userProfileManager;
 
     @Autowired
-    public HouseholdItemService(HouseholdItemManager householdItemManager, MessageCustomerService messageCustomerService) {
+    public HouseholdItemService(
+        HouseholdItemManager householdItemManager,
+        MessageCustomerService messageCustomerService,
+        UserProfileManager userProfileManager
+    ) {
         this.householdItemManager = householdItemManager;
         this.messageCustomerService = messageCustomerService;
+        this.userProfileManager = userProfileManager;
     }
 
     public void save(HouseholdItemEntity householdItem) {
@@ -101,5 +110,37 @@ public class HouseholdItemService {
             MessageOriginEnum.A,
             marketplace.getBusinessType());
         return marketplace;
+    }
+
+    public HouseholdItemEntity initiateContactWithMarketplacePostOwner(String qid, JsonMarketplace jsonMarketplace) {
+        HouseholdItemEntity householdItem = householdItemManager.findOneByIdAndExpressInterest(jsonMarketplace.getId());
+
+        UserProfileEntity userProfileOfExpressInterest = userProfileManager.findByQueueUserId(qid);
+        UserProfileEntity userProfileOfOwner = userProfileManager.findByQueueUserId(householdItem.getQueueUserId());
+
+        String body = "Please contact " + userProfileOfExpressInterest.getName() + " at phone number " + userProfileOfExpressInterest.getPhoneFormatted();
+        if (userProfileOfExpressInterest.isProfileVerified()) {
+            body = body + ". This is a verified profile.";
+        }
+        body = body + "\n\n Note: This is a free service. Please be careful and contact us if there is anything suspicious.";
+
+        messageCustomerService.sendMessageToSpecificUser(
+            " interest received on rental property by " + userProfileOfExpressInterest.getInitials(),
+            body,
+            householdItem.getQueueUserId(),
+            MessageOriginEnum.A,
+            jsonMarketplace.getBusinessType()
+        );
+
+        messageCustomerService.sendMessageToSpecificUser(
+            "your interest was shared",
+            "We have sent your information to the owner (" + userProfileOfOwner.getName() + ") of this post. They will contact you on phone " + userProfileOfExpressInterest.getPhoneFormatted() +
+                "\n\n Note: This is a free service. Please be careful and contact us if there is anything suspicious about this post.",
+            qid,
+            MessageOriginEnum.A,
+            jsonMarketplace.getBusinessType()
+        );
+
+        return householdItem;
     }
 }

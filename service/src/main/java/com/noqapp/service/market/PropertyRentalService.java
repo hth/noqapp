@@ -1,11 +1,14 @@
 package com.noqapp.service.market;
 
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.json.marketplace.JsonMarketplace;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
+import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.service.MessageCustomerService;
 
@@ -28,11 +31,17 @@ public class PropertyRentalService {
 
     private PropertyRentalManager propertyRentalManager;
     private MessageCustomerService messageCustomerService;
+    private UserProfileManager userProfileManager;
 
     @Autowired
-    public PropertyRentalService(PropertyRentalManager propertyRentalManager, MessageCustomerService messageCustomerService) {
+    public PropertyRentalService(
+        PropertyRentalManager propertyRentalManager,
+        MessageCustomerService messageCustomerService,
+        UserProfileManager userProfileManager
+    ) {
         this.propertyRentalManager = propertyRentalManager;
         this.messageCustomerService = messageCustomerService;
+        this.userProfileManager = userProfileManager;
     }
 
     public void save(PropertyRentalEntity propertyRental) {
@@ -100,5 +109,37 @@ public class PropertyRentalService {
             MessageOriginEnum.A,
             marketplace.getBusinessType());
         return marketplace;
+    }
+
+    public PropertyRentalEntity initiateContactWithMarketplacePostOwner(String qid, JsonMarketplace jsonMarketplace) {
+        PropertyRentalEntity propertyRental = propertyRentalManager.findOneByIdAndExpressInterest(jsonMarketplace.getId());
+
+        UserProfileEntity userProfileOfExpressInterest = userProfileManager.findByQueueUserId(qid);
+        UserProfileEntity userProfileOfOwner = userProfileManager.findByQueueUserId(propertyRental.getQueueUserId());
+
+        String body = "Please contact " + userProfileOfExpressInterest.getName() + " at phone number " + userProfileOfExpressInterest.getPhoneFormatted();
+        if (userProfileOfExpressInterest.isProfileVerified()) {
+            body = body + ". This is a verified profile.";
+        }
+        body = body + "\n\n Note: This is a free service. Please be careful and contact us if there is anything suspicious.";
+
+        messageCustomerService.sendMessageToSpecificUser(
+            " interest received on rental property by " + userProfileOfExpressInterest.getInitials(),
+            body,
+            propertyRental.getQueueUserId(),
+            MessageOriginEnum.A,
+            jsonMarketplace.getBusinessType()
+        );
+
+        messageCustomerService.sendMessageToSpecificUser(
+            "your interest was shared",
+            "We have sent your information to the owner (" + userProfileOfOwner.getName() + ") of this post. They will contact you on phone " + userProfileOfExpressInterest.getPhoneFormatted() +
+                "\n\n Note: This is a free service. Please be careful and contact us if there is anything suspicious about this post.",
+            qid,
+            MessageOriginEnum.A,
+            jsonMarketplace.getBusinessType()
+        );
+
+        return propertyRental;
     }
 }
