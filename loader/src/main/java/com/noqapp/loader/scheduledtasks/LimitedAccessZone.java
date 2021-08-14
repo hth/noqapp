@@ -1,5 +1,6 @@
 package com.noqapp.loader.scheduledtasks;
 
+import static com.noqapp.common.utils.Constants.DAYS_15;
 import static com.noqapp.common.utils.Constants.TEN_METERS_IN_KILOMETER;
 
 import com.noqapp.common.utils.CommonUtil;
@@ -22,6 +23,7 @@ import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -85,7 +87,7 @@ public class LimitedAccessZone {
                     GeoJsonPoint from = registeredDevice.getPoint();
 
                     Map<String, RegisteredDeviceEntity> found = new HashMap<>();
-                    try (Stream<GeoResult<RegisteredDeviceEntity>> geoResults = deviceService.findInProximity(registeredDevice.getPoint(), TEN_METERS_IN_KILOMETER)) {
+                    try (Stream<GeoResult<RegisteredDeviceEntity>> geoResults = deviceService.findInProximity(registeredDevice.getPoint(), TEN_METERS_IN_KILOMETER, DAYS_15)) {
                         geoResults.iterator().forEachRemaining(registeredDeviceEntityGeoResult -> {
                             try {
                                 found.put(registeredDeviceEntityGeoResult.getContent().getDeviceId(), registeredDeviceEntityGeoResult.getContent());
