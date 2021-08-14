@@ -98,8 +98,8 @@ public class LandingController {
             .setCurrentQueues(queueService.findAllQueuedByQid(queueUser.getQueueUserId()))
             .setHistoricalQueues(queueService.findAllHistoricalQueue(queueUser.getQueueUserId()))
             .setMinorUserProfiles(accountService.findDependentProfiles(queueUser.getQueueUserId()))
-            .addPropertyMarketplaceForm(propertyRentalService.findPostedProperties(queueUser.getQueueUserId()))
-            .addHouseholdItemMarketplaceForm(householdItemService.findPostedProperties(queueUser.getQueueUserId()));
+            .addPropertyMarketplaceForm(propertyRentalService.findPostedByMeOnMarketplace(queueUser.getQueueUserId()))
+            .addHouseholdItemMarketplaceForm(householdItemService.findPostedByMeOnMarketplace(queueUser.getQueueUserId()));
 
         LOG.info("Current size={} and Historical size={}", landingForm.getCurrentQueues().size(), landingForm.getHistoricalQueues().size());
         apiHealthService.insert(
