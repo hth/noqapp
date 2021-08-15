@@ -44,7 +44,7 @@ public class FileUtil {
     private static final Detector DETECTOR = new DefaultDetector(MimeTypes.getDefaultMimeTypes());
     private static final int FILE_SIZE_IN_MB = 1024 * 1024;
 
-    private static char[][] pairs = {{'a', 'z'}, {'0', '9'}};
+    private static final char[][] pairs = {{'a', 'z'}, {'0', '9'}};
     private static final RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder().withinRange(pairs).build();
 
     private FileUtil() {
@@ -64,10 +64,11 @@ public class FileUtil {
 
     public static File createTempFile(String name, String ext) throws IOException {
         try {
+            var suffix = ext.startsWith(DOT) ? ext : DOT + ext;
             if (name.startsWith(TEMP_FILE_START_WITH)) {
-                return File.createTempFile(name + DASH, ext.startsWith(DOT) ? ext : DOT + ext);
+                return File.createTempFile(name + DASH, suffix);
             } else {
-                return File.createTempFile(TEMP_FILE_START_WITH + DASH + name + DASH, ext.startsWith(DOT) ? ext : DOT + ext);
+                return File.createTempFile(TEMP_FILE_START_WITH + DASH + name + DASH, suffix);
             }
         } catch (IOException e) {
             LOG.error("Error creating temp file, reason={}", e.getLocalizedMessage(), e);
