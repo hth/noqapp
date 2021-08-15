@@ -144,7 +144,7 @@ public class BizStoreSpatialElasticService {
                     .geohash(geoHash)
                     .distance(distance, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder)
-                    .sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.DESC))
+                    .sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.ASC))
                     .size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
@@ -194,7 +194,7 @@ public class BizStoreSpatialElasticService {
                     .geohash(geoHash)
                     .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder)
-                    .sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.DESC))
+                    .sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.ASC))
                     .size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {

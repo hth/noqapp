@@ -189,7 +189,7 @@ public class BizStoreSearchElasticService {
                 searchSourceBuilder.query(geoDistanceQuery("GH")
                     .geohash(geoHash)
                     .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
-                searchSourceBuilder.sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.DESC));
+                searchSourceBuilder.sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.ASC));
                 searchSourceBuilder.size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
