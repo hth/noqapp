@@ -28,7 +28,6 @@ import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.TokenQueueManager;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.neo4j.NotificationN4jManager;
-import com.noqapp.service.exceptions.DuplicateAccountException;
 import com.noqapp.service.exceptions.DuplicateMessageException;
 import com.noqapp.service.graph.GraphDetailOfPerson;
 
@@ -44,7 +43,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**

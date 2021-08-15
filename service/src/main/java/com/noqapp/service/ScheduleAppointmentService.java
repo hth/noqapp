@@ -8,7 +8,6 @@ import static java.util.concurrent.Executors.newCachedThreadPool;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Formatter;
-import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.ScheduleAppointmentEntity;

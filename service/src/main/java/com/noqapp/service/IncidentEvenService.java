@@ -2,12 +2,10 @@ package com.noqapp.service;
 
 import static com.noqapp.domain.types.IncidentEventEnum.SOSP;
 
-import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.IncidentEventEntity;
 import com.noqapp.domain.RegisteredDeviceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.common.ComposeMessagesForFCM;
-import com.noqapp.domain.json.JsonIncidentEvent;
 import com.noqapp.domain.json.fcm.JsonMessage;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.repository.IncidentEventManager;
