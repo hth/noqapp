@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.MockitoAnnotations;
@@ -228,7 +229,8 @@ class JMSConsumerServiceITest extends ITest {
         businessCustomerService.addBusinessCustomerAttribute(businessCustomerId, BusinessCustomerAttributeEnum.LQ);
     }
 
-    @Test
+    /* Ran with success on 15 Aug 2021. Disabled as it consumes lot of time. */
+    @Disabled
     void sendFlexAppointment() {
         BizNameEntity bizName = bizService.findByPhone("9118000000041");
         BizStoreEntity bizStore = bizService.findOneBizStore(bizName.getId());
