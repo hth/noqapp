@@ -180,7 +180,7 @@ public class MarketplaceSearchElasticService {
                     .geohash(geoHash)
                     .distance("200", DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder)
-                    .sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.DESC))
+                    .sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.ASC))
                     .size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
