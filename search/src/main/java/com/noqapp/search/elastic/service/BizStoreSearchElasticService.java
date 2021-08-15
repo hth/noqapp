@@ -235,9 +235,9 @@ public class BizStoreSearchElasticService {
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 boolQueryBuilder.must(QueryBuilders.matchQuery("BID", bizNameId));
                 boolQueryBuilder.filter(QueryBuilders.multiMatchQuery(query, "N", "DN", "BC"));
-                searchSourceBuilder.query(boolQueryBuilder);
-                searchSourceBuilder.sort(new FieldSortBuilder("DN").order(SortOrder.ASC));
-                searchSourceBuilder.size(paginationSize);
+                searchSourceBuilder.query(boolQueryBuilder)
+                    .sort(new FieldSortBuilder("DN").order(SortOrder.ASC))
+                    .size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
                     searchSourceBuilder.from(from);

@@ -33,6 +33,8 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -141,9 +143,9 @@ public class BizStoreSpatialElasticService {
                 boolQueryBuilder.filter(geoDistanceQuery("GH")
                     .geohash(geoHash)
                     .distance(distance, DistanceUnit.KILOMETERS));
-                searchSourceBuilder.query(boolQueryBuilder);
-
-                searchSourceBuilder.size(paginationSize);
+                searchSourceBuilder.query(boolQueryBuilder)
+                    .sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.DESC))
+                    .size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
                     searchSourceBuilder.from(from);
@@ -191,9 +193,9 @@ public class BizStoreSpatialElasticService {
                 boolQueryBuilder.filter(geoDistanceQuery("GH")
                     .geohash(geoHash)
                     .distance(Constants.MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
-                searchSourceBuilder.query(boolQueryBuilder);
-
-                searchSourceBuilder.size(paginationSize);
+                searchSourceBuilder.query(boolQueryBuilder)
+                    .sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.DESC))
+                    .size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
                     searchSourceBuilder.from(from);
