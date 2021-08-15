@@ -1,5 +1,7 @@
 package com.noqapp.service;
 
+import static com.noqapp.common.utils.FileUtil.DASH;
+
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
@@ -225,7 +227,7 @@ public class ShowHTMLService {
         switch (bizStore.getBusinessType()) {
             case CD:
             case CDQ:
-                address = "-";
+                address = DASH;
                 break;
             case RS:
             case RSQ:
@@ -397,7 +399,7 @@ public class ShowHTMLService {
     private void computeQueueStatus(Map<String, Object> rootMap, ZonedDateTime zonedDateTime, StoreHourEntity storeHour) {
         /*
          * Hour format is 0-23, example 1 for 12:01 AM and 2359 for 11:59 PM.
-         * Hence matches ZonedDateTime Hour and Minutes
+         * Hence, matches ZonedDateTime Hour and Minutes
          * And, To make sure minute in time 11:06 AM is not represented as 116 but as 1106 hence string formatting.
          */
         int timeIn24HourFormat = CommonUtil.getTimeIn24HourFormat(zonedDateTime);
