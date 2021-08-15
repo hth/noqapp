@@ -2,7 +2,6 @@ package com.noqapp.service;
 
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static org.apiguardian.api.API.Status.DEPRECATED;
-import static org.apiguardian.api.API.Status.STABLE;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;

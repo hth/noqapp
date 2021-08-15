@@ -5,7 +5,6 @@ import com.noqapp.domain.json.JsonBusinessCustomerPriority;
 import com.noqapp.domain.types.CustomerPriorityLevelEnum;
 import com.noqapp.domain.types.OnOffEnum;
 import com.noqapp.repository.BizNameManager;
-import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.BusinessCustomerPriorityManager;
 
 import org.slf4j.Logger;

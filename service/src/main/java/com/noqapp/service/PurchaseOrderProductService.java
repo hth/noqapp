@@ -7,7 +7,6 @@ import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonPurchaseOrder;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
-import com.noqapp.repository.UserAddressManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

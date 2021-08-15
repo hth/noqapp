@@ -1,8 +1,5 @@
 package com.noqapp.service;
 
-import static com.noqapp.common.utils.AbstractDomain.ISO8601_FMT;
-import static com.noqapp.domain.types.BusinessSupportEnum.OD;
-
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateFormatter;
 import com.noqapp.common.utils.DateUtil;
@@ -18,16 +15,13 @@ import com.noqapp.domain.helper.CommonHelper;
 import com.noqapp.domain.json.JsonNameDatePair;
 import com.noqapp.domain.json.JsonProfessionalProfile;
 import com.noqapp.domain.json.JsonReview;
-import com.noqapp.domain.types.BusinessSupportEnum;
 import com.noqapp.domain.types.WalkInStateEnum;
-import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.UserProfileManager;
 
 import com.google.zxing.WriterException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.text.WordUtils;
 
 import org.slf4j.Logger;
@@ -36,8 +30,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import org.jetbrains.annotations.NotNull;
 
 import freemarker.template.TemplateException;
 

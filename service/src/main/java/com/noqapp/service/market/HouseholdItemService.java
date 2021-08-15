@@ -5,7 +5,6 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.json.marketplace.JsonMarketplace;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
-import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
