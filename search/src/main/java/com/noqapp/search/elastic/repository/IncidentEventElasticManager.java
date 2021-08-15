@@ -1,7 +1,6 @@
 package com.noqapp.search.elastic.repository;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * hitender
