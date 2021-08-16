@@ -125,8 +125,8 @@ public class BizStoreElasticService {
                         int totalReviewCount = 0;
 
                         for (BizStoreEntity bizStore : bizStores) {
-                            totalRating = +bizStore.getRating();
-                            totalReviewCount = +bizStore.getReviewCount();
+                            totalRating = totalRating + bizStore.getRating();
+                            totalReviewCount = totalReviewCount + bizStore.getReviewCount();
                         }
 
                         bizStoreElastic.setRating(totalRating / bizStores.size());
