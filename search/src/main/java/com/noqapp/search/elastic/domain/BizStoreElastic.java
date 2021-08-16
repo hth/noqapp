@@ -135,7 +135,7 @@ public class BizStoreElastic extends AbstractDomain {
     private float rating;
 
     @JsonProperty("RC")
-    private int ratingCount;
+    private int reviewCount;
 
     @JsonProperty("BID")
     String bizNameId;
@@ -422,12 +422,12 @@ public class BizStoreElastic extends AbstractDomain {
         return this;
     }
 
-    public int getRatingCount() {
-        return ratingCount;
+    public int getReviewCount() {
+        return reviewCount;
     }
 
-    public BizStoreElastic setRatingCount(int ratingCount) {
-        this.ratingCount = ratingCount;
+    public BizStoreElastic setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
         return this;
     }
 
@@ -710,7 +710,7 @@ public class BizStoreElastic extends AbstractDomain {
             .setPlaceId(bizStore.getPlaceId())
             .setPlaceType(bizStore.getPlaceType())
             .setRating(bizStore.getRating())
-            .setRatingCount(bizStore.getReviewCount())
+            .setReviewCount(bizStore.getReviewCount())
             .setBizNameId(bizStore.getBizName().getId())
             .setDisplayName(bizStore.getDisplayName())
             .setEnabledPayment(bizStore.isEnabledPayment())
@@ -809,7 +809,7 @@ public class BizStoreElastic extends AbstractDomain {
             ", placeId='" + placeId + '\'' +
             ", placeType=" + Arrays.toString(placeType) +
             ", rating=" + rating +
-            ", ratingCount=" + ratingCount +
+            ", ratingCount=" + reviewCount +
             ", bizNameId='" + bizNameId + '\'' +
             ", displayName='" + displayName + '\'' +
             ", codeQR='" + codeQR + '\'' +

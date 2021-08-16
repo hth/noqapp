@@ -11,6 +11,7 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreElasticList;
+import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
 import com.noqapp.search.elastic.domain.StoreHourElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.repository.BizStoreElasticManager;
@@ -110,7 +111,33 @@ public class BizStoreElasticService {
     void saveSpatial(Set<BizStoreElastic> bizStoreElastics) {
         LOG.info("Bulk save size={}", bizStoreElastics.size());
         if (!bizStoreElastics.isEmpty()) {
-            bizStoreSpatialElasticService.save(bizStoreElastics);
+            Set<BizStoreElastic> bizStoreSpatialElastics = new HashSet<>();
+            for (BizStoreElastic bizStoreElastic : bizStoreElastics) {
+                switch (bizStoreElastic.getBusinessType()) {
+                    case DO:
+                    case HS:
+                    case BK:
+                    case CD:
+                    case CDQ:
+                        /* Clubbing rating for all stores in one spatial store to represent whole data when viewing business at home screen. */
+                        List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStoresActive(bizStoreElastic.getBizNameId());
+                        float totalRating = 0;
+                        int totalReviewCount = 0;
+
+                        for (BizStoreEntity bizStore : bizStores) {
+                            totalRating = +bizStore.getRating();
+                            totalReviewCount = +bizStore.getReviewCount();
+                        }
+
+                        bizStoreElastic.setRating(totalRating / bizStores.size());
+                        bizStoreElastic.setReviewCount(totalReviewCount);
+                        break;
+                    default:
+                        //Do nothing
+                }
+                bizStoreSpatialElastics.add(bizStoreElastic);
+            }
+            bizStoreSpatialElasticService.save(bizStoreSpatialElastics);
         }
     }
 
@@ -210,7 +237,7 @@ public class BizStoreElasticService {
                     .setPhone(map.containsKey("PH") ? map.get("PH").toString() : "")
                     .setPlaceId(map.containsKey("PI") ? map.get("PI").toString() : "")
                     .setRating(map.containsKey("RA") ? Float.parseFloat(map.get("RA").toString()) : 3.0f)
-                    .setRatingCount(map.containsKey("RC") ? Integer.parseInt(map.get("RC").toString()) : 0)
+                    .setReviewCount(map.containsKey("RC") ? Integer.parseInt(map.get("RC").toString()) : 0)
                     .setBizNameId(map.containsKey("BID") ? map.get("BID").toString() : "")
                     .setDisplayName(map.containsKey("DN") ? map.get("DN").toString() : "")
                     .setProductPrice(map.containsKey("PP") ? Integer.parseInt(map.get("PP").toString()) : 0)

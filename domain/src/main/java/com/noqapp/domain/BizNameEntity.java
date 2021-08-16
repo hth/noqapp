@@ -102,7 +102,7 @@ public class BizNameEntity extends BaseEntity {
     @Field("PH")
     private String phone;
 
-    /* To not loose user entered phone number. */
+    /* To not lose user entered phone number. */
     @Field("PR")
     private String phoneRaw;
 
@@ -562,10 +562,12 @@ public class BizNameEntity extends BaseEntity {
         return this;
     }
 
+    @Deprecated
     public boolean isClaimed() {
         return claimed;
     }
 
+    @Deprecated
     public void setClaimed(boolean claimed) {
         this.claimed = claimed;
     }
