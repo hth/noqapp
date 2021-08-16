@@ -210,7 +210,7 @@ public class BizStoreElasticService {
                     .setPhone(map.containsKey("PH") ? map.get("PH").toString() : "")
                     .setPlaceId(map.containsKey("PI") ? map.get("PI").toString() : "")
                     .setRating(map.containsKey("RA") ? Float.parseFloat(map.get("RA").toString()) : 3.0f)
-                    .setRatingCount(map.containsKey("RC") ? Integer.parseInt(map.get("RC").toString()) : 0)
+                    .setReviewCount(map.containsKey("RC") ? Integer.parseInt(map.get("RC").toString()) : 0)
                     .setBizNameId(map.containsKey("BID") ? map.get("BID").toString() : "")
                     .setDisplayName(map.containsKey("DN") ? map.get("DN").toString() : "")
                     .setProductPrice(map.containsKey("PP") ? Integer.parseInt(map.get("PP").toString()) : 0)

@@ -103,7 +103,7 @@ public class DomainConversion {
             .setPlaceId(bizStore.getPlaceId())
             .setPlaceType(bizStore.getPlaceType())
             .setRating(bizStore.getRating())
-            .setRatingCount(bizStore.getReviewCount())
+            .setReviewCount(bizStore.getReviewCount())
             .setBizNameId(bizStore.getBizName().getId())
             .setDisplayName(bizStore.getDisplayName())
             .setEnabledPayment(bizStore.isEnabledPayment())
