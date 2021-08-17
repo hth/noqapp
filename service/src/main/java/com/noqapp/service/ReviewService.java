@@ -45,7 +45,7 @@ public class ReviewService {
 
     @Autowired
     public ReviewService(
-        @Value("${reviewLimitedToDays:180}")
+        @Value("${ReviewService.reviewLimitedToDays}")
         int reviewLimitedToDays,
 
         QueueManager queueManager,
