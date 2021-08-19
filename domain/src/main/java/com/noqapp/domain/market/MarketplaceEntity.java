@@ -283,6 +283,11 @@ public abstract class MarketplaceEntity extends BaseEntity {
     }
 
     @Transient
+    public String getPriceForDisplayWithFormatting() {
+        return CommonUtil.displayWithCurrencyCodeWithFormatting(MathUtil.displayPrice(productPrice), countryShortName);
+    }
+
+    @Transient
     public GeoPointOfQ getGeoPointOfQ() {
         /* Latitude and then Longitude. */
         return new GeoPointOfQ(coordinate[1], coordinate[0]);

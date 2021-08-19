@@ -204,7 +204,7 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
-                                                <td>${marketplaceForm.marketplace.priceForDisplay}</td>
+                                                <td>${marketplaceForm.marketplace.priceForDisplayWithFormatting}</td>
                                                 <td>${marketplaceForm.marketplace.city}</td>
                                                 <td>
                                                     <c:choose>
