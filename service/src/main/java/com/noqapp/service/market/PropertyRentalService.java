@@ -2,6 +2,7 @@ package com.noqapp.service.market;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.marketplace.JsonMarketplace;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
@@ -60,10 +61,12 @@ public class PropertyRentalService {
         return propertyRentalManager.findOneById(id);
     }
 
-    public PropertyRentalEntity findOneByIdAndExpressInterest(String id) {
-        return propertyRentalManager.findOneByIdAndExpressInterest(id);
+    @Mobile
+    public PropertyRentalEntity findOneByIdAndExpressInterest(String qid, String id) {
+        return propertyRentalManager.findOneByIdAndExpressInterest(qid, id);
     }
 
+    @Mobile
     public PropertyRentalEntity findOneByIdAndViewCount(String id) {
         return propertyRentalManager.findOneByIdAndViewCount(id);
     }
@@ -115,8 +118,9 @@ public class PropertyRentalService {
         return marketplace;
     }
 
+    @Mobile
     public PropertyRentalEntity initiateContactWithMarketplacePostOwner(String qid, JsonMarketplace jsonMarketplace) {
-        PropertyRentalEntity propertyRental = propertyRentalManager.findOneByIdAndExpressInterest(jsonMarketplace.getId());
+        PropertyRentalEntity propertyRental = propertyRentalManager.findOneByIdAndExpressInterest(qid, jsonMarketplace.getId());
 
         UserProfileEntity userProfileOfExpressInterest = userProfileManager.findByQueueUserId(qid);
         UserProfileEntity userProfileOfOwner = userProfileManager.findByQueueUserId(propertyRental.getQueueUserId());

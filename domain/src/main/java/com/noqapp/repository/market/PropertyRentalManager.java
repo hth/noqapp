@@ -19,7 +19,7 @@ public interface PropertyRentalManager extends RepositoryManager<PropertyRentalE
 
     Stream<PropertyRentalEntity> findAllWithStream();
 
-    PropertyRentalEntity findOneByIdAndExpressInterest(String id);
+    PropertyRentalEntity findOneByIdAndExpressInterest(String qid, String id);
 
     PropertyRentalEntity findOneByIdAndViewCount(String id);
 
