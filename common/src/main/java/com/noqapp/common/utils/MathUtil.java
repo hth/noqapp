@@ -14,8 +14,7 @@ public class MathUtil {
     private static final Logger LOG = LoggerFactory.getLogger(MathUtil.class);
 
     static float roundFloat(float f, int scale) {
-        BigDecimal bd = new BigDecimal(Float.toString(f));
-        return bd.setScale(scale, RoundingMode.HALF_UP).floatValue();
+        return new BigDecimal(Float.toString(f)).setScale(scale, RoundingMode.HALF_UP).floatValue();
     }
 
     public static float roundFloat(float f) {
@@ -30,7 +29,7 @@ public class MathUtil {
         return new BigDecimal(number).movePointLeft(2).toString();
     }
 
-    public static String correctPriceForDB(final BigDecimal number) {
+    public static String correctPriceForDB(BigDecimal number) {
         return number.movePointRight(2).toString();
     }
 
