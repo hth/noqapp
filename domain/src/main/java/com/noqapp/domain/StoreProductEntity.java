@@ -2,6 +2,7 @@ package com.noqapp.domain;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.JsonStoreProduct;
 import com.noqapp.domain.types.ProductTypeEnum;
@@ -260,14 +261,14 @@ public class StoreProductEntity extends BaseEntity {
     @SuppressWarnings("unused")
     @Transient
     public String getDisplayPrice() {
-        return CommonUtil.displayWithCurrencyCode(new BigDecimal(productPrice).divide(new BigDecimal(100), MathContext.DECIMAL64).longValue());
+        return CommonUtil.displayWithCurrencyCodeWithFormatting(new BigDecimal(MathUtil.displayPrice(productPrice)).longValue());
     }
 
     /* On Web. */
     @SuppressWarnings("unused")
     @Transient
     public String getDisplayDiscount() {
-        return CommonUtil.displayWithCurrencyCode(new BigDecimal(productDiscount).divide(new BigDecimal(100), MathContext.DECIMAL64).longValue());
+        return CommonUtil.displayWithCurrencyCodeWithFormatting(new BigDecimal(MathUtil.displayPrice(productDiscount)).longValue());
     }
 
     @Transient

@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -258,8 +259,12 @@ public final class CommonUtil {
     }
 
     /** Converts 10000 to ₹10,000 value where defaults to India. */
-    public static String displayWithCurrencyCode(long orderPrice) {
+    public static String displayWithCurrencyCodeWithFormatting(long orderPrice) {
         return currencyLocal("IN") + NumberFormat.getInstance(new Locale("en", "IN")).format(orderPrice);
+    }
+
+    public static String displayWithCurrencyCodeWithFormatting(String orderPrice, String countryCode) {
+        return currencyLocal(countryCode) + NumberFormat.getInstance(new Locale("en", countryCode)).format(new BigDecimal(orderPrice));
     }
     
     public static String displayWithCurrencyCode(String orderPrice, String countryCode) {

@@ -23,15 +23,15 @@ public class MathUtil {
     }
 
     public static String displayPrice(String number) {
-        return new BigDecimal(number).scaleByPowerOfTen(-2).toString();
+        return new BigDecimal(number).movePointLeft(2).toString();
     }
 
     public static String displayPrice(int number) {
-        return new BigDecimal(number).scaleByPowerOfTen(-2).toString();
+        return new BigDecimal(number).movePointLeft(2).toString();
     }
 
     public static String correctPriceForDB(final BigDecimal number) {
-        return number.scaleByPowerOfTen(2).toString();
+        return number.movePointRight(2).toString();
     }
 
     public static String correctPriceForDB(String number) {
