@@ -182,7 +182,7 @@ public class DomainConversion {
             .setTitle(marketplace.getTitle())
             .setDescription(marketplace.getDescription())
             .setPostImages(List.copyOf(marketplace.getPostImages()))
-            .setLikeCount(marketplace.getLikeCount())
+            .setViewCount(marketplace.getViewCount())
             .setExpressedInterestCount(marketplace.getExpressedInterestCount())
             .setGeoPointOfQ(marketplace.getCoordinate() == null ? new GeoPointOfQ(0.0, 0.0) : marketplace.getGeoPointOfQ())
             .setGeoHash(marketplace.getCoordinate() == null ? new GeoPoint(0.0, 0.0).getGeohash() : marketplace.getGeoPoint().getGeohash())

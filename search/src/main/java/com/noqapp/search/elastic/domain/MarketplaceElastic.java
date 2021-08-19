@@ -68,8 +68,8 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonProperty("TG")
     private String tag;
 
-    @JsonProperty("LC")
-    private int likeCount;
+    @JsonProperty("VC")
+    private int viewCount;
 
     @JsonProperty("EC")
     private int expressedInterestCount;
@@ -156,12 +156,12 @@ public class MarketplaceElastic extends AbstractDomain {
         return this;
     }
 
-    public int getLikeCount() {
-        return likeCount;
+    public int getViewCount() {
+        return viewCount;
     }
 
-    public MarketplaceElastic setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public MarketplaceElastic setViewCount(int viewCount) {
+        this.viewCount = viewCount;
         return this;
     }
 

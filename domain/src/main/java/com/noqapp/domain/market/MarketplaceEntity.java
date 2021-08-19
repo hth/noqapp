@@ -8,8 +8,6 @@ import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
 
-import org.apache.commons.lang3.StringUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,8 +59,8 @@ public abstract class MarketplaceEntity extends BaseEntity {
     @Field("TG")
     private String tags;
 
-    @Field("LC")
-    private int likeCount;
+    @Field("VC")
+    private int viewCount;
 
     @Field("EC")
     private int expressedInterestCount;
@@ -167,12 +165,12 @@ public abstract class MarketplaceEntity extends BaseEntity {
         return this;
     }
 
-    public int getLikeCount() {
-        return likeCount;
+    public int getViewCount() {
+        return viewCount;
     }
 
-    public MarketplaceEntity setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public MarketplaceEntity setViewCount(int viewCount) {
+        this.viewCount = viewCount;
         return this;
     }
 

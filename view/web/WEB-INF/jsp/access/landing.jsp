@@ -223,11 +223,11 @@
                                                 </td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${marketplaceForm.marketplace.likeCount == 0}">
-                                                            <i class="fas fa-heart" style="color:#4e4d4d;" title="Liked"></i> ${marketplaceForm.marketplace.likeCount}
+                                                        <c:when test="${marketplaceForm.marketplace.viewCount == 0}">
+                                                            <i class="fas fa-eye" style="color:#4e4d4d;" title="Viewed"></i> ${marketplaceForm.marketplace.viewCount}
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <i class="fas fa-heart" style="color:#ff217c;" title="Liked"></i> ${marketplaceForm.marketplace.likeCount}
+                                                            <i class="fas fa-eye" style="color:#ff217c;" title="Viewed"></i> ${marketplaceForm.marketplace.viewCount}
                                                         </c:otherwise>
                                                     </c:choose>
                                                     <c:choose>

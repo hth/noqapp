@@ -38,7 +38,7 @@
       "GH": {
         "type": "geo_point"
       },
-      "LC": {
+      "VC": {
         "type": "integer"
       },
       "MC": {

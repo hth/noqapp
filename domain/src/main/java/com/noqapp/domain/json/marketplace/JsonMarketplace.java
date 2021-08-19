@@ -59,8 +59,8 @@ public abstract class JsonMarketplace extends AbstractDomain {
     @JsonProperty("tg")
     private String tags;
 
-    @JsonProperty("lc")
-    private int likeCount;
+    @JsonProperty("vc")
+    private int viewCount;
 
     @JsonProperty("ec")
     private int expressedInterestCount;
@@ -165,12 +165,12 @@ public abstract class JsonMarketplace extends AbstractDomain {
         return this;
     }
 
-    public int getLikeCount() {
-        return likeCount;
+    public int getViewCount() {
+        return viewCount;
     }
 
-    public JsonMarketplace setLikeCount(int likeCount) {
-        this.likeCount = likeCount;
+    public JsonMarketplace setViewCount(int viewCount) {
+        this.viewCount = viewCount;
         return this;
     }
 

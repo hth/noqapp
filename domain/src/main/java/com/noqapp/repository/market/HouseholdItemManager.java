@@ -22,7 +22,7 @@ public interface HouseholdItemManager extends RepositoryManager<HouseholdItemEnt
 
     HouseholdItemEntity findOneByIdAndExpressInterest(String id);
 
-    HouseholdItemEntity findOneByIdAndLikeCount(String id);
+    HouseholdItemEntity findOneByIdAndViewCount(String id);
 
     List<HouseholdItemEntity> findAllPendingApproval();
 

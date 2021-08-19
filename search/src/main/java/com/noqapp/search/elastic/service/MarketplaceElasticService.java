@@ -150,7 +150,7 @@ public class MarketplaceElasticService {
                     .setDescription(map.containsKey("DS") ? map.get("DS").toString() : "")
                     .setExpressedInterestCount(map.containsKey("EC") ? Integer.parseInt(map.get("EC").toString()) : 0)
                     .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
-                    .setLikeCount(map.containsKey("LC") ? Integer.parseInt(map.get("LC").toString()) : 0)
+                    .setViewCount(map.containsKey("LC") ? Integer.parseInt(map.get("LC").toString()) : 0)
                     .setCity(map.containsKey("MC") ? map.get("MC").toString() : "")
                     .setPostImages(map.containsKey("PI") ? (List<String>) map.get("PI") : new ArrayList<>())
                     .setProductPrice(map.containsKey("PP") ? map.get("PP").toString() : "NA")

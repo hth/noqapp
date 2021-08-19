@@ -77,7 +77,7 @@ class MarketplaceSearchElasticServiceTest extends ITest {
                 .setDescription("This is description " + i)
                 .setPostImages(Set.of(CommonUtil.generateHexFromObjectId()))
                 .setTags("1_BE 4_BR 3000_CA A_RT")
-                .setLikeCount(0)
+                .setViewCount(0)
                 .setExpressedInterestCount(0)
                 .setAddress("Mumbai")
                 .setCity("Mumbai")
