@@ -40,6 +40,14 @@ public class PropertyRentalEntity extends MarketplaceEntity {
     @Field("RT")
     private RentalTypeEnum rentalType;
 
+    /** Used when broker has been selected. Set only once. */
+    @Field("BQ")
+    private String brokerQID;
+
+    /** Review submitted by owner against the broker for providing service. */
+    @Field("BR")
+    private String brokerReview;
+
     public int getBedroom() {
         return bedroom;
     }
@@ -73,6 +81,24 @@ public class PropertyRentalEntity extends MarketplaceEntity {
 
     public PropertyRentalEntity setRentalType(RentalTypeEnum rentalType) {
         this.rentalType = rentalType;
+        return this;
+    }
+
+    public String getBrokerQID() {
+        return brokerQID;
+    }
+
+    public PropertyRentalEntity setBrokerQID(String brokerQID) {
+        this.brokerQID = brokerQID;
+        return this;
+    }
+
+    public String getBrokerReview() {
+        return brokerReview;
+    }
+
+    public PropertyRentalEntity setBrokerReview(String brokerReview) {
+        this.brokerReview = brokerReview;
         return this;
     }
 
