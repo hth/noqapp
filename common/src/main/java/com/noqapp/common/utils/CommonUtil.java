@@ -342,7 +342,7 @@ public final class CommonUtil {
      *
      * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
      * el2 End altitude in meters
-     * @returns Distance in Meters
+     * @return double Distance in Meters
      */
     public static double distanceInMeters(double lat1, double lat2, double lon1, double lon2, double el1, double el2) {
         final int R = 6371; // Radius of the earth
