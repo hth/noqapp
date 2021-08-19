@@ -179,13 +179,13 @@ public final class CommonUtil {
         return did + "-" + RandomString.newInstance(6).nextString();
     }
 
-    /** Get time in 24 hour format. */
+    /** Get time in 24-hour format. */
     public static int getTimeIn24HourFormat(ZonedDateTime zonedDateTime) {
         /* To make sure minute in time 11:06 AM is not represented as 116 but as 1106 hence string formatting. */
         return Integer.parseInt(zonedDateTime.getHour() + String.format(Locale.US, "%02d", zonedDateTime.getMinute()));
     }
 
-    /** This will get you system time in 24 hour format. */
+    /** This will get you system time in 24-hour format. */
     public static int getTimeIn24HourFormat() {
         return getTimeIn24HourFormat(ZonedDateTime.now());
     }
