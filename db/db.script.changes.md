@@ -1,3 +1,10 @@
+### Changed Aug 19, 2021
+
+Changed field name 
+
+    db.getCollection('MP_HOUSEHOLD_ITEM').update({"LC" : {$exists : true}}, {$rename: {"LC":"VC"}}, {multi: true});
+    db.getCollection('MP_PROPERTY_RENTAL').update({"LC" : {$exists : true}}, {$rename: {"LC":"VC"}}, {multi: true});
+
 ### Changed Jun 26, 2021
 
 Remove null from UAI field
