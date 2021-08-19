@@ -44,6 +44,7 @@ public class HouseholdItemEntity extends MarketplaceEntity {
     @Transient
     public String getFieldValueForTag() {
         return itemCondition.name() + UNDER_SCORE + "IC"
+            + getProductPrice() + UNDER_SCORE + "PP"
             + (StringUtils.isNotBlank(getTags()) ? " " + getTags() : "");
     }
 
