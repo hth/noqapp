@@ -210,7 +210,7 @@ public final class CommonUtil {
     }
 
     /**
-     * For privacy reason, abbreviate user name on public forum.
+     * For privacy reason, abbreviate username on public forum.
      * First Name will become First N
      */
     public static String abbreviateName(String name) {
@@ -223,10 +223,6 @@ public final class CommonUtil {
                 }
             }
 
-            /* Remove below check by 2021-01-01. */
-            if (normalize.length() != name.length()) {
-                LOG.warn("Fix name {}", name);
-            }
             return normalize;
         } catch (Exception e) {
             LOG.error("Abbreviate name {} reason={}", name, e.getLocalizedMessage());
@@ -263,6 +259,7 @@ public final class CommonUtil {
         return currencyLocal("IN") + NumberFormat.getInstance(new Locale("en", "IN")).format(orderPrice);
     }
 
+    /** Converts 10000 to ₹10,000 based on the country code supplied. */
     public static String displayWithCurrencyCodeWithFormatting(String orderPrice, String countryCode) {
         return currencyLocal(countryCode) + NumberFormat.getInstance(new Locale("en", countryCode)).format(new BigDecimal(orderPrice));
     }
