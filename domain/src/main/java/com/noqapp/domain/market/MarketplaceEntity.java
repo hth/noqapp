@@ -267,12 +267,7 @@ public abstract class MarketplaceEntity extends BaseEntity {
     /** Shifting decimal point. */
     @Transient
     public String productPriceForDisplay() {
-        BigDecimal transactionAmount = new BigDecimal(productPrice);
-        return correctPriceForPost(transactionAmount);
-    }
-
-    private static String correctPriceForPost(final BigDecimal transactionAmount) {
-        return transactionAmount.scaleByPowerOfTen(-2).toString();
+        return MathUtil.displayPrice(productPrice);
     }
 
     @Transient

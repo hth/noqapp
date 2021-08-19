@@ -179,13 +179,13 @@ public final class CommonUtil {
         return did + "-" + RandomString.newInstance(6).nextString();
     }
 
-    /** Get time in 24 hour format. */
+    /** Get time in 24-hour format. */
     public static int getTimeIn24HourFormat(ZonedDateTime zonedDateTime) {
         /* To make sure minute in time 11:06 AM is not represented as 116 but as 1106 hence string formatting. */
         return Integer.parseInt(zonedDateTime.getHour() + String.format(Locale.US, "%02d", zonedDateTime.getMinute()));
     }
 
-    /** This will get you system time in 24 hour format. */
+    /** This will get you system time in 24-hour format. */
     public static int getTimeIn24HourFormat() {
         return getTimeIn24HourFormat(ZonedDateTime.now());
     }
@@ -210,7 +210,7 @@ public final class CommonUtil {
     }
 
     /**
-     * For privacy reason, abbreviate user name on public forum.
+     * For privacy reason, abbreviate username on public forum.
      * First Name will become First N
      */
     public static String abbreviateName(String name) {
@@ -223,10 +223,6 @@ public final class CommonUtil {
                 }
             }
 
-            /* Remove below check by 2021-01-01. */
-            if (normalize.length() != name.length()) {
-                LOG.warn("Fix name {}", name);
-            }
             return normalize;
         } catch (Exception e) {
             LOG.error("Abbreviate name {} reason={}", name, e.getLocalizedMessage());
@@ -263,6 +259,7 @@ public final class CommonUtil {
         return currencyLocal("IN") + NumberFormat.getInstance(new Locale("en", "IN")).format(orderPrice);
     }
 
+    /** Converts 10000 to ₹10,000 based on the country code supplied. */
     public static String displayWithCurrencyCodeWithFormatting(String orderPrice, String countryCode) {
         return currencyLocal(countryCode) + NumberFormat.getInstance(new Locale("en", countryCode)).format(new BigDecimal(orderPrice));
     }
@@ -345,7 +342,7 @@ public final class CommonUtil {
      *
      * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
      * el2 End altitude in meters
-     * @returns Distance in Meters
+     * @return double Distance in Meters
      */
     public static double distanceInMeters(double lat1, double lat2, double lon1, double lon2, double el1, double el2) {
         final int R = 6371; // Radius of the earth
