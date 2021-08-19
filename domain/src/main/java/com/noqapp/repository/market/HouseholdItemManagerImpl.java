@@ -104,10 +104,10 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
     }
 
     @Override
-    public HouseholdItemEntity findOneByIdAndLikeCount(String id) {
+    public HouseholdItemEntity findOneByIdAndViewCount(String id) {
         return mongoTemplate.findAndModify(
             query(where("id").is(id)),
-            new Update().inc("LC", 1),
+            new Update().inc("VC", 1),
             FindAndModifyOptions.options().returnNew(true),
             HouseholdItemEntity.class,
             TABLE);

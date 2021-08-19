@@ -64,8 +64,8 @@ public class PropertyRentalService {
         return propertyRentalManager.findOneByIdAndExpressInterest(id);
     }
 
-    public PropertyRentalEntity findOneByIdAndLikeCount(String id) {
-        return propertyRentalManager.findOneByIdAndLikeCount(id);
+    public PropertyRentalEntity findOneByIdAndViewCount(String id) {
+        return propertyRentalManager.findOneByIdAndViewCount(id);
     }
 
     public long findAllPendingApprovalCount() {

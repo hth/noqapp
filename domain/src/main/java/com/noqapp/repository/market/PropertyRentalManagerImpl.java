@@ -104,10 +104,10 @@ public class PropertyRentalManagerImpl implements PropertyRentalManager {
     }
 
     @Override
-    public PropertyRentalEntity findOneByIdAndLikeCount(String id) {
+    public PropertyRentalEntity findOneByIdAndViewCount(String id) {
         return mongoTemplate.findAndModify(
             query(where("id").is(id)),
-            new Update().inc("LC", 1),
+            new Update().inc("VC", 1),
             FindAndModifyOptions.options().returnNew(true),
             PropertyRentalEntity.class,
             TABLE);
