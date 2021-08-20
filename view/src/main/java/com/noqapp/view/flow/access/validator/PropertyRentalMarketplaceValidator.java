@@ -1,5 +1,6 @@
 package com.noqapp.view.flow.access.validator;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.common.utils.Validate;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.site.QueueUser;
@@ -17,6 +18,10 @@ import org.springframework.binding.message.MessageBuilder;
 import org.springframework.binding.message.MessageContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 
 /**
  * hitender
@@ -185,6 +190,41 @@ public class PropertyRentalMarketplaceValidator {
                         .defaultText("Please provide carpet area")
                         .build());
                 status = "failure";
+            }
+
+            if (StringUtils.isBlank(propertyRental.getRentalAvailableDay())
+                && !DateUtil.DOB_PATTERN.matcher(propertyRental.getRentalAvailableDay()).matches()) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("marketplace.rentalAvailableDay")
+                        .defaultText("Date format not valid " + propertyRental.getRentalAvailableDay())
+                        .build());
+                status = "failure";
+            } else {
+                try {
+                    LocalDate startDate = LocalDate.parse(propertyRental.getRentalAvailableDay());
+                    LocalDate endDate = LocalDate.now();
+
+                    if (ChronoUnit.DAYS.between(startDate, endDate) > 0) {
+                        messageContext.addMessage(
+                            new MessageBuilder()
+                                .error()
+                                .source("marketplace.rentalAvailableDay")
+                                .defaultText("Date is in past " + propertyRental.getRentalAvailableDay())
+                                .build());
+                        status = "failure";
+                    }
+
+                } catch (DateTimeParseException e) {
+                    messageContext.addMessage(
+                        new MessageBuilder()
+                            .error()
+                            .source("marketplace.rentalAvailableDay")
+                            .defaultText("Date format not valid " + propertyRental.getRentalAvailableDay())
+                            .build());
+                    status = "failure";
+                }
             }
 
             if (!Validate.isValidPrice(marketplaceForm.getListPrice())) {

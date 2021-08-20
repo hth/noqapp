@@ -40,13 +40,16 @@ public class PropertyRentalEntity extends MarketplaceEntity {
     @Field("RT")
     private RentalTypeEnum rentalType;
 
-    /** Used when broker has been selected. Set only once. */
-    @Field("BQ")
-    private String brokerQID;
+    @Field("RA")
+    private String rentalAvailableDay;
 
-    /** Review submitted by owner against the broker for providing service. */
-    @Field("BR")
-    private String brokerReview;
+    /** Used when housing agent has been selected. Set only once. */
+    @Field("HQ")
+    private String housingAgentQID;
+
+    /** Review submitted by owner against the housing agent for providing service. */
+    @Field("HR")
+    private String housingAgentReview;
 
     public int getBedroom() {
         return bedroom;
@@ -84,21 +87,30 @@ public class PropertyRentalEntity extends MarketplaceEntity {
         return this;
     }
 
-    public String getBrokerQID() {
-        return brokerQID;
+    public String getRentalAvailableDay() {
+        return rentalAvailableDay;
     }
 
-    public PropertyRentalEntity setBrokerQID(String brokerQID) {
-        this.brokerQID = brokerQID;
+    public PropertyRentalEntity setRentalAvailableDay(String rentalAvailableDay) {
+        this.rentalAvailableDay = rentalAvailableDay;
         return this;
     }
 
-    public String getBrokerReview() {
-        return brokerReview;
+    public String getHousingAgentQID() {
+        return housingAgentQID;
     }
 
-    public PropertyRentalEntity setBrokerReview(String brokerReview) {
-        this.brokerReview = brokerReview;
+    public PropertyRentalEntity setHousingAgentQID(String housingAgentQID) {
+        this.housingAgentQID = housingAgentQID;
+        return this;
+    }
+
+    public String getHousingAgentReview() {
+        return housingAgentReview;
+    }
+
+    public PropertyRentalEntity setHousingAgentReview(String housingAgentReview) {
+        this.housingAgentReview = housingAgentReview;
         return this;
     }
 
@@ -120,7 +132,8 @@ public class PropertyRentalEntity extends MarketplaceEntity {
             "Bedroom " + bedroom,
             "Bathroom " + bathroom,
             "Carpet Area " + carpetArea + " sq ft",
-            "Rent " + rentalType.getDescription()
+            "Rent " + rentalType.getDescription(),
+            "Available " + rentalAvailableDay
         };
     }
 }
