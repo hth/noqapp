@@ -21,6 +21,16 @@ public class MathUtil {
         return roundFloat(f, 2);
     }
 
+    /** Mainly used for marketplace. */
+    public static String displayPriceWithoutDecimal(String number) {
+        return String.valueOf(new BigDecimal(number).movePointLeft(2).intValue());
+    }
+
+    /** Mainly used for marketplace. */
+    public static String displayPriceWithoutDecimal(int number) {
+        return String.valueOf(new BigDecimal(number).movePointLeft(2).intValue());
+    }
+
     public static String displayPrice(String number) {
         return new BigDecimal(number).movePointLeft(2).toString();
     }

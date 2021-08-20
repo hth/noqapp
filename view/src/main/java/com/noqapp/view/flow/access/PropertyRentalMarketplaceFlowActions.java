@@ -116,7 +116,7 @@ public class PropertyRentalMarketplaceFlowActions {
                         .setBusinessType(marketplace.getBusinessType())
                         .setCity(marketplace.getCity())
                         .setCoordinate(marketplace.getCoordinate())
-                        .setListPrice(marketplace.productPriceForDisplay());
+                        .setListPrice(marketplace.displayPriceWithoutDecimal());
                     break;
                 default:
                     LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());

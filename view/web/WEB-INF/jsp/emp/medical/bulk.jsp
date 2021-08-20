@@ -133,7 +133,7 @@
                                 It is a non recoverable process. All changes successful are final.
                             </p>
                             <p>
-                                Note: For data integrity, its recommended to make bulk upload after store closing hours or at a non peak hours.
+                                Note: For data integrity, it is recommended to make bulk upload after store closing hours or at a non peak hours.
                                 Always download product list from below and then upload this list with changes. That will limit errors if any.
                             </p>
                         </div>

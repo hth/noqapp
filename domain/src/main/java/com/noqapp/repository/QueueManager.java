@@ -28,7 +28,7 @@ public interface QueueManager extends RepositoryManager<QueueEntity> {
     /** Find just the one with qid that has been queued. */
     QueueEntity findQueuedOne(String codeQR, String did, String qid);
 
-    /** Find with qid and all its dependents that has been queued. */
+    /** Find with qid and all dependents that has been queued. */
     QueueEntity findAllQueuedOne(String codeQR, String did, String qid);
 
     QueueEntity findOne(String codeQR, int tokenNumber);

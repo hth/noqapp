@@ -284,7 +284,7 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
                 purchaseOrder);
 
             if (0 == updateResult.getMatchedCount()) {
-                LOG.info("Could not lock since its already modified codeQR={} token={}, going to next in queue",
+                LOG.info("Could not lock since it is already modified codeQR={} token={}, going to next in queue",
                     codeQR, purchaseOrder.getTokenNumber());
 
                 return true;

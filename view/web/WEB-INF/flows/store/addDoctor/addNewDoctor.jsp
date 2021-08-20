@@ -89,7 +89,7 @@
                             <form:input path="mail" cssClass="form-field" cssErrorClass="form-field error-field" placeholder="Email ID"/>
                             <form:password path="password" cssClass="form-field" cssErrorClass="form-field error-field" placeholder="Password"/>
                             <span class="left-remember">
-                                By signing up, user allows NoQueue&trade; or its representatives to connect with user via email, phone, or SMS for
+                                By signing up, user allows NoQueue&trade; or NoQueue representatives to connect with user via email, phone, or SMS for
                                 feedback, for improvements and or for marketing purposes. User's have read and understand the relevant
                                 <a href="https://noqapp.com/#/pages/privacy" style="color:#8339ff">Privacy Statement</a>.
                             </span>

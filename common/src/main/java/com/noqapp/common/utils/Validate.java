@@ -59,4 +59,15 @@ public class Validate {
             return false;
         }
     }
+
+    public static boolean isValidPriceWithOutDecimal(String text) {
+        try {
+            if (text.length() != String.valueOf(Integer.parseInt(text)).length()) {
+                return false;
+            }
+            return isValidPrice(text);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }
