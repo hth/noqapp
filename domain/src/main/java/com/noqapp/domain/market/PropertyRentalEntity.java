@@ -121,7 +121,7 @@ public class PropertyRentalEntity extends MarketplaceEntity {
             + bathroom + UNDER_SCORE + "BR" + " "
             + carpetArea + UNDER_SCORE + "CA" + " "
             + rentalType.name() + UNDER_SCORE + "RT" + " "
-            + productPriceForDisplay() + UNDER_SCORE + "PP"
+            + displayPriceWithoutDecimal() + UNDER_SCORE + "PP"
             + (StringUtils.isNotBlank(getTags()) ? " " + getTags() : "");
     }
 

@@ -227,12 +227,12 @@ public class PropertyRentalMarketplaceValidator {
                 }
             }
 
-            if (!Validate.isValidPrice(marketplaceForm.getListPrice())) {
+            if (!Validate.isValidPriceWithOutDecimal(marketplaceForm.getListPrice())) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()
                         .source("listPrice")
-                        .defaultText("Please correct Rent per Month to match format ####.## and without ','")
+                        .defaultText("Please correct Rent per Month to whole numbers without decimal or commas")
                         .build());
                 status = "failure";
                 return status;

@@ -117,7 +117,7 @@ public class HouseholdItemMarketplaceFlowActions {
                         .setBusinessType(marketplace.getBusinessType())
                         .setCity(marketplace.getCity())
                         .setCoordinate(marketplaceForm.getCoordinate())
-                        .setListPrice(marketplace.productPriceForDisplay());
+                        .setListPrice(marketplace.displayPriceWithoutDecimal());
                     break;
                 default:
                     LOG.error("Reached unreachable condition, businessType={}", marketplaceForm.getBusinessType());

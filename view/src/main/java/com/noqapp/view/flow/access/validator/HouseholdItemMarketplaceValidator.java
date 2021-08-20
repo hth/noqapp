@@ -147,12 +147,12 @@ public class HouseholdItemMarketplaceValidator {
 
         if (BusinessTypeEnum.HI == marketplaceForm.getBusinessType()) {
             HouseholdItemEntity householdItem = (HouseholdItemEntity) marketplaceForm.getMarketplace();
-            if (!Validate.isValidPrice(marketplaceForm.getListPrice())) {
+            if (!Validate.isValidPriceWithOutDecimal(marketplaceForm.getListPrice())) {
                 messageContext.addMessage(
                     new MessageBuilder()
                         .error()
                         .source("listPrice")
-                        .defaultText("Please correct List Price to match format ####.## and without ','")
+                        .defaultText("Please correct List Price to whole numbers without decimal or commas")
                         .build());
                 status = "failure";
                 return status;

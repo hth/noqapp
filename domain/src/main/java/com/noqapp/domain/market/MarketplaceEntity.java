@@ -276,10 +276,10 @@ public abstract class MarketplaceEntity extends BaseEntity {
         return this;
     }
 
-    /** Shifting decimal point. */
+    /** Shifting decimal point and without decimal. */
     @Transient
-    public String productPriceForDisplay() {
-        return MathUtil.displayPrice(productPrice);
+    public String displayPriceWithoutDecimal() {
+        return MathUtil.displayPriceWithoutDecimal(productPrice);
     }
 
     @Transient
