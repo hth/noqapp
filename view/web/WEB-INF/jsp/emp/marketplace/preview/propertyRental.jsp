@@ -106,7 +106,7 @@
                                     <form:label path="productPrice" cssErrorClass="lb_error">Rent per Month</form:label>
                                 </div>
                                 <div class="col-fields" style="margin-top: 10px;">
-                                    ${marketplace.priceForDisplay}
+                                    ${marketplace.priceForDisplayWithFormatting}
                                 </div>
                                 <span class="tooltip" title="Rent on this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -160,6 +160,17 @@
                                     <form:input path="carpetArea" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Size of this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="rentalAvailableDay" cssErrorClass="lb_error">Available From</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="rentalAvailableDay" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readOnly="true" />
+                                </div>
+                                <span class="tooltip" title="Date from when property is available. Cannot change this information later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                 <div class="clearFix"></div>
                             </li>

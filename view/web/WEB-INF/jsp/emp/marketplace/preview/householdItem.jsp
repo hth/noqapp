@@ -107,7 +107,7 @@
                                     <form:label path="productPrice" cssErrorClass="lb_error">List Price</form:label>
                                 </div>
                                 <div class="col-fields" style="margin-top: 10px;">
-                                    ${marketplace.priceForDisplay}
+                                    ${marketplace.priceForDisplayWithFormatting}
                                 </div>
                                 <span class="tooltip" title="Listed price of your item" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>

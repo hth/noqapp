@@ -225,7 +225,7 @@
                                                     </c:when>
                                                 </c:choose>
                                             </td>
-                                            <td>${marketplaceForm.marketplace.priceForDisplay}</td>
+                                            <td>${marketplaceForm.marketplace.priceForDisplayWithFormatting}</td>
                                             <td>${marketplaceForm.marketplace.city}</td>
                                             <td>
                                                 <fmt:formatDate pattern="MMMM dd, yyyy" value="${marketplaceForm.marketplace.publishUntil}"/>
