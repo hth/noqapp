@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/internal/css/style.css" type='text/css'/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/internal/css/phone-style.css" type='text/css' media="screen"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/internal/css/css-menu/menu-style.css" type='text/css' media="screen"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/jquery/css/jquery-ui.css" />
 
     <!-- reference your copy Font Awesome here (from our CDN or by hosting yourself) -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/external/fontawesome/css/fontawesome.css" type='text/css'>
@@ -156,6 +157,17 @@
                                 </li>
                                 <li>
                                     <div class="col-lable3">
+                                        <form:label path="marketplace.rentalAvailableDay" cssErrorClass="lb_error">Available From</form:label>
+                                    </div>
+                                    <div class="col-fields">
+                                        <form:input path="marketplace.rentalAvailableDay" cssClass="datepicker form-field-left" cssErrorClass="datepicker form-field-left error-field" placeholder="Available from YYYY-MM-DD" disabled="${editMode}" />
+                                    </div>
+                                    <span class="tooltip" title="Date from when property is available. Cannot change this information later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                    <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                    <div class="clearFix"></div>
+                                </li>
+                                <li>
+                                    <div class="col-lable3">
                                         <form:label path="marketplace.address" cssErrorClass="lb_error">Rental Address</form:label>
                                     </div>
                                     <div class="col-fields">
@@ -259,12 +271,19 @@
 
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/external/jquery/js/jquery-ui.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.0.9/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/internal/js/script.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/external/editor/ck/js/ckeditor.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/internal/js/services.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/ladda/js/spin.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/external/ladda/js/ladda.min.js"></script>
+<script>
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+    });
+</script>
 <script type="text/javascript">
     // Bind normal buttons
     Ladda.bind('.button-btn button', {timeout: 6000});

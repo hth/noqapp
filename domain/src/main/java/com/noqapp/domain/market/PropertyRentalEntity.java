@@ -40,6 +40,17 @@ public class PropertyRentalEntity extends MarketplaceEntity {
     @Field("RT")
     private RentalTypeEnum rentalType;
 
+    @Field("RA")
+    private String rentalAvailableDay;
+
+    /** Used when housing agent has been selected. Set only once. */
+    @Field("HQ")
+    private String housingAgentQID;
+
+    /** Review submitted by owner against the housing agent for providing service. */
+    @Field("HR")
+    private String housingAgentReview;
+
     public int getBedroom() {
         return bedroom;
     }
@@ -76,6 +87,33 @@ public class PropertyRentalEntity extends MarketplaceEntity {
         return this;
     }
 
+    public String getRentalAvailableDay() {
+        return rentalAvailableDay;
+    }
+
+    public PropertyRentalEntity setRentalAvailableDay(String rentalAvailableDay) {
+        this.rentalAvailableDay = rentalAvailableDay;
+        return this;
+    }
+
+    public String getHousingAgentQID() {
+        return housingAgentQID;
+    }
+
+    public PropertyRentalEntity setHousingAgentQID(String housingAgentQID) {
+        this.housingAgentQID = housingAgentQID;
+        return this;
+    }
+
+    public String getHousingAgentReview() {
+        return housingAgentReview;
+    }
+
+    public PropertyRentalEntity setHousingAgentReview(String housingAgentReview) {
+        this.housingAgentReview = housingAgentReview;
+        return this;
+    }
+
     @Override
     @Transient
     public String getFieldValueForTag() {
@@ -94,7 +132,8 @@ public class PropertyRentalEntity extends MarketplaceEntity {
             "Bedroom " + bedroom,
             "Bathroom " + bathroom,
             "Carpet Area " + carpetArea + " sq ft",
-            "Rent " + rentalType.getDescription()
+            "Rent " + rentalType.getDescription(),
+            "Available " + rentalAvailableDay
         };
     }
 }

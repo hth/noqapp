@@ -39,6 +39,17 @@ public class JsonPropertyRental extends JsonMarketplace {
     @JsonProperty("rt")
     private RentalTypeEnum rentalType;
 
+    @JsonProperty("ra")
+    private String rentalAvailableDay;
+
+    /** Used when housing agent has been selected. Set only once. */
+    @JsonProperty("hq")
+    private String housingAgentQID;
+
+    /** Review submitted by owner against the housing agent for providing service. */
+    @JsonProperty("hr")
+    private String housingAgentReview;
+
     public int getBedroom() {
         return bedroom;
     }
@@ -72,6 +83,33 @@ public class JsonPropertyRental extends JsonMarketplace {
 
     public JsonPropertyRental setRentalType(RentalTypeEnum rentalType) {
         this.rentalType = rentalType;
+        return this;
+    }
+
+    public String getRentalAvailableDay() {
+        return rentalAvailableDay;
+    }
+
+    public JsonPropertyRental setRentalAvailableDay(String rentalAvailableDay) {
+        this.rentalAvailableDay = rentalAvailableDay;
+        return this;
+    }
+
+    public String getHousingAgentQID() {
+        return housingAgentQID;
+    }
+
+    public JsonPropertyRental setHousingAgentQID(String housingAgentQID) {
+        this.housingAgentQID = housingAgentQID;
+        return this;
+    }
+
+    public String getHousingAgentReview() {
+        return housingAgentReview;
+    }
+
+    public JsonPropertyRental setHousingAgentReview(String housingAgentReview) {
+        this.housingAgentReview = housingAgentReview;
         return this;
     }
 }

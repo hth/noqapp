@@ -2,6 +2,7 @@ package com.noqapp.service.market;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.marketplace.JsonMarketplace;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
@@ -60,10 +61,12 @@ public class HouseholdItemService {
         return householdItemManager.findOneById(id);
     }
 
-    public HouseholdItemEntity findOneByIdAndExpressInterest(String id) {
-        return householdItemManager.findOneByIdAndExpressInterest(id);
+    @Mobile
+    public HouseholdItemEntity findOneByIdAndExpressInterest(String qid, String id) {
+        return householdItemManager.findOneByIdAndExpressInterest(qid, id);
     }
 
+    @Mobile
     public HouseholdItemEntity findOneByIdAndViewCount(String id) {
         return householdItemManager.findOneByIdAndViewCount(id);
     }
@@ -115,8 +118,9 @@ public class HouseholdItemService {
         return marketplace;
     }
 
+    @Mobile
     public HouseholdItemEntity initiateContactWithMarketplacePostOwner(String qid, JsonMarketplace jsonMarketplace) {
-        HouseholdItemEntity householdItem = householdItemManager.findOneByIdAndExpressInterest(jsonMarketplace.getId());
+        HouseholdItemEntity householdItem = householdItemManager.findOneByIdAndExpressInterest(qid, jsonMarketplace.getId());
 
         UserProfileEntity userProfileOfExpressInterest = userProfileManager.findByQueueUserId(qid);
         UserProfileEntity userProfileOfOwner = userProfileManager.findByQueueUserId(householdItem.getQueueUserId());

@@ -94,10 +94,10 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
     }
 
     @Override
-    public HouseholdItemEntity findOneByIdAndExpressInterest(String id) {
+    public HouseholdItemEntity findOneByIdAndExpressInterest(String qid, String id) {
         return mongoTemplate.findAndModify(
             query(where("id").is(id)),
-            new Update().inc("EC", 1),
+            new Update().addToSet("EQ", qid).inc("EC", 1),
             FindAndModifyOptions.options().returnNew(true),
             HouseholdItemEntity.class,
             TABLE);

@@ -16,8 +16,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import org.elasticsearch.common.geo.GeoPoint;
 
-import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -64,6 +64,9 @@ public abstract class MarketplaceEntity extends BaseEntity {
 
     @Field("EC")
     private int expressedInterestCount;
+
+    @Field("EQ")
+    private Set<String> expressedInterestQIDs = new HashSet<>();
 
     /** Marketplace location. */
     @Field("MA")
@@ -180,6 +183,15 @@ public abstract class MarketplaceEntity extends BaseEntity {
 
     public MarketplaceEntity setExpressedInterestCount(int expressedInterestCount) {
         this.expressedInterestCount = expressedInterestCount;
+        return this;
+    }
+
+    public Set<String> getExpressedInterestQIDs() {
+        return expressedInterestQIDs;
+    }
+
+    public MarketplaceEntity addExpressedInterestQID(String qid) {
+        this.expressedInterestQIDs.add(qid);
         return this;
     }
 
