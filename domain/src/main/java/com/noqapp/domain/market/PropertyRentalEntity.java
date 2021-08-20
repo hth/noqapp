@@ -131,7 +131,7 @@ public class PropertyRentalEntity extends MarketplaceEntity {
         return new String[] {
             "Bedroom " + bedroom,
             "Bathroom " + bathroom,
-            "Carpet Area " + carpetArea + " sq ft",
+            "Carpet-Area " + carpetArea + " sq ft",
             "Rent " + rentalType.getDescription(),
             "Available " + rentalAvailableDay
         };
