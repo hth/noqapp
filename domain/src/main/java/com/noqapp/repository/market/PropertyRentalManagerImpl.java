@@ -76,6 +76,15 @@ public class PropertyRentalManagerImpl implements PropertyRentalManager {
     }
 
     @Override
+    public PropertyRentalEntity findOneById(String qid, String id) {
+        return mongoTemplate.findOne(
+            query(where("id").is(id).and("QID").is(qid)).with(Sort.by(Sort.Direction.DESC, "C")),
+            PropertyRentalEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<PropertyRentalEntity> findByQid(String queueUserId) {
         return mongoTemplate.find(
             query(where("QID").is(queueUserId)).with(Sort.by(Sort.Direction.DESC, "C")),

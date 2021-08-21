@@ -76,6 +76,15 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
     }
 
     @Override
+    public HouseholdItemEntity findOneById(String qid, String id) {
+        return mongoTemplate.findOne(
+            query(where("id").is(id).and("QID").is(qid)),
+            HouseholdItemEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
     public List<HouseholdItemEntity> findByQid(String queueUserId) {
         return mongoTemplate.find(
             query(where("QID").is(queueUserId)).with(Sort.by(Sort.Direction.DESC, "C")),

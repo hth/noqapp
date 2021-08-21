@@ -61,6 +61,10 @@ public class HouseholdItemService {
         return householdItemManager.findOneById(id);
     }
 
+    public HouseholdItemEntity findOneById(String qid, String id) {
+        return householdItemManager.findOneById(qid, id);
+    }
+
     @Mobile
     public HouseholdItemEntity findOneByIdAndExpressInterest(String qid, String id) {
         return householdItemManager.findOneByIdAndExpressInterest(qid, id);
