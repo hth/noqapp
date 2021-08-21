@@ -18,6 +18,8 @@ public interface HouseholdItemManager extends RepositoryManager<HouseholdItemEnt
 
     HouseholdItemEntity findOneById(String id);
 
+    HouseholdItemEntity findOneById(String qid, String id);
+
     Stream<HouseholdItemEntity> findAllWithStream();
 
     HouseholdItemEntity findOneByIdAndExpressInterest(String qid, String id);

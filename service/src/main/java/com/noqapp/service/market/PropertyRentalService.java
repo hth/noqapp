@@ -61,6 +61,10 @@ public class PropertyRentalService {
         return propertyRentalManager.findOneById(id);
     }
 
+    public PropertyRentalEntity findOneById(String qid, String id) {
+        return propertyRentalManager.findOneById(qid, id);
+    }
+
     @Mobile
     public PropertyRentalEntity findOneByIdAndExpressInterest(String qid, String id) {
         return propertyRentalManager.findOneByIdAndExpressInterest(qid, id);
