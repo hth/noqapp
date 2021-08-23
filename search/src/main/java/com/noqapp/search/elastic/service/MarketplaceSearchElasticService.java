@@ -1,5 +1,6 @@
 package com.noqapp.search.elastic.service;
 
+import static com.noqapp.common.utils.Constants.MAX_Q_SEARCH_DISTANCE;
 import static com.noqapp.search.elastic.service.BizStoreSearchElasticService.MINUTES_FOR_SEARCH;
 import static com.noqapp.search.elastic.service.MarketplaceElasticService.excludeFields;
 import static com.noqapp.search.elastic.service.MarketplaceElasticService.includeFields;
@@ -178,7 +179,7 @@ public class MarketplaceSearchElasticService {
 
                 boolQueryBuilder.filter(geoDistanceQuery("GH")
                     .geohash(geoHash)
-                    .distance("200", DistanceUnit.KILOMETERS));
+                    .distance(MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder)
                     .sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.ASC))
                     .size(paginationSize);
