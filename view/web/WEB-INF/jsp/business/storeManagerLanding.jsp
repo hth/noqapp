@@ -167,7 +167,9 @@
                                                 }">
                                                     <span style="display:block; font-size:13px;"><a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}" style="color: #0000FF;">Store Image</a></span>
                                                 </c:when>
-                                                <c:when test="${BusinessTypeEnum.BK eq store.businessType}">
+                                                <c:when test="${
+                                                BusinessTypeEnum.BK eq store.businessType
+                                                ||  BusinessTypeEnum.LB eq store.businessType}">
                                                     <span style="display:block; font-size:13px;">
                                                         <a href="/business/store/photo/uploadInteriorPhoto/${store.codeQR}" style="color: #0000FF;">Store Image</a>
                                                     </span>
@@ -192,7 +194,10 @@
                                         </td>
                                         <td>
                                             <span style="display:block; font-size:13px;">${storeManagerForm.tokenQueues.get(store.codeQR).lastNumber - storeManagerForm.tokenQueues.get(store.codeQR).currentlyServing}</span>
-                                            <c:if test="${BusinessTypeEnum.CD eq store.businessType || BusinessTypeEnum.CDQ eq store.businessType}">
+                                            <c:if test="${
+                                            BusinessTypeEnum.CD eq store.businessType
+                                            || BusinessTypeEnum.CDQ eq store.businessType
+                                            || BusinessTypeEnum.LB eq store.businessType}">
                                                 <br/>
                                                 <a href="/business/store/inQueueReport/${store.codeQR}" style="color: #0000FF;">
                                                     <span style="display:block; font-size:13px;">Print In Queue</span>
