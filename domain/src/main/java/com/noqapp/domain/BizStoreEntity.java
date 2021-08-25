@@ -112,7 +112,7 @@ public class BizStoreEntity extends BaseEntity {
     @Field("PH")
     private String phone;
 
-    /* To not loose user entered phone number. */
+    /* To not lose user entered phone number. */
     @Field("PR")
     private String phoneRaw;
 
