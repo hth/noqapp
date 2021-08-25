@@ -156,6 +156,9 @@ public class CommonHelper {
                     case CDQ:
                         categoryName = CanteenStoreDepartmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
                         break;
+                    case LB:
+                        categoryName = LocalGovernmentEnum.valueOf(bizStore.getBizCategoryId()).getDescription();
+                        break;
                     default:
                         categoryName = bizStore.getBizCategoryId();
                 }
