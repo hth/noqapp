@@ -63,6 +63,9 @@ public enum BusinessTypeEnum {
     BK("BK", "Bank", Q, "Queue", QQ, TNS),
     PA("PA", "Park", Q, "Queue", QQ, TNS),
 
+    //Government Bodies
+    LB("LB", "Local Bodies", Q, "Queue", QQ, TNS),
+
     //For Marketplace
     PR("PR", "Property Rental", M, "Marketplace", MP, TNS),
     HI("HI", "Household Items", M, "Marketplace", MP, TNS),
