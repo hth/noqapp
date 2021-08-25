@@ -6,12 +6,6 @@ import java.util.EnumSet;
  * hitender
  * 1/10/21 11:17 PM
  */
-@SuppressWarnings ({
-    "PMD.BeanMembersShouldSerialize",
-    "PMD.LocalVariableCouldBeFinal",
-    "PMD.MethodArgumentCouldBeFinal",
-    "PMD.LongVariable"
-})
 public enum RentalTypeEnum {
     A("A", "Apartment"),
     H("H", "Bungalow/House"),
