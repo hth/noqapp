@@ -433,13 +433,14 @@ public class BusinessFlowValidator {
             status = "failure";
         }
 
-        /* Checks if has self defined business category or system defined. DO, BK and HS has system defined. */
+        /* Checks if it has self defined business category or system defined. DO, BK and HS has system defined. */
         switch (registerBusiness.getStoreBusinessType()) {
             case DO:
             case BK:
             case HS:
             case CD:
             case CDQ:
+            case LB:
                 break;
             default:
                 if (StringUtils.isNotBlank(registerBusiness.getBizCategoryId())) {
