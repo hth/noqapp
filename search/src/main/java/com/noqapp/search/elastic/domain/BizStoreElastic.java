@@ -761,6 +761,7 @@ public class BizStoreElastic extends AbstractDomain {
             case BK:
             case CD:
             case CDQ:
+            case LB:
                 return Objects.equals(bizNameId, that.bizNameId) &&
                     Objects.equals(placeId, that.placeId);
             default:
@@ -779,6 +780,7 @@ public class BizStoreElastic extends AbstractDomain {
             case BK:
             case CD:
             case CDQ:
+            case LB:
                 return Objects.hash(bizNameId, placeId);
             default:
                 return Objects.hash(bizNameId, bizCategoryId, address);
