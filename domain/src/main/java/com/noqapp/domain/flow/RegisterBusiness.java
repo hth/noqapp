@@ -167,6 +167,7 @@ public class RegisterBusiness implements Serializable {
                         break;
                     case CD:
                     case CDQ:
+                    case LB:
                         businessHour
                             .setTokenAvailableFrom(830)
                             .setStartHourStore(915)
