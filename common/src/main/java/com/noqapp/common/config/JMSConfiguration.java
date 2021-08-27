@@ -41,6 +41,9 @@ public class JMSConfiguration {
     @Value("${activemq.destination.flexAppointment}")
     private String activemqDestinationFlexAppointment;
 
+    @Value("${activemq.destination.s3FileOperation}")
+    private String activemqDestinationS3FileOperation;
+
     private JMSErrorHandler jmsErrorHandler = new JMSErrorHandler();
 
     @Bean
@@ -129,6 +132,22 @@ public class JMSConfiguration {
         JmsTemplate template = new JmsTemplate();
         template.setConnectionFactory(connectionFactory());
         template.setDefaultDestinationName(activemqDestinationFlexAppointment);
+        return template;
+    }
+
+    @Bean
+    public DefaultJmsListenerContainerFactory jmsS3FileOperationListenerContainerFactory() {
+        DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory());
+        factory.setErrorHandler(jmsErrorHandler);
+        return factory;
+    }
+
+    @Bean(name = "jmsS3FileOperationTemplate")
+    public JmsTemplate jmsS3FileOperationTemplate() {
+        JmsTemplate template = new JmsTemplate();
+        template.setConnectionFactory(connectionFactory());
+        template.setDefaultDestinationName(activemqDestinationS3FileOperation);
         return template;
     }
 }

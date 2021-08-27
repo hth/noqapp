@@ -17,7 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -87,10 +89,22 @@ public class FtpService {
     @Value("${fileserver.ftp.password}")
     private String ftpPassword;
 
+    private String activemqDestinationS3FileOperation;
+    private JmsTemplate jmsS3FileOperationTemplate;
     private FileSystemOptions fileSystemOptions;
 
     @Autowired
-    public FtpService(FileSystemOptions fileSystemOptions) {
+    public FtpService(
+        @Value("${activemq.destination.s3FileOperation}")
+        String activemqDestinationS3FileOperation,
+
+        @Qualifier("jmsS3FileOperationTemplate")
+        JmsTemplate jmsS3FileOperationTemplate,
+
+        FileSystemOptions fileSystemOptions
+    ) {
+        this.activemqDestinationS3FileOperation = activemqDestinationS3FileOperation;
+        this.jmsS3FileOperationTemplate = jmsS3FileOperationTemplate;
         this.fileSystemOptions = fileSystemOptions;
     }
 
@@ -198,8 +212,11 @@ public class FtpService {
 
             /* Copy local file to sftp server. */
             remoteFile.copyFrom(localFile, Selectors.SELECT_SELF);
+            jmsS3FileOperationTemplate.send(
+                activemqDestinationS3FileOperation,
+                session -> session.createObjectMessage(parent + "/" + directory + "/" + filename));
 
-            LOG.info("File ftp to remote successfully");
+            LOG.info("File ftp to remote successfully and invoked S3 operation");
         } catch (FileSystemException e) {
             LOG.error("ftp upload remote {}", e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
