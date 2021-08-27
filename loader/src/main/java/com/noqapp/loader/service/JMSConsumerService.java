@@ -8,6 +8,7 @@ import com.noqapp.domain.jms.SignupUserInfo;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.OnOffEnum;
+import com.noqapp.loader.scheduledtasks.FileOperationOnS3;
 import com.noqapp.service.MailService;
 import com.noqapp.service.MessageCustomerService;
 
@@ -39,16 +40,19 @@ public class JMSConsumerService {
     private MailService mailService;
     private MessageCustomerService messageCustomerService;
     private FlexAppointmentToTokenService flexAppointmentToTokenService;
+    private FileOperationOnS3 fileOperationOnS3;
 
     @Autowired
     public JMSConsumerService(
         MailService mailService,
         MessageCustomerService messageCustomerService,
-        FlexAppointmentToTokenService flexAppointmentToTokenService
+        FlexAppointmentToTokenService flexAppointmentToTokenService,
+        FileOperationOnS3 fileOperationOnS3
     ) {
         this.mailService = mailService;
         this.messageCustomerService = messageCustomerService;
         this.flexAppointmentToTokenService = flexAppointmentToTokenService;
+        this.fileOperationOnS3 = fileOperationOnS3;
 
         cache = Caffeine.newBuilder()
             .maximumSize(100)
@@ -126,5 +130,11 @@ public class JMSConsumerService {
         } else {
             LOG.info("ActiveMQ skipped flex appointment key={}", flexAppointment.key());
         }
+    }
+
+    @JmsListener(destination = "${activemq.destination.s3FileOperation}", containerFactory = "jmsS3FileOperationListenerContainerFactory")
+    public void sendFlexAppointment(String fileLocation) {
+        LOG.info("ActiveMQ S3 File Operation invoked via JMS {}", fileLocation);
+        fileOperationOnS3.runProcess();
     }
 }

@@ -24,6 +24,7 @@ import com.noqapp.domain.types.catgeory.CanteenStoreDepartmentEnum;
 import com.noqapp.health.repository.ApiHealthNowManager;
 import com.noqapp.health.repository.ApiHealthNowManagerImpl;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.loader.scheduledtasks.FileOperationOnS3;
 import com.noqapp.loader.service.FlexAppointmentToTokenService;
 import com.noqapp.loader.service.ComputeNextRunService;
 import com.noqapp.medical.repository.HospitalVisitScheduleManager;
@@ -343,6 +344,7 @@ public class ITest extends RealMongoForITest {
     @Mock protected JMSProducerService jmsProducerService;
     @Mock protected SubscribeTopicService subscribeTopicService;
     @Mock protected SystemNotifyOnGettingTokenService systemNotifyOnGettingTokenService;
+    @Mock protected FileOperationOnS3 fileOperationOnS3;
 
     private MockEnvironment mockEnvironment;
 

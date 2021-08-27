@@ -87,7 +87,8 @@ class JMSConsumerServiceITest extends ITest {
         jmsConsumerService = new JMSConsumerService(
             mailService,
             messageCustomerService,
-            flexAppointmentToTokenService);
+            flexAppointmentToTokenService,
+            fileOperationOnS3);
 
         registerStore();
         registerUsers();
