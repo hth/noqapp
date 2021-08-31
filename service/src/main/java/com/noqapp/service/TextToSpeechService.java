@@ -141,7 +141,6 @@ public class TextToSpeechService {
             case BK:
             case PA:
             case DO:
-            case LB:
                 switch (countryShortName) {
                     case "IN":
                         String languageCode = nationalLanguageCode(countryShortName);
