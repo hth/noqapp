@@ -58,7 +58,6 @@ public class SubscribeTopicService {
                 case BK:
                 case HS:
                 case PW:
-                case LB:
                     Set<String> codeQRs = new HashSet<>();
                     List<BizStoreEntity> bizStores = bizStoreManager.getAllBizStores(bizStore.getBizName().getId());
                     for (BizStoreEntity bizStoreFound : bizStores) {
