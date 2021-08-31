@@ -11,7 +11,6 @@ import com.noqapp.domain.types.catgeory.BankDepartmentEnum;
 import com.noqapp.domain.types.catgeory.CanteenStoreDepartmentEnum;
 import com.noqapp.domain.types.catgeory.GroceryEnum;
 import com.noqapp.domain.types.catgeory.HealthCareServiceEnum;
-import com.noqapp.domain.types.catgeory.LocalGovernmentEnum;
 import com.noqapp.domain.types.catgeory.MedicalDepartmentEnum;
 import com.noqapp.domain.types.medical.PharmacyCategoryEnum;
 
@@ -101,14 +100,6 @@ public class CommonHelper {
                 }
             case PW:
                 return new LinkedHashMap<>();
-            case LB:
-                List<LocalGovernmentEnum> localGovernmentEnums = LocalGovernmentEnum.ordered();
-
-                map = new LinkedHashMap<>();
-                for (LocalGovernmentEnum localGovernment : localGovernmentEnums) {
-                    map.put(localGovernment.name(), localGovernment.getDescription());
-                }
-                return map;
             case RS:
             case FT:
             case BA:
