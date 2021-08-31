@@ -9,8 +9,8 @@ import java.util.List;
  * 8/25/21 8:50 PM
  */
 public enum LocalGovernmentEnum {
-    ADM("ADM", "Administrator"),
-    OFC("OFC", "Officers");
+    E("E", "Elected"),
+    C("C", "Municipal Commissioner");
 
     private final String name;
     private final String description;
@@ -28,12 +28,12 @@ public enum LocalGovernmentEnum {
         return description;
     }
 
-    public static EnumSet<LocalGovernmentEnum> localGovernments = EnumSet.of(ADM, OFC);
+    public static EnumSet<LocalGovernmentEnum> localGovernments = EnumSet.of(E, C);
 
     public static List<LocalGovernmentEnum> ordered() {
         return new LinkedList<>() {{
-            add(ADM);
-            add(OFC);
+            add(E);
+            add(C);
         }};
     }
 }
