@@ -440,7 +440,6 @@ public class BusinessFlowValidator {
             case HS:
             case CD:
             case CDQ:
-            case LB:
                 break;
             default:
                 if (StringUtils.isNotBlank(registerBusiness.getBizCategoryId())) {
