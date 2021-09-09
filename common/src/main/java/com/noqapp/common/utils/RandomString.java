@@ -25,7 +25,7 @@ public final class RandomString {
     /* No mail is sent out with this domain. */
     public static final String MAIL_NOQAPP_COM = "@mail.noqapp.com";
 
-    /* Mail is sent out with this domain. Though its not delivered to any one other than admin of the store. */
+    /* Mail is sent out with this domain. Though it is not delivered to any one other than admin of the store. */
     public static final String MANAGER_NOQAPP_COM = "@m.noqapp.com";
 
     static {
