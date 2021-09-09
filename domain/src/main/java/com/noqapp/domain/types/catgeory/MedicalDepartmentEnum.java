@@ -5,6 +5,7 @@ package com.noqapp.domain.types.catgeory;
  * 6/25/18 6:38 PM
  */
 public enum MedicalDepartmentEnum {
+    AYU("AYU", "Ayurveda"),
     CRD("CRD", "Cardiologist"),
     CHT("CHT", "Chest Physician"),
     CPY("CPY", "Clinical Psychologist"),
