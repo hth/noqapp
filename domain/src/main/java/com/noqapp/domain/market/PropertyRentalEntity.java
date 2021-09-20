@@ -2,6 +2,7 @@ package com.noqapp.domain.market;
 
 import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
+import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.marketplace.JsonPropertyRental;
 import com.noqapp.domain.types.catgeory.RentalTypeEnum;
 
@@ -138,6 +139,7 @@ public class PropertyRentalEntity extends MarketplaceEntity {
         };
     }
 
+    @Mobile
     public JsonPropertyRental populateJson() {
         JsonPropertyRental jsonPropertyRental = new JsonPropertyRental()
             .setBedroom(bedroom)
