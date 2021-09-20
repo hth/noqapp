@@ -288,7 +288,7 @@ public class BizStoreEntity extends BaseEntity {
     //* Business Payment & Delivery Setting Ends.        */
     //****************************************************/
 
-    /* Contains Id if a task is assigned. */
+    /* Contains ID if a task is assigned. */
     @Field("SC")
     private String scheduledTaskId;
 
