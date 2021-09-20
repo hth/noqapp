@@ -2,6 +2,7 @@ package com.noqapp.domain.market;
 
 import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
+import com.noqapp.domain.json.marketplace.JsonPropertyRental;
 import com.noqapp.domain.types.catgeory.RentalTypeEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -135,5 +136,36 @@ public class PropertyRentalEntity extends MarketplaceEntity {
             "Rent " + rentalType.getDescription(),
             "Available " + rentalAvailableDay
         };
+    }
+
+    public JsonPropertyRental populateJson() {
+        JsonPropertyRental jsonPropertyRental = new JsonPropertyRental()
+            .setBedroom(bedroom)
+            .setBathroom(bathroom)
+            .setCarpetArea(carpetArea)
+            .setRentalType(rentalType)
+            .setRentalAvailableDay(rentalAvailableDay)
+            .setHousingAgentQID(housingAgentQID)
+            .setHousingAgentReview(housingAgentReview);
+
+        jsonPropertyRental.setId(id)
+            .setQueueUserId(getQueueUserId())
+            .setBusinessType(getBusinessType())
+            .setCoordinate(getCoordinate())
+            .setProductPrice(getProductPrice())
+            .setTitle(getTitle())
+            .setDescription(getDescription())
+            .setPostImages(getPostImages())
+            .setTags(getTags())
+            .setViewCount(getViewCount())
+            .setExpressedInterestCount(getExpressedInterestCount())
+            .setAddress(getAddress())
+            .setCity(getCity())
+            .setTown(getTown())
+            .setCountryShortName(getCountryShortName())
+            .setLandmark(getLandmark())
+            .setPublishUntil(getPublishUntil());
+
+        return jsonPropertyRental;
     }
 }
