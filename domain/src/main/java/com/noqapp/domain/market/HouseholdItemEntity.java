@@ -2,6 +2,9 @@ package com.noqapp.domain.market;
 
 import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
+import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.json.marketplace.JsonHouseholdItem;
+import com.noqapp.domain.json.marketplace.JsonPropertyRental;
 import com.noqapp.domain.types.catgeory.ItemConditionEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -53,5 +56,31 @@ public class HouseholdItemEntity extends MarketplaceEntity {
         return new String[] {
             itemCondition.getDescription()
         };
+    }
+
+    @Mobile
+    public JsonHouseholdItem populateJson() {
+        JsonHouseholdItem jsonHouseholdItem = new JsonHouseholdItem()
+                .setItemCondition(itemCondition);
+
+        jsonHouseholdItem.setId(id)
+                .setQueueUserId(getQueueUserId())
+                .setBusinessType(getBusinessType())
+                .setCoordinate(getCoordinate())
+                .setProductPrice(getProductPrice())
+                .setTitle(getTitle())
+                .setDescription(getDescription())
+                .setPostImages(getPostImages())
+                .setTags(getTags())
+                .setViewCount(getViewCount())
+                .setExpressedInterestCount(getExpressedInterestCount())
+                .setAddress(getAddress())
+                .setCity(getCity())
+                .setTown(getTown())
+                .setCountryShortName(getCountryShortName())
+                .setLandmark(getLandmark())
+                .setPublishUntil(getPublishUntil());
+
+        return jsonHouseholdItem;
     }
 }
