@@ -241,7 +241,7 @@ public class TokenQueueService {
                 int requesterTime = DateFormatter.getTimeIn24HourFormat(LocalTime.now(zoneId));
                 int tokenFrom = storeHour.getTokenAvailableFrom();
                 if (requesterTime < tokenFrom && tokenService != TokenServiceEnum.S) {
-                    //Ignore condition for walkin appointments
+                    //Ignore condition for walk-in appointments
                     //Might need to add condition || requesterTime > storeHour.getEndHour() to prevent users from taking token after hours.
                     //This should be prevented on mobile front.
                     LOG.warn("Requester time qid={} tokenFrom={} requesterTime={} codeQR={}", qid, tokenFrom, requesterTime, codeQR);
