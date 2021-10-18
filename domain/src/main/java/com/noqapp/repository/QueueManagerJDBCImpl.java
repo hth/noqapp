@@ -78,7 +78,7 @@ public class QueueManagerJDBCImpl implements QueueManagerJDBC {
             "GROUP BY QR) ORDER BY C DESC";
 
     private static final String findHistoricalRecordByCodeQRDateRange =
-        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, V, U, C, A, D" +
+        "SELECT ID, QR, DID, TS, QID, TN, DT, DN, BT, QS, TI, NS, RA, HR, RV, SN, SB, SE, BN, RR, ST, AC, V, U, C, A, D" +
             " FROM " +
             "QUEUE WHERE QR = ? " +
             "AND " +
