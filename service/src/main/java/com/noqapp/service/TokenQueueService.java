@@ -365,6 +365,15 @@ public class TokenQueueService {
                     queueManager.insert(queue);
                     updateQueueWithUserDetail(codeQR, qid, queue);
                     subscribeTopicService.addSubscribedTopic(qid, bizStore);
+                    if (queue.getBusinessType() == BusinessTypeEnum.DO) {
+                        messageCustomerService.sendMessageToSpecificUser(
+                            "Reach 30 minutes before allotted time",
+                            "Token does not guarantee doctors service. We help prevent crowding, save time and provide realtime update.",
+                            qid,
+                            MessageOriginEnum.A,
+                            bizStore.getBusinessType()
+                        );
+                    }
                 } catch (DuplicateKeyException e) {
                     LOG.error("Error adding to queue did={} codeQR={} reason={}", did, codeQR, e.getLocalizedMessage(), e);
                     return new JsonToken(codeQR, tokenQueue.getBusinessType());
