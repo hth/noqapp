@@ -7,6 +7,7 @@ import com.noqapp.domain.EmailValidateEntity;
 import com.noqapp.domain.ForgotRecoverEntity;
 import com.noqapp.domain.MailEntity;
 import com.noqapp.domain.UserAccountEntity;
+import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.MailStatusEnum;
 import com.noqapp.domain.types.MailTypeEnum;
 import com.noqapp.repository.MailManager;
@@ -411,6 +412,23 @@ public class MailService {
             mailManager.save(mail);
         } catch (IOException | TemplateException exception) {
             LOG.error("Failed sending email for={}", userId, exception);
+            return MailTypeEnum.FAILURE;
+        }
+        return MailTypeEnum.SUCCESS;
+    }
+
+    @Async
+    public MailTypeEnum pendingPostApproval(BusinessTypeEnum businessType, long pendingCount) {
+        try {
+            MailEntity mail = new MailEntity()
+                .setToMail(doNotReplyEmail)
+                .setToName("NoQueue")
+                .setSubject("Pending Approval of Post " + businessType.getDescription())
+                .setMessage("Pending count " + pendingCount + ", approve post for " + businessType.getDescription())
+                .setMailStatus(MailStatusEnum.N);
+            mailManager.save(mail);
+        } catch (Exception exception) {
+            LOG.error("Failed sending post approval email for businessType={}", businessType, exception);
             return MailTypeEnum.FAILURE;
         }
         return MailTypeEnum.SUCCESS;

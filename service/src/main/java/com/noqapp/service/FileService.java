@@ -157,6 +157,7 @@ public class FileService {
     private HouseholdItemManager householdItemManager;
     private BizService bizService;
     private StoreCategoryService storeCategoryService;
+    private MailService mailService;
 
     @Autowired
     public FileService(
@@ -183,7 +184,8 @@ public class FileService {
         PropertyRentalManager propertyRentalManager,
         HouseholdItemManager householdItemManager,
         BizService bizService,
-        StoreCategoryService storeCategoryService
+        StoreCategoryService storeCategoryService,
+        MailService mailService
     ) {
         this.imageProfileWidth = imageProfileWidth;
         this.imageProfileHeight = imageProfileHeight;
@@ -202,6 +204,7 @@ public class FileService {
         this.householdItemManager = householdItemManager;
         this.bizService = bizService;
         this.storeCategoryService = storeCategoryService;
+        this.mailService = mailService;
     }
 
     @Async
@@ -507,7 +510,9 @@ public class FileService {
                     ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY_RENTAL);
 
                     images.add(filename);
+                    propertyRental.setValidateStatus(ValidateStatusEnum.P);
                     propertyRentalManager.save(propertyRental);
+                    mailService.pendingPostApproval(businessType, propertyRentalManager.findAllPendingApprovalCount());
 
                     LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
                     break;
@@ -532,7 +537,9 @@ public class FileService {
                     ftpService.upload(filename, postId, FtpService.MARKETPLACE_HOUSEHOLD_ITEM);
 
                     images.add(filename);
+                    householdItem.setValidateStatus(ValidateStatusEnum.P);
                     householdItemManager.save(householdItem);
+                    mailService.pendingPostApproval(businessType, householdItemManager.findAllPendingApprovalCount());
 
                     LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
                     break;
