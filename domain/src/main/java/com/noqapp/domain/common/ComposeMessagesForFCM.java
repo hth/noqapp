@@ -103,12 +103,12 @@ public class ComposeMessagesForFCM {
 
         if (registeredDevice.getDeviceType() == DeviceTypeEnum.I) {
             jsonMessage.getNotification()
-                .setBody(body)
-                .setTitle(title);
+                .setTitle(title)
+                .setBody(body);
         } else {
             jsonMessage.setNotification(null);
-            jsonData.setBody(body)
-                .setTitle(title);
+            jsonData.setTitle(title)
+                .setBody(body);
         }
 
         jsonMessage.setData(jsonData);
