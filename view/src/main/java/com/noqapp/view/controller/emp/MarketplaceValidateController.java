@@ -2,12 +2,15 @@ package com.noqapp.view.controller.emp;
 
 import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
+import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
+import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.service.MarketplaceElasticService;
+import com.noqapp.service.AccountService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.exceptions.NotAValidObjectIdException;
 import com.noqapp.service.market.HouseholdItemService;
@@ -28,7 +31,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
 /**
  * hitender
  * 6/11/21 12:11 PM
@@ -48,6 +50,7 @@ public class MarketplaceValidateController {
     private String nextPagePropertyRental;
     private String nextPageHouseholdItem;
 
+    private AccountService accountService;
     private PropertyRentalService propertyRentalService;
     private HouseholdItemService householdItemService;
     private MarketplaceElasticService marketplaceElasticService;
@@ -63,6 +66,7 @@ public class MarketplaceValidateController {
         @Value("${nextPage:/emp/marketplace/preview/householdItem}")
         String nextPageHouseholdItem,
 
+        AccountService accountService,
         PropertyRentalService propertyRentalService,
         HouseholdItemService householdItemService,
         MarketplaceElasticService marketplaceElasticService
@@ -71,6 +75,7 @@ public class MarketplaceValidateController {
         this.nextPagePropertyRental = nextPagePropertyRental;
         this.nextPageHouseholdItem = nextPageHouseholdItem;
 
+        this.accountService = accountService;
         this.propertyRentalService = propertyRentalService;
         this.householdItemService = householdItemService;
         this.marketplaceElasticService = marketplaceElasticService;
@@ -102,10 +107,14 @@ public class MarketplaceValidateController {
             model.addAttribute("bucketName", FtpService.marketBucketName(bucketName, businessType));
             switch (businessType) {
                 case PR:
-                    model.addAttribute("marketplace", propertyRentalService.findOneById(id.getText()));
+                    PropertyRentalEntity propertyRental = propertyRentalService.findOneById(id.getText());
+                    model.addAttribute("marketplace", propertyRental);
+                    model.addAttribute("userProfile", accountService.findProfileByQueueUserId(propertyRental.getQueueUserId()));
                     return nextPagePropertyRental;
                 case HI:
-                    model.addAttribute("marketplace", householdItemService.findOneById(id.getText()));
+                    HouseholdItemEntity householdItem = householdItemService.findOneById(id.getText());
+                    model.addAttribute("marketplace", householdItem);
+                    model.addAttribute("userProfile", accountService.findProfileByQueueUserId(householdItem.getQueueUserId()));
                     return nextPageHouseholdItem;
                 default:
                     LOG.error("Reached unsupported condition {}", businessTypeEnum.getText());
