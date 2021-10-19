@@ -101,12 +101,12 @@ public class HouseholdItemService {
         switch (actionType) {
             case APPROVE:
                 title = "Active: " + (marketplace.getTitle().length() > 25 ? marketplace.getTitle().substring(0, 25) + "..." : marketplace.getTitle());
-                body = "Your marketplace posting is live and available until " + DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(marketplace.getPublishUntil()) + ". "
+                body = "Your household posting is live and available until " + DateUtil.convertDateToStringOf_DTF_DD_MMM_YYYY(marketplace.getPublishUntil()) + ". "
                     + "There is a free boost after a week. Visit website to boost your posting.";
                 break;
             case REJECT:
-                title = "Your marketplace posting requires attention";
-                body = "Please rectify marketplace posting and submit again. Ref: " + marketplace.getTitle();
+                title = "Your household posting requires attention";
+                body = "Please rectify household posting and submit again. Ref: " + marketplace.getTitle();
                 break;
             default:
                 LOG.warn("Reached un-reachable condition {}", actionType);
