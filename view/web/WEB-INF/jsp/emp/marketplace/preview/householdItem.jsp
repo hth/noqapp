@@ -184,9 +184,36 @@
                         <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
                             <li>
                                 <div class="col-lable3">
+                                    <form:label path="" cssErrorClass="lb_error">Name</form:label>
+                                </div>
+                                <div class="col-fields" style="margin-top: 10px;">${userProfile.name}</div>
+                                <span class="tooltip" title="Name" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="" cssErrorClass="lb_error">Phone</form:label>
+                                </div>
+                                <div class="col-fields" style="margin-top: 10px;">${userProfile.phoneFormatted}</div>
+                                <span class="tooltip" title="Phone" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="" cssErrorClass="lb_error">Mail</form:label>
+                                </div>
+                                <div class="col-fields" style="margin-top: 10px;">${userProfile.email}</div>
+                                <span class="tooltip" title="Email" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
                                     <form:label path="" cssErrorClass="lb_error">Queue User Id</form:label>
                                 </div>
-                                <div class="col-fields" style="margin-top: 10px;">${marketplace.queueUserId}</div>
+                                <div class="col-fields" style="margin-top: 10px;">${userProfile.queueUserId}</div>
                                 <span class="tooltip" title="Id of user" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
                                 <div class="clearFix"></div>

@@ -236,7 +236,7 @@ public class UserProfileEntity extends BaseEntity {
         return phone;
     }
 
-    /* Phone number is suppose to be with country code. */
+    /* Phone number is supposed to be with country code. */
     public void setPhone(String phone) {
         this.phone = phone;
     }
