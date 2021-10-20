@@ -423,7 +423,8 @@ public class ITest extends RealMongoForITest {
             propertyRentalManager,
             householdItemManager,
             bizService,
-            storeCategoryService
+            storeCategoryService,
+            mailService
         );
 
         medicalFileService = new MedicalFileService(medicalRecordManager, medicalPathologyManager, medicalRadiologyManager, s3FileManager, fileService ,ftpService);
