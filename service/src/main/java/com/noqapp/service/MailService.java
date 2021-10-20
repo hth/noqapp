@@ -363,7 +363,7 @@ public class MailService {
         return MailTypeEnum.SUCCESS;
     }
 
-    /** Send account validation email when mail is not blank or mail address does not ends with mail.noqapp.com. */
+    /** Send account validation email when mail is not blank or mail address does not end with mail.noqapp.com. */
     public void sendValidationMailOnAccountCreation(String userId, String qid, String name) {
         if (StringUtils.isNotBlank(userId) && !userId.endsWith(MAIL_NOQAPP_COM)) {
             EmailValidateEntity accountValidate = emailValidateService.saveAccountValidate(qid, userId);
@@ -372,7 +372,7 @@ public class MailService {
     }
 
     /**
-     * Send account validation email when mail is not blank or mail address does not ends with mail.noqapp.com.
+     * Send account validation email when mail is not blank or mail address does not end with mail.noqapp.com.
      * This mail is send before creating an account.
      */
     @Async
