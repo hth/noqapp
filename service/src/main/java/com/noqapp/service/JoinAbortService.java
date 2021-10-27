@@ -324,31 +324,32 @@ public class JoinAbortService {
         purchaseOrderService.deleteReferenceToTransactionId(transactionId);
     }
 
+    /** Prevent for now. */
     @Mobile
     public void checkCustomerApprovedForTheQueue(String qid, BizStoreEntity bizStore) {
-        if (bizStore.getBizName().getPriorityAccess() == OnOffEnum.O) {
-            switch (bizStore.getBusinessType()) {
-                case CD:
-                case CDQ:
-                    BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQidAndAttribute(qid, bizStore.getBizName().getId(), CommonHelper.findBusinessCustomerAttribute(bizStore));
-                    if (null == businessCustomer) {
-                        throw new JoiningQueuePreApprovedRequiredException("Store has to pre-approve. Please register before joining the queue.");
-                    }
-
-                    if (StringUtils.isNotBlank(businessCustomer.getLimitBusinessCategory()) && !businessCustomer.getLimitBusinessCategory().equalsIgnoreCase(bizStore.getBizCategoryId())) {
-                        throw new JoiningNonApprovedQueueException("This queue is not approved. Select correct pre-approved queue.");
-                    }
-
-                    if (businessCustomer.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.RJ)) {
-                        throw new JoiningQueuePermissionDeniedException("Business has prevented you from joining this queue. Please contact store.");
-                    }
-                    break;
-                default:
-                    businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
-                    if (null == businessCustomer) {
-                        throw new JoiningQueuePreApprovedRequiredException("Store has to authorize for joining the queue. Contact store for access.");
-                    }
-            }
-        }
+//        if (bizStore.getBizName().getPriorityAccess() == OnOffEnum.O) {
+//            switch (bizStore.getBusinessType()) {
+//                case CD:
+//                case CDQ:
+//                    BusinessCustomerEntity businessCustomer = businessCustomerService.findOneByQidAndAttribute(qid, bizStore.getBizName().getId(), CommonHelper.findBusinessCustomerAttribute(bizStore));
+//                    if (null == businessCustomer) {
+//                        throw new JoiningQueuePreApprovedRequiredException("Store has to pre-approve. Please register before joining the queue.");
+//                    }
+//
+//                    if (StringUtils.isNotBlank(businessCustomer.getLimitBusinessCategory()) && !businessCustomer.getLimitBusinessCategory().equalsIgnoreCase(bizStore.getBizCategoryId())) {
+//                        throw new JoiningNonApprovedQueueException("This queue is not approved. Select correct pre-approved queue.");
+//                    }
+//
+//                    if (businessCustomer.getBusinessCustomerAttributes().contains(BusinessCustomerAttributeEnum.RJ)) {
+//                        throw new JoiningQueuePermissionDeniedException("Business has prevented you from joining this queue. Please contact store.");
+//                    }
+//                    break;
+//                default:
+//                    businessCustomer = businessCustomerService.findOneByQid(qid, bizStore.getBizName().getId());
+//                    if (null == businessCustomer) {
+//                        throw new JoiningQueuePreApprovedRequiredException("Store has to authorize for joining the queue. Contact store for access.");
+//                    }
+//            }
+//        }
     }
 }
