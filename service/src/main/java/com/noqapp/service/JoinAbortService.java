@@ -326,6 +326,7 @@ public class JoinAbortService {
 
     /** Prevent for now. */
     @Mobile
+    @Deprecated
     public void checkCustomerApprovedForTheQueue(String qid, BizStoreEntity bizStore) {
 //        if (bizStore.getBizName().getPriorityAccess() == OnOffEnum.O) {
 //            switch (bizStore.getBusinessType()) {
