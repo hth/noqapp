@@ -82,7 +82,7 @@ public class IncidentEventElasticService {
                     incidentEventElastic = DomainConversion.getAsIncidentEventElastic(incidentEvent);
                     incidentEventElastics.add(incidentEventElastic);
                 } catch (Exception e) {
-                    LOG.error("Failed to insert in elastic data={} reason={}",
+                    LOG.error("Failed to insert incidentEvent in elastic data={} reason={}",
                         incidentEventElastic,
                         e.getLocalizedMessage(),
                         e);

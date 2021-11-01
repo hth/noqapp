@@ -162,7 +162,7 @@ public class BizStoreElasticService {
                     bizStoreElastic = DomainConversion.getAsBizStoreElastic(bizStore, storeHourManager.findAll(bizStore.getId()));
                     bizStoreElastics.add(bizStoreElastic);
                 } catch (Exception e) {
-                    LOG.error("Failed to insert in elastic data={} reason={}",
+                    LOG.error("Failed to insert bizStore in elastic data={} reason={}",
                         bizStoreElastic,
                         e.getLocalizedMessage(),
                         e);
