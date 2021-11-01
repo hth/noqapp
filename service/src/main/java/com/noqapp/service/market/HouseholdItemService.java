@@ -140,7 +140,7 @@ public class HouseholdItemService {
             body,
             householdItem.getQueueUserId(),
             MessageOriginEnum.A,
-            jsonMarketplace.getBusinessType()
+            householdItem.getBusinessType()
         );
 
         messageCustomerService.sendMessageToSpecificUser(
@@ -149,7 +149,7 @@ public class HouseholdItemService {
                 "\n\n Note: This is a free service. Please be careful and contact us if there is anything suspicious about this post.",
             qid,
             MessageOriginEnum.A,
-            jsonMarketplace.getBusinessType()
+            householdItem.getBusinessType()
         );
 
         return householdItem;
