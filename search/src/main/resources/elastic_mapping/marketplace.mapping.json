@@ -103,6 +103,15 @@
           }
         },
         "type": "text"
+      },
+      "RA": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 3,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
       }
     }
   }
