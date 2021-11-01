@@ -20,6 +20,9 @@ import org.slf4j.LoggerFactory;
 
 import org.elasticsearch.common.geo.GeoPoint;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -184,6 +187,7 @@ public class DomainConversion {
             .setPostImages(List.copyOf(marketplace.getPostImages()))
             .setViewCount(marketplace.getViewCount())
             .setExpressedInterestCount(marketplace.getExpressedInterestCount())
+            .setRating(marketplace.computeRating().toString())
             .setGeoPointOfQ(marketplace.getCoordinate() == null ? new GeoPointOfQ(0.0, 0.0) : marketplace.getGeoPointOfQ())
             .setGeoHash(marketplace.getCoordinate() == null ? new GeoPoint(0.0, 0.0).getGeohash() : marketplace.getGeoPoint().getGeohash())
             .setCity(marketplace.getCity())

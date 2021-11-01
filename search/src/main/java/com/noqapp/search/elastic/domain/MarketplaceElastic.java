@@ -78,6 +78,9 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonProperty("EC")
     private int expressedInterestCount;
 
+    @JsonProperty("RA")
+    private String rating;
+
     @JsonProperty("COR")
     private GeoPointOfQ geoPointOfQ;
 
@@ -175,6 +178,15 @@ public class MarketplaceElastic extends AbstractDomain {
 
     public MarketplaceElastic setExpressedInterestCount(int expressedInterestCount) {
         this.expressedInterestCount = expressedInterestCount;
+        return this;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public MarketplaceElastic setRating(String rating) {
+        this.rating = rating;
         return this;
     }
 
