@@ -21,7 +21,7 @@ public interface HouseholdItemManager extends RepositoryManager<HouseholdItemEnt
 
     Stream<HouseholdItemEntity> findAllWithStream();
 
-    HouseholdItemEntity findOneByIdAndExpressInterest(String qid, String id);
+    HouseholdItemEntity findOneByIdAndExpressInterestWithViewCount(String qid, String id);
 
     HouseholdItemEntity findOneByIdAndViewCount(String id);
 
