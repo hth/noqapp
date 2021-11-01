@@ -233,7 +233,7 @@ public class MarketplaceElastic extends AbstractDomain {
     }
 
     @Transient
-    public BigDecimal getHotness() {
+    public BigDecimal computeRating() {
         return new BigDecimal(expressedInterestCount * 5).divide(new BigDecimal(viewCount), MathContext.DECIMAL64);
     }
 }
