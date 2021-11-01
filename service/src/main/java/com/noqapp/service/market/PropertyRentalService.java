@@ -140,7 +140,7 @@ public class PropertyRentalService {
             body,
             propertyRental.getQueueUserId(),
             MessageOriginEnum.A,
-            jsonMarketplace.getBusinessType()
+            propertyRental.getBusinessType()
         );
 
         messageCustomerService.sendMessageToSpecificUser(
@@ -149,7 +149,7 @@ public class PropertyRentalService {
                 "\n\n Note: This is a free service. Please be careful and contact us if there is anything suspicious about this post.",
             qid,
             MessageOriginEnum.A,
-            jsonMarketplace.getBusinessType()
+            propertyRental.getBusinessType()
         );
 
         return propertyRental;
