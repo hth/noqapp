@@ -16,6 +16,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.annotation.Transient;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -226,5 +230,10 @@ public class MarketplaceElastic extends AbstractDomain {
     public MarketplaceElastic setFieldTags(String[] fieldTags) {
         this.fieldTags = fieldTags;
         return this;
+    }
+
+    @Transient
+    public BigDecimal computeRating() {
+        return new BigDecimal(expressedInterestCount * 5).divide(new BigDecimal(viewCount), MathContext.DECIMAL64);
     }
 }

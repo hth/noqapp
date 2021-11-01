@@ -66,8 +66,8 @@ public class PropertyRentalService {
     }
 
     @Mobile
-    public PropertyRentalEntity findOneByIdAndExpressInterest(String qid, String id) {
-        return propertyRentalManager.findOneByIdAndExpressInterest(qid, id);
+    public PropertyRentalEntity findOneByIdAndExpressInterestWithViewCount(String qid, String id) {
+        return propertyRentalManager.findOneByIdAndExpressInterestWithViewCount(qid, id);
     }
 
     @Mobile
@@ -124,7 +124,7 @@ public class PropertyRentalService {
 
     @Mobile
     public PropertyRentalEntity initiateContactWithMarketplacePostOwner(String qid, JsonMarketplace jsonMarketplace) {
-        PropertyRentalEntity propertyRental = propertyRentalManager.findOneByIdAndExpressInterest(qid, jsonMarketplace.getId());
+        PropertyRentalEntity propertyRental = propertyRentalManager.findOneByIdAndExpressInterestWithViewCount(qid, jsonMarketplace.getId());
 
         UserProfileEntity userProfileOfExpressInterest = userProfileManager.findByQueueUserId(qid);
         UserProfileEntity userProfileOfOwner = userProfileManager.findByQueueUserId(propertyRental.getQueueUserId());

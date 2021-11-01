@@ -66,8 +66,8 @@ public class HouseholdItemService {
     }
 
     @Mobile
-    public HouseholdItemEntity findOneByIdAndExpressInterest(String qid, String id) {
-        return householdItemManager.findOneByIdAndExpressInterest(qid, id);
+    public HouseholdItemEntity findOneByIdAndExpressInterestWithViewCount(String qid, String id) {
+        return householdItemManager.findOneByIdAndExpressInterestWithViewCount(qid, id);
     }
 
     @Mobile
@@ -124,7 +124,7 @@ public class HouseholdItemService {
 
     @Mobile
     public HouseholdItemEntity initiateContactWithMarketplacePostOwner(String qid, JsonMarketplace jsonMarketplace) {
-        HouseholdItemEntity householdItem = householdItemManager.findOneByIdAndExpressInterest(qid, jsonMarketplace.getId());
+        HouseholdItemEntity householdItem = householdItemManager.findOneByIdAndExpressInterestWithViewCount(qid, jsonMarketplace.getId());
 
         UserProfileEntity userProfileOfExpressInterest = userProfileManager.findByQueueUserId(qid);
         UserProfileEntity userProfileOfOwner = userProfileManager.findByQueueUserId(householdItem.getQueueUserId());
