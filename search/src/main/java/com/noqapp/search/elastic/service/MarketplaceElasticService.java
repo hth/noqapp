@@ -98,7 +98,7 @@ public class MarketplaceElasticService {
                     marketplaceElastic = DomainConversion.getAsMarketplaceElastic(marketplace);
                     marketplaceElastics.add(marketplaceElastic);
                 } catch (Exception e) {
-                    LOG.error("Failed to insert in elastic data={} reason={}",
+                    LOG.error("Failed to insert marketplace in elastic data={} reason={}",
                         marketplaceElastic,
                         e.getLocalizedMessage(),
                         e);
