@@ -3,7 +3,6 @@ package com.noqapp.search.elastic.domain;
 import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
 import com.noqapp.common.utils.AbstractDomain;
-import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
@@ -17,12 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.data.annotation.Transient;
-
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
