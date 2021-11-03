@@ -144,7 +144,7 @@ public class HouseholdItemService {
         );
 
         messageCustomerService.sendMessageToSpecificUser(
-            "your interest was shared",
+            " your interest was shared",
             "We have sent your information to the owner (" + userProfileOfOwner.getName() + ") of this post. They will contact you on phone " + userProfileOfExpressInterest.getPhoneFormatted() +
                 "\n\n Note: This is a free service. Please be careful and contact us if there is anything suspicious about this post.",
             qid,
