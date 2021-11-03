@@ -17,8 +17,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import org.elasticsearch.common.geo.GeoPoint;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -322,10 +320,9 @@ public abstract class MarketplaceEntity extends BaseEntity {
         return false;
     }
 
+    /** Compute hotness based on number of interest shown. */
     @Transient
     public BigDecimal computeRating() {
-        return viewCount > 0
-            ? new BigDecimal(expressedInterestCount * 5).divide(new BigDecimal(viewCount), MathContext.DECIMAL64).setScale(1, RoundingMode.HALF_UP)
-            : BigDecimal.ZERO;
+        return CommonUtil.computeHotnessBasedOnYCombinator(expressedInterestCount, DateUtil.getHoursBetween(DateUtil.asLocalDateTime(getCreated())));
     }
 }

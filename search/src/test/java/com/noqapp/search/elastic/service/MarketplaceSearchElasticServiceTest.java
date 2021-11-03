@@ -1,9 +1,11 @@
 package com.noqapp.search.elastic.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.common.utils.DateUtil;
+import com.noqapp.common.utils.RandomString;
 import com.noqapp.domain.GenerateUserIds;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
@@ -29,9 +31,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -63,6 +69,7 @@ class MarketplaceSearchElasticServiceTest extends ITest {
 
         assertTrue(elasticAdministrationService.deleteAllIndices(), "Deleted successfully elastic index");
         elasticAdministrationService.addMapping(MarketplaceElastic.INDEX, MarketplaceElastic.TYPE);
+        Random random = new Random();
         for (int i = 1; i <= 10; i++) {
             MarketplaceEntity marketplaceEntity = new PropertyRentalEntity()
                 .setRentalType(RentalTypeEnum.A)
@@ -78,7 +85,7 @@ class MarketplaceSearchElasticServiceTest extends ITest {
                 .setPostImages(Set.of(CommonUtil.generateHexFromObjectId()))
                 .setTags("1_BE 4_BR 3000_CA A_RT")
                 .setViewCount(0)
-                .setExpressedInterestCount(0)
+                .setExpressedInterestCount(random.ints(0, 10).findFirst().getAsInt())
                 .setAddress("Mumbai")
                 .setCity("Mumbai")
                 .setTown("Mumbai")

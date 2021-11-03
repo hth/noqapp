@@ -43,7 +43,7 @@ public class MarketplaceElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceElasticService.class);
 
     /** Include field are the fields to be included upon completing the search. */
-    static String[] includeFields = new String[]{"BT", "CS", "DS", "EC", "EI", "GH", "VC", "RA", "MC", "PI", "PP", "TG", "TI", "TO", "TS"};
+    static String[] includeFields = new String[]{"BT", "CS", "DS", "EI", "GH", "VC", "RA", "MC", "PI", "PP", "TG", "TI", "TO", "TS"};
     static String[] excludeFields = new String[]{"_type"};
 
     private PropertyRentalManager propertyRentalManager;
@@ -148,7 +148,6 @@ public class MarketplaceElasticService {
                     .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ZZ)
                     .setCountryShortName(map.containsKey("CS") ? map.get("CS").toString() : "")
                     .setDescription(map.containsKey("DS") ? map.get("DS").toString() : "")
-                    .setExpressedInterestCount(map.containsKey("EC") ? Integer.parseInt(map.get("EC").toString()) : 0)
                     .setRating(map.containsKey("RA") ? map.get("RA").toString() : "")
                     .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
                     .setViewCount(map.containsKey("VC") ? Integer.parseInt(map.get("VC").toString()) : 0)

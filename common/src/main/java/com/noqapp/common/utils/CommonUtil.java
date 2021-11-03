@@ -19,6 +19,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -64,7 +66,7 @@ public final class CommonUtil {
 
         Map<String, String> temp = new HashMap<>();
         Arrays.stream(Locale.getISOLanguages()).map(Locale::new).forEachOrdered(loc -> temp.put(loc.getLanguage(), loc.getDisplayLanguage()));
-        
+
         languages = temp.entrySet().stream()
             .sorted(Map.Entry.comparingByValue())
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
@@ -233,6 +235,7 @@ public final class CommonUtil {
     /**
      * Parses error message to increase readability like { : "KUB", : "SONO" } to : "KUB", : "SONO"
      * E11000 duplicate key error collection: TABLE_NAME.COLLECTION NAME index: some_idx dup key: { : "KUB", : "SONO" }
+     *
      * @param errorMessage
      * @return
      */
@@ -263,7 +266,7 @@ public final class CommonUtil {
     public static String displayWithCurrencyCodeWithFormatting(String orderPrice, String countryCode) {
         return currencyLocal(countryCode) + NumberFormat.getInstance(new Locale("en", countryCode)).format(new BigDecimal(orderPrice));
     }
-    
+
     public static String displayWithCurrencyCode(String orderPrice, String countryCode) {
         return currencyLocal(countryCode) + orderPrice;
     }
@@ -339,9 +342,9 @@ public final class CommonUtil {
      * Calculate distance between two points in latitude and longitude taking
      * into account height difference. If you are not interested in height
      * difference pass 0.0. Uses Haversine method as its base.
-     *
      * lat1, lon1 Start point lat2, lon2 End point el1 Start altitude in meters
      * el2 End altitude in meters
+     *
      * @return double Distance in Meters
      */
     public static double distanceInMeters(double lat1, double lat2, double lon1, double lon2, double el1, double el2) {
@@ -361,4 +364,21 @@ public final class CommonUtil {
 
         return Math.sqrt(distance);
     }
- }
+
+    /**
+     * Y Combinator Hacker News
+     *
+     * (p - 1) / (t + 2)^1.5
+     *
+     * p = votes (points) from users
+     * t = time since submission in hours
+     */
+    public static BigDecimal computeHotnessBasedOnYCombinator(int expressedInterestCount, long postedHowLongBackInHours) {
+        BigDecimal computed = new BigDecimal(expressedInterestCount - 1).divide(BigDecimal.valueOf(Math.pow(postedHowLongBackInHours + 2, 1.5)), MathContext.DECIMAL64).setScale(1, RoundingMode.HALF_UP);
+        if (computed.compareTo(new BigDecimal("5.0")) > 0) {
+            return new BigDecimal("5.0").setScale(1, RoundingMode.HALF_UP);
+        } else {
+            return computed;
+        }
+    }
+}
