@@ -3,6 +3,7 @@ package com.noqapp.search.elastic.domain;
 import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
 import com.noqapp.common.utils.AbstractDomain;
+import com.noqapp.common.utils.CommonUtil;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.search.elastic.config.ElasticsearchClientConfiguration;
@@ -21,6 +22,7 @@ import org.springframework.data.annotation.Transient;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -74,9 +76,6 @@ public class MarketplaceElastic extends AbstractDomain {
 
     @JsonProperty("VC")
     private int viewCount;
-
-    @JsonProperty("EC")
-    private int expressedInterestCount;
 
     @JsonProperty("RA")
     private String rating;
@@ -172,15 +171,6 @@ public class MarketplaceElastic extends AbstractDomain {
         return this;
     }
 
-    public int getExpressedInterestCount() {
-        return expressedInterestCount;
-    }
-
-    public MarketplaceElastic setExpressedInterestCount(int expressedInterestCount) {
-        this.expressedInterestCount = expressedInterestCount;
-        return this;
-    }
-
     public String getRating() {
         return rating;
     }
@@ -242,10 +232,5 @@ public class MarketplaceElastic extends AbstractDomain {
     public MarketplaceElastic setFieldTags(String[] fieldTags) {
         this.fieldTags = fieldTags;
         return this;
-    }
-
-    @Transient
-    public BigDecimal computeRating() {
-        return new BigDecimal(expressedInterestCount * 5).divide(new BigDecimal(viewCount), MathContext.DECIMAL64);
     }
 }

@@ -62,9 +62,6 @@ public abstract class JsonMarketplace extends AbstractDomain {
     @JsonProperty("vc")
     private int viewCount;
 
-    @JsonProperty("ec")
-    private int expressedInterestCount;
-
     /** Marketplace location. */
     @JsonProperty("ma")
     private String address;
@@ -171,15 +168,6 @@ public abstract class JsonMarketplace extends AbstractDomain {
 
     public JsonMarketplace setViewCount(int viewCount) {
         this.viewCount = viewCount;
-        return this;
-    }
-
-    public int getExpressedInterestCount() {
-        return expressedInterestCount;
-    }
-
-    public JsonMarketplace setExpressedInterestCount(int expressedInterestCount) {
-        this.expressedInterestCount = expressedInterestCount;
         return this;
     }
 

@@ -4,7 +4,6 @@ import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.marketplace.JsonHouseholdItem;
-import com.noqapp.domain.json.marketplace.JsonPropertyRental;
 import com.noqapp.domain.types.catgeory.ItemConditionEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -73,7 +72,6 @@ public class HouseholdItemEntity extends MarketplaceEntity {
                 .setPostImages(getPostImages())
                 .setTags(getTags())
                 .setViewCount(getViewCount())
-                .setExpressedInterestCount(getExpressedInterestCount())
                 .setAddress(getAddress())
                 .setCity(getCity())
                 .setTown(getTown())

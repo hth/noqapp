@@ -161,7 +161,6 @@ public class PropertyRentalEntity extends MarketplaceEntity {
             .setPostImages(getPostImages())
             .setTags(getTags())
             .setViewCount(getViewCount())
-            .setExpressedInterestCount(getExpressedInterestCount())
             .setAddress(getAddress())
             .setCity(getCity())
             .setTown(getTown())
