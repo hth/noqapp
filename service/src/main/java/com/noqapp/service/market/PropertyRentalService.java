@@ -124,8 +124,7 @@ public class PropertyRentalService {
 
     @Mobile
     public PropertyRentalEntity initiateContactWithMarketplacePostOwner(String qid, JsonMarketplace jsonMarketplace) {
-        PropertyRentalEntity propertyRental = propertyRentalManager.findOneByIdAndExpressInterestWithViewCount(qid, jsonMarketplace.getId());
-
+        PropertyRentalEntity propertyRental = propertyRentalManager.findOneById(jsonMarketplace.getId());
         UserProfileEntity userProfileOfExpressInterest = userProfileManager.findByQueueUserId(qid);
         UserProfileEntity userProfileOfOwner = userProfileManager.findByQueueUserId(propertyRental.getQueueUserId());
 
@@ -141,6 +140,7 @@ public class PropertyRentalService {
             return propertyRental;
         }
 
+        propertyRental = propertyRentalManager.findOneByIdAndExpressInterestWithViewCount(qid, jsonMarketplace.getId());
         String body = "Please contact " + userProfileOfExpressInterest.getName() + " at phone number " + userProfileOfExpressInterest.getPhoneFormatted();
         if (userProfileOfExpressInterest.isProfileVerified()) {
             body = body + ". This is a verified profile.";

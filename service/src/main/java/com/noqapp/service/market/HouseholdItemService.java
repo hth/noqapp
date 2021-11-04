@@ -124,8 +124,7 @@ public class HouseholdItemService {
 
     @Mobile
     public HouseholdItemEntity initiateContactWithMarketplacePostOwner(String qid, JsonMarketplace jsonMarketplace) {
-        HouseholdItemEntity householdItem = householdItemManager.findOneByIdAndExpressInterestWithViewCount(qid, jsonMarketplace.getId());
-
+        HouseholdItemEntity householdItem = householdItemManager.findOneById(jsonMarketplace.getId());
         UserProfileEntity userProfileOfExpressInterest = userProfileManager.findByQueueUserId(qid);
         UserProfileEntity userProfileOfOwner = userProfileManager.findByQueueUserId(householdItem.getQueueUserId());
 
@@ -141,6 +140,7 @@ public class HouseholdItemService {
             return householdItem;
         }
 
+        householdItem = householdItemManager.findOneByIdAndExpressInterestWithViewCount(qid, jsonMarketplace.getId());
         String body = "Please contact " + userProfileOfExpressInterest.getName() + " at phone number " + userProfileOfExpressInterest.getPhoneFormatted();
         if (userProfileOfExpressInterest.isProfileVerified()) {
             body = body + ". This is a verified profile.";
