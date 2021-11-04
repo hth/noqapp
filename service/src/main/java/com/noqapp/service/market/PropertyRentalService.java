@@ -129,6 +129,18 @@ public class PropertyRentalService {
         UserProfileEntity userProfileOfExpressInterest = userProfileManager.findByQueueUserId(qid);
         UserProfileEntity userProfileOfOwner = userProfileManager.findByQueueUserId(propertyRental.getQueueUserId());
 
+        if (userProfileOfExpressInterest.getQueueUserId().equalsIgnoreCase(userProfileOfOwner.getQueueUserId())) {
+            messageCustomerService.sendMessageToSpecificUser(
+                "Interest not sent",
+                "Cannot express interest on your own post",
+                propertyRental.getQueueUserId(),
+                MessageOriginEnum.A,
+                propertyRental.getBusinessType()
+            );
+
+            return propertyRental;
+        }
+
         String body = "Please contact " + userProfileOfExpressInterest.getName() + " at phone number " + userProfileOfExpressInterest.getPhoneFormatted();
         if (userProfileOfExpressInterest.isProfileVerified()) {
             body = body + ". This is a verified profile.";
@@ -136,7 +148,7 @@ public class PropertyRentalService {
         body = body + "\n\n Note: This is a free service. Please be careful and contact us if there is anything suspicious.";
 
         messageCustomerService.sendMessageToSpecificUser(
-            " interest received on rental property by " + userProfileOfExpressInterest.getInitials(),
+            "Interest received on rental property by " + userProfileOfExpressInterest.getInitials(),
             body,
             propertyRental.getQueueUserId(),
             MessageOriginEnum.A,
@@ -144,7 +156,7 @@ public class PropertyRentalService {
         );
 
         messageCustomerService.sendMessageToSpecificUser(
-            " your interest was shared",
+            "Your interest was shared",
             "We have sent your information to the owner (" + userProfileOfOwner.getName() + ") of this post. They will contact you on phone " + userProfileOfExpressInterest.getPhoneFormatted() +
                 "\n\n Note: This is a free service. Please be careful and contact us if there is anything suspicious about this post.",
             qid,
