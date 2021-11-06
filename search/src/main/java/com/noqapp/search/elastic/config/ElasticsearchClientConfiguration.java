@@ -21,7 +21,7 @@ public class ElasticsearchClientConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(ElasticsearchClientConfiguration.class);
 
     /* Helps in migrating to new index by adding new name like v1 to v2 to string array. */
-    private static final String[] INDEX_VERSION = {"v6", "v0", "v1"};
+    private static final String[] INDEX_VERSION = {"v0", "v1"};
 
     /* Always lower case for Index and Type. */
     public static final String INDEX = "noqueue_" + INDEX_VERSION[INDEX_VERSION.length - 1];
