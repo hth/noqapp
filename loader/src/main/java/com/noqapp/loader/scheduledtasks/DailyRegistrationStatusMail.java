@@ -158,7 +158,7 @@ public class DailyRegistrationStatusMail {
             statsCron.addStats("iPhoneDeviceRegistered", iPhoneDeviceRegistered);
             statsCronService.save(statsCron);
 
-            /* Without if condition its too noisy. */
+            /* Without if condition it's too noisy. */
             LOG.info(
                 "Registration Status " +
                 "from={} " +
