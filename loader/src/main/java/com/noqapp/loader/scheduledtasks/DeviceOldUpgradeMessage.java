@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Send message to those devices that would not be supported in future.
+ * Send message to those devices that would not be supported in the future.
  * hitender
  * 3/29/21 6:21 PM
  */
