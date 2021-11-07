@@ -199,7 +199,7 @@ public class MarketplaceSearchElasticService {
                 .setSize(paginationSize)
                 .setSearchedOnBusinessType(searchedOnBusinessType);
         } catch (IOException e) {
-            LOG.error("Failed getting data reason={}", e.getLocalizedMessage(), e);
+            LOG.error("Failed getting marketplace data reason={}", e.getLocalizedMessage(), e);
             return marketplaceElastics;
         }
     }
