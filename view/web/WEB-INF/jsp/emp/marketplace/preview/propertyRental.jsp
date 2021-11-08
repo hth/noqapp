@@ -65,19 +65,31 @@
             <!-- Add New Supervisor -->
             <sec:authorize access="hasAnyRole('ROLE_SUPERVISOR')">
             <div class="admin-main">
-                <form:form action="${pageContext.request.contextPath}/emp/marketplace/action" modelAttribute="marketplace">
+                <form:form action="${pageContext.request.contextPath}/emp/marketplace/action" modelAttribute="marketplaceForm">
                 <div class="admin-title">
-                    <h2>Review your ${marketplace.businessType.description} post</h2>
+                    <h2>Review your ${marketplaceForm.marketplace.businessType.description} post</h2>
                 </div>
+
+                <spring:hasBindErrors name="marketplaceForm">
+                <div class="error-box">
+                    <div class="error-txt">
+                        <ul>
+                            <li><form:errors path="*"/></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="space10"></div>
+                </spring:hasBindErrors>
+
                 <div class="admin-content">
                     <div class="add-new">
                         <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="title" cssErrorClass="lb_error">Title</form:label>
+                                    <form:label path="marketplace.title" cssErrorClass="lb_error">Title</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="title" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="marketplace.title" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Title of your property listing" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -85,10 +97,10 @@
                             </li>
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="description" cssErrorClass="lb_error">Description</form:label>
+                                    <form:label path="marketplace.description" cssErrorClass="lb_error">Description</form:label>
                                 </div>
                                 <div class="col-fields" style="margin-top: 10px;">
-                                    <c:out value="${marketplace.description}" escapeXml="false"/>
+                                    <c:out value="${marketplaceForm.marketplace.description}" escapeXml="false"/>
                                 </div>
                                 <span class="tooltip" title="Public information about your property" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -103,10 +115,10 @@
                         <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="productPrice" cssErrorClass="lb_error">Rent per Month</form:label>
+                                    <form:label path="marketplace.productPrice" cssErrorClass="lb_error">Rent per Month</form:label>
                                 </div>
-                                <div class="col-fields" style="margin-top: 10px;">
-                                    ${marketplace.priceForDisplayWithFormatting}
+                                <div class="col-fields">
+                                    <form:input path="marketplace.priceForDisplayWithFormatting" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Rent on this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -114,10 +126,10 @@
                             </li>
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="rentalType" cssErrorClass="lb_error">Rental Type</form:label>
+                                    <form:label path="marketplace.rentalType" cssErrorClass="lb_error">Rental Type</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="rentalType.description" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="marketplace.rentalType.description" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Type of rental property" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -132,10 +144,10 @@
                         <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="bedroom" cssErrorClass="lb_error">Number of bedrooms</form:label>
+                                    <form:label path="marketplace.bedroom" cssErrorClass="lb_error">Number of bedrooms</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="bedroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="marketplace.bedroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Number of bedrooms available" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -143,10 +155,10 @@
                             </li>
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="bathroom" cssErrorClass="lb_error">Number of bathrooms</form:label>
+                                    <form:label path="marketplace.bathroom" cssErrorClass="lb_error">Number of bathrooms</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="bathroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="marketplace.bathroom" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Number of bathrooms available" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -154,10 +166,10 @@
                             </li>
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="carpetArea" cssErrorClass="lb_error">Carpet Area (sq. ft.)</form:label>
+                                    <form:label path="marketplace.carpetArea" cssErrorClass="lb_error">Carpet Area (sq. ft.)</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="carpetArea" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="marketplace.carpetArea" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Size of this place" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -165,10 +177,10 @@
                             </li>
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="rentalAvailableDay" cssErrorClass="lb_error">Available From</form:label>
+                                    <form:label path="marketplace.rentalAvailableDay" cssErrorClass="lb_error">Available From</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="rentalAvailableDay" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readOnly="true" />
+                                    <form:input path="marketplace.rentalAvailableDay" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readOnly="true" />
                                 </div>
                                 <span class="tooltip" title="Date from when property is available. Cannot change this information later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -176,10 +188,10 @@
                             </li>
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="address" cssErrorClass="lb_error">Rental Address</form:label>
+                                    <form:label path="marketplace.address" cssErrorClass="lb_error">Rental Address</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="address" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="marketplace.address" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Address of the rental place. This is not <b><u>visible</u></b> to others. Cannot change this information later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -194,10 +206,10 @@
                         <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="city" cssErrorClass="lb_error">City/Area</form:label>
+                                    <form:label path="marketplace.city" cssErrorClass="lb_error">City/Area</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="city" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="marketplace.city" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="City the property is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -205,10 +217,10 @@
                             </li>
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="town" cssErrorClass="lb_error">Town/Locality/Sector</form:label>
+                                    <form:label path="marketplace.town" cssErrorClass="lb_error">Town/Locality/Sector</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="town" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="marketplace.town" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Town or Sector the property is located" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -216,10 +228,10 @@
                             </li>
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="landmark" cssErrorClass="lb_error">Landmark</form:label>
+                                    <form:label path="marketplace.landmark" cssErrorClass="lb_error">Landmark</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="landmark" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="marketplace.landmark" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Any close by landmark" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;"></sup>
@@ -227,10 +239,10 @@
                             </li>
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="businessType" cssErrorClass="lb_error">Posting For</form:label>
+                                    <form:label path="marketplace.businessType" cssErrorClass="lb_error">Posting For</form:label>
                                 </div>
                                 <div class="col-fields">
-                                    <form:input path="businessType.description" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                    <form:input path="marketplace.businessType.description" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
                                 </div>
                                 <span class="tooltip" title="Your post will be listed on the market places selected here. This <b><u>cannot</u></b> be changed later." style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
                                 <sup style="color: #9f1313; font-size: 150%;">*</sup>
@@ -284,17 +296,17 @@
                 </div>
 
                 <div class="admin-title">
-                    <h2>Image of ${marketplace.businessType.description}</h2>
+                    <h2>Image of ${marketplaceForm.marketplace.businessType.description}</h2>
                 </div>
                 <div class="admin-content">
                     <div class="add-new">
                         <c:choose>
-                            <c:when test="${!empty marketplace.postImages}">
+                            <c:when test="${!empty marketplaceForm.marketplace.postImages}">
                                 <ul class="list-form">
-                                    <c:forEach items="${marketplace.postImages}" var="image" varStatus="status">
+                                    <c:forEach items="${marketplaceForm.marketplace.postImages}" var="image" varStatus="status">
                                         <li>
                                             <div class="col-fields">
-                                                <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/${marketplace.id}/${image}"
+                                                <img src="https://s3.ap-south-1.amazonaws.com/${bucketName}/${marketplaceForm.marketplace.id}/${image}"
                                                         onerror="this.src='/static/internal/img/pending-image.png'"
                                                         class="img-profile-circle" />
                                             </div>
@@ -311,15 +323,36 @@
                         </c:choose>
                     </div>
                 </div>
+
+                <div class="admin-content">
+                    <div class="add-new">
+                        <ul class="list-form" style="border: 1px solid black; padding-top: 20px;">
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="marketplaceRejectReason" cssErrorClass="lb_error">Reason for Rejection</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:select path="marketplaceRejectReason" cssClass="form-field-select single-dropdown" cssErrorClass="form-field-select single-dropdown error-field" multiple="false" onchange="onRejectMarketplaceChange()">
+                                        <form:option value="" label="--- Select ---"/>
+                                        <form:options items="${marketplaceForm.marketplaceRejectReasons}" itemValue="name" itemLabel="description" disabled="false"/>
+                                    </form:select>
+                                </div>
+                                <span class="tooltip" title="Select the reason for rejection" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                <div class="clearFix"></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 </form:form>
 
                 <div class="admin-content">
                     <div class="add-new">
                         <div class="col-lable3"></div>
                         <div class="col-fields">
-                            <form:form action="${pageContext.request.contextPath}/emp/marketplace/action" modelAttribute="marketplaceForm" method="post">
-                                <form:hidden path="marketplaceId" value="${marketplace.id}"/>
-                                <form:hidden path="businessType" value="${marketplace.businessType.name}"/>
+                            <form:form action="${pageContext.request.contextPath}/emp/marketplace/action" modelAttribute="marketplaceForm" method="post" id="acceptMarketplace">
+                                <form:hidden path="marketplaceId" value="${marketplaceForm.marketplace.id}"/>
+                                <form:hidden path="businessType" value="${marketplaceForm.marketplace.businessType.name}"/>
                                 <form:hidden path="actionType" value="${ActionTypeEnum.APPROVE}" />
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <div class="left-btn">
@@ -327,10 +360,11 @@
                                 </div>
                             </form:form>
 
-                            <form:form action="${pageContext.request.contextPath}/emp/marketplace/action" modelAttribute="marketplaceForm" method="post">
-                                <form:hidden path="marketplaceId" value="${marketplace.id}"/>
-                                <form:hidden path="businessType" value="${marketplace.businessType.name}"/>
+                            <form:form action="${pageContext.request.contextPath}/emp/marketplace/action" modelAttribute="marketplaceForm" method="post" id="rejectMarketplace">
+                                <form:hidden path="marketplaceId" value="${marketplaceForm.marketplace.id}"/>
+                                <form:hidden path="businessType" value="${marketplaceForm.marketplace.businessType.name}"/>
                                 <form:hidden path="actionType" value="${ActionTypeEnum.REJECT}" />
+                                <form:hidden path="marketplaceRejectReason" />
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <div class="right-btn">
                                     <input name="reject" class="ladda-button next-btn" value="REJECT" type="submit" style="font-weight: 500;">

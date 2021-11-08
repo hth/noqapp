@@ -5,6 +5,7 @@ import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.catgeory.MarketplaceRejectReasonEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +33,7 @@ public class MarketplaceForm implements Serializable {
     /** For validating marketplace post. */
     private ScrubbedInput marketplaceId;
     private ActionTypeEnum actionType;
-    //TODO(hth) rejectionReason
+    private MarketplaceRejectReasonEnum marketplaceRejectReason;
     /** For validating marketplace post ends. */
 
     private String ip;
@@ -51,6 +53,9 @@ public class MarketplaceForm implements Serializable {
     @Transient
     private List<BusinessTypeEnum> marketPlaces = BusinessTypeEnum.marketPlaces();
 
+    @Transient
+    private List<MarketplaceRejectReasonEnum> marketplaceRejectReasons = new ArrayList<>(MarketplaceRejectReasonEnum.marketplaceRejectReasons);
+
     public ScrubbedInput getMarketplaceId() {
         return marketplaceId;
     }
@@ -66,6 +71,15 @@ public class MarketplaceForm implements Serializable {
 
     public MarketplaceForm setActionType(ActionTypeEnum actionType) {
         this.actionType = actionType;
+        return this;
+    }
+
+    public MarketplaceRejectReasonEnum getMarketplaceRejectReason() {
+        return marketplaceRejectReason;
+    }
+
+    public MarketplaceForm setMarketplaceRejectReason(MarketplaceRejectReasonEnum marketplaceRejectReason) {
+        this.marketplaceRejectReason = marketplaceRejectReason;
         return this;
     }
 
@@ -156,6 +170,15 @@ public class MarketplaceForm implements Serializable {
 
     public MarketplaceForm setMarketPlaces(List<BusinessTypeEnum> marketPlaces) {
         this.marketPlaces = marketPlaces;
+        return this;
+    }
+
+    public List<MarketplaceRejectReasonEnum> getMarketplaceRejectReasons() {
+        return marketplaceRejectReasons;
+    }
+
+    public MarketplaceForm setMarketplaceRejectReasons(List<MarketplaceRejectReasonEnum> marketplaceRejectReasons) {
+        this.marketplaceRejectReasons = marketplaceRejectReasons;
         return this;
     }
 

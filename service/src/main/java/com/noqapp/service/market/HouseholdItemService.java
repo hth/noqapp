@@ -9,6 +9,7 @@ import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
+import com.noqapp.domain.types.catgeory.MarketplaceRejectReasonEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.HouseholdItemManager;
 import com.noqapp.service.MessageCustomerService;
@@ -79,7 +80,7 @@ public class HouseholdItemService {
         return householdItemManager.findAllPendingApprovalCount();
     }
 
-    public MarketplaceEntity changeStatusOfMarketplace(String marketplaceId, ActionTypeEnum actionType, String qid) {
+    public MarketplaceEntity changeStatusOfMarketplace(String marketplaceId, ActionTypeEnum actionType, MarketplaceRejectReasonEnum marketplaceRejectReason, String qid) {
         ValidateStatusEnum validateStatus;
         switch (actionType) {
             case APPROVE:
@@ -95,7 +96,7 @@ public class HouseholdItemService {
 
         MarketplaceEntity marketplace = householdItemManager.findOneById(marketplaceId);
         Date publishUntil = null == marketplace.getPublishUntil() ? DateUtil.plusDays(10) : marketplace.getPublishUntil();
-        marketplace = householdItemManager.changeStatus(marketplaceId, validateStatus, publishUntil, qid);
+        marketplace = householdItemManager.changeStatus(marketplaceId, validateStatus, marketplaceRejectReason, publishUntil, qid);
 
         String title, body;
         switch (actionType) {
@@ -106,7 +107,8 @@ public class HouseholdItemService {
                 break;
             case REJECT:
                 title = "Your household posting requires attention";
-                body = "Please rectify household posting and submit again. Ref: " + marketplace.getTitle();
+                body = "Please rectify household item posting and submit again. Ref: " + marketplace.getTitle() + "\n" +
+                    "Reason: " + marketplace.getMarketplaceRejectReason().getDescription();
                 break;
             default:
                 LOG.warn("Reached un-reachable condition {}", actionType);

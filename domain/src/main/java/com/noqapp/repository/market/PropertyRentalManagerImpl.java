@@ -8,6 +8,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.ValidateStatusEnum;
+import com.noqapp.domain.types.catgeory.MarketplaceRejectReasonEnum;
 
 import com.mongodb.DuplicateKeyException;
 
@@ -141,12 +142,12 @@ public class PropertyRentalManagerImpl implements PropertyRentalManager {
     }
 
     @Override
-    public PropertyRentalEntity changeStatus(String marketplaceId, ValidateStatusEnum validateStatus, Date publishUntil, String validatedByQid) {
+    public PropertyRentalEntity changeStatus(String marketplaceId, ValidateStatusEnum validateStatus, MarketplaceRejectReasonEnum marketplaceRejectReason, Date publishUntil, String validatedByQid) {
         Update update;
         if (ValidateStatusEnum.A == validateStatus) {
-            update = entityUpdate(update("VS", validateStatus).set("VB", validatedByQid).set("PU", publishUntil));
+            update = entityUpdate(update("VS", validateStatus).set("VB", validatedByQid).set("PU", publishUntil).unset("RR"));
         } else {
-            update = entityUpdate(update("VS", validateStatus).set("VB", validatedByQid));
+            update = entityUpdate(update("VS", validateStatus).set("RR", marketplaceRejectReason).set("VB", validatedByQid));
         }
         return mongoTemplate.findAndModify(
             query(where("id").is(marketplaceId)),

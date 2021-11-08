@@ -9,6 +9,7 @@ import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.domain.types.MessageOriginEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
+import com.noqapp.domain.types.catgeory.MarketplaceRejectReasonEnum;
 import com.noqapp.repository.UserProfileManager;
 import com.noqapp.repository.market.PropertyRentalManager;
 import com.noqapp.service.MessageCustomerService;
@@ -79,7 +80,7 @@ public class PropertyRentalService {
         return propertyRentalManager.findAllPendingApprovalCount();
     }
 
-    public MarketplaceEntity changeStatusOfMarketplace(String marketplaceId, ActionTypeEnum actionType, String qid) {
+    public MarketplaceEntity changeStatusOfMarketplace(String marketplaceId, ActionTypeEnum actionType, MarketplaceRejectReasonEnum marketplaceRejectReason, String qid) {
         ValidateStatusEnum validateStatus;
         switch (actionType) {
             case APPROVE:
@@ -95,7 +96,7 @@ public class PropertyRentalService {
 
         MarketplaceEntity marketplace = propertyRentalManager.findOneById(marketplaceId);
         Date publishUntil = null == marketplace.getPublishUntil() ? DateUtil.plusDays(10) : marketplace.getPublishUntil();
-        marketplace = propertyRentalManager.changeStatus(marketplaceId, validateStatus, publishUntil, qid);
+        marketplace = propertyRentalManager.changeStatus(marketplaceId, validateStatus, marketplaceRejectReason, publishUntil, qid);
 
         String title, body;
         switch (actionType) {
@@ -106,7 +107,8 @@ public class PropertyRentalService {
                 break;
             case REJECT:
                 title = "Your property rental posting requires attention";
-                body = "Please rectify property rental posting and submit again. Ref: " + marketplace.getTitle();
+                body = "Please rectify property rental posting and submit again. Ref: " + marketplace.getTitle() + "\n" +
+                    "Reason: " + marketplace.getMarketplaceRejectReason().getDescription();
                 break;
             default:
                 LOG.warn("Reached un-reachable condition {}", actionType);

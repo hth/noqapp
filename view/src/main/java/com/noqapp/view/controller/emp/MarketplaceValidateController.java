@@ -15,6 +15,7 @@ import com.noqapp.service.FtpService;
 import com.noqapp.service.exceptions.NotAValidObjectIdException;
 import com.noqapp.service.market.HouseholdItemService;
 import com.noqapp.service.market.PropertyRentalService;
+import com.noqapp.view.controller.emp.validator.MarketplaceValidator;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 
 import org.slf4j.Logger;
@@ -25,11 +26,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * hitender
@@ -54,6 +57,7 @@ public class MarketplaceValidateController {
     private PropertyRentalService propertyRentalService;
     private HouseholdItemService householdItemService;
     private MarketplaceElasticService marketplaceElasticService;
+    private MarketplaceValidator marketplaceValidator;
 
     @Autowired
     public MarketplaceValidateController(
@@ -69,7 +73,8 @@ public class MarketplaceValidateController {
         AccountService accountService,
         PropertyRentalService propertyRentalService,
         HouseholdItemService householdItemService,
-        MarketplaceElasticService marketplaceElasticService
+        MarketplaceElasticService marketplaceElasticService,
+        MarketplaceValidator marketplaceValidator
     ) {
         this.bucketName = bucketName;
         this.nextPagePropertyRental = nextPagePropertyRental;
@@ -79,8 +84,13 @@ public class MarketplaceValidateController {
         this.propertyRentalService = propertyRentalService;
         this.householdItemService = householdItemService;
         this.marketplaceElasticService = marketplaceElasticService;
+        this.marketplaceValidator = marketplaceValidator;
     }
 
+    /**
+     * Loading landing page for marketplace post preview.
+     * Gymnastic for PRG.
+     */
     @GetMapping(value = "/approval/{id}/{businessTypeEnum}/preview", produces = "text/html;charset=UTF-8")
     public String preview(
         @PathVariable("id")
@@ -103,22 +113,42 @@ public class MarketplaceValidateController {
                 throw new NotAValidObjectIdException("Failed to validated id " + id.getText());
             }
 
-            BusinessTypeEnum businessType = BusinessTypeEnum.valueOf(businessTypeEnum.getText().toUpperCase());
-            model.addAttribute("bucketName", FtpService.marketBucketName(bucketName, businessType));
-            switch (businessType) {
-                case PR:
-                    PropertyRentalEntity propertyRental = propertyRentalService.findOneById(id.getText());
-                    model.addAttribute("marketplace", propertyRental);
-                    model.addAttribute("userProfile", accountService.findProfileByQueueUserId(propertyRental.getQueueUserId()));
-                    return nextPagePropertyRental;
-                case HI:
-                    HouseholdItemEntity householdItem = householdItemService.findOneById(id.getText());
-                    model.addAttribute("marketplace", householdItem);
-                    model.addAttribute("userProfile", accountService.findProfileByQueueUserId(householdItem.getQueueUserId()));
-                    return nextPageHouseholdItem;
-                default:
-                    LOG.error("Reached unsupported condition {}", businessTypeEnum.getText());
-                    throw new UnsupportedOperationException("Reached un-supported condition");
+            //Gymnastic to show BindingResult errors if any
+            if (model.asMap().containsKey("result")) {
+                model.addAttribute("org.springframework.validation.BindingResult.marketplaceForm", model.asMap().get("result"));
+                switch (BusinessTypeEnum.valueOf(businessTypeEnum.getText().toUpperCase())) {
+                    case PR:
+                        PropertyRentalEntity propertyRental = propertyRentalService.findOneById(id.getText());
+                        marketplaceForm.setMarketplace(propertyRental);
+                        model.addAttribute("userProfile", accountService.findProfileByQueueUserId(propertyRental.getQueueUserId()));
+                        return nextPagePropertyRental;
+                    case HI:
+                        HouseholdItemEntity householdItem = householdItemService.findOneById(id.getText());
+                        marketplaceForm.setMarketplace(householdItem);
+                        model.addAttribute("userProfile", accountService.findProfileByQueueUserId(householdItem.getQueueUserId()));
+                        return nextPageHouseholdItem;
+                    default:
+                        LOG.error("Reached unsupported condition {}", businessTypeEnum.getText());
+                        throw new UnsupportedOperationException("Reached un-supported condition");
+                }
+            } else {
+                BusinessTypeEnum businessType = BusinessTypeEnum.valueOf(businessTypeEnum.getText().toUpperCase());
+                model.addAttribute("bucketName", FtpService.marketBucketName(bucketName, businessType));
+                switch (businessType) {
+                    case PR:
+                        PropertyRentalEntity propertyRental = propertyRentalService.findOneById(id.getText());
+                        marketplaceForm.setMarketplace(propertyRental);
+                        model.addAttribute("userProfile", accountService.findProfileByQueueUserId(propertyRental.getQueueUserId()));
+                        return nextPagePropertyRental;
+                    case HI:
+                        HouseholdItemEntity householdItem = householdItemService.findOneById(id.getText());
+                        marketplaceForm.setMarketplace(householdItem);
+                        model.addAttribute("userProfile", accountService.findProfileByQueueUserId(householdItem.getQueueUserId()));
+                        return nextPageHouseholdItem;
+                    default:
+                        LOG.error("Reached unsupported condition {}", businessTypeEnum.getText());
+                        throw new UnsupportedOperationException("Reached un-supported condition");
+                }
             }
         } catch (Exception e) {
             LOG.error("Failed updated status for marketplace id={} businessType={} qid={} reason={}",
@@ -135,7 +165,10 @@ public class MarketplaceValidateController {
     @PostMapping(value = "/action")
     public String action(
         @ModelAttribute("marketplaceForm")
-        MarketplaceForm marketplaceForm
+        MarketplaceForm marketplaceForm,
+
+        BindingResult result,
+        RedirectAttributes redirectAttrs
     ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         LOG.info("Action on marketplaceId={} action={} qid={}", marketplaceForm.getMarketplaceId(), marketplaceForm.getActionType(), queueUser.getQueueUserId());
@@ -145,16 +178,44 @@ public class MarketplaceValidateController {
             throw new NotAValidObjectIdException("Failed to validated id " + marketplaceForm.getMarketplaceId().getText());
         }
 
+        switch (marketplaceForm.getBusinessType()) {
+            case PR:
+                marketplaceForm.setMarketplace(propertyRentalService.findOneById(marketplaceForm.getMarketplaceId().getText()));
+                break;
+            case HI:
+                marketplaceForm.setMarketplace(householdItemService.findOneById(marketplaceForm.getMarketplaceId().getText()));
+                break;
+            default:
+                LOG.error("Reached unsupported condition {}", marketplaceForm.getBusinessType());
+                throw new UnsupportedOperationException("Reached un-supported condition");
+        }
+
+        marketplaceValidator.validate(marketplaceForm, result);
+        if (result.hasErrors()) {
+            redirectAttrs.addFlashAttribute("result", result);
+            LOG.warn("Failed validation");
+            //Re-direct to prevent resubmit
+            return "redirect:/emp/marketplace/approval/" + marketplaceForm.getMarketplaceId()  + "/" + marketplaceForm.getBusinessType().name() + "/preview";
+        }
+
         MarketplaceEntity marketplace;
         switch (marketplaceForm.getBusinessType()) {
             case HI:
-                marketplace = householdItemService.changeStatusOfMarketplace(marketplaceForm.getMarketplaceId().getText(), marketplaceForm.getActionType(), queueUser.getQueueUserId());
+                marketplace = householdItemService.changeStatusOfMarketplace(
+                    marketplaceForm.getMarketplaceId().getText(),
+                    marketplaceForm.getActionType(),
+                    marketplaceForm.getMarketplaceRejectReason(),
+                    queueUser.getQueueUserId());
                 if (ValidateStatusEnum.A == marketplace.getValidateStatus()) {
                     marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
                 }
                 break;
             case PR:
-                marketplace = propertyRentalService.changeStatusOfMarketplace(marketplaceForm.getMarketplaceId().getText(), marketplaceForm.getActionType(), queueUser.getQueueUserId());
+                marketplace = propertyRentalService.changeStatusOfMarketplace(
+                    marketplaceForm.getMarketplaceId().getText(),
+                    marketplaceForm.getActionType(),
+                    marketplaceForm.getMarketplaceRejectReason(),
+                    queueUser.getQueueUserId());
                 if (ValidateStatusEnum.A == marketplace.getValidateStatus()) {
                     marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(marketplace));
                 }
