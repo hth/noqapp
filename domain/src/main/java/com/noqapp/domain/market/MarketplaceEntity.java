@@ -7,6 +7,7 @@ import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
+import com.noqapp.domain.types.catgeory.MarketplaceRejectReasonEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,6 +94,9 @@ public abstract class MarketplaceEntity extends BaseEntity {
 
     @Field ("VS")
     private ValidateStatusEnum validateStatus = ValidateStatusEnum.I;
+
+    @Field ("RR")
+    private MarketplaceRejectReasonEnum marketplaceRejectReason;
 
     @Field("IP")
     private String ipAddress;
@@ -265,6 +269,15 @@ public abstract class MarketplaceEntity extends BaseEntity {
 
     public MarketplaceEntity setValidateStatus(ValidateStatusEnum validateStatus) {
         this.validateStatus = validateStatus;
+        return this;
+    }
+
+    public MarketplaceRejectReasonEnum getMarketplaceRejectReason() {
+        return marketplaceRejectReason;
+    }
+
+    public MarketplaceEntity setMarketplaceRejectReason(MarketplaceRejectReasonEnum marketplaceRejectReason) {
+        this.marketplaceRejectReason = marketplaceRejectReason;
         return this;
     }
 

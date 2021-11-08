@@ -16,6 +16,10 @@ function handleFoundAddressStoreCheckboxUncheck() {
     $('#addressStoreCheckBox .form-check-box').prop("disabled", true)
 }
 
+function onRejectMarketplaceChange() {
+    $("#rejectMarketplace > #marketplaceRejectReason").val($('#marketplaceRejectReason option:selected').val());
+}
+
 function storeOnlineOrOffline(storeId, action) {
     $.ajax({
         type: "POST",
