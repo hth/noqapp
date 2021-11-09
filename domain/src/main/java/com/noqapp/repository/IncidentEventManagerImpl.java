@@ -6,7 +6,6 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.IncidentEventEntity;
-import com.noqapp.domain.market.PropertyRentalEntity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.stream.Stream;
 
 /**

@@ -8,7 +8,6 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.common.utils.Formatter;
 import com.noqapp.domain.BaseEntity;
-import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.UserLevelEnum;
 

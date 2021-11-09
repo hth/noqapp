@@ -6,10 +6,8 @@ import com.noqapp.domain.BizNameEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.AdvertisementViewerTypeEnum;
 import com.noqapp.domain.types.ValidateStatusEnum;
-import com.noqapp.service.AccountService;
 import com.noqapp.service.AdvertisementService;
 import com.noqapp.service.BizService;
-import com.noqapp.service.MailService;
 import com.noqapp.view.form.business.AdvertisementForm;
 
 import org.apache.commons.lang3.StringUtils;

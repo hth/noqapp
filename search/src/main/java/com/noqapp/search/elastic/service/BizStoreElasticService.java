@@ -11,7 +11,6 @@ import com.noqapp.repository.BizStoreManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreElasticList;
-import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
 import com.noqapp.search.elastic.domain.StoreHourElastic;
 import com.noqapp.search.elastic.helper.DomainConversion;
 import com.noqapp.search.elastic.repository.BizStoreElasticManager;

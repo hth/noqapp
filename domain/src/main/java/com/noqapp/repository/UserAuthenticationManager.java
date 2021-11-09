@@ -3,7 +3,6 @@ package com.noqapp.repository;
 import com.noqapp.domain.UserAuthenticationEntity;
 
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Stream;
 
 /**

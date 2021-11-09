@@ -7,7 +7,6 @@ import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.view.controller.access.LandingController;
-import com.noqapp.view.flow.merchant.validator.MigrateToBusinessProfileValidator;
 import com.noqapp.view.form.MerchantRegistrationForm;
 
 import org.apache.commons.lang3.StringUtils;

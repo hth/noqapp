@@ -23,7 +23,6 @@ import java.util.StringJoiner;
 })
 @Document(collection = "SCHEDULE_APPOINTMENT")
 @CompoundIndexes(value = {
-    /* Business name with address and phone makes it a unique store. */
     @CompoundIndex(name = "schedule_appointment_qr_sd_idx", def = "{'QR': 1, 'SD': 1}", unique = false, background = true),
     @CompoundIndex(name = "schedule_appointment_qid_idx", def = "{'QID': 1}", unique = false, background = true),
 })
