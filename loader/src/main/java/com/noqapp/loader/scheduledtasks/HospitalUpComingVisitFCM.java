@@ -13,7 +13,6 @@ import com.noqapp.service.DeviceService;
 import com.noqapp.service.MailService;
 import com.noqapp.service.MessageCustomerService;
 import com.noqapp.service.StatsCronService;
-import com.noqapp.service.TokenQueueService;
 
 import org.apache.commons.lang3.StringUtils;
 

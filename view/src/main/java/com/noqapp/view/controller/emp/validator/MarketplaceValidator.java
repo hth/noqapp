@@ -1,9 +1,5 @@
 package com.noqapp.view.controller.emp.validator;
 
-import com.noqapp.domain.market.MarketplaceEntity;
-import com.noqapp.domain.types.ActionTypeEnum;
-import com.noqapp.domain.types.ValidateStatusEnum;
-import com.noqapp.view.form.business.AverageHandlingForm;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 
 import org.slf4j.Logger;

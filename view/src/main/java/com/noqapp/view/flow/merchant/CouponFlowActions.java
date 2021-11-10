@@ -19,7 +19,6 @@ import com.noqapp.service.CouponService;
 import com.noqapp.service.DiscountService;
 import com.noqapp.service.UserAddressService;
 import com.noqapp.view.flow.merchant.exception.CouponAlreadyExistsForClient;
-import com.noqapp.view.flow.merchant.exception.CouponGlobalAlreadyExistsException;
 import com.noqapp.view.flow.merchant.exception.UnAuthorizedAccessException;
 import com.noqapp.view.form.business.CouponForm;
 

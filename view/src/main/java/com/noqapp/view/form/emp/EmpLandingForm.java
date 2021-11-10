@@ -6,7 +6,6 @@ import com.noqapp.domain.PublishArticleEntity;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
-import com.noqapp.view.form.LandingForm;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 
 import java.util.LinkedList;

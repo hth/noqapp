@@ -9,7 +9,6 @@ import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 
-import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;

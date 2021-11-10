@@ -9,7 +9,6 @@ import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.json.JsonUserAddress;
 import com.noqapp.domain.shared.DecodedAddress;
 import com.noqapp.domain.shared.Geocode;
-import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.service.ExternalService;
 import com.noqapp.view.controller.access.LandingController;
 

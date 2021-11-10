@@ -4,7 +4,6 @@ import com.noqapp.common.utils.IntRandomNumberGenerator;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.site.QueueUser;
-import com.noqapp.domain.types.PersonalityTraitsEnum;
 import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.UserProfilePreferenceService;

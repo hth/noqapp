@@ -4,7 +4,6 @@ import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.Validate;
-import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;

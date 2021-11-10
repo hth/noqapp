@@ -12,8 +12,6 @@ import com.noqapp.loader.domain.SiteMapIndex;
 import com.noqapp.loader.domain.SiteUrl;
 import com.noqapp.loader.domain.SiteUrlMap;
 import com.noqapp.repository.BizStoreManager;
-import com.noqapp.repository.PurchaseOrderManagerJDBC;
-import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.service.ShowHTMLService;
 import com.noqapp.service.ShowProfessionalProfileHTMLService;
 import com.noqapp.service.StatsCronService;
