@@ -58,6 +58,10 @@ public class PropertyRentalService {
         return propertyRentalManager.findAllPendingApproval();
     }
 
+    public List<PropertyRentalEntity> findAllPendingApprovalWithoutImage() {
+        return propertyRentalManager.findAllPendingApprovalWithoutImage();
+    }
+
     public PropertyRentalEntity findOneById(String id) {
         return propertyRentalManager.findOneById(id);
     }
