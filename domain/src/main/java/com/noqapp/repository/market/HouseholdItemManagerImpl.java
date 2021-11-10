@@ -134,7 +134,7 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
     @Override
     public List<HouseholdItemEntity> findAllPendingApprovalWithoutImage() {
         return mongoTemplate.find(
-            query(where("VS").is(ValidateStatusEnum.P).and("PI").exists(false).and("U").lte(DateUtil.minusMinutes(30))).with(Sort.by(Sort.Direction.DESC, "U")),
+            query(where("VS").is(ValidateStatusEnum.P).and("PI.0").exists(false).and("U").lte(DateUtil.minusMinutes(30))).with(Sort.by(Sort.Direction.DESC, "U")),
             HouseholdItemEntity.class,
             TABLE
         );
