@@ -5,6 +5,7 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.types.ValidateStatusEnum;
@@ -125,6 +126,15 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
     public List<HouseholdItemEntity> findAllPendingApproval() {
         return mongoTemplate.find(
             query(where("VS").is(ValidateStatusEnum.P)).with(Sort.by(Sort.Direction.DESC, "C")).limit(5),
+            HouseholdItemEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public List<HouseholdItemEntity> findAllPendingApprovalWithoutImage() {
+        return mongoTemplate.find(
+            query(where("VS").is(ValidateStatusEnum.P).and("PI").exists(false).and("U").lte(DateUtil.minusMinutes(30))).with(Sort.by(Sort.Direction.DESC, "U")),
             HouseholdItemEntity.class,
             TABLE
         );

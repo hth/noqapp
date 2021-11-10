@@ -28,7 +28,14 @@ public interface PropertyRentalManager extends RepositoryManager<PropertyRentalE
 
     List<PropertyRentalEntity> findAllPendingApproval();
 
+    List<PropertyRentalEntity> findAllPendingApprovalWithoutImage();
+
     long findAllPendingApprovalCount();
 
-    PropertyRentalEntity changeStatus(String marketplaceId, ValidateStatusEnum validateStatus, MarketplaceRejectReasonEnum marketplaceRejectReason, Date publishUntil, String validatedByQid);
+    PropertyRentalEntity changeStatus(
+        String marketplaceId,
+        ValidateStatusEnum validateStatus,
+        MarketplaceRejectReasonEnum marketplaceRejectReason,
+        Date publishUntil,
+        String validatedByQid);
 }

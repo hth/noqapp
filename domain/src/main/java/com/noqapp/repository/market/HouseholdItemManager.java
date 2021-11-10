@@ -28,7 +28,14 @@ public interface HouseholdItemManager extends RepositoryManager<HouseholdItemEnt
 
     List<HouseholdItemEntity> findAllPendingApproval();
 
+    List<HouseholdItemEntity> findAllPendingApprovalWithoutImage();
+
     long findAllPendingApprovalCount();
 
-    HouseholdItemEntity changeStatus(String marketplaceId, ValidateStatusEnum validateStatus, MarketplaceRejectReasonEnum marketplaceRejectReason, Date publishUntil, String qid);
+    HouseholdItemEntity changeStatus(
+        String marketplaceId,
+        ValidateStatusEnum validateStatus,
+        MarketplaceRejectReasonEnum marketplaceRejectReason,
+        Date publishUntil,
+        String qid);
 }

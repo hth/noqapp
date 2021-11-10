@@ -58,6 +58,10 @@ public class HouseholdItemService {
         return householdItemManager.findAllPendingApproval();
     }
 
+    public List<HouseholdItemEntity> findAllPendingApprovalWithoutImage() {
+        return householdItemManager.findAllPendingApprovalWithoutImage();
+    }
+
     public HouseholdItemEntity findOneById(String id) {
         return householdItemManager.findOneById(id);
     }
