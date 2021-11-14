@@ -161,7 +161,7 @@ public class ArchiveAndReset {
         try {
             /*
              * Date is based on UTC time of the System.
-             * Hence its important to run on UTC time.
+             * Hence, it is important to run on UTC time.
              *
              * Order stores are delayed by 5 minutes.
              */

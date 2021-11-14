@@ -14,6 +14,7 @@ import com.noqapp.domain.types.TokenServiceEnum;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -122,7 +123,7 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     void updatePurchaseOrderWithToken(int token, String displayToken, Date expectedServiceBegin, String transactionId);
     void removePurchaseOrderForService(String transactionId);
 
-    /** Cancel order when user returned back from Payment Gateway without paying. Currently support for only orders. */
+    /** Cancel order when user hits back from Payment Gateway without paying. Currently, support for only orders. */
     void cancelOrderWhenBackedAwayFromGateway(String transactionId);
 
     List<PurchaseOrderEntity> findByBizNameId(String bizNameId);
@@ -132,4 +133,6 @@ public interface PurchaseOrderManager extends RepositoryManager<PurchaseOrderEnt
     List<PurchaseOrderEntity> findByQidAndBizNameId(String qid, String bizNameId);
 
     void changeItToPurchaseOrderState(String transactionId, String bizStoreId);
+
+    Stream<PurchaseOrderEntity> findAllWithStream();
 }

@@ -5,10 +5,12 @@ import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.BizStoreSpatialElastic;
 import com.noqapp.search.elastic.domain.IncidentEventElastic;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
+import com.noqapp.search.elastic.domain.PurchaseOrderElastic;
 import com.noqapp.search.elastic.service.BizStoreElasticService;
 import com.noqapp.search.elastic.service.ElasticAdministrationService;
 import com.noqapp.search.elastic.service.IncidentEventElasticService;
 import com.noqapp.search.elastic.service.MarketplaceElasticService;
+import com.noqapp.search.elastic.service.PurchaseOrderElasticService;
 import com.noqapp.service.FtpService;
 import com.noqapp.service.SmsService;
 import com.noqapp.service.payment.PaymentGatewayService;
@@ -73,6 +75,8 @@ public class NoQueueInitializationCheckBean {
     private BizStoreElasticService bizStoreElasticService;
     private MarketplaceElasticService marketplaceElasticService;
     private IncidentEventElasticService incidentEventElasticService;
+    private PurchaseOrderElasticService purchaseOrderElasticService;
+
     private JmsTemplate jmsMailSignUpTemplate;
     private DatabaseReader databaseReader;
     private FtpService ftpService;
@@ -94,6 +98,7 @@ public class NoQueueInitializationCheckBean {
         BizStoreElasticService bizStoreElasticService,
         MarketplaceElasticService marketplaceElasticService,
         IncidentEventElasticService incidentEventElasticService,
+        PurchaseOrderElasticService purchaseOrderElasticService,
 
         @Qualifier("jmsMailSignUpTemplate")
         JmsTemplate jmsMailSignUpTemplate,
@@ -114,6 +119,7 @@ public class NoQueueInitializationCheckBean {
         this.bizStoreElasticService = bizStoreElasticService;
         this.marketplaceElasticService = marketplaceElasticService;
         this.incidentEventElasticService = incidentEventElasticService;
+        this.purchaseOrderElasticService = purchaseOrderElasticService;
 
         this.jmsMailSignUpTemplate = jmsMailSignUpTemplate;
         this.databaseReader = databaseReader;
@@ -235,6 +241,20 @@ public class NoQueueInitializationCheckBean {
             }
         } else {
             LOG.info("Elastic Index={} found", IncidentEventElastic.INDEX);
+        }
+
+        if (!elasticAdministrationService.doesIndexExists(PurchaseOrderElastic.INDEX)) {
+            LOG.info("Elastic Index={} not found. Building Indexes... please wait", PurchaseOrderElastic.INDEX);
+            boolean createdPurchaseOrderMappingSuccessfully = elasticAdministrationService.addMapping(
+                PurchaseOrderElastic.INDEX,
+                PurchaseOrderElastic.TYPE);
+
+            if (createdPurchaseOrderMappingSuccessfully) {
+                LOG.info("Created Index and Mapping {} successfully. Adding data to Index/Type", PurchaseOrderElastic.INDEX);
+                purchaseOrderElasticService.addAllPurchaseOrderToElastic();
+            }
+        } else {
+            LOG.info("Elastic Index={} found", PurchaseOrderElastic.INDEX);
         }
     }
 
