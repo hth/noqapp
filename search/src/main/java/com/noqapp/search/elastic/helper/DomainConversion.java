@@ -4,13 +4,17 @@ import com.noqapp.common.utils.FileUtil;
 import com.noqapp.common.utils.MathUtil;
 import com.noqapp.domain.BizStoreEntity;
 import com.noqapp.domain.IncidentEventEntity;
+import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.StoreHourEntity;
+import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.annotation.Mobile;
+import com.noqapp.domain.json.JsonPurchaseOrder;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.shared.GeoPointOfQ;
 import com.noqapp.search.elastic.domain.BizStoreElastic;
 import com.noqapp.search.elastic.domain.IncidentEventElastic;
 import com.noqapp.search.elastic.domain.MarketplaceElastic;
+import com.noqapp.search.elastic.domain.PurchaseOrderElastic;
 import com.noqapp.search.elastic.domain.StoreHourElastic;
 
 import org.apache.commons.lang3.StringUtils;
@@ -215,5 +219,35 @@ public class DomainConversion {
             .setGeoHash(incidentEvent.getGeoPoint().getGeohash())
             .setTitle(incidentEvent.getTitle())
             .setCreated(incidentEvent.getCreated());
+    }
+
+    public static PurchaseOrderElastic getAsPurchaseOrderElastic(PurchaseOrderEntity purchaseOrder, UserAddressEntity userAddress) {
+        return new PurchaseOrderElastic()
+            .setId(purchaseOrder.getTransactionId())
+            .setQueueUserId(purchaseOrder.getQueueUserId())
+            .setBizStoreId(purchaseOrder.getBizStoreId())
+            .setGeoPointOfQ(userAddress.getGeoPointOfQ())
+            .setGeoHash(userAddress.getGeoHash())
+            .setOrderPrice(purchaseOrder.getOrderPrice())
+            .setBusinessType(purchaseOrder.getBusinessType())
+            .setArea(userAddress.getArea())
+            .setTown(userAddress.getTown())
+            .setDistrict(userAddress.getDistrict())
+            .setState(userAddress.getState());
+    }
+
+    public static PurchaseOrderElastic getAsPurchaseOrderElastic(JsonPurchaseOrder jsonPurchaseOrder, UserAddressEntity userAddress) {
+        return new PurchaseOrderElastic()
+            .setId(jsonPurchaseOrder.getTransactionId())
+            .setQueueUserId(jsonPurchaseOrder.getQueueUserId())
+            .setBizStoreId(jsonPurchaseOrder.getBizStoreId())
+            .setGeoPointOfQ(userAddress.getGeoPointOfQ())
+            .setGeoHash(userAddress.getGeoHash())
+            .setOrderPrice(jsonPurchaseOrder.getOrderPrice())
+            .setBusinessType(jsonPurchaseOrder.getBusinessType())
+            .setArea(userAddress.getArea())
+            .setTown(userAddress.getTown())
+            .setDistrict(userAddress.getDistrict())
+            .setState(userAddress.getState());
     }
 }

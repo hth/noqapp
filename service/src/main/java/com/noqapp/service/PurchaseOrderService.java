@@ -56,7 +56,6 @@ import com.noqapp.repository.PurchaseOrderManagerJDBC;
 import com.noqapp.repository.PurchaseOrderProductManager;
 import com.noqapp.repository.PurchaseOrderProductManagerJDBC;
 import com.noqapp.repository.QueueManager;
-import com.noqapp.repository.QueueManagerJDBC;
 import com.noqapp.repository.RegisteredDeviceManager;
 import com.noqapp.repository.StoreHourManager;
 import com.noqapp.repository.TokenQueueManager;
@@ -133,7 +132,6 @@ public class PurchaseOrderService {
     private PurchaseOrderProductManager purchaseOrderProductManager;
     private PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC;
     private QueueManager queueManager;
-    private QueueManagerJDBC queueManagerJDBC;
     private PointEarnedManager pointEarnedManager;
     private CouponService couponService;
     private UserAddressService userAddressService;
@@ -163,7 +161,6 @@ public class PurchaseOrderService {
         PurchaseOrderProductManager purchaseOrderProductManager,
         PurchaseOrderProductManagerJDBC purchaseOrderProductManagerJDBC,
         QueueManager queueManager,
-        QueueManagerJDBC queueManagerJDBC,
         PointEarnedManager pointEarnedManager,
         CouponService couponService,
         UserAddressService userAddressService,
@@ -192,7 +189,6 @@ public class PurchaseOrderService {
         this.purchaseOrderProductManager = purchaseOrderProductManager;
         this.purchaseOrderProductManagerJDBC = purchaseOrderProductManagerJDBC;
         this.queueManager = queueManager;
-        this.queueManagerJDBC = queueManagerJDBC;
         this.pointEarnedManager = pointEarnedManager;
         this.couponService = couponService;
         this.userAddressService = userAddressService;

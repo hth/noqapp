@@ -457,7 +457,6 @@ public class ITest extends RealMongoForITest {
             purchaseOrderProductManager,
             purchaseOrderProductManagerJDBC,
             queueManager,
-            queueManagerJDBC,
             pointEarnedManager,
             couponService,
             userAddressService,

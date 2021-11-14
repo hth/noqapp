@@ -1,0 +1,85 @@
+{
+  "mappings": {
+    "dynamic": false,
+    "properties": {
+      "AR": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "QID": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 12,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "BS": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 30,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "BT": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 3,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "COR": {
+        "type": "geo_point"
+      },
+      "GH": {
+        "type": "geo_point"
+      },
+      "OP": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 10,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "TO": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "DT": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "ST": {
+        "fields": {
+          "keyword": {
+            "ignore_above": 256,
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      }
+    }
+  }
+}

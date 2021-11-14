@@ -9,7 +9,9 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Update.update;
 
+import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.BaseEntity;
+import com.noqapp.domain.IncidentEventEntity;
 import com.noqapp.domain.PurchaseOrderEntity;
 import com.noqapp.domain.UserAddressEntity;
 import com.noqapp.domain.UserProfileEntity;
@@ -43,6 +45,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * hitender
@@ -634,5 +637,10 @@ public class PurchaseOrderManagerImpl implements PurchaseOrderManager {
             PurchaseOrderEntity.class,
             TABLE
         );
+    }
+
+    @Override
+    public Stream<PurchaseOrderEntity> findAllWithStream() {
+        return mongoTemplate.findAll(PurchaseOrderEntity.class, TABLE).stream();
     }
 }
