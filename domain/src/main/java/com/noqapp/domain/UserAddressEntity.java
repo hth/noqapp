@@ -1,5 +1,8 @@
 package com.noqapp.domain;
 
+import com.noqapp.domain.shared.GeoPointOfQ;
+
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -159,5 +162,11 @@ public class UserAddressEntity extends BaseEntity {
     public UserAddressEntity setLastUsed() {
         this.lastUsed = new Date();
         return this;
+    }
+
+    @Transient
+    public GeoPointOfQ getGeoPointOfQ() {
+        /* Latitude and then Longitude. */
+        return new GeoPointOfQ(coordinate[1], coordinate[0]);
     }
 }
