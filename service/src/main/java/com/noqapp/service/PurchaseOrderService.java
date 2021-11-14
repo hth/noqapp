@@ -219,7 +219,7 @@ public class PurchaseOrderService {
         if (!bizStore.isActive() || storeHour.isDayClosed() || storeHour.isTempDayClosed() || storeHour.isPreventJoining()) {
             LOG.warn("When store closed or prevent joining, attempting to create new order");
 
-            /* Check always if store is active or not. */
+            /* Always Check if store is active or not. */
             if (!bizStore.isActive()) {
                 throw new StoreInActiveException("Store is offline bizStoreId " + bizStore.getId());
             }
