@@ -718,7 +718,7 @@ public class QueueService {
             //JsonToken jsonToken = tokenQueueMobileService.joinQueue(queue.getCodeQR(), did, qid, queue.getGuardianQid(), 0, null);
             JsonQueue jsonQueue = findTokenState(queue.getCodeQR());
 
-            /* Override the create date of TokenAndQueue. This date helps in sorting of client side to show active queue. */
+            /* Override the creation date of TokenAndQueue. This date helps in sorting of client side to show active queue. */
             jsonQueue.setCreated(queue.getCreated());
 
             JsonPurchaseOrder jsonPurchaseOrder = null;
