@@ -72,9 +72,7 @@ public class UserPreferenceEntity extends BaseEntity {
     @Field("EPP")
     private int earnedPointPreviously= 0;
 
-    /**
-     * To make bean happy
-     */
+    /** To make bean happy. */
     @SuppressWarnings("unused")
     public UserPreferenceEntity() {
         super();
