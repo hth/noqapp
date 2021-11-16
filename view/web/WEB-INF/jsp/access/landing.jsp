@@ -240,11 +240,18 @@
                                                     </c:choose>
                                                 </td>
                                                 <c:choose>
-                                                    <c:when test="${empty marketplaceForm.marketplace.postImages}">
-                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Shared Images"></i></a></td>
+                                                    <c:when test="${marketplaceForm.marketplace.postingExpired}">
+                                                        <td>${marketplaceForm.marketplace.postImages.size()} <i class="fas fa-images" style="color:#4e4d4d;" title="Shared Images"></i></a></td>
                                                     </c:when>
                                                     <c:otherwise>
-                                                        <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage">${marketplaceForm.marketplace.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Shared Images"></i></a></td>
+                                                        <c:choose>
+                                                            <c:when test="${empty marketplaceForm.marketplace.postImages}">
+                                                                <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage">0 <i class="fas fa-images" style="color:#4e4d4d;" title="Shared Images"></i></a></td>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <td><a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/uploadImage">${marketplaceForm.marketplace.postImages.size()} <i class="fas fa-images" style="color:#ff217c;" title="Shared Images"></i></a></td>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </c:otherwise>
                                                 </c:choose>
                                                 <c:choose>
