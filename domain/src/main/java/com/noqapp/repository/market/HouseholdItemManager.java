@@ -38,4 +38,8 @@ public interface HouseholdItemManager extends RepositoryManager<HouseholdItemEnt
         MarketplaceRejectReasonEnum marketplaceRejectReason,
         Date publishUntil,
         String qid);
+
+    void pushImage(String id, String postImage);
+
+    void popImage(String id);
 }
