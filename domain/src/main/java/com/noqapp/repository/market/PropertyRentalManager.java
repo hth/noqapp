@@ -39,7 +39,7 @@ public interface PropertyRentalManager extends RepositoryManager<PropertyRentalE
         Date publishUntil,
         String validatedByQid);
 
-    void pushImage(String id, String postImage);
+    PropertyRentalEntity pushImage(String id, String postImage);
 
-    void popImage(String id);
+    PropertyRentalEntity popImage(String id);
 }

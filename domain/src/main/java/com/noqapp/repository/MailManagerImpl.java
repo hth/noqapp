@@ -25,18 +25,18 @@ import java.util.List;
  * Date: 11/27/16 12:46 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class MailManagerImpl implements MailManager {
     private static final Logger LOG = LoggerFactory.getLogger(MailManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            MailEntity.class,
-            Document.class,
-            "collection");
+        MailEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -61,19 +61,28 @@ public class MailManagerImpl implements MailManager {
     @Override
     public List<MailEntity> pendingMails() {
         return mongoTemplate.find(
-                query(where("MS").is(MailStatusEnum.N)),
-                MailEntity.class,
-                TABLE
+            query(where("MS").is(MailStatusEnum.N)),
+            MailEntity.class,
+            TABLE
         );
     }
 
     @Override
     public void updateMail(String id, MailStatusEnum mailStatus) {
         mongoTemplate.updateFirst(
-                query(where("id").is(id)),
-                entityUpdate(update("MS", mailStatus).inc("AT", 1)),
-                MailEntity.class,
-                TABLE
+            query(where("id").is(id)),
+            entityUpdate(update("MS", mailStatus).inc("AT", 1)),
+            MailEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public boolean existsMailWithMessage(String message) {
+        return mongoTemplate.exists(
+            query(where("MS").is(MailStatusEnum.N).and("ME").is(message)),
+            MailEntity.class,
+            TABLE
         );
     }
 

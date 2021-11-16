@@ -14,5 +14,8 @@ public interface MailManager extends RepositoryManager<MailEntity> {
     List<MailEntity> pendingMails();
 
     void updateMail(String id, MailStatusEnum mailStatus);
+
+    /** Check if mail with specific message exists in queue to be sent. */
+    boolean existsMailWithMessage(String message);
 }
 
