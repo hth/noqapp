@@ -491,59 +491,63 @@ public class FileService {
             switch (businessType) {
                 case PR:
                     PropertyRentalEntity propertyRental = propertyRentalManager.findOneById(postId);
-                    if (!propertyRental.isPostingExpired()) {
-                        images = propertyRental.getPostImages();
-
-                        toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
-                        decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
-
-                        // /java/temp/directory/filename.extension
-                        toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
-                        tempFile = new File(toFileAbsolutePath);
-                        writeToFile(tempFile, ImageIO.read(decreaseResolution));
-                        ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY_RENTAL);
-
-                        propertyRentalManager.pushImage(propertyRental.getId(), filename);
-                        if (propertyRentalManager.findAllPendingApprovalCount() > 0) {
-                            mailService.pendingPostApproval(businessType, propertyRentalManager.findAllPendingApprovalCount());
-                        }
-
-                        while (images.size() >= 10) {
-                            String lastImage = images.stream().findFirst().get();
-                            deleteMarketImage(qid, lastImage, postId, propertyRental.getBusinessType());
-                            propertyRentalManager.popImage(propertyRental.getId());
-                        }
-
-                        LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
+                    if (propertyRental.isPostingExpired()) {
+                        LOG.warn("Post expired {} {} {}", propertyRental.getBusinessType(), propertyRental.getId(), propertyRental.getQueueUserId());
+                        return;
                     }
+                    images = propertyRental.getPostImages();
+
+                    toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
+                    decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
+
+                    // /java/temp/directory/filename.extension
+                    toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
+                    tempFile = new File(toFileAbsolutePath);
+                    writeToFile(tempFile, ImageIO.read(decreaseResolution));
+                    ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY_RENTAL);
+
+                    propertyRentalManager.pushImage(propertyRental.getId(), filename);
+                    if (propertyRentalManager.findAllPendingApprovalCount() > 0) {
+                        mailService.pendingPostApproval(businessType, propertyRentalManager.findAllPendingApprovalCount());
+                    }
+
+                    while (images.size() >= 10) {
+                        String lastImage = images.stream().findFirst().get();
+                        deleteMarketImage(qid, lastImage, postId, propertyRental.getBusinessType());
+                        propertyRentalManager.popImage(propertyRental.getId());
+                    }
+
+                    LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
                     break;
                 case HI:
                     HouseholdItemEntity householdItem = householdItemManager.findOneById(postId);
-                    if (!householdItem.isPostingExpired()) {
-                        images = householdItem.getPostImages();
-
-                        toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
-                        decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
-
-                        // /java/temp/directory/filename.extension
-                        toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
-                        tempFile = new File(toFileAbsolutePath);
-                        writeToFile(tempFile, ImageIO.read(decreaseResolution));
-                        ftpService.upload(filename, postId, FtpService.MARKETPLACE_HOUSEHOLD_ITEM);
-
-                        householdItemManager.pushImage(householdItem.getId(), filename);
-                        if (householdItemManager.findAllPendingApprovalCount() > 0) {
-                            mailService.pendingPostApproval(businessType, householdItemManager.findAllPendingApprovalCount());
-                        }
-
-                        while (images.size() >= 10) {
-                            String lastImage = images.stream().findFirst().get();
-                            deleteMarketImage(qid, lastImage, postId, householdItem.getBusinessType());
-                            householdItemManager.popImage(householdItem.getId());
-                        }
-
-                        LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
+                    if (householdItem.isPostingExpired()) {
+                        LOG.warn("Post expired {} {} {}", householdItem.getBusinessType(), householdItem.getId(), householdItem.getQueueUserId());
+                        return;
                     }
+                    images = householdItem.getPostImages();
+
+                    toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
+                    decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
+
+                    // /java/temp/directory/filename.extension
+                    toFileAbsolutePath = getTmpDir() + getFileSeparator() + filename;
+                    tempFile = new File(toFileAbsolutePath);
+                    writeToFile(tempFile, ImageIO.read(decreaseResolution));
+                    ftpService.upload(filename, postId, FtpService.MARKETPLACE_HOUSEHOLD_ITEM);
+
+                    householdItemManager.pushImage(householdItem.getId(), filename);
+                    if (householdItemManager.findAllPendingApprovalCount() > 0) {
+                        mailService.pendingPostApproval(businessType, householdItemManager.findAllPendingApprovalCount());
+                    }
+
+                    while (images.size() >= 10) {
+                        String lastImage = images.stream().findFirst().get();
+                        deleteMarketImage(qid, lastImage, postId, householdItem.getBusinessType());
+                        householdItemManager.popImage(householdItem.getId());
+                    }
+
+                    LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
                     break;
                 default:
                     LOG.warn("Reached un-reachable condition businessType={}", businessType);
