@@ -491,6 +491,10 @@ public class FileService {
             switch (businessType) {
                 case PR:
                     PropertyRentalEntity propertyRental = propertyRentalManager.findOneById(postId);
+                    if (propertyRental.isPostingExpired()) {
+                        LOG.warn("Post expired {} {} {}", propertyRental.getBusinessType(), propertyRental.getId(), propertyRental.getQueueUserId());
+                        return;
+                    }
                     images = propertyRental.getPostImages();
 
                     toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
@@ -517,6 +521,10 @@ public class FileService {
                     break;
                 case HI:
                     HouseholdItemEntity householdItem = householdItemManager.findOneById(postId);
+                    if (householdItem.isPostingExpired()) {
+                        LOG.warn("Post expired {} {} {}", householdItem.getBusinessType(), householdItem.getId(), householdItem.getQueueUserId());
+                        return;
+                    }
                     images = householdItem.getPostImages();
 
                     toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
