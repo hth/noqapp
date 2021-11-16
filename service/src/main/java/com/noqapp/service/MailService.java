@@ -420,13 +420,16 @@ public class MailService {
     @Async
     public MailTypeEnum pendingPostApproval(BusinessTypeEnum businessType, long pendingCount) {
         try {
+            String message = "Pending count " + pendingCount + ", approve post for " + businessType.getDescription();
             MailEntity mail = new MailEntity()
                 .setToMail(doNotReplyEmail)
                 .setToName("NoQueue")
                 .setSubject("Pending Approval of Post " + businessType.getDescription())
-                .setMessage("Pending count " + pendingCount + ", approve post for " + businessType.getDescription())
+                .setMessage(message)
                 .setMailStatus(MailStatusEnum.N);
-            mailManager.save(mail);
+            if (!mailManager.existsMailWithMessage(message)) {
+                mailManager.save(mail);
+            }
         } catch (Exception exception) {
             LOG.error("Failed sending post approval email for businessType={}", businessType, exception);
             return MailTypeEnum.FAILURE;
