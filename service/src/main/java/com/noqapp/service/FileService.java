@@ -503,7 +503,9 @@ public class FileService {
                     ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY_RENTAL);
 
                     propertyRentalManager.pushImage(propertyRental.getId(), filename);
-                    mailService.pendingPostApproval(businessType, propertyRentalManager.findAllPendingApprovalCount());
+                    if (propertyRentalManager.findAllPendingApprovalCount() > 0) {
+                        mailService.pendingPostApproval(businessType, propertyRentalManager.findAllPendingApprovalCount());
+                    }
 
                     while (images.size() >= 10) {
                         String lastImage = images.stream().findFirst().get();
@@ -527,7 +529,9 @@ public class FileService {
                     ftpService.upload(filename, postId, FtpService.MARKETPLACE_HOUSEHOLD_ITEM);
 
                     householdItemManager.pushImage(householdItem.getId(), filename);
-                    mailService.pendingPostApproval(businessType, householdItemManager.findAllPendingApprovalCount());
+                    if (householdItemManager.findAllPendingApprovalCount() > 0) {
+                        mailService.pendingPostApproval(businessType, householdItemManager.findAllPendingApprovalCount());
+                    }
 
                     while (images.size() >= 10) {
                         String lastImage = images.stream().findFirst().get();
