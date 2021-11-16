@@ -171,7 +171,7 @@ public class PropertyRentalManagerImpl implements PropertyRentalManager {
     public void pushImage(String id, String postImage) {
         mongoTemplate.findAndModify(
             query(where("id").is(id)),
-            new Update().push("PI", postImage),
+            new Update().push("PI", postImage).set("VS", ValidateStatusEnum.P),
             PropertyRentalEntity.class,
             TABLE
         );
