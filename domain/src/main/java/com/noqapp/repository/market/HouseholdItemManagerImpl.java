@@ -170,7 +170,7 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
     public void pushImage(String id, String postImage) {
         mongoTemplate.findAndModify(
             query(where("id").is(id)),
-            new Update().push("PI", postImage),
+            new Update().push("PI", postImage).set("VS", ValidateStatusEnum.P),
             HouseholdItemEntity.class,
             TABLE
         );
