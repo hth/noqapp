@@ -167,20 +167,22 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
     }
 
     @Override
-    public void pushImage(String id, String postImage) {
-        mongoTemplate.findAndModify(
+    public HouseholdItemEntity pushImage(String id, String postImage) {
+        return mongoTemplate.findAndModify(
             query(where("id").is(id)),
             new Update().push("PI", postImage).set("VS", ValidateStatusEnum.P),
+            FindAndModifyOptions.options().returnNew(true),
             HouseholdItemEntity.class,
             TABLE
         );
     }
 
     @Override
-    public void popImage(String id) {
-        mongoTemplate.findAndModify(
+    public HouseholdItemEntity popImage(String id) {
+        return mongoTemplate.findAndModify(
             query(where("id").is(id)),
             new Update().pop("PI", Update.Position.FIRST),
+            FindAndModifyOptions.options().returnNew(true),
             HouseholdItemEntity.class,
             TABLE
         );

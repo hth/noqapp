@@ -486,7 +486,6 @@ public class FileService {
         File tempFile = null;
 
         try {
-            Set<String> images;
             String toFileAbsolutePath;
             switch (businessType) {
                 case PR:
@@ -495,7 +494,6 @@ public class FileService {
                         LOG.warn("Post expired {} {} {}", propertyRental.getBusinessType(), propertyRental.getId(), propertyRental.getQueueUserId());
                         return;
                     }
-                    images = propertyRental.getPostImages();
 
                     toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
                     decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
@@ -506,15 +504,15 @@ public class FileService {
                     writeToFile(tempFile, ImageIO.read(decreaseResolution));
                     ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY_RENTAL);
 
-                    propertyRentalManager.pushImage(propertyRental.getId(), filename);
+                    PropertyRentalEntity modifiedPropertyRental = propertyRentalManager.pushImage(propertyRental.getId(), filename);
                     if (propertyRentalManager.findAllPendingApprovalCount() > 0) {
                         mailService.pendingPostApproval(businessType, propertyRentalManager.findAllPendingApprovalCount());
                     }
 
-                    while (images.size() >= 10) {
-                        String lastImage = images.stream().findFirst().get();
+                    while (modifiedPropertyRental.getPostImages().size() > 10) {
+                        String lastImage = modifiedPropertyRental.getPostImages().stream().findFirst().get();
                         deleteMarketImage(qid, lastImage, postId, propertyRental.getBusinessType());
-                        propertyRentalManager.popImage(propertyRental.getId());
+                        modifiedPropertyRental = propertyRentalManager.popImage(propertyRental.getId());
                     }
 
                     LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
@@ -525,7 +523,6 @@ public class FileService {
                         LOG.warn("Post expired {} {} {}", householdItem.getBusinessType(), householdItem.getId(), householdItem.getQueueUserId());
                         return;
                     }
-                    images = householdItem.getPostImages();
 
                     toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
                     decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
@@ -536,15 +533,15 @@ public class FileService {
                     writeToFile(tempFile, ImageIO.read(decreaseResolution));
                     ftpService.upload(filename, postId, FtpService.MARKETPLACE_HOUSEHOLD_ITEM);
 
-                    householdItemManager.pushImage(householdItem.getId(), filename);
+                    HouseholdItemEntity modifiedHouseHoldItem = householdItemManager.pushImage(householdItem.getId(), filename);
                     if (householdItemManager.findAllPendingApprovalCount() > 0) {
                         mailService.pendingPostApproval(businessType, householdItemManager.findAllPendingApprovalCount());
                     }
 
-                    while (images.size() >= 10) {
-                        String lastImage = images.stream().findFirst().get();
+                    while (modifiedHouseHoldItem.getPostImages().size() > 10) {
+                        String lastImage = modifiedHouseHoldItem.getPostImages().stream().findFirst().get();
                         deleteMarketImage(qid, lastImage, postId, householdItem.getBusinessType());
-                        householdItemManager.popImage(householdItem.getId());
+                        modifiedHouseHoldItem = householdItemManager.popImage(householdItem.getId());
                     }
 
                     LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);

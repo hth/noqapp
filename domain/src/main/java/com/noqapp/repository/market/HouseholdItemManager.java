@@ -39,7 +39,7 @@ public interface HouseholdItemManager extends RepositoryManager<HouseholdItemEnt
         Date publishUntil,
         String qid);
 
-    void pushImage(String id, String postImage);
+    HouseholdItemEntity pushImage(String id, String postImage);
 
-    void popImage(String id);
+    HouseholdItemEntity popImage(String id);
 }
