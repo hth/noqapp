@@ -493,13 +493,6 @@ public class FileService {
                     PropertyRentalEntity propertyRental = propertyRentalManager.findOneById(postId);
                     images = propertyRental.getPostImages();
 
-                    while (images.size() >= 10) {
-                        String lastImage = images.stream().findFirst().get();
-                        deleteMarketImage(qid, lastImage, postId, propertyRental.getBusinessType());
-                        /* Delete local reference. */
-                        images.remove(lastImage);
-                    }
-
                     toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
                     decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
 
@@ -509,23 +502,20 @@ public class FileService {
                     writeToFile(tempFile, ImageIO.read(decreaseResolution));
                     ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY_RENTAL);
 
-                    images.add(filename);
-                    propertyRental.setValidateStatus(ValidateStatusEnum.P);
-                    propertyRentalManager.save(propertyRental);
+                    propertyRentalManager.pushImage(propertyRental.getId(), filename);
                     mailService.pendingPostApproval(businessType, propertyRentalManager.findAllPendingApprovalCount());
+
+                    while (images.size() >= 10) {
+                        String lastImage = images.stream().findFirst().get();
+                        deleteMarketImage(qid, lastImage, postId, propertyRental.getBusinessType());
+                        propertyRentalManager.popImage(propertyRental.getId());
+                    }
 
                     LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
                     break;
                 case HI:
                     HouseholdItemEntity householdItem = householdItemManager.findOneById(postId);
                     images = householdItem.getPostImages();
-
-                    while (images.size() >= 10) {
-                        String lastImage = images.stream().findFirst().get();
-                        deleteMarketImage(qid, lastImage, postId, householdItem.getBusinessType());
-                        /* Delete local reference. */
-                        images.remove(lastImage);
-                    }
 
                     toFile = writeToFile(createRandomFilenameOf24Chars() + getFileExtensionWithDot(filename), bufferedImage);
                     decreaseResolution = decreaseResolution(toFile, imageServiceWidth, imageServiceHeight);
@@ -536,10 +526,14 @@ public class FileService {
                     writeToFile(tempFile, ImageIO.read(decreaseResolution));
                     ftpService.upload(filename, postId, FtpService.MARKETPLACE_HOUSEHOLD_ITEM);
 
-                    images.add(filename);
-                    householdItem.setValidateStatus(ValidateStatusEnum.P);
-                    householdItemManager.save(householdItem);
+                    householdItemManager.pushImage(householdItem.getId(), filename);
                     mailService.pendingPostApproval(businessType, householdItemManager.findAllPendingApprovalCount());
+
+                    while (images.size() >= 10) {
+                        String lastImage = images.stream().findFirst().get();
+                        deleteMarketImage(qid, lastImage, postId, householdItem.getBusinessType());
+                        householdItemManager.popImage(householdItem.getId());
+                    }
 
                     LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
                     break;

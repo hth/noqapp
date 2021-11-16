@@ -38,4 +38,8 @@ public interface PropertyRentalManager extends RepositoryManager<PropertyRentalE
         MarketplaceRejectReasonEnum marketplaceRejectReason,
         Date publishUntil,
         String validatedByQid);
+
+    void pushImage(String id, String postImage);
+
+    void popImage(String id);
 }

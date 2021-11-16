@@ -166,4 +166,24 @@ public class PropertyRentalManagerImpl implements PropertyRentalManager {
             PropertyRentalEntity.class,
             TABLE);
     }
+
+    @Override
+    public void pushImage(String id, String postImage) {
+        mongoTemplate.findAndModify(
+            query(where("id").is(id)),
+            new Update().push("PI", postImage),
+            PropertyRentalEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public void popImage(String id) {
+        mongoTemplate.findAndModify(
+            query(where("id").is(id)),
+            new Update().pop("PI", Update.Position.FIRST),
+            PropertyRentalEntity.class,
+            TABLE
+        );
+    }
 }
