@@ -82,3 +82,7 @@ Compare columns within same collection
 
     db.getCollection('QUEUE').find( { $where: "this.SL != this.OSL" } )
 
+Update field value
+
+    db.getCollection('MP_PROPERTY_RENTAL').update({}, {$set: {"PU": ISODate("2021-11-30 00:00:00.000Z")}}, {multi: true});
+

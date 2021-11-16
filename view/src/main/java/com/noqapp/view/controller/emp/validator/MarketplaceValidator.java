@@ -1,5 +1,6 @@
 package com.noqapp.view.controller.emp.validator;
 
+import com.noqapp.domain.types.ActionTypeEnum;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class MarketplaceValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         MarketplaceForm marketplaceForm = (MarketplaceForm) target;
-        if (null == marketplaceForm.getMarketplaceRejectReason()) {
+        if (ActionTypeEnum.REJECT == marketplaceForm.getActionType() && null == marketplaceForm.getMarketplaceRejectReason()) {
             errors.rejectValue("marketplaceRejectReason",
                 "field.reject",
                 new Object[]{""},
