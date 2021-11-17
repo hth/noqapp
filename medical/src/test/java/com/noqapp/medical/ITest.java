@@ -411,7 +411,7 @@ public class ITest extends RealMongoForITest {
         );
 
         fileService = new FileService(
-            192, 192, 300, 150,
+            192, 192, 300, 150, 10,
             accountService,
             ftpService,
             s3FileManager,

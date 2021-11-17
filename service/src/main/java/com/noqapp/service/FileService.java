@@ -144,6 +144,7 @@ public class FileService {
     private int imageProfileHeight;
     private int imageServiceWidth;
     private int imageServiceHeight;
+    private int imageMaxLimit;
 
     private AccountService accountService;
     private FtpService ftpService;
@@ -173,6 +174,9 @@ public class FileService {
         @Value("${image.service.height:450}")
         int imageServiceHeight,
 
+        @Value("${image.max.limit:10}")
+        int imageMaxLimit,
+
         AccountService accountService,
         FtpService ftpService,
         S3FileManager s3FileManager,
@@ -191,6 +195,7 @@ public class FileService {
         this.imageProfileHeight = imageProfileHeight;
         this.imageServiceWidth = imageServiceWidth;
         this.imageServiceHeight = imageServiceHeight;
+        this.imageMaxLimit = imageMaxLimit;
 
         this.accountService = accountService;
         this.ftpService = ftpService;
@@ -398,7 +403,7 @@ public class FileService {
             BizNameEntity bizName = bizNameManager.getById(bizNameId);
             Set<String> businessServiceImages = bizName.getBusinessServiceImages();
 
-            while (businessServiceImages.size() >= 10) {
+            while (imageMaxLimit <= businessServiceImages.size()) {
                 String lastImage = businessServiceImages.stream().findFirst().get();
                 deleteImage(qid, lastImage, bizName.getCodeQR());
                 /* Delete local reference. */
@@ -505,11 +510,11 @@ public class FileService {
                     ftpService.upload(filename, postId, FtpService.MARKETPLACE_PROPERTY_RENTAL);
 
                     PropertyRentalEntity modifiedPropertyRental = propertyRentalManager.pushImage(propertyRental.getId(), filename);
-                    if (propertyRentalManager.findAllPendingApprovalCount() > 0) {
+                    if (0 < propertyRentalManager.findAllPendingApprovalCount()) {
                         mailService.pendingPostApproval(businessType, propertyRentalManager.findAllPendingApprovalCount());
                     }
 
-                    while (modifiedPropertyRental.getPostImages().size() > 10) {
+                    while (imageMaxLimit < modifiedPropertyRental.getPostImages().size()) {
                         String lastImage = modifiedPropertyRental.getPostImages().stream().findFirst().get();
                         deleteMarketImage(qid, lastImage, postId, propertyRental.getBusinessType());
                         modifiedPropertyRental = propertyRentalManager.popImage(propertyRental.getId());
@@ -534,11 +539,11 @@ public class FileService {
                     ftpService.upload(filename, postId, FtpService.MARKETPLACE_HOUSEHOLD_ITEM);
 
                     HouseholdItemEntity modifiedHouseHoldItem = householdItemManager.pushImage(householdItem.getId(), filename);
-                    if (householdItemManager.findAllPendingApprovalCount() > 0) {
+                    if (0 < householdItemManager.findAllPendingApprovalCount()) {
                         mailService.pendingPostApproval(businessType, householdItemManager.findAllPendingApprovalCount());
                     }
 
-                    while (modifiedHouseHoldItem.getPostImages().size() > 10) {
+                    while (imageMaxLimit < modifiedHouseHoldItem.getPostImages().size()) {
                         String lastImage = modifiedHouseHoldItem.getPostImages().stream().findFirst().get();
                         deleteMarketImage(qid, lastImage, postId, householdItem.getBusinessType());
                         modifiedHouseHoldItem = householdItemManager.popImage(householdItem.getId());
@@ -581,7 +586,7 @@ public class FileService {
                 images = bizStore.getStoreInteriorImages();
             }
 
-            while (images.size() >= 10) {
+            while (imageMaxLimit <= images.size()) {
                 String lastImage = images.stream().findFirst().get();
                 deleteImage(qid, lastImage, bizStore.getCodeQR());
                 /* Delete local reference. */
