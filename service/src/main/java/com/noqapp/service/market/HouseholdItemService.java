@@ -85,10 +85,14 @@ public class HouseholdItemService {
     }
 
     public MarketplaceEntity changeStatusOfMarketplace(String marketplaceId, ActionTypeEnum actionType, MarketplaceRejectReasonEnum marketplaceRejectReason, String qid) {
+        MarketplaceEntity marketplace = householdItemManager.findOneById(marketplaceId);
+
+        Date publishUntil = null;
         ValidateStatusEnum validateStatus;
         switch (actionType) {
             case APPROVE:
                 validateStatus = ValidateStatusEnum.A;
+                publishUntil = null == marketplace.getPublishUntil() ? DateUtil.plusDays(10) : marketplace.getPublishUntil();
                 break;
             case REJECT:
                 validateStatus = ValidateStatusEnum.R;
@@ -97,9 +101,6 @@ public class HouseholdItemService {
                 LOG.warn("Reached un-reachable condition {}", actionType);
                 throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
         }
-
-        MarketplaceEntity marketplace = householdItemManager.findOneById(marketplaceId);
-        Date publishUntil = null == marketplace.getPublishUntil() ? DateUtil.plusDays(10) : marketplace.getPublishUntil();
         marketplace = householdItemManager.changeStatus(marketplaceId, validateStatus, marketplaceRejectReason, publishUntil, qid);
 
         String title, body;
