@@ -7,9 +7,8 @@ import java.util.EnumSet;
  * 2/24/21 4:37 PM
  */
 public enum ItemConditionEnum {
-    G("G", "Good"),
-    P("P", "Poor"),
-    V("V", "Very Good");
+    U("U", "Used"),
+    B("B", "Brand New, Unused");
 
     private final String description;
     private final String name;
@@ -27,7 +26,7 @@ public enum ItemConditionEnum {
         return description;
     }
 
-    public static EnumSet<ItemConditionEnum> itemConditionTypes = EnumSet.of(G, P, V);
+    public static EnumSet<ItemConditionEnum> itemConditionTypes = EnumSet.of(U, B);
 
     @Override
     public String toString() {
