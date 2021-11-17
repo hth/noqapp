@@ -150,7 +150,13 @@ public class HouseholdItemManagerImpl implements HouseholdItemManager {
     }
 
     @Override
-    public HouseholdItemEntity changeStatus(String marketplaceId, ValidateStatusEnum validateStatus, MarketplaceRejectReasonEnum marketplaceRejectReason, Date publishUntil, String validatedByQid) {
+    public HouseholdItemEntity changeStatus(
+        String marketplaceId,
+        ValidateStatusEnum validateStatus,
+        MarketplaceRejectReasonEnum marketplaceRejectReason,
+        Date publishUntil,
+        String validatedByQid
+    ) {
         Update update;
         if (ValidateStatusEnum.A == validateStatus) {
             update = entityUpdate(update("VS", validateStatus).set("VB", validatedByQid).set("PU", publishUntil).unset("RR"));

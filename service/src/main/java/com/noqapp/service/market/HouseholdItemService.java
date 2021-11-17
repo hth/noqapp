@@ -85,10 +85,14 @@ public class HouseholdItemService {
     }
 
     public MarketplaceEntity changeStatusOfMarketplace(String marketplaceId, ActionTypeEnum actionType, MarketplaceRejectReasonEnum marketplaceRejectReason, String qid) {
+        MarketplaceEntity marketplace = householdItemManager.findOneById(marketplaceId);
+
+        Date publishUntil = null;
         ValidateStatusEnum validateStatus;
         switch (actionType) {
             case APPROVE:
                 validateStatus = ValidateStatusEnum.A;
+                publishUntil = null == marketplace.getPublishUntil() ? DateUtil.plusDays(10) : marketplace.getPublishUntil();
                 break;
             case REJECT:
                 validateStatus = ValidateStatusEnum.R;
@@ -97,9 +101,6 @@ public class HouseholdItemService {
                 LOG.warn("Reached un-reachable condition {}", actionType);
                 throw new UnsupportedOperationException("Failed to update as the value supplied is invalid");
         }
-
-        MarketplaceEntity marketplace = householdItemManager.findOneById(marketplaceId);
-        Date publishUntil = null == marketplace.getPublishUntil() ? DateUtil.plusDays(10) : marketplace.getPublishUntil();
         marketplace = householdItemManager.changeStatus(marketplaceId, validateStatus, marketplaceRejectReason, publishUntil, qid);
 
         String title, body;
@@ -111,7 +112,8 @@ public class HouseholdItemService {
                 break;
             case REJECT:
                 title = "Your household posting requires attention";
-                body = "Please rectify household item posting and submit again. Ref: " + marketplace.getTitle() + "\n" +
+                body = "Please rectify household item posting and submit again. " +
+                    "Refer: " + (marketplace.getTitle().length() > 25 ? marketplace.getTitle().substring(0, 25) + "..." : marketplace.getTitle()) + "\n" +
                     "Reason: " + marketplace.getMarketplaceRejectReason().getDescription();
                 break;
             default:
