@@ -111,7 +111,8 @@ public class PropertyRentalService {
                 break;
             case REJECT:
                 title = "Your property rental posting requires attention";
-                body = "Please rectify property rental posting and submit again. Ref: " + marketplace.getTitle() + "\n" +
+                body = "Please rectify property rental posting and submit again. " +
+                    "Refer: " + (marketplace.getTitle().length() > 25 ? marketplace.getTitle().substring(0, 25) + "..." : marketplace.getTitle()) + "\n" +
                     "Reason: " + marketplace.getMarketplaceRejectReason().getDescription();
                 break;
             default:
