@@ -84,7 +84,7 @@ public class MongoConfiguration {
 
         /*
         * Index auto creation is false by default.
-        * It is recommend setting up indices manually in an application ready block. You may use index derivation there as well.
+        * It is recommended setting up indices manually in an application ready block. You may use index derivation there as well.
         * This setting is enabled in {@link com.noqapp.view.listener.NoQueueEventListener#initIndicesAfterStartup(ContextRefreshedEvent)}
         */
         mongoMappingContext.setAutoIndexCreation(false);
