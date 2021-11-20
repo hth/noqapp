@@ -270,21 +270,20 @@
             },
             beforeSend: function (xhr) {
                 xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-                $("#" + s + ' > td').attr('id', s + 's').removeAttr("style");
-                $("#" + f + ' > td').attr('id', f + 'f').removeAttr("style");
+                $("#" + s + ' > td').attr('id', s).removeAttr("style");
+                $("#" + f + ' > td').attr('id', f).removeAttr("style");
             },
             success: function (data) {
-                let text;
                 if (data.action === 'SUCCESS') {
                     $("#" + s).removeAttr("style");
                     $("#" + s + ' > td')
-                        .attr('id', s + 's')
+                        .attr('id', s)
                         .css('text-align','right').css("background-color", "#fff0f0").css("color", "#0D8B0B")
                         .html(data.text).delay(5000).fadeOut('slow');
                 } else {
                     $("#" + f).removeAttr("style");
                     $("#" + f + ' > td')
-                        .attr('id', f + 'f')
+                        .attr('id', f)
                         .css('text-align','right').css("background-color", "#fecfcf").css("color", "#c72926")
                         .html(data.text).delay(5000).fadeOut('slow');
                 }
