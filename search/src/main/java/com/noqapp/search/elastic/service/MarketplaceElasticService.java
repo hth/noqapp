@@ -43,7 +43,7 @@ public class MarketplaceElasticService {
     private static final Logger LOG = LoggerFactory.getLogger(MarketplaceElasticService.class);
 
     /** Include field are the fields to be included upon completing the search. */
-    static String[] includeFields = new String[]{"BT", "CS", "DS", "EI", "GH", "VC", "RA", "MC", "PI", "PP", "TG", "TI", "TO", "TS"};
+    static String[] includeFields = new String[]{"BT", "CS", "DS", "GH", "MC", "PI", "PP", "RA", "TG", "TI", "TO", "TS", "VC"};
     static String[] excludeFields = new String[]{"_type"};
 
     private PropertyRentalManager propertyRentalManager;
@@ -148,16 +148,16 @@ public class MarketplaceElasticService {
                     .setBusinessType(map.containsKey("BT") ? BusinessTypeEnum.valueOf(map.get("BT").toString()) : BusinessTypeEnum.ZZ)
                     .setCountryShortName(map.containsKey("CS") ? map.get("CS").toString() : "")
                     .setDescription(map.containsKey("DS") ? map.get("DS").toString() : "")
-                    .setRating(map.containsKey("RA") ? map.get("RA").toString() : "")
                     .setGeoHash(map.containsKey("GH") ? map.get("GH").toString() : "")
-                    .setViewCount(map.containsKey("VC") ? Integer.parseInt(map.get("VC").toString()) : 0)
                     .setCity(map.containsKey("MC") ? map.get("MC").toString() : "")
                     .setPostImages(map.containsKey("PI") ? (List<String>) map.get("PI") : new ArrayList<>())
                     .setProductPrice(map.containsKey("PP") ? map.get("PP").toString() : "NA")
+                    .setRating(map.containsKey("RA") ? map.get("RA").toString() : "")
                     .setTag(map.containsKey("TG") ? map.get("TG").toString() : "")
                     .setTitle(map.containsKey("TI") ? map.get("TI").toString() : "")
                     .setTown(map.containsKey("TO") ? map.get("TO").toString() : "")
-                    .setFieldTags(map.containsKey("TS") ? ((List<String>) map.get("TS")).toArray(new String[0]) : new String[]{});
+                    .setFieldTags(map.containsKey("TS") ? ((List<String>) map.get("TS")).toArray(new String[0]) : new String[]{})
+                    .setViewCount(map.containsKey("VC") ? Integer.parseInt(map.get("VC").toString()) : 0);
 
                 marketplaceElastics.addMarketplaceElastic(marketplaceElastic);
             }
