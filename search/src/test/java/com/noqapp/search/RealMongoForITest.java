@@ -1,10 +1,5 @@
 package com.noqapp.search;
 
-/**
- * hitender
- * 8/4/21 3:12 PM
- */
-
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoClient;
