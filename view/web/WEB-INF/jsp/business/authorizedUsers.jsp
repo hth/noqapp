@@ -258,9 +258,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/internal/js/script.js"></script>
 <script>
     function changeUserLevel(id, position) {
-        var userLevel = $( "#userLevel" + position).val();
-        var s = "authorized_" + position + "_S";
-        var f = "authorized_" + position + "_F";
+        let userLevel = $( "#userLevel" + position).val();
+        let s = "authorized_" + position + "_S";
+        let f = "authorized_" + position + "_F";
         $.ajax({
             type: "POST",
             url: '${pageContext. request. contextPath}/business/changeLevel',
@@ -274,7 +274,7 @@
                 $("#" + f + ' > td').attr('id', f + 'f').removeAttr("style");
             },
             success: function (data) {
-                var text;
+                let text;
                 if (data.action === 'SUCCESS') {
                     $("#" + s).removeAttr("style");
                     $("#" + s + ' > td')
