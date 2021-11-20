@@ -192,7 +192,8 @@ public class DomainConversion {
             .setGeoHash(marketplace.getCoordinate() == null ? new GeoPoint(0.0, 0.0).getGeohash() : marketplace.getGeoPoint().getGeohash())
             .setCity(marketplace.getCity())
             .setTown(marketplace.getTown())
-            .setCountryShortName(marketplace.getCountryShortName());
+            .setCountryShortName(marketplace.getCountryShortName())
+            .setBoost(marketplace.getBoost());
         switch (marketplace.getBusinessType()) {
             case PR:
                 marketplaceElastic

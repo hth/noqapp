@@ -101,6 +101,10 @@ public abstract class MarketplaceEntity extends BaseEntity {
     @Field("IP")
     private String ipAddress;
 
+    /** Paid and free boost will have different values. Free boost is always 10, paid will have a higher value, otherwise default is 0. */
+    @Field("BO")
+    private int boost;
+
     public String getQueueUserId() {
         return queueUserId;
     }
@@ -287,6 +291,15 @@ public abstract class MarketplaceEntity extends BaseEntity {
 
     public MarketplaceEntity setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+        return this;
+    }
+
+    public int getBoost() {
+        return boost;
+    }
+
+    public MarketplaceEntity setBoost(int boost) {
+        this.boost = boost;
         return this;
     }
 

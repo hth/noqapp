@@ -2,6 +2,7 @@ package com.noqapp.view.form;
 
 import com.noqapp.common.utils.DateUtil;
 import com.noqapp.domain.QueueEntity;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
@@ -31,6 +32,7 @@ public class LandingForm {
     private List<QueueEntity> currentQueues;
     private List<QueueEntity> historicalQueues;
     private List<MarketplaceForm> marketplaceForms = new LinkedList<>();
+    private UserPreferenceEntity userPreference;
 
     private List<UserProfileEntity> minorUserProfiles;
 
@@ -81,6 +83,15 @@ public class LandingForm {
 
     public LandingForm setMarketplaceForms(List<MarketplaceForm> marketplaceForms) {
         this.marketplaceForms = marketplaceForms;
+        return this;
+    }
+
+    public UserPreferenceEntity getUserPreference() {
+        return userPreference;
+    }
+
+    public LandingForm setUserPreference(UserPreferenceEntity userPreference) {
+        this.userPreference = userPreference;
         return this;
     }
 

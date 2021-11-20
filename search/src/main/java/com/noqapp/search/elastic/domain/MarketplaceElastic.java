@@ -89,6 +89,9 @@ public class MarketplaceElastic extends AbstractDomain {
     @JsonProperty("CS")
     private String countryShortName;
 
+    @JsonProperty("BO")
+    private int boost;
+
     /** Mostly used for display as most of the common data is listed as text here. */
     @JsonProperty("TS")
     private String[] fieldTags;
@@ -216,6 +219,15 @@ public class MarketplaceElastic extends AbstractDomain {
 
     public MarketplaceElastic setCountryShortName(String countryShortName) {
         this.countryShortName = countryShortName;
+        return this;
+    }
+
+    public int getBoost() {
+        return boost;
+    }
+
+    public MarketplaceElastic setBoost(int boost) {
+        this.boost = boost;
         return this;
     }
 

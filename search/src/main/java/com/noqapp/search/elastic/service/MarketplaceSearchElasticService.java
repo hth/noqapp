@@ -182,6 +182,7 @@ public class MarketplaceSearchElasticService {
                     .distance(MAX_Q_SEARCH_DISTANCE, DistanceUnit.KILOMETERS));
                 searchSourceBuilder.query(boolQueryBuilder)
                     .sort(new GeoDistanceSortBuilder("GH", geoHash).order(SortOrder.ASC))
+                    .sort("BO", SortOrder.DESC)
                     .size(paginationSize);
                 searchRequest.source(searchSourceBuilder);
                 if (from > 0) {
