@@ -4,6 +4,9 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+
     <title>NoQueue</title>
     <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'/>
     <meta content='width=device-width, initial-scale=1' name='viewport'/>
@@ -66,6 +69,14 @@
                     <c:if test="${empty landingForm.minorUserProfiles}">
                     <div class="register-c">
                         <h3>Welcome <sec:authentication property="principal.userShortName"/></h3>
+                        <c:choose>
+                            <c:when test="${landingForm.userPreference.earnedPoint < 1}">
+                                <h4>Points Available: No points available</h4>
+                            </c:when>
+                            <c:otherwise>
+                                <h4>Points Available: ${landingForm.userPreference.earnedPoin}</h4>
+                            </c:otherwise>
+                        </c:choose>
 
                         <sec:authorize access="hasRole('ROLE_CLIENT')">
                         <c:choose>
@@ -167,14 +178,14 @@
                                                 <th>&nbsp;</th>
                                                 <th>Name</th>
                                                 <th>Price</th>
-                                                <th>City/Area</th>
                                                 <th>Visible Until</th>
+                                                <th>Boost Post</th>
                                                 <th>Stats</th>
                                                 <th></th>
                                                 <th></th>
                                             </tr>
                                             <c:forEach items="${landingForm.marketplaceForms}" var="marketplaceForm" varStatus="status">
-                                            <tr>
+                                            <tr id="${marketplaceForm.marketplace.id}">
                                                 <td>${status.count}&nbsp;</td>
                                                 <td>
                                                     <c:choose>
@@ -205,19 +216,39 @@
                                                     </c:choose>
                                                 </td>
                                                 <td>${marketplaceForm.marketplace.priceForDisplayWithFormatting}</td>
-                                                <td>${marketplaceForm.marketplace.city}</td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${empty marketplaceForm.marketplace.publishUntil}">
-                                                            NA
+                                                            &nbsp;
                                                         </c:when>
                                                         <c:when test="${marketplaceForm.marketplace.postingExpired}">
                                                             <fmt:formatDate pattern="MMMM dd" value="${marketplaceForm.marketplace.publishUntil}"/> <span style="font-size: x-small">(Expired)</span>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <a href="/access/marketplace/property/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/boost">
-                                                                <fmt:formatDate pattern="MMMM dd" value="${marketplaceForm.marketplace.publishUntil}"/> <i class="fas fa-rocket" style="color:#ff217c;" title="Boost"></i>
-                                                            </a>
+                                                            <fmt:formatDate pattern="MMMM dd" value="${marketplaceForm.marketplace.publishUntil}"/>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${empty marketplaceForm.marketplace.publishUntil || marketplaceForm.marketplace.postingExpired}">
+                                                            NA
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <c:choose>
+                                                                <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.A and marketplaceForm.marketplace.boost == 0}">
+                                                                    <i class="fas fa-rocket" style="color:#ff217c;" title="Boost Post"
+                                                                            onclick="boostMarketplacePost('${marketplaceForm.marketplace.id}', '${marketplaceForm.marketplace.businessType.name}');">
+                                                                        &nbsp; Click to Boost
+                                                                    </i>
+                                                                </c:when>
+                                                                <c:when test="${marketplaceForm.marketplace.boost != 0}">
+                                                                    <i class="fas fa-rocket" style="color:#4e4d4d;" title="Boost Post">&nbsp; Boosted</i>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    &nbsp;
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
@@ -286,6 +317,12 @@
                                                         </td>
                                                     </c:otherwise>
                                                 </c:choose>
+                                            </tr>
+                                            <tr id="${marketplaceForm.marketplace.id}_S" style="display:none;">
+                                                <td colspan="8"></td>
+                                            </tr>
+                                            <tr id="${marketplaceForm.marketplace.id}_F" style="display:none;">
+                                                <td colspan="8"></td>
                                             </tr>
                                             </c:forEach>
                                         </table>
@@ -369,6 +406,7 @@
 </body>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/internal/js/script.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/internal/js/services.js"></script>
 <script>
     (function(w, u, d){var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};var l = function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://code.upscope.io/F3TE6jAMct.js';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(typeof u!=="function"){w.Upscope=i;l();}})(window, window.Upscope, document);
     Upscope('init');

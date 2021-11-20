@@ -3,14 +3,22 @@ package com.noqapp.view.controller.access.markertplace;
 import static javax.servlet.http.HttpServletResponse.SC_NOT_FOUND;
 
 import com.noqapp.common.utils.FileUtil;
+import com.noqapp.common.utils.ScrubbedInput;
 import com.noqapp.common.utils.Validate;
+import com.noqapp.domain.PointEarnedEntity;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.market.HouseholdItemEntity;
 import com.noqapp.domain.market.MarketplaceEntity;
 import com.noqapp.domain.market.PropertyRentalEntity;
 import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.BusinessTypeEnum;
+import com.noqapp.domain.types.PointActivityEnum;
+import com.noqapp.domain.types.ValidateStatusEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.repository.PointEarnedManager;
+import com.noqapp.search.elastic.helper.DomainConversion;
+import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FtpService;
@@ -19,6 +27,7 @@ import com.noqapp.service.market.PropertyRentalService;
 import com.noqapp.view.controller.access.UserProfileController;
 import com.noqapp.view.controller.business.store.PublishArticleController;
 import com.noqapp.view.form.FileUploadForm;
+import com.noqapp.view.form.marketplace.MarketplaceForm;
 import com.noqapp.view.validator.ImageValidator;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -38,6 +47,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -70,11 +81,13 @@ public class MarketplaceController {
     private String bucketName;
     private String nextPage;
 
-    private AccountService accountService;
     private PropertyRentalService propertyRentalService;
     private HouseholdItemService householdItemService;
     private FileService fileService;
     private ImageValidator imageValidator;
+    private MarketplaceElasticService marketplaceElasticService;
+    private AccountService accountService;
+    private PointEarnedManager pointEarnedManager;
     private ApiHealthService apiHealthService;
 
     @Autowired
@@ -85,21 +98,25 @@ public class MarketplaceController {
         @Value("${nextPage:/access/marketplace/landing}")
         String nextPage,
 
-        AccountService accountService,
         PropertyRentalService propertyRentalService,
         HouseholdItemService householdItemService,
         FileService fileService,
         ImageValidator imageValidator,
+        MarketplaceElasticService marketplaceElasticService,
+        AccountService accountService,
+        PointEarnedManager pointEarnedManager,
         ApiHealthService apiHealthService
     ) {
         this.bucketName = bucketName;
         this.nextPage = nextPage;
 
-        this.accountService = accountService;
         this.propertyRentalService = propertyRentalService;
         this.householdItemService = householdItemService;
         this.fileService = fileService;
         this.imageValidator = imageValidator;
+        this.marketplaceElasticService = marketplaceElasticService;
+        this.accountService = accountService;
+        this.pointEarnedManager = pointEarnedManager;
         this.apiHealthService = apiHealthService;
     }
 
@@ -284,4 +301,74 @@ public class MarketplaceController {
                 bufferedImage);
         }
     }
+
+    @PostMapping(
+        value = "/boost",
+        headers = "Accept=application/json",
+        produces = "application/json"
+    )
+    @ResponseBody
+    public String boostYourPost(
+        @RequestParam("postId")
+        ScrubbedInput postId,
+
+        @RequestParam("businessTypeAsString")
+        ScrubbedInput businessTypeAsString,
+
+        HttpServletResponse response
+    ) throws IOException {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        UserPreferenceEntity userPreference;
+        String text;
+        switch (BusinessTypeEnum.valueOf(businessTypeAsString.getText())) {
+            case HI:
+                HouseholdItemEntity householdItem = householdItemService.findOneById(queueUser.getQueueUserId(), postId.getText());
+                if (householdItem.isPostingExpired() || householdItem.getValidateStatus() != ValidateStatusEnum.A) {
+                    text = "Cannot boost this post";
+                    return String.format("{ \"postId\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}", postId.getText(), "FAILURE", text);
+                } else {
+                    userPreference = accountService.getEarnedPoint(queueUser.getQueueUserId());
+                    if (PointActivityEnum.BOP.absolutePoint() < userPreference.getEarnedPoint()) {
+                        pointEarnedManager.save(new PointEarnedEntity(queueUser.getQueueUserId(), PointActivityEnum.BOP));
+
+                        householdItem.setBoost(10);
+                        householdItemService.save(householdItem);
+                        marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(householdItem));
+
+                        text = "Successfully boosted post";
+                        return String.format("{ \"postId\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}", postId.getText(), "SUCCESS", text);
+                    }
+
+                    /* Not enough point to boost your post. */
+                    text = "Not enough points to boost post. Provide reviews or invite friends to earn points";
+                    return String.format("{ \"postId\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}", postId.getText(), "FAILURE", text);
+                }
+            case PR:
+                PropertyRentalEntity propertyRental = propertyRentalService.findOneById(queueUser.getQueueUserId(), postId.getText());
+                if (propertyRental.isPostingExpired() || propertyRental.getValidateStatus() != ValidateStatusEnum.A) {
+                    text = "Cannot boost this post";
+                    return String.format("{ \"postId\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}", postId.getText(), "FAILURE", text);
+                } else {
+                    userPreference = accountService.getEarnedPoint(queueUser.getQueueUserId());
+                    if (PointActivityEnum.BOP.absolutePoint() < userPreference.getEarnedPoint()) {
+                        pointEarnedManager.save(new PointEarnedEntity(queueUser.getQueueUserId(), PointActivityEnum.BOP));
+
+                        propertyRental.setBoost(10);
+                        propertyRentalService.save(propertyRental);
+                        marketplaceElasticService.save(DomainConversion.getAsMarketplaceElastic(propertyRental));
+                        text = "Successfully boosted post";
+                        return String.format("{ \"postId\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}", postId.getText(), "SUCCESS", text);
+                    }
+
+                    /* Not enough point to boost your post. */
+                    text = "Not enough points to boost post. Provide reviews or invite friends to earn points";
+                    return String.format("{ \"postId\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}", postId.getText(), "FAILURE", text);
+                }
+            default:
+                LOG.error("Reached unsupported condition={} {} {}", businessTypeAsString.getText(), postId.getText(), queueUser.getQueueUserId());
+                throw new UnsupportedOperationException("Reached unsupported condition " + businessTypeAsString.getText());
+        }
+    }
+
 }
