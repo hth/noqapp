@@ -424,7 +424,7 @@ public class MailService {
     @Async
     public MailTypeEnum pendingPostApproval(BusinessTypeEnum businessType, long pendingCount) {
         try {
-            String message = "From: " + environment.getProperty("build.env") + ", Pending count " + pendingCount + ", approve post for " + businessType.getDescription();
+            String message = "Environment: " + environment.getProperty("build.env") + ", Pending count " + pendingCount + ", approve post for " + businessType.getDescription();
             MailEntity mail = new MailEntity()
                 .setToMail(doNotReplyEmail)
                 .setToName("NoQueue")

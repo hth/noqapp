@@ -85,19 +85,4 @@ public class PropertyRentalMarketController {
         redirectAttributes.addFlashAttribute("editMode", true);
         return propertyRentalMarketplaceFlowActions;
     }
-
-    @GetMapping(value = "/{businessTypeAsString}/{postId}/boost")
-    public String boostYourPost(
-        @PathVariable("businessTypeAsString")
-        String businessTypeAsString,
-
-        @PathVariable("postId")
-        String postId,
-
-        Model model,
-        RedirectAttributes redirectAttrs,
-        HttpServletResponse response
-    ) {
-        return "";
-    }
 }

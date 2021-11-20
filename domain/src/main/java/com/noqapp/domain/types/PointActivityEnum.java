@@ -9,6 +9,7 @@ public enum PointActivityEnum {
     INV("INV", "Invite", 1000),
     ISU("ISU", "Invitee Signup", 1000),
 
+    /* BOP is for free and used of reviews and other points. Whereas, paid boot will have a different value. */
     BOP("BOP", "Boost Post", -100),
     HIP("HIP", "Household Item Post", -10),
     PRP("PRP", "Property Rental Post", -1000);
@@ -33,6 +34,10 @@ public enum PointActivityEnum {
 
     public int getPoint() {
         return point;
+    }
+
+    public int absolutePoint() {
+        return Math.abs(point);
     }
 
     @Override
