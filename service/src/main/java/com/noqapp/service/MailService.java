@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,7 @@ public class MailService {
     private EmailValidateService emailValidateService;
     private FreemarkerService freemarkerService;
     private MailManager mailManager;
+    private Environment environment;
 
     private ExecutorService executorService;
 
@@ -96,7 +98,8 @@ public class MailService {
 
         FreemarkerService freemarkerService,
         EmailValidateService emailValidateService,
-        MailManager mailManager
+        MailManager mailManager,
+        Environment environment
     ) {
         this.parentHost = parentHost;
         this.devSentTo = devSentTo;
@@ -112,6 +115,7 @@ public class MailService {
         this.freemarkerService = freemarkerService;
         this.emailValidateService = emailValidateService;
         this.mailManager = mailManager;
+        this.environment = environment;
 
         this.executorService = newCachedThreadPool();
     }
@@ -420,7 +424,7 @@ public class MailService {
     @Async
     public MailTypeEnum pendingPostApproval(BusinessTypeEnum businessType, long pendingCount) {
         try {
-            String message = "Pending count " + pendingCount + ", approve post for " + businessType.getDescription();
+            String message = "From: " + environment.getProperty("build.env") + ", Pending count " + pendingCount + ", approve post for " + businessType.getDescription();
             MailEntity mail = new MailEntity()
                 .setToMail(doNotReplyEmail)
                 .setToName("NoQueue")
