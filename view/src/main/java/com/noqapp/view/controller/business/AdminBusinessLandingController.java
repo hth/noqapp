@@ -733,18 +733,18 @@ public class AdminBusinessLandingController {
             if (-1 == change) {
                 text = "Failed. User role is already set to " + UserLevelEnum.valueOf(userLevel.getText()).getDescription();
                 LOG.info("Failed changing to same userLevel for qid={} to userLevel={}", businessUserOfId.getQueueUserId(), userLevel.getText());
-                return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" , \"text\" : \"%s\"}",
+                return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}",
                     businessUserId.getText(), CommonStatusEnum.FAILURE.name(), text);
             } else if (2 <= change) {
                 text = "Successfully changed user role to " + UserLevelEnum.valueOf(userLevel.getText()).getDescription();
                 LOG.info("Changed userLevel successfully for qid={} to userLevel={}",
                     businessUserOfId.getQueueUserId(), userLevel.getText());
-                return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" , \"text\" : \"%s\"}",
+                return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}",
                     businessUserId.getText(), CommonStatusEnum.SUCCESS.name(), text);
             } else {
                 text = "Failed changing user role to " + UserLevelEnum.valueOf(userLevel.getText()).getDescription();
                 LOG.error("Failed changing userLevel for qid={} to userLevel={}", businessUserOfId.getQueueUserId(), userLevel.getText());
-                return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\" , \"text\" : \"%s\"}",
+                return String.format("{ \"id\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}",
                     businessUserId.getText(), CommonStatusEnum.FAILURE.name(), text);
             }
         } catch (Exception e) {
