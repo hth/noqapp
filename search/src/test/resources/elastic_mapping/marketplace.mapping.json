@@ -35,9 +35,6 @@
       "GH": {
         "type": "geo_point"
       },
-      "VC": {
-        "type": "integer"
-      },
       "MC": {
         "fields": {
           "keyword": {
@@ -65,16 +62,16 @@
         },
         "type": "text"
       },
-      "TG": {
+      "RA": {
         "fields": {
           "keyword": {
-            "ignore_above": 256,
+            "ignore_above": 3,
             "type": "keyword"
           }
         },
         "type": "text"
       },
-      "TS": {
+      "TG": {
         "fields": {
           "keyword": {
             "ignore_above": 256,
@@ -101,14 +98,17 @@
         },
         "type": "text"
       },
-      "RA": {
+      "TS": {
         "fields": {
           "keyword": {
-            "ignore_above": 3,
+            "ignore_above": 256,
             "type": "keyword"
           }
         },
         "type": "text"
+      },
+      "VC": {
+        "type": "integer"
       }
     }
   }
