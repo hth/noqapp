@@ -316,7 +316,7 @@ public class MarketplaceController {
         ScrubbedInput businessTypeAsString,
 
         HttpServletResponse response
-    ) throws IOException {
+    ) {
         QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         UserPreferenceEntity userPreference;

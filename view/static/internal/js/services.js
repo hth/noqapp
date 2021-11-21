@@ -54,8 +54,8 @@ function boostMarketplacePost(postId, businessTypeAsString) {
         url: '/access/marketplace/boost',
         beforeSend: function (xhr) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-            $("#" + s + ' > td').attr('id', s).removeAttr("style");
-            $("#" + f + ' > td').attr('id', f).removeAttr("style");
+            $("#" + s + ' > td').attr('id', s).removeAttr("style").html("");
+            $("#" + f + ' > td').attr('id', f).removeAttr("style").html("");
         },
         data: {
             postId: postId,
