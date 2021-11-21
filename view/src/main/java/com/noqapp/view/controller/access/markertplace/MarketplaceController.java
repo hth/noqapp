@@ -341,7 +341,7 @@ public class MarketplaceController {
                     }
 
                     /* Not enough point to boost your post. */
-                    text = "Not enough points to boost post. Provide reviews or invite friends to earn points";
+                    text = "Not enough points to boost post. Reviews and Invite friends to earn points.";
                     return String.format("{ \"postId\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}", postId.getText(), "FAILURE", text);
                 }
             case PR:
@@ -362,7 +362,7 @@ public class MarketplaceController {
                     }
 
                     /* Not enough point to boost your post. */
-                    text = "Not enough points to boost post. Provide reviews or invite friends to earn points";
+                    text = "Not enough points to boost post. Reviews and Invite friends to earn points.";
                     return String.format("{ \"postId\" : \"%s\", \"action\" : \"%s\", \"text\" : \"%s\"}", postId.getText(), "FAILURE", text);
                 }
             default:
@@ -371,4 +371,7 @@ public class MarketplaceController {
         }
     }
 
+    public void addImage(MarketplaceForm marketplaceForm) {
+        LOG.info("File upload {}", marketplaceForm.getMarketplace().getId());
+    }
 }
