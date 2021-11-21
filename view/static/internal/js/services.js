@@ -54,8 +54,8 @@ function boostMarketplacePost(postId, businessTypeAsString) {
         url: '/access/marketplace/boost',
         beforeSend: function (xhr) {
             xhr.setRequestHeader($("meta[name='_csrf_header']").attr("content"), $("meta[name='_csrf']").attr("content"));
-            $("#" + s + ' > td').attr('id', s).removeAttr("style");
-            $("#" + f + ' > td').attr('id', f).removeAttr("style");
+            $("#" + s + ' > td').attr('id', s).removeAttr("style").html("");
+            $("#" + f + ' > td').attr('id', f).removeAttr("style").html("");
         },
         data: {
             postId: postId,
@@ -67,14 +67,20 @@ function boostMarketplacePost(postId, businessTypeAsString) {
                 $("#" + s).removeAttr("style");
                 $("#" + s + ' > td')
                     .attr('id', s)
-                    .css('text-align','right').css("background-color", "#fff0f0").css("color", "#0D8B0B").css("font-family", "'Roboto', sans-serif")
-                    .html(data.text).delay(5000).fadeOut('slow');
+                    .css('text-align','right')
+                    .css("background-color", "#fff0f0")
+                    .css("color", "#0D8B0B")
+                    .css("font-family", "'Roboto', sans-serif")
+                    .html(data.text).delay(8000).fadeOut('slow');
             } else {
                 $("#" + f).removeAttr("style");
                 $("#" + f + ' > td')
                     .attr('id', f)
-                    .css('text-align','right').css("background-color", "#fecfcf").css("color", "#c72926").css("font-family", "'Roboto', sans-serif")
-                    .html(data.text).delay(5000).fadeOut('slow');
+                    .css('text-align','right')
+                    .css("background-color", "#fecfcf")
+                    .css("color", "#c72926")
+                    .css("font-family", "'Roboto', sans-serif")
+                    .html(data.text).delay(8000).fadeOut('slow');
             }
         }
     });
