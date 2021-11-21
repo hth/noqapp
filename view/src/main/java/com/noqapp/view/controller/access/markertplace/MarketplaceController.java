@@ -370,8 +370,4 @@ public class MarketplaceController {
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessTypeAsString.getText());
         }
     }
-
-    public void addImage(MarketplaceForm marketplaceForm) {
-        LOG.info("File upload {}", marketplaceForm.getMarketplace().getId());
-    }
 }
