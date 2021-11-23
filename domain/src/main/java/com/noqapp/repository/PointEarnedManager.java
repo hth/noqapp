@@ -16,4 +16,10 @@ public interface PointEarnedManager extends RepositoryManager<PointEarnedEntity>
     Stream<PointEarnedEntity> findAllNotMarkedComputed();
 
     void markComputedById(String id);
+
+    long countReviewPoints(String qid);
+
+    long countInvitePoints(String qid);
+
+    long countInviteePoints(String qid);
 }

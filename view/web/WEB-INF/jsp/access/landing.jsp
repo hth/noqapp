@@ -71,10 +71,10 @@
                         <h3>Welcome <sec:authentication property="principal.userShortName"/></h3>
                         <c:choose>
                             <c:when test="${landingForm.userPreference.earnedPoint < 1}">
-                                <h4>Points Available: No points available</h4>
+                                <h4>Points Available: <a href="userProfile/#points">No points available</a></h4>
                             </c:when>
                             <c:otherwise>
-                                <h4>Points Available: ${landingForm.userPreference.earnedPoin}</h4>
+                                <h4>Points Available: ${landingForm.userPreference.earnedPoint}</h4>
                             </c:otherwise>
                         </c:choose>
 

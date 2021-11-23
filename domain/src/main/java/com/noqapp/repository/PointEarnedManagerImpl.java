@@ -8,6 +8,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 
 import com.noqapp.domain.BaseEntity;
 import com.noqapp.domain.PointEarnedEntity;
+import com.noqapp.domain.types.PointActivityEnum;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +83,33 @@ public class PointEarnedManagerImpl implements PointEarnedManager {
         mongoTemplate.updateFirst(
             query(where("id").is(id)),
             entityUpdate(update("MC", true)),
+            PointEarnedEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public long countReviewPoints(String qid) {
+        return mongoTemplate.count(
+            query(where("qid").is(qid).and("PA").is(PointActivityEnum.REV)),
+            PointEarnedEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public long countInvitePoints(String qid) {
+        return mongoTemplate.count(
+            query(where("qid").is(qid).and("PA").is(PointActivityEnum.INV)),
+            PointEarnedEntity.class,
+            TABLE
+        );
+    }
+
+    @Override
+    public long countInviteePoints(String qid) {
+        return mongoTemplate.count(
+            query(where("qid").is(qid).and("PA").is(PointActivityEnum.ISU)),
             PointEarnedEntity.class,
             TABLE
         );

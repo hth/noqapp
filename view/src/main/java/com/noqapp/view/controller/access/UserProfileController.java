@@ -9,15 +9,19 @@ import com.noqapp.domain.BusinessUserEntity;
 import com.noqapp.domain.ProfessionalProfileEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserAddressEntity;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
 import com.noqapp.domain.flow.RegisterUser;
 import com.noqapp.domain.helper.NameDatePair;
 import com.noqapp.domain.site.QueueUser;
+import com.noqapp.domain.types.PointActivityEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
+import com.noqapp.repository.PointEarnedManager;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.FileService;
+import com.noqapp.service.PointEarnedService;
 import com.noqapp.service.ProfessionalProfileService;
 import com.noqapp.service.UserAddressService;
 import com.noqapp.view.form.FileUploadForm;
@@ -89,6 +93,7 @@ public class UserProfileController {
     private FileService fileService;
     private BusinessUserService businessUserService;
     private UserAddressService userAddressService;
+    private PointEarnedService pointEarnedService;
     private ImageValidator imageValidator;
 
     @Autowired
@@ -110,6 +115,7 @@ public class UserProfileController {
         FileService fileService,
         BusinessUserService businessUserService,
         UserAddressService userAddressService,
+        PointEarnedService pointEarnedService,
         ImageValidator imageValidator
     ) {
         this.nextPage = nextPage;
@@ -124,6 +130,7 @@ public class UserProfileController {
         this.fileService = fileService;
         this.businessUserService = businessUserService;
         this.userAddressService = userAddressService;
+        this.pointEarnedService = pointEarnedService;
         this.imageValidator = imageValidator;
     }
 
@@ -210,6 +217,10 @@ public class UserProfileController {
         UserProfileEntity userProfile = accountService.findProfileByQueueUserId(queueUserId);
         UserAccountEntity userAccount = accountService.findByQueueUserId(queueUserId);
         UserAddressEntity userAddress = userAddressService.findOneUserAddress(userProfile.getQueueUserId());
+        UserPreferenceEntity userPreference = accountService.getEarnedPoint(userProfile.getQueueUserId());
+
+        long reviewPointsEarned = pointEarnedService.totalReviewPoints(userProfile.getQueueUserId());
+        long totalInvitePointsEarned = pointEarnedService.totalInvitePoints(userProfile.getQueueUserId());
 
         userProfileForm
             .setProfileImage(StringUtils.isBlank(userProfile.getProfileImage())
@@ -224,7 +235,10 @@ public class UserProfileController {
             .setPhone(new ScrubbedInput(userProfile.getPhone()))
             .setTimeZone(StringUtils.isBlank(userProfile.getTimeZone()) ? new ScrubbedInput("N/A") : new ScrubbedInput(userProfile.getTimeZone()))
             .setEmailValidated(userAccount.isAccountValidated())
-            .setPhoneValidated(userAccount.isPhoneValidated());
+            .setPhoneValidated(userAccount.isPhoneValidated())
+            .setUserPreference(userPreference)
+            .setReviewPointsEarned(reviewPointsEarned * PointActivityEnum.REV.getPoint())
+            .setTotalInvitePointsEarned(totalInvitePointsEarned * PointActivityEnum.INV.getPoint());
 
         ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUserId);
         if (null != professionalProfile) {
