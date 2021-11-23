@@ -236,8 +236,8 @@ public class UserProfileController {
             .setEmailValidated(userAccount.isAccountValidated())
             .setPhoneValidated(userAccount.isPhoneValidated())
             .setUserPreference(userPreference)
-            .setReviewPointsEarned(reviewPointsEarned * PointActivityEnum.REV.getPoint())
-            .setTotalInvitePointsEarned(totalInvitePointsEarned * PointActivityEnum.INV.getPoint());
+            .setReviewPointsEarned(reviewPointsEarned)
+            .setTotalInvitePointsEarned(totalInvitePointsEarned);
 
         ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUserId);
         if (null != professionalProfile) {
