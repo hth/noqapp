@@ -48,6 +48,13 @@ public class JsonUserPreference extends AbstractDomain {
     @JsonProperty("uai")
     private String userAddressId;
 
+    /** Net point earned. */
+    @JsonProperty("ep")
+    private int earnedPoint = 0;
+
+    @JsonProperty("epp")
+    private int earnedPointPreviously= 0;
+
     public CommunicationModeEnum getPromotionalSMS() {
         return promotionalSMS;
     }
@@ -93,6 +100,24 @@ public class JsonUserPreference extends AbstractDomain {
         return this;
     }
 
+    public int getEarnedPoint() {
+        return earnedPoint;
+    }
+
+    public JsonUserPreference setEarnedPoint(int earnedPoint) {
+        this.earnedPoint = earnedPoint;
+        return this;
+    }
+
+    public int getEarnedPointPreviously() {
+        return earnedPointPreviously;
+    }
+
+    public JsonUserPreference setEarnedPointPreviously(int earnedPointPreviously) {
+        this.earnedPointPreviously = earnedPointPreviously;
+        return this;
+    }
+
     public static JsonUserPreference convertToJsonUserPreference(UserPreferenceEntity userPreference) {
         if (null != userPreference) {
             return new JsonUserPreference()
@@ -100,7 +125,9 @@ public class JsonUserPreference extends AbstractDomain {
                 .setFirebaseNotification(userPreference.getFirebaseNotification())
                 .setDeliveryMode(userPreference.getDeliveryMode())
                 .setPaymentMethod(userPreference.getPaymentMethod())
-                .setUserAddressId(userPreference.getUserAddressId());
+                .setUserAddressId(userPreference.getUserAddressId())
+                .setEarnedPoint(userPreference.getEarnedPoint())
+                .setEarnedPointPreviously(userPreference.getEarnedPointPreviously());
         } else {
             /* These fields are default, hence populating as default when null. */
             return new JsonUserPreference()
