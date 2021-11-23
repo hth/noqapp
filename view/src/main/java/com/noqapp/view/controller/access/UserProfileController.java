@@ -17,7 +17,6 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.PointActivityEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.repository.PointEarnedManager;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.FileService;
