@@ -1,6 +1,7 @@
 package com.noqapp.view.form;
 
 import com.noqapp.common.utils.ScrubbedInput;
+import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.types.GenderEnum;
 
 /**
@@ -22,6 +23,10 @@ public class UserProfileForm {
 
     private GenderEnum gender;
     private ScrubbedInput birthday;
+
+    private UserPreferenceEntity userPreference;
+    private long reviewPointsEarned;
+    private long totalInvitePointsEarned;
 
     public String getProfileImage() {
         return profileImage;
@@ -121,5 +126,31 @@ public class UserProfileForm {
         this.birthday = birthday;
         return this;
     }
-}
 
+    public UserPreferenceEntity getUserPreference() {
+        return userPreference;
+    }
+
+    public UserProfileForm setUserPreference(UserPreferenceEntity userPreference) {
+        this.userPreference = userPreference;
+        return this;
+    }
+
+    public long getReviewPointsEarned() {
+        return reviewPointsEarned;
+    }
+
+    public UserProfileForm setReviewPointsEarned(long reviewPointsEarned) {
+        this.reviewPointsEarned = reviewPointsEarned;
+        return this;
+    }
+
+    public long getTotalInvitePointsEarned() {
+        return totalInvitePointsEarned;
+    }
+
+    public UserProfileForm setTotalInvitePointsEarned(long totalInvitePointsEarned) {
+        this.totalInvitePointsEarned = totalInvitePointsEarned;
+        return this;
+    }
+}

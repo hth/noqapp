@@ -1,3 +1,4 @@
+<%@ page import="com.noqapp.domain.types.PointActivityEnum" %>
 <%@ include file="../../jsp/include.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
@@ -297,6 +298,50 @@
                             </div>
                             <div class="clearFix"></div>
                             </c:if>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="admin-title">
+                    <h2><a id="points">Points Earned</a></h2>
+                </div>
+                <div class="admin-content">
+                    <div class="add-new">
+                        <ul class="list-form">
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="userPreference.earnedPoint" cssErrorClass="lb_error">Total Points Earned</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="userPreference.earnedPoint" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="reviewPointsEarned" cssErrorClass="lb_error">Points Earned by Review</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="reviewPointsEarned" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
+                                    <form:label path="totalInvitePointsEarned" cssErrorClass="lb_error">Point Earned by Invite</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="totalInvitePointsEarned" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                </div>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="alert-info">
+                                    <p style="font-weight: bold">How to earn points?</p>
+                                    <p>${PointActivityEnum.REV.point} points per ${PointActivityEnum.REV.description}. Give review and earn points.</p>
+                                    <p>${PointActivityEnum.INV.point} points per ${PointActivityEnum.INV.description}. Invite friends and earn points. Share your invitee code to earn point.</p>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
