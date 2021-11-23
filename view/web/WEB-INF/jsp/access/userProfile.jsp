@@ -310,7 +310,7 @@
                         <ul class="list-form">
                             <li>
                                 <div class="col-lable3">
-                                    <form:label path="userPreference.earnedPoint" cssErrorClass="lb_error">Total Points Earned</form:label>
+                                    <form:label path="userPreference.earnedPoint" cssErrorClass="lb_error">Points Available</form:label>
                                 </div>
                                 <div class="col-fields">
                                     <form:input path="userPreference.earnedPoint" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>

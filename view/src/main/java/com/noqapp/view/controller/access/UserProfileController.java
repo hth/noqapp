@@ -17,7 +17,6 @@ import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.PointActivityEnum;
 import com.noqapp.health.domain.types.HealthStatusEnum;
 import com.noqapp.health.service.ApiHealthService;
-import com.noqapp.repository.PointEarnedManager;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.BusinessUserService;
 import com.noqapp.service.FileService;
@@ -237,8 +236,8 @@ public class UserProfileController {
             .setEmailValidated(userAccount.isAccountValidated())
             .setPhoneValidated(userAccount.isPhoneValidated())
             .setUserPreference(userPreference)
-            .setReviewPointsEarned(reviewPointsEarned * PointActivityEnum.REV.getPoint())
-            .setTotalInvitePointsEarned(totalInvitePointsEarned * PointActivityEnum.INV.getPoint());
+            .setReviewPointsEarned(reviewPointsEarned)
+            .setTotalInvitePointsEarned(totalInvitePointsEarned);
 
         ProfessionalProfileEntity professionalProfile = professionalProfileService.findByQid(queueUserId);
         if (null != professionalProfile) {

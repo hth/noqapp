@@ -91,7 +91,7 @@ public class PointEarnedManagerImpl implements PointEarnedManager {
     @Override
     public long countReviewPoints(String qid) {
         return mongoTemplate.count(
-            query(where("qid").is(qid).and("PA").is(PointActivityEnum.REV)),
+            query(where("QID").is(qid).and("PA").is(PointActivityEnum.REV)),
             PointEarnedEntity.class,
             TABLE
         );
@@ -100,7 +100,7 @@ public class PointEarnedManagerImpl implements PointEarnedManager {
     @Override
     public long countInvitePoints(String qid) {
         return mongoTemplate.count(
-            query(where("qid").is(qid).and("PA").is(PointActivityEnum.INV)),
+            query(where("QID").is(qid).and("PA").is(PointActivityEnum.INV)),
             PointEarnedEntity.class,
             TABLE
         );
@@ -109,7 +109,7 @@ public class PointEarnedManagerImpl implements PointEarnedManager {
     @Override
     public long countInviteePoints(String qid) {
         return mongoTemplate.count(
-            query(where("qid").is(qid).and("PA").is(PointActivityEnum.ISU)),
+            query(where("QID").is(qid).and("PA").is(PointActivityEnum.ISU)),
             PointEarnedEntity.class,
             TABLE
         );
