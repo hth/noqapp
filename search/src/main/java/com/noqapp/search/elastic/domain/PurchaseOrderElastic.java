@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 @JsonPropertyOrder(alphabetic = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PurchaseOrderElastic  extends AbstractDomain {
+public class PurchaseOrderElastic extends AbstractDomain {
     private static final Logger LOG = LoggerFactory.getLogger(PurchaseOrderElastic.class);
 
     public static final String TYPE = "PURCHASE_ORDER".toLowerCase();
