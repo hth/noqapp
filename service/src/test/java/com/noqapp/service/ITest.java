@@ -13,12 +13,14 @@ import com.noqapp.domain.StoreHourEntity;
 import com.noqapp.domain.UserAccountEntity;
 import com.noqapp.domain.UserPreferenceEntity;
 import com.noqapp.domain.UserProfileEntity;
+import com.noqapp.domain.site.QueueUser;
 import com.noqapp.domain.types.AddressOriginEnum;
 import com.noqapp.domain.types.BusinessTypeEnum;
 import com.noqapp.domain.types.BusinessUserRegistrationStatusEnum;
 import com.noqapp.domain.types.DeviceTypeEnum;
 import com.noqapp.domain.types.GenderEnum;
 import com.noqapp.domain.types.OnOffEnum;
+import com.noqapp.domain.types.RoleEnum;
 import com.noqapp.domain.types.UserLevelEnum;
 import com.noqapp.domain.types.catgeory.CanteenStoreDepartmentEnum;
 import com.noqapp.health.repository.ApiHealthNowManager;
@@ -110,10 +112,16 @@ import org.bson.types.ObjectId;
 
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mock.env.MockEnvironment;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -121,6 +129,7 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import okhttp3.OkHttpClient;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -557,6 +566,12 @@ public class ITest extends RealMongoForITest {
         );
 
         registerUser();
+
+        List<UserProfileEntity> userProfiles = userProfileManager.findAll();
+        for (UserProfileEntity userProfile : userProfiles) {
+            addSecurityContextHolder(userProfile.getPhone());
+        }
+
         createBusinessCSD("9118000001100");
     }
 
@@ -925,5 +940,23 @@ public class ITest extends RealMongoForITest {
             bizStore.getCodeQR(),
             queueManagerUserProfile.getLevel());
         businessUserStoreService.save(businessUserStore);
+    }
+
+    public void addSecurityContextHolder(String phone) {
+        Authentication authentication = Mockito.mock(Authentication.class);
+        // Mockito.whens() for your authorization object
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        List<GrantedAuthority> updatedAuthorities = new ArrayList<>();
+        updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_CLIENT.name()));
+        updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_Q_SUPERVISOR.name()));
+        updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_S_MANAGER.name()));
+        updatedAuthorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_M_ADMIN.name()));
+
+        UserProfileEntity merchantUserProfile = accountService.checkUserExistsByPhone(phone);
+        QueueUser queueUser = new QueueUser(merchantUserProfile.getEmail(), "XXX", updatedAuthorities, merchantUserProfile.getQueueUserId(), merchantUserProfile.getLevel(), true, true, merchantUserProfile.getCountryShortName(), "XYZ");
+        Mockito.when(securityContext.getAuthentication().getPrincipal()).thenReturn(queueUser);
+        SecurityContextHolder.setContext(securityContext);
     }
 }
