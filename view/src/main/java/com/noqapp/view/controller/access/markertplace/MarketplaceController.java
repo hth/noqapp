@@ -22,10 +22,10 @@ import com.noqapp.search.elastic.service.MarketplaceElasticService;
 import com.noqapp.service.AccountService;
 import com.noqapp.service.FileService;
 import com.noqapp.service.FtpService;
+import com.noqapp.service.exceptions.NotAValidObjectIdException;
 import com.noqapp.service.market.HouseholdItemService;
 import com.noqapp.service.market.PropertyRentalService;
 import com.noqapp.view.controller.access.UserProfileController;
-import com.noqapp.view.controller.business.store.PublishArticleController;
 import com.noqapp.view.form.FileUploadForm;
 import com.noqapp.view.form.marketplace.MarketplaceForm;
 import com.noqapp.view.validator.ImageValidator;
@@ -80,6 +80,8 @@ public class MarketplaceController {
 
     private String bucketName;
     private String nextPage;
+    private String nextPagePropertyRental;
+    private String nextPageHouseholdItem;
 
     private PropertyRentalService propertyRentalService;
     private HouseholdItemService householdItemService;
@@ -98,6 +100,12 @@ public class MarketplaceController {
         @Value("${nextPage:/access/marketplace/landing}")
         String nextPage,
 
+        @Value("${nextPage:/access/marketplace/propertyRental}")
+        String nextPagePropertyRental,
+
+        @Value("${nextPage:/access/marketplace/householdItem}")
+        String nextPageHouseholdItem,
+
         PropertyRentalService propertyRentalService,
         HouseholdItemService householdItemService,
         FileService fileService,
@@ -109,6 +117,8 @@ public class MarketplaceController {
     ) {
         this.bucketName = bucketName;
         this.nextPage = nextPage;
+        this.nextPagePropertyRental = nextPagePropertyRental;
+        this.nextPageHouseholdItem = nextPageHouseholdItem;
 
         this.propertyRentalService = propertyRentalService;
         this.householdItemService = householdItemService;
@@ -235,7 +245,7 @@ public class MarketplaceController {
                     apiHealthService.insert(
                         "/upload",
                         "upload",
-                        PublishArticleController.class.getName(),
+                        MarketplaceController.class.getName(),
                         Duration.between(start, Instant.now()),
                         HealthStatusEnum.F);
                 }
@@ -368,6 +378,63 @@ public class MarketplaceController {
             default:
                 LOG.error("Reached unsupported condition={} {} {}", businessTypeAsString.getText(), postId.getText(), queueUser.getQueueUserId());
                 throw new UnsupportedOperationException("Reached unsupported condition " + businessTypeAsString.getText());
+        }
+    }
+
+    @GetMapping(value = "/{businessTypeEnum}/{id}/view", produces = "text/html;charset=UTF-8")
+    public String view(
+        @PathVariable("id")
+        ScrubbedInput id,
+
+        @PathVariable("businessTypeEnum")
+        ScrubbedInput businessTypeEnum,
+
+        @ModelAttribute ("marketplaceForm")
+        MarketplaceForm marketplaceForm,
+
+        Model model
+    ) {
+        QueueUser queueUser = (QueueUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        LOG.info("Landed to marketplace view for {} {} by {}", id, businessTypeEnum, queueUser.getQueueUserId());
+
+        try {
+            if (!Validate.isValidObjectId(id.getText())) {
+                LOG.error("Marketplace id should be ObjectId but is {}", id.getText());
+                throw new NotAValidObjectIdException("Failed to validated id " + id.getText());
+            }
+
+            BusinessTypeEnum businessType = BusinessTypeEnum.valueOf(businessTypeEnum.getText().toUpperCase());
+            model.addAttribute("bucketName", FtpService.marketBucketName(bucketName, businessType));
+            switch (businessType) {
+                case PR:
+                    PropertyRentalEntity propertyRental = propertyRentalService.findOneById(queueUser.getQueueUserId(), id.getText());
+                    if (null == propertyRental) {
+                        LOG.warn("Not found {} {} {}", queueUser.getQueueUserId(), businessType, id.getText());
+                        return "redirect:/access/landing";
+                    }
+                    marketplaceForm.setMarketplace(propertyRental);
+                    return nextPagePropertyRental;
+                case HI:
+                    HouseholdItemEntity householdItem = householdItemService.findOneById(queueUser.getQueueUserId(), id.getText());
+                    if (null == householdItem) {
+                        LOG.warn("Not found {} {} {}", queueUser.getQueueUserId(), businessType, id.getText());
+                        return "redirect:/access/landing";
+                    }
+                    marketplaceForm.setMarketplace(householdItem);
+                    return nextPageHouseholdItem;
+                default:
+                    LOG.error("Reached unsupported condition {}", businessTypeEnum.getText());
+                    throw new UnsupportedOperationException("Reached un-supported condition");
+            }
+        } catch (Exception e) {
+            LOG.error("Failed updated status for marketplace id={} businessType={} qid={} reason={}",
+                id.getText(),
+                businessTypeEnum.getText(),
+                queueUser.getQueueUserId(),
+                e.getLocalizedMessage(),
+                e);
+
+            return "redirect:/access/landing";
         }
     }
 }

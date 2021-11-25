@@ -288,31 +288,37 @@
                                                 <c:choose>
                                                     <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.P}">
                                                         <td>
-                                                            <i class="fas fa-ban" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a>
+                                                            <i class="fas fa-ban" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;
+                                                            <a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/view">View</a>
                                                             <span style="font-size: x-small">(Pending Approval)</span>
                                                         </td>
                                                     </c:when>
                                                     <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.A}">
                                                         <td>
-                                                            <i class="fas fa-check-circle" style="color:#ff217c;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a>
+                                                            <i class="fas fa-check-circle" style="color:#ff217c;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;
+                                                            <a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/view">View</a>
                                                             <span style="font-size: x-small">(Approved)</span>
                                                         </td>
                                                     </c:when>
                                                     <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.R}">
                                                         <td>
-                                                            <i class="fas fa-redo" style="color:#4e4d4d;" title="Re-Submit"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a>
+                                                            <i class="fas fa-redo" style="color:#4e4d4d;" title="Re-Submit"></i>&nbsp;&nbsp;&nbsp;
+                                                            uploadImage
+                                                            <a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/view">View</a>
                                                             <span style="font-size: x-small">(Re-Submit)</span>
                                                         </td>
                                                     </c:when>
                                                     <c:when test="${marketplaceForm.marketplace.validateStatus == ValidateStatusEnum.D}">
                                                         <td>
-                                                            <i class="fas fa-trash-alt" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a>
+                                                            <i class="fas fa-trash-alt" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;
+                                                            <a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/view">View</a>
                                                             <span style="font-size: x-small">(Deleted)</span>
                                                         </td>
                                                     </c:when>
                                                     <c:otherwise>
                                                         <td>
-                                                            <i class="fas fa-trash-alt" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;<a href="/view.htm">View</a>
+                                                            <i class="fas fa-trash-alt" style="color:#4e4d4d;" title="${marketplaceForm.marketplace.validateStatus.description}"></i>&nbsp;&nbsp;&nbsp;
+                                                            <a href="/access/marketplace/${marketplaceForm.marketplace.businessType.name}/${marketplaceForm.marketplace.id}/view">View</a>
                                                             <span style="font-size: x-small">(Submit)</span>
                                                         </td>
                                                     </c:otherwise>
