@@ -389,7 +389,7 @@ public class MailService {
             if (message.equalsIgnoreCase("agent account")) {
                 rootMap.put("agent", "YES");
             }
-            sendAnyMail(userId, name, "Confirmation mail for NoQueue", rootMap, "mail/mail-otp.ftl");
+            sendAnyMail(userId, name, "OTP from NoQueue", rootMap, "mail/mail-otp.ftl");
         } else {
             LOG.warn("Could not send mail verification {} {} {}", userId, name, otp);
         }
