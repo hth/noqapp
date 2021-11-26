@@ -69,10 +69,10 @@ public class PurchaseOrderElasticService {
 
     @Async
     public void save(JsonPurchaseOrder jsonPurchaseOrder) {
-        LOG.info("Saving to elastic {} {}", jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getQueueUserId());
         if (null != jsonPurchaseOrder.getUserAddressId()) {
             UserAddressEntity userAddress = userAddressManager.findById(jsonPurchaseOrder.getUserAddressId());
             save(DomainConversion.getAsPurchaseOrderElastic(jsonPurchaseOrder, userAddress));
+            LOG.info("Saved purchaseOrder to elastic {} {}", jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getQueueUserId());
         } else {
             LOG.warn("Missing addressId for transactionId={}", jsonPurchaseOrder.getTransactionId());
         }
