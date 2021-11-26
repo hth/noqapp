@@ -19,7 +19,7 @@ public interface UserAccountManager extends RepositoryManager<UserAccountEntity>
 
     void updateAccountToValidated(String id, AccountInactiveReasonEnum air);
 
-    void markAccountAsValid(String qid);
+    UserAccountEntity markAccountAsValid(String qid);
 
     long countRegisteredBetweenDates(Date from, Date to);
 

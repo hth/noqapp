@@ -35,6 +35,7 @@ import com.noqapp.repository.UserAccountManager;
 import com.noqapp.repository.UserAuthenticationManager;
 import com.noqapp.repository.UserPreferenceManager;
 import com.noqapp.repository.UserProfileManager;
+import com.noqapp.service.exceptions.AccountEmailValidationException;
 import com.noqapp.service.exceptions.DuplicateAccountException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -539,6 +540,16 @@ public class AccountService {
 
         emailValidate.inActive();
         emailValidateService.saveEmailValidateEntity(emailValidate);
+    }
+
+    @Mobile
+    public UserAccountEntity validateAccount(String qid, String mailOTP) {
+        UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
+        if (StringUtils.isNotBlank(userProfile.getMailOTP()) && userProfile.getMailOTP().equals(mailOTP)) {
+            return userAccountManager.markAccountAsValid(qid);
+        }
+
+        throw new AccountEmailValidationException("Failed validating account");
     }
 
     private void markAccountValidated(String qid) {

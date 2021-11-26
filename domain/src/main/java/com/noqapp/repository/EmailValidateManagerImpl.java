@@ -22,18 +22,18 @@ import org.springframework.stereotype.Repository;
  * Date: 11/25/16 10:05 AM
  */
 @SuppressWarnings({
-        "PMD.BeanMembersShouldSerialize",
-        "PMD.LocalVariableCouldBeFinal",
-        "PMD.MethodArgumentCouldBeFinal",
-        "PMD.LongVariable"
+    "PMD.BeanMembersShouldSerialize",
+    "PMD.LocalVariableCouldBeFinal",
+    "PMD.MethodArgumentCouldBeFinal",
+    "PMD.LongVariable"
 })
 @Repository
 public class EmailValidateManagerImpl implements EmailValidateManager {
     private static final Logger LOG = LoggerFactory.getLogger(EmailValidateManagerImpl.class);
     private static final String TABLE = BaseEntity.getClassAnnotationValue(
-            EmailValidateEntity.class,
-            Document.class,
-            "collection");
+        EmailValidateEntity.class,
+        Document.class,
+        "collection");
 
     private MongoTemplate mongoTemplate;
 
@@ -58,18 +58,18 @@ public class EmailValidateManagerImpl implements EmailValidateManager {
     @Override
     public EmailValidateEntity findByAuthenticationKey(String auth) {
         return mongoTemplate.findOne(
-                query(where("AUTH").is(auth).andOperator(isNotDeleted())),
-                EmailValidateEntity.class,
-                TABLE
+            query(where("AUTH").is(auth).andOperator(isNotDeleted())),
+            EmailValidateEntity.class,
+            TABLE
         );
     }
 
     @Override
     public void invalidateAllEntries(String queueUserId) {
         mongoTemplate.updateMulti(
-                query(where("QID").is(queueUserId)),
-                entityUpdate(update("A", false)),
-                EmailValidateEntity.class
+            query(where("QID").is(queueUserId)),
+            entityUpdate(update("A", false)),
+            EmailValidateEntity.class
         );
     }
 

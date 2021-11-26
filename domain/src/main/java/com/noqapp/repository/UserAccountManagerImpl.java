@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.query.Query;
@@ -95,10 +96,11 @@ public class UserAccountManagerImpl implements UserAccountManager {
     }
 
     @Override
-    public void markAccountAsValid(String qid) {
-        mongoTemplate.updateFirst(
+    public UserAccountEntity markAccountAsValid(String qid) {
+       return mongoTemplate.findAndModify(
             query(where("QID").is(qid)),
             entityUpdate(update("AV", true)),
+            FindAndModifyOptions.options().returnNew(true),
             UserAccountEntity.class
         );
     }
