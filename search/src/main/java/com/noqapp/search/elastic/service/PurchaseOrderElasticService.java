@@ -69,8 +69,13 @@ public class PurchaseOrderElasticService {
 
     @Async
     public void save(JsonPurchaseOrder jsonPurchaseOrder) {
-        UserAddressEntity userAddress = userAddressManager.findById(jsonPurchaseOrder.getUserAddressId());
-        save(DomainConversion.getAsPurchaseOrderElastic(jsonPurchaseOrder, userAddress));
+        if (null != jsonPurchaseOrder.getUserAddressId()) {
+            UserAddressEntity userAddress = userAddressManager.findById(jsonPurchaseOrder.getUserAddressId());
+            save(DomainConversion.getAsPurchaseOrderElastic(jsonPurchaseOrder, userAddress));
+            LOG.info("Saved purchaseOrder to elastic {} {}", jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getQueueUserId());
+        } else {
+            LOG.warn("Missing addressId for transactionId={}", jsonPurchaseOrder.getTransactionId());
+        }
     }
 
     @Async
@@ -86,9 +91,13 @@ public class PurchaseOrderElasticService {
             stream.iterator().forEachRemaining(purchaseOrder -> {
                 PurchaseOrderElastic purchaseOrderElastic = null;
                 try {
-                    UserAddressEntity userAddress = userAddressManager.findById(purchaseOrder.getUserAddressId());
-                    purchaseOrderElastic = DomainConversion.getAsPurchaseOrderElastic(purchaseOrder, userAddress);
-                    purchaseOrderElastics.add(purchaseOrderElastic);
+                    if (null != purchaseOrder.getUserAddressId()) {
+                        UserAddressEntity userAddress = userAddressManager.findById(purchaseOrder.getUserAddressId());
+                        purchaseOrderElastic = DomainConversion.getAsPurchaseOrderElastic(purchaseOrder, userAddress);
+                        purchaseOrderElastics.add(purchaseOrderElastic);
+                    } else {
+                        LOG.warn("Missing addressId for transactionId={}", purchaseOrder.getTransactionId());
+                    }
                 } catch (Exception e) {
                     LOG.error("Failed to insert purchaseOrder in elastic data={} reason={}",
                         purchaseOrderElastic,
