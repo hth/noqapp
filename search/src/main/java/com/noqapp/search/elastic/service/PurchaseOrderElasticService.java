@@ -69,6 +69,7 @@ public class PurchaseOrderElasticService {
 
     @Async
     public void save(JsonPurchaseOrder jsonPurchaseOrder) {
+        LOG.info("Saving to elastic {} {}", jsonPurchaseOrder.getTransactionId(), jsonPurchaseOrder.getQueueUserId());
         UserAddressEntity userAddress = userAddressManager.findById(jsonPurchaseOrder.getUserAddressId());
         save(DomainConversion.getAsPurchaseOrderElastic(jsonPurchaseOrder, userAddress));
     }
