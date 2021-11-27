@@ -546,6 +546,7 @@ public class AccountService {
     public UserAccountEntity validateAccount(String qid, String mailOTP) {
         UserProfileEntity userProfile = userProfileManager.findByQueueUserId(qid);
         if (StringUtils.isNotBlank(userProfile.getMailOTP()) && userProfile.getMailOTP().equals(mailOTP)) {
+            LOG.info("Validated email of {}", qid);
             return userAccountManager.markAccountAsValid(qid);
         }
 
