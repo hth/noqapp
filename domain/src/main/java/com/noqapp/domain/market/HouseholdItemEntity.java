@@ -4,6 +4,7 @@ import static com.noqapp.common.utils.Constants.UNDER_SCORE;
 
 import com.noqapp.domain.annotation.Mobile;
 import com.noqapp.domain.json.marketplace.JsonHouseholdItem;
+import com.noqapp.domain.types.catgeory.HouseholdItemCategoryEnum;
 import com.noqapp.domain.types.catgeory.ItemConditionEnum;
 
 import org.apache.commons.lang3.StringUtils;
@@ -33,6 +34,9 @@ public class HouseholdItemEntity extends MarketplaceEntity {
     @Field("IC")
     private ItemConditionEnum itemCondition;
 
+    @Field("HC")
+    private HouseholdItemCategoryEnum householdItemCategory;
+
     public ItemConditionEnum getItemCondition() {
         return itemCondition;
     }
@@ -42,10 +46,20 @@ public class HouseholdItemEntity extends MarketplaceEntity {
         return this;
     }
 
+    public HouseholdItemCategoryEnum getHouseholdItemCategory() {
+        return householdItemCategory;
+    }
+
+    public HouseholdItemEntity setHouseholdItemCategory(HouseholdItemCategoryEnum householdItemCategory) {
+        this.householdItemCategory = householdItemCategory;
+        return this;
+    }
+
     @Override
     @Transient
     public String getFieldValueForTag() {
         return itemCondition.name() + UNDER_SCORE + "IC" + " "
+            + householdItemCategory.name() + UNDER_SCORE + "HC" + " "
             + displayPriceWithoutDecimal() + UNDER_SCORE + "PP"
             + (StringUtils.isNotBlank(getTags()) ? " " + getTags() : "");
     }
@@ -53,31 +67,33 @@ public class HouseholdItemEntity extends MarketplaceEntity {
     @Override
     public String[] getFieldTags() {
         return new String[] {
-            itemCondition.getDescription()
+            "Condition " + itemCondition.getDescription(),
+            "Category " + householdItemCategory.getDescription()
         };
     }
 
     @Mobile
     public JsonHouseholdItem populateJson() {
         JsonHouseholdItem jsonHouseholdItem = new JsonHouseholdItem()
-                .setItemCondition(itemCondition);
+            .setItemCondition(itemCondition)
+            .setHouseholdItemCategory(householdItemCategory);
 
         jsonHouseholdItem.setId(id)
-                .setQueueUserId(getQueueUserId())
-                .setBusinessType(getBusinessType())
-                .setCoordinate(getCoordinate())
-                .setProductPrice(getProductPrice())
-                .setTitle(getTitle())
-                .setDescription(getDescription())
-                .setPostImages(getPostImages())
-                .setTags(getTags())
-                .setViewCount(getViewCount())
-                .setAddress(getAddress())
-                .setCity(getCity())
-                .setTown(getTown())
-                .setCountryShortName(getCountryShortName())
-                .setLandmark(getLandmark())
-                .setPublishUntil(getPublishUntil());
+            .setQueueUserId(getQueueUserId())
+            .setBusinessType(getBusinessType())
+            .setCoordinate(getCoordinate())
+            .setProductPrice(getProductPrice())
+            .setTitle(getTitle())
+            .setDescription(getDescription())
+            .setPostImages(getPostImages())
+            .setTags(getTags())
+            .setViewCount(getViewCount())
+            .setAddress(getAddress())
+            .setCity(getCity())
+            .setTown(getTown())
+            .setCountryShortName(getCountryShortName())
+            .setLandmark(getLandmark())
+            .setPublishUntil(getPublishUntil());
 
         return jsonHouseholdItem;
     }

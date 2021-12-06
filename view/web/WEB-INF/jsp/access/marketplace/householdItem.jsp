@@ -114,6 +114,17 @@
                             </li>
                             <li>
                                 <div class="col-lable3">
+                                    <form:label path="marketplace.householdItemCategory" cssErrorClass="lb_error">Category</form:label>
+                                </div>
+                                <div class="col-fields">
+                                    <form:input path="marketplace.householdItemCategory.description" cssClass="form-field-admin" cssErrorClass="form-field-admin error-field" readonly="true"/>
+                                </div>
+                                <span class="tooltip" title="Listed under category" style="padding-left: 10px;"><i class="fas fa-info-circle"></i></span>
+                                <sup style="color: #9f1313; font-size: 150%;">*</sup>
+                                <div class="clearFix"></div>
+                            </li>
+                            <li>
+                                <div class="col-lable3">
                                     <form:label path="marketplace.itemCondition" cssErrorClass="lb_error">Condition</form:label>
                                 </div>
                                 <div class="col-fields">

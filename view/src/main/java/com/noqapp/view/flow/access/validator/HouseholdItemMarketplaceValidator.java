@@ -167,6 +167,16 @@ public class HouseholdItemMarketplaceValidator {
                         .build());
                 status = "failure";
             }
+
+            if (null == householdItem.getHouseholdItemCategory()) {
+                messageContext.addMessage(
+                    new MessageBuilder()
+                        .error()
+                        .source("marketplace.householdItemCategory")
+                        .defaultText("Select item category")
+                        .build());
+                status = "failure";
+            }
         }
 
         return status;
