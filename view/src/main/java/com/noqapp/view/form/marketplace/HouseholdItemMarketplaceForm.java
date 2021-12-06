@@ -1,5 +1,6 @@
 package com.noqapp.view.form.marketplace;
 
+import com.noqapp.domain.types.catgeory.HouseholdItemCategoryEnum;
 import com.noqapp.domain.types.catgeory.ItemConditionEnum;
 
 import org.slf4j.Logger;
@@ -21,6 +22,9 @@ public class HouseholdItemMarketplaceForm extends MarketplaceForm {
     @Transient
     private List<ItemConditionEnum> itemConditions = new ArrayList<>(ItemConditionEnum.itemConditionTypes);
 
+    @Transient
+    private List<HouseholdItemCategoryEnum> householdItemCategories = new ArrayList<>(HouseholdItemCategoryEnum.householdItemCategoryTypes);
+
     public List<ItemConditionEnum> getItemConditions() {
         return itemConditions;
     }
@@ -30,10 +34,20 @@ public class HouseholdItemMarketplaceForm extends MarketplaceForm {
         return this;
     }
 
+    public List<HouseholdItemCategoryEnum> getHouseholdItemCategories() {
+        return householdItemCategories;
+    }
+
+    public HouseholdItemMarketplaceForm setHouseholdItemCategories(List<HouseholdItemCategoryEnum> householdItemCategories) {
+        this.householdItemCategories = householdItemCategories;
+        return this;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", HouseholdItemMarketplaceForm.class.getSimpleName() + "[", "]")
             .add("itemConditions=" + itemConditions)
+            .add("householdItemCategories=" + householdItemCategories)
             .toString();
     }
 }

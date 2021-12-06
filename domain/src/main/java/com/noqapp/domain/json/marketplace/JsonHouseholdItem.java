@@ -1,5 +1,6 @@
 package com.noqapp.domain.json.marketplace;
 
+import com.noqapp.domain.types.catgeory.HouseholdItemCategoryEnum;
 import com.noqapp.domain.types.catgeory.ItemConditionEnum;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -30,12 +31,24 @@ public class JsonHouseholdItem extends JsonMarketplace {
     @JsonProperty("ic")
     private ItemConditionEnum itemCondition;
 
+    @JsonProperty("hc")
+    private HouseholdItemCategoryEnum householdItemCategory;
+
     public ItemConditionEnum getItemCondition() {
         return itemCondition;
     }
 
     public JsonHouseholdItem setItemCondition(ItemConditionEnum itemCondition) {
         this.itemCondition = itemCondition;
+        return this;
+    }
+
+    public HouseholdItemCategoryEnum getHouseholdItemCategory() {
+        return householdItemCategory;
+    }
+
+    public JsonHouseholdItem setHouseholdItemCategory(HouseholdItemCategoryEnum householdItemCategory) {
+        this.householdItemCategory = householdItemCategory;
         return this;
     }
 }

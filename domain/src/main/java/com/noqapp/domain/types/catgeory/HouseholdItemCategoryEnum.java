@@ -1,5 +1,7 @@
 package com.noqapp.domain.types.catgeory;
 
+import java.util.EnumSet;
+
 /**
  * hitender
  * 11/7/21 7:34 AM
@@ -25,6 +27,13 @@ public enum HouseholdItemCategoryEnum {
     }
 
     public String getDescription() {
+        return description;
+    }
+
+    public static EnumSet<HouseholdItemCategoryEnum> householdItemCategoryTypes = EnumSet.of(AUTO, FURN, ELAP, FREQ, BOOK, FASH);
+
+    @Override
+    public String toString() {
         return description;
     }
 }
