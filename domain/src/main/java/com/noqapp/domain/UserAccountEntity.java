@@ -40,7 +40,7 @@ public class UserAccountEntity extends BaseEntity {
 
     public static final String BLANK_SPACE = " ";
 
-    /* Unique Queue User Id throughout the system. This will never change. */
+    /* Unique Queue User ID throughout the system. This will never change. */
     @NotNull
     @Field ("QID")
     private String queueUserId;
