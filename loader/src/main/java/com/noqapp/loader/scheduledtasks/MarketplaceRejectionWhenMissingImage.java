@@ -68,7 +68,7 @@ public class MarketplaceRejectionWhenMissingImage {
         this.statsCronService = statsCronService;
     }
 
-    @Scheduled(fixedDelayString = "${loader.FilesUploadToS3.uploadOnS3}")
+    @Scheduled(fixedDelayString = "${loader.MarketplaceRejectionWhenMissingImage.autoRejectMarketplaceWhenMissingImage}")
     public void autoRejectMarketplaceWhenMissingImage() {
         StatsCronEntity statsCron = new StatsCronEntity(
             MarketplaceRejectionWhenMissingImage.class.getName(),
