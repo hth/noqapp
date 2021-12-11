@@ -1,3 +1,9 @@
+### Changed Dec 11, 2021
+
+Changed field name
+
+    db.getCollection('BIZ_NAME').update({"TAG" : {$exists : true}}, {$rename: {"TAG":"TG"}}, {multi: true});
+
 ### Changed Aug 19, 2021
 
 Changed field name 
