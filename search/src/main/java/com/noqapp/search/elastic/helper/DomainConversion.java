@@ -129,7 +129,7 @@ public class DomainConversion {
             case CD:
             case CDQ:
                 String tag = StringUtils.isBlank(bizStore.getBizName().getTag())
-                    ? bizStore.getBizName().computeTag()
+                    ? bizStore.getBizName().addBusinessNameWithoutSpaceToTag()
                     : bizStore.getBizName().getTag();
 
                 bizStoreElastic

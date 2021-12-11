@@ -26,7 +26,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import org.elasticsearch.common.geo.GeoPoint;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -35,7 +34,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.validation.constraints.NotNull;
 
@@ -617,10 +615,10 @@ public class BizNameEntity extends BaseEntity {
     }
 
     @Transient
-    public String computeTag() {
+    public String addBusinessNameWithoutSpaceToTag() {
         return Pattern.compile(" ").splitAsStream(businessName)
             .map(String::toLowerCase)
-            .collect(Collectors.joining(" "));
+            .collect(Collectors.joining());
     }
 
     @Override

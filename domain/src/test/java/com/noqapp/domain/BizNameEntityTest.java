@@ -1,7 +1,6 @@
 package com.noqapp.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +15,11 @@ class BizNameEntityTest {
         BizNameEntity bizName = new BizNameEntity()
             .setBusinessName("URC 54 ASP");
 
-        assertEquals("urc 54 asp", bizName.computeTag());
+        assertEquals("urc54asp", bizName.addBusinessNameWithoutSpaceToTag());
+
+        bizName = new BizNameEntity()
+            .setBusinessName("URC ");
+
+        assertEquals("urc", bizName.addBusinessNameWithoutSpaceToTag());
     }
 }
