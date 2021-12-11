@@ -128,9 +128,14 @@ public class DomainConversion {
         switch (bizStore.getBusinessType()) {
             case CD:
             case CDQ:
+                String tag = StringUtils.isBlank(bizStore.getBizName().getTag())
+                    ? bizStore.getBizName().computeTag()
+                    : bizStore.getBizName().getTag();
+
                 bizStoreElastic
-                    .setTag(bizStore.getBizName().getTag())
+                    .setTag(tag)
                     .addTag("csd").addTag("esm").addTag("ems").addTag("echs").addTag("canteen").addTag("ex service");
+                break;
             default:
                 //Do nothing
         }
