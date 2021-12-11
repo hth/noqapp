@@ -179,7 +179,7 @@ public class BizNameEntity extends BaseEntity {
     @Field("SL")
     private LocaleEnum smsLocale;
 
-    @Field("TAG")
+    @Field("TG")
     private String tag = "";
 
     @SuppressWarnings("unused")
