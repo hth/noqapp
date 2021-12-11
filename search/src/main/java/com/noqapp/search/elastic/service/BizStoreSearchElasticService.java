@@ -115,7 +115,7 @@ public class BizStoreSearchElasticService {
                     new Options().setQueryStringMultiMatch(
                         new BizStoreQueryString().setQuery(searchParameter))));
         } else {
-            /* When blank then do a match all. Should be avoided as its little too vague and set Fields as null. */
+            /* When blank then do a match all. Should be avoided, as it is little too vague and set Fields as null. */
             q.setConditions(
                 new Conditions().setOptions(
                     new Options().setQueryStringMatchAll(
