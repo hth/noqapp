@@ -616,7 +616,7 @@ public class BizNameEntity extends BaseEntity {
 
     @Transient
     public String addBusinessNameWithoutSpaceToTag() {
-        return Pattern.compile(" ").splitAsStream(businessName)
+        return Pattern.compile("[ ,]").splitAsStream(businessName)
             .map(String::toLowerCase)
             .collect(Collectors.joining());
     }
