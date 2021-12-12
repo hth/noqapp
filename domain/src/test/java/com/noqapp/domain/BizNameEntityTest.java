@@ -21,5 +21,10 @@ class BizNameEntityTest {
             .setBusinessName("URC ");
 
         assertEquals("urc", bizName.addBusinessNameWithoutSpaceToTag());
+
+        bizName = new BizNameEntity()
+            .setBusinessName("URC 54, ASP");
+
+        assertEquals("urc54asp", bizName.addBusinessNameWithoutSpaceToTag());
     }
 }
