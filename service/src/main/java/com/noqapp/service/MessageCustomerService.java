@@ -186,7 +186,7 @@ public class MessageCustomerService {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Failed sending message to all {} {} {} reason={}", title, body, qid, e.getMessage(), e);
+            LOG.error("Failed sending message to all \"{}\" \"{}\" \"{}\" reason={}", title, body, qid, e.getMessage(), e);
         }
     }
 
@@ -214,7 +214,7 @@ public class MessageCustomerService {
                 }
             }
         } catch (Exception e) {
-            LOG.error("Failed sending message to all {} {} {} reason={}", title, body, qid, e.getMessage(), e);
+            LOG.error("Failed sending message to all \"{}\" \"{}\" {} reason=\"{}\"", title, body, qid, e.getMessage(), e);
         }
     }
 
@@ -223,7 +223,7 @@ public class MessageCustomerService {
             BizNameEntity bizName = bizNameManager.getById(bizNameId);
             String topicForLogging = CommonUtil.buildTopic(bizName.getCountryShortName() + UNDER_SCORE + bizNameId, DeviceTypeEnum.onlyForLogging());
             if (notificationMessageManager.findPreviouslySentMessages(title, body, topicForLogging, qid)) {
-                LOG.info("Sending duplicate message ignored {} {} {} {}", qid, bizNameId, title, body);
+                LOG.info("Sending duplicate message ignored {} {} \"{}\" \"{}\"", qid, bizNameId, title, body);
                 throw new DuplicateMessageException("Previously Sent Message");
             }
 
@@ -255,7 +255,7 @@ public class MessageCustomerService {
                                 break;
                         }
                     } catch (Exception e) {
-                        LOG.error("Failed adding token {} {} {} {}", senderQid, bizName.getBusinessName(), bizNameId, e.getMessage());
+                        LOG.error("Failed adding token {} {} {} \"{}\"", senderQid, bizName.getBusinessName(), bizNameId, e.getMessage());
                     }
                 });
 
