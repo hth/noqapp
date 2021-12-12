@@ -365,7 +365,7 @@ public class MessageCustomerService {
 
     /** Sends any message to a specific user. */
     public void sendMessageToSpecificUser(String title, String body, String qid, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
-        LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
+        LOG.debug("Sending message to specific user title=\"{}\" body=\"{}\" qid={} messageOrigin={}", title, body, qid, messageOrigin);
         RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
         if (null != registeredDevice) {
             createMessageToSendToSpecificUserOrDevice(title, body, null, registeredDevice, messageOrigin, businessType);
@@ -376,7 +376,7 @@ public class MessageCustomerService {
 
     /** Sends any message to a specific user. */
     public void sendMessageToSpecificUser(String title, String body, String imageURL, String qid, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
-        LOG.debug("Sending message to specific user title={} body={} qid={} messageOrigin={}", title, body, qid, messageOrigin);
+        LOG.debug("Sending message to specific user title=\"{}\" body=\"{}\" qid={} messageOrigin={}", title, body, qid, messageOrigin);
         RegisteredDeviceEntity registeredDevice = registeredDeviceManager.findRecentDevice(qid);
         if (null != registeredDevice) {
             createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin, businessType);
@@ -387,7 +387,7 @@ public class MessageCustomerService {
 
     /** Sends any message to a specific user. */
     public void sendMessageToSpecificUser(String title, String body, String imageURL, RegisteredDeviceEntity registeredDevice, MessageOriginEnum messageOrigin, BusinessTypeEnum businessType) {
-        LOG.debug("Sending message to specific user title={} body={} messageOrigin={}", title, body, messageOrigin);
+        LOG.debug("Sending message to specific user title=\"{}\" body=\"{}\" messageOrigin={}", title, body, messageOrigin);
         if (null != registeredDevice) {
             createMessageToSendToSpecificUserOrDevice(title, body, imageURL, registeredDevice, messageOrigin, businessType);
         }
@@ -402,7 +402,7 @@ public class MessageCustomerService {
         if (StringUtils.isNotBlank(registeredDevice.getQueueUserId())) {
             UserProfileEntity userProfile = userProfileManager.populateName(registeredDevice.getQueueUserId());
             body = userProfile.getName() + ", " + body;
-            LOG.info("Message personalized {} {}", registeredDevice.getQueueUserId(), body);
+            LOG.info("Message personalized {} \"{}\"", registeredDevice.getQueueUserId(), body);
         }
 
         if (DeviceTypeEnum.I == registeredDevice.getDeviceType()) {
@@ -420,9 +420,9 @@ public class MessageCustomerService {
         LOG.info("Specific Message={}", jsonMessage.asJson());
         boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
         if (!fcmMessageBroadcast) {
-            LOG.warn("Failed personal message={}", jsonMessage.asJson());
+            LOG.warn("Failed personal message=\"{}\"", jsonMessage.asJson());
         } else {
-            LOG.info("Sent personal message={}", jsonMessage.asJson());
+            LOG.info("Sent personal message=\"{}\"", jsonMessage.asJson());
         }
     }
 
@@ -443,12 +443,12 @@ public class MessageCustomerService {
         }
 
         jsonMessage.setData(jsonData);
-        LOG.info("Specific Message={}", jsonMessage.asJson());
+        LOG.info("Specific Message=\"{}\"", jsonMessage.asJson());
         boolean fcmMessageBroadcast = firebaseMessageService.messageToTopic(jsonMessage);
         if (!fcmMessageBroadcast) {
-            LOG.warn("Failed bulk message={}", jsonMessage.asJson());
+            LOG.warn("Failed bulk message=\"{}\"", jsonMessage.asJson());
         } else {
-            LOG.info("Sent bulk message={}", jsonMessage.asJson());
+            LOG.info("Sent bulk message=\"{}\"", jsonMessage.asJson());
         }
     }
 
