@@ -136,8 +136,6 @@ public class DomainConversion {
                     .setTag(tag)
                     .addTag(" ")
                     .addTag("csd").addTag("esm").addTag("ems").addTag("echs").addTag("canteen").addTag("ex service");
-
-                LOG.info("{} {}", bizStoreElastic.getBusinessName(), bizStoreElastic.getTag());
                 break;
             default:
                 //Do nothing

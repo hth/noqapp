@@ -130,7 +130,7 @@ public class BizStoreSearchElasticService {
                         .setGeoHash(geoHash)));
         }
 
-        LOG.info("Elastic query q={}", q.asJson());
+        LOG.info("Search BizStoreElastic query q={} {}", q.asJson(), BizStoreElastic.INDEX);
         Search search = new Search()
             .setFrom(0)
             .setSize(paginationSize)

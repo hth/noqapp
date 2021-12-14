@@ -520,7 +520,7 @@ public class FileService {
                         modifiedPropertyRental = propertyRentalManager.popImage(propertyRental.getId());
                     }
 
-                    LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
+                    LOG.info("Uploaded {} file={}", businessType, toFileAbsolutePath);
                     break;
                 case HI:
                     HouseholdItemEntity householdItem = householdItemManager.findOneById(postId);
@@ -549,7 +549,7 @@ public class FileService {
                         modifiedHouseHoldItem = householdItemManager.popImage(householdItem.getId());
                     }
 
-                    LOG.debug("Uploaded {} file={}", businessType, toFileAbsolutePath);
+                    LOG.info("Uploaded {} file={}", businessType, toFileAbsolutePath);
                     break;
                 default:
                     LOG.warn("Reached un-reachable condition businessType={}", businessType);
