@@ -425,6 +425,7 @@ public class MailService {
     public MailTypeEnum pendingPostApproval(BusinessTypeEnum businessType, long pendingCount) {
         try {
             String message = "Environment: " + environment.getProperty("build.env") + ", Pending count " + pendingCount + ", approve post for " + businessType.getDescription();
+            LOG.info("Marketplace {}", message);
             MailEntity mail = new MailEntity()
                 .setToMail(doNotReplyEmail)
                 .setToName("NoQueue")
