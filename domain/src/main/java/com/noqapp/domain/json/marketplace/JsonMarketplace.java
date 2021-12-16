@@ -8,9 +8,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.StringJoiner;
 
 /**
  * hitender
@@ -223,5 +225,27 @@ public abstract class JsonMarketplace extends AbstractDomain {
     public JsonMarketplace setPublishUntil(Date publishUntil) {
         this.publishUntil = publishUntil;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", JsonMarketplace.class.getSimpleName() + "[", "]")
+            .add("id='" + id + "'")
+            .add("queueUserId='" + queueUserId + "'")
+            .add("businessType=" + businessType)
+            .add("coordinate=" + Arrays.toString(coordinate))
+            .add("productPrice='" + productPrice + "'")
+            .add("title='" + title + "'")
+            .add("description='" + description + "'")
+            .add("postImages=" + postImages)
+            .add("tags='" + tags + "'")
+            .add("viewCount=" + viewCount)
+            .add("address='" + address + "'")
+            .add("city='" + city + "'")
+            .add("town='" + town + "'")
+            .add("countryShortName='" + countryShortName + "'")
+            .add("landmark='" + landmark + "'")
+            .add("publishUntil=" + publishUntil)
+            .toString();
     }
 }

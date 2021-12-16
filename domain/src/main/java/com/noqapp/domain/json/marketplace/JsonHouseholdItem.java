@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.StringJoiner;
+
 /**
  * hitender
  * 3/7/21 12:06 PM
@@ -50,5 +52,13 @@ public class JsonHouseholdItem extends JsonMarketplace {
     public JsonHouseholdItem setHouseholdItemCategory(HouseholdItemCategoryEnum householdItemCategory) {
         this.householdItemCategory = householdItemCategory;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", JsonHouseholdItem.class.getSimpleName() + "[", "]")
+            .add("itemCondition=" + itemCondition)
+            .add("householdItemCategory=" + householdItemCategory)
+            .toString();
     }
 }

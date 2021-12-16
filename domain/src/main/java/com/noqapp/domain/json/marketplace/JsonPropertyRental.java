@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.StringJoiner;
+
 /**
  * hitender
  * 3/7/21 12:06 PM
@@ -111,5 +113,18 @@ public class JsonPropertyRental extends JsonMarketplace {
     public JsonPropertyRental setHousingAgentReview(String housingAgentReview) {
         this.housingAgentReview = housingAgentReview;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", JsonPropertyRental.class.getSimpleName() + "[", "]")
+            .add("bedroom=" + bedroom)
+            .add("bathroom=" + bathroom)
+            .add("carpetArea=" + carpetArea)
+            .add("rentalType=" + rentalType)
+            .add("rentalAvailableDay='" + rentalAvailableDay + "'")
+            .add("housingAgentQID='" + housingAgentQID + "'")
+            .add("housingAgentReview='" + housingAgentReview + "'")
+            .toString();
     }
 }
