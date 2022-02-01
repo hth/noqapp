@@ -123,17 +123,17 @@ public class BizStoreElasticService {
                         float totalRating = 0;
                         int totalReviewCount = 0;
 
-                        int bizStoreWithRating = 0;
+                        int bizStoreHavingRatingCount = 0;
                         for (BizStoreEntity bizStore : bizStores) {
                             if (0 != bizStore.getReviewCount()) {
                                 totalRating = totalRating + bizStore.getRating();
                                 totalReviewCount = totalReviewCount + bizStore.getReviewCount();
-                                bizStoreWithRating ++;
+                                bizStoreHavingRatingCount ++;
                             }
                         }
 
-                        if (0 != bizStoreWithRating) {
-                            bizStoreElastic.setRating(totalRating / bizStoreWithRating);
+                        if (0 != bizStoreHavingRatingCount) {
+                            bizStoreElastic.setRating(totalRating / bizStoreHavingRatingCount);
                         } else {
                             bizStoreElastic.setRating(0);
                         }
